@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Health Level Seven, Inc. - initial design and content
+ *******************************************************************************/ 				
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 representationKind="flat"
+                 isSerializable="true"
+                 packageKind="id"
+                 name="810100"
+                 title="SOFA Payment Advice Query Results">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="QU"
+                        domain="CR"
+                        version="01"/>
+   <mif:header>
+      <mif:renderingInformation application="RoseTree 4.2.34">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl 49 2009-03-25 15:09:56Z Woody $
+  Base transform: $Id: ConvertBase.xsl 8 2009-01-26 19:10:36Z Woody $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8 2009-01-26 19:10:36Z Woody $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl 8 2009-01-26 19:10:36Z Woody $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl 8 2009-01-26 19:10:36Z Woody $
+ Fix Names Transform: $Id: FixMifNames.xsl 47 2009-03-23 00:05:58Z Woody $
+  Base transform: $Id: ConvertBase.xsl 8 2009-01-26 19:10:36Z Woody $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8 2009-01-26 19:10:36Z Woody $</mif:renderingNotes>
+      </mif:renderingInformation>
+      <mif:legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at  <a href="http://www.eclipse.org/legal/epl-v10.html"> http://www.eclipse.org/legal/epl-v10.html </a>
+				        </p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+               <b>
+                  <i>Contributors: </i>
+               </b>
+            </p>
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+					          <li>Health Level Seven, Inc. - initial design and content</li>
+				        </ul>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint name="AdjudResultsGroup" useKind="SemanticPayload"
+                   className="AdjudResultsGroup"/>
+   <mif:containedClass>
+      <mif:commonModelElementRef name="A_AccountPayeeUniversal" cmetName="A_AccountPayeeUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Account"/>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef name="A_AccountPayorUniversal" cmetName="A_AccountPayorUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Account"/>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsCarrierRole" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="RoleHeir"/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="RoleClassRoot"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsFinancialContract" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassFinancialContract"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodEventOccurrence"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsGroup" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassInvoiceElement"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodEventOccurrence"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="code"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="ActInvoiceAdjudicationPaymentCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="netAmt" sortKey="6" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement" attributeName="netAmt"/>
+            <mif:type name="MO"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsGroupComponent" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActRelationshipHasComponent"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsGroupLocation" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ParticipationTargetLocation"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsGroupPayee" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActRelationshipHasCredit"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsGroupPayor" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActRelationshipHasDebit"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsGroupRef" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActRelationshipRefersTo"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsGroupSummary" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActRelationshipSummarizedBy"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsGroupSummaryData" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Observation"/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassObservation"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodEventOccurrence"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="code"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="ActInvoiceElementSummaryCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="value" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Observation" attributeName="value"/>
+            <mif:type name="ANY"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsProviderRole" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="RoleHeir"/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="RoleClassRoot"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsSendingAppDevice" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Device"/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Entity" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityClassDevice"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Entity" attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityDeterminerSpecific"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Entity" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="AdjudResultsSendingAppRole" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="RoleHeir"/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="RoleClassRoot"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Author" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ParticipationAuthorOriginator"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Device" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ParticipationTargetDevice"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Performer" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ParticipationPhysicalPerformer"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef name="R_ServiceDeliveryLocationUniversal"
+                                 cmetName="R_ServiceDeliveryLocationUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="RoleHeir"/>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:association sortKey="2">
+      <mif:traversableConnection name="author" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="AEA_______"
+                                 participantClassName="Author">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="5">
+      <mif:traversableConnection name="component" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BE________"
+                                 participantClassName="AdjudResultsGroupComponent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="6">
+      <mif:traversableConnection name="credit" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BDOAA_____"
+                                 participantClassName="AdjudResultsGroupPayee">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="7">
+      <mif:traversableConnection name="debit" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BDOAB_____"
+                                 participantClassName="AdjudResultsGroupPayor">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="4">
+      <mif:traversableConnection name="device" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="AAD_______"
+                                 participantClassName="Device">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="3">
+      <mif:traversableConnection name="location" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="AJ________"
+                                 participantClassName="AdjudResultsGroupLocation">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="performer" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="AD________"
+                                 participantClassName="Performer">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="8">
+      <mif:traversableConnection name="reference" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BDK_______"
+                                 participantClassName="AdjudResultsGroupRef">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="9">
+      <mif:traversableConnection name="summary" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BDM_______"
+                                 participantClassName="AdjudResultsGroupSummary">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="adjudResultsGroup" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="AdjudResultsGroup">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroupComponent"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="serviceDeliveryLocation" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="R_ServiceDeliveryLocationUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroupLocation"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="A_AccountPayeeUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroupPayee"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="A_AccountPayorUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroupPayor"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="adjudResultsFinancialContract" minimumMultiplicity="1"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="AdjudResultsFinancialContract">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroupRef"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="adjudResultsGroupSummaryData" minimumMultiplicity="1"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="AdjudResultsGroupSummaryData">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsGroupSummary"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="playingAdjudResultsSendingAppDevice" minimumMultiplicity="1"
+                                 maximumMultiplicity="1"
+                                 isMandatory="true"
+                                 conformance="R"
+                                 sortKey="AZ"
+                                 participantClassName="AdjudResultsSendingAppDevice">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AdjudResultsSendingAppRole"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="adjudResultsCarrierRole" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="AdjudResultsCarrierRole">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Author"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="adjudResultsSendingAppRole" minimumMultiplicity="1"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="AdjudResultsSendingAppRole">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Device"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="adjudResultsProviderRole" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="BZ"
+                                 participantClassName="AdjudResultsProviderRole">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Performer"/>
+   </mif:association>
+</mif:staticModel>

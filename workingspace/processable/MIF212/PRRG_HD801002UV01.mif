@@ -1,0 +1,1128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Tag Location"
+                 isSerializable="true"
+                 name="01">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="AM" subSection="PR"
+                        domain="RG"
+                        version="01"
+                        id="801002"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="8.500" height="11.000"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="72BF2883-CBFB-B584-9316-B8DF5224FF3F">
+         <mif:graphElement shapeId="Sheet.27">
+            <mif:position x="1.912" y="0.782"/>
+            <mif:size width="2.699" height="0.719"/>
+            <mif:anchorage connectToShapeId="Sheet.27">
+               <mif:position x="3.261" y="1.501"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.57">
+                     <mif:position x="3.261" y="2.880"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="EE4F4D80-CEB0-8612-721C-ACB45CEE8486" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.42" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="1.441" y="6.759"/>
+            <mif:size width="2.277" height="3.281"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="70C1CE46-A951-C977-C5C9-C8BFE7935D26" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.38" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="1.566" y="9.134"/>
+            <mif:size width="1.777" height="0.781"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="11031CE5-F003-F7EF-9F2D-F6BA02912460" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.54" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="5.600" y="6.886"/>
+            <mif:size width="1.352" height="0.514"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D6AF6AB6-EC84-2FD9-08A8-620C6066ADC2" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.91" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.636" y="5.368"/>
+            <mif:size width="1.250" height="0.514"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="4F201BFE-7051-9A6D-9CDC-C9DE9D812939" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.72" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="1.566" y="7.009"/>
+            <mif:size width="2.027" height="2.000"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="8484AB3A-47A6-C539-B89D-20012B7B2A82" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.1" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Right">
+            <mif:position x="4.740" y="3.360"/>
+            <mif:size width="1.640" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="9B37BC15-AEE6-8FCF-B687-975504C4295E" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.7" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="6.380" y="3.187"/>
+            <mif:size width="1.362" height="0.914"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="93AF86E4-B3CD-1784-38BA-243B0BD3A3AD" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.101" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="0.180" y="4.352"/>
+            <mif:size width="1.785" height="0.781"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="B0577C80-4459-1AAC-468B-52C90324EEE5" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.68" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="1.691" y="8.134"/>
+            <mif:size width="1.777" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="FF294F49-B3E2-0321-FAA7-D57BD28A5033" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.44" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="5.500" y="8.900"/>
+            <mif:size width="1.250" height="0.514"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="328BF895-9DA8-DEE6-9317-7A0E04393EE4" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.23" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="1.691" y="7.259"/>
+            <mif:size width="1.777" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="B84AA7EA-1629-7910-DFBB-3E7783683824" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.57" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="1.782" y="2.880"/>
+            <mif:size width="2.958" height="1.181"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="F4306D5C-2C74-0510-F37C-1050A1803D4F" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.17" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="2.725" y="4.061"/>
+            <mif:size width="1.073" height="1.307"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="EB618C37-20E9-BA10-84C2-DA38EA10AEEF">
+         <mif:graphElement connectToShapeId="Sheet.91">
+            <mif:position x="2.761" y="5.419"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.101">
+                  <mif:position x="1.073" y="5.133"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="39C19F9D-C676-6131-73BD-6ADA708E6EB9">
+         <mif:graphElement connectToShapeId="Sheet.91">
+            <mif:position x="2.761" y="5.831"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.42">
+                  <mif:position x="1.896" y="6.759"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="45479FC0-7A58-4FDB-B3AF-4F348DAE2629">
+         <mif:graphElement connectToShapeId="Sheet.72">
+            <mif:position x="3.592" y="9.009"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.44">
+                  <mif:position x="5.625" y="9.363"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="FD39B740-1093-9AFE-77F9-1FE8ED761FD5">
+         <mif:graphElement connectToShapeId="Sheet.1">
+            <mif:position x="6.380" y="3.553"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.7">
+                  <mif:position x="6.380" y="3.553"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="392D9A45-53EF-FE7A-1E20-5A66B1814DAA">
+         <mif:graphElement connectToShapeId="Sheet.23">
+            <mif:position x="3.467" y="7.634"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.54">
+                  <mif:position x="5.735" y="7.349"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="8B3E1CA0-65CE-CC94-7A7D-D6EB7B7190BD">
+         <mif:graphElement connectToShapeId="Sheet.57">
+            <mif:position x="4.740" y="3.471"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.1">
+                  <mif:position x="4.740" y="3.471"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="EEFCD5C0-F909-964D-D588-11B11DA3D62E">
+         <mif:graphElement connectToShapeId="Sheet.57">
+            <mif:position x="3.261" y="4.061"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.17">
+                  <mif:position x="3.261" y="4.061"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="2B146567-D1E8-026E-35B1-917544668368">
+         <mif:graphElement connectToShapeId="Sheet.17">
+            <mif:position x="3.261" y="5.368"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.91">
+                  <mif:position x="3.261" y="5.368"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="AM" subSection="PR"
+                             domain="RG"
+                             version="01"
+                             id="801002"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="72BF2883-CBFB-B584-9316-B8DF5224FF3F" id="PRRG_HD801002UV01"
+                   name="Tag Location"
+                   className="PositionObservationEvent">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>The payload message used when informing systems about the location of a real-time location tracking tag assigned to a patient, provider or device.</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="EE4F4D80-CEB0-8612-721C-ACB45CEE8486" name="Choice"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Choice"/>
+         <mif:childClass graphicLinkId="704955A8-1104-FBEC-E559-5A510569DC66" sortKey="001"
+                         name="LivingSubjectChoice"/>
+         <mif:childClass graphicLinkId="C5C4E832-CC1F-8EF9-0AEB-CAEFFD9155EF" sortKey="002"
+                         name="Device"/>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="70C1CE46-A951-C977-C5C9-C8BFE7935D26" name="Device"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Device"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Device"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">An item of durable equipment associated with a tracking tag</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="DEV"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityClass" code="DEV"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="INSTANCE"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityDeterminer" code="INSTANCE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The identifier of the piece of equipment</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The name of the piece of equipment</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="EN"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="11031CE5-F003-F7EF-9F2D-F6BA02912460" name="HealthCareProvider"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="LicensedEntity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="HealthCareProvider"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A person authorized to provide health care services by an authorizing agency</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="PROV"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="LicensedEntity"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="HealthCareProvider"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="RoleClass" code="PROV"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Provider identifier assigned by the authorizing agency</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="LicensedEntity" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="HealthCareProvider" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="D6AF6AB6-EC84-2FD9-08A8-620C6066ADC2" name="IdTag"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="IdTag"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A real time location tracking tag assigned to a particular patient, provider or device</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="HLD"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="IdTag" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="RoleClass" code="HLD"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The unique identifier for this tracking tag assigned to a patient, provider or device</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="IdTag" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="4F201BFE-7051-9A6D-9CDC-C9DE9D812939" name="LivingSubjectChoice"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="LivingSubjectChoice"/>
+         <mif:childClass graphicLinkId="83FDE2D4-CBFB-04C0-E452-64188C55DC5C" sortKey="001"
+                         name="Person"/>
+         <mif:childClass graphicLinkId="A3D1124D-CA47-F5FC-FC31-29C77729FD19" sortKey="002"
+                         name="NonPersonLivingSubject"/>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="8484AB3A-47A6-C539-B89D-20012B7B2A82" name="Location4"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Location4"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Links a position observation to a specific location</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="LOC"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Location4" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="ParticipationType" code="LOC"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="9B37BC15-AEE6-8FCF-B687-975504C4295E" name="LocationRole"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="LocationRole"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The observed location of a tracking tag</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="LOCE"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LocationRole" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="RoleClass" code="LOCE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Identifier for this location</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LocationRole" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Name of this location</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LocationRole" attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="EN"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Postal address of this location</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LocationRole" attributeName="addr"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="telecom" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Telecommunication addresses for this location</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LocationRole" attributeName="telecom"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="93AF86E4-B3CD-1784-38BA-243B0BD3A3AD"
+                 name="ManufacturedMaterial"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterial"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A physical tracking tag</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterial"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityClassManufacturedMaterial"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="INSTANCE"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterial"
+                             attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityDeterminer" code="INSTANCE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The serial number of the physical tracking tag</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterial" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">A code identifying the type of device</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"
+                             attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterial"
+                             attributeName="code"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="EntityCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="B0577C80-4459-1AAC-468B-52C90324EEE5"
+                 name="NonPersonLivingSubject"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="NonPersonLivingSubject"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="NonPersonLivingSubject"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A non-person living subject associated with a tracking tag based on their role as patient</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="NLIV"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="NonPersonLivingSubject"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="NonPersonLivingSubject"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityClass" code="NLIV"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="INSTANCE"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="NonPersonLivingSubject"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="NonPersonLivingSubject"
+                             attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityDeterminer" code="INSTANCE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The name of the non-person living subject</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="NonPersonLivingSubject"
+                             attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="NonPersonLivingSubject"
+                             attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="EN"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="FF294F49-B3E2-0321-FAA7-D57BD28A5033" name="Patient"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Patient"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Patient"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A role of a living subject as a recipient of health care services</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="PAT"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Patient" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Patient" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="RoleClass" code="PAT"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Patient identifier assigned by the healthcare provider</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Patient" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Patient" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="328BF895-9DA8-DEE6-9317-7A0E04393EE4" name="Person"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Person"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Person"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A person associated with a tracking tag based on their role as patient or provider</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="PSN"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityClass" code="PSN"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="INSTANCE"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityDeterminer" code="INSTANCE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The name of the person</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="PN"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="B84AA7EA-1629-7910-DFBB-3E7783683824"
+                 name="PositionObservationEvent"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Observation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The act of observing the position of a tracking tag associated with a patient, provider or device</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="POS"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Observation" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="ActClass" code="POS"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="EVN"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Observation" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="ActMood" code="EVN"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Identifiers for this position observation event</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Observation" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                             attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        defaultValue="completed"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">A value specifying the state of this position observation event; it is assumed that only "completed" observations would be reported</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Observation" attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                             attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActStatus"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The time this position observation was recorded</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Observation"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                             attributeName="effectiveTime"/>
+            <mif:type name="TS"/>
+         </mif:attribute>
+         <mif:attribute name="priorityCode" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">A value representing the urgency for reporting the position of a tracking tag associated with a patient, provider or device. Most position observations would be reported with "routine" urgency but, for example, observing a tracking tag assigned to patient from a locked down ward leaving the building could be reported as "urgent."</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Observation"
+                             attributeName="priorityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                             attributeName="priorityCode"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="CE"/>
+            </mif:type>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="ActPriority"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="confidentialityCode" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Value(s) that control the disclosure of this position observation. For example, the current position of a VIP patient could be restricted.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Observation"
+                             attributeName="confidentialityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                             attributeName="confidentialityCode"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="CE"/>
+            </mif:type>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="Confidentiality"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="F4306D5C-2C74-0510-F37C-1050A1803D4F" name="Subject6"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Subject6"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Links a position observation to the tracking tag whose position is being reported</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="SBJ"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Subject6" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="ParticipationType" code="SBJ"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="EB618C37-20E9-BA10-84C2-DA38EA10AEEF" sortKey="6">
+      <mif:traversableConnection name="heldManufacturedMaterial" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="ManufacturedMaterial">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="IdTag"
+                          associationEndName="heldManufacturedMaterial"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="IdTag">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="39C19F9D-C676-6131-73BD-6ADA708E6EB9" sortKey="7">
+      <mif:traversableConnection name="holdingChoice" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="Choice">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="IdTag"
+                          associationEndName="holdingChoice"/>
+         <mif:choiceItem className="LivingSubjectChoice" traversalName="holdingLivingSubjectChoice">
+            <mif:choiceItem className="Person" traversalName="holdingPerson"/>
+            <mif:choiceItem className="NonPersonLivingSubject"
+                            traversalName="holdingNonPersonLivingSubject"/>
+         </mif:choiceItem>
+         <mif:choiceItem className="Device" traversalName="holdingDevice"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="IdTag">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="45479FC0-7A58-4FDB-B3AF-4F348DAE2629" sortKey="11">
+      <mif:traversableConnection name="asPatient" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AAAAAA____"
+                                 participantClassName="Patient">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="LivingSubjectChoice"
+                          associationEndName="asPatient"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="LivingSubjectChoice">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="FD39B740-1093-9AFE-77F9-1FE8ED761FD5" sortKey="1">
+      <mif:traversableConnection name="locationRole" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="true"
+                                 sortKey="BZ"
+                                 participantClassName="LocationRole">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Location4"
+                          associationEndName="locationRole"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Location4">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="392D9A45-53EF-FE7A-1E20-5A66B1814DAA" sortKey="12">
+      <mif:traversableConnection name="asHealthCareProvider" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AAAAACA___"
+                                 participantClassName="HealthCareProvider">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Person"
+                          associationEndName="playedRoleName"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Person">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="8B3E1CA0-65CE-CC94-7A7D-D6EB7B7190BD" sortKey="2">
+      <mif:traversableConnection name="location" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="AJ________"
+                                 participantClassName="Location4">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                          associationEndName="location"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PositionObservationEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="EEFCD5C0-F909-964D-D588-11B11DA3D62E" sortKey="3">
+      <mif:traversableConnection name="subject" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="AAA_______"
+                                 participantClassName="Subject6">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PositionObservationEvent"
+                          associationEndName="subject"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PositionObservationEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="2B146567-D1E8-026E-35B1-917544668368" sortKey="5">
+      <mif:traversableConnection name="idTag" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="BZ"
+                                 participantClassName="IdTag">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Subject6" associationEndName="idTag"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Subject6">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

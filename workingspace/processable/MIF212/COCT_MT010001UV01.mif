@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="A_Encounter identified"
+                 isSerializable="true"
+                 name="01">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="01"
+                        id="010001"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="5.054" height="1.413"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="B1850022-3895-DCE6-55A0-D872591C34E0">
+         <mif:graphElement shapeId="Sheet.314">
+            <mif:position x="3.423" y="-1.869"/>
+            <mif:size width="1.604" height="0.719"/>
+            <mif:anchorage connectToShapeId="Sheet.314">
+               <mif:position x="3.423" y="0.603"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.469">
+                     <mif:position x="2.423" y="0.172"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="7A5AE3CB-831D-D9CA-BFB7-81F9FCCFC8C2" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.469" shapeTemplate="Act" isWidthAutoSize="false"
+                           isHeightAutoSize="false">
+            <mif:position x="0.010" y="0.035"/>
+            <mif:size width="2.413" height="1.368"/>
+         </mif:graphElement>
+      </mif:class>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="01"
+                             id="010001"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="01"
+                             id="010001"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="B1850022-3895-DCE6-55A0-D872591C34E0" id="COCT_MT010001UV01"
+                   name="A_Encounter identified"
+                   className="Encounter">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>26 Nov 2003 CMET used to refer to an encounter</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="7A5AE3CB-831D-D9CA-BFB7-81F9FCCFC8C2" name="Encounter"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Encounter"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Encounter"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Encounter" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Encounter" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassEncounter"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Encounter" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Encounter" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodEventOccurrence"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Encounter" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Encounter" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Encounter" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Encounter" attributeName="code"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="ActEncounterCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Encounter" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Encounter" attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+</mif:staticModel>

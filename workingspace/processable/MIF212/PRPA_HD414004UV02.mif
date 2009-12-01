@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Home Health Encounter Intent Revise Reschedule"
+                 isSerializable="true"
+                 name="02">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="AM" subSection="PR"
+                        domain="PA"
+                        version="02"
+                        id="414004"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="8.500" height="11.000"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="AC3B565D-DE79-AFD4-117D-9F66DEDDE288">
+         <mif:graphElement shapeId="Sheet.127">
+            <mif:position x="2.469" y="3.340"/>
+            <mif:size width="3.570" height="0.633"/>
+            <mif:anchorage connectToShapeId="Sheet.127">
+               <mif:position x="4.259" y="3.973"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.198">
+                     <mif:position x="4.250" y="4.570"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="F557F848-DDE4-7747-E4CB-EDECA58324FE" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.198" shapeTemplate="Act" isWidthAutoSize="false"
+                           isHeightAutoSize="true">
+            <mif:position x="3.044" y="4.570"/>
+            <mif:size width="2.413" height="1.182"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="FEE01879-8EC7-9A5B-8960-A5C931692C93" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.70" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.528" y="6.399"/>
+            <mif:size width="1.370" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="4907E862-6C24-DB8F-56D4-B49E71D72D06" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.44" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="3.063" y="5.752"/>
+            <mif:size width="2.337" height="0.647"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="89AEA803-28EB-6CFB-2E84-16CCE512358B">
+         <mif:graphElement connectToShapeId="Sheet.198">
+            <mif:position x="4.250" y="5.752"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.44">
+                  <mif:position x="4.250" y="5.752"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="60D37569-2F37-3440-3BE6-2E21290F375B">
+         <mif:graphElement connectToShapeId="Sheet.44">
+            <mif:position x="4.214" y="6.399"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.70">
+                  <mif:position x="4.214" y="6.399"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="AM" subSection="PR"
+                             domain="PA"
+                             version="02"
+                             id="414004"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="AC3B565D-DE79-AFD4-117D-9F66DEDDE288" id="PRPA_HD414004UV02"
+                   name="Home Health Encounter Intent Revise Reschedule"
+                   className="EncounterAppointment">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>This R-MIM defines the message used to report that a home health encounter appointment was rescheduled before the encounter began.</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="F557F848-DDE4-7747-E4CB-EDECA58324FE"
+                 name="EncounterAppointment"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="EncounterAppointment"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterAppointment"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassEncounter"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterAppointment"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodAppointment"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterAppointment" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="HH"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterAppointment"
+                             attributeName="code"/>
+            <mif:type name="CV"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:code codeSystemName="ActCode" code="HH"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterAppointment"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="reasonCode" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"
+                             attributeName="reasonCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterAppointment"
+                             attributeName="reasonCode"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="CE"/>
+            </mif:type>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="ActReason"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="FEE01879-8EC7-9A5B-8960-A5C931692C93"
+                                 name="R_PatientIdentified-confirmable"
+                                 cmetName="R_PatientIdentified-confirmable">
+         <mif:derivedFrom staticModelDerivationId="1" className="Patient"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="R_PatientIdentified-confirmable"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="RoleClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="4907E862-6C24-DB8F-56D4-B49E71D72D06" name="Subject"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Subject"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Subject" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ParticipationTargetSubject"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="contextControlCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation"
+                             attributeName="contextControlCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Subject"
+                             attributeName="contextControlCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="ContextControl" code="OP"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="89AEA803-28EB-6CFB-2E84-16CCE512358B" sortKey="0">
+      <mif:traversableConnection name="subject" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="AAA_______"
+                                 participantClassName="Subject">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="EncounterAppointment"
+                          associationEndName="subject"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="EncounterAppointment">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="60D37569-2F37-3440-3BE6-2E21290F375B" sortKey="2">
+      <mif:traversableConnection name="patient" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="BZ"
+                                 participantClassName="R_PatientIdentified-confirmable">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Subject" associationEndName="patient"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Subject">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

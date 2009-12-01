@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="realmNamespace"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="R_AdministerableMedication"
+                 isSerializable="true"
+                 name="UV">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        id="220200"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="5.810" height="4.386"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="B882D691-A086-DF45-F7D0-626DC0C3FA6E">
+         <mif:graphElement shapeId="Sheet.313">
+            <mif:position x="3.619" y="0.051"/>
+            <mif:size width="2.028" height="0.500"/>
+            <mif:anchorage connectToShapeId="Sheet.313">
+               <mif:position x="4.600" y="0.552"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.284">
+                     <mif:position x="4.666" y="1.196"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="2380F2F4-DAE1-69F0-DDAF-813B83581F59" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.284" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="3.533" y="1.196"/>
+            <mif:size width="2.267" height="1.756"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="F2E76C78-8B18-6E7B-3F26-81F5538B16B2" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.1" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.658" y="1.446"/>
+            <mif:size width="1.321" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="2710D466-009A-AE67-92F1-1898C703C3A5" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.7" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.658" y="2.199"/>
+            <mif:size width="1.161" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             id="220200"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="B882D691-A086-DF45-F7D0-626DC0C3FA6E" id="COCT_HD220200UV"
+                   name="R_AdministerableMedication"
+                   className="R_AdministerableMedication">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Universal</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="2380F2F4-DAE1-69F0-DDAF-813B83581F59"
+                 name="R_AdministerableMedication"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="R_AdministerableMedication"/>
+         <mif:childClass graphicLinkId="0A1A3AF0-618C-0614-AEE6-4B95DF7CB032" sortKey="001"
+                         name="R_BillableMedicationUniversal"/>
+         <mif:childClass graphicLinkId="C88DEFCA-E6F3-E7B1-089E-B621F35B4D2E" sortKey="002"
+                         name="R_MedicationUniversal"/>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="F2E76C78-8B18-6E7B-3F26-81F5538B16B2"
+                                 name="R_BillableMedicationUniversal"
+                                 cmetName="R_BillableMedicationUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="R_BillableMedicationUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="RoleClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="2710D466-009A-AE67-92F1-1898C703C3A5"
+                                 name="R_MedicationUniversal"
+                                 cmetName="R_MedicationUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="R_MedicationUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="RoleClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+</mif:staticModel>

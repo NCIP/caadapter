@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="R_AssignedEntity Identified/Confirmable"
+                 isSerializable="true"
+                 name="01">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="01"
+                        id="090002"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="4.810" height="8.746"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="FF5E70EF-E25F-6E5D-7FC9-74E59D4605DE">
+         <mif:graphElement shapeId="Sheet.46">
+            <mif:position x="0.028" y="0.028"/>
+            <mif:size width="2.777" height="1.386"/>
+            <mif:anchorage connectToShapeId="Sheet.46">
+               <mif:position x="1.500" y="1.414"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.26">
+                     <mif:position x="1.332" y="3.051"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="CF766CC2-CCF6-F54B-4F5E-F8B1319EE7B9" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.26" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="0.234" y="3.051"/>
+            <mif:size width="2.195" height="0.781"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="AFD8B75C-FF70-5FE0-E2EF-B9A32216E4AD" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.85" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.554" y="6.821"/>
+            <mif:size width="2.121" height="0.914"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="93294BEB-37C8-DD59-33B9-585A69BB23EF" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.65" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.430" y="1.700"/>
+            <mif:size width="1.340" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="8AB7E85A-9A07-5FB4-B15F-A2E7AB9A49E6" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.179" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.554" y="7.861"/>
+            <mif:size width="1.763" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="7F1CF384-ACB4-9D95-B694-9A2B8BB9CC6D" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.89" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.554" y="5.946"/>
+            <mif:size width="1.763" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="AC0A0432-03FC-1750-5253-F2D8DE419ACC" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.187" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="2.429" y="5.696"/>
+            <mif:size width="2.371" height="3.039"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="42F43145-78FA-81C5-AF63-A291B6FD2379">
+         <mif:graphElement connectToShapeId="Sheet.26">
+            <mif:position x="2.210" y="3.754"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.187">
+                  <mif:position x="2.666" y="5.696"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="3CDFA750-A2BC-54F5-7C6A-8BD6CB7522B9">
+         <mif:graphElement connectToShapeId="Sheet.26">
+            <mif:position x="2.210" y="3.129"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.65">
+                  <mif:position x="3.234" y="2.328"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="01"
+                             id="090002"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="01"
+                             id="090002"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="FF5E70EF-E25F-6E5D-7FC9-74E59D4605DE" id="COCT_MT090002UV01"
+                   name="R_AssignedEntity Identified-Confirmable"
+                   className="AssignedEntity">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>15 Mar 2004 Supports messages related to an assigned provider, which includes persons, devices, and organizations. An assigned role is one in which the agent is an Entity acting in the employ of an organization. The focus is on functional role on behalf of the organization,</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="CF766CC2-CCF6-F54B-4F5E-F8B1319EE7B9" name="AssignedEntity"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="AssignedEntity"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="AssignedEntity"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedEntity"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="AssignedEntity"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="RoleClassAssignedEntity"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedEntity" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="AssignedEntity" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="role in organization"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedEntity" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="AssignedEntity" attributeName="code"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="RoleCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedEntity" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="AssignedEntity" attributeName="addr"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="AFD8B75C-FF70-5FE0-E2EF-B9A32216E4AD" name="Device"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Device"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Device"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Device"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Device" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityClassDevice"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Device" attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityDeterminerSpecific"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="Software Version"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Device" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="manufacturerModelName" sortKey="4" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Device"
+                             attributeName="manufacturerModelName"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device"
+                             attributeName="manufacturerModelName"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Device"
+                             attributeName="manufacturerModelName"/>
+            <mif:type name="SC"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="ManufacturerModelName"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="softwareName" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="softwareName"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="softwareName"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Device" attributeName="softwareName"/>
+            <mif:type name="SC"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="SoftwareName"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="93294BEB-37C8-DD59-33B9-585A69BB23EF"
+                                 name="E_OrganizationIdentified-confirmable"
+                                 cmetName="E_OrganizationIdentified-confirmable">
+         <mif:derivedFrom staticModelDerivationId="1" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_OrganizationIdentified-confirmable"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="E_OrganizationIdentified-confirmable"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="8AB7E85A-9A07-5FB4-B15F-A2E7AB9A49E6" name="Organization"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Organization"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Organization" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Organization" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Organization" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityClassOrganization"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Organization"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Organization"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Organization"
+                             attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityDeterminerSpecific"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Organization" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Organization" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Organization" attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="EN"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="7F1CF384-ACB4-9D95-B694-9A2B8BB9CC6D" name="Person"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Person"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Person"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Person"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Person" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityClassPerson"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Person" attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="EntityDeterminerSpecific"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Person" attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="EN"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="AC0A0432-03FC-1750-5253-F2D8DE419ACC" name="PrincipalChoiceList"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PrincipalChoiceList"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PrincipalChoiceList"/>
+         <mif:childClass graphicLinkId="CB07A0C2-157F-A7C5-9C79-57AB2B36B540" sortKey="001"
+                         name="Person"/>
+         <mif:childClass graphicLinkId="7B7EDED3-9696-764A-AA05-B9E320F255C2" sortKey="002"
+                         name="Device"/>
+         <mif:childClass graphicLinkId="6B7DA8EC-3C16-1B1A-CEB6-48BE9335DAAC" sortKey="003"
+                         name="Organization"/>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="42F43145-78FA-81C5-AF63-A291B6FD2379" sortKey="0">
+      <mif:traversableConnection name="assignedPrincipalChoiceList" minimumMultiplicity="1"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="PrincipalChoiceList">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="AssignedEntity"
+                          associationEndName="assignedPrincipalChoiceList"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="AssignedEntity"
+                          associationEndName="assignedPrincipalChoiceList"/>
+         <mif:choiceItem className="Person" traversalName="assignedPerson"/>
+         <mif:choiceItem className="Device" traversalName="assignedDevice"/>
+         <mif:choiceItem className="Organization" traversalName="assignedOrganization"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AssignedEntity">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="3CDFA750-A2BC-54F5-7C6A-8BD6CB7522B9" sortKey="1">
+      <mif:traversableConnection name="representedOrganization" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="E_OrganizationIdentified-confirmable">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="AssignedEntity"
+                          associationEndName="representedOrganization"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="AssignedEntity"
+                          associationEndName="representedOrganization"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AssignedEntity">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="R_ServiceDeliveryLocation contact"
+                 isSerializable="true"
+                 name="02">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="02"
+                        id="240003"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="5.413" height="4.583"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="172BBB89-6030-45C6-9CA0-723048F0562A">
+         <mif:graphElement shapeId="Sheet.8">
+            <mif:position x="0.028" y="3.702"/>
+            <mif:size width="2.699" height="0.853"/>
+            <mif:anchorage connectToShapeId="Sheet.8">
+               <mif:position x="1.177" y="3.702"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.36">
+                     <mif:position x="1.577" y="2.480"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="F7659BD7-F65B-B6D3-D04C-5ABD920F2AA9" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.9" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.177" y="2.775"/>
+            <mif:size width="1.000" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="E31F13AC-04AA-4E88-E4A9-DFFB7BEA250B" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.22" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.077" y="0.075"/>
+            <mif:size width="1.000" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="7DDBFEDB-006B-EAB2-717E-CC060A1DEC8E" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.36" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="0.126" y="1.566"/>
+            <mif:size width="2.902" height="0.914"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="D38C052D-61EE-DE41-A2E8-53AAB436E8BA">
+         <mif:graphElement connectToShapeId="Sheet.36">
+            <mif:position x="2.738" y="1.657"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.22">
+                  <mif:position x="3.077" y="0.577"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="23039661-1A95-0003-E655-1EDFCC9B20E7">
+         <mif:graphElement connectToShapeId="Sheet.36">
+            <mif:position x="2.738" y="2.389"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.9">
+                  <mif:position x="3.177" y="3.088"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="02"
+                             id="240003"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="172BBB89-6030-45C6-9CA0-723048F0562A" id="COCT_HD240003UV02"
+                   name="R_ServiceDeliveryLocation contact"
+                   className="ServiceDeliveryLocation">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Used to contact a service delivery location used as a participation to an act (e.g. a designated health care facility, a specific work or accident site, bed, nursing station, floor).</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="F7659BD7-F65B-B6D3-D04C-5ABD920F2AA9"
+                                 name="E_OrganizationContact"
+                                 cmetName="E_OrganizationContact">
+         <mif:derivedFrom staticModelDerivationId="1" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_OrganizationContact"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="E31F13AC-04AA-4E88-E4A9-DFFB7BEA250B" name="E_PlaceUniversal"
+                                 cmetName="E_PlaceUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Place"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_PlaceUniversal"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="7DDBFEDB-006B-EAB2-717E-CC060A1DEC8E"
+                 name="ServiceDeliveryLocation"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ServiceDeliveryLocation"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ServiceDeliveryLocation"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="RoleClassServiceDeliveryLocation"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ServiceDeliveryLocation"
+                             attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ServiceDeliveryLocation"
+                             attributeName="code"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="ServiceDeliveryLocationRoleType"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ServiceDeliveryLocation"
+                             attributeName="addr"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="telecom" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ServiceDeliveryLocation"
+                             attributeName="telecom"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="D38C052D-61EE-DE41-A2E8-53AAB436E8BA" sortKey="0">
+      <mif:traversableConnection name="location" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="E_PlaceUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ServiceDeliveryLocation"
+                          associationEndName="location"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ServiceDeliveryLocation">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="23039661-1A95-0003-E655-1EDFCC9B20E7" sortKey="1">
+      <mif:traversableConnection name="serviceProviderOrganization" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="E_OrganizationContact">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ServiceDeliveryLocation"
+                          associationEndName="serviceProviderOrganization"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ServiceDeliveryLocation">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

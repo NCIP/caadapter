@@ -1,0 +1,1486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="A_Coverage minimal"
+                 isSerializable="true"
+                 name="06">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="06"
+                        id="510004"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="12.373" height="6.618"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="0DA11E9C-1A4B-4C3A-64D3-4EF7530ABA27">
+         <mif:graphElement shapeId="Sheet.241">
+            <mif:position x="5.056" y="0.085"/>
+            <mif:size width="2.748" height="0.633"/>
+            <mif:anchorage connectToShapeId="Sheet.241">
+               <mif:position x="6.380" y="0.718"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.201">
+                     <mif:position x="6.480" y="1.202"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="91187D58-FBD4-8AFA-3E12-D54997845F66" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.205" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="5.346" y="2.518"/>
+            <mif:size width="2.152" height="0.646"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="DC831141-D19F-BB33-EDC8-DE1B71F7D046" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.201" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="4.953" y="1.202"/>
+            <mif:size width="3.054" height="1.316"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="1CDAD6BB-6855-68B4-D41A-3276C0E3C46F" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.21" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="0.672" y="2.860"/>
+            <mif:size width="2.702" height="1.315"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="CB5D99A3-69B2-1B87-DF18-9FE586CDA643" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.36" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Left">
+            <mif:position x="3.374" y="3.320"/>
+            <mif:size width="1.794" height="0.436"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="DEAB7894-1932-6BBF-2A86-9B14527C867B" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.11" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.326" y="1.784"/>
+            <mif:size width="1.068" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="865C8A2B-D8DA-425A-47CD-9F4EC423C160" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.42" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Left">
+            <mif:position x="3.345" y="4.607"/>
+            <mif:size width="1.824" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="1187B161-0083-14FF-CE33-27D1B005A209" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.1" shapeTemplate="Role" isWidthAutoSize="false"
+                           isHeightAutoSize="false">
+            <mif:position x="1.145" y="5.398"/>
+            <mif:size width="2.200" height="1.210"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="16BF0414-5FA6-F3B8-3888-A31024FFBB2C" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.48" shapeTemplate="Role" isWidthAutoSize="false"
+                           isHeightAutoSize="true">
+            <mif:position x="1.227" y="4.278"/>
+            <mif:size width="2.118" height="1.048"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="B6A26299-6630-CFBA-F9EC-D3151F837C35" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.79" shapeTemplate="Act" isWidthAutoSize="false"
+                           isHeightAutoSize="false">
+            <mif:position x="5.169" y="3.164"/>
+            <mif:size width="2.986" height="3.424"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="88970DEA-B158-A0FA-E086-FF41B20A9122" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.89" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="9.624" y="3.531"/>
+            <mif:size width="2.739" height="0.915"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="1A6383DB-596A-7AA6-D090-B72D720EDCF1" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.120" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Left">
+            <mif:position x="3.345" y="5.752"/>
+            <mif:size width="1.824" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="67533EAA-066A-0218-B106-4423D1327354" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.83" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Right">
+            <mif:position x="8.155" y="3.562"/>
+            <mif:size width="1.470" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="4D5A997E-4B20-2C28-50D1-AA07437163C2">
+         <mif:graphElement connectToShapeId="Sheet.205">
+            <mif:position x="6.363" y="3.164"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.79">
+                  <mif:position x="6.363" y="3.164"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="9CF21A36-B388-F5E5-4DD9-7D7D4D2D24C7">
+         <mif:graphElement connectToShapeId="Sheet.201">
+            <mif:position x="6.480" y="2.518"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.205">
+                  <mif:position x="6.480" y="2.518"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="6ABF2E32-8825-0C7F-852C-366B1F0DD764">
+         <mif:graphElement connectToShapeId="Sheet.21">
+            <mif:position x="3.104" y="4.044"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.11">
+                  <mif:position x="3.860" y="2.412"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="3DA3D89B-6935-90FE-FD7D-7E68225163C1">
+         <mif:graphElement connectToShapeId="Sheet.36">
+            <mif:position x="3.374" y="3.912"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.21">
+                  <mif:position x="3.374" y="3.912"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="7F76F73B-0BF5-3329-4D12-237C522DF39F">
+         <mif:graphElement connectToShapeId="Sheet.42">
+            <mif:position x="3.345" y="5.325"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.48">
+                  <mif:position x="3.345" y="5.325"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="6250E78A-CD61-DE7B-6C93-2653A4C50115">
+         <mif:graphElement connectToShapeId="Sheet.48">
+            <mif:position x="1.438" y="5.221"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.11">
+                  <mif:position x="3.326" y="2.036"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="D3084B31-3E30-F75C-886D-6F58B7F08EE7">
+         <mif:graphElement connectToShapeId="Sheet.79">
+            <mif:position x="5.169" y="3.164"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.36">
+                  <mif:position x="5.169" y="3.164"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="E8906DFC-F7E6-4F62-78E6-21E4AB74FC49">
+         <mif:graphElement connectToShapeId="Sheet.79">
+            <mif:position x="5.169" y="4.192"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.42">
+                  <mif:position x="5.169" y="4.192"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="F396685E-4FEF-D8A8-B5F9-56CF066363A5">
+         <mif:graphElement connectToShapeId="Sheet.79">
+            <mif:position x="5.169" y="5.561"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.120">
+                  <mif:position x="5.169" y="5.561"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="C1188BA0-ECF8-2A57-CB32-C2949E1C175C">
+         <mif:graphElement connectToShapeId="Sheet.79">
+            <mif:position x="8.155" y="3.164"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.83">
+                  <mif:position x="8.155" y="3.164"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="3D675417-B8BE-E166-E90B-02029547CB24">
+         <mif:graphElement connectToShapeId="Sheet.120">
+            <mif:position x="3.345" y="6.245"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.1">
+                  <mif:position x="3.345" y="6.245"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="BC9D6397-D615-321F-D2A3-19C6EB36D57A">
+         <mif:graphElement connectToShapeId="Sheet.83">
+            <mif:position x="9.624" y="4.263"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.89">
+                  <mif:position x="9.624" y="4.263"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="06"
+                             id="510004"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="0DA11E9C-1A4B-4C3A-64D3-4EF7530ABA27" id="COCT_HD510004UV06"
+                   name="A_Coverage minimal"
+                   className="CoverageRecord">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Supports conveyance of an entity's coverage record, which may be composed of 0...* policies or programs</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="91187D58-FBD4-8AFA-3E12-D54997845F66" name="Component"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Component"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord may be linked to one or more P/Ps.</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The component relationship typeCode COMP: This ActRelationship links the P/P components to the CoverageRecord. COMP: A collection of sub-services as steps or subtasks performed for the source service. Services may be performed sequentially or concurrently.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Component" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActRelationshipHasComponent"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="priorityNumber" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="prioritizes P/P"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The component ActRelationship priorityNumber: This attribute prioritizes coverages, that is, "1" is the primary coverage, "2" is the secondary coverage, etc. Coverage priority determines which of the P/Ps has primary responsibility for coverage and will impact coordination of benefits during the adjudication process.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="priorityNumber"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Component"
+                             attributeName="priorityNumber"/>
+            <mif:type name="INT"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="DC831141-D19F-BB33-EDC8-DE1B71F7D046" name="CoverageRecord"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">CoverageRecord Usage Notes: The focal class of the Coverage CMET is the CoverageRecord class. This is a grouper class whose purpose is to group one or more policies or programs (P/Ps). It can group many P/Ps under different act statuses. That is, it may be used to group together those P/Ps which are:</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">...active (in one group) versus</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">...cancelled (in another group) versus</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">...suspended versus</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">...yet to become effective.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The parent model should allow this CMET to repeat.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A beneficiary may or may not have coverage, and the coverage may be unknown, which is conveyed by record of coverage (CoverageRecord) components of 0..* P/P, the applicability of which may be known or unknown at a particular point in time. This CMET is intended to support all of these use cases.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">If the CoverageRecord has no component P/Ps, this indicates that the beneficiary has a record of coverage that includes no information about P/Ps, as would be the case when the record is first created before coverage eligibility is investigated or if no eligibility is established. Thus, to indicate that a patient in the Patient PRPA_RM201301 or FIAB_RM10000 Release 2 has no coverage has no coverage, only the CoverageRecord is sent without component P/P.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord may consist of one or more P/Ps that have status codes indicating that they are not in effect or suspended. It may include one or more P/Ps under which the beneficiary is not covered because the type of encounter or services required are not covered by these P/Ps. Alternatively, the CoverageRecord could consist of a charity program for which a beneficiary without alternative coverages may be eligible.</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord classCode COV: This class has an act type of Coverage.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassCoverage"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord moodCodeEVN: The mood of this act is Event, that is, the coverage record is something that actually happens.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodEventOccurrence"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord id: One or more unique identifiers for the CoverageRecord may be sent for use e.g., to locate the record. Note that for the A_Coverage identified and identified-confirmable variants, the lower cardinality is one and is required to be sent if available.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord statusCode: The status of the grouped P/Ps, that is, active, cancelled, completed (expired), suspended, etc., as discussed above. To be specified by a code from the ActStatus code.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord" attributeName="code"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="ActCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="active, active pending investigation"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord statusCode: The status of the grouped P/Ps, that is, active, cancelled, completed (expired), suspended, etc., as discussed above. To be specified by a code from the ActStatus code.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord"
+                             attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="ActStatus"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="6" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord effectiveTime: The effective date range of the statusCode for this CoverageRecord for this group of P/Ps. This may be important for billing purposes to know that this record of coverage information is current for the dates of service.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="confidentialityCode" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoverageRecord confidentialityCode: Optionally conveys a confidentiality code.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="confidentialityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord"
+                             attributeName="confidentialityCode"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="CE"/>
+            </mif:type>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="Confidentiality"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="1CDAD6BB-6855-68B4-D41A-3276C0E3C46F" name="CoveredParty"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoveredParty is played by the E_LivingSubject (informational).</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:businessName name="program eligible, claimant, subscriber, dependent"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoveredParty classCode COVPTY: This shall be specified by a code from the RoleClassCoveredParty specializable value set, e.g., claimant, program eligible, named insured, individual, subscriber, or dependent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="RoleClassCoveredParty"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="primary identifier for coverage role"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoveredParty id: The primary identifiers for this covered party role, is assigned by the sponsor, the underwriter, or payor. These identifiers are the covered party’s identification numbers under a P/P, and may be carried on an identification card. In atypical cases, there may be more than one, e.g., covered party under a Medicaid managed care plan may be identified with both the person’s identifier as a Medicaid eligible and the identifier assigned by the contracting Medicaid managed care plan. The covered party identifier is not necessarily an OID, but may be based on the root OID of the assigning entity.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="e.g., handicapped, student, military, injured worker"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoveredParty code: The type of Covered Party role is required to be specified by a code from the CoverageRoleType value set, which further specifies the Covered Party Role.class, e.g., handicapped, student, military, injured worker, animal, crime victim, unemployed worker, etc. For example, a Covered Party role may have a Role.class of Named Insured and Role.code of "full time student" where the person playing the role has is covered under university health plan as a student. In addition or as an alternative, the same person may play a covered party with the Role.class of Dependent where that status is a result of also being a full time student under the age of 23. Thus, the CoveredParty Role.code of "full time student" further specifies both the Role.class of Named Insured and that of Dependent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty" attributeName="code"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="CoverageRoleType"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoveredParty addr: The address of the covered party may be sent. This supports the use case where correspondence to the covered party may be different than the address of the subject playing the role, e.g., a minor who wishes to be contacted by a payer at an address different from the parent’s address. Note that the E_LivingSubject informational is proposed to be changed to include both a telecom and an addr attribute to support this use case.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty" attributeName="addr"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="telecom" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoveredParty telecom: The telecommunication numbers for the covered party may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty" attributeName="telecom"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="6" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoveredParty effectiveTime: The effective date and expiration date when the covered party is covered by the P/P may be sent. If a dependent is added or deleted from the P/P, then the dependent’s effective dates will be different than the P/P effective dates.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="CB5D99A3-69B2-1B87-DF18-9FE586CDA643" name="CoveredParty2"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty2"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The P/P is required to be linked to one and only one CoveredParty role if known, which must be played by a kind or instance of a person, an organization, or a non-person living subject that is eligible for P/P benefits. A covered party may be a single person, an organization, or a non-person living subject. A designated population that is not individually differentiated as members of a group may play the role of covered party by being a "kind" of person or non-person living subject receiving benefits under a P/P, e.g., reproductive health education provided to all seventh grade children in a school district; needle exchange provided to all needle users within vicinity; or vaccination of a herd of cattle. Note that a kind of organization may not be a covered party.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A covered party may or may not be played by the same entity who is the beneficiary, e.g., under health insurance, the beneficiary may or may not be the covered party, e.g., family counseling; under a life insurance policy the covered party is typically not the beneficiary of the policy except in the case of a viatical settlement, i.e., where the policy is sold at a discount from its face value to pay for care for a terminal illness.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Covered parties may be scoped by any of the organizations playing participatory roles in the P/P as underwriters, sponsors or payors as conveyed by the E_Organization universal.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The type of CoveredParty role varies by P/P type. Under a health insurance policy, the covered party is the person who is either the subscriber or dependent named in the P/P. Under a health program, the covered party is a program eligible. Under property and casualty insurance, the covered party is, for example, the claimant in a liability case or auto accident. Under life insurance, the covered party is the person in whose life the beneficiary has an insurable interest. Under reinsurance, the covered party is an underwriter. If the covered party is not known, a null flavor is sent.</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty2" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ParticipationCoverageTarget"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="negationInd" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        defaultValue="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The CoveredParty negationID: Indicates that the CoveredParty is not covered under a particular P/P under the circumstances. For example, although the beneficiary’s CoverageRecord indicates coverage under a worker compensation program, if the current encounter is not work-related, then the person playing the covered party with respect to the worker compensation program may not be deemed to have coverage under that program at the initiation of an encounter. However, this status may change during the course of the encounter if there is a subsequent finding that the patient’s condition is in fact work-related.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation"
+                             attributeName="negationInd"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty2"
+                             attributeName="negationInd"/>
+            <mif:type name="BL"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="DEAB7894-1932-6BBF-2A86-9B14527C867B"
+                                 name="E_LivingSubjectInformational"
+                                 cmetName="E_LivingSubjectInformational">
+         <mif:derivedFrom staticModelDerivationId="1" className="LivingSubject"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_LivingSubjectInformational"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="865C8A2B-D8DA-425A-47CD-9F4EC423C160" name="Holder"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Holder"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The P/P may be linked to zero or one PolicyHolder role. The policy holder is the one who holds the policy e.g., for health or auto insurance. The policy holder may be the subscriber for health insurance. An employer may be the policy holder for employees. The policy holder may be a person or organization.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">If the covered party is the same person/entity as the policy holder (e.g., subscriber/insured), then the person conveyed by E_LivingSuject from the CoveredParty’s Beneficiary-CoveredPartyChoice box will be identical to the person entity playing the policy holder from the EntityChoice box.</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The Holder participation typeCode holder: This association may be sent to convey that the P/P is "held by" the policy holder.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Holder" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ParticipationHolder"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="1187B161-0083-14FF-CE33-27D1B005A209" name="Payor"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Payor"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The Payor classCode: This class has a role type of "payor".</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Payor" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="RoleClassInvoicePayor"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The Payor id: One or more unique identifiers for the payor is required to be sent if available. For example, an NAIC identifier.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Payor" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The Payor code: The type of payor may be specified by a code from the CoverageAdministratorRoleType value set, e.g., enrollment broker or third party administrator.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Payor" attributeName="code"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="RoleCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The Payor name: The name of the payor may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Payor" attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="ON"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The Payor addr: The address of the payor may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Payor" attributeName="addr"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="telecom" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The Payor telecom: The contact numbers for the payor may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Payor" attributeName="telecom"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The Payor effectiveTime: The effective date range for an organization in this role of payor may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Payor" attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="16BF0414-5FA6-F3B8-3888-A31024FFBB2C" name="PolicyHolder"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PolicyHolder"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The P/P may be linked to zero or one PolicyHolder role. The policy holder is the one who holds the policy e.g., for health or auto insurance. The policy holder may be the subscriber for health insurance. An employer may be the policy holder for employees. The policy holder may be a person or organization.</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyHolder classCode POLHOLD: This class has a role type of "policy holder" that is scoped by either the sponsor or underwriter.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyHolder" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="RoleClassPolicyHolder"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyHolder id: The primary identifier for this policy holder role, which is assigned by the underwriter, is required be sent if available.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyHolder" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="May be different from the address of the playing entity"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyHolder addr: The address of the policy holder, which may differ from that of the covered party and from the address of the playing entity may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyHolder" attributeName="addr"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="telecom" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyHolder telecom: The telecommunication numbers for the policy holder may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyHolder" attributeName="telecom"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="B6A26299-6630-CFBA-F9EC-D3151F837C35" name="PolicyOrProgram"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyOrProgram classCode COV: This class has an act type of Coverage.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassCoverage"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyOrProgram moodCode EVN: The mood of this act is Event, that is, the coverage contract is something that actually happens. When used in the EVN mood, this concept means current benefits provided for a covered party by a (1) A health care insurance policy or plan that is contractually binding between two or more parties; or (2) A health care program, usually administered by government entities, that provides coverage to persons determined eligible under the terms of the program.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodEventOccurrence"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyOrProgram id: Zero or more unique identifiers for this policy or program must be sent if available. Note that for the A_Coverage identified and identified-confirmable variants, the lower cardinality is one.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyOrProgram code: The coverage type of the P/P shall be specified by a code from the ActCoverageTypeCode value set, e.g., a policy for health, property and casualty, or life insurance, or a program for worker compensation, crime victim compensation, or government subsidized health program</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram" attributeName="code"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:valueSet name="ActCoverageTypeCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyOrProgram statusCode: Optionally, the status of this P/P, that is, active, cancelled, completed (expired), suspended may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                             attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="ActStatus"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="6" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyOrProgram effectiveTime: Optionally, the policy or program’s effective date and expiration date may be sent. This is the plan begin and end date range.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="confidentialityCode" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PolicyOrProgram confidentialityCode: Optionally conveys a confidentiality code.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="confidentialityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                             attributeName="confidentialityCode"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="CE"/>
+            </mif:type>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="Confidentiality"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="88970DEA-B158-A0FA-E086-FF41B20A9122"
+                 name="PreviousPolicyOrProgram"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PreviousPolicyOrProgram"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="5AB16F4D-6EEC-FADC-68A8-8A7B390E12C8">
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A Policy or Program is related to,replaces or succeeds a previous Policy or Program</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PreviousPolicyOrProgram classCode: This class has an act type of "coverage".</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PreviousPolicyOrProgram"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassCoverage"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PreviousPolicyOrProgram moodCode EVN: The mood of this act is Event, that is, the coverage contract is something that actually happens.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PreviousPolicyOrProgram"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodEventOccurrence"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PreviousPolicyOrProgram"
+                             attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PreviousPolicyOrProgram statusCode: The fixed status obsolete is required to be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PreviousPolicyOrProgram"
+                             attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActStatusObsolete"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The PreviousPolicyOrProgram effectiveTime: The effective date range for the PreviousPolicyOrProgram may be sent.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialContract"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PreviousPolicyOrProgram"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="1A6383DB-596A-7AA6-D090-B72D720EDCF1" name="PrimaryPerformer"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PrimaryPerformer"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The P/P may be linked to zero to many Payor role. The payor is the party responsible for administering the P/P, e.g., paying claims/invoices.</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The primaryPerformer participation typeCode PRPF: The type of role for this relationship is "performer". There may be multiple payors involved in a P/P.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrimaryPerformer"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ParticipationPrimaryPerformer"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="67533EAA-066A-0218-B106-4423D1327354" name="ReplacementOf"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ReplacementOf"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">The P/P may be linked by the replacementOf ActRelationship typeCode RPLC to 0..1 PreviousPolicyOrProgram. The parent P/P is replacing or related to or succeeds the previous policy or program.</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The replacementOf ActRelationship typeCode RPLC: The type of role for this relationship is "replacement".</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ReplacementOf" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActRelationshipReplaces"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="4D5A997E-4B20-2C28-50D1-AA07437163C2" sortKey="22">
+      <mif:traversableConnection name="policyOrProgram" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="PolicyOrProgram">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Component"
+                          associationEndName="policyOrProgram"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Component">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="9CF21A36-B388-F5E5-4DD9-7D7D4D2D24C7" sortKey="23">
+      <mif:traversableConnection name="component" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="BE________"
+                                 participantClassName="Component">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoverageRecord"
+                          associationEndName="component"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="CoverageRecord">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="6ABF2E32-8825-0C7F-852C-366B1F0DD764" sortKey="4">
+      <mif:traversableConnection name="coveredEntityChoiceSubject" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="E_LivingSubjectInformational">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty"
+                          associationEndName="coveredLivingSubject"/>
+         <mif:choiceItem className="Person" traversalName="coveredPerson"/>
+         <mif:choiceItem className="NonPersonLivingSubject"
+                         traversalName="coveredNonPersonLivingSubject"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="CoveredParty">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="3DA3D89B-6935-90FE-FD7D-7E68225163C1" sortKey="7">
+      <mif:traversableConnection name="coveredParty" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="CoveredParty">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoveredParty2"
+                          associationEndName="coveredParty"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="CoveredParty2">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="7F76F73B-0BF5-3329-4D12-237C522DF39F" sortKey="17">
+      <mif:traversableConnection name="policyHolder" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="PolicyHolder">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Holder"
+                          associationEndName="policyHolder"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Holder">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="6250E78A-CD61-DE7B-6C93-2653A4C50115" sortKey="0">
+      <mif:traversableConnection name="policyHolderEntityChoiceSubject" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="E_LivingSubjectInformational">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PolicyHolder"
+                          associationEndName="policyHolderLivingSubject"/>
+         <mif:choiceItem className="Person" traversalName="policyHolderPerson"/>
+         <mif:choiceItem className="NonPersonLivingSubject"
+                         traversalName="policyHolderNonPersonLivingSubject"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PolicyHolder">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="D3084B31-3E30-F75C-886D-6F58B7F08EE7" sortKey="10">
+      <mif:traversableConnection name="coveredParty" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="ABB_______"
+                                 participantClassName="CoveredParty2">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                          associationEndName="coveredParty"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PolicyOrProgram">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="E8906DFC-F7E6-4F62-78E6-21E4AB74FC49" sortKey="9">
+      <mif:traversableConnection name="holder" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="ABE_______"
+                                 participantClassName="Holder">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                          associationEndName="holder"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PolicyOrProgram">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="F396685E-4FEF-D8A8-B5F9-56CF066363A5" sortKey="8">
+      <mif:traversableConnection name="primaryPerformer" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="ADA_______"
+                                 participantClassName="PrimaryPerformer">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                          associationEndName="primaryPerformer"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PolicyOrProgram">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="C1188BA0-ECF8-2A57-CB32-C2949E1C175C" sortKey="11">
+      <mif:traversableConnection name="replacementOf" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BBI_______"
+                                 participantClassName="ReplacementOf">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrProgram"
+                          associationEndName="replacementOf"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PolicyOrProgram">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="3D675417-B8BE-E166-E90B-02029547CB24" sortKey="14">
+      <mif:traversableConnection name="payor" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="Payor">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PrimaryPerformer"
+                          associationEndName="payor"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PrimaryPerformer">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="BC9D6397-D615-321F-D2A3-19C6EB36D57A" sortKey="19">
+      <mif:traversableConnection name="previousPolicyOrProgram" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="PreviousPolicyOrProgram">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ReplacementOf"
+                          associationEndName="previousPolicyOrProgram"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ReplacementOf">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="E_Place informational"
+                 isSerializable="true"
+                 name="07">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="07"
+                        id="710007"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="4.912" height="5.529"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="FEEC3D22-E89E-F899-8473-CD4314BB83D1">
+         <mif:graphElement shapeId="Sheet.99">
+            <mif:position x="2.011" y="0.028"/>
+            <mif:size width="2.266" height="0.586"/>
+            <mif:anchorage connectToShapeId="Sheet.99">
+               <mif:position x="3.105" y="0.614"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.648">
+                     <mif:position x="3.184" y="1.398"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="C9F54E83-1EDA-5F0D-9F04-E92818977504" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.638" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.454" y="3.814"/>
+            <mif:size width="1.250" height="0.500"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D90206F1-76AE-8DB6-BA1B-FF3106B4B900" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.648" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.165" y="1.398"/>
+            <mif:size width="2.038" height="1.448"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="628CC076-0998-EF56-4C3C-4A2FAEF2AC8C">
+         <mif:graphElement connectToShapeId="Sheet.648">
+            <mif:position x="3.184" y="2.846"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.638">
+                  <mif:position x="3.579" y="3.864"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="07"
+                             id="710007"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="07"
+                             id="710007"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="FEEC3D22-E89E-F899-8473-CD4314BB83D1" id="COCT_MT710007UV07"
+                   name="E_Place informational"
+                   className="Place">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>This CMET is used where the receiver does not require place hierarchy information</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="C9F54E83-1EDA-5F0D-9F04-E92818977504" name="LocatedEntity"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="LocatedEntity"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="LocatedEntity"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <mif:p>Relates an entity (player) to a location (scoper) at which it is present in some way. This presence may be limited in time.</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Structural attribute; this is a "located entity" role</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LocatedEntity" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="LocatedEntity" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassLocatedEntity" rootCode="LOCE" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="D90206F1-76AE-8DB6-BA1B-FF3106B4B900" name="Place"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Place"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Place"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Place"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <mif:p>A subtype of Entity representing a bounded physical place or site with its contained structures, if any</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Structural attribute; this is a "place" entity</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="EntityClassPlace" rootCode="PLC" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Structural attribute; this is a specific place</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="EntityDeterminerSpecific" rootCode="INSTANCE" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Identifier(s) for this physical place</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>A value further specifying the type of place drawn from the PlaceEntityType domain. Examples include bed location, room location, floor location, wing location, and building location.</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="code"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="PlaceEntityType"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Non-unique textual identifier(s) or moniker(s) for this place</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="EN"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="desc" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>A textual or multimedia depiction of this place. Note: descriptions are meant to be shown to interested human individuals.</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="desc"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="desc"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="desc"/>
+            <mif:type name="ED"/>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>The physical address of this place</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="addr"/>
+            <mif:type name="AD"/>
+         </mif:attribute>
+         <mif:attribute name="directionsText" sortKey="8" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>A free text note that carries information related to a site that is useful for entities accessing that site. For example, it could include information useful to people visiting the location such as "Last house on the right" or "If owner not present, check whereabouts with neighbor down the road".</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="directionsText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="directionsText"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="directionsText"/>
+            <mif:type name="ED"/>
+         </mif:attribute>
+         <mif:attribute name="positionText" sortKey="9" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>A text reference that locates the site within a mapping scheme, for example, map coordinates for US Geological Survey maps</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Place" attributeName="positionText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Place" attributeName="positionText"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Place" attributeName="positionText"/>
+            <mif:type name="ED"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="628CC076-0998-EF56-4C3C-4A2FAEF2AC8C" sortKey="0">
+      <mif:traversableConnection name="locatedEntity" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BABE______"
+                                 participantClassName="LocatedEntity">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Place"
+                          associationEndName="locatedEntity"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Place"
+                          associationEndName="locatedEntity"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Place">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

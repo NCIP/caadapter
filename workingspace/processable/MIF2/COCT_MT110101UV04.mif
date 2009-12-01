@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="A_AccountPayor identified"
+                 isSerializable="true"
+                 name="04">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="04"
+                        id="110101"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="11.000" height="8.500"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="C472D3B2-FA21-F3FB-EBA7-DB2B7FC86D58">
+         <mif:graphElement shapeId="Sheet.20">
+            <mif:position x="0.642" y="5.226"/>
+            <mif:size width="1.858" height="0.586"/>
+            <mif:anchorage connectToShapeId="Sheet.20">
+               <mif:position x="2.500" y="2.250"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.24">
+                     <mif:position x="3.462" y="2.199"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="FD32FE7B-E453-F430-924B-4E528C1AF5ED" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.24" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.462" y="1.824"/>
+            <mif:size width="1.250" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D433A83A-9D1E-C63A-8D95-F5F7916404DA" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.30" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="3.516" y="2.574"/>
+            <mif:size width="1.077" height="0.849"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="12464406-A4C3-E20B-86E1-AFEAADAC163D" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.13" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.509" y="3.423"/>
+            <mif:size width="3.029" height="0.514"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="AC83685B-271A-8D19-E4A8-5324C4EE193F">
+         <mif:graphElement connectToShapeId="Sheet.24">
+            <mif:position x="4.087" y="2.574"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.30">
+                  <mif:position x="4.087" y="2.574"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="7264E6E6-31EC-B8AF-CFF4-30C4D55CBFE0">
+         <mif:graphElement connectToShapeId="Sheet.30">
+            <mif:position x="4.023" y="3.423"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.13">
+                  <mif:position x="4.023" y="3.423"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="04"
+                             id="110101"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="04"
+                             id="110101"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="C472D3B2-FA21-F3FB-EBA7-DB2B7FC86D58" id="COCT_MT110101UV04"
+                   name="A_AccountPayor identified"
+                   className="Account">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Used to identify payor in the context of a health claim.</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="FD32FE7B-E453-F430-924B-4E528C1AF5ED" name="Account"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Account"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Account"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Account"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Account" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassAccount" rootCode="ACCT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Account" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodEventOccurrence" rootCode="EVN" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="D433A83A-9D1E-C63A-8D95-F5F7916404DA" name="Holder"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Holder"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Holder"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Holder" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Holder" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationHolder" rootCode="HLD" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="12464406-A4C3-E20B-86E1-AFEAADAC163D" name="PayorRole"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PayorRole"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PayorRole"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PayorRole" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PayorRole" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassInvoicePayor" rootCode="PAYOR" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="Payer identifier, assigned by adjudicator"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PayorRole" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PayorRole" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="AC83685B-271A-8D19-E4A8-5324C4EE193F" sortKey="2">
+      <mif:traversableConnection name="holder" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="ABE_______"
+                                 participantClassName="Holder">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Account" associationEndName="holder"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Account" associationEndName="holder"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Account">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="7264E6E6-31EC-B8AF-CFF4-30C4D55CBFE0" sortKey="1">
+      <mif:traversableConnection name="payorRole" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="true"
+                                 sortKey="BZ"
+                                 participantClassName="PayorRole">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Holder" associationEndName="payorRole"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Holder" associationEndName="payorRole"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Holder">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

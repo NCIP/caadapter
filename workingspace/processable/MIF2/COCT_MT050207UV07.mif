@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="R_PatientPerson informational"
+                 isSerializable="true"
+                 name="07">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="07"
+                        id="050207"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="8.500" height="11.000"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="E8E83425-1CDF-3340-D05A-3CBF9D8AF42B">
+         <mif:graphElement shapeId="Sheet.139">
+            <mif:position x="1.974" y="3.060"/>
+            <mif:size width="2.113" height="0.719"/>
+            <mif:anchorage connectToShapeId="Sheet.139">
+               <mif:position x="3.221" y="3.780"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.189">
+                     <mif:position x="2.841" y="4.824"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="04D3602A-96DD-9202-8351-90061BD31CFA" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.81" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="4.707" y="3.805"/>
+            <mif:size width="1.103" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="4F41311B-C238-7FA8-B3CF-EA349540E16A" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.199" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.350" y="6.593"/>
+            <mif:size width="1.103" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="F7E59682-9D33-FCB2-85A8-61DEDFF4678E" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.189" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.297" y="4.824"/>
+            <mif:size width="1.362" height="0.781"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="FD292F6F-FA60-D128-FA77-8BB633E1402A">
+         <mif:graphElement connectToShapeId="Sheet.189">
+            <mif:position x="3.522" y="5.527"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.199">
+                  <mif:position x="2.901" y="6.592"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="5A2C980D-5724-BF35-B7E7-3E67737612A1">
+         <mif:graphElement connectToShapeId="Sheet.189">
+            <mif:position x="3.522" y="4.902"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.81">
+                  <mif:position x="4.707" y="4.433"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="07"
+                             id="050207"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="07"
+                             id="050207"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="E8E83425-1CDF-3340-D05A-3CBF9D8AF42B" id="COCT_MT050207UV07"
+                   name="R_PatientPerson informational"
+                   className="Patient">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>This CMET is used where the receiver does not require the person patient's identifier to process the message</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="04D3602A-96DD-9202-8351-90061BD31CFA"
+                                 name="E_OrganizationInformational"
+                                 cmetName="E_OrganizationInformational">
+         <mif:derivedFrom staticModelDerivationId="1" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_OrganizationInformational"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="E_OrganizationInformational"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="4F41311B-C238-7FA8-B3CF-EA349540E16A"
+                                 name="E_PersonInformational"
+                                 cmetName="E_PersonInformational">
+         <mif:derivedFrom staticModelDerivationId="1" className="Person"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_PersonInformational"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="E_PersonInformational"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="F7E59682-9D33-FCB2-85A8-61DEDFF4678E" name="Patient"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Patient"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Patient"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Patient"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <mif:p>The primary record for the focal living subject in a Patient Registry</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Structural attribute; this is a "patient" role</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Patient" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Patient" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Patient" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassPatient" rootCode="PAT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Identifiers designated by this patient registry for the focal living subject</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Patient" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Patient" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Patient" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Address(es) for corresponding with the focal living subject in the context of this patient registry</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Patient" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Patient" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Patient" attributeName="addr"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="telecom" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>Telecommunication address(es) for communicating with the focal living subject in the context of this patient registry</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Patient" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Patient" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Patient" attributeName="telecom"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="FD292F6F-FA60-D128-FA77-8BB633E1402A" sortKey="1">
+      <mif:traversableConnection name="patientPerson" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="E_PersonInformational">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Patient"
+                          associationEndName="patientPerson"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Patient"
+                          associationEndName="patientPerson"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Patient">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="5A2C980D-5724-BF35-B7E7-3E67737612A1" sortKey="2">
+      <mif:traversableConnection name="providerOrganization" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="E_OrganizationInformational">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Patient"
+                          associationEndName="providerOrganization"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Patient"
+                          associationEndName="providerOrganization"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Patient">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

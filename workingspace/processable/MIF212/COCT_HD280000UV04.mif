@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="A_Billable universal"
+                 isSerializable="true"
+                 name="04">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="04"
+                        id="280000"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="11.000" height="8.500"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="10178F0F-3DF8-7C80-5A76-9F9B81BB51FA">
+         <mif:graphElement shapeId="Sheet.3">
+            <mif:position x="0.710" y="5.259"/>
+            <mif:size width="1.600" height="0.719"/>
+            <mif:anchorage connectToShapeId="Sheet.3">
+               <mif:position x="2.310" y="3.802"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.50">
+                     <mif:position x="3.452" y="4.221"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="A8B9EEF7-AD5F-38CC-2028-17EC264C7673" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.50" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="3.452" y="1.400"/>
+            <mif:size width="2.226" height="5.642"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="CC400ED4-4EF4-6FF1-7B9A-294B2CA3DCD2" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.19" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.577" y="2.403"/>
+            <mif:size width="1.525" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="6DC6BCE8-E6C9-5C4F-C087-AEDC5C860B68" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.37" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.577" y="1.650"/>
+            <mif:size width="1.501" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="FB2AC57D-5F69-85FE-7590-DD27184A6C64" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.53" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.577" y="5.414"/>
+            <mif:size width="1.667" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="1F779464-BA35-CA21-C076-70FA0736D89B" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.31" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.577" y="3.156"/>
+            <mif:size width="1.735" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="8DB0C2D4-6397-DA40-9DF8-56B7AEF64465" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.25" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.577" y="3.908"/>
+            <mif:size width="1.976" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D2DB3818-899A-01AC-A401-12F8BF61F461" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.44" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.577" y="4.661"/>
+            <mif:size width="1.537" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="323A0889-D7FB-A99D-CF64-EE680CB47273" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.15" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.577" y="6.167"/>
+            <mif:size width="1.250" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="04"
+                             id="280000"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="10178F0F-3DF8-7C80-5A76-9F9B81BB51FA" id="COCT_HD280000UV04"
+                   name="A_Billable universal"
+                   className="A_BillableActChoice">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Clinical content for services performed and/or delivered to support invoicing (billing)</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="A8B9EEF7-AD5F-38CC-2028-17EC264C7673" name="A_BillableActChoice"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_BillableActChoice"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="4692AA21-05B8-64B1-23F1-C36866C3ACC7">
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Only the universal variants of</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">these billable acts are defined here.</html:p>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Specific variants of these CMETs (e.g. BillableClinicalService basic) can be selected in conformance profiles or at run time (process to be determined at a later point).</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:childClass graphicLinkId="E1882837-51C5-726C-D3D1-F56A023B14BF" sortKey="001"
+                         name="A_BillableClinicalServiceUniversal"/>
+         <mif:childClass graphicLinkId="0BF340B7-3B07-6E96-E5E7-C777E6C1DD3F" sortKey="002"
+                         name="A_BillableClinicalProductUniversal"/>
+         <mif:childClass graphicLinkId="B6632ABB-3F79-7245-0279-98C7FF96EA3D" sortKey="003"
+                         name="A_BillablePharmacyDispenseUniversal"/>
+         <mif:childClass graphicLinkId="2181577E-38C4-0550-B34B-52528FE1AB35" sortKey="004"
+                         name="A_BillablePreferredAccomodationUniversal"/>
+         <mif:childClass graphicLinkId="8F4D0E51-5EDB-FCBD-9EE3-EAB877A54C65" sortKey="005"
+                         name="A_BillableVisionDispenseUniversal"/>
+         <mif:childClass graphicLinkId="42DBCABA-0DD9-A31C-8B1A-B79F3B0B3C38" sortKey="006"
+                         name="A_BillableOralHealthServiceUniversal"/>
+         <mif:childClass graphicLinkId="8D49CE6B-3CD4-5F10-D50D-7C61232A6EA9" sortKey="007"
+                         name="CrossReference"/>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="CC400ED4-4EF4-6FF1-7B9A-294B2CA3DCD2"
+                                 name="A_BillableClinicalProductUniversal"
+                                 cmetName="A_BillableClinicalProductUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Supply"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_BillableClinicalProductUniversal"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="6DC6BCE8-E6C9-5C4F-C087-AEDC5C860B68"
+                                 name="A_BillableClinicalServiceUniversal"
+                                 cmetName="A_BillableClinicalServiceUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_BillableClinicalServiceUniversal"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="FB2AC57D-5F69-85FE-7590-DD27184A6C64"
+                                 name="A_BillableOralHealthServiceUniversal"
+                                 cmetName="A_BillableOralHealthServiceUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_BillableOralHealthServiceUniversal"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="1F779464-BA35-CA21-C076-70FA0736D89B"
+                                 name="A_BillablePharmacyDispenseUniversal"
+                                 cmetName="A_BillablePharmacyDispenseUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Supply"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_BillablePharmacyDispenseUniversal"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="8DB0C2D4-6397-DA40-9DF8-56B7AEF64465"
+                                 name="A_BillablePreferredAccomodationUniversal"
+                                 cmetName="A_BillablePreferredAccomodationUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:derivedFrom staticModelDerivationId="2"
+                          className="A_BillablePreferredAccomodationUniversal"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="D2DB3818-899A-01AC-A401-12F8BF61F461"
+                                 name="A_BillableVisionDispenseUniversal"
+                                 cmetName="A_BillableVisionDispenseUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_BillableVisionDispenseUniversal"/>
+         <mif:definingVocabulary>
+            <mif:vocabularyDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="323A0889-D7FB-A99D-CF64-EE680CB47273" name="CrossReference"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CrossReference"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="80AE19C2-5E72-24EE-749E-3EF2B89E9039">
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Used to reference a previous act (e.g. billable act) by including its Act.id. May only be used to reference a billable act in the SAME message, not for past messages (this would require adjudicators to keep a lot of history).</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CrossReference"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActClassRoot"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CrossReference" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:valueSet name="ActMoodEventOccurrence"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CrossReference" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+</mif:staticModel>

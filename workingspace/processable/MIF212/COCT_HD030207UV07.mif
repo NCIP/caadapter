@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="E_Person informational"
+                 isSerializable="true"
+                 name="07">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="07"
+                        id="030207"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="8.500" height="11.000"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="D82D4BBB-F118-AD68-129B-D464957A126C">
+         <mif:graphElement shapeId="Sheet.23">
+            <mif:position x="1.802" y="1.631"/>
+            <mif:size width="1.998" height="0.719"/>
+            <mif:anchorage connectToShapeId="Sheet.23">
+               <mif:position x="2.722" y="2.350"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.211">
+                     <mif:position x="2.880" y="3.369"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="0841117D-FB4C-8E77-41CB-F820B16B70B0" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.1" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.397" y="6.086"/>
+            <mif:size width="3.455" height="0.978"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="9A63F3FE-CE4A-3B5F-F5BE-E7A535F38F57" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.211" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="1.188" y="3.369"/>
+            <mif:size width="3.384" height="1.314"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="C105B342-85EC-A701-6AD3-5668BE72F6EB">
+         <mif:graphElement connectToShapeId="Sheet.211" shapeId="Sheet.5">
+            <mif:position x="3.726" y="4.683"/>
+            <mif:graphEdge>
+               <mif:waypoint x="3.726" y="5.385"/>
+               <mif:waypoint x="5.125" y="5.385"/>
+               <mif:anchor connectToShapeId="Sheet.1">
+                  <mif:position x="5.125" y="6.086"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="07"
+                             id="030207"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="D82D4BBB-F118-AD68-129B-D464957A126C" id="COCT_HD030207UV07"
+                   name="E_Person informational"
+                   className="Person">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>This CMET is used where the receiver does not require the person's identifier to process the message</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="0841117D-FB4C-8E77-41CB-F820B16B70B0"
+                 name="LanguageCommunication"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="LanguageCommunication"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="LanguageCommunication"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A language communication capability of the focal person</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="languageCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">A value representing a language for which the focal person has some level of proficiency for written or spoken communication. Examples: Spanish, Italian, German, English, American Sign</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="LanguageCommunication"
+                             attributeName="languageCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LanguageCommunication"
+                             attributeName="languageCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="HumanLanguage"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="modeCode" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">A value representing the person's method of expression of this language Examples: expressed spoken, expressed written, expressed signed, received spoken, received written, received signed</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="LanguageCommunication"
+                             attributeName="modeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LanguageCommunication"
+                             attributeName="modeCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="LanguageAbilityMode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="proficiencyLevelCode" sortKey="3" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">A value representing the person's level of proficiency in this language. Examples: excellent, good, fair, poor</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="LanguageCommunication"
+                             attributeName="proficiencyLevelCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LanguageCommunication"
+                             attributeName="proficiencyLevelCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="LanguageAbilityProficiency"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="preferenceInd" sortKey="4" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">An indicator specifying whether or not this language is preferred by the focal person for the associated mode</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="LanguageCommunication"
+                             attributeName="preferenceInd"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="LanguageCommunication"
+                             attributeName="preferenceInd"/>
+            <mif:type name="BL"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="9A63F3FE-CE4A-3B5F-F5BE-E7A535F38F57" name="Person"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Person"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Person"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">A subtype of LivingSubject representing a human being</html:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="PSN"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Structural attribute; this is a "person" entity</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityClass" code="PSN"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="INSTANCE"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Structural attribute; this is a specific person</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:code codeSystemName="EntityDeterminer" code="INSTANCE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Identifier(s) for this person. Note that these identifiers can only be used for matching purposes since no scoping organization or status information is included.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Name(s) for this person</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="PN"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="telecom" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Telecommunication address(es) for communicating with the focal person</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="telecom"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="administrativeGenderCode" sortKey="6" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">A value representing the gender (sex) of this person. Note: this attribute does not include terms related to clinical gender which is a complex physiological, genetic and sociological concept that requires multiple observations in order to be comprehensively described.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person"
+                             attributeName="administrativeGenderCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person"
+                             attributeName="administrativeGenderCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="AdministrativeGender"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="birthTime" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The date and time this person was born. This could be an exact moment such as January 1, 1960 @ 03:00:00 EST or an approximate date such as January 1960.</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="birthTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="birthTime"/>
+            <mif:type name="TS"/>
+         </mif:attribute>
+         <mif:attribute name="addr" sortKey="8" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Address(es) for corresponding with the focal person</html:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="addr"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Person" attributeName="addr"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="C105B342-85EC-A701-6AD3-5668BE72F6EB" sortKey="0">
+      <mif:traversableConnection name="languageCommunication" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="CZ"
+                                 participantClassName="LanguageCommunication">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"
+                          associationEndName="languageCommunication"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Person"
+                          associationEndName="languageCommunication"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Person">
+         <mif:derivedFrom staticModelDerivationId="1" className="LanguageCommunication"
+                          associationEndName="entity"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

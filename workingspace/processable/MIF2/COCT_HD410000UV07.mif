@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="R_ExposureAgentCarrier universal"
+                 isSerializable="true"
+                 name="07">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="07"
+                        id="410000"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="11.000" height="8.500"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="FE4C65B8-0D25-D873-C733-C9C107A16661">
+         <mif:graphElement shapeId="Sheet.11">
+            <mif:position x="4.669" y="1.733"/>
+            <mif:size width="2.637" height="0.767"/>
+            <mif:anchorage connectToShapeId="Sheet.11">
+               <mif:position x="6.000" y="2.500"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.1">
+                     <mif:position x="5.975" y="3.193"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="7CF529D0-A537-DF0A-89A9-BDAF2EB6A667" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.24" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="8.425" y="3.047"/>
+            <mif:size width="1.346" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="825A4BA5-D780-5730-E8F3-F7B1AF201E35" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.32" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="8.356" y="4.372"/>
+            <mif:size width="1.488" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="82DE7339-C36D-E92B-3B47-AAD417E8DC7F" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.18" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="8.425" y="2.294"/>
+            <mif:size width="1.328" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="FF6C61AB-0B2A-509D-60E5-B3733CEE56EF" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.1" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="4.937" y="3.193"/>
+            <mif:size width="2.075" height="0.914"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="9B79F2D4-0B7D-D9CB-FCFD-B5FA478575B9" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.30" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="8.300" y="2.044"/>
+            <mif:size width="1.874" height="1.756"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="7F779F8C-DBB3-82E0-4447-4075D06A34D8">
+         <mif:graphElement connectToShapeId="Sheet.1">
+            <mif:position x="6.805" y="3.284"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.30">
+                  <mif:position x="8.300" y="2.396"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="7B7AD70A-5DD1-EF66-2390-E61E16EB0252">
+         <mif:graphElement connectToShapeId="Sheet.1">
+            <mif:position x="6.805" y="4.016"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.32">
+                  <mif:position x="8.356" y="4.372"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="07"
+                             id="410000"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="FE4C65B8-0D25-D873-C733-C9C107A16661" id="COCT_HD410000UV07"
+                   name="R_ExposureAgentCarrier universal"
+                   className="ExposureAgentCarrier">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>The exposure agent role is scoped by the exposure agent (pathogen), and played by a choice of the vector or fomite entity cmets.</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="7CF529D0-A537-DF0A-89A9-BDAF2EB6A667"
+                                 name="E_PublicHealthFomiteUniversal"
+                                 cmetName="E_PublicHealthFomiteUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_PublicHealthFomiteUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="825A4BA5-D780-5730-E8F3-F7B1AF201E35"
+                                 name="E_PublicHealthPathogenUniversal"
+                                 cmetName="E_PublicHealthPathogenUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_PublicHealthPathogenUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="82DE7339-C36D-E92B-3B47-AAD417E8DC7F"
+                                 name="E_PublicHealthVectorUniversal"
+                                 cmetName="E_PublicHealthVectorUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_PublicHealthVectorUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="FF6C61AB-0B2A-509D-60E5-B3733CEE56EF"
+                 name="ExposureAgentCarrier"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ExposureAgentCarrier"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <mif:p>The ExposureAgentCarrier role is played by an entity that is either a living subject (vector) or a non-living material (fomite). The role is scoped by the exposure agent entity.</mif:p>
+                  </mif:text>
+               </mif:definition>
+               <mif:usageNotes>
+                  <mif:text>
+                     <mif:p>The EXPAGTCAR role class code was approved in the March 2007 harmonization, but at design time 8 months later is still not available in the RIM repository for use in designs.</mif:p>
+                  </mif:text>
+               </mif:usageNotes>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ExposureAgentCarrier"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassExposureAgentCarrier" rootCode="EXPAGTCAR" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="negationInd" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>A true value for the negationInd in the ExposureAgentCarrier role asserts that the entity playing the role is not a carrier of the exposure agent scoping the role. A value of false asserts the entity is an exposure agent carrier.</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="negationInd"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ExposureAgentCarrier"
+                             attributeName="negationInd"/>
+            <mif:type name="BL"/>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>A trivial name for the entity in the role of exposure agent carrier. An example name would be "Plague Mary".</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ExposureAgentCarrier"
+                             attributeName="name"/>
+            <mif:type name="TN"/>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>The status of the this record of an exposure agent carrier.</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ExposureAgentCarrier"
+                             attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="RoleStatus"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <mif:p>The interval of time during which this role is being played by the entity.</mif:p>
+                     </mif:text>
+                  </mif:definition>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ExposureAgentCarrier"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="9B79F2D4-0B7D-D9CB-FCFD-B5FA478575B9"
+                 name="VectorOrFomiteChoice"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="VectorOrFomiteChoice"/>
+         <mif:childClass graphicLinkId="B5870D62-A3D5-15D0-2CA5-E1E0CC55C93C" sortKey="001"
+                         name="E_PublicHealthVectorUniversal"/>
+         <mif:childClass graphicLinkId="B11F9C5E-3EB0-8F6B-D503-8B58848DCB9F" sortKey="002"
+                         name="E_PublicHealthFomiteUniversal"/>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="7F779F8C-DBB3-82E0-4447-4075D06A34D8" sortKey="0">
+      <mif:traversableConnection name="partVectorOrFomiteChoice" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="VectorOrFomiteChoice">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ExposureAgentCarrier"
+                          associationEndName="player"/>
+         <mif:choiceItem className="E_PublicHealthVectorUniversal"
+                         traversalName="partPublicHealthLivingSubject1">
+            <mif:choiceItem className="Person" traversalName="partPerson1"/>
+            <mif:choiceItem className="LivingSubject" traversalName="partLivingSubject1"/>
+            <mif:choiceItem className="NonPersonLivingSubject" traversalName="partNonPersonLivingSubject1"/>
+         </mif:choiceItem>
+         <mif:choiceItem className="E_PublicHealthFomiteUniversal"
+                         traversalName="partPublicHealthEntityChoice">
+            <mif:choiceItem className="Place" traversalName="partPlace"/>
+            <mif:choiceItem className="Material" traversalName="partMaterial"/>
+            <mif:choiceItem className="ManufacturedMaterial" traversalName="partManufacturedMaterial"/>
+         </mif:choiceItem>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ExposureAgentCarrier">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="7B7AD70A-5DD1-EF66-2390-E61E16EB0252" sortKey="1">
+      <mif:traversableConnection name="wholePublicHealthEntityChoice" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="E_PublicHealthPathogenUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ExposureAgentCarrier"
+                          associationEndName="scoper"/>
+         <mif:choiceItem className="NonPersonLivingSubject" traversalName="wholeNonPersonLivingSubject"/>
+         <mif:choiceItem className="Material" traversalName="wholeMaterial"/>
+         <mif:choiceItem className="ManufacturedMaterial" traversalName="wholeManufacturedMaterial"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ExposureAgentCarrier">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

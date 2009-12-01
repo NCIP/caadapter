@@ -1,0 +1,2079 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="A_BillablePharmacyDispense universal"
+                 isSerializable="true"
+                 name="04">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="04"
+                        id="300000"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="20.000" height="14.000"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="1E114B94-149F-4652-20FF-546A85BE3A77">
+         <mif:graphElement shapeId="Sheet.115">
+            <mif:position x="12.895" y="11.203"/>
+            <mif:size width="2.685" height="0.586"/>
+            <mif:anchorage connectToShapeId="Sheet.115">
+               <mif:position x="14.227" y="11.203"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.59">
+                     <mif:position x="14.247" y="9.503"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="EFFEDE23-8DE0-3681-313E-9A052ECF0367" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.192" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="13.399" y="2.192"/>
+            <mif:size width="1.649" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="9B62AD48-D44E-1177-04AF-26431CAEF0C9" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.204" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Up">
+            <mif:position x="3.244" y="2.719"/>
+            <mif:size width="1.077" height="0.983"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D5FCEE6B-1A03-2E9B-CA2B-A195F26732D3" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.267" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Right">
+            <mif:position x="15.867" y="7.868"/>
+            <mif:size width="2.157" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="1D186A50-9937-A3FF-663A-CC51A294168D" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.41" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="9.737" y="7.046"/>
+            <mif:size width="1.380" height="0.514"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="23EEDF0E-1CC6-2F6D-72E1-F50D38117E20" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.95" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Left">
+            <mif:position x="5.427" y="3.811"/>
+            <mif:size width="7.221" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="8667A17B-1353-D9A9-0824-C3273BE89F8F" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.255" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Right">
+            <mif:position x="15.867" y="8.909"/>
+            <mif:size width="2.160" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="C6FD56E2-8415-743F-A7EC-6C97EA1F3FD7" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.7" shapeTemplate="Entity" isWidthAutoSize="false"
+                           isHeightAutoSize="true">
+            <mif:position x="5.275" y="9.446"/>
+            <mif:size width="2.905" height="0.914"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="DAE6AE36-C05D-CA3F-4A0D-2A2F4A9E0F1B" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.21" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="8.792" y="8.846"/>
+            <mif:size width="2.297" height="0.514"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="26E939A2-4861-CCBF-58AC-8C3220642F5E" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.261" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Right">
+            <mif:position x="15.867" y="5.886"/>
+            <mif:size width="2.154" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="FAEDD3E3-0C7D-8E3B-C91D-F42ED896B004" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.210" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Left">
+            <mif:position x="11.117" y="7.141"/>
+            <mif:size width="1.510" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="CF3186C7-04B3-2568-8FF6-308B48C64E31" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.198" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="8.663" y="5.493"/>
+            <mif:size width="1.077" height="0.552"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="3F7F05E3-64BA-767F-2336-F1DFE4718127" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.71" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Right">
+            <mif:position x="5.427" y="4.553"/>
+            <mif:size width="2.097" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="4E126A8E-A281-778D-131B-212851F065E4" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.77" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Left">
+            <mif:position x="10.827" y="4.553"/>
+            <mif:size width="1.821" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="83B2A303-D622-C571-0E50-8056AE4FB1D0" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.3" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="5.454" y="1.437"/>
+            <mif:size width="2.659" height="0.914"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="A8A01653-1954-A2D3-4562-37FA398FF3D7" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.31" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.113" y="2.205"/>
+            <mif:size width="1.250" height="0.514"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="185667A3-BFFD-2B4A-28C9-CFA9A8DA244D" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.216" shapeTemplate="Participation" textWrappingWidth="66.0"
+                           nodeOrientation="Left">
+            <mif:position x="11.089" y="8.966"/>
+            <mif:size width="1.538" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="BECB4914-AEEE-D34A-D03D-35F4DE089AFC" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.273" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="18.027" y="8.675"/>
+            <mif:size width="1.606" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="BECB4914-AEEE-D34A-D03D-35F4DE089AFC" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.279" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="18.021" y="5.589"/>
+            <mif:size width="1.606" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="BECB4914-AEEE-D34A-D03D-35F4DE089AFC" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.285" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="18.024" y="7.703"/>
+            <mif:size width="1.606" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D46432B8-D1BD-A9D0-F025-E14EA5B7077F" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.101" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="3.239" y="5.003"/>
+            <mif:size width="1.176" height="0.900"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="F9DAB4FE-02BD-AF91-DAF3-52E57B158E86" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.83" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="13.663" y="5.003"/>
+            <mif:size width="1.176" height="0.800"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="1AD43659-5094-07D1-3354-4904BFB46E5E" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.89" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="13.670" y="2.819"/>
+            <mif:size width="1.139" height="0.883"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="2F20BDB6-8E80-E6A6-0104-DC2FA6E3B9E0" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.55" shapeTemplate="Act" isWidthAutoSize="false"
+                           isHeightAutoSize="false">
+            <mif:position x="12.649" y="3.703"/>
+            <mif:size width="3.215" height="1.300"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D515B240-CFB8-F4AD-6D32-62E6E33F1514" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.63" shapeTemplate="Act" isWidthAutoSize="false"
+                           isHeightAutoSize="false">
+            <mif:position x="2.227" y="3.703"/>
+            <mif:size width="3.200" height="1.300"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="BD3A1400-4359-3B01-53C1-1F33CF08B278" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.51" shapeTemplate="Act" isWidthAutoSize="false"
+                           isHeightAutoSize="false">
+            <mif:position x="7.524" y="4.312"/>
+            <mif:size width="3.303" height="1.181"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="F11DCED9-00F6-C95C-8630-19BA5F9A4804" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.11" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="8.602" y="6.046"/>
+            <mif:size width="1.250" height="0.514"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="5A4F81AD-B485-A983-443A-DC4D8223F621" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.59" shapeTemplate="Act" isWidthAutoSize="false"
+                           isHeightAutoSize="false">
+            <mif:position x="12.627" y="5.803"/>
+            <mif:size width="3.240" height="3.700"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="2DBFCF2A-DBA2-A635-751F-95378961720B" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.67" shapeTemplate="Act" isWidthAutoSize="false"
+                           isHeightAutoSize="false">
+            <mif:position x="2.227" y="5.903"/>
+            <mif:size width="3.200" height="1.100"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="79DA18F1-425D-E33A-F6D2-DDAEF71B2EEB">
+         <mif:graphElement connectToShapeId="Sheet.204">
+            <mif:position x="3.738" y="2.719"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.31">
+                  <mif:position x="3.738" y="2.719"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="F32D9292-9AC5-0FCC-B2FF-1F894C9D9F4E">
+         <mif:graphElement connectToShapeId="Sheet.267">
+            <mif:position x="18.024" y="8.017"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.285">
+                  <mif:position x="18.024" y="8.017"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="AED6A359-DC30-FFB8-B42A-FE9BB952EBA6">
+         <mif:graphElement connectToShapeId="Sheet.95">
+            <mif:position x="5.427" y="3.963"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.63">
+                  <mif:position x="5.427" y="3.963"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="F42F8C59-B2DE-70A2-F112-814D773420E1">
+         <mif:graphElement connectToShapeId="Sheet.255">
+            <mif:position x="18.027" y="8.989"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.273">
+                  <mif:position x="18.027" y="8.989"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="DC9DFDE7-A71B-7AFB-D73E-766576B2E926">
+         <mif:graphElement connectToShapeId="Sheet.21">
+            <mif:position x="9.022" y="9.309"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.7">
+                  <mif:position x="8.180" y="9.674"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="8084365E-0AAA-9F60-5CFF-CBDB4E0282F5">
+         <mif:graphElement connectToShapeId="Sheet.261">
+            <mif:position x="18.021" y="5.903"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.279">
+                  <mif:position x="18.021" y="5.903"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="AA65EABD-D39C-0F3A-94CA-C059445353D7">
+         <mif:graphElement connectToShapeId="Sheet.210">
+            <mif:position x="11.117" y="7.303"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.41">
+                  <mif:position x="11.117" y="7.303"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="584A446B-CF0B-FEE4-947A-4B9F4BE52D9F">
+         <mif:graphElement connectToShapeId="Sheet.198">
+            <mif:position x="9.227" y="6.046"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.11">
+                  <mif:position x="9.227" y="6.046"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="6AE7AC76-0687-F852-2697-E225FBD67586">
+         <mif:graphElement connectToShapeId="Sheet.71">
+            <mif:position x="7.524" y="4.667"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.51">
+                  <mif:position x="7.524" y="4.667"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="40D48788-4BF2-8E7A-9859-19EE7A52C219">
+         <mif:graphElement connectToShapeId="Sheet.77">
+            <mif:position x="10.827" y="4.667"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.51">
+                  <mif:position x="10.827" y="4.667"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="EF224118-F275-6224-6FCF-B033315919D1">
+         <mif:graphElement connectToShapeId="Sheet.31">
+            <mif:position x="4.238" y="2.668"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.3">
+                  <mif:position x="5.454" y="1.894"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="A11E5FE2-FAA6-E4A5-0730-22FD06755F25">
+         <mif:graphElement connectToShapeId="Sheet.216">
+            <mif:position x="11.089" y="9.103"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.21">
+                  <mif:position x="11.089" y="9.103"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="F8EB3597-E8F2-C0A9-D433-C50E9AF1795A">
+         <mif:graphElement connectToShapeId="Sheet.101">
+            <mif:position x="3.827" y="5.903"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.67">
+                  <mif:position x="3.827" y="5.903"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="DD302CEA-4252-0A3F-6D63-7FBF10115A3F">
+         <mif:graphElement connectToShapeId="Sheet.83">
+            <mif:position x="14.256" y="5.003"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.55">
+                  <mif:position x="14.256" y="5.003"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="BF69170F-A398-277A-B26E-3AC830F0A955">
+         <mif:graphElement connectToShapeId="Sheet.89">
+            <mif:position x="14.223" y="2.819"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.192">
+                  <mif:position x="14.223" y="2.819"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="980BECFB-AED1-CF47-8FDF-65558339B253">
+         <mif:graphElement connectToShapeId="Sheet.55">
+            <mif:position x="12.649" y="3.963"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.95">
+                  <mif:position x="12.649" y="3.963"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="AE3EB5E3-7058-510C-554F-C9F5015BC998">
+         <mif:graphElement connectToShapeId="Sheet.55">
+            <mif:position x="12.649" y="4.743"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.77">
+                  <mif:position x="12.649" y="4.743"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="4466BF3F-CDD8-F2DA-ABE6-FF5FB653A324">
+         <mif:graphElement connectToShapeId="Sheet.55">
+            <mif:position x="14.256" y="3.703"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.89">
+                  <mif:position x="14.256" y="3.703"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="9099B8BA-8A48-0B30-94A3-3E061515B8B3">
+         <mif:graphElement connectToShapeId="Sheet.63">
+            <mif:position x="3.827" y="3.703"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.204">
+                  <mif:position x="3.827" y="3.703"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="127DDF29-B63B-988E-71F9-2CC878CC3963">
+         <mif:graphElement connectToShapeId="Sheet.63">
+            <mif:position x="5.427" y="4.743"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.71">
+                  <mif:position x="5.427" y="4.743"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="01A7C7A8-51E5-0D04-3369-0F2D78111281">
+         <mif:graphElement connectToShapeId="Sheet.63">
+            <mif:position x="3.827" y="5.003"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.101">
+                  <mif:position x="3.827" y="5.003"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="38FCCE86-4D69-6C38-EC0F-EECE558394F8">
+         <mif:graphElement connectToShapeId="Sheet.51">
+            <mif:position x="9.176" y="5.493"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.198">
+                  <mif:position x="9.176" y="5.493"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="BB1EABD5-10A9-BB1C-5286-4662EC71597D">
+         <mif:graphElement connectToShapeId="Sheet.59">
+            <mif:position x="15.867" y="8.023"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.267">
+                  <mif:position x="15.867" y="8.023"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="C964D281-414E-51F7-BD6A-E2184EA54D10">
+         <mif:graphElement connectToShapeId="Sheet.59">
+            <mif:position x="15.867" y="9.133"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.255">
+                  <mif:position x="15.867" y="9.133"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="58272E6A-F106-4D61-78CC-BE01E2E16BCD">
+         <mif:graphElement connectToShapeId="Sheet.59">
+            <mif:position x="15.867" y="6.173"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.261">
+                  <mif:position x="15.867" y="6.173"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="AFAADC37-5896-FC93-90F3-2674491F9352">
+         <mif:graphElement connectToShapeId="Sheet.59">
+            <mif:position x="12.627" y="7.283"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.210">
+                  <mif:position x="12.627" y="7.283"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="B8EE9333-46B6-9289-AF1A-5C319F71F27B">
+         <mif:graphElement connectToShapeId="Sheet.59">
+            <mif:position x="12.627" y="9.133"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.216">
+                  <mif:position x="12.627" y="9.133"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="A08D1F44-E6A9-5528-3067-177279536A94">
+         <mif:graphElement connectToShapeId="Sheet.59">
+            <mif:position x="14.247" y="5.803"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.83">
+                  <mif:position x="14.247" y="5.803"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="04"
+                             id="300000"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="04"
+                             id="300000"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="1E114B94-149F-4652-20FF-546A85BE3A77" id="COCT_MT300000UV04"
+                   name="A_BillablePharmacyDispense universal"
+                   className="SupplyEvent">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Pharmacy dispense clinical information required to support invoicing (billing)</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="EFFEDE23-8DE0-3681-313E-9A052ECF0367"
+                                 name="A_DetectedMedicationIssueNoText"
+                                 cmetName="A_DetectedMedicationIssueNoText">
+         <mif:derivedFrom staticModelDerivationId="1" className="Observation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_DetectedMedicationIssueNoText"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="A_DetectedMedicationIssueNoText"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="9B62AD48-D44E-1177-04AF-26431CAEF0C9" name="Author"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Author"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Author"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="36B37316-36A7-8856-8539-3D5F3417B39E">
+                  <mif:text>
+                     <mif:p>Identify prescriber</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Author" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Author" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationAuthorOriginator" rootCode="AUT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="D5FCEE6B-1A03-2E9B-CA2B-A195F26732D3" name="Destination"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Destination"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Destination"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="DE4A03A0-92FE-E97D-A098-7613D75DA5DC">
+                  <mif:text>
+                     <mif:p>Only used for justifying shipping from 1 location to another.</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+            <mif:appInfo>
+               <mif:formalConstraint graphicLinkId="47FA768E-A528-3431-C5FA-A50738CE7607">
+                  <mif:text>
+                     <mif:p>If origin specified, destination mandatory and vice versa</mif:p>
+                  </mif:text>
+               </mif:formalConstraint>
+            </mif:appInfo>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Destination" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Destination" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationDestination" rootCode="DST" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="1D186A50-9937-A3FF-663A-CC51A294168D" name="HealthCareProvider"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="LicensedEntity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="HealthCareProvider"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="HealthCareProvider"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="LicensedEntity"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="HealthCareProvider"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="HealthCareProvider"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassHealthcareProvider" rootCode="PROV" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="LicensedEntity" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="HealthCareProvider" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="HealthCareProvider" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="23EEDF0E-1CC6-2F6D-72E1-F50D38117E20" name="InFulfillmentOf"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="InFulfillmentOf"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="InFulfillmentOf"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InFulfillmentOf"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InFulfillmentOf"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipFulfills" rootCode="FLFS" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="8667A17B-1353-D9A9-0824-C3273BE89F8F" name="Location"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Location"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Location"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="11A283F4-C113-7BF5-DE30-33275E25D263">
+                  <mif:text>
+                     <mif:p>Used when drugs/devices must be shipped. Only need origin when 'drop' shipping from supplier</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Location" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Location" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationTargetLocation" rootCode="LOC" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="C6FD56E2-8415-743F-A7EC-6C97EA1F3FD7"
+                 name="ManufacturedMaterialKind"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterialKind"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedMaterialKind"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterialKind"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedMaterialKind"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="EntityClassManufacturedMaterial" rootCode="MMAT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterialKind"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedMaterialKind"
+                             attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="EntityDeterminerDetermined" rootCode="KIND" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="DIN, UPC, GTIN"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"
+                             attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterialKind"
+                             attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedMaterialKind"
+                             attributeName="code"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="DrugEntity"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="formCode" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="required for compounds"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"
+                             attributeName="formCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedMaterialKind"
+                             attributeName="formCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedMaterialKind"
+                             attributeName="formCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="OrderableDrugForm"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="DAE6AE36-C05D-CA3F-4A0D-2A2F4A9E0F1B" name="ManufacturedProduct"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedProduct"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedProduct"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedProduct"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedProduct"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassManufacturedProduct" rootCode="MANU" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="quantity" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="package size"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="quantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedProduct"
+                             attributeName="quantity"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedProduct"
+                             attributeName="quantity"/>
+            <mif:type name="RTO">
+               <mif:argumentDatatype name="PQ"/>
+               <mif:argumentDatatype name="PQ"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="26E939A2-4861-CCBF-58AC-8C3220642F5E" name="Origin"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Origin"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Origin"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="26578B22-1AE4-4517-85BB-938115744C7B">
+                  <mif:text>
+                     <mif:p>Only used for justifying shipping from 1 location to another.</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+            <mif:appInfo>
+               <mif:formalConstraint graphicLinkId="E3001266-AA68-0BE8-C517-07A6CC310546">
+                  <mif:text>
+                     <mif:p>If origin specified, destination mandatory and vice versa</mif:p>
+                  </mif:text>
+               </mif:formalConstraint>
+            </mif:appInfo>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Origin" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Origin" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationOrigin" rootCode="ORG" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="FAEDD3E3-0C7D-8E3B-C91D-F42ED896B004" name="Performer1"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Performer1"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Performer1"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="4916AC4A-DDC9-FE75-69AF-C34FB44D2042">
+                  <mif:text>
+                     <mif:p>e.g. Pharmacist</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Performer1" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Performer1" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationPhysicalPerformer" rootCode="PRF" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="CF3186C7-04B3-2568-8FF6-308B48C64E31" name="Performer2"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Performer2"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Performer2"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Performer2" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Performer2" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationPhysicalPerformer" rootCode="PRF" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="3F7F05E3-64BA-767F-2336-F1DFE4718127"
+                 name="PertinentInformation"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PertinentInformation"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PertinentInformation"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="88B68B0C-8C27-7458-F151-ED91F7413427">
+                  <mif:text>
+                     <mif:p>Substitution from the Ordering Provider perspective (e.g. no Sub)</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PertinentInformation"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PertinentInformation"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipPertains" rootCode="PERT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="4E126A8E-A281-778D-131B-212851F065E4"
+                 name="PertinentInformation2"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PertinentInformation2"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PertinentInformation2"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="4438648C-6C3E-9F9C-280B-1DA189785F84">
+                  <mif:text>
+                     <mif:p>Substitution from the Dispensing Provider or Patient perspective</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PertinentInformation2"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PertinentInformation2"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipPertains" rootCode="PERT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="83B2A303-D622-C571-0E50-8056AE4FB1D0" name="PrescriberPerson"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Person"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PrescriberPerson"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PrescriberPerson"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrescriberPerson"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PrescriberPerson"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="EntityClassPerson" rootCode="PSN" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrescriberPerson"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PrescriberPerson"
+                             attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="EntityDeterminerSpecific" rootCode="INSTANCE" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrescriberPerson" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PrescriberPerson" attributeName="name"/>
+            <mif:type name="PN"/>
+         </mif:attribute>
+         <mif:attribute name="telecom" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="3"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="used for Coverage Extension to contact prescriber"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Person" attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrescriberPerson"
+                             attributeName="telecom"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PrescriberPerson"
+                             attributeName="telecom"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="A8A01653-1954-A2D3-4562-37FA398FF3D7" name="PrescriberRole"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PrescriberRole"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PrescriberRole"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="DE476A37-D781-D01A-4634-A548A80840CB">
+                  <mif:text>
+                     <mif:p>ID cannot be mandatory as it may not be present on a pre-determination</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrescriberRole"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PrescriberRole"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassRoot" rootCode="ROL" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrescriberRole" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PrescriberRole" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="185667A3-BFFD-2B4A-28C9-CFA9A8DA244D" name="Product"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Product"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Product"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="CE54BB43-E60B-0371-E6D0-63CF318BA1DF">
+                  <mif:text>
+                     <mif:p>Drug and/or device is specified with the Invoice.</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Product" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Product" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationProduct" rootCode="PRD" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="BECB4914-AEEE-D34A-D03D-35F4DE089AFC"
+                                 name="R_ServiceDeliveryLocationContact"
+                                 cmetName="R_ServiceDeliveryLocationContact">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="R_ServiceDeliveryLocationContact"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="R_ServiceDeliveryLocationContact"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="RoleClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="D46432B8-D1BD-A9D0-F025-E14EA5B7077F" name="Reason"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Reason"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Reason"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Reason" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Reason" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipReason" rootCode="RSON" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="F9DAB4FE-02BD-AF91-DAF3-52E57B158E86" name="Reason2"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Reason2"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Reason2"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Reason2" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Reason2" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipReason" rootCode="RSON" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="1AD43659-5094-07D1-3354-4904BFB46E5E" name="Subject"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Subject"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Subject"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="2BF8581E-FFFC-ED4A-1A70-D0CA82B059F3">
+                  <mif:text>
+                     <mif:p>Presence of an Alert means that problem is acknowledged and don't bug me about it</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Subject" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Subject" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipHasSubject" rootCode="SUBJ" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="2F20BDB6-8E80-E6A6-0104-DC2FA6E3B9E0"
+                 name="SubstanceAdministrationIntent"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="AD980D8E-D4B0-C139-F306-C176F4F5A848">
+                  <mif:text>
+                     <mif:p>Used effectiveTime for methadone only</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassSubstanceAdministration" rootCode="SBADM" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodIntent" rootCode="INT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="filler transaction number for dispense"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"
+                             attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"
+                             attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"
+                             attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="4" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name=" (For methadone, this indicates when the drug is expected to be&#xA;   taken"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="priorityCode" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="for PRN, UD or unknown (use NullFlavor"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"
+                             attributeName="priorityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"
+                             attributeName="priorityCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"
+                             attributeName="priorityCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="x_ActPriorityPharmacy"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="D515B240-CFB8-F4AD-6D32-62E6E33F1514"
+                 name="SubstanceAdministrationOrder"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationOrder"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationOrder"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationOrder"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationOrder"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassSubstanceAdministration" rootCode="SBADM" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationOrder"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationOrder"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodRequest" rootCode="RQO" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="BD3A1400-4359-3B01-53C1-1F33CF08B278" name="Substitution"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Substitution"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Substitution"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Substitution" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Substitution" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassSubstitution" rootCode="SUBST" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Substitution" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Substitution" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodEventOccurrence" rootCode="EVN" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="type of substitution"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Substitution" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Substitution" attributeName="code"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActSubstanceAdminSubstitutionCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="reasonCode" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="why was the substance substituted?"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="reasonCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Substitution" attributeName="reasonCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Substitution" attributeName="reasonCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="SubstanceAdminSubstitutionReason"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="F11DCED9-00F6-C95C-8630-19BA5F9A4804" name="SubstitutionRole"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstitutionRole"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstitutionRole"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="4342074A-78B1-B5D5-28C8-69B035A7B623">
+                  <mif:text>
+                     <mif:p>Who did the substitution</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+            <mif:appInfo>
+               <mif:formalConstraint graphicLinkId="95C1E604-B325-C243-22D8-1120A0A21B49">
+                  <mif:text>
+                     <mif:p>ID must be that of the patient, ordering provider or dispensing provider</mif:p>
+                  </mif:text>
+               </mif:formalConstraint>
+            </mif:appInfo>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstitutionRole"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstitutionRole"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassRoot" rootCode="ROL" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SubstitutionRole" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SubstitutionRole" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="5A4F81AD-B485-A983-443A-DC4D8223F621" name="SupplyEvent"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Supply"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="DA2C8DEB-EED6-D88C-BCDA-DD88F7F47C59">
+                  <mif:text>
+                     <mif:p>Patient classes are not referenced in the billable acts, as they are noted in the parent model (e.g. Invoice message) as the CoveredPartyAsPatient</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassSupply" rootCode="SPLY" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="x_ActMoodIntentEvent" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="duplicate or triplicate prescription number"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="partial fill/trial/completion of trial, etc."/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent" attributeName="code"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActPharmacySupplyType"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name=" (dispense time.) (must support hour/minute to handle&#xA;   multi-dispense/day of same product - e.g. methadone"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent"
+                             attributeName="effectiveTime"/>
+            <mif:type name="TS"/>
+         </mif:attribute>
+         <mif:attribute name="quantity" sortKey="6" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name=" (Quantity suppled. The quantity billed will generally default to&#xA;   the quantity supplied. 0 is not a valid value, as non-dispense&#xA;   events (e.g. prof services) should not include a supply&#xA;   (dispense) event."/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="quantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent" attributeName="quantity"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent" attributeName="quantity"/>
+            <mif:type name="PQ"/>
+         </mif:attribute>
+         <mif:attribute name="expectedUseTime" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="expectedUseTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent"
+                             attributeName="expectedUseTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent"
+                             attributeName="expectedUseTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="2DBFCF2A-DBA2-A635-751F-95378961720B" name="SupplyOrder"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Supply"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SupplyOrder"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SupplyOrder"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="2E610C48-99AF-B325-4BC3-462ABD10D419">
+                  <mif:text>
+                     <mif:p>When number of repeats is unlimited, specify Null Flavour of positive infinity in expected_use_time</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+            <mif:appInfo>
+               <mif:formalConstraint graphicLinkId="357AAB7F-AA57-7AFC-7724-1BF89663A7A7">
+                  <mif:text>
+                     <mif:p>Only end date of effective_time can be specified</mif:p>
+                  </mif:text>
+               </mif:formalConstraint>
+            </mif:appInfo>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyOrder" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyOrder" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassSupply" rootCode="SPLY" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyOrder" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyOrder" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodRequest" rootCode="RQO" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="3" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="last allowed dispense"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyOrder"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyOrder"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="repeatNumber" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        defaultValue="1"
+                        isImmutable="false">
+            <mif:businessName name="# refills + 1"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Supply" attributeName="repeatNumber"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SupplyOrder"
+                             attributeName="repeatNumber"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SupplyOrder"
+                             attributeName="repeatNumber"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="INT"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="79DA18F1-425D-E33A-F6D2-DDAEF71B2EEB" sortKey="4">
+      <mif:traversableConnection name="prescriberRole" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="PrescriberRole">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Author"
+                          associationEndName="prescriberRole"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Author"
+                          associationEndName="prescriberRole"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Author">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="F32D9292-9AC5-0FCC-B2FF-1F894C9D9F4E" sortKey="53">
+      <mif:traversableConnection name="serviceDeliveryLocation" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="R_ServiceDeliveryLocationContact">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Destination"
+                          associationEndName="serviceDeliveryLocation"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Destination"
+                          associationEndName="serviceDeliveryLocation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Destination">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="AED6A359-DC30-FFB8-B42A-FE9BB952EBA6" sortKey="21">
+      <mif:traversableConnection name="substanceAdministrationOrder" minimumMultiplicity="1"
+                                 maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="SubstanceAdministrationOrder">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="InFulfillmentOf"
+                          associationEndName="substanceAdministrationOrder"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="InFulfillmentOf"
+                          associationEndName="substanceAdministrationOrder"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="InFulfillmentOf">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="F42F8C59-B2DE-70A2-F112-814D773420E1" sortKey="43">
+      <mif:traversableConnection name="serviceDeliveryLocation" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="true"
+                                 sortKey="BZ"
+                                 participantClassName="R_ServiceDeliveryLocationContact">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Location"
+                          associationEndName="serviceDeliveryLocation"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Location"
+                          associationEndName="serviceDeliveryLocation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Location">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="DC9DFDE7-A71B-7AFB-D73E-766576B2E926" sortKey="32">
+      <mif:traversableConnection name="manufacturedMaterialKind" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="ManufacturedMaterialKind">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ManufacturedProduct"
+                          associationEndName="manufacturedMaterialKind"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ManufacturedProduct"
+                          associationEndName="manufacturedMaterialKind"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ManufacturedProduct">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="8084365E-0AAA-9F60-5CFF-CBDB4E0282F5" sortKey="48">
+      <mif:traversableConnection name="serviceDeliveryLocation" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="R_ServiceDeliveryLocationContact">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Origin"
+                          associationEndName="serviceDeliveryLocation"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Origin"
+                          associationEndName="serviceDeliveryLocation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Origin">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="AA65EABD-D39C-0F3A-94CA-C059445353D7" sortKey="40">
+      <mif:traversableConnection name="healthCareProvider" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="HealthCareProvider">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Performer1"
+                          associationEndName="healthCareProvider"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Performer1"
+                          associationEndName="healthCareProvider"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Performer1">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="584A446B-CF0B-FEE4-947A-4B9F4BE52D9F" sortKey="61">
+      <mif:traversableConnection name="substitutionRole" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="SubstitutionRole">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Performer2"
+                          associationEndName="substitutionRole"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Performer2"
+                          associationEndName="substitutionRole"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Performer2">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="6AE7AC76-0687-F852-2697-E225FBD67586" sortKey="10">
+      <mif:traversableConnection name="substitution" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="Substitution">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PertinentInformation"
+                          associationEndName="substitution"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PertinentInformation"
+                          associationEndName="substitution"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PertinentInformation">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="40D48788-4BF2-8E7A-9859-19EE7A52C219" sortKey="15">
+      <mif:traversableConnection name="substitution" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="Substitution">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PertinentInformation2"
+                          associationEndName="substitution"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PertinentInformation2"
+                          associationEndName="substitution"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PertinentInformation2">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="EF224118-F275-6224-6FCF-B033315919D1" sortKey="1">
+      <mif:traversableConnection name="playingPrescriberPerson" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="PrescriberPerson">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PrescriberRole"
+                          associationEndName="playingPrescriberPerson"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PrescriberRole"
+                          associationEndName="playingPrescriberPerson"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PrescriberRole">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="A11E5FE2-FAA6-E4A5-0730-22FD06755F25" sortKey="31">
+      <mif:traversableConnection name="manufacturedProduct" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="ManufacturedProduct">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Product"
+                          associationEndName="manufacturedProduct"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Product"
+                          associationEndName="manufacturedProduct"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Product">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="F8EB3597-E8F2-C0A9-D433-C50E9AF1795A" sortKey="64">
+      <mif:traversableConnection name="supplyOrder" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="SupplyOrder">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Reason" associationEndName="supplyOrder"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Reason" associationEndName="supplyOrder"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Reason">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="DD302CEA-4252-0A3F-6D63-7FBF10115A3F" sortKey="22">
+      <mif:traversableConnection name="substanceAdministrationIntent" minimumMultiplicity="1"
+                                 maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="SubstanceAdministrationIntent">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Reason2"
+                          associationEndName="substanceAdministrationIntent"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Reason2"
+                          associationEndName="substanceAdministrationIntent"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Reason2">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="BF69170F-A398-277A-B26E-3AC830F0A955" sortKey="57">
+      <mif:traversableConnection name="detectedMedicationIssue" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="A_DetectedMedicationIssueNoText">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Subject"
+                          associationEndName="detectedMedicationIssue"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Subject"
+                          associationEndName="detectedMedicationIssue"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Subject">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="980BECFB-AED1-CF47-8FDF-65558339B253" sortKey="17">
+      <mif:traversableConnection name="inFulfillmentOf" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BBA_______"
+                                 participantClassName="InFulfillmentOf">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"
+                          associationEndName="inFulfillmentOf"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"
+                          associationEndName="inFulfillmentOf"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SubstanceAdministrationIntent">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="AE3EB5E3-7058-510C-554F-C9F5015BC998" sortKey="16">
+      <mif:traversableConnection name="pertinentInformation" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BD________"
+                                 participantClassName="PertinentInformation2">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"
+                          associationEndName="pertinentInformation"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"
+                          associationEndName="pertinentInformation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SubstanceAdministrationIntent">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="4466BF3F-CDD8-F2DA-ABE6-FF5FB653A324" sortKey="19">
+      <mif:traversableConnection name="subjectOf" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="CDB_______"
+                                 participantClassName="Subject">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationIntent"
+                          associationEndName="subjectOf"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationIntent"
+                          associationEndName="subjectOf"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SubstanceAdministrationIntent">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="9099B8BA-8A48-0B30-94A3-3E061515B8B3" sortKey="8">
+      <mif:traversableConnection name="author" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AEA_______"
+                                 participantClassName="Author">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationOrder"
+                          associationEndName="author"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationOrder"
+                          associationEndName="author"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SubstanceAdministrationOrder">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="127DDF29-B63B-988E-71F9-2CC878CC3963" sortKey="5">
+      <mif:traversableConnection name="pertinentInformation" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BD________"
+                                 participantClassName="PertinentInformation">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationOrder"
+                          associationEndName="pertinentInformation"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationOrder"
+                          associationEndName="pertinentInformation"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SubstanceAdministrationOrder">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="01A7C7A8-51E5-0D04-3369-0F2D78111281" sortKey="7">
+      <mif:traversableConnection name="reason" minimumMultiplicity="0" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="false"
+                                 sortKey="BCA_______"
+                                 participantClassName="Reason">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SubstanceAdministrationOrder"
+                          associationEndName="reason"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministrationOrder"
+                          associationEndName="reason"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SubstanceAdministrationOrder">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="38FCCE86-4D69-6C38-EC0F-EECE558394F8" sortKey="13">
+      <mif:traversableConnection name="performer" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AD________"
+                                 participantClassName="Performer2">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Substitution"
+                          associationEndName="performer"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Substitution"
+                          associationEndName="performer"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Substitution">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="BB1EABD5-10A9-BB1C-5286-4662EC71597D" sortKey="27">
+      <mif:traversableConnection name="destination" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AJC_______"
+                                 participantClassName="Destination">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent"
+                          associationEndName="destination"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent"
+                          associationEndName="destination"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SupplyEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="C964D281-414E-51F7-BD6A-E2184EA54D10" sortKey="26">
+      <mif:traversableConnection name="location" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="AJ________"
+                                 participantClassName="Location">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent"
+                          associationEndName="location"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent"
+                          associationEndName="location"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SupplyEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="58272E6A-F106-4D61-78CC-BE01E2E16BCD" sortKey="28">
+      <mif:traversableConnection name="origin" minimumMultiplicity="0" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AJA_______"
+                                 participantClassName="Origin">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent" associationEndName="origin"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent" associationEndName="origin"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SupplyEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="AFAADC37-5896-FC93-90F3-2674491F9352" sortKey="25">
+      <mif:traversableConnection name="performer" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AD________"
+                                 participantClassName="Performer1">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent"
+                          associationEndName="performer"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent"
+                          associationEndName="performer"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SupplyEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="B8EE9333-46B6-9289-AF1A-5C319F71F27B" sortKey="24">
+      <mif:traversableConnection name="product" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AAF_______"
+                                 participantClassName="Product">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent"
+                          associationEndName="product"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent"
+                          associationEndName="product"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SupplyEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="A08D1F44-E6A9-5528-3067-177279536A94" sortKey="29">
+      <mif:traversableConnection name="reasonOf" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="false"
+                                 sortKey="CCA_______"
+                                 participantClassName="Reason2">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SupplyEvent"
+                          associationEndName="reasonOf"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SupplyEvent"
+                          associationEndName="reasonOf"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="SupplyEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

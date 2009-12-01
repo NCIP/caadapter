@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="A_FinancialTransaction universal"
+                 isSerializable="true"
+                 name="04">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="04"
+                        id="190000"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="11.000" height="8.500"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="A5534A1B-DFB4-4A7F-66D0-D018404326AD">
+         <mif:graphElement shapeId="Sheet.8">
+            <mif:position x="0.421" y="5.126"/>
+            <mif:size width="2.299" height="0.719"/>
+            <mif:anchorage connectToShapeId="Sheet.8">
+               <mif:position x="2.719" y="2.100"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.16">
+                     <mif:position x="3.308" y="2.056"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="F7AB1E8C-9481-C965-2AAE-B5B95BBC8DC2" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.49" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="7.119" y="2.186"/>
+            <mif:size width="1.081" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="5E64801D-E5BD-7069-9674-13AB326F429C" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.33" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="7.116" y="1.500"/>
+            <mif:size width="1.068" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="1E974DB2-7658-54BA-866D-31897306ED35" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.27" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Right">
+            <mif:position x="6.044" y="2.308"/>
+            <mif:size width="1.394" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="062B2362-2CB3-C268-6C94-3AA1AF118CC1" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.41" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Right">
+            <mif:position x="6.044" y="1.673"/>
+            <mif:size width="1.307" height="0.303"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="B3CC631D-2207-8D6C-4017-309FC629DAA2" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.16" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.308" y="1.615"/>
+            <mif:size width="2.736" height="1.103"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="E07318D8-C312-3A5C-7F97-A2B49F3B07BE" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.12" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.447" y="3.892"/>
+            <mif:size width="2.446" height="1.103"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="B5330125-25DC-1D87-B294-8145C477003A" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.39" shapeTemplate="ActRelationship" textWrappingWidth="66.0"
+                           nodeOrientation="Down">
+            <mif:position x="4.085" y="2.718"/>
+            <mif:size width="1.176" height="1.174"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="65801B70-3ED5-BD46-6F0D-4A545564F511">
+         <mif:graphElement connectToShapeId="Sheet.27">
+            <mif:position x="7.119" y="2.312"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.49">
+                  <mif:position x="7.119" y="2.312"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="B6178370-87F1-C7B0-FA50-2D02FFB5AF9B">
+         <mif:graphElement connectToShapeId="Sheet.41">
+            <mif:position x="7.116" y="1.814"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.33">
+                  <mif:position x="7.116" y="1.814"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="7A58F8BA-190B-0C2C-7320-1A2105A8AD25">
+         <mif:graphElement connectToShapeId="Sheet.16">
+            <mif:position x="6.044" y="2.608"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.27">
+                  <mif:position x="6.044" y="2.608"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="122A0CF0-C210-CDF3-9346-821B978A56DF">
+         <mif:graphElement connectToShapeId="Sheet.16">
+            <mif:position x="6.044" y="1.836"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.41">
+                  <mif:position x="6.044" y="1.836"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="754906CA-93E2-3EEC-1F11-134A130C8CFF">
+         <mif:graphElement connectToShapeId="Sheet.16">
+            <mif:position x="4.676" y="2.718"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.39">
+                  <mif:position x="4.676" y="2.718"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="9B030CAD-87C4-F035-18C7-63DDA6F34680">
+         <mif:graphElement connectToShapeId="Sheet.39">
+            <mif:position x="4.669" y="3.892"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.12">
+                  <mif:position x="4.669" y="3.892"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="04"
+                             id="190000"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="A5534A1B-DFB4-4A7F-66D0-D018404326AD" id="COCT_HD190000UV04"
+                   name="A_FinancialTransaction universal"
+                   className="FinancialTransaction">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Used to associate costs, charges or other financial transactions with an Act or entity.</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="F7AB1E8C-9481-C965-2AAE-B5B95BBC8DC2"
+                                 name="A_AccountPayeeUniversal"
+                                 cmetName="A_AccountPayeeUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Account"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_AccountPayeeUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="5E64801D-E5BD-7069-9674-13AB326F429C"
+                                 name="A_AccountPayorUniversal"
+                                 cmetName="A_AccountPayorUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Account"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_AccountPayorUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="1E974DB2-7658-54BA-866D-31897306ED35" name="Credit"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Credit"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Credit" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipHasCredit" rootCode="CREDIT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="062B2362-2CB3-C268-6C94-3AA1AF118CC1" name="Debit"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Debit"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Debit" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipHasDebit" rootCode="DEBIT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="B3CC631D-2207-8D6C-4017-309FC629DAA2"
+                 name="FinancialTransaction"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassFinancialTransaction" rootCode="XACT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodRequest" rootCode="RQO" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"
+                             attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="code"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActFinancialTransactionCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="amt" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"
+                             attributeName="amt"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="amt"/>
+            <mif:type name="MO"/>
+         </mif:attribute>
+         <mif:attribute name="creditExchangeRateQuantity" sortKey="6" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"
+                             attributeName="creditExchangeRateQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="creditExchangeRateQuantity"/>
+            <mif:type name="REAL"/>
+         </mif:attribute>
+         <mif:attribute name="debitExchangeRateQuantity" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"
+                             attributeName="debitExchangeRateQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="debitExchangeRateQuantity"/>
+            <mif:type name="REAL"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="E07318D8-C312-3A5C-7F97-A2B49F3B07BE" name="InvoiceElement"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition graphicLinkId="3A970B59-CD57-C91C-DAED-6D41FB553DF6">
+                  <mif:text>
+                     <mif:p>Provides justificiation for the financial transaction</mif:p>
+                  </mif:text>
+               </mif:definition>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassInvoiceElement" rootCode="INVE" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodRequest" rootCode="RQO" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement" attributeName="code"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActInvoiceElementCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="unitQuantity" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"
+                             attributeName="unitQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="unitQuantity"/>
+            <mif:type name="RTO">
+               <mif:argumentDatatype name="PQ"/>
+               <mif:argumentDatatype name="PQ"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="factorNumber" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"
+                             attributeName="factorNumber"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="factorNumber"/>
+            <mif:type name="REAL"/>
+         </mif:attribute>
+         <mif:attribute name="pointsNumber" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"
+                             attributeName="pointsNumber"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="pointsNumber"/>
+            <mif:type name="REAL"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="B5330125-25DC-1D87-B294-8145C477003A" name="Reason"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Reason"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Reason" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipReason" rootCode="RSON" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="65801B70-3ED5-BD46-6F0D-4A545564F511" sortKey="6">
+      <mif:traversableConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="A_AccountPayeeUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Credit"
+                          associationEndName="accountPayee"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Credit">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="B6178370-87F1-C7B0-FA50-2D02FFB5AF9B" sortKey="9">
+      <mif:traversableConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="A_AccountPayorUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Debit" associationEndName="accountPayor"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Debit">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="7A58F8BA-190B-0C2C-7320-1A2105A8AD25" sortKey="2">
+      <mif:traversableConnection name="credit" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BDOAA_____"
+                                 participantClassName="Credit">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                          associationEndName="credit"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="FinancialTransaction">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="122A0CF0-C210-CDF3-9346-821B978A56DF" sortKey="3">
+      <mif:traversableConnection name="debit" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BDOAB_____"
+                                 participantClassName="Debit">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                          associationEndName="debit"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="FinancialTransaction">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="754906CA-93E2-3EEC-1F11-134A130C8CFF" sortKey="4">
+      <mif:traversableConnection name="reason" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="BCA_______"
+                                 participantClassName="Reason">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                          associationEndName="reason"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="FinancialTransaction">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="9B030CAD-87C4-F035-18C7-63DDA6F34680" sortKey="1">
+      <mif:traversableConnection name="invoiceElement" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="InvoiceElement">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Reason"
+                          associationEndName="invoiceElement"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Reason">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

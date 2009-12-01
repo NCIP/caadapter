@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Health Level Seven, Inc. - initial design and content
+ *******************************************************************************/ 				
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Query"
+                 isSerializable="true"
+                 name="01">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="HM" subSection="PO"
+                        domain="LB"
+                        version="01"
+                        id="300000"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at  <mif:a href="http://www.eclipse.org/legal/epl-v10.html"> http://www.eclipse.org/legal/epl-v10.html </mif:a>
+				        </mif:p>
+            <mif:p>
+               <mif:b>
+                  <mif:i>Contributors: </mif:i>
+               </mif:b>
+            </mif:p>
+            <mif:ul>
+					          <mif:li>Health Level Seven, Inc. - initial design and content</mif:li>
+				        </mif:ul>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint id="POLB_MT300000UV01" name="Query" className="QueryByParameterPayload"/>
+   <mif:containedClass>
+      <mif:class name="ActId" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ActMoodCode" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="EVN"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="CV"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="x_ActMoodOrdPrmsEvn" code="EVN"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="InvestigativeSubjectID" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ObservationEffectiveTime" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="GTS"/>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ObservationStatusCode" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="CV"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActStatus"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ObservationType" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PatientAdministrativeGender" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="AdministrativeGender"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PatientDOB" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PatientID" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PatientName" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="PN"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ProcessStepCode" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="x_LabProcessCodes"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ProcessStepEffectiveTime" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ProviderID" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="QueryByParameterPayload" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"/>
+         <mif:attribute name="queryId" sortKey="1" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="queryId"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="QueryStatusCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="modifyCode" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="modifyCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ModifyIndicator"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="responseElementGroupId" sortKey="4" minimumMultiplicity="0"
+                        maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="responseElementGroupId"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="responseModalityCode" sortKey="5" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="responseModalityCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ResponseModality"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="responsePriorityCode" sortKey="6" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="responsePriorityCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="QueryPriority"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="initialQuantity" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="initialQuantity"/>
+            <mif:type name="INT"/>
+         </mif:attribute>
+         <mif:attribute name="initialQuantityCode" sortKey="8" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="initialQuantityCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="QueryQuantityUnit"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="SortControl" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="SortControl"/>
+         <mif:attribute name="sequenceNumber" sortKey="1" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="SortControl"
+                             attributeName="sequenceNumber"/>
+            <mif:type name="INT"/>
+         </mif:attribute>
+         <mif:attribute name="elementName" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="SortControl" attributeName="elementName"/>
+            <mif:type name="SC"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ElementName"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="directionCode" sortKey="3" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="SortControl"
+                             attributeName="directionCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="Sequencing"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="SpecimenCollectionProcessEffectiveTime" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="GTS"/>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association sortKey="2">
+      <mif:traversableConnection name="actId" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ActId">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="14">
+      <mif:traversableConnection name="actMoodCode" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="true"
+                                 sortKey="Z"
+                                 participantClassName="ActMoodCode">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="investigativeSubjectID" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="InvestigativeSubjectID">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="6">
+      <mif:traversableConnection name="observationEffectiveTime" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ObservationEffectiveTime">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="12">
+      <mif:traversableConnection name="observationStatusCode" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ObservationStatusCode">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="11">
+      <mif:traversableConnection name="observationType" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ObservationType">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="8">
+      <mif:traversableConnection name="patientAdministrativeGender" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="PatientAdministrativeGender">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="9">
+      <mif:traversableConnection name="patientDOB" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="PatientDOB">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="0">
+      <mif:traversableConnection name="patientID" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="PatientID">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="7">
+      <mif:traversableConnection name="patientName" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="PatientName">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="13">
+      <mif:traversableConnection name="processStepCode" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ProcessStepCode">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="3">
+      <mif:traversableConnection name="processStepEffectiveTime" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ProcessStepEffectiveTime">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="5">
+      <mif:traversableConnection name="providerID" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ProviderID">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="10">
+      <mif:traversableConnection name="sortControl" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="SortControl">
+         <mif:derivedFrom staticModelDerivationId="1" className="QuerySpec"
+                          associationEndName="sortControl"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="SortControl"
+                          associationEndName="querySpec"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association sortKey="4">
+      <mif:traversableConnection name="specimenCollectionProcessEffectiveTime" minimumMultiplicity="0"
+                                 maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="SpecimenCollectionProcessEffectiveTime">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>
