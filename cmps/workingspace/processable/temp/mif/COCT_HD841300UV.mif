@@ -1,0 +1,1377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Health Level Seven, Inc. - initial design and content
+ *******************************************************************************/ 				
+				--><mif:serializedStaticModel xmlns:mif="urn:hl7-org:v3/mif" packageKind="realm"
+                           representationKind="serialized"
+                           isAbstract="false"
+                           title="E_PublicHealthPlace universal"
+                           isSerializable="true"
+                           name="UV">
+   <mif:packageLocation root="DEFN" section="IM" subSection="CO" domain="CT" artifact="HD-deprecated"
+                        realm="UV"
+                        id="841300"/>
+   <mif:header>
+      <mif:renderingInformation schemaVersion="1" application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+      </mif:legalese>
+   </mif:header>
+   <mif:derivationSupplier staticModelDerivationId="1">
+      <mif:targetStaticModel root="DEFN" artifact="RIM" version="0221"/>
+   </mif:derivationSupplier>
+   <mif:derivationClient>
+      <mif:sourceStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT-deprecated"
+                             realm="UV"
+                             id="841300"/>
+   </mif:derivationClient>
+   <mif:importedDatatypeModelPackage root="DEFN" artifact="DT" realm="UV" version="1.0"/>
+   <mif:importedVocabularyModelPackage root="DEFN" artifact="VO" realm="UV" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage root="DEFN" artifact="CMET" realm="UV" version="1.8.3"/>
+   <mif:ownedEntryPoint id="COCT_HD841300UV" name="E_PublicHealthPlace universal" isAbstract="false">
+      <mif:specializedClass>
+         <mif:class name="Place" isAbstract="false">
+            <mif:derivationSupplier staticModelDerivationId="1" className="Place"/>
+            <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                           conformance="R"
+                           isMandatory="true"
+                           isStructural="true">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="classCode"/>
+               <mif:type name="CS"/>
+               <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="EntityClassPlace" mnemonic="PLC"/>
+            </mif:attribute>
+            <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                           maximumMultiplicity="1"
+                           conformance="R"
+                           isMandatory="true"
+                           isStructural="true">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="determinerCode"/>
+               <mif:type name="CS"/>
+               <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="EntityDeterminer"/>
+            </mif:attribute>
+            <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="code"/>
+               <mif:type name="CD"/>
+               <mif:supplierDomainSpecification codingStrength="CWE" domainName="PlaceEntityType"/>
+            </mif:attribute>
+            <mif:attribute name="quantity" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="quantity"/>
+               <mif:type name="PQ"/>
+            </mif:attribute>
+            <mif:attribute name="name" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="name"/>
+               <mif:type name="BAG">
+                  <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="EN"/>
+               </mif:type>
+            </mif:attribute>
+            <mif:attribute name="desc" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="desc"/>
+               <mif:type name="ED"/>
+            </mif:attribute>
+            <mif:attribute name="existenceTime" sortKey="7" minimumMultiplicity="0"
+                           maximumMultiplicity="1"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="existenceTime"/>
+               <mif:type name="IVL">
+                  <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+               </mif:type>
+            </mif:attribute>
+            <mif:attribute name="riskCode" sortKey="8" minimumMultiplicity="0" maximumMultiplicity="1"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="riskCode"/>
+               <mif:type name="CE"/>
+               <mif:supplierDomainSpecification codingStrength="CWE" domainName="EntityRisk"/>
+            </mif:attribute>
+            <mif:attribute name="handlingCode" sortKey="9" minimumMultiplicity="0" maximumMultiplicity="1"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="handlingCode"/>
+               <mif:type name="CE"/>
+               <mif:supplierDomainSpecification codingStrength="CWE" domainName="EntityHandling"/>
+            </mif:attribute>
+            <mif:attribute name="mobileInd" sortKey="10" minimumMultiplicity="0" maximumMultiplicity="1"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="mobileInd"/>
+               <mif:type name="BL"/>
+            </mif:attribute>
+            <mif:attribute name="directionsText" sortKey="11" minimumMultiplicity="0"
+                           maximumMultiplicity="1"
+                           isMandatory="false"
+                           isStructural="false">
+               <mif:derivationSupplier staticModelDerivationId="1" className="Place" attributeName="directionsText"/>
+               <mif:type name="ED"/>
+            </mif:attribute>
+            <mif:association sortKey="2">
+               <mif:targetConnection name="asIdentifier" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AAABA_____">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="Identifier" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassIdentifiedEntity" mnemonic="IDENT"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="II"/>
+                        </mif:attribute>
+                        <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                           <mif:type name="CE"/>
+                           <mif:supplierDomainSpecification codingStrength="CWE" domainName="IdentifiedEntityType"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="4" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="32">
+                           <mif:targetConnection name="assigningOrganization" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                 conformance="R"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <mif:participantClass>
+                                 <mif:commonModelElementRef name="E_OrganizationUniversal">
+                                    <mif:derivationSupplier staticModelDerivationId="1" className="Organization"/>
+                                    <mif:supplierStructuralDomain domainName="EntityClass" mnemonic="ORG"/>
+                                    <mif:generalizationParent name="COCT_MT150000UV02"/>
+                                 </mif:commonModelElementRef>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="Identifier">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="5">
+               <mif:targetConnection name="asTerritorialAuthority" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AAABK_____">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="TerritorialAuthority" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassTerritoryOfAuthority"
+                                                            mnemonic="TERR"/>
+                        </mif:attribute>
+                        <mif:attribute name="code" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                           <mif:type name="CE"/>
+                           <mif:supplierDomainSpecification codingStrength="CWE" domainName="TerritorialAuthorityRoleType"/>
+                        </mif:attribute>
+                        <mif:association sortKey="46">
+                           <mif:targetConnection name="governingOrganization" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                 conformance="R"
+                                                 isMandatory="true"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <mif:participantClass>
+                                 <mif:reference name="E_PublicHealthOrganizationUniversal"/>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="TerritorialAuthority">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="3">
+               <mif:targetConnection name="asEntityInContainer" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AABB______">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="EntityInContainer" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassContent" mnemonic="CONT"/>
+                        </mif:attribute>
+                        <mif:association sortKey="38">
+                           <mif:targetConnection name="containerManufacturedMaterial" minimumMultiplicity="1"
+                                                 maximumMultiplicity="1"
+                                                 conformance="R"
+                                                 isMandatory="true"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <mif:participantClass>
+                                 <mif:commonModelElementRef name="E_PublicHealthManufacturedMaterialUniversal">
+                                    <mif:derivationSupplier staticModelDerivationId="1" className="ManufacturedMaterial"/>
+                                    <mif:supplierStructuralDomain domainName="EntityClass" mnemonic="MMAT"/>
+                                    <mif:generalizationParent name="COCT_MT841200UV"/>
+                                 </mif:commonModelElementRef>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="EntityInContainer">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="6">
+               <mif:targetConnection name="asPartOfWhole" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AABC______">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="PartOfWhole" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassPart" mnemonic="PART"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="II"/>
+                        </mif:attribute>
+                        <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                           <mif:type name="CE"/>
+                           <mif:supplierDomainSpecification codingStrength="CWE" domainName="PartRoleType"/>
+                        </mif:attribute>
+                        <mif:attribute name="statusCode" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" domainName="RoleStatus"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:attribute name="quantity" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="quantity"/>
+                           <mif:type name="RTO">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="QTY"/>
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="QTY"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="30">
+                           <mif:targetConnection name="wholePublicHealthEntityChoice" minimumMultiplicity="0"
+                                                 maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="PublicHealthLivingSubject"
+                                                              traversalName="wholePublicHealthLivingSubject1">
+                                 <specialization className="Person" traversalName="wholePerson1"/>
+                                 <specialization className="LivingSubject" traversalName="wholeLivingSubject1"/>
+                                 <specialization className="NonPersonLivingSubject" traversalName="wholeNonPersonLivingSubject1"/>
+                              </participantClassSpecialization>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="PublicHealthPlaceOrMaterialChoice"
+                                                              traversalName="wholePublicHealthPlaceOrMaterialChoice">
+                                 <specialization className="Place" traversalName="wholePlace1"/>
+                                 <specialization className="PublicHealthMaterialSubject"
+                                                 traversalName="wholePublicHealthMaterialSubject">
+                                    <specialization className="Material" traversalName="wholeMaterial"/>
+                                    <specialization className="ManufacturedMaterial" traversalName="wholeManufacturedMaterial"/>
+                                 </specialization>
+                              </participantClassSpecialization>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="Organization"
+                                                              traversalName="wholeOrganization"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="EntityGroup"
+                                                              traversalName="wholeEntityGroup"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="Entity" traversalName="wholeEntity"/>
+                              <mif:participantClass>
+                                 <mif:reference name="E_PublicHealthEntityUniversal"/>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="PartOfWhole">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="11">
+               <mif:targetConnection name="asLocatedPlacePartOf" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AABE______">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="LocatedPlacePartOf" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassLocatedEntity" mnemonic="LOCE"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="SET">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="II"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:attribute name="statusCode" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" domainName="RoleStatus"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="4" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="61">
+                           <mif:targetConnection name="location" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <mif:participantClass>
+                                 <mif:reference name="Place"/>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="LocatedPlacePartOf">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="14">
+               <mif:targetConnection name="asMemberOf" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AABF______">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="MemberOf" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassMember" mnemonic="MBR"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="SET">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="II"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                           <mif:type name="CE"/>
+                           <mif:supplierDomainSpecification codingStrength="CWE" domainName="MemberRoleType"/>
+                        </mif:attribute>
+                        <mif:attribute name="statusCode" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" domainName="RoleStatus"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="57">
+                           <mif:targetConnection name="groupChoice" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="E_PublicHealthOrganizationUniversal"
+                                                              traversalName="groupOrganization"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="EntityGroup"
+                                                              traversalName="groupEntityGroup"/>
+                              <mif:participantClass>
+                                 <mif:class name="GroupChoice" isAbstract="true">
+                                    <mif:derivationSupplier staticModelDerivationId="1" className="Entity"/>
+                                    <mif:specializationChild>
+                                       <mif:specializedClass>
+                                          <mif:commonModelElementRef name="E_PublicHealthOrganizationUniversal">
+                                             <mif:derivationSupplier staticModelDerivationId="1" className="Organization"/>
+                                             <mif:supplierStructuralDomain domainName="EntityClass" mnemonic="ORG"/>
+                                             <mif:generalizationParent name="COCT_MT841400UV"/>
+                                          </mif:commonModelElementRef>
+                                       </mif:specializedClass>
+                                    </mif:specializationChild>
+                                    <mif:specializationChild>
+                                       <mif:specializedClass>
+                                          <mif:class name="EntityGroup" isAbstract="false">
+                                             <mif:derivationSupplier staticModelDerivationId="1" className="Entity"/>
+                                             <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                            conformance="R"
+                                                            isMandatory="true"
+                                                            isStructural="true">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="classCode"/>
+                                                <mif:type name="CS"/>
+                                                <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="EntityClassRoot" mnemonic="ENT"/>
+                                             </mif:attribute>
+                                             <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                                                            maximumMultiplicity="1"
+                                                            conformance="R"
+                                                            isMandatory="true"
+                                                            isStructural="true">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="determinerCode"/>
+                                                <mif:type name="CS"/>
+                                                <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="EntityDeterminer"/>
+                                             </mif:attribute>
+                                             <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                            isMandatory="false"
+                                                            isStructural="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="code"/>
+                                                <mif:type name="CD"/>
+                                                <mif:supplierDomainSpecification codingStrength="CWE" domainName="EntityCode"/>
+                                             </mif:attribute>
+                                             <mif:attribute name="quantity" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                            conformance="R"
+                                                            isMandatory="false"
+                                                            isStructural="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="quantity"/>
+                                                <mif:type name="INT"/>
+                                             </mif:attribute>
+                                             <mif:attribute name="name" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                            isMandatory="false"
+                                                            isStructural="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="name"/>
+                                                <mif:type name="ST"/>
+                                             </mif:attribute>
+                                             <mif:attribute name="desc" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                            isMandatory="false"
+                                                            isStructural="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="desc"/>
+                                                <mif:type name="ED"/>
+                                             </mif:attribute>
+                                             <mif:attribute name="statusCode" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                            isMandatory="false"
+                                                            isStructural="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="statusCode"/>
+                                                <mif:type name="CS"/>
+                                                <mif:supplierDomainSpecification codingStrength="CNE" domainName="EntityStatus"/>
+                                             </mif:attribute>
+                                             <mif:attribute name="existenceTime" sortKey="8" minimumMultiplicity="0"
+                                                            maximumMultiplicity="1"
+                                                            isMandatory="false"
+                                                            isStructural="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="existenceTime"/>
+                                                <mif:type name="IVL">
+                                                   <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                                                </mif:type>
+                                             </mif:attribute>
+                                             <mif:attribute name="riskCode" sortKey="9" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                            isMandatory="false"
+                                                            isStructural="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="riskCode"/>
+                                                <mif:type name="SET">
+                                                   <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="CE"/>
+                                                </mif:type>
+                                                <mif:supplierDomainSpecification codingStrength="CWE" domainName="EntityRisk"/>
+                                             </mif:attribute>
+                                             <mif:attribute name="handlingCode" sortKey="10" minimumMultiplicity="0"
+                                                            maximumMultiplicity="*"
+                                                            isMandatory="false"
+                                                            isStructural="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="handlingCode"/>
+                                                <mif:type name="SET">
+                                                   <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="CE"/>
+                                                </mif:type>
+                                                <mif:supplierDomainSpecification codingStrength="CWE" domainName="EntityHandling"/>
+                                             </mif:attribute>
+                                          </mif:class>
+                                       </mif:specializedClass>
+                                    </mif:specializationChild>
+                                 </mif:class>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="MemberOf">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="13">
+               <mif:targetConnection name="asObserved" minimumMultiplicity="0" maximumMultiplicity="1"
+                                     isMandatory="false"
+                                     sortKey="AA________">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="Observed" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassRoot" mnemonic="ROL"/>
+                        </mif:attribute>
+                        <mif:association sortKey="63">
+                           <mif:targetConnection name="subjectOf" minimumMultiplicity="1" maximumMultiplicity="*"
+                                                 conformance="R"
+                                                 isMandatory="true"
+                                                 sortKey="CAA_______">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+                              <mif:participantClass>
+                                 <mif:class name="Subject2" isAbstract="false">
+                                    <mif:derivationSupplier staticModelDerivationId="1" className="Participation"/>
+                                    <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                   conformance="R"
+                                                   isMandatory="true"
+                                                   isStructural="true">
+                                       <mif:derivationSupplier staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+                                       <mif:type name="CS"/>
+                                       <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="ParticipationTargetSubject" mnemonic="SBJ"/>
+                                    </mif:attribute>
+                                    <mif:attribute name="contextControlCode" sortKey="2" minimumMultiplicity="0"
+                                                   maximumMultiplicity="1"
+                                                   isMandatory="false"
+                                                   defaultValue="AN"
+                                                   isStructural="true">
+                                       <mif:derivationSupplier staticModelDerivationId="1" className="Participation"
+                                                               attributeName="contextControlCode"/>
+                                       <mif:type name="CS"/>
+                                       <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="ContextControl"/>
+                                    </mif:attribute>
+                                    <mif:association sortKey="64">
+                                       <mif:targetConnection name="observationEvent" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                             conformance="R"
+                                                             isMandatory="true"
+                                                             sortKey="AZ">
+                                          <mif:derivationSupplier staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+                                          <mif:participantClass>
+                                             <mif:class name="ObservationEvent" isAbstract="false">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                               conformance="R"
+                                                               isMandatory="true"
+                                                               isStructural="true">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="classCode"/>
+                                                   <mif:type name="CS"/>
+                                                   <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                               conformance="R"
+                                                               isMandatory="true"
+                                                               isStructural="true">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="moodCode"/>
+                                                   <mif:type name="CS"/>
+                                                   <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="id"/>
+                                                   <mif:type name="II"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                               conformance="R"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="code"/>
+                                                   <mif:type name="CD"/>
+                                                   <mif:supplierDomainSpecification codingStrength="CWE" domainName="ObservationType"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="negationInd" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                               isMandatory="false"
+                                                               isStructural="true">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="negationInd"/>
+                                                   <mif:type name="BL"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="title" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="title"/>
+                                                   <mif:type name="ED"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="text" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="text"/>
+                                                   <mif:type name="ED"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="statusCode" sortKey="8" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="statusCode"/>
+                                                   <mif:type name="CS"/>
+                                                   <mif:supplierDomainSpecification codingStrength="CNE" domainName="ActStatus"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="effectiveTime" sortKey="9" minimumMultiplicity="0"
+                                                               maximumMultiplicity="1"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation"
+                                                                           attributeName="effectiveTime"/>
+                                                   <mif:type name="GTS"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="confidentialityCode" sortKey="10" minimumMultiplicity="0"
+                                                               maximumMultiplicity="*"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation"
+                                                                           attributeName="confidentialityCode"/>
+                                                   <mif:type name="SET">
+                                                      <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="CE"/>
+                                                   </mif:type>
+                                                   <mif:supplierDomainSpecification codingStrength="CWE" domainName="Confidentiality"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="value" sortKey="11" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                               conformance="R"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                   <mif:type name="ANY"/>
+                                                   <mif:supplierDomainSpecification codingStrength="CWE" domainName="ObservationValue"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="interpretationCode" sortKey="12" minimumMultiplicity="0"
+                                                               maximumMultiplicity="*"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation"
+                                                                           attributeName="interpretationCode"/>
+                                                   <mif:type name="SET">
+                                                      <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="CE"/>
+                                                   </mif:type>
+                                                   <mif:supplierDomainSpecification codingStrength="CWE" domainName="ObservationInterpretation"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="methodCode" sortKey="13" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="methodCode"/>
+                                                   <mif:type name="SET">
+                                                      <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="CE"/>
+                                                   </mif:type>
+                                                   <mif:supplierDomainSpecification codingStrength="CWE" domainName="ObservationMethod"/>
+                                                </mif:attribute>
+                                                <mif:attribute name="targetSiteCode" sortKey="14" minimumMultiplicity="0"
+                                                               maximumMultiplicity="*"
+                                                               isMandatory="false"
+                                                               isStructural="false">
+                                                   <mif:derivationSupplier staticModelDerivationId="1" className="Observation"
+                                                                           attributeName="targetSiteCode"/>
+                                                   <mif:type name="SET">
+                                                      <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="CD"/>
+                                                   </mif:type>
+                                                   <mif:supplierDomainSpecification codingStrength="CWE" domainName="ActSite"/>
+                                                </mif:attribute>
+                                             </mif:class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <mif:nonTraversableConnection participantClassName="Subject2">
+                                             <mif:derivationSupplier staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+                                          </mif:nonTraversableConnection>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                 </mif:class>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="Observed">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="15">
+               <mif:targetConnection name="asOtherIDs" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AA________">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="OtherIDs" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassRoot" mnemonic="ROL"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="SET">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="II"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                           <mif:type name="CE"/>
+                           <mif:supplierDomainSpecification codingStrength="CWE" domainName="RoleCode"/>
+                        </mif:attribute>
+                        <mif:attribute name="statusCode" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" domainName="RoleStatus"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="36">
+                           <mif:targetConnection name="scopingOrganization" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                 conformance="R"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <mif:participantClass>
+                                 <mif:reference name="E_OrganizationUniversal"/>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="OtherIDs">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="1">
+               <mif:targetConnection name="asManagingEntity" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AZ">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="ManagingEntity" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassManagedEntity"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="II"/>
+                        </mif:attribute>
+                        <mif:attribute name="statusCode" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" domainName="RoleStatus"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="4" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="20">
+                           <mif:targetConnection name="scoper1" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="PublicHealthLivingSubject"
+                                                              traversalName="scoper1">
+                                 <specialization className="Person" traversalName="scoper1"/>
+                                 <specialization className="LivingSubject" traversalName="scoper2"/>
+                                 <specialization className="NonPersonLivingSubject" traversalName="scoper3"/>
+                              </participantClassSpecialization>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="PublicHealthPlaceOrMaterialChoice"
+                                                              traversalName="scoper5">
+                                 <specialization className="Place" traversalName="scoper5"/>
+                                 <specialization className="PublicHealthMaterialSubject" traversalName="scoper6">
+                                    <specialization className="Material" traversalName="scoper6"/>
+                                    <specialization className="ManufacturedMaterial" traversalName="scoper7"/>
+                                 </specialization>
+                              </participantClassSpecialization>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="Organization" traversalName="scoper19"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="EntityGroup" traversalName="scoper20"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="Entity" traversalName="scoper21"/>
+                              <mif:participantClass>
+                                 <mif:commonModelElementRef name="E_PublicHealthEntityUniversal">
+                                    <mif:derivationSupplier staticModelDerivationId="1" className="Entity"/>
+                                    <mif:supplierStructuralDomain domainName="EntityClass" mnemonic="ENT"/>
+                                    <mif:generalizationParent name="COCT_MT840000UV"/>
+                                 </mif:commonModelElementRef>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="ManagingEntity">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="8">
+               <mif:targetConnection name="asProductEntity" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AZ">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="ProductEntity" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassProductRelated"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="II"/>
+                        </mif:attribute>
+                        <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                           <mif:type name="CE"/>
+                           <mif:supplierDomainSpecification codingStrength="CWE" domainName="ProductRelatedRoleType"/>
+                        </mif:attribute>
+                        <mif:attribute name="name" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="name"/>
+                           <mif:type name="TN"/>
+                        </mif:attribute>
+                        <mif:attribute name="statusCode" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" domainName="RoleStatus"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="6" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="50">
+                           <mif:targetConnection name="scoper" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                              <mif:participantClass>
+                                 <mif:reference name="E_PublicHealthOrganizationUniversal"/>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="ProductEntity">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="0">
+               <mif:targetConnection name="contactParty" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="BAAAADAA__">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="ContactParty" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassContact" mnemonic="CON"/>
+                        </mif:attribute>
+                        <mif:attribute name="addr" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                                       conformance="R"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="addr"/>
+                           <mif:type name="BAG">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="AD"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:attribute name="telecom" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                                       conformance="R"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="telecom"/>
+                           <mif:type name="BAG">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TEL"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="16">
+                           <mif:targetConnection name="contactPerson" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="AZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                              <mif:participantClass>
+                                 <mif:commonModelElementRef name="E_PersonUniversal">
+                                    <mif:derivationSupplier staticModelDerivationId="1" className="Person"/>
+                                    <mif:supplierStructuralDomain domainName="EntityClass" mnemonic="PSN"/>
+                                    <mif:generalizationParent name="COCT_MT030200UV01"/>
+                                 </mif:commonModelElementRef>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="ContactParty">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="7">
+               <mif:targetConnection name="part" minimumMultiplicity="0" maximumMultiplicity="*" isMandatory="false"
+                                     sortKey="BABC______">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="Part" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassPart" mnemonic="PART"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="II"/>
+                        </mif:attribute>
+                        <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                           <mif:type name="CE"/>
+                           <mif:supplierDomainSpecification codingStrength="CWE" domainName="PartRoleType"/>
+                        </mif:attribute>
+                        <mif:attribute name="statusCode" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" domainName="RoleStatus"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:attribute name="quantity" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="quantity"/>
+                           <mif:type name="RTO">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="QTY"/>
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="QTY"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="24">
+                           <mif:targetConnection name="partPublicHealthEntityChoice" minimumMultiplicity="0"
+                                                 maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="AZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="PublicHealthLivingSubject"
+                                                              traversalName="partPublicHealthLivingSubject1">
+                                 <specialization className="Person" traversalName="partPerson1"/>
+                                 <specialization className="LivingSubject" traversalName="partLivingSubject1"/>
+                                 <specialization className="NonPersonLivingSubject" traversalName="partNonPersonLivingSubject1"/>
+                              </participantClassSpecialization>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="PublicHealthPlaceOrMaterialChoice"
+                                                              traversalName="partPublicHealthPlaceOrMaterialChoice">
+                                 <specialization className="Place" traversalName="partPlace1"/>
+                                 <specialization className="PublicHealthMaterialSubject"
+                                                 traversalName="partPublicHealthMaterialSubject">
+                                    <specialization className="Material" traversalName="partMaterial"/>
+                                    <specialization className="ManufacturedMaterial" traversalName="partManufacturedMaterial"/>
+                                 </specialization>
+                              </participantClassSpecialization>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="Organization"
+                                                              traversalName="partOrganization"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="EntityGroup"
+                                                              traversalName="partEntityGroup"/>
+                              <participantClassSpecialization xmlns="urn:hl7-org:v3/mif" className="Entity" traversalName="partEntity"/>
+                              <mif:participantClass>
+                                 <mif:reference name="E_PublicHealthEntityUniversal"/>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="Part">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="4">
+               <mif:targetConnection name="locatedEntity" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="BABE______">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="LocatedEntity" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassLocatedEntity" mnemonic="LOCE"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="II"/>
+                        </mif:attribute>
+                        <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                           <mif:type name="CE"/>
+                           <mif:supplierDomainSpecification codingStrength="CWE" domainName="LocatedEntityRoleType"/>
+                        </mif:attribute>
+                        <mif:attribute name="addr" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="addr"/>
+                           <mif:type name="BAG">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="AD"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:attribute name="telecom" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="telecom"/>
+                           <mif:type name="BAG">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TEL"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="41">
+                           <mif:targetConnection name="subjectOf" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                 isMandatory="false"
+                                                 sortKey="CAA_______">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+                              <mif:participantClass>
+                                 <mif:class name="Subject3" isAbstract="false">
+                                    <mif:derivationSupplier staticModelDerivationId="1" className="Participation"/>
+                                    <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                   conformance="R"
+                                                   isMandatory="true"
+                                                   isStructural="true">
+                                       <mif:derivationSupplier staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+                                       <mif:type name="CS"/>
+                                       <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="ParticipationTargetSubject" mnemonic="SBJ"/>
+                                    </mif:attribute>
+                                    <mif:attribute name="contextControlCode" sortKey="2" minimumMultiplicity="0"
+                                                   maximumMultiplicity="1"
+                                                   isMandatory="false"
+                                                   defaultValue="AN"
+                                                   isStructural="true">
+                                       <mif:derivationSupplier staticModelDerivationId="1" className="Participation"
+                                                               attributeName="contextControlCode"/>
+                                       <mif:type name="CS"/>
+                                       <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="ContextControl"/>
+                                    </mif:attribute>
+                                    <mif:association sortKey="42">
+                                       <mif:targetConnection name="position" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                             isMandatory="false"
+                                                             sortKey="AZ">
+                                          <mif:derivationSupplier staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+                                          <mif:participantClass>
+                                             <mif:commonModelElementRef name="A_SpatialCoordinateUniversal">
+                                                <mif:derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                <mif:supplierStructuralDomain domainName="ActClass" mnemonic="OBS"/>
+                                                <mif:generalizationParent name="COCT_MT960000UV05"/>
+                                             </mif:commonModelElementRef>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <mif:nonTraversableConnection participantClassName="Subject3">
+                                             <mif:derivationSupplier staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+                                          </mif:nonTraversableConnection>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                 </mif:class>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="LocatedEntity">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="10">
+               <mif:targetConnection name="locatedPlaceHasParts" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="BABE______">
+                  <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                  <mif:participantClass>
+                     <mif:class name="LocatedPlaceHasParts" isAbstract="false">
+                        <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                        <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                                       conformance="R"
+                                       isMandatory="true"
+                                       isStructural="true">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassLocatedEntity" mnemonic="LOCE"/>
+                        </mif:attribute>
+                        <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                           <mif:type name="II"/>
+                        </mif:attribute>
+                        <mif:attribute name="statusCode" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="statusCode"/>
+                           <mif:type name="CS"/>
+                           <mif:supplierDomainSpecification codingStrength="CNE" domainName="RoleStatus"/>
+                        </mif:attribute>
+                        <mif:attribute name="effectiveTime" sortKey="4" minimumMultiplicity="0"
+                                       maximumMultiplicity="1"
+                                       isMandatory="false"
+                                       isStructural="false">
+                           <mif:derivationSupplier staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+                           <mif:type name="IVL">
+                              <supplierBindingArgumentDatatype xmlns="urn:hl7-org:v3/mif" name="TS"/>
+                           </mif:type>
+                        </mif:attribute>
+                        <mif:association sortKey="58">
+                           <mif:targetConnection name="locatedPlace" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="AZ">
+                              <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                              <mif:participantClass>
+                                 <mif:reference name="Place"/>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <mif:nonTraversableConnection participantClassName="LocatedPlaceHasParts">
+                                 <mif:derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+                              </mif:nonTraversableConnection>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </mif:class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <mif:nonTraversableConnection participantClassName="Place">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                  </mif:nonTraversableConnection>
+               </mif:sourceConnection>
+            </mif:association>
+         </mif:class>
+      </mif:specializedClass>
+   </mif:ownedEntryPoint>
+</mif:serializedStaticModel>

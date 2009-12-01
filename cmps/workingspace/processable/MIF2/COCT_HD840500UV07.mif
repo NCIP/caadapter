@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.5"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="E_PublicHealthPathogen universal"
+                 isSerializable="true"
+                 name="07">
+   <mif:packageLocation realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        version="07"
+                        id="840500"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="2.650" height="3.757"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="A5F33D1A-664A-393B-6DA6-AD45CD9FF7BD">
+         <mif:graphElement shapeId="Sheet.161">
+            <mif:position x="0.046" y="0.028"/>
+            <mif:size width="2.557" height="0.719"/>
+            <mif:anchorage connectToShapeId="Sheet.161">
+               <mif:position x="1.337" y="0.747"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.266">
+                     <mif:position x="1.313" y="1.239"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="4365088A-C7E3-B898-1CBA-8AE3C340DE7F" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.13" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="0.162" y="2.994"/>
+            <mif:size width="2.130" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="B133EABD-2FA3-A372-EB45-0C10C8C292DE" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.7" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="0.162" y="2.242"/>
+            <mif:size width="1.402" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="CC417492-8834-038C-6798-63B094C76C4C" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.1" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="0.162" y="1.489"/>
+            <mif:size width="2.303" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="182ABBA2-97D6-0F14-8298-CDF368EA617C" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.266" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="0.037" y="1.239"/>
+            <mif:size width="2.553" height="2.508"/>
+         </mif:graphElement>
+      </mif:class>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="CO"
+                             domain="CT"
+                             version="07"
+                             id="840500"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="A5F33D1A-664A-393B-6DA6-AD45CD9FF7BD" id="COCT_HD840500UV07"
+                   name="E_PublicHealthPathogen universal"
+                   className="PublicHealthEntityChoice">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>The E_PublicHealthPathogen cmet is designed to capture information about pathogens of interest to Public Health.</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="4365088A-C7E3-B898-1CBA-8AE3C340DE7F"
+                                 name="E_PublicHealthManufacturedMaterialUniversal"
+                                 cmetName="E_PublicHealthManufacturedMaterialUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="ManufacturedMaterial"/>
+         <mif:derivedFrom staticModelDerivationId="2"
+                          className="E_PublicHealthManufacturedMaterialUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="B133EABD-2FA3-A372-EB45-0C10C8C292DE"
+                                 name="E_PublicHealthMaterialUniversal"
+                                 cmetName="E_PublicHealthMaterialUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Material"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_PublicHealthMaterialUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="CC417492-8834-038C-6798-63B094C76C4C"
+                                 name="E_PublicHealthNonPersonLivingSubjectUniversal"
+                                 cmetName="E_PublicHealthNonPersonLivingSubjectUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="NonPersonLivingSubject"/>
+         <mif:derivedFrom staticModelDerivationId="2"
+                          className="E_PublicHealthNonPersonLivingSubjectUniversal"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="EntityClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="182ABBA2-97D6-0F14-8298-CDF368EA617C"
+                 name="PublicHealthEntityChoice"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PublicHealthEntityChoice"/>
+         <mif:childClass graphicLinkId="ACD86D40-0FF2-C5CB-6650-8B3182B59832" sortKey="001"
+                         name="E_PublicHealthNonPersonLivingSubjectUniversal"/>
+         <mif:childClass graphicLinkId="16E506F4-1978-33AC-741C-D61E6B46462D" sortKey="002"
+                         name="E_PublicHealthMaterialUniversal"/>
+         <mif:childClass graphicLinkId="FF246660-5079-43CD-9DAC-7E5A1EB6022C" sortKey="003"
+                         name="E_PublicHealthManufacturedMaterialUniversal"/>
+      </mif:class>
+   </mif:containedClass>
+</mif:staticModel>

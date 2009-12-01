@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Health Level Seven, Inc. - initial design and content
+ *******************************************************************************/ 				
+				--><mif:serializedStaticModel xmlns:mif="urn:hl7-org:v3/mif" packageKind="version"
+                           representationKind="serialized"
+                           isAbstract="false"
+                           title="R_Subject universal"
+                           isSerializable="true"
+                           name="07">
+   <mif:packageLocation root="DEFN" section="IM" subSection="CO" domain="CT" artifact="HD-deprecated"
+                        realm="UV"
+                        version="07"
+                        id="560000"/>
+   <mif:header>
+      <mif:renderingInformation schemaVersion="1" application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+      </mif:legalese>
+   </mif:header>
+   <mif:derivationSupplier staticModelDerivationId="1">
+      <mif:targetStaticModel root="DEFN" artifact="RIM" version="0221"/>
+   </mif:derivationSupplier>
+   <mif:derivationClient>
+      <mif:sourceStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT-deprecated"
+                             realm="UV"
+                             version="07"
+                             id="560000"/>
+   </mif:derivationClient>
+   <mif:importedDatatypeModelPackage root="DEFN" artifact="DT" realm="UV" version="1.0"/>
+   <mif:importedVocabularyModelPackage root="DEFN" artifact="VO" realm="UV" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage root="DEFN" artifact="CMET" realm="UV" version="1.8.3"/>
+   <mif:ownedEntryPoint id="COCT_HD560000UV07" name="R_Subject universal" isAbstract="false">
+      <mif:specializedClass>
+         <mif:class name="SubjectChoice" isAbstract="true">
+            <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+            <mif:specializationChild>
+               <mif:specializedClass>
+                  <mif:commonModelElementRef name="R_PatientUniversal">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Patient"/>
+                     <mif:supplierStructuralDomain domainName="RoleClass" mnemonic="PAT"/>
+                     <mif:generalizationParent name="COCT_MT050000UV01"/>
+                  </mif:commonModelElementRef>
+               </mif:specializedClass>
+            </mif:specializationChild>
+            <mif:specializationChild>
+               <mif:specializedClass>
+                  <mif:commonModelElementRef name="R_PatientClinical">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Patient"/>
+                     <mif:supplierStructuralDomain domainName="RoleClass" mnemonic="PAT"/>
+                     <mif:generalizationParent name="COCT_MT050004UV01"/>
+                  </mif:commonModelElementRef>
+               </mif:specializedClass>
+            </mif:specializationChild>
+            <mif:specializationChild>
+               <mif:specializedClass>
+                  <mif:commonModelElementRef name="R_InvestigativeSubjectUniversal">
+                     <mif:derivationSupplier staticModelDerivationId="1" className="Role"/>
+                     <mif:supplierStructuralDomain domainName="RoleClass" mnemonic="INVSBJ"/>
+                     <mif:generalizationParent name="COCT_MT550000UV07"/>
+                  </mif:commonModelElementRef>
+               </mif:specializedClass>
+            </mif:specializationChild>
+         </mif:class>
+      </mif:specializedClass>
+   </mif:ownedEntryPoint>
+</mif:serializedStaticModel>

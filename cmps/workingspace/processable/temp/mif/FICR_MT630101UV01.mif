@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Health Level Seven, Inc. - initial design and content
+ *******************************************************************************/ 				
+				--><mif:serializedStaticModel xmlns:mif="urn:hl7-org:v3/mif" representationKind="serialized"
+                           isSerializable="true"
+                           packageKind="id"
+                           name="630101">
+   <packageLocation xmlns="urn:hl7-org:v3/mif" root="DEFN" section="AM" subSection="FI" domain="CR"
+                    artifact="MT-deprecated"
+                    realm="UV"
+                    version="01"/>
+   <header xmlns="urn:hl7-org:v3/mif">
+      <renderingInformation schemaVersion="1" application="RoseTree 4.2.34">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl 49 2009-03-25 15:09:56Z Woody $
+  Base transform: $Id: ConvertBase.xsl 8 2009-01-26 19:10:36Z Woody $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8 2009-01-26 19:10:36Z Woody $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl 8 2009-01-26 19:10:36Z Woody $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl 8 2009-01-26 19:10:36Z Woody $
+ Fix Names Transform: $Id: FixMifNames.xsl 47 2009-03-23 00:05:58Z Woody $
+  Base transform: $Id: ConvertBase.xsl 8 2009-01-26 19:10:36Z Woody $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8 2009-01-26 19:10:36Z Woody $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2009">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivationSupplier xmlns="urn:hl7-org:v3/mif" staticModelDerivationId="1">
+      <targetStaticModel root="DEFN" artifact="RIM" version="0221"/>
+   </derivationSupplier>
+   <mif:ownedEntryPoint useKind="SemanticPayload">
+      <mif:specializedClass>
+         <class xmlns="urn:hl7-org:v3/mif" name="InvoiceElementGroup" isAbstract="false">
+            <derivationSupplier staticModelDerivationId="1" className="InvoiceElement"/>
+            <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                       maximumMultiplicity="1"
+                       isMandatory="true"
+                       conformance="R">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+               <type name="CS"/>
+               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassInvoiceElement" mnemonic="INVE"/>
+            </attribute>
+            <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                       maximumMultiplicity="1"
+                       isMandatory="true"
+                       conformance="R">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+               <type name="CS"/>
+               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodRequest" mnemonic="RQO"/>
+            </attribute>
+            <attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="*"
+                       isMandatory="true"
+                       conformance="NP"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="id"/>
+               <type name="SET">
+                  <supplierBindingArgumentDatatype name="II"/>
+               </type>
+            </attribute>
+            <attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                       isMandatory="true"
+                       conformance="NP"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+               <type name="CS"/>
+               <supplierDomainSpecification codingStrength="CNE" domainName="ActInvoiceGroupCode"/>
+            </attribute>
+            <attribute name="statusCode" sortKey="5" minimumMultiplicity="1" maximumMultiplicity="1"
+                       isMandatory="true"
+                       conformance="R"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="statusCode"/>
+               <type name="CS"/>
+               <supplierDomainSpecification codingStrength="CNE" domainName="ActStatus" mnemonic="nullified"/>
+            </attribute>
+            <attribute name="netAmt" sortKey="6" minimumMultiplicity="1" maximumMultiplicity="1"
+                       isMandatory="true"
+                       conformance="R"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="InvoiceElement" attributeName="netAmt"/>
+               <type name="MO"/>
+            </attribute>
+            <mif:association sortKey="1">
+               <mif:targetConnection name="reference" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     conformance="R"
+                                     sortKey="BDK_______">
+                  <derivationSupplier staticModelDerivationId="1" className="Act"
+                                      associationEndName="outboundRelationship"/>
+                  <mif:participantClass>
+                     <class name="PreviousAdjudicationResultReference" isAbstract="false">
+                        <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                        <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                   maximumMultiplicity="1"
+                                   isMandatory="true"
+                                   conformance="R">
+                           <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                               attributeName="typeCode"/>
+                           <type name="CS"/>
+                           <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipRefersTo" mnemonic="REFR"/>
+                        </attribute>
+                        <mif:association sortKey="1">
+                           <mif:targetConnection name="adjudicatedInvoiceElementGroup" minimumMultiplicity="1"
+                                                 maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 conformance="R"
+                                                 sortKey="BZ">
+                              <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                  associationEndName="target"/>
+                              <mif:participantClass>
+                                 <class name="AdjudicatedInvoiceElementGroup" isAbstract="false">
+                                    <derivationSupplier staticModelDerivationId="1" className="InvoiceElement"/>
+                                    <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                               maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                       <type name="CS"/>
+                                       <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassInvoiceElement" mnemonic="INVE"/>
+                                    </attribute>
+                                    <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                               maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                       <type name="CS"/>
+                                       <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+                                    </attribute>
+                                    <attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="id"/>
+                                       <type name="II"/>
+                                    </attribute>
+                                    <attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                       <type name="CS"/>
+                                       <supplierDomainSpecification codingStrength="CNE" domainName="ActInvoiceGroupCode"/>
+                                    </attribute>
+                                    <attribute name="statusCode" sortKey="5" minimumMultiplicity="1" maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="statusCode"/>
+                                       <type name="CS"/>
+                                       <supplierDomainSpecification codingStrength="CNE" domainName="ActStatus" mnemonic="nullified"/>
+                                    </attribute>
+                                    <attribute name="netAmt" sortKey="6" minimumMultiplicity="1" maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="InvoiceElement" attributeName="netAmt"/>
+                                       <type name="MO"/>
+                                    </attribute>
+                                    <mif:association sortKey="1">
+                                       <mif:targetConnection name="reason" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                             isMandatory="false"
+                                                             conformance="R"
+                                                             sortKey="BCA_______">
+                                          <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                              associationEndName="outboundRelationship"/>
+                                          <mif:participantClass>
+                                             <class name="PaymentIntentReason" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                       attributeName="typeCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipReason" mnemonic="RSON"/>
+                                                </attribute>
+                                                <mif:association sortKey="1">
+                                                   <mif:targetConnection name="paymentIntent" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                         isMandatory="false"
+                                                                         conformance="R"
+                                                                         sortKey="BZ">
+                                                      <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                          associationEndName="target"/>
+                                                      <mif:participantClass>
+                                                         <class name="PaymentIntent" isAbstract="false">
+                                                            <derivationSupplier staticModelDerivationId="1" className="FinancialTransaction"/>
+                                                            <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                               <type name="CS"/>
+                                                               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassFinancialTransaction"
+                                                                                            mnemonic="XACT"/>
+                                                            </attribute>
+                                                            <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                               <type name="CS"/>
+                                                               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodPromise" mnemonic="PRMS"/>
+                                                            </attribute>
+                                                            <attribute name="effectiveTime" sortKey="3" minimumMultiplicity="0"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="false"
+                                                                       conformance="R"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+                                                               <type name="TS"/>
+                                                            </attribute>
+                                                            <attribute name="amt" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="FinancialTransaction"
+                                                                                   attributeName="amt"/>
+                                                               <type name="MO"/>
+                                                            </attribute>
+                                                            <mif:association sortKey="1">
+                                                               <mif:targetConnection name="credit" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                     isMandatory="true"
+                                                                                     conformance="R"
+                                                                                     sortKey="BDOAA_____">
+                                                                  <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                                                      associationEndName="outboundRelationship"/>
+                                                                  <mif:participantClass>
+                                                                     <class name="PaymentIntentPayee" isAbstract="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                                        <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                   maximumMultiplicity="1"
+                                                                                   isMandatory="true"
+                                                                                   conformance="R">
+                                                                           <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                               attributeName="typeCode"/>
+                                                                           <type name="CS"/>
+                                                                           <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipHasCredit" mnemonic="CREDIT"/>
+                                                                        </attribute>
+                                                                        <mif:association sortKey="1">
+                                                                           <mif:targetConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                                 isMandatory="true"
+                                                                                                 conformance="R"
+                                                                                                 sortKey="BZ">
+                                                                              <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                  associationEndName="target"/>
+                                                                              <mif:participantClass>
+                                                                                 <commonModelElementRef name="A_AccountPayeeUniversal" isAbstract="false">
+                                                                                    <derivationSupplier staticModelDerivationId="1" className="Account"/>
+                                                                                 </commonModelElementRef>
+                                                                              </mif:participantClass>
+                                                                           </mif:targetConnection>
+                                                                           <mif:sourceConnection>
+                                                                              <nonTraversableConnection participantClassName="PaymentIntentPayee"/>
+                                                                           </mif:sourceConnection>
+                                                                        </mif:association>
+                                                                     </class>
+                                                                  </mif:participantClass>
+                                                               </mif:targetConnection>
+                                                               <mif:sourceConnection>
+                                                                  <nonTraversableConnection participantClassName="PaymentIntent"/>
+                                                               </mif:sourceConnection>
+                                                            </mif:association>
+                                                            <mif:association sortKey="2">
+                                                               <mif:targetConnection name="debit" minimumMultiplicity="1" maximumMultiplicity="1" isMandatory="true"
+                                                                                     conformance="R"
+                                                                                     sortKey="BDOAB_____">
+                                                                  <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                                                      associationEndName="outboundRelationship"/>
+                                                                  <mif:participantClass>
+                                                                     <class name="PaymentIntentPayor" isAbstract="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                                        <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                   maximumMultiplicity="1"
+                                                                                   isMandatory="true"
+                                                                                   conformance="R">
+                                                                           <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                               attributeName="typeCode"/>
+                                                                           <type name="CS"/>
+                                                                           <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipHasDebit" mnemonic="DEBIT"/>
+                                                                        </attribute>
+                                                                        <mif:association sortKey="1">
+                                                                           <mif:targetConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                                 isMandatory="true"
+                                                                                                 conformance="R"
+                                                                                                 sortKey="BZ">
+                                                                              <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                  associationEndName="target"/>
+                                                                              <mif:participantClass>
+                                                                                 <commonModelElementRef name="A_AccountPayorUniversal" isAbstract="false">
+                                                                                    <derivationSupplier staticModelDerivationId="1" className="Account"/>
+                                                                                 </commonModelElementRef>
+                                                                              </mif:participantClass>
+                                                                           </mif:targetConnection>
+                                                                           <mif:sourceConnection>
+                                                                              <nonTraversableConnection participantClassName="PaymentIntentPayor"/>
+                                                                           </mif:sourceConnection>
+                                                                        </mif:association>
+                                                                     </class>
+                                                                  </mif:participantClass>
+                                                               </mif:targetConnection>
+                                                               <mif:sourceConnection>
+                                                                  <nonTraversableConnection participantClassName="PaymentIntent"/>
+                                                               </mif:sourceConnection>
+                                                            </mif:association>
+                                                         </class>
+                                                      </mif:participantClass>
+                                                   </mif:targetConnection>
+                                                   <mif:sourceConnection>
+                                                      <nonTraversableConnection participantClassName="PaymentIntentReason"/>
+                                                   </mif:sourceConnection>
+                                                </mif:association>
+                                             </class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="AdjudicatedInvoiceElementGroup"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                    <mif:association sortKey="2">
+                                       <mif:targetConnection name="reference" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                             isMandatory="false"
+                                                             conformance="R"
+                                                             sortKey="BDK_______">
+                                          <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                              associationEndName="outboundRelationship"/>
+                                          <mif:participantClass>
+                                             <class name="Reference" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                       attributeName="typeCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipRefersTo" mnemonic="REFR"/>
+                                                </attribute>
+                                                <mif:association sortKey="1">
+                                                   <mif:targetConnection name="adjudicatedInvoiceElementGroup" minimumMultiplicity="1"
+                                                                         maximumMultiplicity="1"
+                                                                         isMandatory="false"
+                                                                         conformance="R"
+                                                                         sortKey="BZ">
+                                                      <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                          associationEndName="target"/>
+                                                      <mif:participantClass>
+                                                         <mif:reference name="AdjudicatedInvoiceElementGroup"/>
+                                                      </mif:participantClass>
+                                                   </mif:targetConnection>
+                                                   <mif:sourceConnection>
+                                                      <nonTraversableConnection participantClassName="Reference"/>
+                                                   </mif:sourceConnection>
+                                                </mif:association>
+                                             </class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="AdjudicatedInvoiceElementGroup"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                    <mif:association sortKey="3">
+                                       <mif:targetConnection name="referencedBy" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                             isMandatory="false"
+                                                             conformance="R"
+                                                             sortKey="CDK_______">
+                                          <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                              associationEndName="inboundRelationship"/>
+                                          <mif:participantClass>
+                                             <class name="AdjudResultsRef" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                       attributeName="typeCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipRefersTo" mnemonic="REFR"/>
+                                                </attribute>
+                                                <mif:association sortKey="1">
+                                                   <mif:targetConnection name="adjudResultsGroup" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                         isMandatory="false"
+                                                                         conformance="R"
+                                                                         sortKey="AZ">
+                                                      <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                          associationEndName="source"/>
+                                                      <mif:participantClass>
+                                                         <class name="AdjudResultsGroup" isAbstract="false">
+                                                            <derivationSupplier staticModelDerivationId="1" className="InvoiceElement"/>
+                                                            <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                               <type name="CS"/>
+                                                               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassInvoiceElement" mnemonic="INVE"/>
+                                                            </attribute>
+                                                            <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                               <type name="CS"/>
+                                                               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+                                                            </attribute>
+                                                            <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                               <type name="CS"/>
+                                                               <supplierDomainSpecification codingStrength="CNE" domainName="ActInvoiceAdjudicationPaymentCode"/>
+                                                            </attribute>
+                                                            <attribute name="effectiveTime" sortKey="4" minimumMultiplicity="1"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+                                                               <type name="IVL">
+                                                                  <supplierBindingArgumentDatatype name="TS"/>
+                                                               </type>
+                                                            </attribute>
+                                                            <attribute name="netAmt" sortKey="5" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="InvoiceElement" attributeName="netAmt"/>
+                                                               <type name="MO"/>
+                                                            </attribute>
+                                                            <mif:association sortKey="1">
+                                                               <mif:targetConnection name="summary" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                                                     isMandatory="false"
+                                                                                     sortKey="BDM_______">
+                                                                  <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                                                      associationEndName="outboundRelationship"/>
+                                                                  <mif:participantClass>
+                                                                     <class name="AdjudResultsGroupSummary" isAbstract="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                                        <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                   maximumMultiplicity="1"
+                                                                                   isMandatory="true"
+                                                                                   conformance="R">
+                                                                           <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                               attributeName="typeCode"/>
+                                                                           <type name="CS"/>
+                                                                           <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipSummarizedBy" mnemonic="SUMM"/>
+                                                                        </attribute>
+                                                                        <mif:association sortKey="1">
+                                                                           <mif:targetConnection name="adjudResultsGroupSummaryData" minimumMultiplicity="1"
+                                                                                                 maximumMultiplicity="1"
+                                                                                                 isMandatory="false"
+                                                                                                 sortKey="BZ">
+                                                                              <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                  associationEndName="target"/>
+                                                                              <mif:participantClass>
+                                                                                 <class name="AdjudResultsGroupSummaryData" isAbstract="false">
+                                                                                    <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                                    <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                               maximumMultiplicity="1"
+                                                                                               isMandatory="true"
+                                                                                               conformance="R">
+                                                                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                                       <type name="CS"/>
+                                                                                       <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                                    </attribute>
+                                                                                    <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                               maximumMultiplicity="1"
+                                                                                               isMandatory="true"
+                                                                                               conformance="R">
+                                                                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                                       <type name="CS"/>
+                                                                                       <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+                                                                                    </attribute>
+                                                                                    <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                               isMandatory="true"
+                                                                                               conformance="R"
+                                                                                               isStructural="false">
+                                                                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                                       <type name="CS"/>
+                                                                                       <supplierDomainSpecification codingStrength="CNE" domainName="ActInvoiceElementSummaryCode"/>
+                                                                                    </attribute>
+                                                                                    <attribute name="value" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                               isMandatory="true"
+                                                                                               conformance="R"
+                                                                                               isStructural="false">
+                                                                                       <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                                       <type name="ANY"/>
+                                                                                    </attribute>
+                                                                                 </class>
+                                                                              </mif:participantClass>
+                                                                           </mif:targetConnection>
+                                                                           <mif:sourceConnection>
+                                                                              <nonTraversableConnection participantClassName="AdjudResultsGroupSummary"/>
+                                                                           </mif:sourceConnection>
+                                                                        </mif:association>
+                                                                     </class>
+                                                                  </mif:participantClass>
+                                                               </mif:targetConnection>
+                                                               <mif:sourceConnection>
+                                                                  <nonTraversableConnection participantClassName="AdjudResultsGroup"/>
+                                                               </mif:sourceConnection>
+                                                            </mif:association>
+                                                         </class>
+                                                      </mif:participantClass>
+                                                   </mif:targetConnection>
+                                                   <mif:sourceConnection>
+                                                      <nonTraversableConnection participantClassName="AdjudResultsRef"/>
+                                                   </mif:sourceConnection>
+                                                </mif:association>
+                                             </class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="AdjudicatedInvoiceElementGroup"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                 </class>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <nonTraversableConnection participantClassName="PreviousAdjudicationResultReference"/>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <nonTraversableConnection participantClassName="InvoiceElementGroup"/>
+               </mif:sourceConnection>
+            </mif:association>
+         </class>
+      </mif:specializedClass>
+   </mif:ownedEntryPoint>
+</mif:serializedStaticModel>

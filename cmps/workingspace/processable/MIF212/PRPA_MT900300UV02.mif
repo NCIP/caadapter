@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.2"
+                 packageKind="version"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Find Encounters Query"
+                 isSerializable="true"
+                 name="02">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="AM" subSection="PR"
+                        domain="PA"
+                        version="02"
+                        id="900300"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="11.000" height="8.500"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="39C46E75-220C-FF11-BFE9-01433E4966DA">
+         <mif:graphElement shapeId="Sheet.1">
+            <mif:position x="3.472" y="0.835"/>
+            <mif:size width="2.329" height="0.853"/>
+            <mif:anchorage connectToShapeId="Sheet.1">
+               <mif:position x="4.665" y="1.688"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.8">
+                     <mif:position x="4.607" y="2.332"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="4FE10DD1-B745-8CA4-1EE6-30A7183C3DBB" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.32" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="7.526" y="7.112"/>
+            <mif:size width="2.033" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="350F67DA-8539-4449-054A-F5ACCCAAD4B2" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.16" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="7.526" y="1.932"/>
+            <mif:size width="2.490" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="3EDB86F3-99D6-E7C3-3939-52F7CC0C5F05" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.24" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="7.526" y="4.522"/>
+            <mif:size width="2.589" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="6EA00CE6-6814-15E0-A710-1F95280C5E0A" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.12" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="7.526" y="0.638"/>
+            <mif:size width="1.879" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="A3AD994E-C0FE-398C-7576-FC89EECDF3FF" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.8" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.098" y="2.332"/>
+            <mif:size width="3.020" height="1.456"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="301F0499-A540-5ADF-5161-99D7F5F42704" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.28" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="7.526" y="5.818"/>
+            <mif:size width="2.750" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="447436D0-7F67-0566-0FC1-44DFF0FF114A" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.110" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="1.343" y="5.399"/>
+            <mif:size width="2.390" height="0.789"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="A53C1F53-5CC9-DA0E-9A9E-0434994185B4" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.20" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="7.558" y="3.228"/>
+            <mif:size width="2.606" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="9CAF35F6-0D69-1025-2963-F9D9F603CCDD">
+         <mif:graphElement connectToShapeId="Sheet.8" shapeId="Sheet.86">
+            <mif:position x="5.362" y="3.787"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.146" y="3.787"/>
+               <mif:waypoint x="3.199" y="3.787"/>
+               <mif:anchor connectToShapeId="Sheet.32">
+                  <mif:position x="7.526" y="7.488"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="FB80E68D-226B-B55C-563F-20FE0503D4BB">
+         <mif:graphElement connectToShapeId="Sheet.8" shapeId="Sheet.46">
+            <mif:position x="6.117" y="2.696"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.413" y="2.696"/>
+               <mif:waypoint x="5.413" y="3.272"/>
+               <mif:anchor connectToShapeId="Sheet.16">
+                  <mif:position x="7.526" y="2.120"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="ABD8FCC7-00BA-4396-1E15-BAEFA692C012">
+         <mif:graphElement connectToShapeId="Sheet.8" shapeId="Sheet.66">
+            <mif:position x="6.117" y="3.424"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.200" y="3.424"/>
+               <mif:waypoint x="5.200" y="2.137"/>
+               <mif:anchor connectToShapeId="Sheet.24">
+                  <mif:position x="7.526" y="4.710"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="7C98859A-E372-C71D-85F4-6F9D8A500E6E">
+         <mif:graphElement connectToShapeId="Sheet.8" shapeId="Sheet.36">
+            <mif:position x="6.117" y="2.332"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.977" y="2.332"/>
+               <mif:waypoint x="4.709" y="2.332"/>
+               <mif:anchor connectToShapeId="Sheet.12">
+                  <mif:position x="7.526" y="0.825"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="259D873E-94A4-FA3E-B4CC-F1EA4B3D5672">
+         <mif:graphElement connectToShapeId="Sheet.8" shapeId="Sheet.76">
+            <mif:position x="6.117" y="3.787"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.977" y="3.787"/>
+               <mif:waypoint x="4.709" y="3.787"/>
+               <mif:anchor connectToShapeId="Sheet.28">
+                  <mif:position x="7.526" y="6.192"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="1D4F27D9-7785-A909-7E59-E39D0DC74843">
+         <mif:graphElement connectToShapeId="Sheet.8" shapeId="Sheet.114">
+            <mif:position x="3.852" y="3.787"/>
+            <mif:graphEdge>
+               <mif:waypoint x="3.852" y="2.982"/>
+               <mif:waypoint x="4.570" y="2.982"/>
+               <mif:anchor connectToShapeId="Sheet.110">
+                  <mif:position x="3.135" y="5.399"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="C0DDA918-A122-EABF-C8C3-FF3100F0CDDC">
+         <mif:graphElement connectToShapeId="Sheet.8" shapeId="Sheet.56">
+            <mif:position x="6.117" y="3.060"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.397" y="3.060"/>
+               <mif:waypoint x="5.397" y="2.704"/>
+               <mif:anchor connectToShapeId="Sheet.20">
+                  <mif:position x="7.558" y="3.415"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="AM" subSection="PR"
+                             domain="PA"
+                             version="02"
+                             id="900300"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="AM" subSection="PR"
+                             domain="PA"
+                             version="02"
+                             id="900300"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="817-20090215"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="39C46E75-220C-FF11-BFE9-01433E4966DA" id="PRPA_MT900300UV02"
+                   name="Find Encounters Query"
+                   className="QueryByParameterPayload">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>This RMIM defines content to query an encounter manager for all encounters related to one specific patient that match the set of encounter related query parameters.</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="4FE10DD1-B745-8CA4-1EE6-30A7183C3DBB" name="CareEventID"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CareEventID"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="CareEventID"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CareEventID" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="CareEventID" attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        defaultValue="CareEvent.id"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CareEventID"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="CareEventID"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="350F67DA-8539-4449-054A-F5ACCCAAD4B2" name="EncounterStatus"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="EncounterStatus"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="EncounterStatus"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterStatus" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="EncounterStatus" attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="CV"/>
+            </mif:type>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="ActStatus"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        defaultValue="Encounter.statusCode"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterStatus"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="EncounterStatus"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="3EDB86F3-99D6-E7C3-3939-52F7CC0C5F05" name="EncounterTimeframe"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="EncounterTimeframe"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="EncounterTimeframe"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterTimeframe"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="EncounterTimeframe"
+                             attributeName="value"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        defaultValue="Encounter.effectiveTime"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="EncounterTimeframe"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="EncounterTimeframe"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="6EA00CE6-6814-15E0-A710-1F95280C5E0A" name="PatientId"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PatientId"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PatientId"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PatientId" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PatientId" attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        defaultValue="Patient.ID"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PatientId" attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PatientId" attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="A3AD994E-C0FE-398C-7576-FC89EECDF3FF"
+                 name="QueryByParameterPayload"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"/>
+         <mif:attribute name="queryId" sortKey="1" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="queryId"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                             attributeName="queryId"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                             attributeName="queryId"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                             attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                             attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="QueryStatusCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="modifyCode" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="modifyCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                             attributeName="modifyCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                             attributeName="modifyCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="ModifyIndicator"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="responseElementGroupId" sortKey="4" minimumMultiplicity="0"
+                        maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="responseElementGroupId"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                             attributeName="responseElementGroupId"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                             attributeName="responseElementGroupId"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="responseModalityCode" sortKey="5" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="responseModalityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                             attributeName="responseModalityCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                             attributeName="responseModalityCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="ResponseModality"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="responsePriorityCode" sortKey="6" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="responsePriorityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                             attributeName="responsePriorityCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                             attributeName="responsePriorityCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="QueryPriority"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="initialQuantity" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="initialQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                             attributeName="initialQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                             attributeName="initialQuantity"/>
+            <mif:type name="INT"/>
+         </mif:attribute>
+         <mif:attribute name="initialQuantityCode" sortKey="8" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                             attributeName="initialQuantityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                             attributeName="initialQuantityCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                             attributeName="initialQuantityCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="QueryRequestLimit"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="301F0499-A540-5ADF-5161-99D7F5F42704"
+                 name="ResponsibleOrganization"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ResponsibleOrganization"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ResponsibleOrganization"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="*"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ResponsibleOrganization"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ResponsibleOrganization"
+                             attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        defaultValue="ResponsibleOrganization.id"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ResponsibleOrganization"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ResponsibleOrganization"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="447436D0-7F67-0566-0FC1-44DFF0FF114A" name="SortControl"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="SortControl"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="SortControl"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="SortControl"/>
+         <mif:attribute name="sequenceNumber" sortKey="1" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="SortControl"
+                             attributeName="sequenceNumber"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SortControl"
+                             attributeName="sequenceNumber"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SortControl"
+                             attributeName="sequenceNumber"/>
+            <mif:type name="INT"/>
+         </mif:attribute>
+         <mif:attribute name="elementName" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="SortControl" attributeName="elementName"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SortControl" attributeName="elementName"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SortControl" attributeName="elementName"/>
+            <mif:type name="SC"/>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="ElementName"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="directionCode" sortKey="3" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="SortControl"
+                             attributeName="directionCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="SortControl"
+                             attributeName="directionCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="SortControl"
+                             attributeName="directionCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary codingStrength="CNE">
+               <mif:vocabularyDomain name="Sequencing"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="A53C1F53-5CC9-DA0E-9A9E-0434994185B4" name="TypeOfEncounter"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="TypeOfEncounter"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="TypeOfEncounter"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="TypeOfEncounter" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="TypeOfEncounter" attributeName="value"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="CD"/>
+            </mif:type>
+            <mif:vocabulary codingStrength="CWE">
+               <mif:vocabularyDomain name="ActEncounterCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="semanticsText" sortKey="2" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        defaultValue="Encounter.code"
+                        isImmutable="false">
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="TypeOfEncounter"
+                             attributeName="semanticsText"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="TypeOfEncounter"
+                             attributeName="semanticsText"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="9CAF35F6-0D69-1025-2963-F9D9F603CCDD" sortKey="7">
+      <mif:traversableConnection name="careEventID" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="CareEventID">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                          associationEndName="careEventID"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                          associationEndName="careEventID"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="FB80E68D-226B-B55C-563F-20FE0503D4BB" sortKey="4">
+      <mif:traversableConnection name="encounterStatus" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="EncounterStatus">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                          associationEndName="encounterStatus"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                          associationEndName="encounterStatus"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="ABD8FCC7-00BA-4396-1E15-BAEFA692C012" sortKey="2">
+      <mif:traversableConnection name="encounterTimeframe" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="EncounterTimeframe">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                          associationEndName="encounterTimeframe"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                          associationEndName="encounterTimeframe"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="7C98859A-E372-C71D-85F4-6F9D8A500E6E" sortKey="5">
+      <mif:traversableConnection name="patientId" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="true"
+                                 sortKey="Z"
+                                 participantClassName="PatientId">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                          associationEndName="patientId"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                          associationEndName="patientId"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="259D873E-94A4-FA3E-B4CC-F1EA4B3D5672" sortKey="1">
+      <mif:traversableConnection name="responsibleOrganization" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ResponsibleOrganization">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                          associationEndName="responsibleOrganization"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                          associationEndName="responsibleOrganization"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="1D4F27D9-7785-A909-7E59-E39D0DC74843" sortKey="6">
+      <mif:traversableConnection name="sortControl" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="SortControl">
+         <mif:derivedFrom staticModelDerivationId="1" className="QuerySpec"
+                          associationEndName="sortControl"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                          associationEndName="sortControl"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                          associationEndName="sortControl"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="SortControl"
+                          associationEndName="querySpec"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="C0DDA918-A122-EABF-C8C3-FF3100F0CDDC" sortKey="3">
+      <mif:traversableConnection name="typeOfEncounter" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="TypeOfEncounter">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryByParameter"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="QueryByParameterPayload"
+                          associationEndName="typeOfEncounter"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="QueryByParameterPayload"
+                          associationEndName="typeOfEncounter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="QueryByParameterPayload">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="queryByParameter"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

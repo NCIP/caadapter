@@ -1,0 +1,1310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Health Level Seven, Inc. - initial design and content
+ *******************************************************************************/ 				
+				--><mif:serializedStaticModel xmlns:mif="urn:hl7-org:v3/mif" representationKind="serialized"
+                           isSerializable="true"
+                           packageKind="id"
+                           name="000040">
+   <packageLocation xmlns="urn:hl7-org:v3/mif" root="DEFN" section="HM" subSection="PO" domain="CG"
+                    artifact="MT-deprecated"
+                    realm="UV"
+                    version="01"/>
+   <header xmlns="urn:hl7-org:v3/mif">
+      <renderingInformation schemaVersion="1" application="RoseTree 4.2.10">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl 49 2009-03-25 15:09:56Z Woody $
+  Base transform: $Id: ConvertBase.xsl 8 2009-01-26 19:10:36Z Woody $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8 2009-01-26 19:10:36Z Woody $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl 8 2009-01-26 19:10:36Z Woody $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl 8 2009-01-26 19:10:36Z Woody $
+ Fix Names Transform: $Id: FixMifNames.xsl 47 2009-03-23 00:05:58Z Woody $
+  Base transform: $Id: ConvertBase.xsl 8 2009-01-26 19:10:36Z Woody $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8 2009-01-26 19:10:36Z Woody $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivationSupplier xmlns="urn:hl7-org:v3/mif" staticModelDerivationId="1">
+      <targetStaticModel root="DEFN" artifact="RIM" version="0221"/>
+   </derivationSupplier>
+   <mif:ownedEntryPoint useKind="SemanticPayload">
+      <mif:specializedClass>
+         <class xmlns="urn:hl7-org:v3/mif" name="FamilyHistory" isAbstract="false">
+            <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+            <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                       maximumMultiplicity="1"
+                       isMandatory="true"
+                       conformance="R">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+               <type name="CS"/>
+               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+            </attribute>
+            <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                       maximumMultiplicity="1"
+                       isMandatory="true"
+                       conformance="R">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+               <type name="CS"/>
+               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+            </attribute>
+            <attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                       isMandatory="false"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="id"/>
+               <type name="SET">
+                  <supplierBindingArgumentDatatype name="II"/>
+               </type>
+            </attribute>
+            <attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                       isMandatory="false"
+                       conformance="R"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+               <type name="CD"/>
+               <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+            </attribute>
+            <attribute name="text" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                       isMandatory="false"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="text"/>
+               <type name="ED"/>
+            </attribute>
+            <attribute name="statusCode" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                       isMandatory="false"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="statusCode"/>
+               <type name="CS"/>
+               <supplierDomainSpecification codingStrength="CNE" domainName="ActStatus"/>
+            </attribute>
+            <attribute name="effectiveTime" sortKey="7" minimumMultiplicity="0"
+                       maximumMultiplicity="1"
+                       isMandatory="false"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+               <type name="TS"/>
+            </attribute>
+            <attribute name="confidentialityCode" sortKey="8" minimumMultiplicity="0"
+                       maximumMultiplicity="*"
+                       isMandatory="false"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="confidentialityCode"/>
+               <type name="SET">
+                  <supplierBindingArgumentDatatype name="CE"/>
+               </type>
+               <supplierDomainSpecification codingStrength="CWE" domainName="Confidentiality"/>
+            </attribute>
+            <attribute name="uncertaintyCode" sortKey="9" minimumMultiplicity="0"
+                       maximumMultiplicity="1"
+                       isMandatory="false"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="uncertaintyCode"/>
+               <type name="CE"/>
+               <supplierDomainSpecification codingStrength="CNE" domainName="ActUncertainty"/>
+            </attribute>
+            <attribute name="languageCode" sortKey="10" minimumMultiplicity="0"
+                       maximumMultiplicity="1"
+                       isMandatory="false"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="languageCode"/>
+               <type name="CE"/>
+               <supplierDomainSpecification codingStrength="CWE" domainName="HumanLanguage"/>
+            </attribute>
+            <attribute name="methodCode" sortKey="11" minimumMultiplicity="0" maximumMultiplicity="*"
+                       isMandatory="false"
+                       isStructural="false">
+               <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="methodCode"/>
+               <type name="SET">
+                  <supplierBindingArgumentDatatype name="CE"/>
+               </type>
+               <supplierDomainSpecification codingStrength="CWE" domainName="ObservationMethod"/>
+            </attribute>
+            <mif:association sortKey="1">
+               <mif:targetConnection name="subject" minimumMultiplicity="0" maximumMultiplicity="1"
+                                     isMandatory="false"
+                                     sortKey="AAA_______">
+                  <derivationSupplier staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+                  <mif:participantClass>
+                     <class name="Subject5" isAbstract="false">
+                        <derivationSupplier staticModelDerivationId="1" className="Participation"/>
+                        <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                   maximumMultiplicity="1"
+                                   isMandatory="true"
+                                   conformance="R">
+                           <derivationSupplier staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+                           <type name="CS"/>
+                           <supplierDomainSpecification codingStrength="CNE" valueSetName="ParticipationTargetSubject" mnemonic="SBJ"/>
+                        </attribute>
+                        <mif:association sortKey="1">
+                           <mif:targetConnection name="patient" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <derivationSupplier staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+                              <mif:participantClass>
+                                 <class name="Patient" isAbstract="false">
+                                    <derivationSupplier staticModelDerivationId="1" className="Patient"/>
+                                    <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                               maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R">
+                                       <derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                                       <type name="CS"/>
+                                       <supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassPatient" mnemonic="PAT"/>
+                                    </attribute>
+                                    <attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="1"
+                                               isMandatory="false"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Role" attributeName="id"/>
+                                       <type name="II"/>
+                                    </attribute>
+                                    <mif:association sortKey="4">
+                                       <mif:targetConnection name="patientPerson" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                             isMandatory="false"
+                                                             sortKey="AZ">
+                                          <derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                                          <mif:participantClass>
+                                             <class name="Person" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="Person"/>
+                                                <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="classCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="EntityClassPerson" mnemonic="PSN"/>
+                                                </attribute>
+                                                <attribute name="determinerCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="determinerCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="EntityDeterminerSpecific"
+                                                                                mnemonic="INSTANCE"/>
+                                                </attribute>
+                                                <attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="id"/>
+                                                   <type name="II"/>
+                                                </attribute>
+                                                <attribute name="name" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="name"/>
+                                                   <type name="BAG">
+                                                      <supplierBindingArgumentDatatype name="EN"/>
+                                                   </type>
+                                                </attribute>
+                                                <attribute name="telecom" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Entity" attributeName="telecom"/>
+                                                   <type name="BAG">
+                                                      <supplierBindingArgumentDatatype name="TEL"/>
+                                                   </type>
+                                                </attribute>
+                                                <attribute name="administrativeGenderCode" sortKey="6" minimumMultiplicity="0"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="LivingSubject"
+                                                                       attributeName="administrativeGenderCode"/>
+                                                   <type name="CE"/>
+                                                   <supplierDomainSpecification codingStrength="CWE" domainName="AdministrativeGender"/>
+                                                </attribute>
+                                                <attribute name="birthTime" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="LivingSubject" attributeName="birthTime"/>
+                                                   <type name="TS"/>
+                                                </attribute>
+                                                <attribute name="deceasedInd" sortKey="8" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                           isMandatory="false"
+                                                           defaultValue="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="LivingSubject"
+                                                                       attributeName="deceasedInd"/>
+                                                   <type name="BL"/>
+                                                </attribute>
+                                                <attribute name="deceasedTime" sortKey="9" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="LivingSubject"
+                                                                       attributeName="deceasedTime"/>
+                                                   <type name="TS"/>
+                                                </attribute>
+                                                <attribute name="raceCode" sortKey="10" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Person" attributeName="raceCode"/>
+                                                   <type name="SET">
+                                                      <supplierBindingArgumentDatatype name="CE"/>
+                                                   </type>
+                                                   <supplierDomainSpecification codingStrength="CWE" domainName="Race"/>
+                                                </attribute>
+                                                <attribute name="ethnicGroupCode" sortKey="11" minimumMultiplicity="0"
+                                                           maximumMultiplicity="*"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Person" attributeName="ethnicGroupCode"/>
+                                                   <type name="SET">
+                                                      <supplierBindingArgumentDatatype name="CE"/>
+                                                   </type>
+                                                   <supplierDomainSpecification codingStrength="CWE" domainName="Ethnicity"/>
+                                                </attribute>
+                                                <mif:association sortKey="1">
+                                                   <mif:targetConnection name="relative" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                                         isMandatory="false"
+                                                                         sortKey="BAAAB_____">
+                                                      <derivationSupplier staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+                                                      <mif:participantClass>
+                                                         <class name="Relative" isAbstract="false">
+                                                            <derivationSupplier staticModelDerivationId="1" className="RoleHeir"/>
+                                                            <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+                                                               <type name="CS"/>
+                                                               <supplierDomainSpecification codingStrength="CNE" valueSetName="RoleClassPersonalRelationship"
+                                                                                            mnemonic="PRS"/>
+                                                            </attribute>
+                                                            <attribute name="code" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Role" attributeName="code"/>
+                                                               <type name="CE"/>
+                                                               <supplierDomainSpecification codingStrength="CWE" domainName="FamilyMember"/>
+                                                            </attribute>
+                                                            <mif:association sortKey="3">
+                                                               <mif:targetConnection name="relationshipHolder" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                     isMandatory="false"
+                                                                                     sortKey="AZ">
+                                                                  <derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="player"/>
+                                                                  <mif:participantClass>
+                                                                     <mif:reference name="Person"/>
+                                                                  </mif:participantClass>
+                                                               </mif:targetConnection>
+                                                               <mif:sourceConnection>
+                                                                  <nonTraversableConnection participantClassName="Relative"/>
+                                                               </mif:sourceConnection>
+                                                            </mif:association>
+                                                            <mif:association sortKey="2">
+                                                               <mif:targetConnection name="subjectOf1" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                                                     isMandatory="false"
+                                                                                     sortKey="CAA_______">
+                                                                  <derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+                                                                  <mif:participantClass>
+                                                                     <mif:reference name="Subject3"/>
+                                                                  </mif:participantClass>
+                                                               </mif:targetConnection>
+                                                               <mif:sourceConnection>
+                                                                  <nonTraversableConnection participantClassName="Relative"/>
+                                                               </mif:sourceConnection>
+                                                            </mif:association>
+                                                            <mif:association sortKey="1">
+                                                               <mif:targetConnection name="subjectOf2" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                                                     isMandatory="false"
+                                                                                     sortKey="CAA_______">
+                                                                  <derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+                                                                  <mif:participantClass>
+                                                                     <mif:reference name="Subject"/>
+                                                                  </mif:participantClass>
+                                                               </mif:targetConnection>
+                                                               <mif:sourceConnection>
+                                                                  <nonTraversableConnection participantClassName="Relative"/>
+                                                               </mif:sourceConnection>
+                                                            </mif:association>
+                                                         </class>
+                                                      </mif:participantClass>
+                                                   </mif:targetConnection>
+                                                   <mif:sourceConnection>
+                                                      <nonTraversableConnection participantClassName="Person"/>
+                                                   </mif:sourceConnection>
+                                                </mif:association>
+                                             </class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="Patient"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                    <mif:association sortKey="1">
+                                       <mif:targetConnection name="providerOrganization" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                             isMandatory="false"
+                                                             sortKey="BZ">
+                                          <derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+                                          <mif:participantClass>
+                                             <commonModelElementRef name="E_OrganizationUniversal" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="Organization"/>
+                                             </commonModelElementRef>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="Patient"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                    <mif:association sortKey="3">
+                                       <mif:targetConnection name="subjectOf1" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                             isMandatory="false"
+                                                             sortKey="CAA_______">
+                                          <derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+                                          <mif:participantClass>
+                                             <class name="Subject3" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="Participation"/>
+                                                <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="ParticipationTargetSubject" mnemonic="SBJ"/>
+                                                </attribute>
+                                                <mif:association sortKey="1">
+                                                   <mif:targetConnection name="subjectEstimatedAge" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                         isMandatory="false"
+                                                                         sortKey="AZ">
+                                                      <derivationSupplier staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+                                                      <participantClassSpecialization className="DeceasedEstimatedAge" traversalName="deceasedEstimatedAge"/>
+                                                      <participantClassSpecialization className="LivingEstimatedAge" traversalName="livingEstimatedAge"/>
+                                                      <mif:participantClass>
+                                                         <class name="SubjectEstimatedAge" isAbstract="true">
+                                                            <derivationSupplier staticModelDerivationId="1" className="Act"/>
+                                                            <mif:specializationChild sortKey="1">
+                                                               <mif:specializedClass>
+                                                                  <class name="DeceasedEstimatedAge" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                     <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                     </attribute>
+                                                                     <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+                                                                     </attribute>
+                                                                     <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                conformance="R"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                        <type name="CD"/>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                     </attribute>
+                                                                     <attribute name="value" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                        <type name="IVL">
+                                                                           <supplierBindingArgumentDatatype name="REAL"/>
+                                                                        </type>
+                                                                     </attribute>
+                                                                  </class>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                            <mif:specializationChild sortKey="2">
+                                                               <mif:specializedClass>
+                                                                  <class name="LivingEstimatedAge" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                     <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                     </attribute>
+                                                                     <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+                                                                     </attribute>
+                                                                     <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                conformance="R"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                        <type name="CD"/>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                     </attribute>
+                                                                     <attribute name="value" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                        <type name="IVL">
+                                                                           <supplierBindingArgumentDatatype name="REAL"/>
+                                                                        </type>
+                                                                     </attribute>
+                                                                  </class>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                         </class>
+                                                      </mif:participantClass>
+                                                   </mif:targetConnection>
+                                                   <mif:sourceConnection>
+                                                      <nonTraversableConnection participantClassName="Subject3"/>
+                                                   </mif:sourceConnection>
+                                                </mif:association>
+                                             </class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="Patient"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                    <mif:association sortKey="2">
+                                       <mif:targetConnection name="subjectOf2" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                             isMandatory="false"
+                                                             sortKey="CAA_______">
+                                          <derivationSupplier staticModelDerivationId="1" className="Role" associationEndName="participation"/>
+                                          <mif:participantClass>
+                                             <class name="Subject" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="Participation"/>
+                                                <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="ParticipationTargetSubject" mnemonic="SBJ"/>
+                                                </attribute>
+                                                <mif:association sortKey="1">
+                                                   <mif:targetConnection name="clinicalGenomicChoice" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                         isMandatory="false"
+                                                                         sortKey="AZ">
+                                                      <derivationSupplier staticModelDerivationId="1" className="Participation" associationEndName="act"/>
+                                                      <participantClassSpecialization className="A_GeneticLociUniversal" traversalName="geneticLoci"/>
+                                                      <participantClassSpecialization className="A_GeneticLocusUniversal" traversalName="geneticLocus"/>
+                                                      <participantClassSpecialization className="ClinicalObservation" traversalName="clinicalObservation"/>
+                                                      <mif:participantClass>
+                                                         <class name="ClinicalGenomicChoice" isAbstract="true">
+                                                            <derivationSupplier staticModelDerivationId="1" className="Act"/>
+                                                            <mif:specializationChild sortKey="1">
+                                                               <mif:specializedClass>
+                                                                  <commonModelElementRef name="A_GeneticLociUniversal" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                  </commonModelElementRef>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                            <mif:specializationChild sortKey="2">
+                                                               <mif:specializedClass>
+                                                                  <commonModelElementRef name="A_GeneticLocusUniversal" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                  </commonModelElementRef>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                            <mif:specializationChild sortKey="3">
+                                                               <mif:specializedClass>
+                                                                  <class name="ClinicalObservation" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                     <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                     </attribute>
+                                                                     <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+                                                                     </attribute>
+                                                                     <attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="id"/>
+                                                                        <type name="SET">
+                                                                           <supplierBindingArgumentDatatype name="II"/>
+                                                                        </type>
+                                                                     </attribute>
+                                                                     <attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                conformance="R"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                        <type name="CD"/>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                     </attribute>
+                                                                     <attribute name="negationInd" sortKey="5" isStructural="true" minimumMultiplicity="0"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="negationInd"/>
+                                                                        <type name="BL"/>
+                                                                     </attribute>
+                                                                     <attribute name="text" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="text"/>
+                                                                        <type name="ED"/>
+                                                                     </attribute>
+                                                                     <attribute name="statusCode" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="statusCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" domainName="ActStatus"/>
+                                                                     </attribute>
+                                                                     <attribute name="effectiveTime" sortKey="8" minimumMultiplicity="0"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+                                                                        <type name="IVL">
+                                                                           <supplierBindingArgumentDatatype name="TS"/>
+                                                                        </type>
+                                                                     </attribute>
+                                                                     <attribute name="confidentialityCode" sortKey="9" minimumMultiplicity="0"
+                                                                                maximumMultiplicity="*"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="confidentialityCode"/>
+                                                                        <type name="SET">
+                                                                           <supplierBindingArgumentDatatype name="CE"/>
+                                                                        </type>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="Confidentiality"/>
+                                                                     </attribute>
+                                                                     <attribute name="uncertaintyCode" sortKey="10" minimumMultiplicity="0"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="uncertaintyCode"/>
+                                                                        <type name="CE"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" domainName="ActUncertainty"/>
+                                                                     </attribute>
+                                                                     <attribute name="value" sortKey="11" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                        <type name="ANY"/>
+                                                                     </attribute>
+                                                                     <attribute name="methodCode" sortKey="12" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="methodCode"/>
+                                                                        <type name="SET">
+                                                                           <supplierBindingArgumentDatatype name="CE"/>
+                                                                        </type>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="ObservationMethod"/>
+                                                                     </attribute>
+                                                                     <mif:association sortKey="1">
+                                                                        <mif:targetConnection name="subject" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                              isMandatory="false"
+                                                                                              sortKey="BDB_______">
+                                                                           <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                                                               associationEndName="outboundRelationship"/>
+                                                                           <mif:participantClass>
+                                                                              <class name="Subject4" isAbstract="false">
+                                                                                 <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                                                 <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                            maximumMultiplicity="1"
+                                                                                            isMandatory="true"
+                                                                                            conformance="R">
+                                                                                    <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                        attributeName="typeCode"/>
+                                                                                    <type name="CS"/>
+                                                                                    <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipHasSubject" mnemonic="SUBJ"/>
+                                                                                 </attribute>
+                                                                                 <mif:association sortKey="1">
+                                                                                    <mif:targetConnection name="dataEstimatedAge" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                                          isMandatory="false"
+                                                                                                          sortKey="BZ">
+                                                                                       <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                           associationEndName="target"/>
+                                                                                       <mif:participantClass>
+                                                                                          <class name="DataEstimatedAge" isAbstract="false">
+                                                                                             <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                                             <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                                        maximumMultiplicity="1"
+                                                                                                        isMandatory="true"
+                                                                                                        conformance="R">
+                                                                                                <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                                                <type name="CS"/>
+                                                                                                <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                                             </attribute>
+                                                                                             <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                                        maximumMultiplicity="1"
+                                                                                                        isMandatory="true"
+                                                                                                        conformance="R">
+                                                                                                <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                                                <type name="CS"/>
+                                                                                                <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventOccurrence" mnemonic="EVN"/>
+                                                                                             </attribute>
+                                                                                             <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                                        isMandatory="false"
+                                                                                                        conformance="R"
+                                                                                                        isStructural="false">
+                                                                                                <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                                                <type name="CD"/>
+                                                                                                <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                                             </attribute>
+                                                                                             <attribute name="value" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                                        isMandatory="false"
+                                                                                                        isStructural="false">
+                                                                                                <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                                                <type name="IVL">
+                                                                                                   <supplierBindingArgumentDatatype name="REAL"/>
+                                                                                                </type>
+                                                                                             </attribute>
+                                                                                          </class>
+                                                                                       </mif:participantClass>
+                                                                                    </mif:targetConnection>
+                                                                                    <mif:sourceConnection>
+                                                                                       <nonTraversableConnection participantClassName="Subject4"/>
+                                                                                    </mif:sourceConnection>
+                                                                                 </mif:association>
+                                                                              </class>
+                                                                           </mif:participantClass>
+                                                                        </mif:targetConnection>
+                                                                        <mif:sourceConnection>
+                                                                           <nonTraversableConnection participantClassName="ClinicalObservation"/>
+                                                                        </mif:sourceConnection>
+                                                                     </mif:association>
+                                                                     <mif:association sortKey="2">
+                                                                        <mif:targetConnection name="sourceOf" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                                                              isMandatory="false"
+                                                                                              sortKey="BZ">
+                                                                           <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                                                               associationEndName="outboundRelationship"/>
+                                                                           <mif:participantClass>
+                                                                              <class name="SourceOf" isAbstract="false">
+                                                                                 <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                                                 <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                            maximumMultiplicity="1"
+                                                                                            isMandatory="true"
+                                                                                            conformance="R">
+                                                                                    <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                        attributeName="typeCode"/>
+                                                                                    <type name="CS"/>
+                                                                                    <supplierDomainSpecification codingStrength="CNE" domainName="ActRelationshipType"/>
+                                                                                 </attribute>
+                                                                                 <mif:association sortKey="1">
+                                                                                    <mif:targetConnection name="clinicalObservation" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                                          isMandatory="false"
+                                                                                                          sortKey="BZ">
+                                                                                       <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                           associationEndName="target"/>
+                                                                                       <mif:participantClass>
+                                                                                          <mif:reference name="ClinicalObservation"/>
+                                                                                       </mif:participantClass>
+                                                                                    </mif:targetConnection>
+                                                                                    <mif:sourceConnection>
+                                                                                       <nonTraversableConnection participantClassName="SourceOf"/>
+                                                                                    </mif:sourceConnection>
+                                                                                 </mif:association>
+                                                                              </class>
+                                                                           </mif:participantClass>
+                                                                        </mif:targetConnection>
+                                                                        <mif:sourceConnection>
+                                                                           <nonTraversableConnection participantClassName="ClinicalObservation"/>
+                                                                        </mif:sourceConnection>
+                                                                     </mif:association>
+                                                                  </class>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                         </class>
+                                                      </mif:participantClass>
+                                                   </mif:targetConnection>
+                                                   <mif:sourceConnection>
+                                                      <nonTraversableConnection participantClassName="Subject"/>
+                                                   </mif:sourceConnection>
+                                                </mif:association>
+                                             </class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="Patient"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                 </class>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <nonTraversableConnection participantClassName="Subject5"/>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <nonTraversableConnection participantClassName="FamilyHistory"/>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="2">
+               <mif:targetConnection name="informant" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="AEC_______">
+                  <derivationSupplier staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+                  <mif:participantClass>
+                     <class name="Informant" isAbstract="false">
+                        <derivationSupplier staticModelDerivationId="1" className="Participation"/>
+                        <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                   maximumMultiplicity="1"
+                                   isMandatory="true"
+                                   conformance="R">
+                           <derivationSupplier staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+                           <type name="CS"/>
+                           <supplierDomainSpecification codingStrength="CNE" valueSetName="ParticipationInformant" mnemonic="INF"/>
+                        </attribute>
+                        <mif:association sortKey="1">
+                           <mif:targetConnection name="relatedParty" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <derivationSupplier staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+                              <participantClassSpecialization className="Employee" traversalName="employee"/>
+                              <participantClassSpecialization className="Student" traversalName="student"/>
+                              <participantClassSpecialization className="PersonalRelationship" traversalName="personalRelationship"/>
+                              <participantClassSpecialization className="CareGiver" traversalName="careGiver"/>
+                              <participantClassSpecialization className="ResponsibleParty" traversalName="responsibleParty"/>
+                              <mif:participantClass>
+                                 <commonModelElementRef name="R_RelatedPartyUniversal" isAbstract="false">
+                                    <derivationSupplier staticModelDerivationId="1" className="RoleHeir"/>
+                                 </commonModelElementRef>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <nonTraversableConnection participantClassName="Informant"/>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <nonTraversableConnection participantClassName="FamilyHistory"/>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="3">
+               <mif:targetConnection name="risk" minimumMultiplicity="0" maximumMultiplicity="*" isMandatory="false"
+                                     sortKey="BAA_______">
+                  <derivationSupplier staticModelDerivationId="1" className="Act"
+                                      associationEndName="outboundRelationship"/>
+                  <mif:participantClass>
+                     <class name="Risk" isAbstract="false">
+                        <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                        <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                   maximumMultiplicity="1"
+                                   isMandatory="true"
+                                   conformance="R">
+                           <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                               attributeName="typeCode"/>
+                           <type name="CS"/>
+                           <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipHasRisk" mnemonic="RISK"/>
+                        </attribute>
+                        <mif:association sortKey="1">
+                           <mif:targetConnection name="pedigreeAnalysisResults" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                  associationEndName="target"/>
+                              <mif:participantClass>
+                                 <class name="PedigreeAnalysisResults" isAbstract="false">
+                                    <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                    <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                               maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                       <type name="CS"/>
+                                       <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                    </attribute>
+                                    <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                               maximumMultiplicity="1"
+                                               isMandatory="true"
+                                               conformance="R">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                       <type name="CS"/>
+                                       <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodRisk" mnemonic="RSK"/>
+                                    </attribute>
+                                    <attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                                               isMandatory="false"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="id"/>
+                                       <type name="SET">
+                                          <supplierBindingArgumentDatatype name="II"/>
+                                       </type>
+                                    </attribute>
+                                    <attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                               isMandatory="false"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                       <type name="CD"/>
+                                       <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                    </attribute>
+                                    <attribute name="negationInd" sortKey="5" isStructural="true" minimumMultiplicity="0"
+                                               maximumMultiplicity="1"
+                                               isMandatory="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="negationInd"/>
+                                       <type name="BL"/>
+                                    </attribute>
+                                    <attribute name="derivationExpr" sortKey="6" minimumMultiplicity="0"
+                                               maximumMultiplicity="1"
+                                               isMandatory="false"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="derivationExpr"/>
+                                       <type name="ST"/>
+                                    </attribute>
+                                    <attribute name="text" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                                               isMandatory="false"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="text"/>
+                                       <type name="ED"/>
+                                    </attribute>
+                                    <attribute name="effectiveTime" sortKey="8" minimumMultiplicity="0"
+                                               maximumMultiplicity="1"
+                                               isMandatory="false"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+                                       <type name="IVL">
+                                          <supplierBindingArgumentDatatype name="TS"/>
+                                       </type>
+                                    </attribute>
+                                    <attribute name="methodCode" sortKey="9" minimumMultiplicity="0" maximumMultiplicity="*"
+                                               isMandatory="false"
+                                               isStructural="false">
+                                       <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="methodCode"/>
+                                       <type name="SET">
+                                          <supplierBindingArgumentDatatype name="CE"/>
+                                       </type>
+                                       <supplierDomainSpecification codingStrength="CWE" domainName="ObservationMethod"/>
+                                    </attribute>
+                                    <mif:association sortKey="1">
+                                       <mif:targetConnection name="controlVariable" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                             isMandatory="false"
+                                                             sortKey="BEA_______">
+                                          <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                              associationEndName="outboundRelationship"/>
+                                          <mif:participantClass>
+                                             <class name="ControlVariable" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                       attributeName="typeCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipHasControlVariable"
+                                                                                mnemonic="CTRLV"/>
+                                                </attribute>
+                                                <attribute name="localVariableName" sortKey="2" minimumMultiplicity="0"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="false"
+                                                           isStructural="false">
+                                                   <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                       attributeName="localVariableName"/>
+                                                   <type name="ST"/>
+                                                </attribute>
+                                                <mif:association sortKey="1">
+                                                   <mif:targetConnection name="inputParameters" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                         isMandatory="false"
+                                                                         sortKey="BZ">
+                                                      <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                          associationEndName="target"/>
+                                                      <mif:participantClass>
+                                                         <class name="InputParameters" isAbstract="false">
+                                                            <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                            <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                               <type name="CS"/>
+                                                               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                            </attribute>
+                                                            <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                       maximumMultiplicity="1"
+                                                                       isMandatory="true"
+                                                                       conformance="R">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                               <type name="CS"/>
+                                                               <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodEventCriterion" mnemonic="EVN.CRT"/>
+                                                            </attribute>
+                                                            <attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                       isMandatory="false"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                               <type name="CD"/>
+                                                               <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                            </attribute>
+                                                            <attribute name="text" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                       isMandatory="false"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="text"/>
+                                                               <type name="ED"/>
+                                                            </attribute>
+                                                            <attribute name="value" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                       isMandatory="false"
+                                                                       isStructural="false">
+                                                               <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                               <type name="ANY"/>
+                                                            </attribute>
+                                                         </class>
+                                                      </mif:participantClass>
+                                                   </mif:targetConnection>
+                                                   <mif:sourceConnection>
+                                                      <nonTraversableConnection participantClassName="ControlVariable"/>
+                                                   </mif:sourceConnection>
+                                                </mif:association>
+                                             </class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="PedigreeAnalysisResults"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                    <mif:association sortKey="2">
+                                       <mif:targetConnection name="component" minimumMultiplicity="0" maximumMultiplicity="*"
+                                                             isMandatory="false"
+                                                             sortKey="BE________">
+                                          <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                              associationEndName="outboundRelationship"/>
+                                          <mif:participantClass>
+                                             <class name="Component" isAbstract="false">
+                                                <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                           maximumMultiplicity="1"
+                                                           isMandatory="true"
+                                                           conformance="R">
+                                                   <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                       attributeName="typeCode"/>
+                                                   <type name="CS"/>
+                                                   <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipHasComponent" mnemonic="COMP"/>
+                                                </attribute>
+                                                <mif:association sortKey="1">
+                                                   <mif:targetConnection name="choice" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                         isMandatory="false"
+                                                                         sortKey="BZ">
+                                                      <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                          associationEndName="target"/>
+                                                      <participantClassSpecialization className="Age" traversalName="age"/>
+                                                      <participantClassSpecialization className="AnalysisResult" traversalName="analysisResult"/>
+                                                      <participantClassSpecialization className="PercentageRisk" traversalName="percentageRisk"/>
+                                                      <participantClassSpecialization className="Probability" traversalName="probability"/>
+                                                      <participantClassSpecialization className="RelativeRisk" traversalName="relativeRisk"/>
+                                                      <mif:participantClass>
+                                                         <class name="Choice" isAbstract="true">
+                                                            <derivationSupplier staticModelDerivationId="1" className="Act"/>
+                                                            <mif:specializationChild sortKey="1">
+                                                               <mif:specializedClass>
+                                                                  <class name="Age" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                     <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                     </attribute>
+                                                                     <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodRisk" mnemonic="RSK"/>
+                                                                     </attribute>
+                                                                     <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                conformance="R"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                        <type name="CD"/>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                     </attribute>
+                                                                     <attribute name="value" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                        <type name="IVL">
+                                                                           <supplierBindingArgumentDatatype name="REAL"/>
+                                                                        </type>
+                                                                     </attribute>
+                                                                     <mif:association sortKey="1">
+                                                                        <mif:targetConnection name="pertinentInformation" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                              isMandatory="false"
+                                                                                              sortKey="BD________">
+                                                                           <derivationSupplier staticModelDerivationId="1" className="Act"
+                                                                                               associationEndName="outboundRelationship"/>
+                                                                           <mif:participantClass>
+                                                                              <class name="PertinentInformation" isAbstract="false">
+                                                                                 <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                                                                                 <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                            maximumMultiplicity="1"
+                                                                                            isMandatory="true"
+                                                                                            conformance="R">
+                                                                                    <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                        attributeName="typeCode"/>
+                                                                                    <type name="CS"/>
+                                                                                    <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipPertains" mnemonic="PERT"/>
+                                                                                 </attribute>
+                                                                                 <mif:association sortKey="1">
+                                                                                    <mif:targetConnection name="probability" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                                          isMandatory="false"
+                                                                                                          sortKey="BZ">
+                                                                                       <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                                                                           associationEndName="target"/>
+                                                                                       <mif:participantClass>
+                                                                                          <class name="Probability" isAbstract="false">
+                                                                                             <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                                             <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                                        maximumMultiplicity="1"
+                                                                                                        isMandatory="true"
+                                                                                                        conformance="R">
+                                                                                                <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                                                <type name="CS"/>
+                                                                                                <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                                             </attribute>
+                                                                                             <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                                        maximumMultiplicity="1"
+                                                                                                        isMandatory="true"
+                                                                                                        conformance="R">
+                                                                                                <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                                                <type name="CS"/>
+                                                                                                <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodRisk" mnemonic="RSK"/>
+                                                                                             </attribute>
+                                                                                             <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                                        isMandatory="false"
+                                                                                                        conformance="R"
+                                                                                                        isStructural="false">
+                                                                                                <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                                                <type name="CD"/>
+                                                                                                <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                                             </attribute>
+                                                                                             <attribute name="value" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                                        isMandatory="false"
+                                                                                                        isStructural="false">
+                                                                                                <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                                                <type name="REAL"/>
+                                                                                             </attribute>
+                                                                                          </class>
+                                                                                       </mif:participantClass>
+                                                                                    </mif:targetConnection>
+                                                                                    <mif:sourceConnection>
+                                                                                       <nonTraversableConnection participantClassName="PertinentInformation"/>
+                                                                                    </mif:sourceConnection>
+                                                                                 </mif:association>
+                                                                              </class>
+                                                                           </mif:participantClass>
+                                                                        </mif:targetConnection>
+                                                                        <mif:sourceConnection>
+                                                                           <nonTraversableConnection participantClassName="Age"/>
+                                                                        </mif:sourceConnection>
+                                                                     </mif:association>
+                                                                  </class>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                            <mif:specializationChild sortKey="2">
+                                                               <mif:specializedClass>
+                                                                  <class name="AnalysisResult" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                     <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                     </attribute>
+                                                                     <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodRisk" mnemonic="RSK"/>
+                                                                     </attribute>
+                                                                     <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                conformance="R"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                        <type name="CD"/>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                     </attribute>
+                                                                     <attribute name="value" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                        <type name="ANY"/>
+                                                                     </attribute>
+                                                                  </class>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                            <mif:specializationChild sortKey="3">
+                                                               <mif:specializedClass>
+                                                                  <class name="PercentageRisk" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                     <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                     </attribute>
+                                                                     <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodRisk" mnemonic="RSK"/>
+                                                                     </attribute>
+                                                                     <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                conformance="R"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                        <type name="CD"/>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                     </attribute>
+                                                                     <attribute name="value" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                        <type name="REAL"/>
+                                                                     </attribute>
+                                                                  </class>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                            <mif:specializationChild sortKey="4">
+                                                               <mif:specializedClass>
+                                                                  <mif:reference name="Probability"/>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                            <mif:specializationChild sortKey="5">
+                                                               <mif:specializedClass>
+                                                                  <class name="RelativeRisk" isAbstract="false">
+                                                                     <derivationSupplier staticModelDerivationId="1" className="Observation"/>
+                                                                     <attribute name="classCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActClassObservation" mnemonic="OBS"/>
+                                                                     </attribute>
+                                                                     <attribute name="moodCode" sortKey="2" isStructural="true" minimumMultiplicity="1"
+                                                                                maximumMultiplicity="1"
+                                                                                isMandatory="true"
+                                                                                conformance="R">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+                                                                        <type name="CS"/>
+                                                                        <supplierDomainSpecification codingStrength="CNE" valueSetName="ActMoodRisk" mnemonic="RSK"/>
+                                                                     </attribute>
+                                                                     <attribute name="code" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                conformance="R"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Act" attributeName="code"/>
+                                                                        <type name="CD"/>
+                                                                        <supplierDomainSpecification codingStrength="CWE" domainName="ActCode"/>
+                                                                     </attribute>
+                                                                     <attribute name="value" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                                                                                isMandatory="false"
+                                                                                isStructural="false">
+                                                                        <derivationSupplier staticModelDerivationId="1" className="Observation" attributeName="value"/>
+                                                                        <type name="REAL"/>
+                                                                     </attribute>
+                                                                  </class>
+                                                               </mif:specializedClass>
+                                                            </mif:specializationChild>
+                                                         </class>
+                                                      </mif:participantClass>
+                                                   </mif:targetConnection>
+                                                   <mif:sourceConnection>
+                                                      <nonTraversableConnection participantClassName="Component"/>
+                                                   </mif:sourceConnection>
+                                                </mif:association>
+                                             </class>
+                                          </mif:participantClass>
+                                       </mif:targetConnection>
+                                       <mif:sourceConnection>
+                                          <nonTraversableConnection participantClassName="PedigreeAnalysisResults"/>
+                                       </mif:sourceConnection>
+                                    </mif:association>
+                                 </class>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <nonTraversableConnection participantClassName="Risk"/>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <nonTraversableConnection participantClassName="FamilyHistory"/>
+               </mif:sourceConnection>
+            </mif:association>
+            <mif:association sortKey="4">
+               <mif:targetConnection name="component" minimumMultiplicity="0" maximumMultiplicity="*"
+                                     isMandatory="false"
+                                     sortKey="BE________">
+                  <derivationSupplier staticModelDerivationId="1" className="Act"
+                                      associationEndName="outboundRelationship"/>
+                  <mif:participantClass>
+                     <class name="Component2" isAbstract="false">
+                        <derivationSupplier staticModelDerivationId="1" className="ActRelationship"/>
+                        <attribute name="typeCode" sortKey="1" isStructural="true" minimumMultiplicity="1"
+                                   maximumMultiplicity="1"
+                                   isMandatory="true"
+                                   conformance="R">
+                           <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                               attributeName="typeCode"/>
+                           <type name="CS"/>
+                           <supplierDomainSpecification codingStrength="CNE" valueSetName="ActRelationshipHasComponent" mnemonic="COMP"/>
+                        </attribute>
+                        <mif:association sortKey="1">
+                           <mif:targetConnection name="clinicalGenomicChoice" minimumMultiplicity="1" maximumMultiplicity="1"
+                                                 isMandatory="false"
+                                                 sortKey="BZ">
+                              <derivationSupplier staticModelDerivationId="1" className="ActRelationship"
+                                                  associationEndName="target"/>
+                              <participantClassSpecialization className="A_GeneticLociUniversal" traversalName="geneticLoci"/>
+                              <participantClassSpecialization className="A_GeneticLocusUniversal" traversalName="geneticLocus"/>
+                              <participantClassSpecialization className="ClinicalObservation" traversalName="clinicalObservation"/>
+                              <mif:participantClass>
+                                 <mif:reference name="ClinicalGenomicChoice"/>
+                              </mif:participantClass>
+                           </mif:targetConnection>
+                           <mif:sourceConnection>
+                              <nonTraversableConnection participantClassName="Component2"/>
+                           </mif:sourceConnection>
+                        </mif:association>
+                     </class>
+                  </mif:participantClass>
+               </mif:targetConnection>
+               <mif:sourceConnection>
+                  <nonTraversableConnection participantClassName="FamilyHistory"/>
+               </mif:sourceConnection>
+            </mif:association>
+         </class>
+      </mif:specializedClass>
+   </mif:ownedEntryPoint>
+</mif:serializedStaticModel>

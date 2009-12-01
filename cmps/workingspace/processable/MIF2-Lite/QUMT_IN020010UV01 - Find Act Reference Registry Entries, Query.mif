@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Health Level Seven, Inc.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Health Level Seven, Inc. - initial design and content
+ *******************************************************************************/ 				
+				--><mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.5" name="020010"
+                 title="Act Reference Query">
+   <mif:packageLocation root="DEFN" section="IM" subSection="QU" domain="MT" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="020010"/>
+   <mif:invokingTriggerEvent root="DEFN" section="IM" subSection="QU" domain="MT" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="020010"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100"/>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:text>
+            <mif:p>Find Act Reference Registry Entries, Response</mif:p>
+         </mif:text>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="IM" subSection="QU" domain="MT" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="020020"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>
