@@ -11,6 +11,8 @@ package gov.nih.nci.cbiit.cmps.ui.jgraph;
 
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.properties.DefaultPropertiesSwitchController;
+import gov.nih.nci.cbiit.cmps.ui.tree.TreeTransferHandler;
+
 import java.util.EventObject;
 
 import javax.swing.JOptionPane;
@@ -30,8 +32,8 @@ import org.jgraph.graph.DefaultPort;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2009-11-03 18:13:21 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-12-01 17:17:38 $
  */
 public class LinkSelectionHighlighter implements GraphSelectionListener
 {
@@ -47,7 +49,7 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.6 2009-11-03 18:13:21 wangeug Exp $";  
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.7 2009-12-01 17:17:38 wangeug Exp $";  
 	private MiddlePanelJGraphController graphController;
 	public LinkSelectionHighlighter(MiddlePanelJGraphController controller)
 	{
@@ -62,16 +64,6 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 	public void valueChanged(GraphSelectionEvent e)
 	{
 		CmpsMappingPanel mappingPanel= graphController.getMappingPanel();
-		try
-        {
-            if (mappingPanel.isInDragDropMode())
-			    return;
-        }
-        catch(NullPointerException ne)
-        {
-            JOptionPane.showMessageDialog(mappingPanel, "You should input the source and target file names first(2).", "No Source or Target file", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
         mappingPanel.getMiddlePanel().getGraphController().setGraphSelected(true);
 		//the graph is in selection mode, do not set property pan for Element or Attribute
         if(!isAClearSelectionEvent(e))
@@ -148,6 +140,9 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2009/11/03 18:13:21  wangeug
+ * HISTORY: clean codes: keep MiddlePanelJGraphController only with MiddleMappingPanel
+ * HISTORY:
  * HISTORY: Revision 1.5  2009/11/02 14:52:08  wangeug
  * HISTORY: clean codes
  * HISTORY:
