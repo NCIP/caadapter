@@ -36,8 +36,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2009-11-24 18:30:14 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-12-01 16:45:45 $
  *
  */
 public class TransformTest {
@@ -76,10 +76,17 @@ public class TransformTest {
 	@Test
 	public void testMappingAndTransformation() throws JAXBException, XQException
 	{
+//		String mappingFile="workingspace/hl7v3/examples/testMapping.xml";//PORT_MT_TO_IN020001mapping.xml";
+//		String mappingFile="workingspace/hl7v3/examples/PORT_MT_TO_IN020001mapping.xml";
+//		String srcFile = "workingspace/hl7v3/examples/PORT_EX020001UV.xml";  
+//		String mappingFile="workingspace/simpleMapping/mapping.xml";
+//		String srcFile = "workingspace/simpleMapping/shiporder.xml";
+//		String mappingFile="workingspace/siblingMapping/mapping.xml";
+//		String srcFile = "workingspace/siblingMapping/shiporder.xml";
+//		String mappingFile="workingspace/parentChildInverted/mapping.xml";
+//		String srcFile = "workingspace/parentChildInverted/order.xml";
 		String mappingFile="workingspace/ISO_21090/example/mapping.xml";
 		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
-//		String mappingFile="workingspace/mapping1.xml";
-//		String srcFile = "workingspace/shiporder.xml";
 		Mapping map = MappingFactory.loadMapping(new File(mappingFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
@@ -100,8 +107,8 @@ public class TransformTest {
 		final String sep = System.getProperty("line.separator");
 		String queryString =
 			"declare variable $docName as xs:string external;" + sep +
-			"for $item_temp0 in doc($docName)/grouporder return <deliveries><item> {for $item_temp1 in $item_temp0/orderperson return <name>{data($item_temp1)}</name>}"+
-			" </item></deliveries>";
+			"for $item_temp0 in doc($docName)/PORT_MT020001UV01.AnnotatedECG return element result {element item {for $item_temp1 in $item_temp0/id return attribute id {data($item_temp1/@root)}, attribute myaattr {\"testing\"}}"+
+			" }";
 
 //			"<result>" +
 //			"{" +
@@ -120,7 +127,7 @@ public class TransformTest {
 		
 		System.out.println("TransformTest.testXQueryTransform()\n"+queryString);
 		XQueryTransformer tester= new XQueryTransformer();
-		String srcFile="workingspace/parentChildInverted/order.xml";
+		String srcFile="workingspace/hl7v3/examples/PORT_EX020001UV.xml";
 //		String srcFile = "workingspace/simpleMapping/shiporder.xml";//purchase.xml";
 //		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
 		tester.setFilename(srcFile);
@@ -130,7 +137,8 @@ public class TransformTest {
 
 	@Test
 	public void testCMPSTransform() throws XQException, JAXBException, IOException {
-		Mapping map = MappingFactory.loadMapping(new File("workingspace/mapping1.xml"));
+		String mapFile="workingspace/simpleMapping/mapping1.xml";
+		Mapping map = MappingFactory.loadMapping(new File(mapFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
 		//System.out.println("$$$$$$ query: \n"+queryString);
@@ -139,11 +147,13 @@ public class TransformTest {
 		w.close();
 		
 		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("workingspace/shiporder.xml");
+		tester.setFilename("workingspace/simpleMapping/shiporder.xml");
 		tester.setQuery(queryString);
-		w = new FileWriter("bin/tranform.out.xml");
-		w.write(tester.executeQuery());
-		w.close();
+		System.out.println("TransformTest.testCMPSTransform()..:\n"+tester.executeQuery());
+//		
+//		w = new FileWriter("bin/tranform.out.xml");
+//		w.write(tester.executeQuery());
+//		w.close();
 	}
 
 	@Test
@@ -189,6 +199,9 @@ public class TransformTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2009/11/24 18:30:14  wangeug
+ * HISTORY: add hl7 v3 example
+ * HISTORY:
  * HISTORY: Revision 1.6  2008/12/10 15:43:03  linc
  * HISTORY: Fixed component id generator and delete link.
  * HISTORY:
