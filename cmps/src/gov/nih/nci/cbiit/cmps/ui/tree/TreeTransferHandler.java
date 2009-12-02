@@ -8,6 +8,7 @@
 package gov.nih.nci.cbiit.cmps.ui.tree;
 
 import gov.nih.nci.cbiit.cmps.core.FunctionDef;
+import gov.nih.nci.cbiit.cmps.ui.common.CommonTransferHandler;
 import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionTypeNodeLoader;
@@ -22,7 +23,6 @@ import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JTree;
-import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -32,20 +32,13 @@ import javax.swing.tree.TreePath;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2009-11-03 18:31:15 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-12-02 18:46:50 $
  *
  */
-public class TreeTransferHandler extends TransferHandler {
+public class TreeTransferHandler extends CommonTransferHandler {
 
 	private CmpsMappingPanel panel;
-	public static final int READY = 0;
-	public static final int START = 1;
-	public static final int TRANSFER = 2;
-	public static final int IMPORT = 3;
-	
-	private int state = READY;
-	
 	/**
 	 * @param tree
 	 */
@@ -53,24 +46,12 @@ public class TreeTransferHandler extends TransferHandler {
 		this.panel = panel;
 	}
 
-	/**
-	 * @return the state
-	 */
-	public int getState() {
-		return state;
-	}
-
 	/* (non-Javadoc)
 	 * @see javax.swing.TransferHandler#canImport(javax.swing.TransferHandler.TransferSupport)
 	 */
 	@Override
 	public boolean canImport(TransferSupport info) {
-		//System.out.println("canImport:"+info);
-        if (!info.isDrop()) {
-            return false;
-        }
 
-        info.setShowDropLocation(true);
 
         if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) {
             return false;
@@ -84,9 +65,7 @@ public class TreeTransferHandler extends TransferHandler {
         if(path.getLastPathComponent() instanceof DefaultSourceTreeNode){
         	return false;
         }
-        this.state = TRANSFER;
         return true;
-
 	}
 
 	/* (non-Javadoc)
@@ -94,7 +73,6 @@ public class TreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	protected Transferable createTransferable(JComponent c) {
-		System.out.println("createTransferable:"+c);
 		JTree tree = (JTree)c;
 		TreePath path = tree.getSelectionPath();
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
@@ -105,65 +83,43 @@ public class TreeTransferHandler extends TransferHandler {
 			FunctionDef f =((FunctionDef)((FunctionTypeNodeLoader.MyTreeObject)node.getUserObject()).getObj()); 
 			pathString = f.getGroup()+":"+f.getName();
 		}
-		System.out.println("createTransferable: obj="+pathString);
-        this.state = START;
+		System.out.println("TreeTransferHandler.createTransferable() ..createTransferable: obj="+pathString);
 		return new StringSelection(pathString);
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.swing.TransferHandler#exportDone(javax.swing.JComponent, java.awt.datatransfer.Transferable, int)
-	 */
-	@Override
-	protected void exportDone(JComponent source, Transferable data, int action) {
-		// TODO Auto-generated method stub
-		System.out.println("exportDone:source="+source+", data="+data);
-        this.state = READY;
-
-		super.exportDone(source, data, action);
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.swing.TransferHandler#getSourceActions(javax.swing.JComponent)
-	 */
-	@Override
-	public int getSourceActions(JComponent c) {
-        return COPY_OR_MOVE;
-	}
 
 	/* (non-Javadoc)
 	 * @see javax.swing.TransferHandler#importData(javax.swing.TransferHandler.TransferSupport)
 	 */
 	@Override
 	public boolean importData(TransferSupport info) {
-		System.out.println("importData:"+info);
-        if (!canImport(info)) {
-            return false;
-        }
-        JTree.DropLocation dl = (JTree.DropLocation)info.getDropLocation();
-        TreePath path = dl.getPath();
-
         String data;
         try {
             data = (String)info.getTransferable().getTransferData(DataFlavor.stringFlavor);
         } catch (UnsupportedFlavorException e) {
+        	e.printStackTrace();
             return false;
         } catch (IOException e) {
+        	e.printStackTrace();
             return false;
         }
-
+       
+        JTree.DropLocation dl = (JTree.DropLocation)info.getDropLocation();
+        TreePath path = dl.getPath();
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        String targetData = UIHelper.getPathStringForNode(targetNode);
         DefaultMutableTreeNode sourceNode = UIHelper.findTreeNodeWithXmlPath((DefaultMutableTreeNode)panel.getSourceTree().getModel().getRoot(), data);
         
-        boolean ret = this.panel.getMiddlePanel().getGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);//.getMappingDataManager().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
-        this.state = IMPORT;
-
-        return true;
+        boolean ret = this.panel.getMiddlePanel().getGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
+        System.out.println("TreeTransferHandler.importData()..dragged object:"+data +"...accepted:"+ret);
+        return ret;
 	}
 
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2009/11/03 18:31:15  wangeug
+ * HISTORY: clean codes: keep MiddlePanelJGraphController only with MiddleMappingPanel
+ * HISTORY:
  * HISTORY: Revision 1.6  2009/10/28 16:45:56  wangeug
  * HISTORY: clean codes
  * HISTORY:
