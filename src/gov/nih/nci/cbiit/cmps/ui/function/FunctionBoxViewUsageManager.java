@@ -29,10 +29,10 @@ import java.util.List;
  * instance oriented, as each instance targets to one instance of mapping.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-12-02 18:48:54 $
  */
 public class FunctionBoxViewUsageManager
 {
@@ -40,6 +40,14 @@ public class FunctionBoxViewUsageManager
     //key: uuid of function instance, function instance.
     private Map functionInstanceMap;
 
+    private static final FunctionBoxViewUsageManager instance = new FunctionBoxViewUsageManager();
+
+
+	public static final FunctionBoxViewUsageManager getInstance()
+	{
+		return instance;
+	}
+	
     public FunctionBoxViewUsageManager()
     {
         clear();
@@ -152,4 +160,7 @@ public class FunctionBoxViewUsageManager
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/29 22:18:18  linc
+ * HISTORY      : function UI added.
+ * HISTORY      :
  */

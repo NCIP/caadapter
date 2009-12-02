@@ -12,6 +12,7 @@ package gov.nih.nci.cbiit.cmps.ui.function;
 
 import gov.nih.nci.cbiit.cmps.common.FunctionManager;
 import gov.nih.nci.cbiit.cmps.core.FunctionType;
+import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphTransferHandler;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 
 import javax.swing.JPanel;
@@ -29,10 +30,10 @@ import java.awt.dnd.DnDConstants;
  * This class displays a scrollable panel listing functions available in FunctionTypeImpl and organizes by Group name.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-12-02 18:47:37 $
  */
 public class FunctionLibraryPane extends JPanel// implements TreeSelectionListener
 {
@@ -68,7 +69,10 @@ public class FunctionLibraryPane extends JPanel// implements TreeSelectionListen
 			tree = new JTree(kindNode);
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			tree.setDragEnabled(true);
-			tree.setTransferHandler(parent.getDndHandler());
+			FunctionTransferHandler ftd=new FunctionTransferHandler();
+			parent.getMiddlePanel().getGraph().setTransferHandler(ftd);
+			tree.setTransferHandler(ftd);
+//			tree.setTransferHandler(parent.getDndHandler());
 			//new TreeDefaultDragTransferHandler(tree, DnDConstants.ACTION_LINK);
 
 			//Create the scroll pane and add the tree to it.
@@ -102,4 +106,7 @@ public class FunctionLibraryPane extends JPanel// implements TreeSelectionListen
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/29 22:18:18  linc
+ * HISTORY      : function UI added.
+ * HISTORY      :
  */
