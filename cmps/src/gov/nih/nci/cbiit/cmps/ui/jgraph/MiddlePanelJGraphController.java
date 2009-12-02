@@ -32,6 +32,7 @@ import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxDefaultPort;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxDefaultPortView;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxUserObject;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxViewManager;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxViewUsageManager;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
@@ -51,6 +52,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Hashtable;
@@ -67,8 +69,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.13 $
- * @date       $Date: 2009-11-03 18:33:37 $
+ * @version    $Revision: 1.14 $
+ * @date       $Date: 2009-12-02 18:48:44 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -95,7 +97,26 @@ public class MiddlePanelJGraphController
 		middlePanel=mappingPanel.getMiddlePanel();
 		initialization(false);
 	}
+	public boolean addFunction(FunctionDef function, Point2D startPoint)
+	{
+		if ( startPoint == null ) {// set to default value.
+			startPoint = new Point(25, 25);
+		}
 
+		ViewType functionViewtype=new ViewType();
+ 
+		functionViewtype.setX(BigInteger.valueOf((int)startPoint.getX()));
+		functionViewtype.setY(BigInteger.valueOf((int)startPoint.getY()));
+		functionViewtype.setHight(BigInteger.valueOf(200));
+		functionViewtype.setWidth(BigInteger.valueOf(200));
+		FunctionBoxUserObject functionBox=	FunctionBoxViewUsageManager.getInstance().createOneFunctionBoxUserObject(function, functionViewtype, mappingPanel.getRootContainer());
+ 
+		if ( functionBox == null ) {
+			return false;
+		}
+		return addFunctionInstance(functionBox);
+	}
+	
 	//	private FunctionBoxViewUsageManager usageManager;
 
 	private boolean addFunctionInstance(FunctionBoxUserObject functionInstance)
@@ -1021,6 +1042,9 @@ public class MiddlePanelJGraphController
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.13  2009/11/03 18:33:37  wangeug
+ * HISTORY: clean codes: add JScroll panel as instance variable
+ * HISTORY:
  * HISTORY: Revision 1.12  2009/11/03 18:13:21  wangeug
  * HISTORY: clean codes: keep MiddlePanelJGraphController only with MiddleMappingPanel
  * HISTORY:

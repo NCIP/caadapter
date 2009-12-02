@@ -64,8 +64,8 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.15 $
- * @date       $Date: 2009-11-23 18:31:44 $
+ * @version    $Revision: 1.16 $
+ * @date       $Date: 2009-12-02 18:53:16 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -192,7 +192,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		sTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		sTree.setTransferHandler(getDndHandler());
 		sTree.setDragEnabled(true);
-		sTree.setDropMode(DropMode.ON);
+//		sTree.setDropMode(DropMode.ON);
 		sTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		sourceScrollPane.setViewportView(sTree);
 		sTree.expandAll();
@@ -317,6 +317,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
 		MiddlePanelJGraphController graphController = new MiddlePanelJGraphController(middlePanel.getGraphScrollPane(), this);
 		middlePanel.setGraphController(graphController);
+		middlePanel.getGraph().setDropEnabled(true);
 		leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
 		return leftRightSplitPane;
 	}
@@ -662,14 +663,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		return false;
 	}
 
-	/**
-	 * Return whether the mapping module is in drag-and-drop mode.
-	 * @return whether the mapping module is in drag-and-drop mode.
-	 */
-	public boolean isInDragDropMode()
-	{
-		return dndHandler.getState()!=TreeTransferHandler.READY;
-	}
 
 	protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile)throws Exception
 	{
@@ -904,6 +897,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.15  2009/11/23 18:31:44  wangeug
+ * HISTORY: create new package: ui.main
+ * HISTORY:
  * HISTORY: Revision 1.14  2009/11/03 18:32:54  wangeug
  * HISTORY: clean codes: keep MiddlePanelJGraphController only with MiddleMappingPanel
  * HISTORY:
