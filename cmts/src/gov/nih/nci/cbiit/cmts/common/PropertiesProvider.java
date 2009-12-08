@@ -6,9 +6,9 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.common;
+package gov.nih.nci.cbiit.cmts.common;
 
-import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesResult;
+import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
 
 
 

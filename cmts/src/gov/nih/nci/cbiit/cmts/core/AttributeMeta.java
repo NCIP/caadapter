@@ -6,13 +6,13 @@
 //
 
 
-package gov.nih.nci.cbiit.cmps.core;
+package gov.nih.nci.cbiit.cmts.core;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesResult;
+import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

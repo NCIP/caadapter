@@ -7,12 +7,12 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.mapping;
+package gov.nih.nci.cbiit.cmts.ui.mapping;
 
 
 
 
-import gov.nih.nci.cbiit.cmps.ui.common.ToolBarHandler;
+import gov.nih.nci.cbiit.cmts.ui.common.ToolBarHandler;
 
 import javax.swing.*;
 import java.util.Collections;

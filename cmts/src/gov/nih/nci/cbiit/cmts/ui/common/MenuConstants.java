@@ -6,7 +6,7 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.common;
+package gov.nih.nci.cbiit.cmts.ui.common;
 
 /**
  * This class defines a list of menu names that will be referenced across the system.

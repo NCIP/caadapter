@@ -6,4 +6,4 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://cmps.cbiit.nci.nih.gov/core")
-package gov.nih.nci.cbiit.cmps.core;
+package gov.nih.nci.cbiit.cmts.core;

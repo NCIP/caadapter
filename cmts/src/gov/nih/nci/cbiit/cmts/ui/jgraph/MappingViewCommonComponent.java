@@ -7,20 +7,20 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
-import gov.nih.nci.cbiit.cmps.common.PropertiesProvider;
-import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
-import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
-import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesResult;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultTargetTreeNode;
-import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.common.PropertiesProvider;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultTargetTreeNode;
+import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;

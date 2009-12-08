@@ -6,13 +6,13 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.tree;
+package gov.nih.nci.cbiit.cmts.ui.tree;
 
-import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmps.core.BaseMeta;
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmts.core.BaseMeta;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;

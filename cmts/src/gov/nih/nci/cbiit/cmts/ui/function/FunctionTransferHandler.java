@@ -1,4 +1,4 @@
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
@@ -13,13 +13,13 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
-import gov.nih.nci.cbiit.cmps.ui.common.CommonTransferHandler;
-import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
-import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
-import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.ui.common.CommonTransferHandler;
+import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 
 
 

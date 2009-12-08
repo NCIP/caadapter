@@ -5,16 +5,16 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.mapping;
+package gov.nih.nci.cbiit.cmts.ui.mapping;
 
 import org.jgraph.graph.GraphModel;
 
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelGraphModel;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraph;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphScrollAdjustmentAdapter;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphViewFactory;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelScrollAdjustmentCoordinator;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelGraphModel;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraph;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphScrollAdjustmentAdapter;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphViewFactory;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelScrollAdjustmentCoordinator;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

@@ -5,7 +5,7 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.transform;
+package gov.nih.nci.cbiit.cmts.transform;
 /**
  * Define the method to watch progress of a transformation service
  *  

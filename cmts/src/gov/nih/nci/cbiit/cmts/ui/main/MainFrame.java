@@ -5,14 +5,14 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.main;
+package gov.nih.nci.cbiit.cmts.ui.main;
 
 
-import gov.nih.nci.cbiit.cmps.ui.common.ContextManager;
-import gov.nih.nci.cbiit.cmps.ui.common.ContextManagerClient;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
-import gov.nih.nci.cbiit.cmps.ui.mapping.MainToolBarHandler;
+import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
+import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MainToolBarHandler;
 
 import javax.swing.*;
 

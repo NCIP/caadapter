@@ -7,7 +7,7 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.common;
+package gov.nih.nci.cbiit.cmts.common;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

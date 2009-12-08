@@ -6,11 +6,11 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
-import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
-import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
-import gov.nih.nci.cbiit.cmps.ui.tree.MappingTargetTree;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
+import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
 
 import javax.swing.JTree;
 import javax.swing.JScrollPane;

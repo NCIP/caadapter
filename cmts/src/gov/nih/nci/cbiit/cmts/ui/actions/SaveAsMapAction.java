@@ -6,15 +6,15 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
 
-import gov.nih.nci.cbiit.cmps.core.Mapping;
-import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
-import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

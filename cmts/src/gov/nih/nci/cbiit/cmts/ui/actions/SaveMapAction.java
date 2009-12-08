@@ -6,10 +6,10 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
-import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.Icon;
 import java.awt.event.ActionEvent;

@@ -6,7 +6,7 @@
 //
 
 
-package gov.nih.nci.cbiit.cmps.core;
+package gov.nih.nci.cbiit.cmts.core;
 
 import java.util.ArrayList;
 import java.util.List;

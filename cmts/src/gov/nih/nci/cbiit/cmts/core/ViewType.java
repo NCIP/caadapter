@@ -6,7 +6,7 @@
 //
 
 
-package gov.nih.nci.cbiit.cmps.core;
+package gov.nih.nci.cbiit.cmts.core;
 
 import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;

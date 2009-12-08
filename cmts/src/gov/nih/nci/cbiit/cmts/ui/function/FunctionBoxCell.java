@@ -6,10 +6,10 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
-import gov.nih.nci.cbiit.cmps.core.FunctionData;
-import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
+import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultGraphCell;

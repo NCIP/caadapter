@@ -7,9 +7,9 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.common;
+package gov.nih.nci.cbiit.cmts.ui.common;
 
-import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.JFrame;
 import javax.swing.Action;

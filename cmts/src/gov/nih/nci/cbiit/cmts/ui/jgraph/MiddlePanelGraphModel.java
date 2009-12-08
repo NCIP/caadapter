@@ -5,14 +5,14 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.Edge;
 
-import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
