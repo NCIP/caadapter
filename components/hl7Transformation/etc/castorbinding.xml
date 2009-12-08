@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<cbf:binding xmlns:cbf="http://www.castor.org/SourceGenerator/Binding" defaultBindingType='type'>
+    <cbf:namingXML>
+        <cbf:elementName>
+            <cbf:prefix>C_</cbf:prefix>
+        </cbf:elementName>
+    </cbf:namingXML>
+</cbf:binding> 
