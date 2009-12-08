@@ -1,0 +1,33 @@
+cd dist\webstart
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 BrowserLauncher2-all-10rc4.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 DataViewer_OpenSource_DnD.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 ant.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 caAdapter.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 caadapterHl7.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 castor-0.9.9.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 client.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 commons-collections-3.2.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 commons-logging-1.0.4.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 cts.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 dom4j-1.4.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 hibernate3.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 hl7message.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 javasig.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 jaxen-jdom.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 jdom.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 jgraph.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 knuHL7V2tree.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 log4j-1.2.8.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 mif.zip myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 ojdbc14.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 ostermillerutils_1_04_03_for_java_1_4.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 poi-2.5.1-final-20040804.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 saxon8.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 serialMif.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 xbean.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 xbean_xpath.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 xerces262-src.zip myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 xercesImpl.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 xmi.in.out.jar myAlias
+jarsigner -keystore myKeyStore -storepass mysecret -keypass saic123 xml-apis.jar myAlias
+cd ..\..

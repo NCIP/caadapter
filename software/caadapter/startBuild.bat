@@ -1,0 +1,1 @@
+ant -logger org.apache.tools.ant.listener.MailLogger
