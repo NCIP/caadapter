@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="components/common/src"/>
+	<classpathentry kind="src" path="components/hl7Transformation/src"/>
+	<classpathentry kind="src" path="components/hl7Transformation/test/src"/>
+	<classpathentry kind="src" path="components/sdtmTransformation/src"/>
+	<classpathentry kind="src" path="components/sdtmTransformation/test/src"/>
+	<classpathentry kind="src" path="components/modelMapping/src"/>
+	<classpathentry kind="src" path="components/dataviewer/src"/>
+	<classpathentry kind="src" path="components/userInterface/src"/>
+	<classpathentry kind="src" path="components/userInterface/resources"/>
+	<classpathentry kind="src" path="components/webservices/src"/>
+	<classpathentry kind="src" path="gencode"/>
+	<classpathentry kind="src" path="components/common/gencode"/>
+	<classpathentry kind="src" path="components/hl7Transformation/gencode"/>
+	<classpathentry excluding="apiTest/|webServiceClient/TestCaadapterWebservice.java" kind="src" path="demo"/>
+	<classpathentry kind="src" path="etc"/>
+	<classpathentry including="LocalCodegenConfig.xml|caadapter-resources.properties|castorbinding.xml|java.policy" kind="src" path="conf"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commonModuleLib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/mmsModuleLib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/sdtmModuleLib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/wsModuleLIb"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/dataviewerLib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/uiModuleLib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/caadapterProjectLib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/axisLib"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>
