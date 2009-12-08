@@ -7,12 +7,12 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
 
-import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
-import gov.nih.nci.cbiit.cmps.ui.common.ContextManager;
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
+import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 
 import javax.swing.Icon;
 import java.awt.event.ActionEvent;

@@ -6,7 +6,7 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.tree;
+package gov.nih.nci.cbiit.cmts.ui.tree;
 
 
 import javax.swing.tree.DefaultMutableTreeNode;

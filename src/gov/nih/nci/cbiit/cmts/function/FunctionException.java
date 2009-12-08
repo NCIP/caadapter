@@ -6,9 +6,9 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.function;
+package gov.nih.nci.cbiit.cmts.function;
 
-import gov.nih.nci.cbiit.cmps.common.ApplicationException;
+import gov.nih.nci.cbiit.cmts.common.ApplicationException;
 
 
 

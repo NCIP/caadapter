@@ -7,12 +7,12 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
-import gov.nih.nci.cbiit.cmps.core.ViewType;
-import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.core.ViewType;
+import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 
 import javax.swing.*;
 import java.beans.PropertyDescriptor;

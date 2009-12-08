@@ -7,10 +7,10 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.message.OpenMessageFrontPage;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.message.OpenMessageFrontPage;
 
 import javax.swing.*;
 import java.awt.*;

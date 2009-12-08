@@ -1,7 +1,7 @@
-package gov.nih.nci.cbiit.cmps.ui.tree;
+package gov.nih.nci.cbiit.cmts.ui.tree;
 
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
 
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;

@@ -5,7 +5,7 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.mapping;
+package gov.nih.nci.cbiit.cmts.mapping;
 
 import java.io.File;
 import java.util.List;
@@ -19,18 +19,18 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import gov.nih.nci.cbiit.cmps.common.XSDParser;
-import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmps.core.BaseMeta;
-import gov.nih.nci.cbiit.cmps.core.Component;
-import gov.nih.nci.cbiit.cmps.core.ComponentType;
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
-import gov.nih.nci.cbiit.cmps.core.KindType;
-import gov.nih.nci.cbiit.cmps.core.LinkType;
-import gov.nih.nci.cbiit.cmps.core.LinkpointType;
-import gov.nih.nci.cbiit.cmps.core.Mapping;
-import gov.nih.nci.cbiit.cmps.core.Mapping.Components;
-import gov.nih.nci.cbiit.cmps.core.Mapping.Links;
+import gov.nih.nci.cbiit.cmts.common.XSDParser;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmts.core.BaseMeta;
+import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ComponentType;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.core.KindType;
+import gov.nih.nci.cbiit.cmts.core.LinkType;
+import gov.nih.nci.cbiit.cmts.core.LinkpointType;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.core.Mapping.Components;
+import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
 
 /**
  * This class is used to generate CMPS Mapping
@@ -118,14 +118,14 @@ public class MappingFactory {
 	}
 	
 	public static Mapping loadMapping(File f) throws JAXBException{
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Unmarshaller u = jc.createUnmarshaller();
 		JAXBElement<Mapping> jaxbElmt = u.unmarshal(new StreamSource(f), Mapping.class);
 		return  jaxbElmt.getValue();
 	}
 	
 	public static void saveMapping(File f, Mapping m) throws JAXBException {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement<Mapping>(new QName("mapping"),Mapping.class, m), f);

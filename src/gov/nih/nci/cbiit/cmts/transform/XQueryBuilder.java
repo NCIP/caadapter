@@ -5,14 +5,14 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.transform;
+package gov.nih.nci.cbiit.cmts.transform;
 
-import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmps.core.Component;
-import gov.nih.nci.cbiit.cmps.core.ComponentType;
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
-import gov.nih.nci.cbiit.cmps.core.LinkType;
-import gov.nih.nci.cbiit.cmps.core.Mapping;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ComponentType;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.core.LinkType;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
 
 import java.util.HashMap;
 import java.util.List;

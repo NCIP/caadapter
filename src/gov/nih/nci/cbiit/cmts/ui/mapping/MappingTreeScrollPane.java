@@ -5,10 +5,10 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.mapping;
+package gov.nih.nci.cbiit.cmts.ui.mapping;
 
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
-import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTree;

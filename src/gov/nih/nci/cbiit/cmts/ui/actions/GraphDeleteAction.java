@@ -7,15 +7,15 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
 
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MappingViewCommonComponent;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MappingViewCommonComponent;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;

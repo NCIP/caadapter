@@ -5,7 +5,7 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.common;
+package gov.nih.nci.cbiit.cmts.ui.common;
 
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.Clipboard;
@@ -41,7 +41,7 @@ public class TransferableNode implements Serializable, ClipboardOwner, Transfera
 	static
 	{
 		NODE_FLAVOR = new DataFlavor(TransferableNode.class, "TransferableNode");
-		LOCAL_NODE_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + "; class=gov.nih.nci.cbiit.cmps.ui.common.TransferableNode", "Local TransferableNode");
+		LOCAL_NODE_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + "; class=gov.nih.nci.cbiit.cmts.ui.common.TransferableNode", "Local TransferableNode");
 	}
 
 	public static final DataFlavor[] transferDataFlavors = {NODE_FLAVOR, LOCAL_NODE_FLAVOR};

@@ -6,12 +6,12 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
 
-import gov.nih.nci.cbiit.cmps.common.FunctionManager;
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.common.FunctionManager;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 
 import java.util.*;
 

@@ -7,13 +7,13 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
 
-import gov.nih.nci.cbiit.cmps.common.FunctionManager;
-import gov.nih.nci.cbiit.cmps.core.FunctionType;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphTransferHandler;
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.common.FunctionManager;
+import gov.nih.nci.cbiit.cmts.core.FunctionType;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphTransferHandler;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;

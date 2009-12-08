@@ -6,10 +6,10 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultMappableTreeNode;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultMappableTreeNode;
 
 import java.util.List;
 import java.util.Map;

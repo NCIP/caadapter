@@ -7,7 +7,7 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.message;
+package gov.nih.nci.cbiit.cmts.ui.message;
 
 import javax.swing.*;
 import java.awt.*;

@@ -6,7 +6,7 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import org.jgraph.graph.*;
 

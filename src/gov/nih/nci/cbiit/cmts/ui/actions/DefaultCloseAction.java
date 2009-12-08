@@ -6,11 +6,11 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
-import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;

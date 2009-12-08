@@ -7,7 +7,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.message;
+package gov.nih.nci.cbiit.cmts.ui.message;
 
 
 import javax.swing.BorderFactory;

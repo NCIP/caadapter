@@ -5,7 +5,7 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.common;
+package gov.nih.nci.cbiit.cmts.common;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -17,7 +17,7 @@ import org.w3c.dom.DOMError;
 import org.w3c.dom.DOMErrorHandler;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-import gov.nih.nci.cbiit.cmps.core.*; 
+import gov.nih.nci.cbiit.cmts.core.*; 
 
 /**
  * This class parses XSD into CMPS Core Model object
