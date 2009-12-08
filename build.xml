@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="caAdapter" default="dist.bin" basedir=".">
+<project name="caAdapter" default="build-all" basedir=".">
     <description>
         **************************************************************************
         caAdapter ANT BUILD SCRIPT
@@ -73,7 +73,7 @@
     <property name="ui.module.build" value="${ui.module.home}/build.xml"/>
 
     <!-- Define webservices module properties !-->
-    <property name="ws.module.home" value="${basedir}/components/webservices"/>
+    <property name="ws.module.home" value="${basedir}/../hl7mtsWebservices"/>
     <property name="ws.module.build" value="${ws.module.home}/build.xml"/>
 
     <target name="compile" depends="build.modules">
@@ -161,7 +161,7 @@
 				<include name="resources/images/*.*"/>
 				<include name="lib/**"/>
 			</zipfileset>	
-			<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
+			<zipfileset dir="${ws.module.home}" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
 			<zipfileset dir="./${project.docs.home}" includes="*.pdf,*.doc, *Help.zip" prefix="${project.docs.home}"/>
 			<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
 					webstartconf/**, webstart/caadapter-mms.jnlp, webstart/index-mms.html, webstart/web.xml, webstart/myKeyStore"/>
