@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+      Clinical Data Interchange Standards Consortium (CDISC)
+      Operational Data Model (ODM) for clinical data interchange
+
+      You can learn more about CDISC standards efforts at 
+      http://www.cdisc.org/standards/index.html
+  -->
+
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+     xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 ODM1-3-0.xsd"
+
+     ODMVersion="1.3"
+     FileOID="000-00-0000"
+     FileType="Transactional"
+     Description="Sample ItemData Extension"
+
+     AsOfDateTime="2005-03-31T00:00:00"
+     CreationDateTime="2005-04-04T07:57:00" >
+
+   <Study OID="StudyOID">
+
+      <!--
+            GlobalVariables is a REQUIRED section in ODM markup
+        -->
+      <GlobalVariables>
+         <StudyName>RawValue</StudyName>
+         <StudyDescription>This file contains test data</StudyDescription>
+         <ProtocolName>CDISC-Protocol-00-000</ProtocolName>
+      </GlobalVariables>
+
+      <BasicDefinitions />
+
+      <!--
+            Internal ODM markup required metadata
+            Illustrates use of ConditionOID attribute on references
+        -->
+      <MetaDataVersion OID="v1.3.0" Name="Version 1.3.0">
+         <Protocol>
+            <StudyEventRef StudyEventOID="StudyEventOID" OrderNumber="1" Mandatory="Yes" CollectionExceptionConditionOID="Cond.001" />
+         </Protocol>
+
+         <StudyEventDef OID="StudyEventOID" Name="Study Event Definition" Repeating="Yes" Type="Common">
+            <Description>
+                <TranslatedText xml:lang="en">English:   The simple English textual description</TranslatedText>
+                <TranslatedText xml:lang="fr">Français:  La description textuelle française simple</TranslatedText>
+                <TranslatedText xml:lang="es">Español:   La descripción textual española simple</TranslatedText>
+                <TranslatedText xml:lang="de">Deutscher: Die einfache deutsche Textbeschreibung</TranslatedText>
+            </Description>            
+            <FormRef FormOID="FormOID" OrderNumber="1" Mandatory="No" CollectionExceptionConditionOID="Cond.001"/>
+         </StudyEventDef>
+
+         <FormDef OID="FormOID" Name="Form Definition" Repeating="Yes">
+            <Description>
+                <TranslatedText xml:lang="en">English:   The simple English textual description</TranslatedText>
+                <TranslatedText xml:lang="fr">Français:  La description textuelle française simple</TranslatedText>
+                <TranslatedText xml:lang="es">Español:   La descripción textual española simple</TranslatedText>
+                <TranslatedText xml:lang="de">Deutscher: Die einfache deutsche Textbeschreibung</TranslatedText>
+            </Description>            
+            <ItemGroupRef ItemGroupOID="PARTIAL" Mandatory="No" CollectionExceptionConditionOID="Cond.002"/>
+         </FormDef>
+
+
+         <!--
+               Columns defined in the table
+           -->
+         <ItemGroupDef OID="PARTIAL" Repeating="Yes"
+                       SASDatasetName="PARTIAL"
+                       Name="ItemData Extension"
+                       Domain="RawValue"
+                       Comment="Sample ItemData Extension">
+            <Description>
+                <TranslatedText xml:lang="en">English:   The simple English textual description</TranslatedText>
+                <TranslatedText xml:lang="fr">Français:  La description textuelle française simple</TranslatedText>
+                <TranslatedText xml:lang="es">Español:   La descripción textual española simple</TranslatedText>
+                <TranslatedText xml:lang="de">Deutscher: Die einfache deutsche Textbeschreibung</TranslatedText>
+            </Description>            
+            <ItemRef ItemOID="ID.PD"   OrderNumber="1" Mandatory="No" />
+            <ItemRef ItemOID="ID.PT"   OrderNumber="2" Mandatory="No" />
+            <ItemRef ItemOID="ID.PDT"  OrderNumber="3" Mandatory="No" />
+            <ItemRef ItemOID="ID.DDT"  OrderNumber="4" Mandatory="No" />
+            <ItemRef ItemOID="ID.IDT"  OrderNumber="5" Mandatory="No" />
+            <ItemRef ItemOID="ID.NDT"  OrderNumber="6" Mandatory="No" />
+         </ItemGroupDef>
+
+
+         <!--
+               Column attributes as defined in the table
+               Demonstration of the Description element in v1.3.0 (no error reported)
+         -->
+         <ItemDef OID="ID.PD"    SASFieldName="PD"   Name="PD"  DataType="partialDate" />
+         <ItemDef OID="ID.PT"    SASFieldName="PT"   Name="PT"  DataType="partialTime" />
+         <ItemDef OID="ID.PDT"   SASFieldName="PDT"  Name="PDT" DataType="partialDatetime" />
+         <ItemDef OID="ID.DDT"   SASFieldName="DDT"  Name="DDT" DataType="durationDatetime" />
+         <ItemDef OID="ID.IDT"   SASFieldName="IDT"  Name="IDT" DataType="intervalDatetime" />
+         <ItemDef OID="ID.NDT"   SASFieldName="NDT"  Name="NDT" DataType="incompleteDatetime">
+            <Description>
+                <TranslatedText xml:lang="en">English:   The simple English textual description</TranslatedText>
+                <TranslatedText xml:lang="fr">Français:  La description textuelle française simple</TranslatedText>
+                <TranslatedText xml:lang="es">Español:   La descripción textual española simple</TranslatedText>
+                <TranslatedText xml:lang="de">Deutscher: Die einfache deutsche Textbeschreibung</TranslatedText>
+            </Description>            
+         </ItemDef>
+
+
+      <!--
+           Demonstration of the new EnumeratedItem element in CodeList for v1.3.0
+           to support simple enumerations of acceptable values not requiring translation
+           new datatpe of enum (no error reported)
+        -->
+         <CodeList OID="CL.$SEX" SASFormatName="$SEX"  Name="$SEX" DataType="string">
+            <EnumeratedItem CodedValue="F" />
+            <EnumeratedItem CodedValue="M" />
+         </CodeList>
+
+
+
+
+
+
+
+
+
+      <!--
+           Demonstration of the new ConditionDef element for v1.3.0
+        -->
+         <ConditionDef OID="Cond.001" Name="Red"> 
+            <Description>
+               <TranslatedText xml:lang="en">English:   This item should be collected only if the subject is male</TranslatedText>
+               <TranslatedText xml:lang="fr">Français:  Cet article devrait être rassemblé seulement si le sujet est masculin</TranslatedText>
+               <TranslatedText xml:lang="es">Español:   Este artículo debe ser recogido solamente si el tema es masculino</TranslatedText>
+               <TranslatedText xml:lang="de">Deutscher: Dieses einzelteil sollte gesammelt werden, nur wenn das thema männlich ist</TranslatedText>
+            </Description>
+            <FormalExpression Context="XPath">../ItemDef[@OID='Sex'][@Value='M']</FormalExpression>
+         </ConditionDef>
+
+         <ConditionDef OID="Cond.002" Name="Orange"> 
+            <Description>
+               <TranslatedText xml:lang="en">
+                  <![CDATA[
+                  this is a test. this is only a test.
+                  had this been an actual condition, you would have been instructed           
+                  where to tune in your area for important news & information.
+                  ]]>
+               </TranslatedText>
+            </Description>
+         </ConditionDef>
+
+
+
+      </MetaDataVersion>
+   </Study>
+
+
+   <!--
+         Administrative metadata
+     -->
+   <AdminData StudyOID="StudyOID">
+      <User OID="USR.inv001" UserType="Investigator">
+              <FullName>John Smith, M.D.</FullName>
+              <FirstName>John</FirstName>
+              <LastName>Smith</LastName>
+              <Organization>Roswell Park</Organization>
+              <LocationRef LocationOID="LOC.site001"/>
+      </User>
+      <User OID="USR.inv002" UserType="Investigator">
+              <FullName>Jane Doe, M.D.</FullName>
+              <FirstName>Jane</FirstName>
+              <LastName>Doe</LastName>
+              <Organization>Fred Hutchinson</Organization>
+              <LocationRef LocationOID="LOC.site001"/>
+      </User>
+
+      
+      <Location OID="LOC.CDISCHome" Name="CDISC Headquarters" LocationType="Other">
+              <MetaDataVersionRef StudyOID="StudyOID" MetaDataVersionOID="v1.3.0" EffectiveDate="2001-10-19"/>
+      </Location>
+      <Location OID="LOC.site001" Name="Roswell Park" LocationType="Site">
+              <MetaDataVersionRef StudyOID="StudyOID" MetaDataVersionOID="v1.3.0" EffectiveDate="2001-10-19"/>
+      </Location>
+
+
+      <SignatureDef OID="SD.cdisc001-es" Methodology="Electronic">
+              <Meaning>Signature Meaning</Meaning>
+              <LegalReason>Legal Reason</LegalReason>
+      </SignatureDef>
+   </AdminData>
+
+
+   <!--
+         Clinical Data   : RawValue
+                           ItemData Extension
+                           Sample ItemData Extension
+     -->
+   <ClinicalData StudyOID="StudyOID" MetaDataVersionOID="v1.3.0">
+      <SubjectData SubjectKey="001">
+         <StudyEventData StudyEventOID="StudyEventOID" StudyEventRepeatKey="1">
+            <FormData FormOID="FormOID" FormRepeatKey="1">
+               <ItemGroupData ItemGroupOID="PARTIAL" ItemGroupRepeatKey="ALL ATTRIBUTE" TransactionType="Insert">
+                  <ItemData ItemOID="ID.PD"  Value="1959-12" />
+                  <ItemData ItemOID="ID.PT"  Value="12" />
+                  <ItemData ItemOID="ID.PDT" Value="1959-12-11T12" />
+                  <ItemData ItemOID="ID.DDT" Value="P03Y11M07DT16H" />
+                  <ItemData ItemOID="ID.IDT" Value="19591211/20031107T1624" />
+                  <ItemData ItemOID="ID.NDT" Value="1959---11T12:34:56-05:00" />
+               </ItemGroupData>
+            </FormData>
+         </StudyEventData>
+      </SubjectData>
+
+
+      <!--
+           Demonstrates use of ItemData* elements for data (no error reported).
+        -->
+      <SubjectData SubjectKey="002">
+         <StudyEventData StudyEventOID="StudyEventOID" StudyEventRepeatKey="1">
+            <FormData FormOID="FormOID" FormRepeatKey="1">
+               <ItemGroupData ItemGroupOID="PARTIAL" ItemGroupRepeatKey="ALL ELEMENT" TransactionType="Insert">
+                  <ItemDataPartialDate ItemOID="ID.PD">1959-12</ItemDataPartialDate>
+                  <ItemDataPartialTime ItemOID="ID.PT">12</ItemDataPartialTime>
+                  <ItemDataPartialDatetime  ItemOID="ID.PDT">1959-12-11T12</ItemDataPartialDatetime>
+                  <ItemDataDurationDatetime ItemOID="ID.DDT">P03Y11M07DT16H</ItemDataDurationDatetime>
+                  <ItemDataIntervalDatetime ItemOID="ID.IDT">1959-12-11/2003-11-07T16:24</ItemDataIntervalDatetime>         
+                  <ItemDataIncompleteDatetime ItemOID="ID.NDT">1959---11T12:34:56-05:00</ItemDataIncompleteDatetime>
+               </ItemGroupData>
+            </FormData>
+         </StudyEventData>
+      </SubjectData>
+
+
+      <!--
+           Demonstrates no mixture of ItemData/ItemDataAny elements (error reported).
+           ID.DDT & ID.IDT have an audit record reference (no error reported)
+        -->
+      <SubjectData SubjectKey="003">
+         <StudyEventData StudyEventOID="StudyEventOID" StudyEventRepeatKey="1">
+            <FormData FormOID="FormOID" FormRepeatKey="1">
+               <ItemGroupData ItemGroupOID="PARTIAL" ItemGroupRepeatKey="MIXED ATTRIBUTE/ELEMENT" TransactionType="Insert">
+                  <ItemData    ItemOID="ID.PD"  Value="1959-12" />
+                  <ItemDataAny ItemOID="ID.PT">noon</ItemDataAny>
+                  <ItemData    ItemOID="ID.PDT" Value="1959-12-11T12"/>
+                  <ItemDataDurationDatetime ItemOID="ID.DDT" AuditRecordID="Audit-001" AnnotationID="Anno-001" SignatureID="Signature-001">P03Y11M07DT16H</ItemDataDurationDatetime>
+                  <ItemDataIntervalDatetime ItemOID="ID.IDT" AuditRecordID="Audit-001" AnnotationID="Anno-002">1959-12-11/2003-11-07T16:24</ItemDataIntervalDatetime>
+                  <ItemData ItemOID="ID.NDT" Value="1959---11T12:34:56-05:00" />
+               </ItemGroupData>
+            </FormData>
+         </StudyEventData>
+      </SubjectData>
+
+
+      <!--
+           Demonstrates new containers for AuditRecord, Signature, and Annotation (no error reported).
+        -->
+      <AuditRecords>
+         <AuditRecord ID="Audit-001">
+            <UserRef UserOID = "USR.inv001"/>
+            <LocationRef LocationOID = "LOC.site001"/>
+            <DateTimeStamp>2002-02-04T14:11:32-05:00</DateTimeStamp>
+            <SourceID>46881304</SourceID>
+         </AuditRecord>
+      </AuditRecords>
+      
+      <Signatures>
+         <Signature ID="Signature-001">
+             <UserRef UserOID="USR.inv001"></UserRef>
+             <LocationRef LocationOID="LOC.site001"></LocationRef>
+             <SignatureRef SignatureOID="SD.cdisc001-es"></SignatureRef>
+             <DateTimeStamp>2002-02-04T14:11:32-05:00</DateTimeStamp>
+         </Signature>
+      </Signatures>
+      
+      <Annotations>
+         <Annotation ID="Anno-001" SeqNum="001">
+             <Comment>
+                <![CDATA[
+                   This item had an audit, a signature, & an annotation.
+                ]]>
+             </Comment>
+         </Annotation>
+
+         <Annotation ID="Anno-002" SeqNum="001">
+             <Comment>
+                <![CDATA[
+                This item had only an annotation.
+                But notice that it has a "duplicate" sequence number.
+                This key/value relationship curiosity came out of the HL7 RIM Mapping exercise.
+                ]]>
+             </Comment>
+         </Annotation>
+      </Annotations>
+   
+   </ClinicalData>
+</ODM>

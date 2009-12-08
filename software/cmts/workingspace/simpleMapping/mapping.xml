@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
+    <components>
+        <component location="C:\eclipseJ2ee\workspace\cmps\workingspace\simpleMapping\shiporder.xsd" kind="xml" type="source" id="0">
+            <rootElement type="shipordertype" name="shiporder">
+                <attrData isRequired="true" type="orderidtype" name="orderid"/>
+                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="orderperson"/>
+                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="shiptotype" name="shipto">
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="address"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="city"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="country"/>
+                </childElement>
+                <childElement minOccurs="1" maxOccurs="-1" isRequired="true" type="itemtype" name="item">
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="title"/>
+                    <childElement minOccurs="0" maxOccurs="1" isRequired="false" type="stringtype" name="note"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="inttype" name="quantity"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="dectype" name="price"/>
+                </childElement>
+            </rootElement>
+        </component>
+        <component location="C:\eclipseJ2ee\workspace\cmps\workingspace\simpleMapping\printorder.xsd" kind="xml" type="target" id="1">
+            <rootElement type="printordertype" name="printorder">
+                <attrData isRequired="true" type="orderidtype" name="orderid"/>
+                <attrData isRequired="true" isFixed="true" type="orderidtype" name="printType">
+                    <fixedValue>text/html</fixedValue>
+                </attrData>
+                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="buyer"/>
+                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="addresstype" name="address">
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="street"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="city"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="country"/>
+                </childElement>
+                <childElement minOccurs="1" maxOccurs="-1" isRequired="true" type="itemtype" name="item">
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
+                    <childElement minOccurs="0" maxOccurs="1" isRequired="false" type="stringtype" name="description"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="inttype" name="quantity"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="dectype" name="price"/>
+                </childElement>
+            </rootElement>
+        </component>
+    </components>
+    <links>
+        <link>
+            <source id="/shiporder/shipto/address" componentid="0"/>
+            <target id="/printorder/address/street" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/city" componentid="0"/>
+            <target id="/printorder/address/city" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/country" componentid="0"/>
+            <target id="/printorder/address/country" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/item" componentid="0"/>
+            <target id="/printorder/item" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/title" componentid="0"/>
+            <target id="/printorder/item/name" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/note" componentid="0"/>
+            <target id="/printorder/item/description" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/quantity" componentid="0"/>
+            <target id="/printorder/item/quantity" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/price" componentid="0"/>
+            <target id="/printorder/item/price" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/@orderid" componentid="0"/>
+            <target id="/printorder/@orderid" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/orderperson" componentid="0"/>
+            <target id="/printorder/buyer" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/name" componentid="0"/>
+            <target id="/printorder/address/name" componentid="1"/>
+        </link>
+    </links>
+</mapping>
