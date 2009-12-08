@@ -5,13 +5,13 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.test;
+package gov.nih.nci.cbiit.cmts.test;
 
-import gov.nih.nci.cbiit.cmps.core.Mapping;
-import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
-import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
-import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
-import gov.nih.nci.cbiit.cmps.util.FileUtil;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
+import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -99,7 +99,7 @@ public class TransformTest {
 		System.out.println("TransformTest.testMappingAndTransformation()\n"+xmlResult);
 	}
 	/**
-	 * Test method for {@link gov.nih.nci.cbiit.cmps.transform.XQueryBuilder#getXQuery()}.
+	 * Test method for {@link gov.nih.nci.cbiit.cmts.transform.XQueryBuilder#getXQuery()}.
 	 * @throws XQException 
 	 */
 	@Test
@@ -176,7 +176,7 @@ public class TransformTest {
 
 	@Test
 	public void testCMPSTransform2() throws XQException, JAXBException, IOException {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Unmarshaller u = jc.createUnmarshaller();
 		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("workingspace/mapping2.xml")), Mapping.class);
 		Mapping map = m.getValue();
