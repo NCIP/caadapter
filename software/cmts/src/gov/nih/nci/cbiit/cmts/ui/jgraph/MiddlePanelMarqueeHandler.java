@@ -6,10 +6,10 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
-import gov.nih.nci.cbiit.cmps.ui.actions.GraphDeleteAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.GraphDeleteAllAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAllAction;
 
 import javax.swing.SwingUtilities;
 import javax.swing.JPopupMenu;

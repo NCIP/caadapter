@@ -7,11 +7,11 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.properties;
+package gov.nih.nci.cbiit.cmts.ui.properties;
 
 
-import gov.nih.nci.cbiit.cmps.common.PropertiesProvider;
-import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.common.PropertiesProvider;
+import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 /**
  * This class provides basic functions to help update properties information along user's selection.

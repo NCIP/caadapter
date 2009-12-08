@@ -7,14 +7,14 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.*;
 
-import gov.nih.nci.cbiit.cmps.core.FunctionData;
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 
 import javax.swing.*;
 import javax.swing.border.Border;

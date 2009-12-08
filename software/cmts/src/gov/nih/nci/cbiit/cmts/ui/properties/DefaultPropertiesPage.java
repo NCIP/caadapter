@@ -7,12 +7,12 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.properties;
+package gov.nih.nci.cbiit.cmts.ui.properties;
 
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

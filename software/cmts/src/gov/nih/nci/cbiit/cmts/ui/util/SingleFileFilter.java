@@ -6,7 +6,7 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.util;
+package gov.nih.nci.cbiit.cmts.ui.util;
 
 import javax.swing.filechooser.FileFilter;
 import java.io.File;

@@ -5,7 +5,7 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
@@ -17,29 +17,29 @@ import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.ParentMap;
 
-import gov.nih.nci.cbiit.cmps.core.Component;
-import gov.nih.nci.cbiit.cmps.core.FunctionData;
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
-import gov.nih.nci.cbiit.cmps.core.LinkType;
-import gov.nih.nci.cbiit.cmps.core.LinkpointType;
-import gov.nih.nci.cbiit.cmps.core.Mapping;
-import gov.nih.nci.cbiit.cmps.core.ViewType;
-import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
-import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
-import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
-import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxCell;
-import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxDefaultPort;
-import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxDefaultPortView;
-import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxUserObject;
-import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxViewManager;
-import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxViewUsageManager;
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
-import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
-import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
-import gov.nih.nci.cbiit.cmps.ui.properties.DefaultPropertiesSwitchController;
-import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesSwitchController;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultTargetTreeNode;
+import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.core.LinkType;
+import gov.nih.nci.cbiit.cmts.core.LinkpointType;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.core.ViewType;
+import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPortView;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxUserObject;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxViewManager;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxViewUsageManager;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesSwitchController;
+import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesSwitchController;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultTargetTreeNode;
 
 import javax.swing.JTree;
 import javax.swing.JOptionPane;

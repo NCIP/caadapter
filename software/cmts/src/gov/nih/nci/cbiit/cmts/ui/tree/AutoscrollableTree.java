@@ -5,7 +5,7 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.tree;
+package gov.nih.nci.cbiit.cmts.ui.tree;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;

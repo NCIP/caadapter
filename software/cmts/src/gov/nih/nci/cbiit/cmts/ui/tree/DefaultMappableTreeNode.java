@@ -5,11 +5,11 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.tree;
+package gov.nih.nci.cbiit.cmts.ui.tree;
 
-import gov.nih.nci.cbiit.cmps.core.BaseMeta;
-import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
-import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.core.BaseMeta;
+import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;

@@ -6,20 +6,20 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.main;
+package gov.nih.nci.cbiit.cmts.ui.main;
 
 
-import gov.nih.nci.cbiit.cmps.ui.actions.AbstractContextAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.CloseAllAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.DefaultCloseAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.DefaultSaveAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.DefaultSaveAsAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.ExitAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.NewMapFileAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.NewMessageAction;
-import gov.nih.nci.cbiit.cmps.ui.actions.OpenMapFileAction;
-import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
-import gov.nih.nci.cbiit.cmps.ui.common.MenuConstants;
+import gov.nih.nci.cbiit.cmts.ui.actions.AbstractContextAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.CloseAllAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.DefaultCloseAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAsAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.ExitAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.NewMessageAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
+import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
 
 import javax.swing.*;
 

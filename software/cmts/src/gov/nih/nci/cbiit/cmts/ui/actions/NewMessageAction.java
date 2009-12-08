@@ -6,19 +6,19 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
 
-import gov.nih.nci.cbiit.cmps.core.Mapping;
-import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
-import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
-import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
-import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.main.MainFrame;
-import gov.nih.nci.cbiit.cmps.ui.message.MessagePanel;
-import gov.nih.nci.cbiit.cmps.ui.message.OpenMessageWizard;
-import gov.nih.nci.cbiit.cmps.util.FileUtil;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
+import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.message.MessagePanel;
+import gov.nih.nci.cbiit.cmts.ui.message.OpenMessageWizard;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import javax.swing.*;
 

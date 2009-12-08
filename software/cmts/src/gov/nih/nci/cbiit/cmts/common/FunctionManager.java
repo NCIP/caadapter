@@ -6,16 +6,16 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.common;
+package gov.nih.nci.cbiit.cmts.common;
 
 
-import gov.nih.nci.cbiit.cmps.core.FunctionData;
-import gov.nih.nci.cbiit.cmps.core.FunctionDef;
-import gov.nih.nci.cbiit.cmps.core.FunctionMeta;
-import gov.nih.nci.cbiit.cmps.core.FunctionType;
-import gov.nih.nci.cbiit.cmps.core.Mapping;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.util.FileUtil;
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.core.FunctionMeta;
+import gov.nih.nci.cbiit.cmts.core.FunctionType;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -93,7 +93,7 @@ public class FunctionManager
 	}
 
 	public static FunctionMeta parseFunctionMeta(InputStream in) throws JAXBException {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Unmarshaller u = jc.createUnmarshaller();
 		JAXBElement<FunctionMeta> m = u.unmarshal(new StreamSource(in), FunctionMeta.class);
 		return  m.getValue();

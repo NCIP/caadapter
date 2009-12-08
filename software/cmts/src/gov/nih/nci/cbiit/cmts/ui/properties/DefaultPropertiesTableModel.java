@@ -7,7 +7,7 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.properties;
+package gov.nih.nci.cbiit.cmts.ui.properties;
 
 
 import javax.swing.table.AbstractTableModel;

@@ -6,10 +6,10 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 
 import javax.swing.*;
 

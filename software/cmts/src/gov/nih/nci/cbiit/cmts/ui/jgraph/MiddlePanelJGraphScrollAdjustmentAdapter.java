@@ -5,10 +5,10 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 

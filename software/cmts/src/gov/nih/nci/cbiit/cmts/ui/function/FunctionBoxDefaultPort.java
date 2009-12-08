@@ -6,13 +6,13 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.PortRenderer;
 
-import gov.nih.nci.cbiit.cmps.core.FunctionData;
-import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
+import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 
 import java.util.Set;
 

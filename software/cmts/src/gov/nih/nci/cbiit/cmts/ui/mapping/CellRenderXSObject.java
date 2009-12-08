@@ -1,4 +1,4 @@
-package gov.nih.nci.cbiit.cmps.ui.mapping;
+package gov.nih.nci.cbiit.cmts.ui.mapping;
 
 import org.apache.xerces.impl.dv.xs.XSSimpleTypeDecl;
 import org.apache.xerces.impl.xs.XSComplexTypeDecl;

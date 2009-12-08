@@ -7,10 +7,10 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.actions;
+package gov.nih.nci.cbiit.cmts.ui.actions;
 
 
-import gov.nih.nci.cbiit.cmps.ui.common.ContextManagerClient;
+import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 
 import javax.swing.JComponent;
 import javax.swing.JRootPane;

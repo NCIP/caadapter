@@ -7,7 +7,7 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.function;
+package gov.nih.nci.cbiit.cmts.ui.function;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.*;

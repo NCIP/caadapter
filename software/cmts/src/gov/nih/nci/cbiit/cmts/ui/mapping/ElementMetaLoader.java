@@ -6,14 +6,14 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.mapping;
+package gov.nih.nci.cbiit.cmts.ui.mapping;
 
-import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmps.core.Component;
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultMappableTreeNode;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultTargetTreeNode;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultMappableTreeNode;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultTargetTreeNode;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;

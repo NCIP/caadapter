@@ -6,7 +6,7 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.common;
+package gov.nih.nci.cbiit.cmts.ui.common;
 
 
 import org.jgraph.graph.AttributeMap;
@@ -14,14 +14,14 @@ import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
 
-import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmps.core.BaseMeta;
-import gov.nih.nci.cbiit.cmps.core.Component;
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
-import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultMappableTreeNode;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
-import gov.nih.nci.cbiit.cmps.ui.tree.DefaultTargetTreeNode;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmts.core.BaseMeta;
+import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultMappableTreeNode;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultTargetTreeNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
