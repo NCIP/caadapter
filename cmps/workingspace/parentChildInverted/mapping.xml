@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
+    <components>
+        <component location="C:\eclipseJ2ee\workspace\cmps\workingspace\parentChildInverted\delivery.xsd" kind="xml" type="target" id="0">
+            <rootElement name="deliveries">
+                <childElement minOccurs="1" maxOccurs="-1" isRequired="true" type="itemtype" name="item">
+                    <attrData isRequired="true" type="orderidtype" name="orderid"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
+                    <childElement minOccurs="0" maxOccurs="1" isRequired="false" type="stringtype" name="description"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="inttype" name="quantity"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="dectype" name="price"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="buyer"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="addresstype" name="shipping">
+                        <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
+                        <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="street"/>
+                        <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="city"/>
+                        <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="country"/>
+                    </childElement>
+                </childElement>
+            </rootElement>
+        </component>
+        <component location="C:\eclipseJ2ee\workspace\cmps\workingspace\parentChildInverted\groupOrder.xsd" kind="xml" type="source" id="1">
+            <rootElement type="shipordertype" name="grouporder">
+                <attrData isRequired="true" type="orderidtype" name="orderid"/>
+                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="orderperson"/>
+                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="shiptotype" name="shipto">
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="address"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="city"/>
+                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="country"/>
+                    <childElement minOccurs="1" maxOccurs="-1" isRequired="true" type="itemtype" name="item">
+                        <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="title"/>
+                        <childElement minOccurs="0" maxOccurs="1" isRequired="false" type="stringtype" name="note"/>
+                        <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="inttype" name="quantity"/>
+                        <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="dectype" name="price"/>
+                    </childElement>
+                </childElement>
+            </rootElement>
+        </component>
+    </components>
+    <links>
+        <link>
+            <source id="/grouporder" componentid="1"/>
+            <target id="/deliveries" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item" componentid="1"/>
+            <target id="/deliveries/item" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/name" componentid="1"/>
+            <target id="/deliveries/item/shipping/name" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/address" componentid="1"/>
+            <target id="/deliveries/item/shipping/street" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/city" componentid="1"/>
+            <target id="/deliveries/item/shipping/city" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/country" componentid="1"/>
+            <target id="/deliveries/item/shipping/country" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item/price" componentid="1"/>
+            <target id="/deliveries/item/price" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/orderperson" componentid="1"/>
+            <target id="/deliveries/item/buyer" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item/quantity" componentid="1"/>
+            <target id="/deliveries/item/quantity" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item/note" componentid="1"/>
+            <target id="/deliveries/item/description" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item/title" componentid="1"/>
+            <target id="/deliveries/item/name" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/@orderid" componentid="1"/>
+            <target id="/deliveries/item/@orderid" componentid="0"/>
+        </link>
+    </links>
+</mapping>

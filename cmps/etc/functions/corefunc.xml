@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<functions>
+	<function name="constant" group="constant" class="constant"
+		method="null">
+		<data name="constant" type="string" input="false" />
+	</function>
+	<function name="changeFormat" group="date" class="date"
+		method="changeFormat">
+		<data name="fromFormat" type="string" input="true" />
+		<data name="dateIn" type="string" input="true" />
+		<data name="dateOut" type="string" input="false" />
+	</function>
+	<function name="countDays" group="date" class="date" method="countDays">
+		<data name="fromDate" type="string" input="true" />
+		<data name="toDate" type="string" input="true" />
+		<data name="dayNumber" type="int" input="false" />
+	</function>
+	<function name="addition" group="math" class="math" method="add">
+		<data name="value1" type="double" input="true" />
+		<data name="value2" type="double" input="true" />
+		<data name="sum" type="double" input="false" />
+	</function>
+	<function name="subtract" group="math" class="math" method="subtract">
+		<data name="value1" type="double" input="true" />
+		<data name="value2" type="double" input="true" />
+		<data name="difference" type="double" input="false" />
+	</function>
+	<function name="multiply" group="math" class="math" method="multiply">
+		<data name="value1" type="double" input="true" />
+		<data name="value2" type="double" input="true" />
+		<data name="product" type="double" input="false" />
+	</function>
+	<function name="divide" group="math" class="math" method="divide">
+		<data name="value1" type="double" input="true" />
+		<data name="value2" type="double" input="true" />
+		<data name="quotient" type="double" input="false" />
+	</function>
+	<function name="round" group="math" class="math" method="round">
+		<data name="input" type="double" input="true" />
+		<data name="roundDigit" type="int" input="true" />
+		<data name="output" type="double" input="false" />
+	</function>
+	<function name="concatenate" group="string" class="string"
+		method="concatenate">
+		<data name="string1" type="string" input="true" />
+		<data name="string2" type="string" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+	<function name="length" group="string" class="string" method="length">
+		<data name="string" type="string" input="true" />
+		<data name="length" type="int" input="false" />
+	</function>
+	<function name="substring" group="string" class="string"
+		method="substring">
+		<data name="string1" type="string" input="true" />
+		<data name="startPos" type="int" input="true" />
+		<data name="endPos" type="int" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+	<function name="replace" group="string" class="string" method="replace">
+		<data name="string" type="string" input="true" />
+		<data name="fromStr" type="string" input="true" />
+		<data name="toStr" type="string" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+	<function name="upper" group="string" class="string" method="upper">
+		<data name="string" type="string" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+	<function name="lower" group="string" class="string" method="lower">
+		<data name="string" type="string" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+</functions>
