@@ -5,17 +5,17 @@
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
  * /docs/caAdapter_License
  */
-package gov.nih.nci.cbiit.cmps.test;
+package gov.nih.nci.cbiit.cmts.test;
 
 
-import gov.nih.nci.cbiit.cmps.common.XSDParser;
-import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmps.core.BaseMeta;
-import gov.nih.nci.cbiit.cmps.core.Component;
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
-import gov.nih.nci.cbiit.cmps.core.Mapping;
-import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
-import gov.nih.nci.cbiit.cmps.util.FileUtil;
+import gov.nih.nci.cbiit.cmts.common.XSDParser;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmts.core.BaseMeta;
+import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class MappingTest {
 		XSDParser p = new XSDParser();
 		p.loadSchema("workingspace/shiporder.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder.meta.xml"));
@@ -80,7 +80,7 @@ public class MappingTest {
 		XSDParser p = new XSDParser();
 		p.loadSchema("workingspace/shiporder1.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder1.meta.xml"));
@@ -94,7 +94,7 @@ public class MappingTest {
 		XSDParser p = new XSDParser();
 		p.loadSchema("workingspace/shiporder2.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder2.meta.xml"));
@@ -108,7 +108,7 @@ public class MappingTest {
 		XSDParser p = new XSDParser();
 		p.loadSchema("workingspace/shiporder3.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder3.meta.xml"));
@@ -122,7 +122,7 @@ public class MappingTest {
 		XSDParser p = new XSDParser();
 		p.loadSchema(FileUtil.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString());
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", "ADT_A01");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/ADT_A01.meta.xml"));
@@ -136,7 +136,7 @@ public class MappingTest {
 		XSDParser p = new XSDParser();
 		p.loadSchema("workingspace/hl7v3/HL7v3Schema/COCT_MT010000UV01.xsd");
 		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "COCT_MT010000UV01.Encounter");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/COCT_MT010000UV01.meta.xml"));
@@ -167,7 +167,7 @@ public class MappingTest {
 		MappingFactory.addLink(m, "0", "/shiporder", "1", "/printorder");
 		MappingFactory.addLink(m, "0", "/shiporder/shipto", "1", "/printorder/address");
 		
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("mapping"),Mapping.class, m), new File("bin/mapping.out.xml"));
@@ -224,7 +224,7 @@ public class MappingTest {
 			map.put(c.getId(), c);
 		Component c = map.get(cid);
 		BaseMeta b = MappingFactory.findNodeById(c, id);
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller mar = jc.createMarshaller();
 		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		mar.marshal(new JAXBElement(new QName("meta"), b.getClass(), b), new File("bin/mapping_findObj.out.xml"));
