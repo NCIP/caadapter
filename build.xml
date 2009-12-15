@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="caAdapter" default="build-all" basedir=".">
+<project name="caAdapter" default="build:all" basedir=".">
     <description>
         **************************************************************************
         caAdapter ANT BUILD SCRIPT
@@ -10,28 +10,21 @@
     	-->
     <!-- Define project properties !-->
     <property file="./build.properties"/>
-    <property name="project.ref.lib.dir" value="${basedir}/referenceLib"/>
+    <property name="caadapter.project.lib.dir" value="./lib"/>
+    <property name="caadapter.project.ref.lib.dir" value="./referenceLib"/>
+    <property name="caadapter.project.src.dir" value="./src/java"/>
+    <property name="caadapter.project.resources.dir" value="./src/resources"/>
+    
+    <property name="sqleonardo.jar" value="${basedir}/lib/sqleonardo.jar"/>
+	<property name="ref_sqleonardo.jar" value="${caadapter.project.ref.lib.dir}/sqleonardo.jar"/>
+	
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
-    <property name="lib.dir" value="${basedir}/lib"/>
-	<property name="reference.dir" value = "${basedir}/referenceLib"/>
+
+	<property name="reference.dir" value ="${basedir}/referenceLib"/>
     <property name="config.dir" value="${basedir}/conf"/>
     <property name="docs.dir" value="${basedir}/docs"/>
-    <property name="project.jar.name" value="caAdapter.jar"/>
-    <property name="project.deploy.root1" value="L:\caAdapter\releases\caAdapter v4.0\${DATE}"/>
-    <property name="project.deploy.root" value="c:\distBin\test_${DATE}"/>
-    <property name="webstart.deploy.dir" value="${basedir}/dist/mmswebstart"/>
-    <property name="hl7.webstart.deploy.dir" value="${basedir}/dist/hl7webstart"/>
-    <property name="rds.webstart.deploy.dir" value="${basedir}/dist/rdswebstart"/>
-    <property name="tdms.webstart.deploy.dir" value="${basedir}/dist/tdmswebstart"/>
-    <property name="caadapter.webstart.deploy.dir" value="${basedir}/dist/caadapter-webstart"/>
-    <property name="webstart.home.files" value="${basedir}/etc/webstart"/>
-    <property name="webstart.warfile.name" value="caadapter-mms.war"/>
-    <property name="hl7.webstart.warfile.name" value="caadapter-hl7.war"/>
-    <property name="rds.webstart.warfile.name" value="caadapter-rds.war"/>
-    <property name="tdms.webstart.warfile.name" value="caadapter-tdms.war"/>
-    <property name="caadapter.webstart.warfile.name" value="caadapter-webstart.war"/>
-    <property name="webstart.config.dir" value="${basedir}/etc/webstartconf"/>
+
     <property name="webserver" value="http://localhost:8080"/>
 
     <!-- Mailer properties begin-->
@@ -42,90 +35,176 @@
     <property name="MailLogger.success.subject" value="Build successful"/>
     <property name="MailLogger.failure.subject" value="Build failed"/>
     <property name="MailLogger.success.notify" value="on"/>
+	
+	<path id="project.class.path">
+		<fileset dir="${caadapter.project.lib.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
+		<fileset dir="${caadapter.project.ref.lib.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+			<exclude name="caAdapter.jar"/>
+		</fileset>
+	</path>
 
-    <property name="j2ee.server.deploy.dir" value="C:\devWeb\jboss-5.0.1.GA\server\default\deploy"/>
+	<target name="build:caadapter-api" depends="init">
+		<echo message="build:caadapter-api is called :dist.dir =${dist.dir}"/>
+		<antcall target="build:dist.src"/>
+   	</target>
 
-	<property name="sqleonardo.jar" value="${basedir}/lib/sqleonardo.jar"/>
-	<property name="ref_sqleonardo.jar" value="${basedir}/referenceLib/sqleonardo.jar"/>
+   	<property name="caadapter.project.webstart.home" value="src/web/webstart"/>
+   	<property name="caadapter.project.webstart.conf" value="src/web/webstartconf"/>
+	<target name="build:caadapter-webstart" depends="webstart:repack, webstart:copy_resources" >	
+		<antcall target="webstart:sign_resources">
+			<param name="RESOURCE_HOME" value="${dist.dir}/webstart"/>
+		</antcall>
 
-    <!-- Define dataview module properties !-->
-    <property name="dataview.module.home" value="${basedir}/components/dataviewer"/>
-    <property name="dataview.module.build" value="${dataview.module.home}/build.xml"/>
+		<echo message=""/>
+		<echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
+		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="${caadapter.project.webstart.home}/web.xml">
+			<fileset dir="${dist.dir}/webstart">
+				<exclude name="myKeyStore"/>
+			</fileset>
+			<zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/>
+		</war>
+	</target>
 
-    <!-- Define common module properties !-->
-    <property name="common.module.home" value="${basedir}/components/common"/>
-    <property name="common.module.build" value="${common.module.home}/build.xml"/>
+   	<target name="webstart:repack" depends="build:dist.bin" description="Re-pack caAdapter.jar for web start deployment">
+   		<echo message="build:webstart is called :dist.dir =${dist.dir}"/>
+   		<echo message="build:webstart -- re-pack caAdapter.jar "/>
+   		<property name="caadapter.project.webstart.build.home" value="${dist.dir}/webstart"/>
+		<unzip dest="${caadapter.project.webstart.build.home}/tmp">
+			<fileset dir="${caadapter.project.ref.lib.dir}">
+				<include name="caAdapter.jar"/>
+			</fileset>
+		</unzip>
+		<copy file="${caadapter.project.webstart.conf}/${webstart.properties.file}" tofile="${caadapter.project.webstart.build.home}/tmp/caadapter-components.properties"/>
+		<zip destfile="${caadapter.project.webstart.build.home}/caAdapter.jar">
+			<fileset dir="${caadapter.project.webstart.build.home}/tmp"/>
+		</zip>
+		<delete dir="${caadapter.project.webstart.build.home}/tmp"/>
+   	</target>
+   	
+	<target name="webstart:copy_resources" description="Perpare web start resources...">  
+		<echo message="build:webstart --copy resource"/>
+		<copy todir="${dist.dir}/webstart" failonerror="false">
+			<fileset dir="${caadapter.project.lib.dir}">
+				<include name="BrowserLauncher2-all-10rc4.jar"/>
+				<include name="castor-0.9.9.jar"/>
+				<include name="cmps.jar"/> 
+				<include name="commons-collections-3.2.jar"/>
+				<include name="commons-logging-1.0.4.jar"/>
+				<include name="dom4j-1.4.jar"/>
+				<include name="jaxen-jdom.jar"/>
+				<include name="jdom.jar"/>
+				<include name="knuHL7V2tree.jar"/>
+				<include name="log4j-1.2.8.jar"/>
+				<include name="sdk-codegen.jar"/>
+				<include name="spring.jar"/>
+				<include name="xmi.in.out.jar"/>
+				<include name="xml-apis.jar"/>
+				<include name="xercesImpl.jar"/>
+			</fileset>
+			<fileset dir="${caadapter.project.ref.lib.dir}">
+				<include name="jgraph.jar"/>
+				<include name="caAdapter_ui.jar"/>
+			</fileset>
+		</copy>
 
-    <!-- Define hl7Transformation module properties !-->
-    <property name="hl7.module.home" value="${basedir}/components/hl7Transformation"/>
-    <property name="hl7.module.build" value="${hl7.module.home}/build.xml"/>
-
-    <!-- Define mms module properties !-->
-    <property name="mms.module.home" value="${basedir}/components/modelMapping"/>
-    <property name="mms.module.build" value="${mms.module.home}/build.xml"/>
-
-    <!-- Define SDTM transformation module properties !-->
-    <property name="sdtm.module.home" value="${basedir}/components/sdtmTransformation"/>
-    <property name="sdtm.module.build" value="${sdtm.module.home}/build.xml"/>
-
-    <!-- Define uerInterface module properties !-->
-    <property name="ui.module.home" value="${basedir}/components/userInterface"/>
-    <property name="ui.module.build" value="${ui.module.home}/build.xml"/>
-
-    <!-- Define webservices module properties !-->
-    <property name="ws.module.home" value="${basedir}/../hl7mtsWebservices"/>
-    <property name="ws.module.build" value="${ws.module.home}/build.xml"/>
-
-    <target name="compile" depends="build.modules">
-        <echo message="-------- build jar for all modules  --------"/>
-        <copy todir="${build.dir}">
-            <fileset dir="${common.module.home}/build"/>
-            <fileset dir="${hl7.module.home}/build"/>
-            <fileset dir="${mms.module.home}/build"/>
-            <fileset dir="${dataview.module.home}/build"/>
-            <fileset dir="${sdtm.module.home}/build"/>
-            <fileset dir="${ui.module.home}/build"/>
-            <!-- fileset dir="${lib.dir}"/ -->
-        </copy>
-        <!-- "${download.jar.location}\delete.jar" dest="${download.jar.location}\deletethisfolder.jar" -->
-        <delete file="${lib.dir}\delete.jar"/>
-        <!-- delete dir="${lib.dir}\deletethisfolder.jar"/-->
-
-        <copy todir="${build.dir}">
-            <fileset dir="${ui.module.home}/resources">
-                <exclude name="images/help_images/**"/>
-            </fileset>
-            <fileset dir="${basedir}/etc">
-            	<include name="*Notes.txt"/>
-            	<include name="warning/**"/>
-            	<include name="license/**"/>
-            	<include name="map/functions/**"/>
-            </fileset>
-            <fileset dir="${basedir}/${project.docs.home}">
-            	<include name="*Notes.txt"/>
-            </fileset>
-        </copy>
-        
-        <delete includeemptydirs="true">
-            <fileset dir="${dist.dir}" includes="**/*"/>
-        </delete>
-
-        <jar destfile="${project.ref.lib.dir}/${project.jar.name}">
-            <fileset dir="${build.dir}"/>
-            <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
-        </jar>
-    	
-    	<!-- antcall target="add-license"/ -->
-		<antcall target="dist.prepare" />
+		<copy file="${caadapter.project.webstart.home}/${webstart.launch.page.file}" todir="${dist.dir}/webstart" />
+		<copy file="${caadapter.project.webstart.home}/${webstart.index.page.file}/" tofile="${dist.dir}/webstart/index.html" />
+		
+        <echo message="-------- Applying Webserver replacement --------"/>
+        <replace file="${dist.dir}/webstart/${webstart.launch.page.file}" token="$WEBSERVER" value="${webserver}"/>
+	</target>
+	
+	<target name="webstart:sign_resources">
+		<antcall target="generate-keys"/>
+	    <echo message="digitally signing...${RESOURCE_HOME}"/>
+	    <echo message="Key Store: ${jar-signing.keystore.abs-location}"/>
+	    <echo message="-------- Signing all jar files --------"/>
+	    <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
+		   	<fileset dir="${RESOURCE_HOME}" includes="*.jar, *.zip"/>
+	    </signjar>
+	</target>
+	
+   	<property name="demo.build.working.dir" value="${dist.dir}/tempdir"/>
+    <target name="build:dist.bin">
+		<tstamp>
+			<format property="DIST_DATE" pattern="MM-dd-yy" locale="en_us"/>
+		</tstamp>
+		<property name="BINARY_DIST_FILE" value="${project.name}${caadapter-webapp.version}_Bin_${DIST_DATE}.zip"/>
+		<antcall target="build:demo.ui.prepare"/>
+		
+		<echo message="${demo.build.working.dir} ... create ${BINARY_DIST_FILE}"/>
+		
+		<ant dir="${demo.build.working.dir}" inheritAll="false" target="demo.ui.jar">
+			<property name="BINARY_DIST_FILE" value="${BINARY_DIST_FILE}"/>
+		</ant>
+		
+		<copy tofile="${caadapter.project.ref.lib.dir}/caAdapter_ui.jar">
+			<fileset file="${demo.build.working.dir}/caAdapter_ui.jar" />
+		</copy>
+		
+		<zip destfile="${dist.dir}/${BINARY_DIST_FILE}">
+			<zipfileset dir="${demo.build.working.dir}"/>
+ 			<zipfileset dir="workingspace/Object_to_DB_Example" prefix="workingspace/sampleModels"/>
+		</zip>
+		<delete dir="${demo.build.working.dir}" failonerror="false" />
     </target>
+    
+	<target name="build:demo.ui.prepare">
+		<echo message="build demo_ui.jar...."/>
+		<mkdir dir="${demo.build.working.dir}"/>
+		
+		<copy tofile="${demo.build.working.dir}/build.xml" flatten="true">
+			<fileset file="build_demo.xml"/>
+		</copy>
+		<copy todir="${demo.build.working.dir}" flatten="true">
+			<fileset file="run.bat"/> 
+			<fileset file="build.properties"/> 
+		</copy>
+		<copy todir="${demo.build.working.dir}/src/demo" flatten="true">
+			<fileset dir="src/demo"/> 
+		</copy>
+		<mkdir dir="${demo.build.working.dir}/conf"/>
+		<copy todir="${demo.build.working.dir}/conf">
+			<fileset file="${config.dir}/caadapter-components.properties" />
+			<fileset file="${config.dir}/logging.properties" />
+			<fileset file="${config.dir}/caadapter-resources.properties" />
+			<fileset file="${config.dir}/datatype-core-attributes-default.xml" />
+			<fileset file="${config.dir}/datatype-core-attributes-setting.xml" />
+			<fileset file="${config.dir}/hl7-normative-setting.xml" />
+			<fileset file="${config.dir}/hl7-customer-datatype-setting.xml"/>	
+		</copy>
+		<mkdir dir="${demo.build.working.dir}/lib"/>
+		<copy todir="${demo.build.working.dir}/lib">
+			<fileset dir="${caadapter.project.lib.dir}">
+				<include name="**/*.jar"/>
+				<include name="**/*.zip"/>
+			</fileset>
+			<fileset dir="${caadapter.project.ref.lib.dir}">
+				<include name="**/*.jar"/>
+				<include name="**/*.zip"/>
+			</fileset>
+		</copy>
+		<mkdir dir="${demo.build.working.dir}/hl7_home"/>   	 
+		<delete file="${lib.dir}\sqleonardo.jar"/>
+		<delete dir="${lib.dir}\delete.jar"/>
+	</target>
+    
+	<target name="build:dist.src" depends="init" description="compile the source">
+		<tstamp>
+	            <format property="DIST_DATE" pattern="MM-dd-yy" locale="en_us"/>
+        </tstamp>
+        <property name="SOURCE_DIST_FILE" value="${project.name}${caadapter-webapp.version}_Src_${DIST_DATE}.zip"/>
+		<echo message="create ${SOURCE_DIST_FILE}"/>
+		<delete>
+			<fileset dir="${dist.dir}" includes="*.zip"/>
+		</delete>
 
-    <target name="dist.src">
-    	<echo message="create ${project.release.version}_Src_${DATE}.zip"/>
-    	<delete>
-    		<fileset dir="." includes="caadapter*.zip"/>
-    	</delete>
-    	
-    	<condition property="caadapter.module.all.zip">	
+		<condition property="caadapter.module.all.zip">	
 				<equals arg1="${caadapter.release.all.modules}" arg2="true"/>
 		</condition>
 
@@ -136,142 +215,138 @@
 				<equals arg1="${caadapter.release.mms.gme.only}" arg2="true"/>
 		</condition>
 		<condition property="caadapter.module.mms.zip">	
-			 	<equals arg1="${caadapter.release.mms.only}" arg2="true"/>
+				<equals arg1="${caadapter.release.mms.only}" arg2="true"/>
 		</condition>
 		<!-- conditionally zip the distributed zip file -->
-		<antcall target="zipAllModuleSrc"/>
-		<antcall target="zipHl7ModuleSrc"/>
-		<antcall target="zipGmeModuleSrc"/>
-		<antcall target="zipMMSModuleSrc"/>
+		<echo message="Build source distribution for ALL module..."/>
+		<zip destfile="${dist.dir}/${SOURCE_DIST_FILE}" basedir="." 
+			excludes="referenceLIB/**.*, lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, **/gencode/**">
+		</zip>
+	</target>
+    
+	<target name="compile" depends="gencode" description="compile the source">
+		<javac destdir="${build.dir}" target="${project.build.target.version}"
+				classpathref="project.class.path"
+				fork="yes" debug="on">
+			<src path="${caadapter.project.src.dir}"/>
+			<src path="${caadapter.project.gencode.dir}"/>
+			<exclude name="test/**"/>
+		</javac>
+
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${dist.dir}" includes="**/*"/>
+		</delete>
+
+		<jar destfile="${caadapter.project.ref.lib.dir}/${project.jar.name}">
+		     <fileset dir="${build.dir}"/>
+		     <fileset dir="${caadapter.project.resources.dir}" includes="images/*"/> 
+		     <fileset dir="src/resources/etc">
+				<include name="*Notes.txt"/>
+				<include name="warning/**"/>
+				<include name="license/**"/>
+			</fileset>
+			<fileset dir="${project.docs.home}">
+				<include name="*Notes.txt"/>
+			</fileset>
+		     <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
+        </jar>
+        <delete dir="${build.dir}" failonerror="false"/>
+        <delete dir="${caadapter.project.gencode.dir}" failonerror="false"/>
+	</target>
+	
+	
+	<!-- Define genCode parameters !-->
+	<property name="caadapter.project.gencode.dir" value="gencode"/>
+	<property name="caadapter.project.gencode.common.dir" value="src/resources/gencode/common"/>
+	<property name="caadapter.project.gencode.map.dir" value="src/resources/gencode/map"/>
+	<property name="gencode.out.file" value="gencode.out"/>
+
+	<path id="castor.gencode.path">
+		<pathelement location="${caadapter.project.lib.dir}/castor-0.9.9.jar"/>
+		<pathelement location="${caadapter.project.lib.dir}/commons-logging-1.0.4.jar"/>
+		<pathelement location="${caadapter.project.lib.dir}/xercesImpl.jar"/>
+	</path>
+
+	<path id="saxon8.gencode.path">
+		<pathelement location="${caadapter.project.lib.dir}/saxon8.jar"/>
+	</path>
+	
+	<target name="gencode" depends="init"  >
+		<echo message="Call generating common CODE ..."/>
+		<antcall target="gencode.common.code"/>
+
+		<echo message="Call generating castor CODE ..."  />
+		<antcall target="gencode.castor.code"/>
+	</target>
+	
+	<target name="gencode.castor.code" description="create castor code">
+		<!-- define castor code generation properties -->
+		<property name="castor_binding_file" value="${caadapter.project.gencode.common.dir}/castorbinding.xml"/>
 		
-    </target>
+		<echo message="** Generate castor csv objects"/>
+		<java fork="yes" 
+				classname="org.exolab.castor.builder.SourceGenerator"
+				failonerror="true"
+				classpathref="castor.gencode.path">
+			<arg line="-f 
+				-i ${caadapter.project.gencode.map.dir}/csv/csvspecification.xsd 
+				-dest ${caadapter.project.gencode.dir} 
+				-package gov.nih.nci.caadapter.castor.csv.meta.impl 
+				-binding-file ${castor_binding_file} 
+				-verbose"/>
+		</java>
 
-	<target name="zipMMSModuleSrc" if="caadapter.module.mms.zip">
-		<echo message="Build source distribution for MMS module..."/>
-		<zip destfile="${project.release.version}_Src_${DATE}.zip">
-			<zipfileset dir="components/common" includes="build.xml, conf/**,src/**, lib/**" prefix="components/common"/>
-			<zipfileset dir="components/dataviewer" includes="build.xml, src/**, lib/**" prefix="components/dataviewer"/>
-			<zipfileset dir="components/hl7Transformation" includes="build.xml, conf/**, etc/**, src/**, lib/**" prefix="components/hl7Transformation"/>
-			<zipfileset dir="components/modelMapping" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/modelMapping"/>
-			<zipfileset dir="components/sdtmTransformation" includes="build.xml, src/**, lib/**" prefix="components/sdtmTransformation"/>
-			<zipfileset dir="components/userInterface" prefix="components/userInterface">
-				<include name="build.xml"/>
-				<include name="conf/**"/>
-				<include name="src/**"/>
-				<include name="resources/images/*.*"/>
-				<include name="lib/**"/>
-			</zipfileset>	
-			<zipfileset dir="${ws.module.home}" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
-			<zipfileset dir="./${project.docs.home}" includes="*.pdf,*.doc, *Help.zip" prefix="${project.docs.home}"/>
-			<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
-					webstartconf/**, webstart/caadapter-mms.jnlp, webstart/index-mms.html, webstart/web.xml, webstart/myKeyStore"/>
-			<zipfileset dir="." includes="conf/**, demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java, lib/**,
-				build*, *.bat" />
+		<echo message="** Generate castor FUNCTION bjects"/>
+		<java fork="yes" classname="org.exolab.castor.builder.SourceGenerator"
+				failonerror="true"
+				classpathref="castor.gencode.path">
+			<arg line="-f 
+				-i ${caadapter.project.gencode.map.dir}/functions/functionspecification.xsd 
+				-dest ${caadapter.project.gencode.dir} 
+				-package gov.nih.nci.caadapter.castor.function.impl 
+				-binding-file ${castor_binding_file} 
+				-verbose"/>
+		</java>
 
-			<zipfileset dir="workingspace" includes="Object_to_DB_Example/**"
-				prefix="workingspace"/>
-		</zip> 
+		<echo message="** Generate castor mapping objects"/>
+		<java fork="yes" classname="org.exolab.castor.builder.SourceGenerator"
+				failonerror="true"
+				classpathref="castor.gencode.path">
+			<arg line="-f 
+				-i ${caadapter.project.gencode.map.dir}/MappingV4.0.xsd
+				-dest ${caadapter.project.gencode.dir} 
+				-package gov.nih.nci.caadapter.castor.map.impl
+				-binding-file ${castor_binding_file} 
+				-verbose"/>
+		</java>
+	</target>
+
+	<target name="gencode.common.code" description="create common XML_TO_JAVA file code">
+		<echo message="Generating config file"/>
+		<java fork="yes" classname="net.sf.saxon.Transform" 
+				taskname="saxon.gencode.config" 
+				failonerror="true"
+				classpathref="saxon8.gencode.path">
+			<arg value="-o"/>
+			<arg value="${gencode.out.file}"/>
+			<arg value="${caadapter.project.gencode.common.dir}/config-dev.xml"/>
+			<arg value="${caadapter.project.gencode.common.dir}/config2java.xsl"/>
+			<arg value="base-path=${caadapter.project.gencode.dir}"/>
+		</java>
+
+		<echo message="Generating message file"/>
+		<java fork="yes" classname="net.sf.saxon.Transform" 
+				taskname="saxon.gencode.message" 
+				failonerror="true"
+				classpathref="saxon8.gencode.path">
+			<arg value="-o"/>
+			<arg value="${gencode.out.file}"/>
+			<arg value="${caadapter.project.gencode.common.dir}/messages.xml"/>
+			<arg value="${caadapter.project.gencode.common.dir}/messages2java.xsl"/>
+			<arg value="base-path=${caadapter.project.gencode.dir}"/>
+		</java>
 	</target>
 	
-	<target name="zipGmeModuleSrc" if="caadapter.module.gme.zip">
-		<echo message="Build source distribution for GME module..."/>
-		<zip destfile="${project.release.version}_Src_${DATE}.zip">
-			<zipfileset dir="components/common" includes="build.xml, conf/**,src/**, lib/**" prefix="components/common"/>
-			<zipfileset dir="components/dataviewer" includes="build.xml, src/**, lib/**" prefix="components/dataviewer"/>
-			<zipfileset dir="components/hl7Transformation" includes="build.xml, conf/**, etc/**, src/**, lib/**" prefix="components/hl7Transformation"/>
-			<zipfileset dir="components/modelMapping" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/modelMapping"/>
-			<zipfileset dir="components/sdtmTransformation" includes="build.xml, src/**, lib/**" prefix="components/sdtmTransformation"/>
-			<zipfileset dir="components/userInterface" prefix="components/userInterface">
-				<include name="build.xml"/>
-				<include name="conf/**"/>
-				<include name="src/**"/>
-				<include name="resources/images/*.*"/>
-				<include name="lib/**"/>
-			</zipfileset>	
-			<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
-			<zipfileset dir="docs/GME" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, help_gme.zip" prefix="docs/GME"/>
-			<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
-					webstartconf/**, webstart/caadapter-mms.jnlp, webstart/index-mms.html, webstart/web.xml, webstart/myKeyStore"/>
-			<zipfileset dir="." includes="conf/**, demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java, lib/**,
-				build*, *.bat" />
-			
-			<!-- zipfileset dir="." includes="conf/**, etc/**, lib/** 
-				build*, *.bat" / -->
-			<zipfileset dir="workingspace" includes="GME_example/**"
-				prefix="workingspace"/>
-		</zip> 
-	</target>
-	
-	<target name="zipHl7ModuleSrc" if="caadapter.module.hl7.zip">
-			<echo message="Build source distribution for HL7 module..."/>
-			<available property="zip.hl7.v2tov3.example.present" file="./workingspace/V2Meta_to_V3" type="dir"/>
-			<available property="zip.hl7.csvtov3.example.present" file="./workingspace/CSV_to_HL7_V3_Example" type="dir"/>
-			<zip destfile="${project.release.version}_Src_${DATE}.zip">
-				<zipfileset dir="components/common" includes="build.xml, conf/**,src/**, lib/**" prefix="components/common"/>
-				<zipfileset dir="components/dataviewer" includes="build.xml, src/**, lib/**" prefix="components/dataviewer"/>
-				<zipfileset dir="components/hl7Transformation" includes="build.xml, conf/**, etc/**, src/**, lib/**" prefix="components/hl7Transformation"/>
-				<zipfileset dir="components/modelMapping" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/modelMapping"/>
-				<zipfileset dir="components/sdtmTransformation" includes="build.xml, src/**, lib/**" prefix="components/sdtmTransformation"/>
-				<zipfileset dir="components/userInterface" prefix="components/userInterface">
-					<include name="build.xml"/>
-					<include name="conf/**"/>
-					<include name="src/**"/>
-					<include name="resources/images/*.*"/>
-					<include name="lib/**"/>
-			    </zipfileset>
-				<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, axislib/**, lib/**" prefix="components/webservices"/>
-				<zipfileset dir="docs" prefix="docs">
-					<include name="4.3/*v4.3*.pdf"/>
-					<include name="*4.3*.zip"/>
-					<include name="4.3/*v4.3*.txt"/>
-				</zipfileset>
-				<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
-					webstartconf/**, webstart/WEB-INF/**, webstart/caadapter-hl7.jnlp,webstart/index-hl7.html, webstart/index-ws.html, webstart/myKeyStore, webstart/v2MessageIndex.obj,webstart/web.xml"/>
-				<zipfileset dir=".">
-					<include name="conf/**"/>
-					<include name="demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java"/>
-					<include name="lib/**"/>
-					<include name="referenceLib/client.jar"/>
-					<include name="referenceLib/hl7v2xsd.jar"/>
-					<include name="build*"/>
-					<include name="*.bat"/>
-				</zipfileset>			 
-			</zip> 
-			<echo message="copy HL7 MTS example files..."/>
-			<ant antfile="build_demo.xml" target="zip.hl7.example">
-				<property name="release.zip.file.name" value="${project.release.version}_Src_${DATE}.zip"/>
-				<property name="example.src.dir" value="./workingspace/V2Meta_to_V3"/>
-				<property name="example.tgrt.prefix" value="workingspace/v2Tov3_example"/>
-				<property name="example.exist.flag" value="zip.hl7.v2tov3.example.present"/>
-			</ant>
-			<ant antfile="build_demo.xml" target="zip.hl7.example">
-				<property name="release.zip.file.name" value="${project.release.version}_Src_${DATE}.zip"/>
-				<property name="example.src.dir" value="./workingspace/CSV_to_HL7_V3_Example"/>
-				<property name="example.tgrt.prefix" value="workingspace/csvTov3_example"/>
-				<property name="example.exist.flag" value="zip.hl7.csvtov3.example.present"/>
-			</ant>
-	</target>
-	<target name="zipAllModuleSrc" if="caadapter.module.all.zip">
-			<echo message="Build source distribution for ALL module..."/>
-			<zip destfile="${project.release.version}_Src_${DATE}.zip" basedir="." 
-				excludes="tdms*.doc,lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
-				docs/v4.2/**, docs/v4.0/**, docs/MMSv4.1/*.zip, docs/v4.1*BETA/**, **/CVS/**,
-				referenceLib/**, run.bat, *.spp, *.mpp,">
-			</zip>
-	</target>
-	
-    <target name="dist.bin" depends="compile, dist.src">
-		<ant dir="${dist.dir}" inheritAll="false" target="demo.zip"/>
-    	<antcall target="copy.built.ws.module"/>
-    </target>
- 
-    <target name="build-all"  depends="compile">
-        <antcall target="copy.built.ws.module"/>
-    	<antcall target="mmswebstart"/>
-    	<antcall target="mmsGMEwebstart"/>
-    	<antcall target="hl7webstart"/>
-    	<!-- antcall target="rdswebstart"/ -->
-    </target>
     
     <target name="copy.built.ws.module" if="caadapter.release.ws.build">
     	<ant antfile="${ws.module.build}"/>
@@ -289,226 +364,8 @@
     	</copy>
     </target>
     	
-    <target name="mmsGMEwebstart" if="caadapter.release.mms.gme.build">
-	        <echo message="------- cleaning webstart deploy directory ------"/>
-	        <delete dir="${webstart.deploy.dir}"/>
-	        <delete file="${dist.dir}/${webstart.warfile.mms.gme.name}"/>
-	
-	    	<mkdir dir="${webstart.deploy.dir}/tmp"/>
-			<unzip dest="${webstart.deploy.dir}/tmp">
-	        	<fileset dir="${dist.dir}/lib">
-	            	<include name="caAdapter.jar"/>
-	        	</fileset>
-			</unzip>
-	
-	    	<copy file="${webstart.config.dir}/caadapter-components.mms.properties" tofile="${webstart.deploy.dir}/tmp/caadapter-components.properties"/>
-	
-			<zip destfile="${webstart.deploy.dir}/caAdapter.jar">
-				<fileset dir="${webstart.deploy.dir}/tmp"/>
-			</zip>
-	
-	        <delete dir="${webstart.deploy.dir}/tmp"/>
-	
-	        <echo message=""/>
-	        <echo message="------- copying jar files to webstart deploy directory ------"/>
-	        <copy todir="${webstart.deploy.dir}" failonerror="false">
-	            <fileset dir="${lib.dir}">
-	                <!-- include name="commons-collections-3.2.jar"/ -->
-	                <include name="commons-logging-1.0.4.jar"/>
-	                <include name="xmi.in.out.jar"/>
-	                <!-- include name="xml-apis.jar"/ -->
-	                <include name="xercesImpl.jar"/>
-	                <include name="jdom.jar"/>
-	                <include name="castor-0.9.9.jar"/>
-	            	<include name="knuHL7V2tree.jar"/>
-	            	<include name="cmps.jar"/>
-	            </fileset>
-	        	<fileset dir="${reference.dir}">
-	            	<include name="caAdapter_ui.jar"/>
-	                <include name="jgraph.jar"/>
-	        	</fileset>
-	        	<fileset dir="${dist.dir}/docs">
-	        	    <include name="help/**"/>
-	        	</fileset>
-	        	        	
-	        	<fileset dir="${dist.dir}/lib">
-	            	<include name="caAdapter.jar"/>
-	        	</fileset>
-	        	<fileset dir="${ui.module.home}/lib">
-	            	<include name="BrowserLauncher2-all-10rc4.jar"/>
-	        	</fileset>
-	        	<fileset dir="${common.module.home}/lib">
-	                <include name="log4j-1.2.8.jar"/>
-	        	</fileset>
-	        	<fileset dir="${mms.module.home}/lib">
-	        		<include name="jaxen-jdom.jar"/>
-	                <include name="dom4j-1.4.jar"/>
-					<!-- include name="sdk-codegen.jar"/ -->
-					<!-- include name="spring.jar"/ -->
-	        	</fileset>
-	        </copy>
-	
-	        <echo message=""/>
-	        <echo message="------ copying webstart files to webstart deploy directory ------"/>
-	        <!-- copy todir="${webstart.deploy.dir}" includeEmptyDirs="false">
-	            <fileset dir="${webstart.home.files}">
-	                <include name="caadapter-mms-gme.jnlp"/>
-					<include name="index-mms-gme.html"/>
-	            </fileset>
-	        </copy -->
-	        <copy file="${webstart.home.files}/caadapter-mms-gme.jnlp" tofile="${webstart.deploy.dir}/caadapter-gme.jnlp"/>
-			<copy file="${webstart.home.files}/index-mms-gme.html" tofile="${webstart.deploy.dir}/index.html"/>
-	        <echo message=""/>
-	        <echo message="-------- Applying Webserver replacement --------"/>
-	        <replace file="${webstart.deploy.dir}/caadapter-gme.jnlp" token="$WEBSERVER" value="${webserver}"/>
-	        <!-- move file="${webstart.deploy.dir}/index-mms-gme.html" tofile="${webstart.deploy.dir}/index.html" />
-	        <move file="${webstart.deploy.dir}/caadapter-mms-gme.jnlp" tofile="${webstart.deploy.dir}/caadapter-gme.jnlp" / -->
-	        
-	        <antcall target="generate-keys"/>
-	        <echo message=""/>
-	        <echo message="-------- Signing all jar files --------"/>
-	        <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
-	            <fileset dir="${webstart.deploy.dir}" includes="*.jar, *.zip"/>
-	        </signjar>
-	
-	        <echo message=""/>
-	        <echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
-	        <war destfile="${dist.dir}/${webstart.warfile.mms.gme.name}" webxml="">
-	            <fileset dir="${webstart.deploy.dir}">
-	                <exclude name="myKeyStore"/>
-	            </fileset>
-	        </war>
-	
-	        <echo message=""/>
-	        <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-	        <copy file="${dist.dir}/${webstart.warfile.mms.gme.name}" tofile="${j2ee.server.deploy.dir}/${webstart.warfile.mms.gme.name}"/>
-	</target>
-
-
-    <target name="mmswebstart" if="caadapter.release.mms.build">
-        <echo message="------- cleaning webstart deploy directory ------"/>
-        <delete dir="${webstart.deploy.dir}"/>
-        <delete file="${dist.dir}/${webstart.warfile.name}"/>
-
-    	<mkdir dir="${webstart.deploy.dir}/tmp"/>
-		<unzip dest="${webstart.deploy.dir}/tmp">
-        	<fileset dir="${dist.dir}/lib">
-            	<include name="caAdapter.jar"/>
-        	</fileset>
-		</unzip>
-
-    	<copy file="${webstart.config.dir}/caadapter-components.mms.properties" tofile="${webstart.deploy.dir}/tmp/caadapter-components.properties"/>
-
-		<zip destfile="${webstart.deploy.dir}/caAdapter.jar">
-			<fileset dir="${webstart.deploy.dir}/tmp"/>
-		</zip>
-
-        <delete dir="${webstart.deploy.dir}/tmp"/>
-
-        <echo message=""/>
-        <echo message="------- copying jar files to webstart deploy directory ------"/>
-        <copy todir="${webstart.deploy.dir}" failonerror="false">
-            <fileset dir="${lib.dir}">
-                <include name="commons-collections-3.2.jar"/>
-                <include name="commons-logging-1.0.4.jar"/>
-                <include name="xmi.in.out.jar"/>
-                <include name="xml-apis.jar"/>
-                <include name="xercesImpl.jar"/>
-                <include name="jdom.jar"/>
-                <include name="castor-0.9.9.jar"/>
-            	<include name="knuHL7V2tree.jar"/>
-            	<include name="cmps.jar"/>
-            </fileset>
-        	<fileset dir="${reference.dir}">
-                <include name="jgraph.jar"/>
-        	</fileset>
-
-        	<fileset dir="${ui.module.home}/lib">
-            	<include name="BrowserLauncher2-all-10rc4.jar"/>
-        	</fileset>
-        	<fileset dir="${common.module.home}/lib">
-                <include name="log4j-1.2.8.jar"/>
-        	</fileset>
-        	<fileset dir="${mms.module.home}/lib">
-        		<include name="jaxen-jdom.jar"/>
-                <include name="dom4j-1.4.jar"/>
-				<include name="sdk-codegen.jar"/>
-				<include name="spring.jar"/>
-        	</fileset>
-        </copy>
-
-        <echo message="------ copying webstart files to webstart deploy directory ------"/>
-        <copy todir="${webstart.deploy.dir}" includeEmptyDirs="false">
-            <fileset dir="${webstart.home.files}">
-                <include name="caadapter-mms.jnlp"/>
-                <include name="index-mms.html"/>
-            </fileset>
-        </copy>
-
-        <echo message=""/>
-        <echo message="-------- Applying Webserver replacement --------"/>
-        <replace file="${webstart.deploy.dir}/caadapter-mms.jnlp" token="$WEBSERVER" value="${webserver}"/>
-        <move file="${webstart.deploy.dir}/index-mms.html" tofile="${webstart.deploy.dir}/index.html" />
-
-        <antcall target="generate-keys"/>
-        <echo message=""/>
-        <echo message="-------- Signing all jar files --------"/>
-        <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
-            <fileset dir="${webstart.deploy.dir}" includes="*.jar, *.zip"/>
-        </signjar>
-
-        <echo message=""/>
-        <echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
-        <war destfile="${dist.dir}/${webstart.warfile.name}" webxml="${webstart.home.files}/web.xml">
-            <fileset dir="${webstart.deploy.dir}">
-                <exclude name="myKeyStore"/>
-            </fileset>
-            <zipfileset src="./${project.docs.home}/${proejct.online.help}" prefix="help"/>
-        </war>
-
-        <echo message=""/>
-        <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${j2ee.server.deploy.dir}/${webstart.warfile.name}"/>
-    </target>
-
-	<target name="build.hl7.specification">
-		<mkdir dir="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/"/>
-		<unzip dest="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/${normative.year}">
-		     <fileset dir="${basedir}/hl7_home/${normative.year}" >
-		         <include name="${hl7.mif.file}"/>
-		         <include name="${hl7.datatype.file}"/>
-		      </fileset>
-		</unzip>
-		<copy file="${basedir}/hl7_home/${normative.year}/mifIndex.obj" 
-			tofile="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/${normative.year}/mifIndex.obj"/>
-	</target>
-	
-	<target name="hl7.spec.process">
-		<antcall target="build.hl7.specification">
-			<param name="param1" value="value"/>
-		  	<param name="normative.year" value="Normative_2008"/>
-		  	<param name="hl7.mif.file" value="mif_2008.zip"/>
-		  	<param name="hl7.datatype.file" value="schemas.zip"/>
-		 </antcall>
- 
-  		<antcall target="build.hl7.specification">
-					<param name="param1" value="value"/>
-				  	<param name="normative.year" value="Normative_2006"/>
-				  	<param name="hl7.mif.file" value="mif_2006.zip"/>
-				  	<param name="hl7.datatype.file" value="schemas.zip"/>
-		</antcall>
-		<antcall target="build.hl7.specification">
-					<param name="param1" value="value"/>
-				  	<param name="normative.year" value="Normative_2005"/>
-				  	<param name="hl7.mif.file" value="mif_2005.zip"/>
-				  	<param name="hl7.datatype.file" value="schemas.zip"/>
-		 </antcall>
- 
-	     <zip destfile="${hl7.webstart.deploy.dir}/hl7Specfication.zip">
-			<fileset dir="${hl7.webstart.deploy.dir}/tmp/hl7spec"/>
-		</zip>
-		<delete dir="${hl7.webstart.deploy.dir}/tmp"/>
-	</target>
+   
+   <property name="j2ee.server.deploy.dir" value="C:\devWeb\jboss-5.0.1.GA\server\default\deploy"/>
 	
     <target name="hl7webstart" if="caadapter.release.hl7.build">
         <echo message="------- cleaning webstart deploy directory ------"/>
@@ -619,108 +476,51 @@
         <copy file="${dist.dir}/${hl7.webstart.warfile.name}" tofile="${j2ee.server.deploy.dir}/${hl7.webstart.warfile.name}"/>
     </target>
 	
-	<!-- target name="demo.dist"  -->
-    <target name="demo.dist">
-        <!-- ant antfile="build_demo.xml" target="demo.ui.jar"/ -->
-
-        <delete dir="${project.deploy.root}/lib"/>
-
-        <mkdir dir="${project.deploy.root}/lib"/>
-        <copy todir="${project.deploy.root}/lib">
-            <fileset dir="${dist.dir}/lib">
-                <exclude name="*.zip, *.jar"/>
-            </fileset>
-            <fileset dir="${project.ref.lib.dir}">
-                <exclude name="*.zip, *.jar"/>
-            </fileset>
-        </copy>
-
-        <copy todir="${project.deploy.root}/conf">
-            <fileset dir="${config.dir}">
-                <include name="*.properties"/>
-            </fileset>
-        </copy>
-
-        <copy file="dist/demo_ui.jar" todir="${project.deploy.root}"/>
-        <copy file="run.bat" todir="${project.deploy.root}"/>
-    </target>
+		<target name="build.hl7.specification">
+			<mkdir dir="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/"/>
+			<unzip dest="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/${normative.year}">
+			     <fileset dir="${basedir}/hl7_home/${normative.year}" >
+			         <include name="${hl7.mif.file}"/>
+			         <include name="${hl7.datatype.file}"/>
+			      </fileset>
+			</unzip>
+			<copy file="${basedir}/hl7_home/${normative.year}/mifIndex.obj" 
+				tofile="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/${normative.year}/mifIndex.obj"/>
+		</target>
+		
+		<target name="hl7.spec.process">
+			<antcall target="build.hl7.specification">
+				<param name="param1" value="value"/>
+			  	<param name="normative.year" value="Normative_2008"/>
+			  	<param name="hl7.mif.file" value="mif_2008.zip"/>
+			  	<param name="hl7.datatype.file" value="schemas.zip"/>
+			 </antcall>
+	 
+	  		<antcall target="build.hl7.specification">
+						<param name="param1" value="value"/>
+					  	<param name="normative.year" value="Normative_2006"/>
+					  	<param name="hl7.mif.file" value="mif_2006.zip"/>
+					  	<param name="hl7.datatype.file" value="schemas.zip"/>
+			</antcall>
+			<antcall target="build.hl7.specification">
+						<param name="param1" value="value"/>
+					  	<param name="normative.year" value="Normative_2005"/>
+					  	<param name="hl7.mif.file" value="mif_2005.zip"/>
+					  	<param name="hl7.datatype.file" value="schemas.zip"/>
+			 </antcall>
+	 
+		     <zip destfile="${hl7.webstart.deploy.dir}/hl7Specfication.zip">
+				<fileset dir="${hl7.webstart.deploy.dir}/tmp/hl7spec"/>
+			</zip>
+			<delete dir="${hl7.webstart.deploy.dir}/tmp"/>
+	</target>
 	
-    <target name="dist.prepare" depends="copy.modules.lib">
- 
-        <echo message="build demo_ui.jar...."/>
-        <copy tofile="${dist.dir}/build.xml" flatten="true">
-            <fileset file="build_demo.xml"></fileset>
-        </copy>
-        <copy todir="${dist.dir}" flatten="true">
-            <fileset file="run.bat"></fileset>
-        </copy>
-        <mkdir dir="dist/conf"/>
-    	<copy todir="${dist.dir}/conf">
-			<fileset file="${config.dir}/caadapter-components.properties" />
-			<fileset file="${config.dir}/CodegenConfig.xml" />
-			<fileset file="${config.dir}/logging.properties" />
-			<fileset file="${config.dir}/caadapter-resources.properties" />
-			<fileset file="${config.dir}/datatype-core-attributes-default.xml" />
-			<fileset file="${config.dir}/datatype-core-attributes-setting.xml" />
-			<fileset file="${config.dir}/hl7-normative-setting.xml" />
-			<fileset file="${config.dir}/hl7-customer-datatype-setting.xml"/>	
-    	</copy>
-    	<!-- mkdir dir="${dist.dir}/workingspace"/ -->
-    	<mkdir dir="${dist.dir}/hl7_home"/>   	 
-        <delete file="${lib.dir}\sqleonardo.jar"/>
-        <delete dir="${lib.dir}\delete.jar"/>
-    </target>
-
-    <target name="demo.jar">
-        <echo message="build demo_ui.jar...."/>
-        <ant antfile="build_demo.xml" target="compile.demo"/>
-        <echo message="Call Generating castor CODE...."/>
-        <ant antfile="build_demo.xml" target="demo.ui.jar"/>
-    </target>
 	<target name="copyDownload" if="sql.downloaded">
         <copy tofile="${basedir}/lib/sqleonardo.jar">
             <fileset file="${basedir}/lib/deletethisfolder.jar/sqleonardo-2007.06.rc1/**.jar"/>
         </copy>
         <delete dir="${basedir}/lib/deletethisfolder.jar"/>
 	</target>
-    <target name="copy.modules.lib">
-        <!-- deleting the folder deletethisfolder.jar and just copying the sqleonardo,jar as /lib/sqleonardo.jar so that
-        it exists in the manifest file-->
-    	<condition property="sql.downloaded">
-    		<available file="${basedir}/lib/deletethisfolder.jar/sqleonardo-2007.06.rc1" type="dir"></available>
-    	</condition>
-    	
-    	<antcall target="copyDownload"></antcall>
-    	
-        <!-- copy dir="${lib.dir}"/ -->
-        <copy todir="${dist.dir}/lib">
-            <fileset dir="${common.module.home}/lib"/>
-            <fileset dir="${hl7.module.home}/lib"/>
-            <fileset dir="${mms.module.home}/lib"/>
-            <!-- fileset dir="${dataview.module.home}/lib"/ -->
-            <fileset dir="${sdtm.module.home}/lib"/>
-            <fileset dir="${ui.module.home}/lib"/>
-            <!-- fileset dir="${ui.module.home}/../dataviewer/lib"/ -->
-            <fileset dir="${lib.dir}">
-                <exclude name="delete.jar"/>
-            </fileset>
-            <fileset dir="${project.ref.lib.dir}" includes="jgraph.jar,caAdapter.jar, client.jar, sqleonardo.jar,schemas.zip, mif.zip"/>
-
-        </copy>
-    </target>
-
-    <target name="build.modules" depends="init">
-        <echo message="-------- build all modules in ${project.name}  --------"/>
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${dist.dir}"/>
-        <ant antfile="${common.module.build}"/>
-        <ant antfile="${hl7.module.build}"/>
-        <ant antfile="${mms.module.build}"/>
-        <ant antfile="${dataview.module.build}"/>
-        <ant antfile="${sdtm.module.build}"/>
-        <ant antfile="${ui.module.build}"/> 
-    </target>
-
 	
 
     <target name="init" depends="clean">
@@ -731,7 +531,6 @@
 
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
-		<mkdir dir="${project.ref.lib.dir}"/>
     	<condition property="ref.sqleonardo">
 		   <available file="${ref_sqleonardo.jar}"/>
 		</condition>
@@ -745,7 +544,7 @@
 		<condition property="caadapter.release.mms.build">	
 			<equals arg1="${caadapter.release.mms.only}" arg2="true"/>
 		</condition>
-		<antcall target="copyMMSCaadapterUtil"/>
+		<!-- antcall target="copyMMSCaadapterUtil"/ -->
 		
 		<!-- if only release GME module, copy the GME_CaadapterUtil from MMS module -->
 			<condition property="caadapter.release.mms.gme.build">	
@@ -757,23 +556,12 @@
 		<condition property="caadapter.release.hl7.build">	
 			<equals arg1="${caadapter.release.hl7.only}" arg2="true"/>
 		</condition>
-		<antcall target="copyHL7CaadapterUtil"/>
+		<!-- antcall target="copyHL7CaadapterUtil"/ -->
 		
 		
     	<condition property="download.sqleonardo">
 		   <available file="${sqleonardo.jar}"/>
 		</condition>
-
-    	<ant antfile="${common.module.build}" target="init"/>
-        <!--		<ant antfile="${hl7.module.build}" target="init"/> -->
-        <ant antfile="${mms.module.build}" target="init"/>
-        <ant antfile="${dataview.module.build}" target="init"/>
-        <ant antfile="${sdtm.module.build}" target="init"/>
-        <ant antfile="${ui.module.build}" target="init"/>
-        <antcall target="clean.ws.option"/>
-    	<delete>
-    		<fileset dir="." includes="caadapter*.zip"/>
-    	</delete>
     </target>
     <target name="clean.ws.option" if="caadapter.release.ws.build">
     	<ant antfile="${ws.module.build}" target="init"/>
@@ -809,15 +597,12 @@
 
     <target name="clean">
         <echo message="-------- clean ${project.name}  --------"/>
-        <delete dir="${build.dir}"/>
+        <delete dir="${build.dir}" failonerror="false"/>
         <delete dir="${dist.dir}" failonerror="false"/>
-        <ant antfile="${common.module.build}" target="clean"/>
-        <ant antfile="${hl7.module.build}" target="clean"/>
-        <ant antfile="${mms.module.build}" target="clean"/>
-        <ant antfile="${dataview.module.build}" target="clean"/>
-        <ant antfile="${sdtm.module.build}" target="clean"/>
-        <ant antfile="${ui.module.build}" target="clean"/>
-        <ant antfile="${ws.module.build}" target="clean"/>
+        
+		<delete failonerror="false">
+		    <fileset dir="." includes="caadapter*.zip"/>
+    	</delete>
     </target>
 
  
@@ -860,5 +645,4 @@
     	<delete file="${signjar.keystore}"/>
         <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=${certificate.subject.CN}, OU=${certificate.subject.OU}, O=${certificate.subject.O}, C=${certificate.subject.C}"/>
     </target>
-
 </project>
