@@ -7,7 +7,7 @@
 		************************************************************************** 
 	</description>	
 	<!-- load project properties -->
-	<property file="../build.properties"/>
+	<property file="build.properties"/>
 
 	<path id="execution.class.path">
 		<fileset dir="lib">
@@ -26,79 +26,30 @@
 		<map from="${basedir}" to="."/>
 	</pathconvert>
 	
-	<target name="demo.zip"  depends="demo.ui.jar" >       
-        <tstamp>
-		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
-        </tstamp>
-        
-        
-        <condition property="caadapter.module.all.zip">	
-						<equals arg1="${caadapter.release.all.modules}" arg2="true"/>
-		</condition>
-		<echo message="caadapter.release.hl7.only=${caadapter.release.hl7.only}"/>
-        <condition property="caadapter.module.hl7.zip">	
-				<equals arg1="${caadapter.release.hl7.only}" arg2="true"/>
-		</condition>
-	 
-		<condition property="caadapter.module.gme.zip">	
-						<equals arg1="${caadapter.release.mms.gme.only}" arg2="true"/>
-		</condition>
-	 	<condition property="caadapter.module.mms.zip">	
-	 		<equals arg1="${caadapter.release.mms.only}" arg2="true"/>
-		</condition>
-		<!-- conditionally zip the distributed zip file -->
-		<antcall target="zipAllModule"/>
-		<antcall target="zipHL7Module"/>
-		<antcall target="zipGmeModule"/>
-        <antcall target="zipMMSModule"/>
-    </target>
+	<target name="demo.ui.jar" description="create the distribution jars">
+		<!-- Create an executable jar that runs the UI.-->
+		<echo message="targetVersion=${project.build.target.version}"/>
+		<echo message="Build demo jar:${build.dir}"/>
+		<mkdir dir="build"/>
+		<javac destdir="build" target="${project.build.target.version}"
+				classpathref="execution.class.path"
+				fork="yes" debug="on">
+			<src path="src/demo" />
+			<include name="**/LaunchUI.java"/>
+		</javac>
 
-	<target name="zipMMSModule" if="caadapter.module.mms.zip">
-		<echo message="Build bin distribution for MMS modules..."/>
-		<zip destfile="${project.release.version}_Bin_${DATE}.zip">
-			<zipfileset dir="lib" prefix="lib" includes="BrowserLauncher2-all-10rc4.jar, caAdapter.jar, castor*.jar, cmps.jar commons-logging*.jar, dom*.jar, jaxen-jdom.jar, jdom.jar,
-					knuHL7V2tree.jar, log*.jar, sdk-codegen.jar, spring.jar, xercesImpl.jar, xmi.in.out.jar"/>
-			<zipfileset dir="." includes="run.bat, caAdapter_ui.jar, conf/**"/>
-			
-			<zipfileset dir="../${project.docs.home}" prefix="docs">
-								<include name="*.pdf"/>
-								<include name="*.txt"/>
-							</zipfileset>	
-			<zipfileset src="../${project.docs.home}/${proejct.online.help}" prefix="docs/help"/>
-			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
-			<zipfileset dir="../workingspace" 
-				includes="Object_to_DB_Example/**"
-				prefix="workingspace" />
-		</zip>
-	</target>
-	
-	<target name="zipGmeModule" if="caadapter.module.gme.zip">
-		<echo message="Build bin distribution for GME modules..."/>
-		<zip destfile="${project.release.version}_Bin_${DATE}.zip">
-			<zipfileset dir="lib" prefix="lib" includes="BrowserLauncher2-all-10rc4.jar, caAdapter.jar, castor*.jar, cmps.jar commons-logging*.jar, dom*.jar, jaxen-jdom.jar, jdom.jar,
-					knuHL7V2tree.jar, log*.jar, xercesImpl.jar, xmi.in.out.jar"/>
-			<zipfileset dir="." includes="run.bat, caAdapter_ui.jar, conf/**, docs/help/**"/>
-			<zipfileset dir="../docs/GME" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, help_gme.zip" prefix="docs/GME"/>
-			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
-			<zipfileset dir="../workingspace" 
-				includes="GME_example/**"
-				prefix="workingspace" />
-		</zip>
-	</target>
-	
-	<target name="zipAllModule" if="caadapter.module.all.zip">
-		<echo message="Build all modules..."/>
-		<zip destfile="${project.release.version}_Bin_${DATE}.zip">
-			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
-					lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,lib/jgraph.jar,lib/junit*.jar,lib/mysql*.jar,lib/ojdbc*.jar,
-					lib/sqleonardo.jar" />
-
-			<zipfileset dir=".." includes="docs/help/**, docs/MMSv4.1/**" excludes="docs/MMSv4.1/*.zip" />
-			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
-			<zipfileset dir="../workingspace" 
-				includes="GME_example/**,VocabularyMapping/**"
-				prefix="workingspace" />
-		</zip>
+		<echo message="${distribution.manifest.class.property}"/>
+		<jar destfile="caAdapter_ui.jar">
+			<fileset dir="build" includes="**/LaunchUI.class"/>
+			<manifest>
+				<attribute name="Main-Class" value="gov.nih.nci.caadapter.hl7.demo.LaunchUI"/>
+				<attribute name="Class-Path" value=". ./conf/ ${distribution.manifest.class.property}"/>
+			</manifest>
+		</jar>
+		<delete dir="build" failonerror="false"/>
+		<delete dir="src" failonerror="false" />
+		<delete file="build.properties" failonerror="false"/>
+		<delete file="build.xml" failonerror="false"/>
 	</target>
 	
 	<target name="zipHL7Module" if="caadapter.module.hl7.zip">
@@ -153,43 +104,6 @@
 			</antcall>
 	</target>
 	
-	<target name="zip.hl7.example" if="${example.exist.flag}">
-	  <echo message="${example.exist.flag}"/>
-	  <zip destfile="${release.zip.file.name}" update="true">
-	   <zipfileset dir="${example.src.dir}"           
-	    prefix="${example.tgrt.prefix}">
-	    <include name="**"/>
-	   </zipfileset>
-	  </zip>
- 	</target>
- 	
-	<target name="demo.ui.jar"  depends="compile.demo" description="create the distribution jars">
-		<!-- Create an executable jar that runs the UI.-->
-		<echo message="${distribution.manifest.class.property}"/>
-		<jar destfile="caAdapter_ui.jar">
-			<fileset dir="../build" includes="**/LaunchUI.class"/>
-			<manifest>
-				<attribute name="Main-Class" value="gov.nih.nci.caadapter.hl7.demo.LaunchUI"/>
-				<attribute name="Class-Path" value=". ./conf/ ${distribution.manifest.class.property}"/>
-			</manifest>
-		</jar>
-	</target>
-	
-	<target name="test.jar" description="create testing jar: CSV to HL7 V3">
-			<mkdir dir="../test"/>
-			<javac destdir="../test" 
-				classpath="lib/caAdapter.jar;../lib/junit-4.3.1.jar"
-				fork="yes" debug="on">
-				<src path="../components/hl7Transformation/test/src" />
-				<include name="**/DemoCSV2HL7v3TransformationTests.java"/>
-			</javac>
-			<jar destfile="demoTest.jar">
-				<fileset dir="../test" />
-			</jar>
-			<delete dir="../test"/>
-	</target>
-	
-	
 	<target name="ws.client.jar" description="create testing jar: web service client">
 		<javac destdir="../build" 
 			classpath="../demo/webServiceClient/axis.jar;../demo/webServiceClient/jaxrpc.jar"
@@ -202,15 +116,6 @@
 		</jar>
 	</target>
 	
-	<target name="compile.demo"  description="compile the source">
-		<echo message="targetVersion=${project.build.target.version}"/>
-		<javac destdir="../build" target="${project.build.target.version}"
-				classpathref="execution.class.path"
-				fork="yes" debug="on">
-			<src path="../demo" />
-			<include name="**/LaunchUI.java"/>
-		</javac>
-	</target>
 	<target name="deploy.webstart"  description="deploy webstart components">
 		 <copy todir="C:/devWeb/jboss-4.0.5.GA/server/default/deploy">
 		      <fileset dir=".">
