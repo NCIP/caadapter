@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="caAdapter" default="build:all" basedir=".">
+<project name="caAdapter" default="build:dist.bin">
     <description>
         **************************************************************************
         caAdapter ANT BUILD SCRIPT
@@ -68,6 +68,7 @@
 			</fileset>
 			<zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/>
 		</war>
+		<delete dir="${dist.dir}/webstart" failonerror="false"/>
 	</target>
 
    	<target name="webstart:repack" depends="build:dist.bin" description="Re-pack caAdapter.jar for web start deployment">
@@ -120,17 +121,20 @@
 	</target>
 	
 	<target name="webstart:sign_resources">
-		<antcall target="generate-keys"/>
+    	<available file="${jar-signing.keystore.abs-location}" property="digital-keys.exist"/>
+
+	    <antcall target="generate-keys"/>
 	    <echo message="digitally signing...${RESOURCE_HOME}"/>
+
 	    <echo message="Key Store: ${jar-signing.keystore.abs-location}"/>
 	    <echo message="-------- Signing all jar files --------"/>
-	    <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
+	    <signjar alias="${jar-signing.keystore.alias}" storepass="${jar-signing.keystore.password}" keystore="${jar-signing.keystore.abs-location}" lazy="false">
 		   	<fileset dir="${RESOURCE_HOME}" includes="*.jar, *.zip"/>
 	    </signjar>
 	</target>
 	
    	<property name="demo.build.working.dir" value="${dist.dir}/tempdir"/>
-    <target name="build:dist.bin">
+    <target name="build:dist.bin" depends="compile">
 		<tstamp>
 			<format property="DIST_DATE" pattern="MM-dd-yy" locale="en_us"/>
 		</tstamp>
@@ -165,8 +169,8 @@
 			<fileset file="run.bat"/> 
 			<fileset file="build.properties"/> 
 		</copy>
-		<copy todir="${demo.build.working.dir}/src/demo" flatten="true">
-			<fileset dir="src/demo"/> 
+		<copy todir="${demo.build.working.dir}/src/demo">
+			<fileset dir="src/demo/"/> 
 		</copy>
 		<mkdir dir="${demo.build.working.dir}/conf"/>
 		<copy todir="${demo.build.working.dir}/conf">
@@ -194,7 +198,7 @@
 		<delete dir="${lib.dir}\delete.jar"/>
 	</target>
     
-	<target name="build:dist.src" depends="init" description="compile the source">
+	<target name="build:dist.src" depends="init" description="build the source distribution">
 		<tstamp>
 	            <format property="DIST_DATE" pattern="MM-dd-yy" locale="en_us"/>
         </tstamp>
@@ -237,7 +241,7 @@
 			<fileset dir="${dist.dir}" includes="**/*"/>
 		</delete>
 
-		<jar destfile="${caadapter.project.ref.lib.dir}/${project.jar.name}">
+		<jar destfile="${caadapter.project.ref.lib.dir}/caAdapter.jar">
 		     <fileset dir="${build.dir}"/>
 		     <fileset dir="${caadapter.project.resources.dir}" includes="images/*"/> 
 		     <fileset dir="src/resources/etc">
@@ -639,10 +643,31 @@
 	<!-- ================================= 
           target: generate keys              
          ================================= -->
-    <target name="generate-keys"  description="generate sign keys" if="generate-keys">
+    <target name="generate-keys"  unless="digital-keys.exist" description="generate sign keys" >
         <echo message=""/>
         <echo message="-------- Create a keyStore *disabled--------"/>
     	<delete file="${signjar.keystore}"/>
-        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=${certificate.subject.CN}, OU=${certificate.subject.OU}, O=${certificate.subject.O}, C=${certificate.subject.C}"/>
+	   	<genkey alias="${jar-signing.keystore.alias}" storepass="${jar-signing.keystore.password}" keystore="${jar-signing.keystore.abs-location}" dname="CN=${certificate.subject.CN}, OU=${certificate.subject.OU}, O=${certificate.subject.O}, C=${certificate.subject.C}"/>
     </target>
+    
+	<target name="test.flag" >
+		<condition property="generate-keys">
+			<available file="NCIKeystore"/>
+		</condition>
+		<condition property="control.value">
+			<equals arg1="${caadapter.release.mms.only}" arg2="true"/>
+		</condition>
+		<echo message="test.prop caadapter.release.mms.only: ${caadapter.release.mms.only}"/>
+		<echo message="test.prop generate-keys: ${generate-keys}"/>
+		<property name="copy.control" value="${caadapter.release.mms.only}"/>
+		<echo message="control.value: ${control.value}"/>
+		<antcall target="test.copy"/>
+		<delete dir="temp"/>
+	</target>
+	<target name="test.copy" if="control.value">
+			<copy todir="temp/src/demo" >
+					<fileset dir="src/demo/"/> 
+			</copy>
+	</target>
+
 </project>
