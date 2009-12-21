@@ -321,6 +321,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<ant inheritAll="false" inheritRefs="false" antfile="${caadapter-api.build.file}"
 			target="${caadapter-api.build.target}"
 			dir="${caadapter-api.base.dir}" >
+			<property name="dist.dir" value="${caadapter-api.dist.dir}" />
 			<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 		</ant>
 	</target>
