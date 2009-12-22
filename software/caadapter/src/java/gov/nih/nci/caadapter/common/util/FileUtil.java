@@ -1558,6 +1558,7 @@ public class FileUtil
                 File[] list = ff.listFiles();
                 for (File f:list)
                 {
+                    if (f.isHidden()) continue;
                     String fN = f.getAbsolutePath();
                     if (f.isFile())
                     {
