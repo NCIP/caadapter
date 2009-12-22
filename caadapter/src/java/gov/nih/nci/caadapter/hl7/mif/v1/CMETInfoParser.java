@@ -115,7 +115,52 @@ public class CMETInfoParser {
 		oos.close();
 		os.close();
 	}
-	
+
+    public void loadCMETInofs() throws Exception
+    {
+		InputStream cmetIs=null;
+
+        String mifZipFilePath= NormativeVersionUtil.getCurrentMIFIndex().getMifPath();
+        ZipFile mifZipFile=new ZipFile(mifZipFilePath);
+        ZipEntry cmetEntry=mifZipFile.getEntry("mif/cmetinfo.coremif");
+        if (cmetEntry==null)
+            cmetEntry=mifZipFile.getEntry("cmetinfo.coremif");
+        if (cmetEntry!=null) cmetIs=mifZipFile.getInputStream(cmetEntry);
+
+        if (cmetIs==null)
+        {
+            //normative 2008 structure /mif/cmetinfo.coremif
+		    //normative 2006 structure /cmetinfo.coremif
+            URL cmetURL=null;
+            //webStart deployment
+            String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
+            //normative 2008 structure
+
+            cmetURL=FileUtil.retrieveResourceURL(specHome+"/mif/cmetinfo.coremif");
+            //normative 2006 structure
+            if (cmetURL==null)
+                cmetURL=FileUtil.retrieveResourceURL(specHome+"/cmetinfo.coremif");
+            //working for Normative 2006
+            if (cmetURL==null)
+                cmetURL=FileUtil.retrieveResourceURL("cmetinfo.coremif");
+            if (cmetURL==null)
+            {
+                cmetURL=FileUtil.retrieveResourceURL("mif/cmetinfo.coremif");
+            }
+            System.out.println("##FFF# cmetURL=" + cmetURL.toString());
+
+            if (cmetURL!=null)
+                cmetIs=cmetURL.openStream();
+            else
+            {
+                throw new Exception("Not Found CMET Information.");
+            }
+        }
+        parserCMETInfoWithStream(cmetIs);
+	}	
+
+
+/*
 	public void loadCMETInofs() throws Exception {
 		//normative 2008 structure /mif/cmetinfo.coremif
 		//normative 2006 structure /cmetinfo.coremif
@@ -147,7 +192,7 @@ public class CMETInfoParser {
 		}
 		parserCMETInfoWithStream(cmetIs);
 	}
- 
+ */
 
 	public static void main(String[] args) throws Exception {
 //		CMETInfoParser cmetInfoParser = new CMETInfoParser();
