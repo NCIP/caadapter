@@ -301,7 +301,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<echo  message="Checking if database properties exist: ${db.prop.list}"/>
 		<properties-exist properties.list="${db.prop.list}"/>
 		<echoproperties prefix="database"/>
-		<copy todir="${db.dir.dest}" filtering="true">
+		<copy todir="${db.dir.dest}" filtering="true" failonerror="false">
 			<fileset dir="${db.dir.src}">
 				<include name="**/*"/>
 			</fileset>
@@ -312,7 +312,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			</filterset>
 		</copy>
 		<mkdir dir="${os.temp.dir}/${project.name}"/>
-		<copy todir="${os.temp.dir}/${project.name}" filtering="true" flatten="true" overwrite="true">
+		<copy todir="${os.temp.dir}/${project.name}" filtering="true" flatten="true" overwrite="true" failonerror="false">
 			<fileset dir="${db.dir.dest}">
 				<include name="**/db-upgrade.xml"/>
 			</fileset>
@@ -327,8 +327,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		install:database:validation:pre-install
 		">
 		<!-- Drop all schema objects or re-create the db -->
+		<!--
 		<database-clean/>
+		-->
 		<!-- Run baseline scripts stored in db.install.create.${database.type}.file.list variable -->
+		<!-- 
 		<switch value="${database.type}">
 			<case value="oracle">
 				<database-install
@@ -354,6 +357,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			database.changelog.file="${os.temp.dir}/${project.name}/db-upgrade.xml"
 			/>
 		<database-tag/>
+		-->
 	</target>
 
 	<target name="install:jboss:binaries" description="Install JBoss binaries" unless="exclude.jboss" depends="common:jboss:init, common:init">
@@ -822,10 +826,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		install:database:prep,
 		install:database:validation:pre-install
 		">
+		<!-- do nothing
 		<database-upgrade
 			database.changelog.file="${os.temp.dir}/${project.name}/db-upgrade.xml"
 			/>
 		<database-tag/>
+		-->
 	</target>
 
 	<target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database"
@@ -904,9 +910,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<properties-print
 			properties.list="${read.properties.list}"
 			/>
-		<properties-exist
+		<!-- properties-exist
 			properties.list="${read.properties.list}"
-			/>
+			/ -->
 		<properties-write
 			properties.list="${read.properties.list}"
 			/>
