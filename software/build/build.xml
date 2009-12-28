@@ -228,9 +228,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	</target>
 
 	<target name="clean">
-	<echo message="webserver: ${WEBSERVER}"/>
-		<delete dir="${dist.dir}" failonerror="false" />
-		<delete dir="${temp.dir}" />
+	<delete dir="${dist.dir}" failonerror="false" />
+	<delete dir="${temp.dir}" />
 	</target>
 
 	<target name="init" description="Sets up build are and initalizes variables">
@@ -326,7 +325,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</ant>
 	</target>
 
-	<target name="build:caadapter-webapp" depends="init, build:caadapter-api" description="Call webapp sub-projects build target to produce artifiacts">
+	<target name="web.server.host" unless="WEBSERVER">
+		<echo message="jboss.server.hostname=${jboss.server.hostname}"/>
+		<echo message="jboss.server.port=${jboss.server.port}"/>
+		<property name="WEBSERVER" value="http://${jboss.server.hostname}:${jboss.server.port}"/>
+		<echo message="web.sever=${WEBSERVER}"/>
+	</target>
+	<target name="build:caadapter-webapp" 
+		depends="init, 
+		build:caadapter-api,
+		web.server.host" 
+		description="Call webapp sub-projects build target to produce artifiacts">
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${caadapter-webapp.build.file}" target="${caadapter-webapp.build.target}" dir="${caadapter-webapp.base.dir}">
 			<property name="dist.dir" value="${caadapter-webapp.dist.dir}" />
