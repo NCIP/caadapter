@@ -53,7 +53,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<property name="working.dir" location="${basedir}/working" />
 	<property name="temp.dir" location="${working.dir}/temp" />
 
-
+	<!-- exclude.database properties -->
+	<property name="exclude.database" value="whatever to exclude database"/>
 	<!-- Install Time properties -->
 	<!-- Source and target directories -->
 	<property name="bda-utils.dir" location="${basedir}/bda-utils" />
@@ -321,17 +322,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 
 	<target name="install:database" description="Runs datbase creation scripts then calls uprade database." unless="exclude.database"
 		depends="
-
 		common:init,
 		install:database:prep,
 		install:database:validation:pre-install
 		">
 		<!-- Drop all schema objects or re-create the db -->
-		<!--
 		<database-clean/>
-		-->
+
 		<!-- Run baseline scripts stored in db.install.create.${database.type}.file.list variable -->
-		<!-- 
 		<switch value="${database.type}">
 			<case value="oracle">
 				<database-install
@@ -357,7 +355,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			database.changelog.file="${os.temp.dir}/${project.name}/db-upgrade.xml"
 			/>
 		<database-tag/>
-		-->
 	</target>
 
 	<target name="install:jboss:binaries" description="Install JBoss binaries" unless="exclude.jboss" depends="common:jboss:init, common:init">
@@ -552,11 +549,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<target name="install:database:validation:pre-install" description="Runs pre-install validation checks bda-utils"
 		depends="
 		common:init,
-		install:common:validation:pre-install
-		">
-		<!-- validate-pre-install-database
+		install:common:validation:pre-install"
+		unless="exclude.database">
+		<validate-pre-install-database
 			database.version="${mysql.minimum.version}"
-			/ -->
+			/>
 	</target>
 
 	<target name="install:jboss:validation:pre-install:ports" description="Checks to see if configured ports are listenting and fails buld, meant to be run after jboss:stop"
@@ -826,12 +823,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		install:database:prep,
 		install:database:validation:pre-install
 		">
-		<!-- do nothing
 		<database-upgrade
 			database.changelog.file="${os.temp.dir}/${project.name}/db-upgrade.xml"
 			/>
 		<database-tag/>
-		-->
 	</target>
 
 	<target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database"
@@ -923,7 +918,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		upgrade:jboss:init:prep,
 		upgrade:database:readers:bda,
 		upgrade:database:readers:custom
-		">
+		"
+		unless="exclude.database">
 		<!-- You need to either depend on jboss or tomcat so that you can read the db properties from it's configs.  BDA only has macros to read database properties from jboss. -->
 	</target>
 
@@ -982,7 +978,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<!-- call your custom readers here, two properties included in these scripts that don't have readers are "fs-data.base.dir, mail.smtp.server" -->
 	</target>
 
-	<target name="upgrade:database:readers:bda" depends="upgrade:jboss:init:prep" if="jboss.exists">
+	<target name="upgrade:database:readers:bda" depends="upgrade:jboss:init:prep" if="jboss.exists" unless="exclude.database">
 
 		<!-- Make sure the ${properties.file} has at least the following props -->
 		<properties-exist
