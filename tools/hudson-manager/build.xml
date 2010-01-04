@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+$Id: $
+$HeadURL:  $
+-->
+<project name="ncia-hudson-manager" default="save-hudson-configs" basedir=".">
+        <description>
+		This build file will update or deploy hudson configuraitons between working directory and svn repository.  This process assumes it is starting with an existing configuration in the repository.
+	</description>
+
+	<property environment="env"/>
+	<property file="project.properties" />
+	<property name="properties.file" value="${basedir}/install.properties"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<property file="${properties.file}" />
+	<!-- added for remote deployments since file is copied to root of install dir -->
+	<basename property="properties.file.name" file="${properties.file}"/>
+
+	<property name="svn.conf.dir" location="conf" />
+	<property name="target.dir" location="target" />
+	<property name="bda-utils.dir" location="${target.dir}/bda-utils" />
+	<property name="bda-download.dir" location="${target.dir}/bda-download" />
+	<!-- trick out repo dir -->
+	<property name="software.dir" location="${target.dir}/temp/temp/temp"/>
+	<property name="lib.dir" location="${target.dir}/lib" />
+	<property name="working.dir" location="${target.dir}/working" />
+	<property name="tomcat.dest.file" location="${working.dir}/${tomcat.binaries.file}"/>
+	<property name="artifacts.backup.file" location="${backup.dir}/hudson-artifacts.zip"/>
+
+	<property name="bda.version" value="0.3.0"/>
+	<mkdir dir="${bda-download.dir}" />
+	<mkdir dir="${software.dir}" />
+	<property name="bda-download.file" value="bda-ivy-build.xml"/>
+	<property name="bda-download.src.url" value="http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-download/${bda-download.file}"/>
+	<get src="${bda-download.src.url}" dest="${bda-download.dir}/${bda-download.file}"/>
+
+	<ant inheritAll="false" inheritRefs="false"
+		antfile="${bda-download.file}"
+		target="retrieve-bda"
+		dir="${bda-download.dir}"
+		>
+		<property name="bda.version" value="${bda.version}" />
+		<property name="bda-utils.dir" location="${bda-utils.dir}" />
+		<property name="lib.dir" location="${lib.dir}" />
+		<property name="software.dir" location="${software.dir}" />
+	</ant>
+
+	<path id="bda-utils.classpath">
+		<fileset dir="${bda-utils.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<taskdef name="svn" classpathref="bda-utils.classpath" classname="org.tigris.subversion.svnant.SvnTask" />
+	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
+			<pathelement location="${bda-utils.dir}/bcel-5.1.jar"/>
+			<pathelement location="${bda-utils.dir}/commons-httpclient-3.0.1.jar"/>
+			<pathelement location="${bda-utils.dir}/commons-logging-1.0.4.jar"/>
+			<pathelement location="${bda-utils.dir}/ivy-1.3.1.jar"/>
+		</classpath>
+	</taskdef>
+	  <taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="bda-utils.classpath" />
+
+	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
+
+	<target name="validate:svn:props">
+		<property name="prop.list" value="svn.user.name,svn.user.pass"/>
+		<for list="${prop.list}" param="prop.list.item" delimiter=",">
+			<sequential>
+				<echo message="Checking for existence of @{prop.list.item}"/>
+				<if>    
+					<not>   
+						<isset property="@{prop.list.item}"/>
+					</not>  
+					<then>  
+						<fail message="Usage is 'ant -Dsvn.user.name=svnusername -Dsvn.user.pass=svnpassword'."/>
+					</then> 
+				</if>   
+			</sequential>
+		</for>  
+	</target>
+	<target name="init">
+		<mkdir dir="${working.dir}"/>
+		<available file="${tomcat.dest.file}" property="tomcat.tools.exists"/>
+		<available file="${tomcat.home}/conf/server.xml" property="tomcat.exists"/>
+		<if>
+			<not>
+				<isset property="env.HUDSON_HOME"/>
+			</not>
+			<then>
+				<property name="hudson.not.set" value="true"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="copy2repo">
+		<copy todir="${svn.conf.dir}" overwrite="true">
+			<fileset dir="${hudson.dir}">
+				<exclude name="**/builds/**"/>
+				<exclude name="**/workspace/**"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="deploy2hudson">
+		<input message="This target will overwrite the current configuration of hudson.  It may also break hudson.  We will backup your existing configuration before begining.  Are you sure you want to proceed?"
+			validargs="y,n"
+			addproperty="accept.deploy2hudson" />
+		<if>    
+			<equals arg1="${accept.deploy2hudson}" arg2="n"/>
+			<then>  
+				<fail message="User tereminated the build."/>
+			</then> 
+		</if>
+		<echo message="Backing up ${hudson.dir} to ${user.home}/hudson-config-backup.zip before deploy"/>
+		<delete file="${user.home}/hudson-config-backup.zip"/>
+		<zip update="false" destfile="${user.home}/hudson-config-backup.zip">
+			<zipfileset dir="${hudson.dir}">
+				<exclude name="**/workspace/**/*"/>
+			</zipfileset>
+		</zip>  
+
+		<copy todir="${hudson.dir}">
+			<fileset dir="${svn.conf.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		
+	</target>
+	<target name="svn-add" depends="validate:svn:props">
+		<exec os="Linux" executable="svn" spawn="false">
+			<arg line="--force add ${svn.conf.dir}"/>
+		</exec>
+	</target>
+	<target name="svn-commit" depends="validate:svn:props">
+		<exec os="Linux" executable="svn" spawn="false">
+			<arg line="--username ${svn.user.name} --password ${svn.user.pass} commit -m 'Added by automated process' ${svn.conf.dir}"/>
+		</exec>
+	</target>
+	<target name="save-hudson-configs"
+		depends="
+		init,
+		copy2repo,
+		svn-add,
+		svn-commit
+		"/>
+
+	<target name="retrieve:tomcat" unless="tomcat.exists">
+		<if>
+			<not>
+				<available file="${tomcat.dest.file}"/>
+			</not>
+			<then>
+				<get src="${tomcat.src.url}"
+					dest="${tomcat.dest.file}"/>
+				<get src="${tomcat.src.url}.MD5"
+					dest="${tomcat.dest.file}.MD5"/>
+				<checksum file="${tomcat.dest.file}" verifyProperty="tomcat.cksum.ok"/>
+				<if>
+					<equals arg1="${tomcat.cksum.ok}" arg2="true"/>
+					<then>
+						<echo message="Downloaded tomcat sucessfully"/>
+					</then>
+					<else>
+						<fail message="Failed to download tomcat file sucessfully."/>
+					</else>
+				</if>
+			</then>
+		</if>
+	</target>
+
+	<target name="retrieve:hudson" unless="tomcat.exists">
+		<echo message="Checking for hudson ${hudson.file.name}"/>
+		<if>
+			<not>
+				<available file="${working.dir}/${hudson.file.name}"/>
+			</not>
+			<then>
+				<get src="${hudson.base.url}/${hudson.file.name}"
+					dest="${working.dir}/${hudson.file.name}"/>
+			</then>
+		</if>
+		<for list="${hudson.plugin.list}" param="plugin.name">
+			<sequential>
+				<echo message="Checking for plugin @{plugin.name}"/>
+				<if>
+					<not>
+						<available file="${working.dir}/@{plugin.name}"/>
+					</not>
+					<then>
+						<get src="${hudson.base.url}/@{plugin.name}"
+							dest="${working.dir}/@{plugin.name}"/>
+					</then>
+				</if>
+			</sequential>
+		</for>
+	</target>
+	
+	<target name="install:tomcat:binaries" description="Install tomcat" unless="tomcat.exists">
+		<delete dir="${tomcat.home}"/>
+		<unzip dest="${application.base.path}" src="${tomcat.dest.file}" />
+		<if>
+			<os family="unix"/>
+			<then>
+				<chmod dir="${tomcat.home}/bin" perm="ugo+rx" 
+					includes="**/*.sh"/>
+			</then>
+		</if>
+	</target>
+	<target name="install:tomcat:configure" description="Configure tomcat (change ports)" unless="tomcat.exists">
+		<xmlconfig in="${tomcat.home}/conf/server.xml" verbose="false">
+			<update path="(//Connector)[@port=8080]/@port" value="${tomcat.port.http}" />
+			<update path="(//Connector)[@redirectPort=8443]/@redirectPort" value="${tomcat.port.ssl}" />
+			<update path="(//Connector)[@port=8009]/@port" value="${tomcat.port.ajp}" />
+			<update path="(//Connector)[@port=8443]/@port" value="${tomcat.port.ssl}" />
+			<update path="(//Server)[@port=8005]/@port" value="${tomcat.port.shutdown}" />
+		</xmlconfig>
+	</target>
+	<target name="install:tomcat" description="Install tomcat" unless="tomcat.exists"
+		depends="
+		init,
+		retrieve:tomcat,
+		install:tomcat:binaries,
+		install:tomcat:configure
+		"/>
+	<target name="install:hudson" description="Install hudson" unless="tomcat.exists"
+		depends="
+		init,
+		retrieve:hudson,
+		install:hudson:binaries,
+		install:hudson:configure
+		"/>
+
+	<target name="install:hudson:binaries" description="Install hudson binary" unless="tomcat.exists">
+		<copy todir="${tomcat.home}/webapps">
+			<fileset dir="${working.dir}">
+				<include name="${hudson.file.name}"/>
+			</fileset>
+		</copy>
+		<mkdir dir="${hudson.dir}/plugins"/>
+		<copy todir="${hudson.dir}/plugins">
+			<fileset dir="${working.dir}">
+				<include name="*.hpi"/>
+			</fileset>
+		</copy>
+
+	</target>
+	<target name="install:hudson:configure" description="configure hudson" unless="tomcat.exists">
+	</target>
+	<target name="start:tomcat" unless="hudson.not.set">
+		<tomcat-start tomcat.home="${tomcat.home}"/>
+	</target>
+	<target name="stop:tomcat">
+		<tomcat-stop/>
+	</target>
+	<target name="install"
+		depends="
+		init,
+		install:tomcat,
+		install:hudson,
+		start:tomcat
+		">
+		<if>
+			<isset property="hudson.not.set"/>
+			<then>
+				<echo message="The environment variable HUDSON_HOME is not set. You need to set it before before starting tomcat, hence you will need to start tomcat manually."/>
+				<osfamily property="os.family"/>
+				<switch value="${os.family}">
+					<case value="unix">
+						<echo message="For bash shell you can edit the $HOME/.bash_profile and add 'export HUDSON_HOME=${hudson.dir}'"/>
+						<echo message="For other shells refer to you operating system documentation (you can check your shell by 'echo $SHELL')"/>
+					</case> 
+					<case value="windows">
+						<echo message="Right click on MyComputer, select Proeprties, select Advanced tab, click on Environment Variables, click on New under System Variables,  and set HUDSON_HOME to ${hudson.dir}"/>
+						<echo message="Don't forget to close all existing CMD windows before trying to use this variable."/>
+					</case> 
+				</switch>
+				<echo message="Once environment variable is set and tomcat is started you can access it at http://localhost:${tomcat.port.http}/hudson"/>
+			</then>
+			<else>
+				<echo message="You can access it at http://localhost:${tomcat.port.http}/hudson"/>
+			</else>
+
+		</if>
+	</target>
+	<target name="artifacts:backup">
+		<delete file="${artifacts.backup.file}"/>
+		<zip update="false" destfile="${artifacts.backup.file}">
+			<zipfileset dir="${hudson.dir}">
+				<include name="**/builds/**/*"/>
+			</zipfileset>
+		</zip>  
+	</target>
+	<target name="artifacts:restore">
+		<unzip dest="${hudson.dir}" src="${artifacts.backup.file}" />
+	</target>
+</project>
