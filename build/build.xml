@@ -324,23 +324,15 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 		</ant>
 	</target>
-
-	<target name="web.server.host" unless="WEBSERVER">
-		<echo message="jboss.server.hostname=${jboss.server.hostname}"/>
-		<echo message="jboss.server.port=${jboss.server.port}"/>
-		<property name="WEBSERVER" value="http://${jboss.server.hostname}:${jboss.server.port}"/>
-		<echo message="web.sever=${WEBSERVER}"/>
-	</target>
+	
 	<target name="build:caadapter-webapp" 
 		depends="init, 
-		build:caadapter-api,
-		web.server.host" 
+		build:caadapter-api" 
 		description="Call webapp sub-projects build target to produce artifiacts">
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${caadapter-webapp.build.file}" target="${caadapter-webapp.build.target}" dir="${caadapter-webapp.base.dir}">
 			<property name="dist.dir" value="${caadapter-webapp.dist.dir}" />
 			<property name="webstart.warfile.name" value="${caadapter-webapp.file.name}" />
-			<property name="webserver" value="${WEBSERVER}" />
 			<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 			<property name="commonlibrary.dir" value="${commonlibrary.dir}"/>
 			<property name="local.cbiit-ivy-repo.dir" value="${local.cbiit-ivy-repo.dir}"/>
