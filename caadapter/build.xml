@@ -66,6 +66,12 @@
 			<fileset dir="${dist.dir}/webstart">
 				<exclude name="myKeyStore"/>
 			</fileset>
+			<!-- zipfileset dir="${caadapter.project.webstart.home}/jsp" prefix="jsp"/ -->
+			<lib dir="${caadapter.project.webstart.home}/WEB-INF/lib">
+				<include name="jardiff.jar"/>
+				<include name="jnlp.jar"/>
+				<include name="jnlp-servlet.jar"/>
+			</lib>
 			<zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/>
 		</war>
 		<delete dir="${dist.dir}/webstart" failonerror="false"/>
@@ -117,7 +123,7 @@
 		<copy file="${caadapter.project.webstart.home}/${webstart.index.page.file}/" tofile="${dist.dir}/webstart/index.html" />
 		
         <echo message="-------- Applying Webserver replacement --------"/>
-        <replace file="${dist.dir}/webstart/${webstart.launch.page.file}" token="$WEBSERVER" value="${webserver}"/>
+        <!-- replace file="${dist.dir}/webstart/${webstart.launch.page.file}" token="$WEBSERVER" value="${webserver}"/ -->
 	</target>
 	
 	<target name="webstart:sign_resources">
