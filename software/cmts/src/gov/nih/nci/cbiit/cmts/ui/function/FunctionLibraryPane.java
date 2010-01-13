@@ -70,6 +70,7 @@ public class FunctionLibraryPane extends JPanel// implements TreeSelectionListen
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			tree.setDragEnabled(true);
 			FunctionTransferHandler ftd=new FunctionTransferHandler();
+			ftd.setGraphController(parent.getMiddlePanel().getGraphController());
 			parent.getMiddlePanel().getGraph().setTransferHandler(ftd);
 			tree.setTransferHandler(ftd);
 //			tree.setTransferHandler(parent.getDndHandler());
