@@ -75,7 +75,7 @@ public class MainFrame extends JFrame
 			contextManager.setMenu(frameMenu);
 			contextManager.setToolBarHandler(new MainToolBarHandler());
 			contextManager.initContextManager(this);
-			this.setTitle("CMPS");
+			this.setTitle("caAdapter Common Mapping and Transformation Services");
 			Container contentPane = this.getContentPane();
 			contentPane.setLayout(new BorderLayout());
 			//set the icon.
