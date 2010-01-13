@@ -17,20 +17,17 @@ public class FunctionDefTransfer implements Transferable, Serializable {
 	{
 		object=transfered;
 	}
-	@Override
 	public Object getTransferData(DataFlavor flavor)
 			throws UnsupportedFlavorException, IOException {
 		// TODO Auto-generated method stub
 		return object;
 	}
 
-	@Override
 	public DataFlavor[] getTransferDataFlavors() {
 		// TODO Auto-generated method stub
 		return flavorSupport;
 	}
 
-	@Override
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
 		// TODO Auto-generated method stub
 		System.out.println("FunctionDefTransfer.isDataFlavorSupported()..flavor"+flavor);
