@@ -136,8 +136,8 @@ public class MiddlePanelJGraphController
 		// Insert the functionBoxVertex (including child port and attributes)
 		Map portAttributes = new Hashtable();
 		ParentMap parentMap = new ParentMap();
-		int numOfInputs = FunctionBoxViewManager.getInstance().getTotalNumberOfDefinedInputs(function);
-		int numOfOutputs = FunctionBoxViewManager.getInstance().getTotalNumberOfDefinedOutputs(function);
+		int numOfInputs = functionInstance.getTotalNumberOfDefinedInputs();// FunctionBoxViewManager.getInstance().getTotalNumberOfDefinedInputs(function);
+		int numOfOutputs =functionInstance.getTotalNumberOfDefinedOutputs();// FunctionBoxViewManager.getInstance().getTotalNumberOfDefinedOutputs(function);
 		int maximumPorts = Math.max(numOfInputs, numOfOutputs);
 		addGraphPorts(function, portAttributes, parentMap, functionBoxVertex, funcBoxAttrbutes, numOfInputs, UIHelper.getDefaultFunctionalBoxInputOrientation(), maximumPorts);
 		addGraphPorts(function, portAttributes, parentMap, functionBoxVertex, funcBoxAttrbutes, numOfOutputs, UIHelper.getDefaultFunctionalBoxOutputOrientation(), maximumPorts);
