@@ -8,6 +8,8 @@
 
 package gov.nih.nci.cbiit.cmts.core;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -36,7 +38,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "functionData")
-public class FunctionData {
+public class FunctionData implements Serializable{
 
     @XmlAttribute
     protected String name;

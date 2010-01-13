@@ -8,6 +8,7 @@
 
 package gov.nih.nci.cbiit.cmts.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -43,7 +44,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "functionDef", propOrder = {
     "data"
 })
-public class FunctionDef {
+public class FunctionDef implements Serializable{
 
     protected List<FunctionData> data;
     @XmlAttribute
