@@ -145,4 +145,15 @@ public class FunctionData implements Serializable{
         this.input = value;
     }
 
+    public FunctionData clone()
+    {
+    	FunctionData cloned=new FunctionData();
+    	cloned.setName(new String (this.getName()));
+    	cloned.setValue(new String (this.getValue()));
+    	cloned.setType(new String(this.getType()));
+    	cloned.setInput(this.isInput());
+    	
+    	return cloned;
+    	
+    }
 }
