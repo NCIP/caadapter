@@ -31,11 +31,6 @@ import java.util.Map;
  */
 public class FunctionBoxView extends VertexView
 {
-//	public static transient FunctionBoxCellRenderer renderer = new FunctionBoxCellRenderer();
-
-	public FunctionBoxView()
-	{
-	}
 
 	public FunctionBoxView(Object cell)
 	{
@@ -47,9 +42,7 @@ public class FunctionBoxView extends VertexView
 	 */
 	public CellViewRenderer getRenderer()
 	{
-//		return super.getRenderer();
 		FunctionBoxCellRenderer fbRender=new FunctionBoxCellRenderer();
-
 		return fbRender;
 	}
 
@@ -113,7 +106,6 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 	{
 		defaultForeground = UIManager.getColor("Tree.textForeground");
 		defaultBackground = UIManager.getColor("Tree.textBackground");
-//		setBackground(backgroundColor);
 	}
 
 	public JComponent getRendererComponent(JGraph graph, CellView view, boolean sel, boolean focus, boolean preview)
@@ -162,7 +154,9 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 				label.setText(functionName);
 				label.setIcon(imageIcon);
 				mainPanel.add(label, BorderLayout.NORTH);
-
+				if (function.getFunctionDef().getName().equalsIgnoreCase("constant"))
+					return renderConstantFunction(function, mainPanel);
+						
 				return renderNormalFunction(function, mainPanel);
 			}
 		}
@@ -240,17 +234,9 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 		mainPanel.setBorder(getDefaultBorder(1, 1, 1, 1));
 		this.setLayout(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
 		this.add(mainPanel, BorderLayout.CENTER);
-//			Insets insets = new Insets(5, 5, 5, 5);
 		return this;
 	}
 
-//	private JComponent getSpaceFiller()
-//	{
-//		JComponent comp = new JPanel();
-//		Dimension dim = new Dimension(5, 5);
-//		comp.setPreferredSize(dim);
-//		return comp;
-//	}
 
 	private Border getDefaultBorder(int top, int left, int bottom, int right)
 	{
@@ -292,9 +278,9 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 		{
 			String name = null;
 			FunctionData paramMeta = paramList.get(i);
+			if (paramMeta.isInput()!=isInput)
+				continue;
 			name = paramMeta.getName();
-//			isInput ? "value_" : "result_";
-//			name += i;
 			JLabel label = new JLabel();
 			if(i<size-1)
 			{
@@ -307,7 +293,6 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 			label.setText(name);
 			panel.add(label, new GridBagConstraints(0, i, 1, 1, 1.0 / ((double)size), 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH, insets, 0, 0));
-//			panel.add(label);
 		}
 	}
 
@@ -356,7 +341,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 		}
 		catch (IllegalArgumentException e)
 		{
-			// JDK Bug: Zero length string passed to TextLayout constructor
+			e.printStackTrace();
 		}
 	}
 
