@@ -97,6 +97,8 @@ public class FunctionBoxViewManager
 		}
 		else if (function instanceof FunctionDef)
 		{
+			FunctionDef fdef=(FunctionDef)function;
+			functionUUID=fdef.getClazz()+":"+fdef.getName();
 		}
 		else
 		{
