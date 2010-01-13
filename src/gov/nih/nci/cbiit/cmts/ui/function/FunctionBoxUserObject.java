@@ -33,7 +33,6 @@ public class FunctionBoxUserObject implements MappableNode
 	private boolean mapped = false;
 
 	private Icon icon = null;
-//	private String name = null;
 	private int totalNumberOfDefinedInputs = 0;
 	private int totalNumberOfDefinedOutputs = 0;
 	private List inputElementList = new ArrayList();
@@ -116,8 +115,6 @@ public class FunctionBoxUserObject implements MappableNode
 
 	private void resetMetas()
 	{
-//		this.inputElementList = new ArrayList();
-//		this.outputElementList = new ArrayList();
 		if (FunctionDef != null)
 		{
 			for (FunctionData fData:FunctionDef.getData())
