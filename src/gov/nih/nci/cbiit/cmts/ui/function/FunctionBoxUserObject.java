@@ -9,7 +9,7 @@
 
 package gov.nih.nci.cbiit.cmts.ui.function;
 
-import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.core.ViewType;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
@@ -116,13 +116,18 @@ public class FunctionBoxUserObject implements MappableNode
 
 	private void resetMetas()
 	{
+//		this.inputElementList = new ArrayList();
+//		this.outputElementList = new ArrayList();
 		if (FunctionDef != null)
 		{
-//			this.totalNumberOfDefinedInputs = FunctionDef.getSizeOfDefinedInput();
-//			this.totalNumberOfDefinedOutputs = FunctionDef.getSizeOfDefinedOutput();
+			for (FunctionData fData:FunctionDef.getData())
+			{
+				if (fData.isInput())
+					totalNumberOfDefinedInputs++;
+				else
+					totalNumberOfDefinedOutputs++;
+			}
 		}
-		this.inputElementList = new ArrayList();
-		this.outputElementList = new ArrayList();
 	}
 
 	/**
