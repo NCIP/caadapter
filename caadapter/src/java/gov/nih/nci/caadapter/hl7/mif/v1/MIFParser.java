@@ -12,6 +12,7 @@ import gov.nih.nci.caadapter.hl7.datatype.XSDParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
+import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -101,7 +102,9 @@ public class MIFParser {
         if (mifClass==null)
         	return false;
         mifClass.setPackageLocation(mifPackageLocation);
-        mifClass.setCopyrightYears(copyYear);
+        if (NormativeVersionUtil.getCurrentMIFIndex() != null)
+             mifClass.setCopyrightYears(NormativeVersionUtil.getCurrentMIFIndex().getCopyrightYears());
+        else mifClass.setCopyrightYears(copyYear);
 //&umkis        if (annotation != null)  mifClass.setAnnotation(annotation);
 
         return true;
