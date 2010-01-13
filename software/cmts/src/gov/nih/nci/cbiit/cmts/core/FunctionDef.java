@@ -86,6 +86,13 @@ public class FunctionDef implements Serializable{
     }
 
     /**
+	 * @param data the data to set
+	 */
+	public void setData(List<FunctionData> data) {
+		this.data = data;
+	}
+
+	/**
      * Gets the value of the name property.
      * 
      * @return
@@ -181,4 +188,20 @@ public class FunctionDef implements Serializable{
         this.method = value;
     }
 
+    public FunctionDef clone()
+    {
+    	FunctionDef cloned=new FunctionDef();
+    	cloned.setName(new String (this.getName()));
+    	cloned.setGroup(new String (this.getGroup()));
+    	cloned.setMethod(new String(this.getMethod()));
+    	cloned.setClazz(new String(this.getClazz()));
+    	List<FunctionData> clonedData=new ArrayList<FunctionData>();
+    	for(FunctionData fData: getData())
+    	{
+    		clonedData.add(fData.clone());
+    		
+    	}
+    	cloned.setData(clonedData);
+    	return cloned;
+    }
 }
