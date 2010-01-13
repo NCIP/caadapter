@@ -434,12 +434,11 @@ public class FileUtil
             }
         }
 
-        if ((!dir.exists())||(!dir.isDirectory())) return null;
+        if ((!dir.exists())||(!dir.isDirectory())||(dir.isHidden())) return null;
 
         String dirName = dir.getAbsolutePath();
         if (!dirName.endsWith(File.separator)) dirName = dirName + File.separator;
         File f = new File(dirName + fileName);
-        //System.out.println("BBBB File search ("+fileName + ") :" + (isFile) + ":" + (f.isFile()) + " : "+ f.getAbsolutePath());
 
         if (f.exists())
         {
@@ -470,9 +469,13 @@ public class FileUtil
         if (isStart)
         {
             if (dir.getParentFile() == null) return null;
-            dir = dir.getParentFile();
-            String res = searchFile(startDir, dir, fileName, searchedDirList, isFile);
-            if (res != null) return res;
+            String dName = startDir.getName();
+            if ((dName.equalsIgnoreCase("bin"))||(dName.equalsIgnoreCase("dist")))
+            {
+                dir = dir.getParentFile();
+                String res = searchFile(startDir, dir, fileName, searchedDirList, isFile);
+                if (res != null) return res;
+            }
         }
         return null;
     }
