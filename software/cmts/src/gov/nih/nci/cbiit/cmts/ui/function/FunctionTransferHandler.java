@@ -78,8 +78,10 @@ public class FunctionTransferHandler extends CommonTransferHandler
             return false;
         }
         if (data instanceof FunctionDef)
-        	return getGraphController().addFunction((FunctionDef)data, info.getDropLocation().getDropPoint());
-        
+        {
+        	FunctionDef cloneData=((FunctionDef)data).clone();
+        	return getGraphController().addFunction(cloneData, info.getDropLocation().getDropPoint());
+        }
         return false;
 	}
 	
