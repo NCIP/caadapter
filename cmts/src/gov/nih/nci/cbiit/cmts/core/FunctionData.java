@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "functionData")
-public class FunctionData implements Serializable{
+public class FunctionData implements Serializable, Cloneable{
 
     @XmlAttribute
     protected String name;
@@ -145,15 +145,16 @@ public class FunctionData implements Serializable{
         this.input = value;
     }
 
-    public FunctionData clone()
+    public Object clone()
     {
-    	FunctionData cloned=new FunctionData();
-    	cloned.setName(new String (this.getName()));
-    	cloned.setValue(new String (this.getValue()));
-    	cloned.setType(new String(this.getType()));
-    	cloned.setInput(this.isInput());
-    	
-    	return cloned;
-    	
+    	FunctionData cloned;
+		try {
+			cloned = (FunctionData)super.clone();
+	    	return cloned;
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new InternalError(e.toString());
+		}   	
     }
 }
