@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "functionDef", propOrder = {
     "data"
 })
-public class FunctionDef implements Serializable{
+public class FunctionDef implements Serializable, Cloneable {
 
     protected List<FunctionData> data;
     @XmlAttribute
@@ -188,20 +188,19 @@ public class FunctionDef implements Serializable{
         this.method = value;
     }
 
-    public FunctionDef clone()
+    public Object clone()
     {
-    	FunctionDef cloned=new FunctionDef();
-    	cloned.setName(new String (this.getName()));
-    	cloned.setGroup(new String (this.getGroup()));
-    	cloned.setMethod(new String(this.getMethod()));
-    	cloned.setClazz(new String(this.getClazz()));
-    	List<FunctionData> clonedData=new ArrayList<FunctionData>();
-    	for(FunctionData fData: getData())
-    	{
-    		clonedData.add(fData.clone());
-    		
-    	}
-    	cloned.setData(clonedData);
-    	return cloned;
+		try {
+			FunctionDef cloned = (FunctionDef)super.clone();
+			List<FunctionData> clonedData=new ArrayList<FunctionData>();
+	    	for(FunctionData fData: getData())
+	    		clonedData.add((FunctionData)fData.clone());
+	    	cloned.setData(clonedData);
+	    	return cloned;
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new InternalError(e.toString());
+		}
     }
 }
