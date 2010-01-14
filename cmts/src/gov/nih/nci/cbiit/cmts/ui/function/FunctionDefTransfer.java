@@ -20,7 +20,11 @@ public class FunctionDefTransfer implements Transferable, Serializable {
 	public Object getTransferData(DataFlavor flavor)
 			throws UnsupportedFlavorException, IOException {
 		// TODO Auto-generated method stub
-		return object;
+		if (flavor.getHumanPresentableName().equals(FUNCTION_DEFINITION_FLAVOR))
+			return object;
+		else
+			throw new UnsupportedFlavorException(flavor);
+
 	}
 
 	public DataFlavor[] getTransferDataFlavors() {
@@ -31,6 +35,9 @@ public class FunctionDefTransfer implements Transferable, Serializable {
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
 		// TODO Auto-generated method stub
 		System.out.println("FunctionDefTransfer.isDataFlavorSupported()..flavor"+flavor);
+		if (flavor.getHumanPresentableName().equals(FUNCTION_DEFINITION_FLAVOR))
+			return true;
+		
 		return false;
 	}
 
