@@ -56,7 +56,7 @@ public class FunctionTransferHandler extends CommonTransferHandler
 		DataFlavor[] transferFlavors=info.getDataFlavors();
 		for (int i=0; i<transferFlavors.length;i++)
 		{
-			if (transferFlavors[i].getHumanPresentableName().equals(FunctionDefTransfer.FUNCTION_DEFINITION_FLAVOR))
+			if (info.isDataFlavorSupported(transferFlavors[i]))
 				return true;
 		}
         return super.canImport(info);
@@ -69,7 +69,7 @@ public class FunctionTransferHandler extends CommonTransferHandler
 	{
 		Object data;
         try {
-            data = info.getTransferable().getTransferData(DataFlavor.stringFlavor);
+            data = info.getTransferable().getTransferData(new DataFlavor(FunctionDefTransfer.class, FunctionDefTransfer.FUNCTION_DEFINITION_FLAVOR));
         } catch (UnsupportedFlavorException e) {
         	e.printStackTrace();
             return false;
@@ -79,7 +79,7 @@ public class FunctionTransferHandler extends CommonTransferHandler
         }
         if (data instanceof FunctionDef)
         {
-        	FunctionDef cloneData=((FunctionDef)data).clone();
+        	FunctionDef cloneData=(FunctionDef)((FunctionDef)data).clone();
         	return getGraphController().addFunction(cloneData, info.getDropLocation().getDropPoint());
         }
         return false;
