@@ -12,14 +12,13 @@ package gov.nih.nci.cbiit.cmts.ui.function;
 
 import gov.nih.nci.cbiit.cmts.common.FunctionManager;
 import gov.nih.nci.cbiit.cmts.core.FunctionType;
-import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphTransferHandler;
+import gov.nih.nci.cbiit.cmts.ui.dnd.FunctionDragTransferHandler;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.GraphDropTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -69,13 +68,13 @@ public class FunctionLibraryPane extends JPanel// implements TreeSelectionListen
 			tree = new JTree(kindNode);
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			tree.setDragEnabled(true);
-			FunctionTransferHandler ftd=new FunctionTransferHandler();
-			ftd.setGraphController(parent.getMiddlePanel().getGraphController());
-			parent.getMiddlePanel().getGraph().setTransferHandler(ftd);
-			tree.setTransferHandler(ftd);
-//			tree.setTransferHandler(parent.getDndHandler());
-			//new TreeDefaultDragTransferHandler(tree, DnDConstants.ACTION_LINK);
-
+			FunctionDragTransferHandler dragHandler=new FunctionDragTransferHandler();
+			tree.setTransferHandler(dragHandler);
+		
+			GraphDropTransferHandler gDropHandler=new GraphDropTransferHandler();
+			gDropHandler.setGraphController(parent.getMiddlePanel().getGraphController());
+			parent.getMiddlePanel().getGraph().setTransferHandler(gDropHandler);
+			
 			//Create the scroll pane and add the tree to it.
 			JScrollPane treeView = new JScrollPane(tree);
 			//Add treeView to this panel.
