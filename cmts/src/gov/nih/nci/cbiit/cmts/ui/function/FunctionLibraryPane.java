@@ -12,8 +12,8 @@ package gov.nih.nci.cbiit.cmts.ui.function;
 
 import gov.nih.nci.cbiit.cmts.common.FunctionManager;
 import gov.nih.nci.cbiit.cmts.core.FunctionType;
-import gov.nih.nci.cbiit.cmts.ui.dnd.FunctionDragTransferHandler;
-import gov.nih.nci.cbiit.cmts.ui.jgraph.GraphDropTransferHandler;
+import gov.nih.nci.cbiit.cmts.ui.dnd.GraphDropTransferHandler;
+import gov.nih.nci.cbiit.cmts.ui.dnd.TreeDragTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 
 import javax.swing.JPanel;
@@ -23,7 +23,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.BorderLayout;
-import java.awt.dnd.DnDConstants;
 
 /**
  * This class displays a scrollable panel listing functions available in FunctionTypeImpl and organizes by Group name.
@@ -68,7 +67,7 @@ public class FunctionLibraryPane extends JPanel// implements TreeSelectionListen
 			tree = new JTree(kindNode);
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			tree.setDragEnabled(true);
-			FunctionDragTransferHandler dragHandler=new FunctionDragTransferHandler();
+			TreeDragTransferHandler dragHandler=new TreeDragTransferHandler();
 			tree.setTransferHandler(dragHandler);
 		
 			GraphDropTransferHandler gDropHandler=new GraphDropTransferHandler();
