@@ -9,9 +9,9 @@
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 
+import gov.nih.nci.cbiit.cmts.ui.dnd.TreeTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesSwitchController;
-import gov.nih.nci.cbiit.cmts.ui.tree.TreeTransferHandler;
 
 import java.util.EventObject;
 

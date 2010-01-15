@@ -12,7 +12,6 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphTransferHandler;
 
 import gov.nih.nci.cbiit.cmts.ui.common.DataTransferActionType;
-import gov.nih.nci.cbiit.cmts.ui.common.TransferableNode;
 
 import javax.swing.JComponent;
 import java.awt.datatransfer.DataFlavor;
