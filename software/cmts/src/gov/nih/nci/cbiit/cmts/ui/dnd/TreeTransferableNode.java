@@ -1,5 +1,10 @@
 package gov.nih.nci.cbiit.cmts.ui.dnd;
 
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionTypeNodeLoader;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -30,7 +35,23 @@ public class TreeTransferableNode implements Transferable, Serializable {
 //	 public Object getTransferData(DataFlavor flavor)
 	 throws UnsupportedFlavorException, IOException {
 		 if (flavor.getRepresentationClass().equals(mutableTreeNodeFlavor.getRepresentationClass())) 
-			 return nodeTransferable.getUserObject();
+		 {
+			 if(nodeTransferable.getUserObject() instanceof ElementMetaLoader.MyTreeObject)
+			 {		
+				 //return the node path for mapping tree
+				 String pathString = UIHelper.getPathStringForNode(nodeTransferable);
+				 return pathString;
+			 }
+			 else if (nodeTransferable.getUserObject() instanceof FunctionTypeNodeLoader.MyTreeObject)
+			 {
+				//return the FunctionDef object for tree node of function meta
+				 FunctionDef f =null;	
+				 f=((FunctionDef)((FunctionTypeNodeLoader.MyTreeObject)nodeTransferable.getUserObject()).getObj()); 
+				 return f;
+			 }
+			 else 
+				 return nodeTransferable.getUserObject();
+		 }
 		 else
 			 throw new UnsupportedFlavorException(flavor);
  
