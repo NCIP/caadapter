@@ -19,6 +19,8 @@ import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
+import gov.nih.nci.cbiit.cmts.ui.dnd.TreeDragTransferHandler;
+import gov.nih.nci.cbiit.cmts.ui.dnd.TreeTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionLibraryPane;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
@@ -26,7 +28,6 @@ import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesPage;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeSelectionHandler;
-import gov.nih.nci.cbiit.cmts.ui.tree.TreeTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
@@ -81,20 +82,15 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	private static final String SELECT_HMD_TIP = "select HMD";
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_TARGET = "Open Target...";
-
 	private static final String SOURCE_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
-
 	private static final String TARGET_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
-	private TreeTransferHandler dndHandler = null;
+
 	//	protected TreeCollapseAllAction sourceTreeCollapseAllAction;
 	//	protected TreeExpandAllAction sourceTreeExpandAllAction;
-	//	
 	//	protected TreeCollapseAllAction targetTreeCollapseAllAction;
 	//	protected TreeExpandAllAction targetTreeExpandAllAction;
-	//
 	//	protected MappingFileSynchronizer fileSynchronizer;
 	//	
-	private FunctionLibraryPane functionPane;
 
 	private Mapping mapping = null;
 	private File mappingSourceFile = null;
@@ -107,8 +103,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	private JTextField targetLocationArea = new JTextField();
 	private MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
 	private MappingTargetTree tTree = null;
-
-	//	private TargetTreeDropTransferHandler targetTreeDropTransferHandler = null;
 
 	public CmpsMappingPanel() throws Exception
 	{
@@ -190,7 +184,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		sTree = new MappingSourceTree(middlePanel, nodes);
 		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(middlePanel.getGraphController());
 		sTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
-		sTree.setTransferHandler(getDndHandler());
+		sTree.setTransferHandler(new TreeDragTransferHandler());
 		sTree.setDragEnabled(true);
 //		sTree.setDropMode(DropMode.ON);
 		sTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -234,8 +228,10 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
 		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(middlePanel.getGraphController());
 		tTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
-		tTree.setTransferHandler(getDndHandler());
+		TreeTransferHandler targetTreeTransferHandler= new TreeTransferHandler(this);
+		tTree.setTransferHandler(targetTreeTransferHandler);
 		tTree.setDropMode(DropMode.ON);
+		tTree.setDragEnabled(true);
 		targetScrollPane.setViewportView(tTree);
 		tTree.expandAll();
 		
@@ -355,14 +351,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		return saveAction;
 	}
 
-	/**
-	 * @return the dndHandler
-	 */
-	public TreeTransferHandler getDndHandler() {
-		if(this.dndHandler == null)
-			this.dndHandler = new TreeTransferHandler(this);
-		return dndHandler;
-	}
 
 	/**
 	 * @return the mapping
@@ -439,11 +427,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	public JScrollPane getSourceScrollPane() {
 		return sourceScrollPane;
 	}
-
-	//	protected TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler()
-	//	{
-	//		return this.targetTreeDropTransferHandler;
-	//	}
 
 	/**
 	 * Reload the file specified in the parameter.
@@ -636,7 +619,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		//topBottomSplitPane.setBorder(BorderFactory.createEtchedBorder());
 		topBottomSplitPane.setDividerLocation(0.5);
 
-		functionPane = new FunctionLibraryPane(this);
+		FunctionLibraryPane functionPane = new FunctionLibraryPane(this);
 		functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
 		if(functionPaneRequired)
 		{
