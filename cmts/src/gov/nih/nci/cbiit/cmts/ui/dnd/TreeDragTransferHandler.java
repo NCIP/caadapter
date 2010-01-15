@@ -1,6 +1,5 @@
 package gov.nih.nci.cbiit.cmts.ui.dnd;
 
-import gov.nih.nci.cbiit.cmts.ui.common.CommonTransferHandler;
 
 import java.awt.datatransfer.Transferable;
 import javax.swing.JComponent;
