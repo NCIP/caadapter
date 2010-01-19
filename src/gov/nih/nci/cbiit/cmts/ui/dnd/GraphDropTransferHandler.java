@@ -25,7 +25,6 @@ import gov.nih.nci.cbiit.cmts.ui.function.FunctionTypeNodeLoader;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraph;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
-import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
 
 public class GraphDropTransferHandler extends CommonTransferHandler {
 private static DataFlavor[] acceptableFlavors =new DataFlavor[]{TreeTransferableNode.mutableTreeNodeFlavor};
@@ -57,12 +56,8 @@ public boolean importData(TransferSupport info)
     	if (treeNodeTransfered.getUserObject() instanceof FunctionTypeNodeLoader.MyTreeObject)
     	{
     		FunctionDef cloneData=(FunctionDef)((FunctionTypeNodeLoader.MyTreeObject)treeNodeTransfered.getUserObject()).getObj();
-//    		FunctionDef cloneData=(FunctionDef)((FunctionDef)transferableObject).clone();
-    		System.out.println("GraphDropTransferHandler.importData()..cloneData hash:"+cloneData.hashCode());
     		return rootMappingPanel.getGraphController().addFunction(cloneData, info.getDropLocation().getDropPoint());
     	}
-    	
-    	
     	Point2D pDrop=info.getDropLocation().getDropPoint();
     	    	
     	boolean inputPort=false;
@@ -70,23 +65,24 @@ public boolean importData(TransferSupport info)
     		inputPort=true;
     	FunctionBoxDefaultPort fPort= findNearestFunctionPortOnFunctionBox (middlePanelGraph, pDrop, inputPort);
     	
-    	
-    	System.out.println("GraphDropTransferHandler.importData()..drop port:"+((FunctionData)fPort.getUserObject()).getName());
-    	System.out.println("GraphDropTransferHandler.importData()..drop port is input:"+fPort.isInput());
     	//create a link between tree node and function port
-    	MappingSourceTree srcTree=(MappingSourceTree)rootMappingPanel.getMappingPanel().getSourceTree();
-    	TreePath path = srcTree.getSelectionPath();
-		DefaultMutableTreeNode srcNodeSelected = (DefaultMutableTreeNode) path.getLastPathComponent();   	 
-    	boolean isSucess= rootMappingPanel.getGraphController().createTreeToFunctionBoxPortMapping((MappableNode)srcNodeSelected,fPort,new ArrayList());
+    	TreePath pathSelected=rootMappingPanel.getMappingPanel().getTargetTree().getSelectionPath();    	
+    	if (inputPort)
+    		pathSelected=rootMappingPanel.getMappingPanel().getSourceTree().getSelectionPath();
+
+		DefaultMutableTreeNode nodeSelected = (DefaultMutableTreeNode) pathSelected.getLastPathComponent();   	 
+    	boolean isSucess= rootMappingPanel.getGraphController().createTreeToFunctionBoxPortMapping((MappableNode)nodeSelected,fPort,new ArrayList());
     	if (isSucess)
     	{
-    		((MappableNode)srcNodeSelected).setMapStatus(true);
-    		srcTree.repaint();
+    		((MappableNode)nodeSelected).setMapStatus(true);
+    		if (inputPort)
+    			rootMappingPanel.getMappingPanel().getSourceTree().repaint();
+    		else
+    			rootMappingPanel.getMappingPanel().getTargetTree().repaint();
     		fPort.setMapStatus(true);
     	}    	
     	return isSucess;
     }
-
     return false;
 }
 
@@ -101,32 +97,15 @@ private JComponent retrieveRootMappingPanel(JComponent childComp)
 		childComp=rtnComp;
 	}
 	return rtnComp;
-	
 }
-///* (non-Javadoc)
-// * @see javax.swing.TransferHandler#canImport(javax.swing.JComponent, java.awt.datatransfer.DataFlavor)
-// */
-//@Override
-// public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
-//
-//	System.out.println("GraphDropTransferHandler.canImport()..check super_flavors:"+super.canImport(comp, transferFlavors));
-//	for (int i=0; i<transferFlavors.length;i++)
-//	{
-//		if (acceptableFlavorsList.contains(transferFlavors[i]))
-//			return true;
-//	}
-//	System.out.println("GraphDropTransferHandler.canImport()..not acceptable DataFlavor kinds:"+transferFlavors.length);
-//	return super.canImport(comp, transferFlavors);
-// }
+
 /* (non-Javadoc)
  * @see javax.swing.TransferHandler#canImport(javax.swing.TransferHandler.TransferSupport)
  */
 @Override
 public boolean canImport(TransferSupport info) {
-//	System.out.println("GraphDropTransferHandler.canImport()..check super_TransferSupport:"+super.canImport(info));
 	if (info.getTransferable().isDataFlavorSupported(TreeTransferableNode.mutableTreeNodeFlavor))
 		return true;
-//	System.out.println("GraphDropTransferHandler.canImport()..check support..:not support");
     return super.canImport(info);
 }
 
