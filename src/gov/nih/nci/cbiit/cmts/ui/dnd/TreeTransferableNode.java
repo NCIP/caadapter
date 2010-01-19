@@ -1,10 +1,5 @@
 package gov.nih.nci.cbiit.cmts.ui.dnd;
 
-import gov.nih.nci.cbiit.cmts.core.FunctionDef;
-import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionTypeNodeLoader;
-import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
-
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -19,14 +14,15 @@ public class TreeTransferableNode implements Transferable, Serializable {
 
 	public static final DataFlavor mutableTreeNodeFlavor = new DataFlavor(DefaultMutableTreeNode.class, "DefaultMutableTreeNode");
 	public static final DataFlavor localStringFlavor = DataFlavor.stringFlavor;
-
+	
 	public static final DataFlavor[] flavors = {
 		mutableTreeNodeFlavor,
 		DataFlavor.stringFlavor
 	  };
-	 private static final List flavorList = Arrays.asList( flavors );
+	 private static final List<DataFlavor> flavorList = Arrays.asList( flavors );
 	 private DefaultMutableTreeNode nodeTransferable;
 	 
+
 	 public TreeTransferableNode(DefaultMutableTreeNode node)
 	 {
 		 nodeTransferable=node;
@@ -36,21 +32,7 @@ public class TreeTransferableNode implements Transferable, Serializable {
 	 throws UnsupportedFlavorException, IOException {
 		 if (flavor.getRepresentationClass().equals(mutableTreeNodeFlavor.getRepresentationClass())) 
 		 {
-			 if(nodeTransferable.getUserObject() instanceof ElementMetaLoader.MyTreeObject)
-			 {		
-				 //return the node path for mapping tree
-				 String pathString = UIHelper.getPathStringForNode(nodeTransferable);
-				 return pathString;
-			 }
-			 else if (nodeTransferable.getUserObject() instanceof FunctionTypeNodeLoader.MyTreeObject)
-			 {
-				//return the FunctionDef object for tree node of function meta
-				 FunctionDef f =null;	
-				 f=((FunctionDef)((FunctionTypeNodeLoader.MyTreeObject)nodeTransferable.getUserObject()).getObj()); 
-				 return f;
-			 }
-			 else 
-				 return nodeTransferable.getUserObject();
+			 return nodeTransferable;
 		 }
 		 else
 			 throw new UnsupportedFlavorException(flavor);
@@ -72,4 +54,5 @@ public class TreeTransferableNode implements Transferable, Serializable {
 	public boolean isDataFlavorSupported( DataFlavor flavor ) {
 		return (flavorList.contains(flavor));
 	}
+
 }

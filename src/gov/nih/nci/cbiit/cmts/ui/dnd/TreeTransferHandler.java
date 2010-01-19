@@ -13,9 +13,11 @@ import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
+import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -39,6 +41,7 @@ public class TreeTransferHandler extends TreeDragTransferHandler {
 	public TreeTransferHandler(CmpsMappingPanel panel) {
 		this.panel = panel;
 	}
+
 
 	/* (non-Javadoc)
 	 * @see javax.swing.TransferHandler#canImport(javax.swing.TransferHandler.TransferSupport)
@@ -95,16 +98,23 @@ public class TreeTransferHandler extends TreeDragTransferHandler {
         	e.printStackTrace();
             return false;
         }
+       
+       if (data instanceof DefaultMutableTreeNode )
+       {
+ 	        JTree.DropLocation dl = (JTree.DropLocation)info.getDropLocation();
+	        TreePath path = dl.getPath();
+	        DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+	        DefaultMutableTreeNode sourceNodeTransfered = (DefaultMutableTreeNode)data ;
+	        String srcNodePath=UIHelper.getPathStringForNode(sourceNodeTransfered);
+	        	 
+	        DefaultMutableTreeNode sourceNode=UIHelper.findTreeNodeWithXmlPath((DefaultMutableTreeNode)panel.getSourceTree().getModel().getRoot(), srcNodePath);
+	        
+	        boolean ret = this.panel.getMiddlePanel().getGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
+	        System.out.println("TreeTransferHandler.importData()..dragged object:" +sourceNode.getUserObjectPath()+"...accepted:"+ret);
+	        return ret;
+       }
        System.out.println("TreeTransferHandler.importData()...Object:"+data);
-        String srcNodePath=data.toString();
-        JTree.DropLocation dl = (JTree.DropLocation)info.getDropLocation();
-        TreePath path = dl.getPath();
-        DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        DefaultMutableTreeNode sourceNode = UIHelper.findTreeNodeWithXmlPath((DefaultMutableTreeNode)panel.getSourceTree().getModel().getRoot(), srcNodePath);
-        
-        boolean ret = this.panel.getMiddlePanel().getGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
-        System.out.println("TreeTransferHandler.importData()..dragged object:"+data +"...accepted:"+ret);
-        return ret;
+       return false;
 	}
 
 }
