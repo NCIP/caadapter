@@ -11,14 +11,11 @@ package gov.nih.nci.cbiit.cmts.ui.function;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultMappableTreeNode;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 /**
@@ -30,7 +27,7 @@ import javax.swing.tree.TreeNode;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
-public class FunctionTypeNodeLoader {
+public class FunctionTypeNodeLoader implements Serializable{
 
 	private Map<String, List<FunctionDef>> meta;
 
@@ -60,7 +57,7 @@ public class FunctionTypeNodeLoader {
 		return node;
 	}
 
-	public class MyTreeObject {
+	public class MyTreeObject implements Serializable {
 		String name;
 		Object obj;
 		Object rootObj;
