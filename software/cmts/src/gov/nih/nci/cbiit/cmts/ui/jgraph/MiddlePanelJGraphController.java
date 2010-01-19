@@ -31,7 +31,6 @@ import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPortView;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxUserObject;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxViewManager;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxViewUsageManager;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
@@ -477,8 +476,6 @@ public class MiddlePanelJGraphController
 			int sourceYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), sourceNode, false);
 			// so the same for the Target side.
 			int targetYpos = calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), targetNode, false);
-			// if (!(isOutOfBound(sourceYpos) && isOutOfBound(targetYpos)))
-			// {
 			// process source
 			sourceCell = new DefaultGraphCell(sourceNode);
 			sourceAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, sourceYpos), true);
@@ -505,13 +502,6 @@ public class MiddlePanelJGraphController
 			// graph.getGraphLayoutCache().edit(attributes, cs, null, null);
 			middlePanel.getGraph().getGraphLayoutCache().setSelectsAllInsertedCells(false);
 			result = true;
-			//System.out.println("invisible source bounds: '" + GraphConstants.getBounds(sourceCell.getAttributes()) + "'");
-			//System.out.println("invisible target bounds: '" + GraphConstants.getBounds(targetCell.getAttributes()) + "'");
-			// }
-			// else
-			// {
-			// result = false;
-			// }
 		} else {
 			result = false;
 		}
@@ -524,7 +514,9 @@ public class MiddlePanelJGraphController
 
 	public boolean createTreeToFunctionBoxPortMapping(MappableNode mappableNode, FunctionBoxDefaultPort port, List graphCellList)
 	{
-		boolean isDataFromSourceTree = true;//temp UIHelper.isDataFromSourceTree(mappableNode);
+		boolean isDataFromSourceTree = false;
+		if (mappingPanel.getSourceTree().getSelectionPath()!=null)
+			isDataFromSourceTree=true;
 		// port is not null, so let's figure out how draw the link
 		int treeNodeYpos = -1;
 		AttributeMap treeNodeAttribute = null;
@@ -557,15 +549,6 @@ public class MiddlePanelJGraphController
 		graphCellList.add(port);
 		graphCellList.add(linkEdge);
 		middlePanel.getGraph().getGraphLayoutCache().insert(new Object[] { treeNodeCell, linkEdge }, attributes, cs, null, null);
-//		if ( mappableNode instanceof MappableNode ) {
-//			((MappableNode) mappableNode).setMapStatus(true);
-//			TreePath treePath = new TreePath(mappableNode.getPath());
-//			if ( isDataFromSourceTree ) {
-//				((JTree) mappingPanel.getSourceScrollPane().getViewport().getView()).setSelectionPath(treePath);
-//			} else {// to work around a JTree refreshing defect to reflect the latest linked item
-//				((JTree) mappingPanel.getTargetScrollPane().getViewport().getView()).setSelectionPath(treePath);
-//			}
-//		}
 		return true;
 	}
 	
