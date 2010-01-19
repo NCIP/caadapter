@@ -23,7 +23,6 @@ import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionTypeNodeLoader;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraph;
-import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
@@ -32,7 +31,6 @@ public class GraphDropTransferHandler extends CommonTransferHandler {
 private static DataFlavor[] acceptableFlavors =new DataFlavor[]{TreeTransferableNode.mutableTreeNodeFlavor};
 
 private static  final List<DataFlavor> acceptableFlavorsList = Arrays.asList( TreeTransferableNode.flavors );
-
 
 /* (non-Javadoc)
  * @see javax.swing.TransferHandler#importData(javax.swing.TransferHandler.TransferSupport)
