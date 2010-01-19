@@ -11,8 +11,6 @@ package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.GraphModel;
-import java.awt.Rectangle;
-import java.awt.Graphics;
 
 /**
  * This class will handle JGraph specific rendering with some customized functions.
@@ -55,28 +53,8 @@ public class MiddlePanelJGraph extends JGraph
 		// Jump to default port on connect
 		setJumpToDefaultPort(false);
 		setDoubleBuffered(true);
-//		this.setOpaque(false);
 	}
 
-	/**
-	 * Notification from the <code>UIManager</code> that the L&F has changed.
-	 * Replaces the current UI object with the latest version from the
-	 * <code>UIManager</code>. Subclassers can override this to support
-	 * different GraphUIs.
-	 *
-	 * @see javax.swing.JComponent#updateUI
-	 */
-	public void updateUI()
-	{
-		setUI(new DefaultGraphUI());
-//		Container rootPane = getRootPane();
-//		if(rootPane!=null)
-//		{
-//			setBackground(rootPane.getBackground());
-//			setForeground(rootPane.getForeground());
-//		}
-		invalidate();
-	}
 
 //	public void paint(Graphics g)
 //	{
