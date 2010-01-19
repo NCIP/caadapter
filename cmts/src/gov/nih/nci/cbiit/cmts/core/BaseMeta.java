@@ -9,6 +9,7 @@
 package gov.nih.nci.cbiit.cmts.core;
 
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ import javax.xml.bind.annotation.XmlType;
     AttributeMeta.class,
     ElementMeta.class
 })
-public abstract class BaseMeta implements PropertiesProvider{
+public abstract class BaseMeta implements Serializable, PropertiesProvider{
 
     @XmlAttribute
     private String id;

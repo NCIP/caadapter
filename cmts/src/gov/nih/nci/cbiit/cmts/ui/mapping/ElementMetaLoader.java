@@ -21,7 +21,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
-import java.util.Collections;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ import java.util.List;
  * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
-public class ElementMetaLoader
+public class ElementMetaLoader implements Serializable
 {
 	public static final int SOURCE_MODE = 0;
 	public static final int TARGET_MODE = 1;
@@ -86,7 +87,7 @@ public class ElementMetaLoader
 		return node;
 	}
 
-	public class MyTreeObject {
+	public class MyTreeObject implements Serializable {
 		String name;
 		Object obj;
 		Object rootObj;
