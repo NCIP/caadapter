@@ -927,10 +927,13 @@ public class MiddlePanelJGraphController
 			DefaultGraphCell targetCell = mappingComponent.getTargetCell();
 			DefaultEdge linkEdge = mappingComponent.getLinkEdge();
 			AttributeMap lineStyle = linkEdge.getAttributes();
-			AttributeMap sourceNodeCellAttribute = sourceCell.getAttributes();
-			AttributeMap targetNodeCellAttribute = targetCell.getAttributes();
-			//			boolean sourceNodeDisplayed=true;
-			//			boolean targetNodeDisplayed=true;
+			AttributeMap sourceNodeCellAttribute =null;
+			if (sourceCell!=null)
+				sourceNodeCellAttribute=sourceCell.getAttributes();
+			AttributeMap targetNodeCellAttribute =null;
+			if (targetCell!=null)
+				targetNodeCellAttribute=targetCell.getAttributes();
+
 			try {
 				//				if ( sourceNode instanceof FunctionBoxDefaultPort ) 
 				//				{
