@@ -184,7 +184,17 @@ public class MiddlePanelJGraphController
 		int offsetY = (int) portDimension.getHeight() / 2;
 		int interimFactor = (unit / (numberOfPorts + 1));
 		int offsetTitleHeight = ((unit / (maxPortsOfGivenFunction + 1))) - interimFactor / 2;// interimFactor + 10;
-		List<FunctionData> paramList = (portOrientation == UIHelper.PORT_LEFT) ? function.getData(): function.getData();
+		List<FunctionData> paramList = new ArrayList<FunctionData>();
+		for (FunctionData fData:function.getData())
+		{
+			if (UIHelper.PORT_LEFT==portOrientation &&
+					fData.isInput())
+				paramList.add(fData);
+			else if (UIHelper.PORT_RIGHT==portOrientation &&
+					!fData.isInput())
+				paramList.add(fData);
+		}
+//		(portOrientation == UIHelper.PORT_LEFT) ? function.getData(): function.getData();
 		for (int i = 0; i < numberOfPorts; i++) {
 			Map attriMap = new Hashtable();
 			DefaultPort port = null;
@@ -510,6 +520,71 @@ public class MiddlePanelJGraphController
 			targetNode.setMapStatus(true);
 		}
 		return result;
+	}
+
+	public boolean createTreeToFunctionBoxPortMapping(MappableNode mappableNode, FunctionBoxDefaultPort port, List graphCellList)
+	{
+		boolean isDataFromSourceTree = true;//temp UIHelper.isDataFromSourceTree(mappableNode);
+		// port is not null, so let's figure out how draw the link
+		int treeNodeYpos = -1;
+		AttributeMap treeNodeAttribute = null;
+		DefaultGraphCell treeNodeCell = new DefaultGraphCell(mappableNode);
+		treeNodeCell.add(new DefaultPort());
+		ConnectionSet cs = new ConnectionSet();
+		Map attributes = new Hashtable();
+		// Dimension cellDimension = UIHelper.getDefaultSourceOrTargetVertexDimension();
+		DefaultEdge linkEdge = new DefaultEdge();
+		if ( isDataFromSourceTree ) {
+			treeNodeYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), (DefaultMutableTreeNode)mappableNode, false);
+			treeNodeAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, treeNodeYpos), true);
+			// treeNodeAttribute = (AttributeMap) UIHelper.createBounds(new AttributeMap(), 0 - cellDimension.getWidth(), treeNodeYpos, cellDimension,
+			// UIHelper.DEFAULT_VERTEX_COLOR, false);
+			// edge, source, target
+			cs.connect(linkEdge, treeNodeCell.getChildAt(0), port);
+		} else {
+			treeNodeYpos =calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), (DefaultMutableTreeNode)mappableNode, false);
+			treeNodeAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(getMaximalXValueOnPane(), treeNodeYpos), false);
+			// treeNodeAttribute = (AttributeMap) UIHelper.createBounds(new AttributeMap(), this.middlePanel.getWidth(), treeNodeYpos, cellDimension,
+			// UIHelper.DEFAULT_VERTEX_COLOR, false);
+			// edge, source, target
+			cs.connect(linkEdge, port, treeNodeCell.getChildAt(0));
+		}
+		attributes.put(treeNodeCell, treeNodeAttribute);
+		attributes.put(port, port.getAttributes());
+//		attributes.put(linkEdge, UIHelper.getDefaultUnmovableEdgeStyle(mappableNode.getUserObject()));
+		// return back those being affected.
+		graphCellList.add(treeNodeCell);
+		graphCellList.add(port);
+		graphCellList.add(linkEdge);
+		middlePanel.getGraph().getGraphLayoutCache().insert(new Object[] { treeNodeCell, linkEdge }, attributes, cs, null, null);
+//		if ( mappableNode instanceof MappableNode ) {
+//			((MappableNode) mappableNode).setMapStatus(true);
+//			TreePath treePath = new TreePath(mappableNode.getPath());
+//			if ( isDataFromSourceTree ) {
+//				((JTree) mappingPanel.getSourceScrollPane().getViewport().getView()).setSelectionPath(treePath);
+//			} else {// to work around a JTree refreshing defect to reflect the latest linked item
+//				((JTree) mappingPanel.getTargetScrollPane().getViewport().getView()).setSelectionPath(treePath);
+//			}
+//		}
+		return true;
+	}
+	
+	private boolean createFunctionBoxPortToFunctionBoxPortMapping(FunctionBoxDefaultPort source, FunctionBoxDefaultPort target, List graphCellList)
+	{
+		ConnectionSet cs = new ConnectionSet();
+		Map attributes = new Hashtable();
+		// Dimension cellDimension = UIHelper.getDefaultSourceOrTargetVertexDimension();
+		DefaultEdge linkEdge = new DefaultEdge();
+		cs.connect(linkEdge, source, target);
+		attributes.put(source, source.getAttributes());
+		attributes.put(target, target.getAttributes());
+		attributes.put(linkEdge, UIHelper.getDefaultUnmovableEdgeStyle(source));
+		// return back those being affected.
+		graphCellList.add(source);
+		graphCellList.add(target);
+		graphCellList.add(linkEdge);
+		middlePanel.getGraph().getGraphLayoutCache().insert(new Object[] { linkEdge }, attributes, cs, null, null);
+		return true;
 	}
 
 	/**
