@@ -14,6 +14,7 @@ import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraph;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphScrollAdjustmentAdapter;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphViewFactory;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelMarqueeHandler;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelScrollAdjustmentCoordinator;
 
 import javax.swing.JPanel;
@@ -45,18 +46,6 @@ public class MappingMiddlePanel extends JPanel
 	private MiddlePanelJGraphController graphController = null;
 	private CmpsMappingPanel mappingPanel = null;
 	private JScrollPane graphScrollPane = new JScrollPane();
-	/**
-	 * @return the graphScrollPane
-	 */
-	public JScrollPane getGraphScrollPane() {
-		return graphScrollPane;
-	}
-	/**
-	 * @param graphScrollPane the graphScrollPane to set
-	 */
-	public void setGraphScrollPane(JScrollPane graphScrollPane) {
-		this.graphScrollPane = graphScrollPane;
-	}
 	public MappingMiddlePanel(CmpsMappingPanel mappingPane)
 	{
 		mappingPanel = mappingPane;
@@ -67,7 +56,7 @@ public class MappingMiddlePanel extends JPanel
 		graph = new MiddlePanelJGraph(model);
 		MiddlePanelJGraphViewFactory	graphViewFactory = new MiddlePanelJGraphViewFactory();
 		graph.getGraphLayoutCache().setFactory(graphViewFactory);
-
+		graph.setDropEnabled(true);
 				 
 		graphScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		graphScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -77,24 +66,11 @@ public class MappingMiddlePanel extends JPanel
 		add(graphScrollPane, BorderLayout.CENTER);
 		adjustmentCoordinator = new MiddlePanelScrollAdjustmentCoordinator(this, graphScrollPane);
 		graphAdjustmentAdapter = new MiddlePanelJGraphScrollAdjustmentAdapter(mappingPanel);
-		
     }
-	/**
-	 * @param graphController the graphController to set
-	 */
-	public void setGraphController(MiddlePanelJGraphController graphController) {
-		this.graphController = graphController;
-	}
 	public MiddlePanelScrollAdjustmentCoordinator getAdjustmentCoordinator()
 	{
 		return adjustmentCoordinator;
 	}
-
-//    public Object getFunctionBoxSelection()
-//	{
-//    	return null;
-//		//return mappingPanel.getFunctionPane().getFunctionSelection();
-//	}
 
 	/**
 	 * @return the graph
@@ -112,26 +88,37 @@ public class MappingMiddlePanel extends JPanel
         return graphController;
     }
 
+	/**
+	 * @param graphController the graphController to set
+	 */
+	public void setGraphController(MiddlePanelJGraphController graphController) {
+		this.graphController = graphController;
+		MiddlePanelMarqueeHandler marquee=(MiddlePanelMarqueeHandler)graph.getMarqueeHandler();
+		marquee.setController(graphController);
+	}
+	/**
+	 * @return the graphScrollPane
+	 */
+	public JScrollPane getGraphScrollPane() {
+		return graphScrollPane;
+	}
+	/**
+	 * @param graphScrollPane the graphScrollPane to set
+	 */
+	public void setGraphScrollPane(JScrollPane graphScrollPane) {
+		this.graphScrollPane = graphScrollPane;
+	}
 	public CmpsMappingPanel getMappingPanel()
 	{
 		return mappingPanel;
 	}
 
-//	@Override
-//	public void paintComponent(Graphics g)
-//	{
-//		super.paintComponent(g);
-//		graphController.renderInJGraph(g);
-//	}
-
-
-//	/**
-//	 * @param graph the graph to set
-//	 */
-//	public void setGraph(MiddlePanelJGraph jGraph) {
-//		graph = jGraph;
-//	}
-
+	@Override
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		graphController.renderInJGraph(g);
+	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
