@@ -118,7 +118,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());
 		this.add(getCenterPanel(true), BorderLayout.CENTER);
-	
 		if (!sourceFile.equals(""))
 			processOpenSourceTree(new File(sourceFile), false, false);
 
@@ -311,9 +310,8 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		DefaultSettings.setDefaultFeatureForJSplitPane(leftRightSplitPane);
 		leftRightSplitPane.setDividerLocation(0.85);
 		leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
-		MiddlePanelJGraphController graphController = new MiddlePanelJGraphController(middlePanel.getGraphScrollPane(), this);
+		MiddlePanelJGraphController graphController = new MiddlePanelJGraphController(this);
 		middlePanel.setGraphController(graphController);
-		middlePanel.getGraph().setDropEnabled(true);
 		leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
 		return leftRightSplitPane;
 	}
