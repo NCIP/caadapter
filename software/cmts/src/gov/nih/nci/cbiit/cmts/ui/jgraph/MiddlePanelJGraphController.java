@@ -7,7 +7,6 @@
  */
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
-import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.ConnectionSet;
 import org.jgraph.graph.DefaultEdge;
@@ -74,8 +73,6 @@ import java.util.List;
  */
 public class MiddlePanelJGraphController 
 {
-	private Color graphBackgroundColor = new Color(222, 238, 255);
-	private JScrollPane graphScroll;
 	private boolean graphSelected=false;
 	private boolean isGraphChanged = false;
 
@@ -84,15 +81,11 @@ public class MiddlePanelJGraphController
 
 	// a list of MappingViewCommonComponent
 	private List<MappingViewCommonComponent> mappingViewList = null;
-	// the parent panels
-	private MappingMiddlePanel middlePanel = null;
 	private DefaultPropertiesSwitchController propertiesSwitchController;
 
 	public MiddlePanelJGraphController(CmpsMappingPanel mappingPan) {
 		mappingPanel = mappingPan;
-		middlePanel=mappingPanel.getMiddlePanel();
-		graphScroll=middlePanel.getGraphScrollPane();
-		initialization(false);
+		setMappingViewList(Collections.synchronizedList(new ArrayList<MappingViewCommonComponent>()));
 	}
 	public boolean addFunction(FunctionDef function, Point2D startPoint)
 	{
@@ -140,8 +133,8 @@ public class MiddlePanelJGraphController
 		addGraphPorts(function, portAttributes, parentMap, functionBoxVertex, funcBoxAttrbutes, numOfOutputs, UIHelper.getDefaultFunctionalBoxOutputOrientation(), maximumPorts);
 		// Create a Map that holds the attributes for the Vertex
 		functionBoxVertex.getAttributes().applyMap(funcBoxAttrbutes);
-		middlePanel.getGraph().getGraphLayoutCache().insert(functionBoxVertex);
-		middlePanel.getGraph().getGraphLayoutCache().insert(functionBoxVertex.getChildren().toArray(), portAttributes, null, parentMap, null);
+		getMiddlePanel().getGraph().getGraphLayoutCache().insert(functionBoxVertex);
+		getMiddlePanel().getGraph().getGraphLayoutCache().insert(functionBoxVertex.getChildren().toArray(), portAttributes, null, parentMap, null);
 		setGraphChanged(true);
 		return true;
 		// EDIT does not work!
@@ -299,7 +292,7 @@ public class MiddlePanelJGraphController
 			if ( row > 0 ) {
 				Rectangle r = tree.getRowBounds(row);
 				Point point = r.getLocation();
-				int graphHeightHidden = (int) graphScroll.getViewport().getViewPosition().getY();
+				int graphHeightHidden = (int) getMiddlePanel().getGraphScrollPane().getViewport().getViewPosition().getY();
 				int treeHeightHidden = (int) treeScrollPane.getViewport().getViewPosition().getY();
 				nodePositionBasedOnTotalPanel = (int) point.getY() + (int) r.getHeight() / 2 + graphHeightHidden - treeHeightHidden;
 			} else {
@@ -324,7 +317,7 @@ public class MiddlePanelJGraphController
 	public void clearAllGraphCells()
 	{
 		// clean up
-		Object[] cells = DefaultGraphModel.getDescendants(middlePanel.getGraph().getModel(), middlePanel.getGraph().getRoots()).toArray();
+		Object[] cells = DefaultGraphModel.getDescendants(getMiddlePanel().getGraph().getModel(), getMiddlePanel().getGraph().getRoots()).toArray();
 		// call to remove all cells
 		removeCells(cells, false);
 		unmapCells(cells);		
@@ -496,9 +489,9 @@ public class MiddlePanelJGraphController
 			graphCellList.add(targetCell);
 			graphCellList.add(linkEdge);
 			cs.connect(linkEdge, sourceCell.getChildAt(0), targetCell.getChildAt(0));
-			middlePanel.getGraph().getGraphLayoutCache().insert(new Object[] { sourceCell, targetCell, linkEdge }, attributes, cs, null, null);
+			getMiddlePanel().getGraph().getGraphLayoutCache().insert(new Object[] { sourceCell, targetCell, linkEdge }, attributes, cs, null, null);
 			// graph.getGraphLayoutCache().edit(attributes, cs, null, null);
-			middlePanel.getGraph().getGraphLayoutCache().setSelectsAllInsertedCells(false);
+			getMiddlePanel().getGraph().getGraphLayoutCache().setSelectsAllInsertedCells(false);
 			result = true;
 		} else {
 			result = false;
@@ -546,7 +539,7 @@ public class MiddlePanelJGraphController
 		graphCellList.add(treeNodeCell);
 		graphCellList.add(port);
 		graphCellList.add(linkEdge);
-		middlePanel.getGraph().getGraphLayoutCache().insert(new Object[] { treeNodeCell, linkEdge }, attributes, cs, null, null);
+		getMiddlePanel().getGraph().getGraphLayoutCache().insert(new Object[] { treeNodeCell, linkEdge }, attributes, cs, null, null);
 		return true;
 	}
 	
@@ -564,7 +557,7 @@ public class MiddlePanelJGraphController
 		graphCellList.add(source);
 		graphCellList.add(target);
 		graphCellList.add(linkEdge);
-		middlePanel.getGraph().getGraphLayoutCache().insert(new Object[] { linkEdge }, attributes, cs, null, null);
+		getMiddlePanel().getGraph().getGraphLayoutCache().insert(new Object[] { linkEdge }, attributes, cs, null, null);
 		return true;
 	}
 
@@ -580,11 +573,6 @@ public class MiddlePanelJGraphController
 	}
 
 
-	public JGraph getGraph()
-	{
-		return middlePanel.getGraph();
-	}
-
 	/**
 	 * @return the mappingPanel
 	 */
@@ -599,11 +587,11 @@ public class MiddlePanelJGraphController
 
 	private int getMaximalXValueOnPane()
 	{
-		int visibleWidth = (int) graphScroll.getVisibleRect().getWidth();
-		int viewPortVisibleWidth = (int) graphScroll.getViewport().getVisibleRect().getWidth();
-		int viewPortViewSizeWidth = (int) graphScroll.getViewport().getViewSize().getWidth();
-		int viewPortViewRectWidth = (int) graphScroll.getViewport().getViewRect().getWidth();
-		int middlePanelWidth = this.middlePanel.getWidth();
+		int visibleWidth = (int) getMiddlePanel().getGraphScrollPane().getVisibleRect().getWidth();
+		int viewPortVisibleWidth = (int) getMiddlePanel().getGraphScrollPane().getViewport().getVisibleRect().getWidth();
+		int viewPortViewSizeWidth = (int) getMiddlePanel().getGraphScrollPane().getViewport().getViewSize().getWidth();
+		int viewPortViewRectWidth = (int) getMiddlePanel().getGraphScrollPane().getViewport().getViewRect().getWidth();
+		int middlePanelWidth = getMiddlePanel().getWidth();
 		// Log.logInfo(this, "middlePanelWidth='" + middlePanelWidth + "',visibleWidth='" + visibleWidth + "'.");
 		// Log.logInfo(this, "viewPortVisibleWidth='" + viewPortVisibleWidth + "',viewPortViewSizeWidth='" + viewPortViewSizeWidth + "'," +
 		// "',viewPortViewRectWidth='" + viewPortViewRectWidth + "'.");
@@ -613,7 +601,7 @@ public class MiddlePanelJGraphController
 
 	public MappingMiddlePanel getMiddlePanel()
 	{
-		return middlePanel;
+		return mappingPanel.getMiddlePanel();
 	}
 
 
@@ -661,7 +649,7 @@ public class MiddlePanelJGraphController
 				}
 				msg.append("This target port number is being used. Input again another port number.");
 			}
-			JOptionPane.showMessageDialog(middlePanel.getRootPane().getParent(), msg.toString(), "Mapping Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getMiddlePanel().getRootPane().getParent(), msg.toString(), "Mapping Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		//Log.logInfo(this, getClass().getName() + " will link source and target port.");
@@ -670,25 +658,25 @@ public class MiddlePanelJGraphController
 		edge.setSource(source);
 		edge.setTarget(target);
 		AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(source);
-		if ( middlePanel.getGraph().getModel().acceptsSource(edge, source) && middlePanel.getGraph().getModel().acceptsTarget(edge, target) ) {
+		if ( getMiddlePanel().getGraph().getModel().acceptsSource(edge, source) && getMiddlePanel().getGraph().getModel().acceptsTarget(edge, target) ) {
 			// Create a Map that holds the attributes for the edge
 			edge.getAttributes().applyMap(lineStyle);
 			MappableNode sourceNode = (MappableNode) source;// getMappableNodeThroughPort(source);
 			MappableNode targetNode = (MappableNode) target;// getMappableNodeThroughPort(target);
 			if ( sourceNode == null || targetNode == null ) {
 				StringBuffer msg = new StringBuffer("Cannot find mappable source or target node.");
-				JOptionPane.showMessageDialog(middlePanel.getRootPane().getParent(), msg.toString(), "Mapping Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(getMiddlePanel().getRootPane().getParent(), msg.toString(), "Mapping Error", JOptionPane.ERROR_MESSAGE);
 			}
 			// Insert the Edge and its Attributes
-			middlePanel.getGraph().getGraphLayoutCache().insertEdge(edge, source, target);
+			getMiddlePanel().getGraph().getGraphLayoutCache().insertEdge(edge, source, target);
 			MappingViewCommonComponent comp = new MappingViewCommonComponent(sourceNode, targetNode, source, target, edge);
 			edge.setUserObject(comp);
 			mappingViewList.add(comp);
 			setGraphChanged(true);
 			return true;
 		} else {
-			List reasonList = ((MiddlePanelGraphModel) middlePanel.getGraph().getModel()).getNotAcceptableReasonList();
-			JOptionPane.showMessageDialog(middlePanel.getGraph().getRootPane().getParent(), reasonList.toArray(new Object[0]), "Mapping Error", JOptionPane.ERROR_MESSAGE);
+			List reasonList = ((MiddlePanelGraphModel) getMiddlePanel().getGraph().getModel()).getNotAcceptableReasonList();
+			JOptionPane.showMessageDialog(getMiddlePanel().getGraph().getRootPane().getParent(), reasonList.toArray(new Object[0]), "Mapping Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
@@ -698,7 +686,7 @@ public class MiddlePanelJGraphController
 	 */
 	public synchronized void handleDelete()
 	{
-		Object[] cells = middlePanel.getGraph().getSelectionCells();
+		Object[] cells = getMiddlePanel().getGraph().getSelectionCells();
 		removeCells(cells, true);
 		unmapCells(cells);
 		setGraphChanged(true);
@@ -716,59 +704,7 @@ public class MiddlePanelJGraphController
 		mappingPanel.getTargetScrollPane().repaint();
 		setGraphChanged(true);
 	}
-	private void initialization(boolean keepSourceTargetComponent)
-	{
-		// dropTarget = new DropTarget(graph, DnDConstants.ACTION_LINK, this);
-		// Use a Custom Marquee Handler
-		MiddlePanelMarqueeHandler marqueeHandler = new MiddlePanelMarqueeHandler();//this);
-		middlePanel.getGraph().setMarqueeHandler(marqueeHandler); 
-		// Make Ports Visible by Default
-		this.middlePanel.getGraph().setPortsVisible(true);
-		// Use the Grid (but don't make it Visible)
-		this.middlePanel.getGraph().setGridEnabled(true);
-		// Set the Grid Size to 10 Pixel
-		this.middlePanel.getGraph().setGridSize(6);
-		// Set the Tolerance to 2 Pixel
-		this.middlePanel.getGraph().setTolerance(2);
-		// Accept edits if click on background
-		this.middlePanel.getGraph().setInvokesStopCellEditing(true);
-		// dose not allow control-drag
-		this.middlePanel.getGraph().setCloneable(false);
-		// // Jump to default port on connect
-		// this.graph.setJumpToDefaultPort(true);
-		// Container rootPane = csvPanel.getRootPane();
-		// if (rootPane != null)
-		// {
-		// graph.setBackground(rootPane.getBackground());
-		// graph.setForeground(rootPane.getBackground());
-		// }
-		// graph.setPortsVisible(false);
-		// graph.setConnectable(true);
-		// graph.setAntiAliased(false);
-		middlePanel.getGraph().setSizeable(true);
-		// // graph.setBendable(false);
-		middlePanel.getGraph().setDragEnabled(true);
-		middlePanel.getGraph().setDropEnabled(true);
-		middlePanel.getGraph().setEditable(false);
-		middlePanel.getGraph().setMoveable(true);
-		middlePanel.getGraph().setBackground(graphBackgroundColor);
-
-		// setMappingPairCellMap(Collections.synchronizedMap(new HashMap()));
-		setMappingViewList(Collections.synchronizedList(new ArrayList<MappingViewCommonComponent>()));
-		//		if ( this.mappingData != null && keepSourceTargetComponent ) {// just to clear graphs but not the source and target component if any.
-		//			MappingImpl newMappingImpl = new MappingImpl();
-		//			newMappingImpl.setSourceComponent(this.mappingData.getSourceComponent());
-		//			newMappingImpl.setTargetComponent(this.mappingData.getTargetComponent());
-		//			newMappingImpl.setMappingType(this.mappingData.getMappingType());
-		//			setMappingData(newMappingImpl);
-		//		} else {// initialize all
-		//			setMappingData(new MappingImpl());
-		//		}
-		setGraphChanged(false);
-		//		usageManager = null;
-	}
-
-
+	
 	public boolean isGraphChanged()
 	{
 		return isGraphChanged;
@@ -887,7 +823,7 @@ public class MiddlePanelJGraphController
 
 	public void renderInJGraph(Graphics g)
 	{
-		System.out.println("enter MiddlePanelJGraphController.renderInJGraph.");
+//		System.out.println("enter MiddlePanelJGraphController.renderInJGraph.");
 		/** the real renderer */
 		ConnectionSet cs = new ConnectionSet();
 		Map attributes = new Hashtable();
@@ -1029,15 +965,10 @@ public class MiddlePanelJGraphController
 		this.graphSelected = graphSelected;
 	}
 
-//	public void setJGraph(MiddlePanelJGraph newGraph)
-//	{
-////		newGraph.removeGraphSelectionListener(linkSelectionHighlighter);
-//		initialization(true);
-//	}
-	
+
 	public void setMappingData(Mapping mappingData)
 	{
-		if ( isGraphChanged() || middlePanel.getGraph().getRoots().length > 0 ) {// if changed, clear them up
+		if ( isGraphChanged() || getMiddlePanel().getGraph().getRoots().length > 0 ) {// if changed, clear them up
 			// clean up
 			clearAllGraphCells();
 		}
