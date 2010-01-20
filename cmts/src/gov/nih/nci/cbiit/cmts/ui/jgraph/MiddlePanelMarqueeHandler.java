@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JPopupMenu;
 import javax.swing.JMenuItem;
 
+import org.jgraph.JGraph;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
@@ -45,7 +46,7 @@ import java.awt.geom.Rectangle2D;
  */
 public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 {
-	private MiddlePanelJGraph graph;
+	private JGraph graph;
 	private MiddlePanelJGraphController controller;
 
 	// Holds the First and the Current Port
@@ -61,7 +62,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	{
 		controller = graphController;
 		deleteAction=new GraphDeleteAction(controller);
-		graph =(MiddlePanelJGraph) controller.getGraph();
+		graph = controller.getGraph();
 	}
 
 	// Override to Gain Control (for PopupMenu and ConnectMode)
