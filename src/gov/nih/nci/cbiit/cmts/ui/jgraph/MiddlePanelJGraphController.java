@@ -88,12 +88,10 @@ public class MiddlePanelJGraphController
 	private MappingMiddlePanel middlePanel = null;
 	private DefaultPropertiesSwitchController propertiesSwitchController;
 
-	public MiddlePanelJGraphController(JScrollPane scrollPane, CmpsMappingPanel mappingPan) {
-		graphScroll=scrollPane;
+	public MiddlePanelJGraphController(CmpsMappingPanel mappingPan) {
 		mappingPanel = mappingPan;
-		System.out
-				.println("MiddlePanelJGraphController.MiddlePanelJGraphController()..middle panel:"+mappingPanel.getMiddlePanel());
 		middlePanel=mappingPanel.getMiddlePanel();
+		graphScroll=middlePanel.getGraphScrollPane();
 		initialization(false);
 	}
 	public boolean addFunction(FunctionDef function, Point2D startPoint)
@@ -722,7 +720,7 @@ public class MiddlePanelJGraphController
 	{
 		// dropTarget = new DropTarget(graph, DnDConstants.ACTION_LINK, this);
 		// Use a Custom Marquee Handler
-		MiddlePanelMarqueeHandler marqueeHandler = new MiddlePanelMarqueeHandler(this);
+		MiddlePanelMarqueeHandler marqueeHandler = new MiddlePanelMarqueeHandler();//this);
 		middlePanel.getGraph().setMarqueeHandler(marqueeHandler); 
 		// Make Ports Visible by Default
 		this.middlePanel.getGraph().setPortsVisible(true);
@@ -889,7 +887,7 @@ public class MiddlePanelJGraphController
 
 	public void renderInJGraph(Graphics g)
 	{
-		//System.out.println("enter MiddlePanelJGraphController.renderInJGraph.");
+		System.out.println("enter MiddlePanelJGraphController.renderInJGraph.");
 		/** the real renderer */
 		ConnectionSet cs = new ConnectionSet();
 		Map attributes = new Hashtable();
