@@ -9,6 +9,8 @@
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 
+import java.awt.Color;
+
 import org.jgraph.JGraph;
 import org.jgraph.graph.GraphModel;
 
@@ -33,7 +35,7 @@ public class MiddlePanelJGraph extends JGraph
 	private static final int PORT_RIGHT = 1;
 	private static final int PORT_NORTH = 2;
 	private static final int PORT_SOUTH = 3;
-
+	private Color graphBackgroundColor = new Color(222, 238, 255);
 	// Construct the Graph using the Model as its Data Source
 	public MiddlePanelJGraph(GraphModel model)
 	{
@@ -53,6 +55,16 @@ public class MiddlePanelJGraph extends JGraph
 		// Jump to default port on connect
 		setJumpToDefaultPort(false);
 		setDoubleBuffered(true);
+		setSizeable(true);
+		MiddlePanelJGraphViewFactory	graphViewFactory = new MiddlePanelJGraphViewFactory();
+		getGraphLayoutCache().setFactory(graphViewFactory);
+		setDropEnabled(true);
+		setDragEnabled(true);
+		setEditable(false);
+		setMoveable(true);
+		MiddlePanelMarqueeHandler marqueeHandler = new MiddlePanelMarqueeHandler();//this);
+		setMarqueeHandler(marqueeHandler);
+		setBackground( graphBackgroundColor);
 	}
 
 

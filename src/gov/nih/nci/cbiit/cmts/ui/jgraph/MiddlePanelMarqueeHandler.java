@@ -77,7 +77,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		// Find and Remember Port
 		port = getSourcePortAt(e.getPoint());
 		// If Port Found and in ConnectMode (=Ports Visible)
-		JGraph graph =controller.getGraph();
+		JGraph graph =controller.getMiddlePanel().getGraph();
 		if (port != null && graph.isPortsVisible())
 		{
 			return isValidPort(port);
@@ -94,7 +94,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		System.out.println("MiddlePanelMarqueeHandler.mousePressed() mousePressed().:(x="+e.getX()+",y="+e.getY()+")" );
 		// following if block was inserted by umkis   (defect# 196)
 		// For selection clearing when mouse clicking(pressing) on any empty place of middle (JGraph) panel.
-		JGraph graph =controller.getGraph();
+		JGraph graph =controller.getMiddlePanel().getGraph();
 		if (SwingUtilities.isLeftMouseButton(e))
 		{
 			//System.out.println("mouse Left Pressed().");
@@ -133,7 +133,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		if (startPoint != null)
 		{
 			// Fetch Graphics from Graph
-			JGraph graph =controller.getGraph();
+			JGraph graph =controller.getMiddlePanel().getGraph();
 			Graphics g = graph.getGraphics();
 			// Reset Remembered Port
 			PortView newPort = getTargetPortAt(e.getPoint());
@@ -163,7 +163,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 
 	public PortView getSourcePortAt(Point2D point)
 	{
-		JGraph graph =controller.getGraph();
+		JGraph graph =controller.getMiddlePanel().getGraph();
 		// Disable jumping
 		graph.setJumpToDefaultPort(false);
 		PortView result;
@@ -183,7 +183,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	protected PortView getTargetPortAt(Point2D point)
 	{
 		// Find a Port View in Model Coordinates and Remember
-		JGraph graph =controller.getGraph();
+		JGraph graph =controller.getMiddlePanel().getGraph();
 		return graph.getPortViewAt(point.getX(), point.getY());
 	}
 
@@ -192,7 +192,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	{
 		//		System.out.println("mouseReleased(). :(x="+e.getX()+",y="+e.getY()+")" );
 		// If Valid Event, Current and First Port
-		JGraph graph =controller.getGraph();
+		JGraph graph =controller.getMiddlePanel().getGraph();
 		if (e != null && port != null && firstPort != null
 				&& firstPort != port)
 		{
@@ -219,7 +219,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	{
 		//	System.out.println("mouseMoved().:(x="+e.getX()+",y="+e.getY()+")" );
 		// Check Mode and Find Port
-		JGraph graph =controller.getGraph();
+		JGraph graph =controller.getMiddlePanel().getGraph();
 		if (e != null && getSourcePortAt(e.getPoint()) != null
 				&& graph.isPortsVisible())
 		{
@@ -240,7 +240,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		// Set Xor-Mode Color
 		g.setXORMode(bg);
 		// Highlight the Current Port
-		JGraph graph =controller.getGraph();
+		JGraph graph =controller.getMiddlePanel().getGraph();
 		paintPort(graph.getGraphics());
 		// If Valid First Port, Start and Current Point
 		if (firstPort != null && startPoint != null && currentPoint != null)
@@ -262,7 +262,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			//					.getBounds();
 			Rectangle2D r = port.getBounds();
 			// Scale from Model to Screen
-			JGraph graph =controller.getGraph();
+			JGraph graph =controller.getMiddlePanel().getGraph();
 			r = graph.toScreen((Rectangle2D) r.clone());
 			// Add Space For the Highlight Border
 			r.setFrame(r.getX() - 3, r.getY() - 3, r.getWidth() + 6, r
@@ -311,7 +311,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 
 		//		constantEditAction.setEnabled(false);
 		//        vacabularyMappingEditAction.setEnabled(false);
-		JGraph graph =controller.getGraph();
+		JGraph graph =controller.getMiddlePanel().getGraph();
 		boolean graphHasSelection = !graph.isSelectionEmpty();
 		if(graphHasSelection)
 		{//context-sensitively enable or disable Constant Edit Action.

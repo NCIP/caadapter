@@ -9,13 +9,10 @@
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 
-import gov.nih.nci.cbiit.cmts.ui.dnd.TreeTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesSwitchController;
 
 import java.util.EventObject;
-
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -64,7 +61,7 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 	public void valueChanged(GraphSelectionEvent e)
 	{
 		CmpsMappingPanel mappingPanel= graphController.getMappingPanel();
-        mappingPanel.getMiddlePanel().getGraphController().setGraphSelected(true);
+        mappingPanel.getGraphController().setGraphSelected(true);
 		//the graph is in selection mode, do not set property pan for Element or Attribute
         if(!isAClearSelectionEvent(e))
 		{//ignore if it is a clear selection event
