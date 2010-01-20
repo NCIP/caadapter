@@ -23,6 +23,7 @@ import gov.nih.nci.cbiit.cmts.ui.dnd.TreeDragTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.dnd.TreeTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionLibraryPane;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelMarqueeHandler;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesPage;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
@@ -103,7 +104,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	private JTextField targetLocationArea = new JTextField();
 	private MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
 	private MappingTargetTree tTree = null;
-
+	private MiddlePanelJGraphController graphController =null;
 	public CmpsMappingPanel() throws Exception
 	{
 		this("","calledFromConstructor","");
@@ -117,6 +118,11 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	{
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());
+		middlePanel = new MappingMiddlePanel(this);
+		graphController = new MiddlePanelJGraphController(this);
+//		middlePanel.setGraphController(graphController);
+		MiddlePanelMarqueeHandler marquee=(MiddlePanelMarqueeHandler)middlePanel.getGraph().getMarqueeHandler();
+		marquee.setController(graphController);
 		this.add(getCenterPanel(true), BorderLayout.CENTER);
 		if (!sourceFile.equals(""))
 			processOpenSourceTree(new File(sourceFile), false, false);
@@ -181,7 +187,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 		//Build the source tree
 		sTree = new MappingSourceTree(middlePanel, nodes);
-		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(middlePanel.getGraphController());
+		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getGraphController());
 		sTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		sTree.setTransferHandler(new TreeDragTransferHandler());
 		sTree.setDragEnabled(true);
@@ -225,7 +231,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		TreeNode nodes=loadTargetTreeData(metaInfo,absoluteFile);
 		//Build the target tree
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
-		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(middlePanel.getGraphController());
+		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getGraphController());
 		tTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		TreeTransferHandler targetTreeTransferHandler= new TreeTransferHandler(this);
 		tTree.setTransferHandler(targetTreeTransferHandler);
@@ -291,6 +297,13 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	}
 
 
+	/**
+	 * @return the graphController
+	 */
+	public MiddlePanelJGraphController getGraphController() {
+		return graphController;
+	}
+
 	protected JComponent getCenterPanel(boolean functionPaneRequired)
 	{//construct the top level layout of mapping panel
 		/**
@@ -310,8 +323,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		DefaultSettings.setDefaultFeatureForJSplitPane(leftRightSplitPane);
 		leftRightSplitPane.setDividerLocation(0.85);
 		leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
-		MiddlePanelJGraphController graphController = new MiddlePanelJGraphController(this);
-		middlePanel.setGraphController(graphController);
+
 		leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
 		return leftRightSplitPane;
 	}
@@ -356,7 +368,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	public Mapping getMapping() {
 		if(this.mapping == null){
 			this.mapping = new Mapping();
-			this.getMiddlePanel().getGraphController().setMappingData(mapping);
+			getGraphController().setMappingData(mapping);
 		}
 		return mapping;
 	}
@@ -518,6 +530,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	}
 
 
+
 	protected JPanel getTopLevelLeftPanel()
 	{
 		JPanel topCenterPanel = new JPanel(new BorderLayout());
@@ -583,8 +596,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		JPanel middleContainerPanel = new JPanel(new BorderLayout());
 		JLabel placeHolderLabel = new JLabel();
 		placeHolderLabel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 3.5), 24));
-		middlePanel = new MappingMiddlePanel(this);
-		middlePanel.setSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 3), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
 		middleContainerPanel.add(placeHolderLabel, BorderLayout.NORTH);
 		middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
 
@@ -623,7 +634,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		{
 			topBottomSplitPane.setTopComponent(functionPane);
 		}
-		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(middlePanel.getGraphController().getPropertiesSwitchController());
+		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(getGraphController().getPropertiesSwitchController());
 		topBottomSplitPane.setBottomComponent(propertiesPane);
 
 		double topCenterFactor = 0.3;
@@ -701,7 +712,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		buildTargetTree(mapping, null, false);
 
 		System.out.println("before setMappingData");
-		middlePanel.getGraphController().setMappingData(mapping);
+		getGraphController().setMappingData(mapping);
 		System.out.println("after setMappingData");
 
 		setSaveFile(file);
@@ -778,7 +789,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	 */
 	public void setChanged(boolean newValue)
 	{
-		middlePanel.getGraphController().setGraphChanged(newValue);
+		getGraphController().setGraphChanged(newValue);
 	}
 
 	/**
