@@ -51,7 +51,7 @@ public boolean importData(TransferSupport info)
     if (transferableObject instanceof DefaultMutableTreeNode)
     {
     	DefaultMutableTreeNode treeNodeTransfered=(DefaultMutableTreeNode)transferableObject;
-    	MiddlePanelJGraph middlePanelGraph=(MiddlePanelJGraph)info.getComponent();
+    	JGraph middlePanelGraph=(JGraph)info.getComponent();
     	MappingMiddlePanel rootMappingPanel=(MappingMiddlePanel)retrieveRootMappingPanel(middlePanelGraph);
     	if (treeNodeTransfered.getUserObject() instanceof FunctionTypeNodeLoader.MyTreeObject)
     	{
