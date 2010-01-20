@@ -13,11 +13,9 @@ import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -65,22 +63,6 @@ public class TreeTransferHandler extends TreeDragTransferHandler {
         return true;
 	}
 
-//	/* (non-Javadoc)
-//	 * @see javax.swing.TransferHandler#createTransferable(javax.swing.JComponent)
-//	 */
-//	@Override
-//	protected Transferable createTransferable(JComponent c) {
-//		JTree tree = (JTree)c;
-//		TreePath path = tree.getSelectionPath();
-//		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-//		String pathString = null;
-//		if(node.getUserObject() instanceof ElementMetaLoader.MyTreeObject)
-//			pathString = UIHelper.getPathStringForNode(node);
-//
-//		System.out.println("TreeTransferHandler.createTransferable() ..createTransferable: obj="+pathString);
-//		return new StringSelection(pathString);
-//	}
-
 
 	/* (non-Javadoc)
 	 * @see javax.swing.TransferHandler#importData(javax.swing.TransferHandler.TransferSupport)
@@ -109,11 +91,10 @@ public class TreeTransferHandler extends TreeDragTransferHandler {
 	        	 
 	        DefaultMutableTreeNode sourceNode=UIHelper.findTreeNodeWithXmlPath((DefaultMutableTreeNode)panel.getSourceTree().getModel().getRoot(), srcNodePath);
 	        
-	        boolean ret = this.panel.getMiddlePanel().getGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
-	        System.out.println("TreeTransferHandler.importData()..dragged object:" +sourceNode.getUserObjectPath()+"...accepted:"+ret);
+	        boolean ret = this.panel.getGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
 	        return ret;
        }
-       System.out.println("TreeTransferHandler.importData()...Object:"+data);
+       System.out.println("TreeTransferHandler.importData()...not accepted Object:"+data);
        return false;
 	}
 
