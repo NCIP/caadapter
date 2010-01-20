@@ -85,7 +85,7 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 	protected boolean doAction(ActionEvent e)
 	{
 //		Log.logInfo(this, "GraphDeleteAction's actionPerformed() is called.");
-		JGraph graph = getController().getGraph();
+		JGraph graph = getController().getMiddlePanel().getGraph();
 		if (!graph.isSelectionEmpty())
 		{
 			int userChoice = JOptionPane.showConfirmDialog(getMiddlePanel(),
