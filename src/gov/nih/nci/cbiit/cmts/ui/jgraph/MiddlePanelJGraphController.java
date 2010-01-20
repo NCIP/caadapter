@@ -1031,11 +1031,11 @@ public class MiddlePanelJGraphController
 		this.graphSelected = graphSelected;
 	}
 
-	public void setJGraph(MiddlePanelJGraph newGraph)
-	{
-//		newGraph.removeGraphSelectionListener(linkSelectionHighlighter);
-		initialization(true);
-	}
+//	public void setJGraph(MiddlePanelJGraph newGraph)
+//	{
+////		newGraph.removeGraphSelectionListener(linkSelectionHighlighter);
+//		initialization(true);
+//	}
 	
 	public void setMappingData(Mapping mappingData)
 	{
