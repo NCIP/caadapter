@@ -47,7 +47,7 @@ public boolean importData(TransferSupport info)
     	e.printStackTrace();
         return false;
     }
-    System.out.println("GraphDropTransferHandler.importData()..transferable object:"+transferableObject);
+   
     if (transferableObject instanceof DefaultMutableTreeNode)
     {
     	DefaultMutableTreeNode treeNodeTransfered=(DefaultMutableTreeNode)transferableObject;
@@ -56,7 +56,7 @@ public boolean importData(TransferSupport info)
     	if (treeNodeTransfered.getUserObject() instanceof FunctionTypeNodeLoader.MyTreeObject)
     	{
     		FunctionDef cloneData=(FunctionDef)((FunctionTypeNodeLoader.MyTreeObject)treeNodeTransfered.getUserObject()).getObj();
-    		return rootMappingPanel.getGraphController().addFunction(cloneData, info.getDropLocation().getDropPoint());
+    		return rootMappingPanel.getMappingPanel().getGraphController().addFunction(cloneData, info.getDropLocation().getDropPoint());
     	}
     	Point2D pDrop=info.getDropLocation().getDropPoint();
     	    	
@@ -116,8 +116,6 @@ public boolean canImport(TransferSupport info) {
  */
 private FunctionBoxDefaultPort findNearestFunctionPortOnFunctionBox(JGraph graph, Point2D dropLocation, boolean inputPort)
 {
-	System.out
-			.println("GraphDropTransferHandler.findNearestFunctionPortOnFunctionBox()...input port:"+inputPort);
 	FunctionBoxDefaultPort rtnPort=null;
 	Object object = graph.getFirstCellForLocation(dropLocation.getX(), dropLocation.getY());
 	if (!(object instanceof FunctionBoxCell))
