@@ -71,7 +71,7 @@ public class FunctionLibraryPane extends JPanel// implements TreeSelectionListen
 			tree.setTransferHandler(dragHandler);
 		
 			GraphDropTransferHandler gDropHandler=new GraphDropTransferHandler();
-			parent.getMiddlePanel().getGraphController().getGraph().setTransferHandler(gDropHandler);
+			parent.getMiddlePanel().getGraph().setTransferHandler(gDropHandler);
 			
 			//Create the scroll pane and add the tree to it.
 			JScrollPane treeView = new JScrollPane(tree);
