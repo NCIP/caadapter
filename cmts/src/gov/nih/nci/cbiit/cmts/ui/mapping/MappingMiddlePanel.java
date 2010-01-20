@@ -90,11 +90,11 @@ public class MappingMiddlePanel extends JPanel
 		return adjustmentCoordinator;
 	}
 
-    public Object getFunctionBoxSelection()
-	{
-    	return null;
-		//return mappingPanel.getFunctionPane().getFunctionSelection();
-	}
+//    public Object getFunctionBoxSelection()
+//	{
+//    	return null;
+//		//return mappingPanel.getFunctionPane().getFunctionSelection();
+//	}
 
 	/**
 	 * @return the graph
@@ -117,20 +117,20 @@ public class MappingMiddlePanel extends JPanel
 		return mappingPanel;
 	}
 
-	@Override
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		graphController.renderInJGraph(g);
-	}
+//	@Override
+//	public void paintComponent(Graphics g)
+//	{
+//		super.paintComponent(g);
+//		graphController.renderInJGraph(g);
+//	}
 
 
-	/**
-	 * @param graph the graph to set
-	 */
-	public void setGraph(MiddlePanelJGraph jGraph) {
-		graph = jGraph;
-	}
+//	/**
+//	 * @param graph the graph to set
+//	 */
+//	public void setGraph(MiddlePanelJGraph jGraph) {
+//		graph = jGraph;
+//	}
 
 }
 /**
