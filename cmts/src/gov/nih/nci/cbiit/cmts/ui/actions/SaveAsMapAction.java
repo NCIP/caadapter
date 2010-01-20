@@ -18,9 +18,7 @@ import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 
 /**
  * This class defines a concrete "Save As" action.
@@ -96,7 +94,7 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	protected boolean processSaveFile(File file) throws Exception
 	{
 		preActionPerformed(mappingPanel);
-		MiddlePanelJGraphController mappingManager = mappingPanel.getMiddlePanel().getGraphController();
+		MiddlePanelJGraphController mappingManager = mappingPanel.getGraphController();//.getMiddlePanel().getGraphController();
 		Mapping mappingData = mappingManager.retrieveMappingData(true);
 		MappingFactory.saveMapping(file, mappingData);
 		boolean oldChangeValue = mappingPanel.isChanged();
