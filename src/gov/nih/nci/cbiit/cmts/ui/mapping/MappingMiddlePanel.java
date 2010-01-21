@@ -22,7 +22,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ScrollPaneConstants;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.BorderLayout;
 
 /**
@@ -98,11 +97,11 @@ public class MappingMiddlePanel extends JPanel
 	}
 
 	@Override
-	public void paintComponent(Graphics g)
+	public void repaint()
 	{
-		super.paintComponent(g);
-	
-		mappingPanel.getGraphController().renderInJGraph(g);
+		if (mappingPanel!=null&&mappingPanel.getGraphController()!=null)
+			mappingPanel.getGraphController().renderInJGraph();
+		super.repaint();
 	}
 }
 /**
