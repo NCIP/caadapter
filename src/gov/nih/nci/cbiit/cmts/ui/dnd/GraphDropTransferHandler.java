@@ -71,15 +71,13 @@ public boolean importData(TransferSupport info)
     		pathSelected=rootMappingPanel.getMappingPanel().getSourceTree().getSelectionPath();
 
 		DefaultMutableTreeNode nodeSelected = (DefaultMutableTreeNode) pathSelected.getLastPathComponent();   	 
-    	boolean isSucess= rootMappingPanel.getGraphController().createTreeToFunctionBoxPortMapping((MappableNode)nodeSelected,fPort,new ArrayList());
+    	boolean isSucess= rootMappingPanel.getGraphController().createMapping((MappableNode)nodeSelected,fPort);
     	if (isSucess)
     	{
-    		((MappableNode)nodeSelected).setMapStatus(true);
     		if (inputPort)
     			rootMappingPanel.getMappingPanel().getSourceTree().repaint();
     		else
     			rootMappingPanel.getMappingPanel().getTargetTree().repaint();
-    		fPort.setMapStatus(true);
     	}    	
     	return isSucess;
     }
