@@ -133,18 +133,16 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 		{
 			throw new IllegalArgumentException("Target Node cannot be null!");
 		}
-//		MappableNode localSourceNode = null;
-//		MappableNode localTargetNode = null;
-
-		determineSourceAndTargetNode(sourceNode, sourceCell);
-		determineSourceAndTargetNode(targetNode, targetCell);
+ 
+//		determineSourceAndTargetNode(sourceNode, sourceCell);
+//		determineSourceAndTargetNode(targetNode, targetCell);
 
 		this.linkEdge = linkEdge;
 
-//		this.sourceNode = sourceNode;
-//		this.targetNode = targetNode;
-//		this.sourceCell = sourceCell;
-//		this.targetCell = targetCell;
+		this.sourceNode = sourceNode;
+		this.targetNode = targetNode;
+		this.sourceCell = sourceCell;
+		this.targetCell = targetCell;
 	}
 
 	private void determineSourceAndTargetNode(MappableNode paramNode, DefaultGraphCell paramCell)
