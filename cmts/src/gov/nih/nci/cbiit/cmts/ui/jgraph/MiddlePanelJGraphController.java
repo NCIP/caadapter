@@ -772,7 +772,7 @@ public class MiddlePanelJGraphController
 	//		return portAttributes;
 	//	}
 
-	public void renderInJGraph(Graphics g)
+	public void renderInJGraph()
 	{
 		/** the real renderer */
 		ConnectionSet cs = new ConnectionSet();
