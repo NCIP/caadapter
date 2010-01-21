@@ -36,6 +36,7 @@ import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesSwitchController;
 import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesSwitchController;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultMappableTreeNode;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultTargetTreeNode;
 
@@ -392,19 +393,14 @@ public class MiddlePanelJGraphController
 				result = false;
 				return result;
 			}
-			//			if ( sourceNode instanceof FunctionBoxDefaultPort ) {// drag from FunctionBoxCell
-			//				if ( targetNode instanceof FunctionBoxDefaultPort ) {
-			//					result = createFunctionBoxPortToFunctionBoxPortMapping((FunctionBoxDefaultPort) sourceNode, (FunctionBoxDefaultPort) targetNode, graphCellList);
-			//				} else if ( targetNode instanceof DefaultMutableTreeNode ) {// functional box to tree link
-			//					DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
-			//					result = createTreeToFunctionBoxPortMapping(treeNode, (FunctionBoxDefaultPort) sourceNode, graphCellList);
-			//				}
+
 			if ( sourceNode instanceof DefaultMutableTreeNode ) {// drag from tree to middle panel
 				// todo: will source tree always stays at left? If not, the implicit logic between source is left and target is right should have been changed.
 				DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) sourceNode;
-				//				if ( targetNode instanceof FunctionBoxDefaultPort ) {
-				//					result = createTreeToFunctionBoxPortMapping(treeNode, (FunctionBoxDefaultPort) targetNode, graphCellList);
-				if ( targetNode instanceof DefaultTargetTreeNode )// targetNode instanceof DefaultMutableTreeNode
+				if ( targetNode instanceof FunctionBoxDefaultPort ) {
+					result = createTreeToFunctionBoxPortMapping(sourceNode, (FunctionBoxDefaultPort) targetNode, graphCellList);
+				}
+				else if ( targetNode instanceof DefaultTargetTreeNode )// targetNode instanceof DefaultMutableTreeNode
 				{// mapping between source and target tree node
 					result = createTreeToTreeDirectMapping((DefaultSourceTreeNode) sourceNode, (DefaultTargetTreeNode) targetNode, graphCellList);
 				} else if ( targetNode instanceof DefaultSourceTreeNode )// targetNode instanceof DefaultMutableTreeNode
@@ -422,31 +418,25 @@ public class MiddlePanelJGraphController
 			e.printStackTrace();
 			//Log.logException(this, e);
 		}
-		if ( result ) {// successfully mapped, add to mapping
+		if ( result ) 
+		{// successfully mapped, add to mapping
 			DefaultGraphCell temp1 = (DefaultGraphCell) graphCellList.get(0);
 			DefaultGraphCell temp2 = (DefaultGraphCell) graphCellList.get(1);
 			DefaultEdge edge = (DefaultEdge) graphCellList.get(2);
 			DefaultGraphCell sourceCell = null;
 			DefaultGraphCell targetCell = null;
-			//			if ( sourceNode instanceof FunctionBoxDefaultPort ) {
-			//				sourceCell = temp1 == sourceNode ? temp1 : temp2;
-			//			} else {
 			sourceCell = temp1.getUserObject() == sourceNode ? temp1 : temp2;
-			//			}
-			//			if ( targetNode instanceof FunctionBoxDefaultPort ) {
-			//				targetCell = temp1 == targetNode ? temp1 : temp2;
-			//			} else {
 			targetCell = temp1.getUserObject() == targetNode ? temp1 : temp2;
-			//			}
 			MappingViewCommonComponent viewComp = new MappingViewCommonComponent(sourceNode, targetNode, sourceCell, targetCell, edge);
 			edge.setUserObject(viewComp);
-			//			Log.logInfo(this, "mapped: "+viewComp);
 			mappingViewList.add(viewComp);
+			sourceNode.setMapStatus(true);
+			targetNode.setMapStatus(true);
 			setGraphChanged(true);
 		}
 		return result;
 	}
-
+	
 	private boolean createTreeToTreeDirectMapping(DefaultSourceTreeNode sourceNode, DefaultTargetTreeNode targetNode, List graphCellList)
 	{
 		// boolean result = sourceNode.isMapped() || targetNode.isMapped();
@@ -455,34 +445,23 @@ public class MiddlePanelJGraphController
 		if ( !result ) {// neither one has been mapped before
 			ConnectionSet cs = new ConnectionSet();
 			Map attributes = new Hashtable();
-			AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(((ElementMetaLoader.MyTreeObject)sourceNode.getUserObject()).getObj());//.getDefaultUnmovableEdgeStyle();
-			Dimension cellDimension = UIHelper.getDefaultSourceOrTargetVertexDimension();
-			DefaultGraphCell sourceCell = null;
-			DefaultGraphCell targetCell = null;
-			DefaultEdge linkEdge = null;
-			AttributeMap sourceAttribute = null;
-			AttributeMap targetAttribute = null;
-			// Find the Y position for the source for this mappingNode.
-			// find the # of pixels hidden. For example : 30
-			int sourceYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), sourceNode, false);
+			// The X and Y position of treeNode anchor will be calculated as rendering the graph cell
+			int sourceYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), sourceNode, false);		
+			DefaultGraphCell sourceCell=new DefaultGraphCell(sourceNode);
+			sourceCell.add(new DefaultPort());
+			AttributeMap soucreCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, sourceYpos), true);
+//			AttributeMap soucreCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, 0), true);
+			attributes.put(sourceCell, soucreCellAttributes);
 			// so the same for the Target side.
 			int targetYpos = calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), targetNode, false);
-			// process source
-			sourceCell = new DefaultGraphCell(sourceNode);
-			sourceAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, sourceYpos), true);
-			// sourceAttribute = (AttributeMap) UIHelper.createBounds(new AttributeMap(), 0 - cellDimension.getWidth(), sourceYpos, cellDimension,
-			// UIHelper.DEFAULT_VERTEX_COLOR, false);
-			sourceCell.add(new DefaultPort());
-			// process target
-			targetCell = new DefaultGraphCell(targetNode);
-			targetAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(getMaximalXValueOnPane(), targetYpos), false);
-			// targetAttribute = (AttributeMap) UIHelper.createBounds(new AttributeMap(), this.middlePanel.getWidth(), targetYpos, cellDimension,
-			// UIHelper.DEFAULT_VERTEX_COLOR, false);
+			DefaultGraphCell targetCell=new DefaultGraphCell(targetNode);
 			targetCell.add(new DefaultPort());
+			AttributeMap targetCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(getMaximalXValueOnPane(), targetYpos), false);
+//			AttributeMap targetCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, 0), false);
+			attributes.put(targetCell, targetCellAttributes);
 			// process the edge
-			linkEdge = new DefaultEdge();
-			attributes.put(sourceCell, sourceAttribute);
-			attributes.put(targetCell, targetAttribute);
+			DefaultEdge linkEdge = new DefaultEdge();
+			AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(((ElementMetaLoader.MyTreeObject)sourceNode.getUserObject()).getObj());
 			attributes.put(linkEdge, lineStyle);
 			// return back those being affected.
 			graphCellList.add(sourceCell);
@@ -490,77 +469,49 @@ public class MiddlePanelJGraphController
 			graphCellList.add(linkEdge);
 			cs.connect(linkEdge, sourceCell.getChildAt(0), targetCell.getChildAt(0));
 			getMiddlePanel().getGraph().getGraphLayoutCache().insert(new Object[] { sourceCell, targetCell, linkEdge }, attributes, cs, null, null);
-			// graph.getGraphLayoutCache().edit(attributes, cs, null, null);
 			getMiddlePanel().getGraph().getGraphLayoutCache().setSelectsAllInsertedCells(false);
 			result = true;
 		} else {
 			result = false;
 		}
-		if ( result ) {
-			sourceNode.setMapStatus(true);
-			targetNode.setMapStatus(true);
-		}
 		return result;
 	}
 
-	public boolean createTreeToFunctionBoxPortMapping(MappableNode mappableNode, FunctionBoxDefaultPort port, List graphCellList)
+	private boolean createTreeToFunctionBoxPortMapping(MappableNode mappableNode, FunctionBoxDefaultPort port, List graphCellList)
 	{
 		boolean isDataFromSourceTree = false;
 		if (mappingPanel.getSourceTree().getSelectionPath()!=null)
 			isDataFromSourceTree=true;
-		// port is not null, so let's figure out how draw the link
-		int treeNodeYpos = -1;
-		AttributeMap treeNodeAttribute = null;
-		DefaultGraphCell treeNodeCell = new DefaultGraphCell(mappableNode);
+
+ 		AttributeMap treeCellAttributes=null;	
+		DefaultGraphCell treeNodeCell=new DefaultGraphCell(mappableNode);
 		treeNodeCell.add(new DefaultPort());
+		if ( isDataFromSourceTree ) {
+			int treeNodeYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), (DefaultMutableTreeNode)mappableNode, false);
+			treeCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, treeNodeYpos), true);
+//			treeCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, 0), true);
+		}
+		else
+		{
+			int treeNodeYpos =calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), (DefaultMutableTreeNode)mappableNode, false);	
+ 			treeCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(getMaximalXValueOnPane(), treeNodeYpos), false);
+//			treeCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, 0), false);
+		}
+	
 		ConnectionSet cs = new ConnectionSet();
 		Map attributes = new Hashtable();
-		// Dimension cellDimension = UIHelper.getDefaultSourceOrTargetVertexDimension();
 		DefaultEdge linkEdge = new DefaultEdge();
-		if ( isDataFromSourceTree ) {
-			treeNodeYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), (DefaultMutableTreeNode)mappableNode, false);
-			treeNodeAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, treeNodeYpos), true);
-			// treeNodeAttribute = (AttributeMap) UIHelper.createBounds(new AttributeMap(), 0 - cellDimension.getWidth(), treeNodeYpos, cellDimension,
-			// UIHelper.DEFAULT_VERTEX_COLOR, false);
-			// edge, source, target
-			cs.connect(linkEdge, treeNodeCell.getChildAt(0), port);
-		} else {
-			treeNodeYpos =calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), (DefaultMutableTreeNode)mappableNode, false);
-			treeNodeAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(getMaximalXValueOnPane(), treeNodeYpos), false);
-			// treeNodeAttribute = (AttributeMap) UIHelper.createBounds(new AttributeMap(), this.middlePanel.getWidth(), treeNodeYpos, cellDimension,
-			// UIHelper.DEFAULT_VERTEX_COLOR, false);
-			// edge, source, target
-			cs.connect(linkEdge, port, treeNodeCell.getChildAt(0));
-		}
-		attributes.put(treeNodeCell, treeNodeAttribute);
+		cs.connect(linkEdge, port, treeNodeCell.getChildAt(0));
+		attributes.put(treeNodeCell, treeCellAttributes);
 		attributes.put(port, port.getAttributes());
-//		attributes.put(linkEdge, UIHelper.getDefaultUnmovableEdgeStyle(mappableNode.getUserObject()));
-		// return back those being affected.
+
 		graphCellList.add(treeNodeCell);
 		graphCellList.add(port);
 		graphCellList.add(linkEdge);
-		getMiddlePanel().getGraph().getGraphLayoutCache().insert(new Object[] { treeNodeCell, linkEdge }, attributes, cs, null, null);
+		getMiddlePanel().getGraph().getGraphLayoutCache().insert(new Object[] { treeNodeCell, port, linkEdge }, attributes, cs, null, null);
 		return true;
 	}
 	
-	private boolean createFunctionBoxPortToFunctionBoxPortMapping(FunctionBoxDefaultPort source, FunctionBoxDefaultPort target, List graphCellList)
-	{
-		ConnectionSet cs = new ConnectionSet();
-		Map attributes = new Hashtable();
-		// Dimension cellDimension = UIHelper.getDefaultSourceOrTargetVertexDimension();
-		DefaultEdge linkEdge = new DefaultEdge();
-		cs.connect(linkEdge, source, target);
-		attributes.put(source, source.getAttributes());
-		attributes.put(target, target.getAttributes());
-		attributes.put(linkEdge, UIHelper.getDefaultUnmovableEdgeStyle(source));
-		// return back those being affected.
-		graphCellList.add(source);
-		graphCellList.add(target);
-		graphCellList.add(linkEdge);
-		getMiddlePanel().getGraph().getGraphLayoutCache().insert(new Object[] { linkEdge }, attributes, cs, null, null);
-		return true;
-	}
-
 	/**
 	 * @param node
 	 * @param searchMode
@@ -634,7 +585,7 @@ public class MiddlePanelJGraphController
 	}
 
 	/**
-	 * Called by MiddlePanelMarqueeHandler Insert a new Edge between source and target
+	 * Called by MiddlePanelMarqueeHandler Insert a new Edge between source function port to and target function port
 	 */
 	public boolean handleConnect(DefaultPort source, DefaultPort target)
 	{	
@@ -823,18 +774,9 @@ public class MiddlePanelJGraphController
 
 	public void renderInJGraph(Graphics g)
 	{
-//		System.out.println("enter MiddlePanelJGraphController.renderInJGraph.");
 		/** the real renderer */
 		ConnectionSet cs = new ConnectionSet();
 		Map attributes = new Hashtable();
-
-		// render links
-		//		List visibleSrcNodes=new ArrayList<DefaultMutableTreeNode>();
-		//		if(mappingPanel.getSourceTree()!=null)
-		//			visibleSrcNodes=((MappingBaseTree)mappingPanel.getSourceTree()).getAllVisibleMappedNode();
-		//		List visibleTgrtNodes=new ArrayList<DefaultMutableTreeNode>();;
-		//		if (mappingPanel.getTargetTree()!=null)
-		//			visibleTgrtNodes=((MappingBaseTree)mappingPanel.getTargetTree()).getAllVisibleMappedNode();
 		int mappingSize = mappingViewList.size();
 		for (int i = 0; i < mappingSize; i++) {
 			MappingViewCommonComponent mappingComponent = mappingViewList.get(i);
@@ -852,41 +794,21 @@ public class MiddlePanelJGraphController
 				targetNodeCellAttribute=targetCell.getAttributes();
 
 			try {
-				//				if ( sourceNode instanceof FunctionBoxDefaultPort ) 
-				//				{
-				//					if ( targetNode instanceof FunctionBoxDefaultPort ) 
-				//					{// todo: consider how to draw functional box movement.
-				//					} 
-				//					else if ( targetNode instanceof DefaultMutableTreeNode ) 
-				//					{
-				//						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
-				////						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
-				//						adjustToNewPosition(treeNode, targetNodeCellAttribute);
-				//					}
-				//				} 
-				if ( sourceNode instanceof DefaultMutableTreeNode ) 
-				{// neither sourceNode nor targetNode is functional box, so this implies a direct map
-					//					if ( !(targetNode instanceof FunctionBoxDefaultPort) && (targetNode instanceof DefaultMutableTreeNode) ) {
-					if ( (targetNode instanceof DefaultMutableTreeNode) ) {
+				if ( sourceNode instanceof DefaultMappableTreeNode ) 
+				{
+					if ( (targetNode instanceof DefaultMappableTreeNode) ) {
 						// change target node
 						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
-						//						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
 						adjustToNewPosition(treeNode, targetNodeCellAttribute);
 					}
 					// change source node
 					DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) sourceNode;
-					//					sourceNodeDisplayed=visibleSrcNodes.contains(srcNode);
 					adjustToNewPosition(srcNode, sourceNodeCellAttribute);
-				}// end of else if(sourceNode instanceof DefaultMutableTreeNode)
+				}
 				if ( sourceNodeCellAttribute != null
 						&&targetNodeCellAttribute!=null) {// put in attribute if and only if it is constructed.
 					attributes.put(sourceCell, sourceNodeCellAttribute);
 					attributes.put(targetCell, targetNodeCellAttribute);
-					//reset link color
-					//					if (!targetNodeDisplayed||!sourceNodeDisplayed)
-					//					{
-					//						lineStyle.put("linecolor",this.graphBackgroundColor);
-					//					}
 					attributes.put(linkEdge, lineStyle);
 					// cs.connect(linkEdge, sourceCell.getChildAt(0), targetCell.getChildAt(0));
 					// Log.logInfo(this, "Drew line for : " + mappingComponent.toString());
@@ -898,7 +820,6 @@ public class MiddlePanelJGraphController
 		}// end of for
 		getMiddlePanel().getGraph().getGraphLayoutCache().edit(attributes, cs, null, null);
 		getMiddlePanel().getGraph().getGraphLayoutCache().setSelectsAllInsertedCells(false);
-		//System.out.println("leave MiddlePanelJGraphController.renderInJGraph.");
 	}
 
 
