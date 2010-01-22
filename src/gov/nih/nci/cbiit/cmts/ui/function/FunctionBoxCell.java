@@ -27,9 +27,18 @@ import javax.swing.tree.MutableTreeNode;
  */
 public class FunctionBoxCell extends DefaultGraphCell // implements MappableNode
 {
+	private String funcionBoxUUID;
 	public FunctionBoxCell(Object userObject)
 	{
 		this(userObject, null);
+		funcionBoxUUID=""+System.currentTimeMillis();
+	}
+
+	/**
+	 * @return the funcionBoxUUID
+	 */
+	public String getFuncionBoxUUID() {
+		return funcionBoxUUID;
 	}
 
 	public FunctionBoxCell(Object userObject, AttributeMap storageMap)
