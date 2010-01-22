@@ -46,7 +46,6 @@ import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Dimension;
@@ -942,8 +941,8 @@ public class MiddlePanelJGraphController
 			DefaultEdge edge = (DefaultEdge) cells[i];
 
 			MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
-			DefaultSourceTreeNode srcNode = (DefaultSourceTreeNode) e.getSourceNode();
-			DefaultTargetTreeNode tgtNode = (DefaultTargetTreeNode) e.getTargetNode();
+			MappableNode srcNode = (MappableNode) e.getSourceNode();
+			MappableNode tgtNode = (MappableNode) e.getTargetNode();
 			srcNode.setMapStatus(false);
 			tgtNode.setMapStatus(false);
 			mappingViewList.remove(e);
