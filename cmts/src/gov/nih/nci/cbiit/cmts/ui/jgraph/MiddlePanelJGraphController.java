@@ -851,13 +851,42 @@ public class MiddlePanelJGraphController
 		for (Iterator it = mappingViewList.iterator(); it.hasNext();) {
 			MappingViewCommonComponent comp = (MappingViewCommonComponent) it.next();
 			MappableNode sourceNode = comp.getSourceNode();
-			MappableNode targetNode = comp.getTargetNode();
 			String srcComponentId = ((Component) ((ElementMetaLoader.MyTreeObject) ((DefaultMutableTreeNode) sourceNode).getUserObject()).getRootObj()).getId();
-			String tgtComponentId = ((Component) ((ElementMetaLoader.MyTreeObject) ((DefaultMutableTreeNode) targetNode).getUserObject()).getRootObj()).getId();
+			
 			String srcPath = UIHelper.getPathStringForNode((DefaultMutableTreeNode) sourceNode);
-			String tgtPath = UIHelper.getPathStringForNode((DefaultMutableTreeNode) targetNode);
-
+			MappableNode targetNode = comp.getTargetNode();
+			String tgtComponentId="";
+			String tgtPath="";
+			if (targetNode instanceof FunctionBoxDefaultPort)
+			{
+				FunctionBoxDefaultPort fPort=(FunctionBoxDefaultPort)targetNode;
+				FunctionData portData=(FunctionData)fPort.getUserObject();
+				FunctionBoxCell functionCell=(FunctionBoxCell)fPort.getParent();
+				FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
+				FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
+				tgtComponentId= ""+functionDef.hashCode();
+				tgtPath=functionDef.getGroup()+"/"+functionDef.getName()+":"+portData.getName()+"="+portData.getValue();
+			}
+			else
+			{
+				tgtComponentId = ((Component) ((ElementMetaLoader.MyTreeObject) ((DefaultMutableTreeNode) targetNode).getUserObject()).getRootObj()).getId();
+				tgtPath = UIHelper.getPathStringForNode((DefaultMutableTreeNode) targetNode);
+			}
 			MappingFactory.addLink(mappingData, srcComponentId, srcPath, tgtComponentId, tgtPath);
+		}
+
+		//retrieve functionBox
+		Object[] childrenCom=getMiddlePanel().getGraph().getRoots();
+		for (Object child:childrenCom)
+		{
+			if (child instanceof FunctionBoxCell)
+			{
+				FunctionBoxCell functionCell=(FunctionBoxCell)child;
+				FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
+				FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
+				MappingFactory.addFunctionDefinition(mappingData, functionDef);
+			}
+		
 		}
 		return mappingData;
 	}
