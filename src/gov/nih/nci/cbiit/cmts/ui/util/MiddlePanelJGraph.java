@@ -6,8 +6,11 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmts.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.util;
 
+
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphViewFactory;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelMarqueeHandler;
 
 import java.awt.Color;
 
