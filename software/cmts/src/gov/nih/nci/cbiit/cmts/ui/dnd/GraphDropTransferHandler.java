@@ -5,7 +5,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +21,6 @@ import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionTypeNodeLoader;
-import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraph;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 
