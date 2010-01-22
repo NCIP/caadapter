@@ -12,7 +12,11 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.DefaultGraphCell;
 
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
@@ -94,13 +98,39 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 			if (userChoice == JOptionPane.YES_OPTION)
 			{
 				Object[] cells = graph.getSelectionCells();
-				DefaultEdge edge = (DefaultEdge) cells[0];
-				MappingViewCommonComponent viewC = (MappingViewCommonComponent) edge.getUserObject();
-				//check if the mapped Table has any mapped column
-				boolean hasMappedColumn=false;
-				DefaultMutableTreeNode tableTreeNode=(DefaultMutableTreeNode) viewC.getSourceNode();
-				if (!hasMappedColumn)
-					getController().handleDelete();
+				DefaultGraphCell graphCell = (DefaultGraphCell) cells[0];
+				if (graphCell instanceof DefaultEdge)
+				{
+					DefaultEdge edge = (DefaultEdge)graphCell;
+					MappingViewCommonComponent viewC = (MappingViewCommonComponent) edge.getUserObject();
+					//check if the link has any mapped child/descend node
+					boolean hasMappedColumn=false;
+					DefaultMutableTreeNode tableTreeNode=(DefaultMutableTreeNode) viewC.getSourceNode();
+//					if (!hasMappedColumn)
+						getController().handleDelete();
+				}
+				else if (graphCell instanceof FunctionBoxCell)
+				{
+					FunctionBoxCell fBox=(FunctionBoxCell)graphCell;
+					//check if any functionPort is mapped
+					String errorMsg="";
+					for(Object child:graphCell.getChildren())
+					{
+						FunctionBoxDefaultPort fPort=(FunctionBoxDefaultPort)child;
+						if (fPort.isMapped())
+						{
+							FunctionData portData=(FunctionData)fPort.getUserObject();
+							errorMsg="Mapped port:\nname="+portData.getName()
+								+"\ntype="+portData.getType()
+								+"\nvalue="+portData.getValue();
+							break;
+						}
+					}
+					if(errorMsg.equals(""))
+						getController().handleDelete();
+					else						
+						JOptionPane.showMessageDialog(getMiddlePanel(), errorMsg, "Port is currently mapped.",  JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		}
 		else
