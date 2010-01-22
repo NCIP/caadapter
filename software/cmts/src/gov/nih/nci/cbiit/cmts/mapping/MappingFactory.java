@@ -25,6 +25,8 @@ import gov.nih.nci.cbiit.cmts.core.BaseMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.core.FunctionType;
 import gov.nih.nci.cbiit.cmts.core.KindType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
 import gov.nih.nci.cbiit.cmts.core.LinkpointType;
@@ -117,6 +119,32 @@ public class MappingFactory {
 		m.getLinks().getLink().add(l);
 	}
 	
+	public static void addFunctionDefinition(Mapping m, FunctionDef functionDef)
+	{
+		//chech if functionDef exist
+		boolean isExist=false;
+		String functionDefId=""+functionDef.hashCode();
+		for (Component comp:m.getComponents().getComponent())
+		{
+			if (comp.getLocation().equals("function")&&comp.getId().equals(functionDefId))
+			{
+				isExist=true;
+				break;
+			}
+		}
+		
+		if (isExist)
+			return;
+		//this functionDef is an new instance
+		Component functionComp=new Component();
+		FunctionType functionType=new FunctionType();
+		functionType.setGroup(functionDef.getGroup());
+		functionType.setName(functionDef.getName());
+		functionComp.setFunction(functionType);
+		functionComp.setLocation("function");
+		functionComp.setId(functionDefId);
+		m.getComponents().getComponent().add(functionComp);
+	}
 	public static Mapping loadMapping(File f) throws JAXBException{
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Unmarshaller u = jc.createUnmarshaller();
