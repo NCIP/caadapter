@@ -19,6 +19,7 @@ import org.jgraph.graph.ParentMap;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
+import gov.nih.nci.cbiit.cmts.core.FunctionType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
 import gov.nih.nci.cbiit.cmts.core.LinkpointType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
@@ -864,7 +865,7 @@ public class MiddlePanelJGraphController
 				FunctionBoxCell functionCell=(FunctionBoxCell)fPort.getParent();
 				FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
 				FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
-				tgtComponentId= ""+functionDef.hashCode();
+				tgtComponentId= functionCell.getFuncionBoxUUID();
 				tgtPath=functionDef.getGroup()+"/"+functionDef.getName()+":"+portData.getName()+"="+portData.getValue();
 			}
 			else
@@ -876,6 +877,12 @@ public class MiddlePanelJGraphController
 		}
 
 		//retrieve functionBox
+		List<Component> compList=new ArrayList<Component>();
+		for (Component comp:mappingData.getComponents().getComponent())
+		{
+			if (!comp.getLocation().equals("function"))
+				compList.add(comp);
+		}
 		Object[] childrenCom=getMiddlePanel().getGraph().getRoots();
 		for (Object child:childrenCom)
 		{
@@ -884,10 +891,21 @@ public class MiddlePanelJGraphController
 				FunctionBoxCell functionCell=(FunctionBoxCell)child;
 				FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
 				FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
-				MappingFactory.addFunctionDefinition(mappingData, functionDef);
+				//this functionDef is an new instance
+				Component functionComp=new Component();
+				FunctionType functionType=new FunctionType();
+				functionType.setGroup(functionDef.getGroup());
+				functionType.setName(functionDef.getName());
+				functionComp.setFunction(functionType);
+				functionComp.setLocation("function");
+				functionComp.setId(functionCell.getFuncionBoxUUID());
+				compList.add(functionComp);
 			}
-		
 		}
+		mappingData.getComponents().getComponent().clear();
+		mappingData.getComponents().getComponent().addAll(compList);
+		
+		
 		return mappingData;
 	}
 
