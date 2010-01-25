@@ -281,17 +281,7 @@ public class MiddlePanelJGraphController
 		 * @return mapping relation consolidated.
 		 */
 		public Mapping retrieveMappingData(boolean refresh) {
-			/**
-			 * Design rationale: 1) for each of functions in the graph, create FunctionComponent; 2) for each of direct mapping, create map object associated with
-			 * it. Caveat: for simplicity, all previous map information is removed. Therefore, new component may carry different UUID then.
-			 */
-			if ( !refresh ) {// return what it is now.
-				return mappingData;
-			}
-			if ( mappingData == null ) {
-				// mappingData = new MappingImpl();
-				throw new IllegalStateException("If refresh is true, the mapping data in " + getClass().getName() + " shall not be null. Please call registerXYZs() to add in soruce and target components.");
-			}
+
 			// clear out the data before adding.
 			if(mappingData.getLinks() == null){
 				mappingData.setLinks(new Mapping.Links());
@@ -299,7 +289,6 @@ public class MiddlePanelJGraphController
 				mappingData.getLinks().getLink().clear();
 			}
 			List<DefaultEdge> graphEdgeLinks=this.getMiddlePanel().retrieveLinks();
-	//		for (Iterator it = mappingViewList.iterator(); it.hasNext();) {
 			for(DefaultEdge linkEdge:graphEdgeLinks)
 			{
 		
@@ -311,7 +300,6 @@ public class MiddlePanelJGraphController
 					FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)srcPort;
 					FunctionData portData=(FunctionData)fPort.getUserObject();
 					FunctionBoxGraphCell functionObject=(FunctionBoxGraphCell)fPort.getParent();
-//					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
 					FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
 					srcComponentId= functionObject.getFuncionBoxUUID();
 					srcPath=functionDef.getGroup()+"/"+functionDef.getName()+":"+portData.getName()+"="+portData.getValue();
@@ -331,7 +319,6 @@ public class MiddlePanelJGraphController
 					FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)trgtPort;
 					FunctionData portData=(FunctionData)fPort.getUserObject();
 					FunctionBoxGraphCell functionObject=(FunctionBoxGraphCell)fPort.getParent();
-//					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
 					FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
 					tgtComponentId= functionObject.getFuncionBoxUUID();
 					tgtPath=functionDef.getGroup()+"/"+functionDef.getName()+":"+portData.getName()+"="+portData.getValue();
@@ -358,7 +345,6 @@ public class MiddlePanelJGraphController
 				if (child instanceof FunctionBoxGraphCell)
 				{
 					FunctionBoxGraphCell functionObject=(FunctionBoxGraphCell)child;
-//					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
 					FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
 					//this functionDef is an new instance
 					Component functionComp=new Component();
@@ -538,7 +524,7 @@ public class MiddlePanelJGraphController
 			AttributeMap targetCellAttributes=UIHelper.getDefaultInvisibleVertexAttribute(new Point(getMaximalXValueOnPane(), targetYpos), false);
 			attributes.put(targetCell, targetCellAttributes);
 			// process the edge
-			DefaultEdge linkEdge = new DefaultEdge();
+			DefaultEdge linkEdge = new MappingGraphLink();
 			AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(((ElementMetaLoader.MyTreeObject)sourceNode.getUserObject()).getObj());
 			attributes.put(linkEdge, lineStyle);
 			// return back those being affected.
@@ -576,7 +562,7 @@ public class MiddlePanelJGraphController
 	
 		ConnectionSet cs = new ConnectionSet();
 		Map attributes = new Hashtable();
-		DefaultEdge linkEdge = new DefaultEdge();
+		DefaultEdge linkEdge = new MappingGraphLink();
 		cs.connect(linkEdge,  treeNodeCell.getChildAt(0),port);
 		attributes.put(treeNodeCell, treeCellAttributes);
 		attributes.put(port, port.getAttributes());
@@ -666,7 +652,7 @@ public class MiddlePanelJGraphController
 		}
 		//Log.logInfo(this, getClass().getName() + " will link source and target port.");
 		// Construct Edge with no label
-		DefaultEdge edge = new DefaultEdge();
+		DefaultEdge edge = new MappingGraphLink();
 		edge.setSource(source);
 		edge.setTarget(target);
 		AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(source);
