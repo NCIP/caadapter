@@ -199,7 +199,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			if(isValidPort(port) && isValidPort(firstPort))
 			{
 				// Then Establish Connection
-				controller.handleConnect((DefaultPort) firstPort.getCell(), (DefaultPort) port.getCell());
+				controller.linkFunctionPortToFunctionPort((DefaultPort) firstPort.getCell(), (DefaultPort) port.getCell());
 				e.consume();
 			}
 		}

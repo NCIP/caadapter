@@ -13,16 +13,15 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.DefaultPort;
 
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
-import gov.nih.nci.cbiit.cmts.ui.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -101,17 +100,19 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 				DefaultGraphCell graphCell = (DefaultGraphCell) cells[0];
 				if (graphCell instanceof DefaultEdge)
 				{
-					DefaultEdge edge = (DefaultEdge)graphCell;
-					MappingViewCommonComponent viewC = (MappingViewCommonComponent) edge.getUserObject();
+					DefaultEdge linkEdge = (DefaultEdge)graphCell;
+					DefaultPort srcPort=(DefaultPort)linkEdge.getSource();
+					DefaultPort trgtPort=(DefaultPort)linkEdge.getTarget();
+					DefaultGraphCell sourceCell =(DefaultGraphCell)srcPort.getParent();
+					DefaultGraphCell targetCell =(DefaultGraphCell)trgtPort.getParent();
 					//check if the link has any mapped child/descend node
 					boolean hasMappedColumn=false;
-					DefaultMutableTreeNode tableTreeNode=(DefaultMutableTreeNode) viewC.getSourceNode();
+					
 //					if (!hasMappedColumn)
-						getController().handleDelete();
+						getController().deleteGraphLink();
 				}
 				else if (graphCell instanceof FunctionBoxCell)
 				{
-					FunctionBoxCell fBox=(FunctionBoxCell)graphCell;
 					//check if any functionPort is mapped
 					String errorMsg="";
 					for(Object child:graphCell.getChildren())
@@ -127,7 +128,7 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 						}
 					}
 					if(errorMsg.equals(""))
-						getController().handleDelete();
+						getController().deleteGraphLink();
 					else						
 						JOptionPane.showMessageDialog(getMiddlePanel(), errorMsg, "Port is currently mapped.",  JOptionPane.WARNING_MESSAGE);
 				}

@@ -7,7 +7,7 @@
  */
 
 
-package gov.nih.nci.cbiit.cmts.ui.jgraph;
+package gov.nih.nci.cbiit.cmts.ui.util;
 
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
@@ -20,7 +20,6 @@ import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultTargetTreeNode;
-import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 /**
  * A data container contains mapping information, which is the mapping either from-tree-to-functional-box,
