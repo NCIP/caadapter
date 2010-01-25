@@ -8,24 +8,39 @@
 package gov.nih.nci.cbiit.cmts.ui.mapping;
 
 import org.jgraph.JGraph;
+import org.jgraph.graph.AttributeMap;
+import org.jgraph.graph.ConnectionSet;
+import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphModel;
 
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelGraphModel;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphScrollAdjustmentAdapter;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphViewFactory;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelMarqueeHandler;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelScrollAdjustmentCoordinator;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultMappableTreeNode;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The panel is used to render graphical respresentation of the mapping relations between
@@ -131,11 +146,104 @@ public class MappingMiddlePanel extends JPanel
 	}
 
 	@Override
-	public void repaint()
+	public void paintComponent(Graphics g)
 	{
-		if (mappingPanel!=null&&mappingPanel.getGraphController()!=null)
-			mappingPanel.getGraphController().renderInJGraph();
-		super.repaint();
+		super.paintComponent(g);
+		renderInJGraph();
+		
+	}
+	
+	public List<DefaultEdge> retrieveLinks()
+	{
+		ArrayList<DefaultEdge> links=new ArrayList<DefaultEdge>();
+		for (Object child:getGraph().getRoots())
+		{
+			if (child instanceof DefaultEdge)
+				links.add((DefaultEdge)child);
+		}
+		return links;		
+	}
+	public void renderInJGraph()
+	{
+		/** the real renderer */
+		ConnectionSet cs = new ConnectionSet();
+		Map<Object, AttributeMap> attributes = new Hashtable<Object, AttributeMap>();
+		for(DefaultEdge linkEdge:retrieveLinks())
+		{
+			DefaultPort srcPort=(DefaultPort)linkEdge.getSource();
+			DefaultPort trgtPort=(DefaultPort)linkEdge.getTarget();
+			DefaultGraphCell sourceCell =(DefaultGraphCell)srcPort.getParent();
+			DefaultGraphCell targetCell =(DefaultGraphCell)trgtPort.getParent();
+
+			AttributeMap lineStyle = linkEdge.getAttributes();
+			AttributeMap sourceNodeCellAttribute =null;
+			if (sourceCell!=null)
+				sourceNodeCellAttribute=sourceCell.getAttributes();
+			AttributeMap targetNodeCellAttribute =null;
+			if (targetCell!=null)
+				targetNodeCellAttribute=targetCell.getAttributes();
+
+			Object sourceNode = srcPort.getUserObject();
+			Object targetNode = trgtPort.getUserObject();
+			try {
+				if ( sourceNode instanceof DefaultMappableTreeNode ) 
+				{
+					if ( (targetNode instanceof DefaultMappableTreeNode) ) {
+						// change target node
+						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
+						adjustToNewPosition(treeNode, targetNodeCellAttribute);
+					}
+					// change source node
+					DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) sourceNode;
+					adjustToNewPosition(srcNode, sourceNodeCellAttribute);
+				}
+				if ( sourceNodeCellAttribute != null
+						&&targetNodeCellAttribute!=null) {// put in attribute if and only if it is constructed.
+					attributes.put(sourceCell, sourceNodeCellAttribute);
+					attributes.put(targetCell, targetNodeCellAttribute);
+					attributes.put(linkEdge, lineStyle);
+					// cs.connect(linkEdge, sourceCell.getChildAt(0), targetCell.getChildAt(0));
+					// Log.logInfo(this, "Drew line for : " + mappingComponent.toString());
+				}
+			} catch (Throwable e) {
+				e.printStackTrace();
+				//Log.logInfo(this, "Did not draw line for : " + mappingComponent.toString(true));
+			}
+		}// end of for
+		getGraph().getGraphLayoutCache().edit(attributes, cs, null, null);
+		getGraph().getGraphLayoutCache().setSelectsAllInsertedCells(false);
+	}
+	/**
+	 * Adjust the given treenode's display coordinates. If given tree node is null or the root, will simply ignore.
+	 * 
+	 * @param treeNode
+	 *            the tree node
+	 * @param oldAttributeMap
+	 *            the existing attribute on the graph associated with the given tree node
+	 * @return the oldAttributeMap after applying the newly calculated attribute.
+	 */
+	private AttributeMap adjustToNewPosition(DefaultMutableTreeNode treeNode, AttributeMap oldAttributeMap)
+	{
+		if ( treeNode != null && !treeNode.isRoot() ) {// change the render value if and only if neither it is null nor a root.
+			boolean isFromSourceTree = UIHelper.isDataFromSourceTree(treeNode);
+			int sourceYpos = -1;
+			AttributeMap newTreeNodeAttribute = null;
+			if ( isFromSourceTree ) {
+				// Find the Y position for the source for this mappingNode.
+				// find the # of pixels hidden. For example : 30
+				sourceYpos = getGraphController().calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), treeNode, true);
+				// To hide the vertex body from the graph
+				newTreeNodeAttribute = UIHelper.getDefaultInvisibleVertexBounds(new Point(0, sourceYpos), true);
+			} else {
+				sourceYpos = getGraphController().calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), treeNode, true);
+				newTreeNodeAttribute = UIHelper.getDefaultInvisibleVertexBounds(new Point( (int) getGraphScrollPane().getVisibleRect().getWidth()-5, sourceYpos), false);
+			}
+			if ( oldAttributeMap == null ) {// never return null.
+				oldAttributeMap = new AttributeMap();
+			}
+			oldAttributeMap.applyMap(newTreeNodeAttribute);
+		}
+		return oldAttributeMap;
 	}
 }
 /**
