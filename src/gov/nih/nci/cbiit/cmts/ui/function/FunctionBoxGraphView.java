@@ -29,10 +29,10 @@ import java.util.Map;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
-public class FunctionBoxView extends VertexView
+public class FunctionBoxGraphView extends VertexView
 {
 
-	public FunctionBoxView(Object cell)
+	public FunctionBoxGraphView(Object cell)
 	{
 		super(cell);
 	}
@@ -126,7 +126,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 			installAttributes(view);
 
 			Object obj = view.getCell();
-			if(obj instanceof FunctionBoxCell)
+			if(obj instanceof FunctionBoxGraphCell)
 			{
 				JPanel mainPanel = new JPanel(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
 				if(selected)
@@ -137,27 +137,26 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 				{
 					mainPanel.setBackground(titleBackgroundColor);
 				}
-				FunctionBoxCell functionCell = (FunctionBoxCell) obj;
-				Object userObj = functionCell.getUserObject();
-				if(!(userObj instanceof FunctionBoxUserObject))
-				{
-					System.err.println("User Object of FunctionBoxCell is not of type '" + FunctionBoxUserObject.class.getName() + "'");
-					return null;
-				}
-				FunctionBoxUserObject function = (FunctionBoxUserObject) userObj;
+				FunctionBoxGraphCell functionCell = (FunctionBoxGraphCell) obj;
+//				Object userObj = functionCell.getUserObject();
+//				if(!(userObj instanceof FunctionBoxUserObject))
+//				{
+//					System.err.println("User Object of FunctionBoxCell is not of type '" + FunctionBoxUserObject.class.getName() + "'");
+//					return null;
+//				}
+
 				//set up the function title
-				String functionName = function.getFunctionDef().getName().toString();
-//			Log.logInfo(this, "Function Name in FunctionBoxCellRenderer.getRendererComponent(): '" + functionName + "'");
+				String functionName = functionCell.getFunctionDef().getName().toString();
 				JLabel label = new JLabel();
 				label.setBorder(getDefaultBorder(1, 0, 0, 0));
 				label.setBackground(titleBackgroundColor);
 				label.setText(functionName);
 				label.setIcon(imageIcon);
 				mainPanel.add(label, BorderLayout.NORTH);
-				if (function.getFunctionDef().getName().equalsIgnoreCase("constant"))
-					return renderConstantFunction(function, mainPanel);
+				if (functionCell.getFunctionDef().getName().equalsIgnoreCase("constant"))
+					return renderConstantFunction(functionCell, mainPanel);
 						
-				return renderNormalFunction(function, mainPanel);
+				return renderNormalFunction(functionCell, mainPanel);
 			}
 		}
 		return this;
@@ -169,7 +168,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 	 * @param mainPanel
 	 * @return this component
 	 */
-	private JComponent renderConstantFunction(FunctionBoxUserObject function, JPanel mainPanel)
+	private JComponent renderConstantFunction(FunctionBoxGraphCell function, JPanel mainPanel)
 	{
 		FunctionDef functionConstant = function.getFunctionDef();
 		JTextArea area = new JTextArea(functionConstant.getName().toString());
@@ -187,7 +186,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 		return this;
 	}
 
-    private JComponent renderNormalFunction(FunctionBoxUserObject function, JPanel mainPanel)
+    private JComponent renderNormalFunction(FunctionBoxGraphCell function, JPanel mainPanel)
 	{
 		JPanel centerPanel = new JPanel(new GridLayout(1, 2));
 		centerPanel.setBorder(getDefaultBorder(1, 0, 1, 0));
@@ -264,7 +263,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 		parentPanel.add(component, cons);
 	}
 
-	private void addParameters(JPanel panel, FunctionBoxUserObject function, boolean isInput)
+	private void addParameters(JPanel panel, FunctionBoxGraphCell function, boolean isInput)
 	{
 		FunctionDef FunctionDef = (FunctionDef) function.getFunctionDef();
 		int size = FunctionDef.getData().size();

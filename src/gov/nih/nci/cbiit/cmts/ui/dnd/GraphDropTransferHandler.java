@@ -18,8 +18,8 @@ import org.jgraph.graph.DefaultGraphCell;
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPort;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionTypeNodeLoader;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
@@ -61,7 +61,7 @@ public boolean importData(TransferSupport info)
     	boolean inputPort=false;
     	if (treeNodeTransfered instanceof DefaultSourceTreeNode)
     		inputPort=true;
-    	FunctionBoxDefaultPort fPort= findNearestFunctionPortOnFunctionBox (middlePanelGraph, pDrop, inputPort);
+    	FunctionBoxGraphPort fPort= findNearestFunctionPortOnFunctionBox (middlePanelGraph, pDrop, inputPort);
     	
     	//create a link between tree node and function port
     	TreePath pathSelected=rootMappingPanel.getMappingPanel().getTargetTree().getSelectionPath();    	
@@ -110,20 +110,20 @@ public boolean canImport(TransferSupport info) {
  * @param dropLocation
  * @return
  */
-private FunctionBoxDefaultPort findNearestFunctionPortOnFunctionBox(JGraph graph, Point2D dropLocation, boolean inputPort)
+private FunctionBoxGraphPort findNearestFunctionPortOnFunctionBox(JGraph graph, Point2D dropLocation, boolean inputPort)
 {
-	FunctionBoxDefaultPort rtnPort=null;
+	FunctionBoxGraphPort rtnPort=null;
 	Object object = graph.getFirstCellForLocation(dropLocation.getX(), dropLocation.getY());
-	if (!(object instanceof FunctionBoxCell))
+	if (!(object instanceof FunctionBoxGraphCell))
 		return rtnPort;
 
-	List<DefaultGraphCell> children=((FunctionBoxCell)object).getChildren();
+	List<DefaultGraphCell> children=((FunctionBoxGraphCell)object).getChildren();
 	int disDif=0;
 	for (DefaultGraphCell cell: children)
 	{
-		if (cell instanceof FunctionBoxDefaultPort)
+		if (cell instanceof FunctionBoxGraphPort)
 		{
-			FunctionBoxDefaultPort fPort=(FunctionBoxDefaultPort)cell;
+			FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)cell;
 			//only the un-mapped port interested
 			if (fPort.isMapped())
 				continue;

@@ -27,10 +27,9 @@ import gov.nih.nci.cbiit.cmts.core.ViewType;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPortView;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxUserObject;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPort;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPortView;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxViewUsageManager;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
@@ -92,26 +91,25 @@ public class MiddlePanelJGraphController
  
 		functionViewtype.setX(BigInteger.valueOf((int)startPoint.getX()));
 		functionViewtype.setY(BigInteger.valueOf((int)startPoint.getY()));
-		functionViewtype.setHight(BigInteger.valueOf(200));
-		functionViewtype.setWidth(BigInteger.valueOf(200));
-		FunctionBoxUserObject functionBox=	FunctionBoxViewUsageManager.getInstance().createOneFunctionBoxUserObject(function, functionViewtype, mappingPanel.getRootContainer());
- 
-		if ( functionBox == null ) {
+		if (function.getName().equalsIgnoreCase("constant"))
+		{
+			functionViewtype.setHight(BigInteger.valueOf(50));
+			functionViewtype.setWidth(BigInteger.valueOf(100));
+		}
+		FunctionBoxGraphCell functionBox=	FunctionBoxViewUsageManager.getInstance().createOneFunctionBoxUserObject(function, functionViewtype, mappingPanel.getRootContainer());
+ 		if ( functionBox == null ) {
 			return false;
 		}
 		return addFunctionInstance(functionBox);
 	}
 	
-	//	private FunctionBoxViewUsageManager usageManager;
-
-	private boolean addFunctionInstance(FunctionBoxUserObject functionInstance)
+	private boolean addFunctionInstance(FunctionBoxGraphCell functionInstance)
 	{
 		FunctionDef function = functionInstance.getFunctionDef();
 		ViewType viewInfo = functionInstance.getViewMeta();
 		Point2D startPoint = new Point(viewInfo.getX().intValue() < 0 ? 25 : viewInfo.getX().intValue(), viewInfo.getY().intValue() < 0 ? 25 : viewInfo.getY().intValue());
 		// Construct Vertex with Label
-		FunctionBoxCell functionBoxVertex = new FunctionBoxCell(functionInstance);// createDefaultGraphCell(function);
-		Dimension functionBoxDimension = new Dimension(viewInfo.getWidth().intValue() <= 0 ? 200 : viewInfo.getWidth().intValue(), viewInfo.getHight().intValue() <= 0 ? 200 : viewInfo.getHight().intValue());
+		Dimension functionBoxDimension = new Dimension(viewInfo.getWidth().intValue(), viewInfo.getHight().intValue());
 		// Create a Map that holds the attributes for the functionBoxVertex
 		// functionBoxVertex.getAttributes().applyMap(createCellAttributes(startPoint, functionBoxDimension));
 		//Color backGroundColor = viewInfo.getColor() == null ? UIHelper.DEFAULT_VERTEX_COLOR : viewInfo.getColor();
@@ -121,15 +119,15 @@ public class MiddlePanelJGraphController
 		// Insert the functionBoxVertex (including child port and attributes)
 		Map portAttributes = new Hashtable();
 		ParentMap parentMap = new ParentMap();
-		int numOfInputs = functionInstance.getTotalNumberOfDefinedInputs();// FunctionBoxViewManager.getInstance().getTotalNumberOfDefinedInputs(function);
-		int numOfOutputs =functionInstance.getTotalNumberOfDefinedOutputs();// FunctionBoxViewManager.getInstance().getTotalNumberOfDefinedOutputs(function);
+		int numOfInputs = functionInstance.getTotalNumberOfDefinedInputs();
+		int numOfOutputs =functionInstance.getTotalNumberOfDefinedOutputs();
 		int maximumPorts = Math.max(numOfInputs, numOfOutputs);
-		addFunctionGraphPorts(function, portAttributes, parentMap, functionBoxVertex, funcBoxAttrbutes, numOfInputs, UIHelper.getDefaultFunctionalBoxInputOrientation(), maximumPorts);
-		addFunctionGraphPorts(function, portAttributes, parentMap, functionBoxVertex, funcBoxAttrbutes, numOfOutputs, UIHelper.getDefaultFunctionalBoxOutputOrientation(), maximumPorts);
+		addFunctionGraphPorts(function, portAttributes, parentMap, functionInstance, funcBoxAttrbutes, numOfInputs, UIHelper.getDefaultFunctionalBoxInputOrientation(), maximumPorts);
+		addFunctionGraphPorts(function, portAttributes, parentMap, functionInstance, funcBoxAttrbutes, numOfOutputs, UIHelper.getDefaultFunctionalBoxOutputOrientation(), maximumPorts);
 		// Create a Map that holds the attributes for the Vertex
-		functionBoxVertex.getAttributes().applyMap(funcBoxAttrbutes);
-		getMiddlePanel().getGraph().getGraphLayoutCache().insert(functionBoxVertex);
-		getMiddlePanel().getGraph().getGraphLayoutCache().insert(functionBoxVertex.getChildren().toArray(), portAttributes, null, parentMap, null);
+		functionInstance.getAttributes().applyMap(funcBoxAttrbutes);
+		getMiddlePanel().getGraph().getGraphLayoutCache().insert(functionInstance);
+		getMiddlePanel().getGraph().getGraphLayoutCache().insert(functionInstance.getChildren().toArray(), portAttributes, null, parentMap, null);
 		setGraphChanged(true);
 		return true;
 		// EDIT does not work!
@@ -162,7 +160,7 @@ public class MiddlePanelJGraphController
 		// Log.logInfo(this, "numOfPorts: " + numberOfPorts + ",orientation=" + portOrientation);
 		// key=port, value=its attribute map of portAttributes
 //		Rectangle2D bounds = GraphConstants.getBounds(cellAttributes);
-		Dimension portDimension = new Dimension(FunctionBoxDefaultPortView.MY_SIZE, FunctionBoxDefaultPortView.MY_SIZE);
+		Dimension portDimension = new Dimension(FunctionBoxGraphPortView.MY_SIZE, FunctionBoxGraphPortView.MY_SIZE);
 		// create ports and need 100 percent unit for relative positioning.
 		int unit = GraphConstants.PERMILLE;
 		int offsetX = (int) portDimension.getWidth() / 2;
@@ -195,7 +193,7 @@ public class MiddlePanelJGraphController
 				GraphConstants.setOffset(attriMap, new Point2D.Double(unit + offsetX, (interimFactor * (i + 1)) - offsetY + offsetTitleHeight));
 				// port = new FunctionBoxDefaultPort(UIHelper.getDefaultFunctionalBoxOutputCaption() + " " + i);
 			}
-			port = new FunctionBoxDefaultPort(paramList.get(i));// UIHelper.getDefaultFunctionalBoxInputCaption() + " " + i);
+			port = new FunctionBoxGraphPort(paramList.get(i));// UIHelper.getDefaultFunctionalBoxInputCaption() + " " + i);
 			cell.add(port);
 			portAttributes.put(port, attriMap);
 			parentMap.addEntry(port, cell);
@@ -308,14 +306,14 @@ public class MiddlePanelJGraphController
 				DefaultPort srcPort=(DefaultPort)linkEdge.getSource();
 				String srcComponentId="";
 				String srcPath="";
-				if (srcPort instanceof FunctionBoxDefaultPort)
+				if (srcPort instanceof FunctionBoxGraphPort)
 				{
-					FunctionBoxDefaultPort fPort=(FunctionBoxDefaultPort)srcPort;
+					FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)srcPort;
 					FunctionData portData=(FunctionData)fPort.getUserObject();
-					FunctionBoxCell functionCell=(FunctionBoxCell)fPort.getParent();
-					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
+					FunctionBoxGraphCell functionObject=(FunctionBoxGraphCell)fPort.getParent();
+//					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
 					FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
-					srcComponentId= functionCell.getFuncionBoxUUID();
+					srcComponentId= functionObject.getFuncionBoxUUID();
 					srcPath=functionDef.getGroup()+"/"+functionDef.getName()+":"+portData.getName()+"="+portData.getValue();
 				}
 				else
@@ -328,14 +326,14 @@ public class MiddlePanelJGraphController
 				DefaultPort trgtPort=(DefaultPort)linkEdge.getTarget();
 				String tgtComponentId="";
 				String tgtPath="";
-				if (trgtPort instanceof FunctionBoxDefaultPort)
+				if (trgtPort instanceof FunctionBoxGraphPort)
 				{
-					FunctionBoxDefaultPort fPort=(FunctionBoxDefaultPort)trgtPort;
+					FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)trgtPort;
 					FunctionData portData=(FunctionData)fPort.getUserObject();
-					FunctionBoxCell functionCell=(FunctionBoxCell)fPort.getParent();
-					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
+					FunctionBoxGraphCell functionObject=(FunctionBoxGraphCell)fPort.getParent();
+//					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
 					FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
-					tgtComponentId= functionCell.getFuncionBoxUUID();
+					tgtComponentId= functionObject.getFuncionBoxUUID();
 					tgtPath=functionDef.getGroup()+"/"+functionDef.getName()+":"+portData.getName()+"="+portData.getValue();
 				}
 				else
@@ -357,10 +355,10 @@ public class MiddlePanelJGraphController
 			Object[] childrenCom=getMiddlePanel().getGraph().getRoots();
 			for (Object child:childrenCom)
 			{
-				if (child instanceof FunctionBoxCell)
+				if (child instanceof FunctionBoxGraphCell)
 				{
-					FunctionBoxCell functionCell=(FunctionBoxCell)child;
-					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
+					FunctionBoxGraphCell functionObject=(FunctionBoxGraphCell)child;
+//					FunctionBoxUserObject functionObject=(FunctionBoxUserObject)functionCell.getUserObject();
 					FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
 					//this functionDef is an new instance
 					Component functionComp=new Component();
@@ -369,7 +367,7 @@ public class MiddlePanelJGraphController
 					functionType.setName(functionDef.getName());
 					functionComp.setFunction(functionType);
 					functionComp.setLocation("function");
-					functionComp.setId(functionCell.getFuncionBoxUUID());
+					functionComp.setId(functionObject.getFuncionBoxUUID());
 					compList.add(functionComp);
 				}
 			}
@@ -479,8 +477,8 @@ public class MiddlePanelJGraphController
 			if ( sourceNode instanceof DefaultMutableTreeNode ) {// drag from tree to middle panel
 				// todo: will source tree always stays at left? If not, the implicit logic between source is left and target is right should have been changed.
 				DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) sourceNode;
-				if ( targetNode instanceof FunctionBoxDefaultPort ) {
-					result = createTreeToFunctionBoxPortMapping(sourceNode, (FunctionBoxDefaultPort) targetNode, graphCellList);
+				if ( targetNode instanceof FunctionBoxGraphPort ) {
+					result = createTreeToFunctionBoxPortMapping(sourceNode, (FunctionBoxGraphPort) targetNode, graphCellList);
 				}
 				else if ( targetNode instanceof DefaultTargetTreeNode )// targetNode instanceof DefaultMutableTreeNode
 				{// mapping between source and target tree node
@@ -557,7 +555,7 @@ public class MiddlePanelJGraphController
 		return result;
 	}
 
-	private boolean createTreeToFunctionBoxPortMapping(MappableNode mappableNode, FunctionBoxDefaultPort port, List graphCellList)
+	private boolean createTreeToFunctionBoxPortMapping(MappableNode mappableNode, FunctionBoxGraphPort port, List graphCellList)
 	{
 		boolean isDataFromSourceTree = false;
 		if (mappingPanel.getSourceTree().getSelectionPath()!=null)
@@ -768,16 +766,16 @@ public class MiddlePanelJGraphController
 				continue;
 			DefaultEdge linkEdge = (DefaultEdge) cells[i];
 			DefaultPort srcPort=(DefaultPort)linkEdge.getSource();
-			if (srcPort instanceof FunctionBoxDefaultPort)
-				((FunctionBoxDefaultPort) srcPort).setMapStatus(false);
+			if (srcPort instanceof FunctionBoxGraphPort)
+				((FunctionBoxGraphPort) srcPort).setMapStatus(false);
 			else
 			{
 				MappableNode sourceNode =(MappableNode)srcPort.getUserObject();
 				sourceNode.setMapStatus(false);
 			}
 			DefaultPort trgtPort=(DefaultPort)linkEdge.getTarget();
-			if (trgtPort instanceof FunctionBoxDefaultPort)
-				((FunctionBoxDefaultPort)trgtPort).setMapStatus(false);
+			if (trgtPort instanceof FunctionBoxGraphPort)
+				((FunctionBoxGraphPort)trgtPort).setMapStatus(false);
 			else
 			{
 				MappableNode targetNode =(MappableNode)trgtPort.getUserObject();

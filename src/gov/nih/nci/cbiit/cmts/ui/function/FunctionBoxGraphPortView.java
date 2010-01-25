@@ -21,7 +21,7 @@ import java.util.Set;
 
 /**
  * This class defines a custom view class associated with the custom Port definition class.
- * @see FunctionBoxDefaultPort
+ * @see FunctionBoxGraphPort
  * @see gov.nih.nci.caadapter.ui.common.jgraph.MiddlePanelJGraphViewFactory
  *
  * @author Chunqing Lin
@@ -30,7 +30,7 @@ import java.util.Set;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
-public class FunctionBoxDefaultPortView extends PortView
+public class FunctionBoxGraphPortView extends PortView
 {
 	/**
 	 * Logging constant used to identify source of log entry, that could be later used to create
@@ -55,7 +55,7 @@ public class FunctionBoxDefaultPortView extends PortView
 	/**
 	 * Constructs an empty portview.
 	 */
-	public FunctionBoxDefaultPortView()
+	public FunctionBoxGraphPortView()
 	{
 		super();
 	}
@@ -66,7 +66,7 @@ public class FunctionBoxDefaultPortView extends PortView
 	 *
 	 * @param cell reference to the cell in the model
 	 */
-	public FunctionBoxDefaultPortView(Object cell)
+	public FunctionBoxGraphPortView(Object cell)
 	{
 		super(cell);
 	}
@@ -90,7 +90,7 @@ public class FunctionBoxDefaultPortView extends PortView
 	 */
 	public CellViewRenderer getRenderer()
 	{
-		return FunctionBoxDefaultPortView.renderer;    //To change body of overridden methods use File | Settings | File Templates.
+		return FunctionBoxGraphPortView.renderer;    //To change body of overridden methods use File | Settings | File Templates.
 	}
 }
 

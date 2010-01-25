@@ -47,9 +47,9 @@ public class ViewType {
     @XmlAttribute
     protected BigInteger y;
     @XmlAttribute
-    protected BigInteger hight;
+    protected BigInteger hight=BigInteger.valueOf(68);
     @XmlAttribute
-    protected BigInteger width;
+    protected BigInteger width=BigInteger.valueOf(140);
 
     /**
      * Gets the value of the componentid property.

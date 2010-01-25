@@ -25,7 +25,7 @@ import java.util.Set;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
-public class FunctionBoxDefaultPort extends DefaultPort implements MappableNode
+public class FunctionBoxGraphPort extends DefaultPort implements MappableNode
 {
 	/**
 	 * Renderer for the class.
@@ -39,7 +39,7 @@ public class FunctionBoxDefaultPort extends DefaultPort implements MappableNode
 //		super();
 //	}
 
-	public FunctionBoxDefaultPort(Object userObject)
+	public FunctionBoxGraphPort(Object userObject)
 	{
 		super(userObject);
 	}
