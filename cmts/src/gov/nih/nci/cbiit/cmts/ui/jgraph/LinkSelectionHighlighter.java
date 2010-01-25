@@ -8,13 +8,18 @@
 
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
-
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesSwitchController;
+import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultTargetTreeNode;
 
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.List;
+
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -73,14 +78,9 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 				DefaultEdge edge = (DefaultEdge) obj;
 				DefaultPort srcPort=(DefaultPort)edge.getSource();
 				DefaultPort trgtPort=(DefaultPort)edge.getTarget();
-				Object source = edge.getSource();
-				Object target = edge.getTarget();
-
 				//manually highlight if and only if it is orignated from graph selection.
 				Object sourceUserObject =srcPort.getUserObject();
 				highlightTreeNodeInTree(sourceUserObject);
-				
-
 				//manually highlight if and only if it is orignated from graph selection.
 				Object targetUserObject =trgtPort.getUserObject();// getUserObject(target);
 				highlightTreeNodeInTree(targetUserObject);
@@ -89,14 +89,14 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 		
 		if(e.getCell() instanceof DefaultGraphCell)
 		{
-			Object newSelection = ((DefaultGraphCell)e.getCell()).getUserObject();
+			DefaultGraphCell newSelection = (DefaultGraphCell)e.getCell();
 			DefaultPropertiesSwitchController propertySwitchConroller =(DefaultPropertiesSwitchController)mappingPanel.getMiddlePanel().getGraphController().getPropertiesSwitchController();
 			propertySwitchConroller.setSelectedItem(newSelection);
 		}
 		mappingPanel.getMiddlePanel().getGraphController().getPropertiesSwitchController().getPropertiesPage().updateProptiesDisplay(null);
 		mappingPanel.getMiddlePanel().getGraphController().setGraphSelected(false);
 	}
-
+	
 	/**
 	 * If it is clear selection event, the isAddedXXX() will return false, so the return will be true, i.e., it is a clear selection event.
 	 * @param event
