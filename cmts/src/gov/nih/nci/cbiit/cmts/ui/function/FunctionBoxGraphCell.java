@@ -9,16 +9,19 @@
 
 package gov.nih.nci.cbiit.cmts.ui.function;
 
+import gov.nih.nci.cbiit.cmts.common.PropertiesProvider;
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.core.ViewType;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
 
 import javax.swing.*;
 
 import org.jgraph.graph.DefaultGraphCell;
 
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,7 @@ import java.util.List;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
-public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNode
+public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNode, Serializable, PropertiesProvider
 {
 	private boolean mapped = false;
 
@@ -175,6 +178,41 @@ public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNo
 	 */
 	public String getFuncionBoxUUID() {
 		return funcionBoxUUID;
+	}
+
+
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		// TODO Auto-generated method stub
+		Class beanClass = this.getClass();
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		PropertyDescriptor groupProp = new PropertyDescriptor("Group", beanClass, "getGroupProperty", null);
+		PropertyDescriptor nameProp = new PropertyDescriptor("Name", beanClass,"getNameProperty", null);
+		PropertyDescriptor classProp = new PropertyDescriptor("Class", beanClass, "getClassProperty", null);
+		PropertyDescriptor methodProp = new PropertyDescriptor("Method", beanClass,"getMethodProperty", null);
+		propList.add(groupProp);
+		propList.add(nameProp);
+		propList.add(classProp);
+		propList.add(methodProp);
+		PropertiesResult result = new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+	
+	public String getGroupProperty()
+	{
+		return  getFunctionDef().getGroup();
+	}
+	public String getNameProperty()
+	{
+		return  getFunctionDef().getName();
+	}
+	public String getClassProperty()
+	{
+		return  getFunctionDef().getClazz();
+	}
+	public String getMethodProperty()
+	{
+		return  getFunctionDef().getMethod();
 	}
 }
 /**
