@@ -11,6 +11,8 @@ package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesSwitchController;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultTargetTreeNode;
 
 import java.util.EventObject;
 import javax.swing.JTree;
@@ -69,17 +71,19 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 			if (obj instanceof DefaultEdge)
 			{//only handles edge, when graph is NOT in CLEAR selection mode.
 				DefaultEdge edge = (DefaultEdge) obj;
+				DefaultPort srcPort=(DefaultPort)edge.getSource();
+				DefaultPort trgtPort=(DefaultPort)edge.getTarget();
 				Object source = edge.getSource();
 				Object target = edge.getTarget();
 
 				//manually highlight if and only if it is orignated from graph selection.
-				Object sourceUserObject = getUserObject(source);
-				highlightTreeNodeInTree(mappingPanel.getSourceTree(), sourceUserObject);
+				Object sourceUserObject =srcPort.getUserObject();
+				highlightTreeNodeInTree(sourceUserObject);
 				
 
 				//manually highlight if and only if it is orignated from graph selection.
-				Object targetUserObject = getUserObject(target);
-				highlightTreeNodeInTree(mappingPanel.getTargetTree(), targetUserObject);
+				Object targetUserObject =trgtPort.getUserObject();// getUserObject(target);
+				highlightTreeNodeInTree(targetUserObject);
 			}
 		}
 		
@@ -108,31 +112,24 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 		return result;
 	}
 
-	private Object getUserObject(Object graphOrTreeNode)
-	{
-		if(graphOrTreeNode instanceof DefaultPort)
-		{
-			DefaultMutableTreeNode parentCell = (DefaultMutableTreeNode)((DefaultPort) graphOrTreeNode).getParent();
-			return getUserObject(parentCell);
-		}
-		else if(graphOrTreeNode instanceof DefaultMutableTreeNode)
-		{
-			return ((DefaultMutableTreeNode)graphOrTreeNode).getUserObject();
-		}
-		else
-		{
-			return null;
-		}
-	}
 
-	private void highlightTreeNodeInTree(JTree tree, Object object)
+	private void highlightTreeNodeInTree(Object object)
 	{
-		if ((!(object instanceof DefaultGraphCell) && (object instanceof DefaultMutableTreeNode)))
-		{//screen out possible graph cell but just leave pure tree node to be highlighted
-			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;			
-			TreePath treePath = new TreePath(treeNode.getPath());
-			tree.setSelectionPath(treePath);
-		}
+		if (object instanceof DefaultGraphCell |!(object instanceof DefaultMutableTreeNode))
+			return;
+		
+		DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;			
+		JTree tree=null;
+		CmpsMappingPanel mappingPanel= graphController.getMappingPanel();
+		if (treeNode instanceof DefaultSourceTreeNode)
+			tree=mappingPanel.getSourceTree();
+		else if (treeNode instanceof DefaultTargetTreeNode)
+			tree=mappingPanel.getTargetTree();
+		if (tree==null)
+			return;
+		TreePath treePath = new TreePath(treeNode.getPath());
+		tree.setSelectionPath(treePath);
+
 	}	    
 }
 /**

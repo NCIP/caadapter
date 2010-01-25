@@ -16,8 +16,8 @@ import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPort;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 
@@ -111,13 +111,13 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 //					if (!hasMappedColumn)
 						getController().deleteGraphLink();
 				}
-				else if (graphCell instanceof FunctionBoxCell)
+				else if (graphCell instanceof FunctionBoxGraphCell)
 				{
 					//check if any functionPort is mapped
 					String errorMsg="";
 					for(Object child:graphCell.getChildren())
 					{
-						FunctionBoxDefaultPort fPort=(FunctionBoxDefaultPort)child;
+						FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)child;
 						if (fPort.isMapped())
 						{
 							FunctionData portData=(FunctionData)fPort.getUserObject();

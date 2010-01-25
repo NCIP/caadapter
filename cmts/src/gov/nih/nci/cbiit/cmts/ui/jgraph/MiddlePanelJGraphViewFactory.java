@@ -7,10 +7,10 @@
  */
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPort;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxDefaultPortView;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxView;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPort;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPortView;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphView;
 
 import org.jgraph.graph.*;
 
@@ -32,9 +32,9 @@ public class MiddlePanelJGraphViewFactory extends DefaultCellViewFactory
 	 */
 	protected VertexView createVertexView(Object v)
 	{
-		if (v instanceof FunctionBoxCell)
+		if (v instanceof FunctionBoxGraphCell)
 		{		
-			return new FunctionBoxView(v);
+			return new FunctionBoxGraphView(v);
 		}
 		return super.createVertexView(v);
 	}
@@ -54,9 +54,9 @@ public class MiddlePanelJGraphViewFactory extends DefaultCellViewFactory
 
 	protected PortView createPortView(Object port)
 	{
-		if(port instanceof FunctionBoxDefaultPort)
+		if(port instanceof FunctionBoxGraphPort)
 		{
-			return new FunctionBoxDefaultPortView(port);
+			return new FunctionBoxGraphPortView(port);
 		}
 		return super.createPortView(port);
 	}

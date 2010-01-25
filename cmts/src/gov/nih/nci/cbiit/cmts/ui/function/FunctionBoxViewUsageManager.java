@@ -58,27 +58,6 @@ public class FunctionBoxViewUsageManager
         this.functionInstanceMap = Collections.synchronizedMap(new HashMap());
     }
 
-    /**
-     * This function is expected to be called by UI when it is loading a map file to display and tries to convert a functionComponent to an instance of GUI component.
-     * This function will handle constant function as well.
-     * @param functionComponent the uuid of the FunctionDef, or of type FunctionDef,
-     *                 or of type of FunctionBoxMutableViewInterface, or of type FunctionComponent
-     * @return null if the given functionComponent is null or could not find specified function within the functionComponent.
-     */
-    public FunctionBoxUserObject createOneFunctionBoxUserObject(FunctionDef function, ViewType view)
-    {
-        
-        FunctionDef functionDefinition = FunctionBoxViewManager.getInstance().getOneFunctionalBoxSpecification(function);
-        FunctionBoxUserObject newFunctionBox = null;
-        if (functionDefinition != null)
-        {//just to confirm the system has it.
-
-            newFunctionBox = new FunctionBoxUserObject(function, view);
-            //register the newly created item in the map.
-            functionInstanceMap.put(newFunctionBox.getXmlPath(), newFunctionBox);
-        }
-        return newFunctionBox;
-    }
 
     /**
      * This function is expected to be called by UI's action to manually add/create a function box, which will expect to ask constant definition if it is a constant function.
@@ -88,17 +67,18 @@ public class FunctionBoxViewUsageManager
      * @param parentContainer
      * @return a FunctionBoxMutableViewInterface
      */
-    public FunctionBoxUserObject createOneFunctionBoxUserObject(Object function, ViewType viewInfo, Container parentContainer)
+    public FunctionBoxGraphCell createOneFunctionBoxUserObject(Object function, ViewType viewInfo, Container parentContainer)
     {
-        FunctionDef FunctionDef = FunctionBoxViewManager.getInstance().getOneFunctionalBoxSpecification(function);
+        FunctionDef functionDef = FunctionBoxViewManager.getInstance().getOneFunctionalBoxSpecification(function);
 
-        FunctionBoxUserObject newFunctionBoxInstance = null;
-        if (FunctionDef != null)
+        FunctionBoxGraphCell newFunctionBoxInstance = null;
+        if (functionDef != null)
         {
-            newFunctionBoxInstance = new FunctionBoxUserObject(FunctionDef, viewInfo);
+            newFunctionBoxInstance = new FunctionBoxGraphCell(functionDef, viewInfo);
             //register the newly created item in the map.
             functionInstanceMap.put(newFunctionBoxInstance.getXmlPath(), newFunctionBoxInstance);
         }
+        newFunctionBoxInstance.setViewMeta(viewInfo);
         return newFunctionBoxInstance;
     }
 
@@ -107,19 +87,19 @@ public class FunctionBoxViewUsageManager
      * @param functionInstanceUUID
      * @return a FunctionBoxMutableViewInterface
      */
-    public FunctionBoxUserObject findFunctionUsageInstance(String functionInstanceUUID)
+    public FunctionBoxGraphCell findFunctionUsageInstance(String functionInstanceUUID)
     {
-        return ((FunctionBoxUserObject) functionInstanceMap.get(functionInstanceUUID));
+        return ((FunctionBoxGraphCell) functionInstanceMap.get(functionInstanceUUID));
     }
 
-     public List<FunctionBoxUserObject> findFunctionUsageInstanceByName(String functionName)
+     public List<FunctionBoxGraphCell> findFunctionUsageInstanceByName(String functionName)
     {
-        ArrayList<FunctionBoxUserObject> result = new ArrayList<FunctionBoxUserObject>();
+        ArrayList<FunctionBoxGraphCell> result = new ArrayList<FunctionBoxGraphCell>();
         Iterator it = functionInstanceMap.keySet().iterator();
         while(it.hasNext())
         {
             Object key = it.next();
-            FunctionBoxUserObject element = (FunctionBoxUserObject) functionInstanceMap.get(key);
+            FunctionBoxGraphCell element = (FunctionBoxGraphCell) functionInstanceMap.get(key);
             if(GeneralUtilities.areEqual(element.getTitle(), functionName))
             {
                 result.add(element);
@@ -132,20 +112,20 @@ public class FunctionBoxViewUsageManager
      * Return all usage functions.
      * @return a list of FunctionBoxMutableViewInterface
      */
-    public List<FunctionBoxUserObject> getAllFunctionUsageList()
+    public List<FunctionBoxGraphCell> getAllFunctionUsageList()
     {
-        ArrayList<FunctionBoxUserObject> result = new ArrayList<FunctionBoxUserObject>();
+        ArrayList<FunctionBoxGraphCell> result = new ArrayList<FunctionBoxGraphCell>();
         Iterator it = functionInstanceMap.keySet().iterator();
         while (it.hasNext())
         {
             Object key = it.next();
-            FunctionBoxUserObject element = (FunctionBoxUserObject) functionInstanceMap.get(key);
+            FunctionBoxGraphCell element = (FunctionBoxGraphCell) functionInstanceMap.get(key);
             result.add(element);
         }
         return result;
     }
 
-    public Object removeFunctionUsage(FunctionBoxUserObject functionUsage)
+    public Object removeFunctionUsage(FunctionBoxGraphCell functionUsage)
     {
         if(functionUsage!=null)
         {

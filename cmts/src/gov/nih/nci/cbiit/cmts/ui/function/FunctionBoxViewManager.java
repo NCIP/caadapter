@@ -11,7 +11,6 @@ package gov.nih.nci.cbiit.cmts.ui.function;
 
 import gov.nih.nci.cbiit.cmts.common.FunctionManager;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
-import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 
 import java.util.*;
 
@@ -91,7 +90,7 @@ public class FunctionBoxViewManager
 		{
 			functionUUID = (String) function;
 		}
-		else if (function instanceof FunctionBoxUserObject)
+		else if (function instanceof FunctionBoxGraphCell)
 		{
 //			functionUUID = ((FunctionDef)((FunctionBoxUserObject) function).getFunctionType())
 		}
