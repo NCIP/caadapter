@@ -15,6 +15,9 @@ import gov.nih.nci.cbiit.cmts.core.ViewType;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 
 import javax.swing.*;
+
+import org.jgraph.graph.DefaultGraphCell;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ import java.util.List;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
-public class FunctionBoxUserObject implements MappableNode
+public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNode
 {
 	private boolean mapped = false;
 
@@ -40,8 +43,8 @@ public class FunctionBoxUserObject implements MappableNode
 
 	protected FunctionDef FunctionDef;
 	protected ViewType viewMeta;
-	protected FunctionBoxCell functionBoxCell;
-	//protected FunctionConstant functionConstant;
+	private String funcionBoxUUID;
+	
 	/**
 	 * This constuctor is intended to be used when adding a new function on the mapping,
 	 * since at that time, no function component is available but just FunctionDef and/or viewMeta.
@@ -49,8 +52,10 @@ public class FunctionBoxUserObject implements MappableNode
 	 * @param function
 	 * @param viewMeta
 	 */
-	public FunctionBoxUserObject (FunctionDef function, ViewType viewMeta)
+	public FunctionBoxGraphCell (FunctionDef function, ViewType viewMeta)
 	{
+		super();
+		funcionBoxUUID=""+System.currentTimeMillis();
 		this.FunctionDef = function;
 		this.viewMeta = viewMeta;
 		resetMetas();
@@ -127,27 +132,6 @@ public class FunctionBoxUserObject implements MappableNode
 		}
 	}
 
-	/**
-	 * Return the associated view object in JGraph.
-	 * Could return null if this view has not be put on view yet.
-	 *
-	 * @return a FunctionBoxCell
-	 */
-	public FunctionBoxCell getFunctionBoxCell()
-	{
-		return this.functionBoxCell;
-	}
-
-	/**
-	 * Set the function box cell.
-	 *
-	 * @param newFunctionBoxCell
-	 */
-	public void setFunctionalBoxCell(FunctionBoxCell newFunctionBoxCell)
-	{
-		this.functionBoxCell = newFunctionBoxCell;
-	}
-
     /**
 	 * Set the map status to new value, which might trigger underline property change.
 	 *
@@ -186,9 +170,12 @@ public class FunctionBoxUserObject implements MappableNode
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
+	/**
+	 * @return the funcionBoxUUID
+	 */
+	public String getFuncionBoxUUID() {
+		return funcionBoxUUID;
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $

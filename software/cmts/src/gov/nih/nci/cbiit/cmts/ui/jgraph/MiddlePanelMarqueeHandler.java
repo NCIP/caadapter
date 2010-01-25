@@ -10,7 +10,7 @@ package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAllAction;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxCell;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
 
 import javax.swing.SwingUtilities;
 import javax.swing.JPopupMenu;
@@ -360,7 +360,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			{//return false if the port has been linked by edge.
 				return false;
 			}
-			else if (portCell.getParent() instanceof FunctionBoxCell)
+			else if (portCell.getParent() instanceof FunctionBoxGraphCell)
 			{
 //				System.out.println("port " + localPort + "'s parent is FunctionBoxCell. Will return true.");
 				return true;
