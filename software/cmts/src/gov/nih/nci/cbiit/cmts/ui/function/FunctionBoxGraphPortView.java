@@ -22,7 +22,6 @@ import java.util.Set;
 /**
  * This class defines a custom view class associated with the custom Port definition class.
  * @see FunctionBoxGraphPort
- * @see gov.nih.nci.caadapter.ui.common.jgraph.MiddlePanelJGraphViewFactory
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
