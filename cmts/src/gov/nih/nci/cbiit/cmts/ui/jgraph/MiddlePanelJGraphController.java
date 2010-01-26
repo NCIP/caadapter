@@ -17,6 +17,7 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.ParentMap;
 
 import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.core.FunctionType;
@@ -30,7 +31,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPort;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPortView;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxViewUsageManager;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxUsageManager;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
@@ -96,7 +97,7 @@ public class MiddlePanelJGraphController
 			functionViewtype.setHight(BigInteger.valueOf(50));
 			functionViewtype.setWidth(BigInteger.valueOf(100));
 		}
-		FunctionBoxGraphCell functionBox=	FunctionBoxViewUsageManager.getInstance().createOneFunctionBoxUserObject(function, functionViewtype, mappingPanel.getRootContainer());
+		FunctionBoxGraphCell functionBox=	FunctionBoxUsageManager.getInstance().createOneFunctionBoxGraphCell(function, functionViewtype, mappingPanel.getRootContainer());
  		if ( functionBox == null ) {
 			return false;
 		}
@@ -333,10 +334,11 @@ public class MiddlePanelJGraphController
 			}
 	
 			//retrieve functionBox
+			List<ViewType> viewList=new ArrayList<ViewType>();
 			List<Component> compList=new ArrayList<Component>();
 			for (Component comp:mappingData.getComponents().getComponent())
 			{
-				if (!comp.getLocation().equals("function"))
+				if (!comp.getType().value().equals(ComponentType.FUNCTION.value()))
 					compList.add(comp);
 			}
 			Object[] childrenCom=getMiddlePanel().getGraph().getRoots();
@@ -351,15 +353,26 @@ public class MiddlePanelJGraphController
 					FunctionType functionType=new FunctionType();
 					functionType.setGroup(functionDef.getGroup());
 					functionType.setName(functionDef.getName());
+					
 					functionComp.setFunction(functionType);
-					functionComp.setLocation("function");
+					functionComp.setType(ComponentType.FUNCTION);
 					functionComp.setId(functionObject.getFuncionBoxUUID());
 					compList.add(functionComp);
+					
+					//create view
+					ViewType functionView=functionObject.getViewMeta();
+					functionView.setComponentid(functionObject.getFuncionBoxUUID());
+					viewList.add(functionView);
 				}
 			}
 			mappingData.getComponents().getComponent().clear();
 			mappingData.getComponents().getComponent().addAll(compList);
-			
+			if(mappingData.getViews() == null){
+				mappingData.setViews(new Mapping.Views());
+			}else{
+				mappingData.getViews().getView().clear();
+			}
+			mappingData.getViews().getView().addAll(viewList);
 			return mappingData;
 		}
 	public void setMappingData(Mapping mappingData)
