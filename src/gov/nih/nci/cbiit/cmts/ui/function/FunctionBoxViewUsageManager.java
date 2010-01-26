@@ -10,13 +10,11 @@
 package gov.nih.nci.cbiit.cmts.ui.function;
 
 
+import gov.nih.nci.cbiit.cmts.common.FunctionManager;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.core.ViewType;
-import gov.nih.nci.cbiit.cmts.function.FunctionException;
-import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -69,7 +67,7 @@ public class FunctionBoxViewUsageManager
      */
     public FunctionBoxGraphCell createOneFunctionBoxUserObject(Object function, ViewType viewInfo, Container parentContainer)
     {
-        FunctionDef functionDef = FunctionBoxViewManager.getInstance().getOneFunctionalBoxSpecification(function);
+        FunctionDef functionDef = getOneFunctionalBoxSpecification(function);
 
         FunctionBoxGraphCell newFunctionBoxInstance = null;
         if (functionDef != null)
@@ -136,6 +134,39 @@ public class FunctionBoxViewUsageManager
             return null;
         }
     }
+    /**
+	 * @param function the uuid of the FunctionDef, or of type FunctionDef,
+	 *                 or of type of FunctionBoxMutableViewInterface, or of type FunctionComponent
+	 * @return
+	 */
+	public FunctionDef getOneFunctionalBoxSpecification(Object function)
+	{
+		function = getFunctionUUID(function);
+		return (FunctionDef) FunctionManager.getInstance().getFunctionMap().get(function);
+	}
+
+	private String getFunctionUUID(Object function)  
+	{
+		String functionUUID = null;
+		if (function instanceof String)
+		{
+			functionUUID = (String) function;
+		}
+		else if (function instanceof FunctionBoxGraphCell)
+		{
+//			functionUUID = ((FunctionDef)((FunctionBoxUserObject) function).getFunctionType())
+		}
+		else if (function instanceof FunctionDef)
+		{
+			FunctionDef fdef=(FunctionDef)function;
+			functionUUID=fdef.getClazz()+":"+fdef.getName();
+		}
+		else
+		{
+			System.err.println("I don't know this type of function. Its type is '" + (function==null? "null" : function.getClass().getName()) + "'.");
+		}
+		return functionUUID;
+	}
 }
 
 /**
