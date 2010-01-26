@@ -20,40 +20,30 @@ import java.util.*;
 import java.util.List;
 
 /**
- * This class may look similar to FunctionalBoxManager, but it is solely designated
- * to support MiddlePanelJGraphController to manage the list of function box usages.
- *
- * Therefore, the implementation of FunctionalBoxManager is singleton while this class is
- * instance oriented, as each instance targets to one instance of mapping.
- *
+ * 
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
  * @version    $Revision: 1.2 $
  * @date       $Date: 2009-12-02 18:48:54 $
  */
-public class FunctionBoxViewUsageManager
+public class FunctionBoxUsageManager
 {
 
     //key: uuid of function instance, function instance.
-    private Map functionInstanceMap;
+    private Map<String, FunctionBoxGraphCell> functionBoxGraphCellMap;
 
-    private static final FunctionBoxViewUsageManager instance = new FunctionBoxViewUsageManager();
+    private static final FunctionBoxUsageManager instance = new FunctionBoxUsageManager();
 
 
-	public static final FunctionBoxViewUsageManager getInstance()
+	public static final FunctionBoxUsageManager getInstance()
 	{
 		return instance;
 	}
 	
-    public FunctionBoxViewUsageManager()
+    private FunctionBoxUsageManager()
     {
-        clear();
-    }
-
-    public void clear()
-    {
-        this.functionInstanceMap = Collections.synchronizedMap(new HashMap());
+    	functionBoxGraphCellMap = Collections.synchronizedMap(new HashMap<String, FunctionBoxGraphCell>());
     }
 
 
@@ -65,7 +55,7 @@ public class FunctionBoxViewUsageManager
      * @param parentContainer
      * @return a FunctionBoxMutableViewInterface
      */
-    public FunctionBoxGraphCell createOneFunctionBoxUserObject(Object function, ViewType viewInfo, Container parentContainer)
+    public FunctionBoxGraphCell createOneFunctionBoxGraphCell(Object function, ViewType viewInfo, Container parentContainer)
     {
         FunctionDef functionDef = getOneFunctionalBoxSpecification(function);
 
@@ -74,30 +64,30 @@ public class FunctionBoxViewUsageManager
         {
             newFunctionBoxInstance = new FunctionBoxGraphCell(functionDef, viewInfo);
             //register the newly created item in the map.
-            functionInstanceMap.put(newFunctionBoxInstance.getXmlPath(), newFunctionBoxInstance);
+            functionBoxGraphCellMap.put(newFunctionBoxInstance.getFuncionBoxUUID(), newFunctionBoxInstance);
         }
         newFunctionBoxInstance.setViewMeta(viewInfo);
         return newFunctionBoxInstance;
     }
 
     /**
-     * Return the function usage instance based on the given instance's UUID.
+     * Return the function box cell instance based on the given instance's UUID.
      * @param functionInstanceUUID
      * @return a FunctionBoxMutableViewInterface
      */
-    public FunctionBoxGraphCell findFunctionUsageInstance(String functionInstanceUUID)
+    public FunctionBoxGraphCell findFunctionBoxGraphCell(String functionInstanceUUID)
     {
-        return ((FunctionBoxGraphCell) functionInstanceMap.get(functionInstanceUUID));
+        return ((FunctionBoxGraphCell) functionBoxGraphCellMap.get(functionInstanceUUID));
     }
 
-     public List<FunctionBoxGraphCell> findFunctionUsageInstanceByName(String functionName)
+     public List<FunctionBoxGraphCell> findFunctionBoxGraphCellByName(String functionName)
     {
         ArrayList<FunctionBoxGraphCell> result = new ArrayList<FunctionBoxGraphCell>();
-        Iterator it = functionInstanceMap.keySet().iterator();
+        Iterator it = functionBoxGraphCellMap.keySet().iterator();
         while(it.hasNext())
         {
             Object key = it.next();
-            FunctionBoxGraphCell element = (FunctionBoxGraphCell) functionInstanceMap.get(key);
+            FunctionBoxGraphCell element = (FunctionBoxGraphCell) functionBoxGraphCellMap.get(key);
             if(GeneralUtilities.areEqual(element.getTitle(), functionName))
             {
                 result.add(element);
@@ -108,16 +98,16 @@ public class FunctionBoxViewUsageManager
 
     /**
      * Return all usage functions.
-     * @return a list of FunctionBoxMutableViewInterface
+     * @return a list of FunctionBoxGraphCell
      */
-    public List<FunctionBoxGraphCell> getAllFunctionUsageList()
+    public List<FunctionBoxGraphCell> getAllFunctionGraphCellList()
     {
         ArrayList<FunctionBoxGraphCell> result = new ArrayList<FunctionBoxGraphCell>();
-        Iterator it = functionInstanceMap.keySet().iterator();
+        Iterator it = functionBoxGraphCellMap.keySet().iterator();
         while (it.hasNext())
         {
             Object key = it.next();
-            FunctionBoxGraphCell element = (FunctionBoxGraphCell) functionInstanceMap.get(key);
+            FunctionBoxGraphCell element = (FunctionBoxGraphCell) functionBoxGraphCellMap.get(key);
             result.add(element);
         }
         return result;
@@ -127,7 +117,7 @@ public class FunctionBoxViewUsageManager
     {
         if(functionUsage!=null)
         {
-            return functionInstanceMap.remove(functionUsage.getXmlPath());
+            return functionBoxGraphCellMap.remove(functionUsage.getXmlPath());
         }
         else
         {
@@ -139,10 +129,10 @@ public class FunctionBoxViewUsageManager
 	 *                 or of type of FunctionBoxMutableViewInterface, or of type FunctionComponent
 	 * @return
 	 */
-	public FunctionDef getOneFunctionalBoxSpecification(Object function)
+	private FunctionDef getOneFunctionalBoxSpecification(Object function)
 	{
-		function = getFunctionUUID(function);
-		return (FunctionDef) FunctionManager.getInstance().getFunctionMap().get(function);
+		String functionID = getFunctionUUID(function);
+		return (FunctionDef) FunctionManager.getInstance().getFunctionMap().get(functionID);
 	}
 
 	private String getFunctionUUID(Object function)  
@@ -152,14 +142,10 @@ public class FunctionBoxViewUsageManager
 		{
 			functionUUID = (String) function;
 		}
-		else if (function instanceof FunctionBoxGraphCell)
-		{
-//			functionUUID = ((FunctionDef)((FunctionBoxUserObject) function).getFunctionType())
-		}
 		else if (function instanceof FunctionDef)
 		{
 			FunctionDef fdef=(FunctionDef)function;
-			functionUUID=fdef.getClazz()+":"+fdef.getName();
+			functionUUID=fdef.getGroup()+":"+fdef.getName();
 		}
 		else
 		{
