@@ -1,0 +1,1 @@
+c:\"program Files"\java\jre6\bin\java -cp bin/;lib/jgraph.jar;lib/xercesImpl.jar;lib/saxon9-xqj.jar gov.nih.nci.cbiit.cmts.ui.main.MainFrame
