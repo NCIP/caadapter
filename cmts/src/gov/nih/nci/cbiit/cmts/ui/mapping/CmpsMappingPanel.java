@@ -710,12 +710,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		buildSourceTree(mapping, null, false);
 		//build target tree
 		buildTargetTree(mapping, null, false);
-
-		System.out.println("before setMappingData");
 		getGraphController().setMappingData(mapping);
-		System.out.println("after setMappingData");
-
 		setSaveFile(file);
+		getMiddlePanel().renderInJGraph();
 		System.out.println("CmpsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
 	}
 
