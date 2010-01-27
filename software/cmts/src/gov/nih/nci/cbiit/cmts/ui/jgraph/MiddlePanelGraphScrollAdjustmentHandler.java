@@ -33,7 +33,6 @@ public class MiddlePanelGraphScrollAdjustmentHandler implements AdjustmentListen
 	 */
 	public void adjustmentValueChanged(AdjustmentEvent e)
 	{
-
 		//start scrolling
 		if (e.getSource() instanceof JScrollBar)
 		{
@@ -43,9 +42,7 @@ public class MiddlePanelGraphScrollAdjustmentHandler implements AdjustmentListen
 			{
 				MappingMiddlePanel middlePanel=(MappingMiddlePanel)jscroll.getParent();
 				middlePanel.renderInJGraph();
-				middlePanel.repaint();
 			}
-
 		}
 	}
 }

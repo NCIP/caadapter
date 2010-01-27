@@ -564,8 +564,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		sourceButtonPanel.add(sourceLocationPanel, BorderLayout.NORTH);
 		sourceScrollPane.setSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 4), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
 		sourceButtonPanel.add(sourceScrollPane, BorderLayout.CENTER);
-		MappingPanelAdjustmentHandler scrollHandler=new MappingPanelAdjustmentHandler();
-		scrollHandler.addAdjustmentObserver(sourceScrollPane);
 
 		//construct target panel
 		JPanel targetButtonPanel = new JPanel(new BorderLayout());
@@ -591,7 +589,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		targetButtonPanel.add(targetLocationPanel, BorderLayout.NORTH);
 		targetButtonPanel.add(targetScrollPane, BorderLayout.CENTER);
 		targetButtonPanel.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 5), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
-		scrollHandler.addAdjustmentObserver(targetScrollPane);
+		
 		//construct middle panel
 		JPanel middleContainerPanel = new JPanel(new BorderLayout());
 		JLabel placeHolderLabel = new JLabel();
