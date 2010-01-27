@@ -70,9 +70,6 @@ public class MappingMiddlePanel extends JPanel
 		graphScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		graphScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		graphScrollPane.getViewport().setView(graph);
-		//update source and target tree as scroll
-		MappingPanelAdjustmentHandler listener=new MappingPanelAdjustmentHandler();
-		graphScrollPane.getVerticalScrollBar().addAdjustmentListener(listener);
 		add(graphScrollPane, BorderLayout.CENTER);
 		//update graph as scroll
 		MiddlePanelGraphScrollAdjustmentHandler grapScrollHandler=new MiddlePanelGraphScrollAdjustmentHandler();

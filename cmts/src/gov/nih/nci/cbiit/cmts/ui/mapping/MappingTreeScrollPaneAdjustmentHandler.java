@@ -9,7 +9,6 @@ package gov.nih.nci.cbiit.cmts.ui.mapping;
 
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -24,29 +23,35 @@ import javax.swing.JScrollPane;
  * @date       $Date: 2008-12-10 15:43:02 $
  *
  */
-public class MappingPanelAdjustmentHandler implements AdjustmentListener {
+public class MappingTreeScrollPaneAdjustmentHandler implements AdjustmentListener {
 
-	private ArrayList <JComponent> observingComponents =new ArrayList<JComponent>();
 	/* 
 	 * @see java.awt.event.AdjustmentListener#adjustmentValueChanged(java.awt.event.AdjustmentEvent)
 	 */
-	public void adjustmentValueChanged(AdjustmentEvent arg0) 
+	public void adjustmentValueChanged(AdjustmentEvent e) 
 	{
-//		System.out.println("enter MappingPanelAdjustmentHandler.adjustmentValueChanged:"+arg0.getSource());
-		if (!arg0.getValueIsAdjusting())
-			return;	
-		for (JComponent obsrvComp: observingComponents)
-			obsrvComp.repaint();
+		//start scrolling
+		JScrollBar srcBar=(JScrollBar)e.getSource();
+		JScrollPane jscroll=(JScrollPane)srcBar.getParent();
+		CmpsMappingPanel mappingPanel=(CmpsMappingPanel)retrieveRootMappingPanel((JComponent)jscroll.getParent());
+		if (mappingPanel==null)
+			return;
+		mappingPanel.getMiddlePanel().renderInJGraph();
 	}
 
-	/**
-	 * Add one component to observe the adjustment change
-	 */
-	public void addAdjustmentObserver(JComponent comp)
+	private JComponent retrieveRootMappingPanel(JComponent childComp)
 	{
-		if (!observingComponents.contains(comp))
-			observingComponents.add(comp);
+		JComponent rtnComp=null;
+		while (childComp.getParent()!=null)
+		{
+			rtnComp=(JComponent)childComp.getParent();
+			if (rtnComp instanceof CmpsMappingPanel)
+				return rtnComp;
+			childComp=rtnComp;
+		}
+		return rtnComp;
 	}
+
 }
 
 /**
