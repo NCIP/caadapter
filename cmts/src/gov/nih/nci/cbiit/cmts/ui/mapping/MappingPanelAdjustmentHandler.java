@@ -11,6 +11,8 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 /**
  * This class defines ...
@@ -30,7 +32,7 @@ public class MappingPanelAdjustmentHandler implements AdjustmentListener {
 	 */
 	public void adjustmentValueChanged(AdjustmentEvent arg0) 
 	{
-		//System.out.println("enter MappingPanelAdjustmentHandler.adjustmentValueChanged:"+arg0);
+//		System.out.println("enter MappingPanelAdjustmentHandler.adjustmentValueChanged:"+arg0.getSource());
 		if (!arg0.getValueIsAdjusting())
 			return;	
 		for (JComponent obsrvComp: observingComponents)
