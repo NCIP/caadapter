@@ -1,4 +1,4 @@
-<project name="CMPS" default="compile" basedir=".">
+<project name="CMPS" default="jar" basedir=".">
 
 	<!-- Tell ant to use my environment variables -->
 	<property environment="env" />
@@ -15,7 +15,7 @@
 
 	<pathconvert pathsep=" " targetos="unix" property="distribution.manifest.class.property" refid="project.class.path">
 		<!-- make paths relative-->
-		<map from="${basedir}/lib" to="." />
+		<map from="${basedir}/lib" to="./lib" />
 		<map from="${basedir}" to="." />
 	</pathconvert>
 
@@ -110,20 +110,20 @@
 				<exclude name="**/CVS/**" />
 			</fileset>
 		</copy -->
-		<jar destfile="${dist.dir}/cmps.jar">
+		<jar destfile="${dist.dir}/cmts.jar">
 			<fileset dir="${build.dir}" excludes="**/Test.class **/ui/**" />
 			<!-- fileset dir="${basedir}" includes="config/*.*" /-->
 			<!-- fileset dir="${etc.dir}" excludes="**/ucum-expression.xml" /-->
 			<!-- fileset dir="${src.dir}" excludes="**/*.java" /-->
 		</jar>
-		<jar destfile="${dist.dir}/cmps-resources.jar">
+		<jar destfile="${dist.dir}/cmts-resources.jar">
 			<fileset dir="resources" excludes="**/CVS/**" />
 		</jar>
-		<jar destfile="${dist.dir}/cmpsUI.jar">
+		<jar destfile="${dist.dir}/cmtsUI.jar">
 			<fileset dir="${build.dir}" includes="**/ui/**" />
 			<manifest>
-				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cmps.ui.mapping.MainFrame" />
-				<attribute name="Class-Path" value=". cmps.jar cmps-resources.jar ${distribution.manifest.class.property}" />
+				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cmts.ui.main.MainFrame" />
+				<attribute name="Class-Path" value=". cmts.jar cmts-resources.jar ${distribution.manifest.class.property}" />
 			</manifest>
 		</jar>
 	</target>
