@@ -16,14 +16,12 @@ import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphModel;
 
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelGraphModel;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelGraphScrollAdjustmentHandler;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphScrollAdjustmentAdapter;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphViewFactory;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelMarqueeHandler;
-import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelScrollAdjustmentCoordinator;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultMappableTreeNode;
 
 import javax.swing.JPanel;
@@ -35,7 +33,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -55,13 +52,11 @@ import java.util.Map;
  */
 public class MappingMiddlePanel extends JPanel
 {
-	private MiddlePanelScrollAdjustmentCoordinator adjustmentCoordinator = null;
 	private JGraph graph = null;
 	private Color graphBackgroundColor = new Color(222, 238, 255);
-	private MiddlePanelJGraphScrollAdjustmentAdapter graphAdjustmentAdapter = null;
-
 	private CmpsMappingPanel mappingPanel = null;
 	private JScrollPane graphScrollPane = new JScrollPane();
+	
 	public MappingMiddlePanel(CmpsMappingPanel mappingPane)
 	{
 		super();
@@ -75,11 +70,13 @@ public class MappingMiddlePanel extends JPanel
 		graphScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		graphScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		graphScrollPane.getViewport().setView(graph);
+		//update source and target tree as scroll
 		MappingPanelAdjustmentHandler listener=new MappingPanelAdjustmentHandler();
 		graphScrollPane.getVerticalScrollBar().addAdjustmentListener(listener);
 		add(graphScrollPane, BorderLayout.CENTER);
-		adjustmentCoordinator = new MiddlePanelScrollAdjustmentCoordinator(this, graphScrollPane);
-		graphAdjustmentAdapter = new MiddlePanelJGraphScrollAdjustmentAdapter(mappingPanel);
+		//update graph as scroll
+		MiddlePanelGraphScrollAdjustmentHandler grapScrollHandler=new MiddlePanelGraphScrollAdjustmentHandler();
+		graphScrollPane.getVerticalScrollBar().addAdjustmentListener(grapScrollHandler);
     }
 	
 	private void initGraph()
@@ -112,21 +109,12 @@ public class MappingMiddlePanel extends JPanel
 		graph.setMarqueeHandler(marqueeHandler);
 		graph.setBackground( graphBackgroundColor);
 	}
-	public MiddlePanelScrollAdjustmentCoordinator getAdjustmentCoordinator()
-	{
-		return adjustmentCoordinator;
-	}
 
 	/**
 	 * @return the graph
 	 */
 	public JGraph getGraph() {
 		return graph;
-	}
-
-	public MiddlePanelJGraphScrollAdjustmentAdapter getGraphAdjustmentAdapter()
-	{
-		return graphAdjustmentAdapter;
 	}
 
 	public MiddlePanelJGraphController getGraphController(){
@@ -143,14 +131,6 @@ public class MappingMiddlePanel extends JPanel
 	public CmpsMappingPanel getMappingPanel()
 	{
 		return mappingPanel;
-	}
-
-	@Override
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		renderInJGraph();
-		
 	}
 	
 	public List<DefaultEdge> retrieveLinks()
