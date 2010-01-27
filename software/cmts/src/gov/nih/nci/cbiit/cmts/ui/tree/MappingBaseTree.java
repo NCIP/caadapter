@@ -9,6 +9,7 @@ package gov.nih.nci.cbiit.cmts.ui.tree;
 
 
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -17,9 +18,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.JPanel;
-//import javax.swing.JViewport;
 import java.awt.Graphics;
-//import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,18 +56,14 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 
 	public void treeExpanded(TreeExpansionEvent event)
 	{
-		mappingMiddlePanel.repaint();
+		((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();//.repaint();
 	}
 
 	public void treeCollapsed(TreeExpansionEvent event)
 	{
-		mappingMiddlePanel.repaint();
+		((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();//.repaint();
 	}
 
-//	public void redraw()
-//	{
-//		mappingMiddlePanel.repaint();
-//	}
 	private boolean isNodeMappedOrHasMappedDecendant(MappableNode mappable)
 	{
 		if (mappable.isMapped())
