@@ -18,7 +18,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.JPanel;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,13 +133,12 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 	}
 
 
-	protected void paintComponent(Graphics g)
-	{
-		//System.out.println("enter MappingBaseTree.paintComponent.");
-		super.paintComponent(g);
-		mappingMiddlePanel.repaint();
-		//System.out.println("leave MappingBaseTree.paintComponent.");
-	}
+//	protected void paintComponent(Graphics g)
+//	{
+//		//System.out.println("enter MappingBaseTree.paintComponent.");
+//		super.paintComponent(g);
+//		//System.out.println("leave MappingBaseTree.paintComponent.");
+//	}
 
 	protected abstract void loadData();
 

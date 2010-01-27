@@ -7,7 +7,6 @@
  */
 package gov.nih.nci.cbiit.cmts.ui.mapping;
 
-import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 
 import javax.swing.BorderFactory;
@@ -18,7 +17,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.SwingUtilities;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
@@ -47,9 +45,12 @@ public class MappingTreeScrollPane extends JScrollPane
 	private String paneType;
 	public MappingTreeScrollPane(String type)
 	{
+		super();
 		paneType=type;
 		setBackground(Color.white);
 		setBorder(BorderFactory.createEmptyBorder());
+		MappingTreeScrollPaneAdjustmentHandler handler=new MappingTreeScrollPaneAdjustmentHandler();
+		this.getVerticalScrollBar().addAdjustmentListener(handler);
 	}
 	
 	/**
