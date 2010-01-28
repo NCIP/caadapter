@@ -457,7 +457,7 @@ public class MiddlePanelJGraphController
 	{
 		boolean result = false;
 		// to remember the list of cells, edges, etc. that involve in the mapping.
-		List graphCellList = new ArrayList();
+		List<DefaultGraphCell> graphCellList = new ArrayList<DefaultGraphCell>();
 		try {
 			if ( sourceNode == null || targetNode == null ) {
 				String msg = (sourceNode == null) ? "source node is null" : "";
@@ -474,8 +474,6 @@ public class MiddlePanelJGraphController
 			}
 
 			if ( sourceNode instanceof DefaultMutableTreeNode ) {// drag from tree to middle panel
-				// todo: will source tree always stays at left? If not, the implicit logic between source is left and target is right should have been changed.
-				DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) sourceNode;
 				if ( targetNode instanceof FunctionBoxGraphPort ) {
 					result = createTreeToFunctionBoxPortMapping(sourceNode, (FunctionBoxGraphPort) targetNode, graphCellList);
 				}
@@ -489,7 +487,6 @@ public class MiddlePanelJGraphController
 				} else {
 					System.out.println("Not a graph cell or tree node, what is it? '" + (targetNode == null ? "null" : targetNode.toString() + " " + targetNode.getClass().getName()) + "'");
 				}
-				//System.out.println("object is '" + object.getClass().getName() + "'");
 			} else {
 				System.out.println(sourceNode + " is not accepted by " + getClass().getName());
 			}
@@ -516,14 +513,14 @@ public class MiddlePanelJGraphController
 		return result;
 	}
 	
-	private boolean createTreeToTreeDirectMapping(DefaultSourceTreeNode sourceNode, DefaultTargetTreeNode targetNode, List graphCellList)
+	private boolean createTreeToTreeDirectMapping(DefaultSourceTreeNode sourceNode, DefaultTargetTreeNode targetNode, List<DefaultGraphCell> graphCellList)
 	{
 		// boolean result = sourceNode.isMapped() || targetNode.isMapped();
 		// no longer need to check anymore.
 		boolean result = false;
 		if ( !result ) {// neither one has been mapped before
 			ConnectionSet cs = new ConnectionSet();
-			Map attributes = new Hashtable();
+			Map<DefaultGraphCell, AttributeMap> attributes = new Hashtable<DefaultGraphCell, AttributeMap>();
 			// The X and Y position of treeNode anchor will be calculated as rendering the graph cell
 			int sourceYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), sourceNode, false);		
 			DefaultGraphCell sourceCell=new DefaultGraphCell(); 
@@ -554,7 +551,7 @@ public class MiddlePanelJGraphController
 		return result;
 	}
 
-	private boolean createTreeToFunctionBoxPortMapping(MappableNode mappableNode, FunctionBoxGraphPort port, List graphCellList)
+	private boolean createTreeToFunctionBoxPortMapping(MappableNode mappableNode, FunctionBoxGraphPort port, List<DefaultGraphCell> graphCellList)
 	{
 		boolean isDataFromSourceTree = false;
 		if (mappingPanel.getSourceTree().getSelectionPath()!=null)
@@ -574,7 +571,7 @@ public class MiddlePanelJGraphController
 		}
 	
 		ConnectionSet cs = new ConnectionSet();
-		Map attributes = new Hashtable();
+		Map<DefaultGraphCell, AttributeMap> attributes = new Hashtable<DefaultGraphCell, AttributeMap>();
 		DefaultEdge linkEdge = new MappingGraphLink();
 		cs.connect(linkEdge,  treeNodeCell.getChildAt(0),port);
 		attributes.put(treeNodeCell, treeCellAttributes);
@@ -587,41 +584,10 @@ public class MiddlePanelJGraphController
 		return true;
 	}
 	
-//	/**
-//	 * @param node
-//	 * @param searchMode
-//	 *            any of the SEARCH_BY constants defined above.
-//	 * @return a list of MappingViewCommonComponent if any being found; an empty list if nothing is found.
-//	 */
-//	public List<MappingViewCommonComponent> findMappingViewCommonComponentList(Object node, String searchMode)
-//	{
-//		return MappingViewCommonComponent.findMappingViewCommonComponentListList(mappingViewList, node, searchMode);
-//	}
-
-
-	//	/**
-	//	 * @param node
-	//	 * @param searchMode
-	//	 *            any of the SEARCH_BY constants defined above.
-	//	 * @return a list of MappingViewCommonComponent if any being found; an empty list if nothing is found.
-	//	 */
-	//	public List<MappingViewCommonComponent> findMappingViewCommonComponentList(Object node, String searchMode)
-	//	{
-	//		return MappingViewCommonComponent.findMappingViewCommonComponentListList(mappingViewList, node, searchMode);
-	//	}
-	
 	
 	private int getMaximalXValueOnPane()
 	{
 		int visibleWidth = (int) getMiddlePanel().getGraphScrollPane().getVisibleRect().getWidth();
-		int viewPortVisibleWidth = (int) getMiddlePanel().getGraphScrollPane().getViewport().getVisibleRect().getWidth();
-		int viewPortViewSizeWidth = (int) getMiddlePanel().getGraphScrollPane().getViewport().getViewSize().getWidth();
-		int viewPortViewRectWidth = (int) getMiddlePanel().getGraphScrollPane().getViewport().getViewRect().getWidth();
-		int middlePanelWidth = getMiddlePanel().getWidth();
-		// Log.logInfo(this, "middlePanelWidth='" + middlePanelWidth + "',visibleWidth='" + visibleWidth + "'.");
-		// Log.logInfo(this, "viewPortVisibleWidth='" + viewPortVisibleWidth + "',viewPortViewSizeWidth='" + viewPortViewSizeWidth + "'," +
-		// "',viewPortViewRectWidth='" + viewPortViewRectWidth + "'.");
-		// return viewPortVisibleWidth;// - 23;
 		return visibleWidth - 20;
 	}
 	/**
