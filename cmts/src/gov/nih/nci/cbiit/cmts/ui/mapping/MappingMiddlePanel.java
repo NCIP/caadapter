@@ -213,7 +213,7 @@ public class MappingMiddlePanel extends JPanel
 				newTreeNodeAttribute = UIHelper.getDefaultInvisibleVertexBounds(new Point(0, sourceYpos), true);
 			} else {
 				sourceYpos = getGraphController().calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), treeNode, true);
-				newTreeNodeAttribute = UIHelper.getDefaultInvisibleVertexBounds(new Point( (int) getGraphScrollPane().getVisibleRect().getWidth()-5, sourceYpos), false);
+				newTreeNodeAttribute = UIHelper.getDefaultInvisibleVertexBounds(new Point( (int) graphScrollPane.getVisibleRect().getWidth()-5, sourceYpos), false);
 			}
 			if ( oldAttributeMap == null ) {// never return null.
 				oldAttributeMap = new AttributeMap();
