@@ -20,6 +20,8 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
 import java.util.logging.FileHandler;
 
 /**
@@ -825,7 +827,9 @@ public class FileUtil
 		ret = ClassLoader.getSystemResource(name);
 		if(ret!=null) return ret;
 		ret = ClassLoader.getSystemResource("/"+name);
-		return ret;
+        if(ret!=null) return ret;
+        ret = findFile(name);
+        return ret;
 	}
 	
 	/**
@@ -833,23 +837,161 @@ public class FileUtil
 	 * @param name
 	 * @return An enumeration of URL objects for the resource
 	 */
-	public static Enumeration<URL> getResources(String name) {
-		Enumeration<URL> ret = null;
-		try {
-			ret = FileUtil.class.getClassLoader().getResources(name);
-			if(ret!=null&&ret.hasMoreElements()) return ret;
-			ret = FileUtil.class.getClassLoader().getResources("/"+name);
-			if(ret!=null&&ret.hasMoreElements()) return ret;
-			ret = ClassLoader.getSystemResources(name);
-			if(ret!=null&&ret.hasMoreElements()) return ret;
-			ret = ClassLoader.getSystemResources("/"+name);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return ret;
-	}
-	
+    public static Enumeration<URL> getResources(String name) {
+        Enumeration<URL> ret = null;
+        try {
+            ret = FileUtil.class.getClassLoader().getResources(name);
+            if(ret!=null&&ret.hasMoreElements()) return ret;
+            ret = FileUtil.class.getClassLoader().getResources("/"+name);
+            if(ret!=null&&ret.hasMoreElements()) return ret;
+            ret = ClassLoader.getSystemResources(name);
+            if(ret!=null&&ret.hasMoreElements()) return ret;
+            ret = ClassLoader.getSystemResources("/"+name);
+            if(ret!=null&&ret.hasMoreElements()) return ret;
+            final URL urlx = findFile(name);
+            if (urlx != null)
+            {
+                return new Enumeration<URL>()
+                {
+                    private URL url = urlx;
+
+                    public URL nextElement()
+                    {
+                        if (url == null)
+                        {
+                            throw new NoSuchElementException();
+                        }
+                        URL u = url;
+                        url = null;
+                        return u;
+                    }
+
+                    public boolean hasMoreElements()
+                    {
+                        return (url != null);
+                    }
+                };
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * Utility method to find file in dir or zip,jar file
+     * @param name
+     * @return A file URL object
+     */
+    public static URL findFile(String name)
+    {
+        if ((name == null)||(name.trim().equals(""))) return null;
+        name = name.trim();
+        return findFileExe(name, new File(FileUtil.getWorkingDirPath()));
+    }
+    private static URL findFileExe(String name, File dir)
+    {
+        String sp = File.separator;
+        String nName = name;
+
+        if (dir.isDirectory())
+        {
+            File[] files = dir.listFiles();
+            if (files.length == 0) return null;
+            List<File> dFiles = new ArrayList<File>();
+            List<File> zFiles = new ArrayList<File>();
+
+            if ((!sp.equals("/"))&&(name.indexOf("/") >= 0)) nName = nName.replace("/", sp);
+            if (nName.startsWith(sp)) nName = nName.substring(sp.length());
+            if (nName.endsWith(sp)) nName = nName.substring(0, nName.length() - sp.length());
+
+            for (File f:files)
+            {
+                if (f.isDirectory()) dFiles.add(f);
+                else if (f.isFile())
+                {
+                    String fName = f.getAbsolutePath();
+                    if ((fName.endsWith(".zip"))||(fName.endsWith(".jar"))) zFiles.add(f);
+                    //System.out.println(" === Searching (dir) : " + f.getAbsolutePath() );
+                    if (fName.endsWith(sp + nName))
+                    {
+                        try
+                        {
+                            URL url = f.toURI().toURL();
+                            //System.out.println("Find File : " + url);
+                            return url;
+                        }
+                        catch(MalformedURLException me)
+                        {
+                            System.out.println("MalformedURLException (" + f.getAbsolutePath() + ") : " + me.getMessage());
+                        }
+                    }
+                }
+            }
+            for (File f:zFiles)
+            {
+                URL ff = findFileExe(name, f);
+                if (ff != null) return ff;
+            }
+            for (File f:dFiles)
+            {
+                URL ff = findFileExe(name, f);
+                if (ff != null) return ff;
+            }
+            return null;
+        }
+
+        if ((!sp.equals("/"))&&(name.indexOf(sp) >= 0)) nName = nName.replace(sp, "/");
+        if (nName.startsWith("/")) nName = nName.substring(1);
+        if (nName.endsWith("/")) nName = nName.substring(0, nName.length() - 1);
+
+        URL url = null;
+        try
+        {
+            url = dir.toURI().toURL();
+        }
+        catch(MalformedURLException me)
+        {
+            System.out.println("MalformedURLException(dir) (" + dir.getAbsolutePath() + ") : " + me.getMessage());
+            return null;
+        }
+
+        JarFile jar = null;
+        try
+        {
+            jar = new JarFile(dir);
+        }
+        catch(IOException ie)
+        {
+            System.out.println("This is neither a zip nor a jar file  : " + dir.getAbsolutePath());
+            return null;
+        }
+        Enumeration<JarEntry> entries = jar.entries();
+        while(entries.hasMoreElements())
+        {
+            JarEntry entry = entries.nextElement();
+            String entryName = entry.getName();
+            //System.out.println(" === Searching (jar) : " + dir.getAbsolutePath() + " : " + entryName );
+            if ((entryName.endsWith("/" + nName))||(entryName.equals(nName)))
+            {
+                URL fUrl = null;
+                String strURL = "jar:" + url.toString() + "!/" + entryName;
+                try
+                {
+                    fUrl = new URL(strURL);
+                }
+                catch(MalformedURLException me)
+                {
+                    System.out.println("MalformedURLException(entry) (" + strURL + ") : " + me.getMessage());
+                    return null;
+                }
+                //System.out.println("Find URL (entry) (" + strURL + ") : " + fUrl.toString());
+                return fUrl;
+            }
+        }
+        return null;
+    }
 }
 
 /**
