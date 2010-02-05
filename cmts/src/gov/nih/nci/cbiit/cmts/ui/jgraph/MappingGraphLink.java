@@ -2,7 +2,6 @@ package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import gov.nih.nci.cbiit.cmts.common.PropertiesProvider;
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
-import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPort;
 import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
@@ -23,8 +22,6 @@ public class MappingGraphLink extends DefaultEdge  implements  Serializable, Pro
 		// TODO Auto-generated method stub
 		Class beanClass = this.getClass();
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-		DefaultPort srcPort=(DefaultPort)this.getSource();
-
 		PropertyDescriptor srcParent = new PropertyDescriptor("Source Parent", beanClass, "getSourcParentProperty", null);
 		PropertyDescriptor srcName = new PropertyDescriptor("Source Name", beanClass,"getSourceNameProperty", null);
 		propList.add(srcParent);
@@ -34,7 +31,6 @@ public class MappingGraphLink extends DefaultEdge  implements  Serializable, Pro
 		propList.add(trgtParent);
 		propList.add(trgtName);
 
-
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
 		return result;
@@ -43,6 +39,8 @@ public class MappingGraphLink extends DefaultEdge  implements  Serializable, Pro
 	public String getSourcParentProperty()
 	{
 		DefaultPort srcPort=(DefaultPort)this.getSource();
+		if (srcPort==null)
+			return null;
 		if (srcPort instanceof FunctionBoxGraphPort)
 		{
 			FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)srcPort;
@@ -60,6 +58,8 @@ public class MappingGraphLink extends DefaultEdge  implements  Serializable, Pro
 	public String getSourceNameProperty()
 	{
 		DefaultPort srcPort=(DefaultPort)this.getSource();
+		if (srcPort==null)
+			return null;
 		if (srcPort instanceof FunctionBoxGraphPort)
 		{
 			FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)srcPort;
@@ -78,6 +78,8 @@ public class MappingGraphLink extends DefaultEdge  implements  Serializable, Pro
 	public String getTargetParentProperty()
 	{
 		DefaultPort trgtPort=(DefaultPort)this.getTarget();
+		if (trgtPort==null)
+			return null;
 		if (trgtPort instanceof FunctionBoxGraphPort)
 		{
 			FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)trgtPort;
@@ -96,6 +98,8 @@ public class MappingGraphLink extends DefaultEdge  implements  Serializable, Pro
 	public String getTargetNameProperty()
 	{
 		DefaultPort trgtPort=(DefaultPort)this.getTarget();
+		if (trgtPort==null)
+			return null;
 		if (trgtPort instanceof FunctionBoxGraphPort)
 		{
 			FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)trgtPort;

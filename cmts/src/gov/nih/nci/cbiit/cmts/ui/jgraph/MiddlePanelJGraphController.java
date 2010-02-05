@@ -301,9 +301,8 @@ public class MiddlePanelJGraphController
 					FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)srcPort;
 					FunctionData portData=(FunctionData)fPort.getUserObject();
 					FunctionBoxGraphCell functionObject=(FunctionBoxGraphCell)fPort.getParent();
-					FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
 					srcComponentId= functionObject.getFuncionBoxUUID();
-					srcPath=functionDef.getGroup()+"/"+functionDef.getName()+":"+portData.getName()+"="+portData.getValue();
+					srcPath=portData.getName();
 				}
 				else
 				{
@@ -320,9 +319,8 @@ public class MiddlePanelJGraphController
 					FunctionBoxGraphPort fPort=(FunctionBoxGraphPort)trgtPort;
 					FunctionData portData=(FunctionData)fPort.getUserObject();
 					FunctionBoxGraphCell functionObject=(FunctionBoxGraphCell)fPort.getParent();
-					FunctionDef functionDef=(FunctionDef)functionObject.getFunctionDef();
 					tgtComponentId= functionObject.getFuncionBoxUUID();
-					tgtPath=functionDef.getGroup()+"/"+functionDef.getName()+":"+portData.getName()+"="+portData.getValue();
+					tgtPath=portData.getName();
 				}
 				else
 				{
@@ -334,13 +332,21 @@ public class MiddlePanelJGraphController
 			}
 	
 			//retrieve functionBox
-			List<ViewType> viewList=new ArrayList<ViewType>();
+			if(mappingData.getViews() == null){
+				mappingData.setViews(new Mapping.Views());
+			}else{
+				mappingData.getViews().getView().clear();
+			}
+			//only keep source and target components
 			List<Component> compList=new ArrayList<Component>();
 			for (Component comp:mappingData.getComponents().getComponent())
 			{
 				if (!comp.getType().value().equals(ComponentType.FUNCTION.value()))
 					compList.add(comp);
 			}
+			mappingData.getComponents().getComponent().clear();
+			mappingData.getComponents().getComponent().addAll(compList);
+			
 			Object[] childrenCom=getMiddlePanel().getGraph().getRoots();
 			for (Object child:childrenCom)
 			{
@@ -357,22 +363,20 @@ public class MiddlePanelJGraphController
 					functionComp.setFunction(functionType);
 					functionComp.setType(ComponentType.FUNCTION);
 					functionComp.setId(functionObject.getFuncionBoxUUID());
-					compList.add(functionComp);
+					
+					//process port/data for
+					for (FunctionData fData:functionDef.getData())
+					{
+						functionType.getData().add(fData);
+					}
+					mappingData.getComponents().getComponent().add(functionComp);
 					
 					//create view
 					ViewType functionView=functionObject.getViewMeta();
 					functionView.setComponentid(functionObject.getFuncionBoxUUID());
-					viewList.add(functionView);
+					mappingData.getViews().getView().add(functionView);
 				}
-			}
-			mappingData.getComponents().getComponent().clear();
-			mappingData.getComponents().getComponent().addAll(compList);
-			if(mappingData.getViews() == null){
-				mappingData.setViews(new Mapping.Views());
-			}else{
-				mappingData.getViews().getView().clear();
-			}
-			mappingData.getViews().getView().addAll(viewList);
+			} 
 			return mappingData;
 		}
 	public void setMappingData(Mapping mappingData)
