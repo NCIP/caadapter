@@ -11,7 +11,7 @@ package gov.nih.nci.cbiit.cmts.ui.main;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MainToolBarHandler;
 
 import javax.swing.*;
@@ -206,7 +206,7 @@ public class MainFrame extends JFrame
 		}
 		String title = null;
 
-		if (panel instanceof CmpsMappingPanel) {
+		if (panel instanceof MappingMainPanel) {
 			title = "Untitled_" + (++tabcount) + ".map";
 		}
 		else

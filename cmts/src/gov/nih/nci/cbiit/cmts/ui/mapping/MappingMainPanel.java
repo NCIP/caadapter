@@ -70,7 +70,7 @@ import org.apache.xerces.xs.XSNamedMap;
  * @date       $Date: 2009-12-02 18:53:16 $
  *
  */
-public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
+public class MappingMainPanel extends JPanel implements ActionListener, ContextManagerClient{
 
 	private static final String Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION = ".map";
 
@@ -105,16 +105,16 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	private MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
 	private MappingTargetTree tTree = null;
 	private MiddlePanelJGraphController graphController =null;
-	public CmpsMappingPanel() throws Exception
+	public MappingMainPanel() throws Exception
 	{
 		this("","calledFromConstructor","");
 	}
 
-	public CmpsMappingPanel(String sourceFile, String _flag) throws Exception
+	public MappingMainPanel(String sourceFile, String _flag) throws Exception
 	{
 		this(sourceFile, "calledFromConstructor", _flag);
 	}
-	public CmpsMappingPanel(String sourceFile, String targetFile, String _flag) throws Exception
+	public MappingMainPanel(String sourceFile, String targetFile, String _flag) throws Exception
 	{
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());

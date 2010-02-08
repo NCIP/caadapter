@@ -13,7 +13,7 @@ import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.*;
@@ -32,13 +32,13 @@ import java.io.File;
 public class SaveAsMapAction extends DefaultSaveAsAction
 {
 
-	protected CmpsMappingPanel mappingPanel;
+	protected MappingMainPanel mappingPanel;
 
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public SaveAsMapAction(CmpsMappingPanel mappingPanel)
+	public SaveAsMapAction(MappingMainPanel mappingPanel)
 	{
 		this(COMMAND_NAME, mappingPanel);
 	}
@@ -47,7 +47,7 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public SaveAsMapAction(String name, CmpsMappingPanel mappingPanel)
+	public SaveAsMapAction(String name, MappingMainPanel mappingPanel)
 	{
 		this(name, null, mappingPanel);
 	}
@@ -56,7 +56,7 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public SaveAsMapAction(String name, Icon icon, CmpsMappingPanel mappingPanel)
+	public SaveAsMapAction(String name, Icon icon, MappingMainPanel mappingPanel)
 	{
 		super(name, icon, null);
 		this.mappingPanel = mappingPanel;

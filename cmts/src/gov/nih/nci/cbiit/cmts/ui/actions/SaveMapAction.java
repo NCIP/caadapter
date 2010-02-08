@@ -8,7 +8,7 @@
 
 package gov.nih.nci.cbiit.cmts.ui.actions;
 
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.Icon;
@@ -34,7 +34,7 @@ public class SaveMapAction extends SaveAsMapAction
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public SaveMapAction(CmpsMappingPanel mappingPanel)
+	public SaveMapAction(MappingMainPanel mappingPanel)
 	{
 		this(DefaultSaveAction.COMMAND_NAME, mappingPanel);
 	}
@@ -43,7 +43,7 @@ public class SaveMapAction extends SaveAsMapAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public SaveMapAction(String name, CmpsMappingPanel mappingPanel)
+	public SaveMapAction(String name, MappingMainPanel mappingPanel)
 	{
 		this(name, DefaultSaveAction.IMAGE_ICON, mappingPanel);
 	}
@@ -52,7 +52,7 @@ public class SaveMapAction extends SaveAsMapAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public SaveMapAction(String name, Icon icon, CmpsMappingPanel mappingPanel)
+	public SaveMapAction(String name, Icon icon, MappingMainPanel mappingPanel)
 	{
 		super(name, icon, mappingPanel);
 //		setAdditionalAttributes();

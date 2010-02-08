@@ -9,7 +9,7 @@
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesSwitchController;
 import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
@@ -67,7 +67,7 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 	 */
 	public void valueChanged(GraphSelectionEvent e)
 	{
-		CmpsMappingPanel mappingPanel= graphController.getMappingPanel();
+		MappingMainPanel mappingPanel= graphController.getMappingPanel();
         mappingPanel.getGraphController().setGraphSelected(true);
 		//the graph is in selection mode, do not set property pan for Element or Attribute
         if(!isAClearSelectionEvent(e))
@@ -120,7 +120,7 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 		
 		DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;			
 		JTree tree=null;
-		CmpsMappingPanel mappingPanel= graphController.getMappingPanel();
+		MappingMainPanel mappingPanel= graphController.getMappingPanel();
 		if (treeNode instanceof DefaultSourceTreeNode)
 			tree=mappingPanel.getSourceTree();
 		else if (treeNode instanceof DefaultTargetTreeNode)

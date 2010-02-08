@@ -8,7 +8,7 @@
 package gov.nih.nci.cbiit.cmts.ui.util;
 
 
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 
@@ -29,14 +29,14 @@ public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListe
 {
 
 	private boolean inScrollingMode = false;
-	private CmpsMappingPanel mappingPanel;
+	private MappingMainPanel mappingPanel;
 
 	public boolean isInScrollingMode()
 	{
 		return inScrollingMode;
 	}
 
-	public MiddlePanelJGraphScrollAdjustmentAdapter(CmpsMappingPanel mappingPane)
+	public MiddlePanelJGraphScrollAdjustmentAdapter(MappingMainPanel mappingPane)
 	{
 		mappingPanel = mappingPane;
 	}

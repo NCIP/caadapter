@@ -14,7 +14,7 @@ import gov.nih.nci.cbiit.cmts.common.FunctionManager;
 import gov.nih.nci.cbiit.cmts.core.FunctionType;
 import gov.nih.nci.cbiit.cmts.ui.dnd.GraphDropTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.dnd.TreeDragTransferHandler;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 
 import javax.swing.JPanel;
 import javax.swing.JTree;
@@ -36,13 +36,13 @@ import java.awt.BorderLayout;
 public class FunctionLibraryPane extends JPanel// implements TreeSelectionListener
 {
 	private JTree tree;
-	private CmpsMappingPanel parent;
+	private MappingMainPanel parent;
 	/**
 	 * Creates a Function Library tree and adds it to a panel for display.
 	 *
 	 * @@param lstFunction a FunctionTypeIml object
 	 */
-	public FunctionLibraryPane(CmpsMappingPanel p)
+	public FunctionLibraryPane(MappingMainPanel p)
 	{
 		this.parent = p;
 		initialize();
