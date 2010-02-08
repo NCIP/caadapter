@@ -32,7 +32,7 @@ import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPort;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPortView;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxUsageManager;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesSwitchController;
@@ -75,11 +75,11 @@ public class MiddlePanelJGraphController
 	private boolean isGraphChanged = false;
 
 	private Mapping mappingData = null;
-	private CmpsMappingPanel mappingPanel = null;
+	private MappingMainPanel mappingPanel = null;
 
 	private DefaultPropertiesSwitchController propertiesSwitchController;
 
-	public MiddlePanelJGraphController(CmpsMappingPanel mappingPan) {
+	public MiddlePanelJGraphController(MappingMainPanel mappingPan) {
 		mappingPanel = mappingPan;
 	}
 	public boolean addFunction(FunctionDef function, Point2D startPoint)
@@ -597,7 +597,7 @@ public class MiddlePanelJGraphController
 	/**
 	 * @return the mappingPanel
 	 */
-	public CmpsMappingPanel getMappingPanel() {
+	public MappingMainPanel getMappingPanel() {
 		return mappingPanel;
 	}
 
@@ -790,7 +790,7 @@ public class MiddlePanelJGraphController
 	/**
 	 * @param mappingPanel the mappingPanel to set
 	 */
-	public void setMappingPanel(CmpsMappingPanel mappingPanel) {
+	public void setMappingPanel(MappingMainPanel mappingPanel) {
 		this.mappingPanel = mappingPanel;
 	}
 }

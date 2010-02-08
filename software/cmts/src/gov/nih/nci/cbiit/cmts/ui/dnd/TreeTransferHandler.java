@@ -9,7 +9,7 @@ package gov.nih.nci.cbiit.cmts.ui.dnd;
 
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 
 import java.awt.datatransfer.DataFlavor;
@@ -32,11 +32,11 @@ import javax.swing.tree.TreePath;
  */
 public class TreeTransferHandler extends TreeDragTransferHandler {
 
-	private CmpsMappingPanel panel;
+	private MappingMainPanel panel;
 	/**
 	 * @param tree
 	 */
-	public TreeTransferHandler(CmpsMappingPanel panel) {
+	public TreeTransferHandler(MappingMainPanel panel) {
 		this.panel = panel;
 	}
 

@@ -54,10 +54,10 @@ public class MappingMiddlePanel extends JPanel
 {
 	private JGraph graph = null;
 	private Color graphBackgroundColor = new Color(222, 238, 255);
-	private CmpsMappingPanel mappingPanel = null;
+	private MappingMainPanel mappingPanel = null;
 	private JScrollPane graphScrollPane = new JScrollPane();
 	
-	public MappingMiddlePanel(CmpsMappingPanel mappingPane)
+	public MappingMiddlePanel(MappingMainPanel mappingPane)
 	{
 		super();
 		mappingPanel = mappingPane;
@@ -125,7 +125,7 @@ public class MappingMiddlePanel extends JPanel
 		return graphScrollPane;
 	}
 
-	public CmpsMappingPanel getMappingPanel()
+	public MappingMainPanel getMappingPanel()
 	{
 		return mappingPanel;
 	}

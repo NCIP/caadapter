@@ -33,7 +33,7 @@ public class MappingTreeScrollPaneAdjustmentHandler implements AdjustmentListene
 		//start scrolling
 		JScrollBar srcBar=(JScrollBar)e.getSource();
 		JScrollPane jscroll=(JScrollPane)srcBar.getParent();
-		CmpsMappingPanel mappingPanel=(CmpsMappingPanel)retrieveRootMappingPanel((JComponent)jscroll.getParent());
+		MappingMainPanel mappingPanel=(MappingMainPanel)retrieveRootMappingPanel((JComponent)jscroll.getParent());
 		if (mappingPanel==null)
 			return;
 		mappingPanel.getMiddlePanel().renderInJGraph();
@@ -45,7 +45,7 @@ public class MappingTreeScrollPaneAdjustmentHandler implements AdjustmentListene
 		while (childComp.getParent()!=null)
 		{
 			rtnComp=(JComponent)childComp.getParent();
-			if (rtnComp instanceof CmpsMappingPanel)
+			if (rtnComp instanceof MappingMainPanel)
 				return rtnComp;
 			childComp=rtnComp;
 		}

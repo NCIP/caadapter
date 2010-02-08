@@ -11,7 +11,7 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -78,7 +78,7 @@ public class NewMapFileAction extends AbstractContextAction
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
 	
-		CmpsMappingPanel mp = new CmpsMappingPanel();
+		MappingMainPanel mp = new MappingMainPanel();
 		mainFrame.addNewTab(mp);
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
