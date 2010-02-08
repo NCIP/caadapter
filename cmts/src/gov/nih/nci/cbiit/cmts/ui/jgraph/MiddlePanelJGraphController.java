@@ -16,6 +16,7 @@ import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.ParentMap;
 
+import gov.nih.nci.cbiit.cmts.common.FunctionManager;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
@@ -405,35 +406,75 @@ public class MiddlePanelJGraphController
 		if(mappingData.getLinks() == null){
 			mappingData.setLinks(new Mapping.Links());
 		}
-	
-		List<LinkType> mapList = mappingData.getLinks().getLink();
-		int mapSize = mapList.size();
-		if ( mapSize == 0 )
+		Hashtable<String, FunctionBoxGraphCell> functionBoxHash=new Hashtable<String, FunctionBoxGraphCell>();
+		if(mappingData.getViews()!=null)
 		{
-			// Log.logInfo(this, "No need to refresh graph.");
+			//process function box
+			Hashtable<String, FunctionType> functionHash=new Hashtable<String, FunctionType>();
+			for (Component oneComp:mappingData.getComponents().getComponent())
+			{
+				FunctionType function=oneComp.getFunction();
+				if (function!=null)
+				{
+					functionHash.put(oneComp.getId(), function);
+				}
+			}
+			for (ViewType oneView:mappingData.getViews().getView())
+			{
+				FunctionType function=functionHash.get(oneView.getComponentid());
+				FunctionDef functionDef=FunctionManager.getInstance().getFunctionType(function.getGroup(), function.getName());
+				FunctionBoxGraphCell functionBox=	FunctionBoxUsageManager.getInstance().createOneFunctionBoxGraphCell(functionDef, oneView, mappingPanel.getRootContainer());
+		 		if ( functionBox != null ) {
+		 			//set the UUID of the new functionBox as the original ID
+		 			functionBox.setFuncionBoxUUID(oneView.getComponentid());
+		 			addFunctionInstance(functionBox);
+		 			functionBoxHash.put(functionBox.getFuncionBoxUUID(), functionBox);
+				}
+			}
+		}
+		List<LinkType> linkList = mappingData.getLinks().getLink();
+		if ( linkList == null )
+		{			
 			return;
 		}
 		// render functional box first
 		// Log.logInfo(this, "Total function component: '" + functionSize + "'.");
 		// render map second
-		for (int i = 0; i < mapSize; i++)
+		for (LinkType map:linkList)
 		{
-			LinkType map = mapList.get(i);
 			LinkpointType sourceMapComp = map.getSource();
 			LinkpointType targetMapComp = map.getTarget();
 	
 			MappableNode sourceNode = null;
 			MappableNode targetNode = null;
-	
-			sourceNode = getSourceMappableNode(sourceMapComp);
-			if (sourceNode == null)
+			if (functionBoxHash.get(targetMapComp.getComponentid())!=null)
 			{
-				sourceNode = getTargetMappableNode(sourceMapComp);
-				targetNode = getSourceMappableNode(targetMapComp);
+				//The link target is a function port
+				FunctionBoxGraphCell targetFunctionBox=functionBoxHash.get(targetMapComp.getComponentid());
+				if (functionBoxHash.get(sourceMapComp.getComponentid())!=null)
+				{
+					//The link source is a function port
+					FunctionBoxGraphCell functionBox=functionBoxHash.get(sourceMapComp.getComponentid());
+					linkFunctionPortToFunctionPort(functionBox.findPortByName(sourceMapComp.getId()), targetFunctionBox.findPortByName(targetMapComp.getId()));
+				}
+				targetNode=targetFunctionBox.findPortByName(targetMapComp.getId());
+				FunctionData targetPort=(FunctionData)((DefaultMutableTreeNode)targetNode).getUserObject();
+				if (targetPort.isInput())
+				{
+					//from source tree to function port
+					sourceNode = getSourceMappableNode(sourceMapComp);
+				}
+				else
+					//from target tree to function port
+					sourceNode = getTargetMappableNode(sourceMapComp);
+				createMapping(sourceNode, targetNode);
 			}
-			else targetNode = getTargetMappableNode(targetMapComp);
-	
-			createMapping(sourceNode, targetNode);
+			else
+			{
+				sourceNode = getSourceMappableNode(sourceMapComp);			
+				targetNode = getTargetMappableNode(targetMapComp);
+				createMapping(sourceNode, targetNode);
+			}
 		}
 	}
 	private MappableNode getSourceMappableNode(LinkpointType sourceMapComp)
@@ -500,16 +541,6 @@ public class MiddlePanelJGraphController
 		}
 		if ( result ) 
 		{// successfully mapped, add to mapping
-//			DefaultGraphCell temp1 = (DefaultGraphCell) graphCellList.get(0);
-//			DefaultGraphCell temp2 = (DefaultGraphCell) graphCellList.get(1);
-//			DefaultEdge edge = (DefaultEdge) graphCellList.get(2);
-//			DefaultGraphCell sourceCell = null;
-//			DefaultGraphCell targetCell = null;
-//			sourceCell = temp1.getUserObject() == sourceNode ? temp1 : temp2;
-//			targetCell = temp1.getUserObject() == targetNode ? temp1 : temp2;
-//			MappingViewCommonComponent viewComp = new MappingViewCommonComponent(sourceNode, targetNode, sourceCell, targetCell, edge);
-//			edge.setUserObject(viewComp);
-//			mappingViewList.add(viewComp);
 			sourceNode.setMapStatus(true);
 			targetNode.setMapStatus(true);
 			setGraphChanged(true);
