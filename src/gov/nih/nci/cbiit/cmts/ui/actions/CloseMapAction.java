@@ -12,7 +12,7 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 
 import javax.swing.Icon;
 import java.awt.event.ActionEvent;
@@ -28,17 +28,17 @@ import java.awt.event.ActionEvent;
  */
 public class CloseMapAction extends DefaultContextCloseAction //implements ContextManagerClient
 {
-	public CloseMapAction(CmpsMappingPanel mappingPanel)
+	public CloseMapAction(MappingMainPanel mappingPanel)
 	{
 		this(COMMAND_NAME, mappingPanel);
 	}
 
-	public CloseMapAction(String name, CmpsMappingPanel mappingPanel)
+	public CloseMapAction(String name, MappingMainPanel mappingPanel)
 	{
 		this(name, null, mappingPanel);
 	}
 
-	public CloseMapAction(String name, Icon icon, CmpsMappingPanel mappingPanel)
+	public CloseMapAction(String name, Icon icon, MappingMainPanel mappingPanel)
 	{
 		super(name, icon, mappingPanel);
 	}

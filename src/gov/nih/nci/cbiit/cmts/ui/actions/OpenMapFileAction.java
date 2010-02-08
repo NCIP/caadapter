@@ -13,7 +13,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
-import gov.nih.nci.cbiit.cmts.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.*;
@@ -73,7 +73,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 	 */
 	protected Class getContextClientClass()
 	{
-		return CmpsMappingPanel.class;
+		return MappingMainPanel.class;
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 	 */
 	protected void launchPanel(final ContextManagerClient panel, final File file)
 	{
-		final CmpsMappingPanel mappingPanel  = (CmpsMappingPanel) panel;
+		final MappingMainPanel mappingPanel  = (MappingMainPanel) panel;
 		//have to add the new tab so as the panel may update its panel title in the tabbed pane.
 		SwingWorker worker = new SwingWorker()
 		{
@@ -244,9 +244,9 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 		if (file != null)
 		{
 			openFile = file;
-			CmpsMappingPanel panel;
+			MappingMainPanel panel;
 			try {
-				panel = new CmpsMappingPanel();
+				panel = new MappingMainPanel();
 			
 				launchPanel(panel, file);
 			} catch (Exception e1) {
