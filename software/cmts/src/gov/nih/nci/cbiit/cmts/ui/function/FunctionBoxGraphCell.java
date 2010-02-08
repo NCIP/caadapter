@@ -168,7 +168,20 @@ public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNo
 		return title;
 	}
 
-
+public FunctionBoxGraphPort findPortByName(String nameToSearch)
+{
+	for (Object fPort:this.getChildren())
+	{
+		if (fPort instanceof FunctionBoxGraphPort)
+		{
+			FunctionBoxGraphPort graphPort=(FunctionBoxGraphPort)fPort;
+			FunctionData fData=(FunctionData)graphPort.getUserObject();
+			if (fData.getName().equals(nameToSearch))
+				return graphPort;
+		}
+	}
+	return null;
+}
 	public String getXmlPath() {
 		// TODO Auto-generated method stub
 		return null;
@@ -178,6 +191,11 @@ public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNo
 	 */
 	public String getFuncionBoxUUID() {
 		return funcionBoxUUID;
+	}
+
+
+	public void setFuncionBoxUUID(String funcionBoxUUID) {
+		this.funcionBoxUUID = funcionBoxUUID;
 	}
 
 
