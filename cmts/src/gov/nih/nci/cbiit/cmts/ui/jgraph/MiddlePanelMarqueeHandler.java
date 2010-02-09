@@ -11,6 +11,7 @@ package gov.nih.nci.cbiit.cmts.ui.jgraph;
 import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAllAction;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
+import gov.nih.nci.cbiit.cmts.ui.function.action.ConstantEditAction;
 
 import javax.swing.SwingUtilities;
 import javax.swing.JPopupMenu;
@@ -51,7 +52,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	protected PortView port, firstPort;
 
 	//	private AddFunctionalBoxAction addFunctionalBoxAction;
-	//	private ConstantEditAction constantEditAction;
+	private ConstantEditAction constantEditAction;
 	//    private VacabularyMappingEditAction vacabularyMappingEditAction;
 	GraphDeleteAction deleteAction = null;
 	private JPopupMenu popupMenu = null;
@@ -272,9 +273,12 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		}
 	}
 
-	//
-	// PopupMenu
-	//
+	/**
+	 * Create popup menu
+	 * @param pt
+	 * @param cell
+	 * @return
+	 */
 	protected JPopupMenu createPopupMenu(final Point pt, final Object cell)
 	{
 		if(popupMenu==null)
@@ -292,12 +296,11 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 //			menuItem = new JMenuItem(addFunctionalBoxAction);
 //			popupMenu.add(menuItem);
 //
-//			//Edit constant
-//			constantEditAction = new ConstantEditAction(controller.getMiddlePanel(), controller);
-//			menuItem = new JMenuItem(constantEditAction);
-//			popupMenu.add(menuItem);
-//
-//			//Edit constant
+			//Edit constant
+			constantEditAction = new ConstantEditAction(controller.getMiddlePanel(), controller);
+			menuItem = new JMenuItem(constantEditAction);
+			popupMenu.add(menuItem);
+
 //			vacabularyMappingEditAction = new VacabularyMappingEditAction(controller.getMiddlePanel(), controller);
 //			menuItem = new JMenuItem(vacabularyMappingEditAction);
 //			popupMenu.add(menuItem);
@@ -309,35 +312,23 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 
 		}
 
-		//		constantEditAction.setEnabled(false);
 		//        vacabularyMappingEditAction.setEnabled(false);
 		JGraph graph =controller.getMiddlePanel().getGraph();
-		boolean graphHasSelection = !graph.isSelectionEmpty();
-		if(graphHasSelection)
+		constantEditAction.setEnabled(false);
+		deleteAction.setEnabled(false);
+		if(!graph.isSelectionEmpty())
 		{//context-sensitively enable or disable Constant Edit Action.
 			Object selectedObj = graph.getSelectionCell();
-			//			if(selectedObj instanceof FunctionBoxCell)
-			//			{
-			//				Object userObject = ((FunctionBoxCell) selectedObj).getUserObject();
-			//				if(userObject instanceof FunctionBoxMutableViewInterface)
-			//				{
-			//					FunctionConstant constant = ((FunctionBoxMutableViewInterface)userObject).getFunctionConstant();
-			//					if(constant!=null)
-			//					{
-			//						constantEditAction.setEnabled(true);
-			//					}
-			//                    FunctionVocabularyMapping vm = ((FunctionBoxMutableViewInterface)userObject).getFunctionVocabularyMapping();
-			//					if(vm!=null)
-			//					{
-			//						vacabularyMappingEditAction.setEnabled(true);
-			//					}
-			//                }
-			//			}
+			if(selectedObj instanceof FunctionBoxGraphCell)
+			{
+				FunctionBoxGraphCell functionBox = (FunctionBoxGraphCell) selectedObj;
+				if (functionBox.getFunctionDef().getName().equals("constant"))
+					constantEditAction.setEnabled(true);
+			}
+			deleteAction.setEnabled(true);
 		}
 
 		//		addFunctionalBoxAction.setEnabled(!graphHasSelection);
-				deleteAction.setEnabled(graphHasSelection);
-
 		return popupMenu;
 	}
 
