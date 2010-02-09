@@ -421,8 +421,23 @@ public class MiddlePanelJGraphController
 			}
 			for (ViewType oneView:mappingData.getViews().getView())
 			{
-				FunctionType function=functionHash.get(oneView.getComponentid());
-				FunctionDef functionDef=FunctionManager.getInstance().getFunctionType(function.getGroup(), function.getName());
+				FunctionType functionType=functionHash.get(oneView.getComponentid());
+				FunctionDef functionDef=FunctionManager.getInstance().getFunctionType(functionType.getGroup(), functionType.getName());
+				for(FunctionData ftypeData:functionType.getData())
+				{
+					//replace the default functionData with saved data
+					if (ftypeData.getValue()!=null)
+					{
+						for (FunctionData fdefData:functionDef.getData())
+						{
+							if(fdefData.getName().equals(ftypeData.getName()))
+							{
+								fdefData.setType(ftypeData.getType());
+								fdefData.setValue(ftypeData.getValue());
+							}
+						}
+					}
+				}
 				FunctionBoxGraphCell functionBox=	FunctionBoxUsageManager.getInstance().createOneFunctionBoxGraphCell(functionDef, oneView, mappingPanel.getRootContainer());
 		 		if ( functionBox != null ) {
 		 			//set the UUID of the new functionBox as the original ID
