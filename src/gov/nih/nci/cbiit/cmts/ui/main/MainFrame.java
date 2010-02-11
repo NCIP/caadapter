@@ -34,13 +34,9 @@ public class MainFrame extends JFrame
 {
 	private JTabbedPane tabbedPane = new JTabbedPane();
 
-	private int tabcount = 0;
-
-	private JPanel statusBar = new JPanel();
-
 	private JPanel toolBarPanel;
 
-	private JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+	private JPanel centerPanel ;//= new JPanel(new FlowLayout(FlowLayout.LEADING));
 
 	private JPanel currentToolBarPanel;
 
@@ -78,7 +74,7 @@ public class MainFrame extends JFrame
 			Container contentPane = this.getContentPane();
 			contentPane.setLayout(new BorderLayout());
 			//set the icon.
-			Image icon = DefaultSettings.getMainframeImage();//using default image file
+			Image icon = DefaultSettings.getMainframeImage();
 			setIconImage(icon);
 			// set the menu bar.
 			setJMenuBar(frameMenu);
@@ -86,9 +82,10 @@ public class MainFrame extends JFrame
 			//may depend on the size to align components.
 			this.setSize(DefaultSettings.FRAME_DEFAULT_WIDTH, DefaultSettings.FRAME_DEFAULT_HEIGHT);
 			contentPane.add(constructNorthPanel(), BorderLayout.NORTH);
-			JPanel p = (JPanel) constructCenterPanel();
-			contentPane.add(p, BorderLayout.CENTER); 
+			centerPanel = (JPanel) constructCenterPanel();
+			contentPane.add(centerPanel, BorderLayout.CENTER); 
 			//--------------------------------------
+			JPanel statusBar = new JPanel();
 			contentPane.add(statusBar, BorderLayout.SOUTH);
 			tabbedPane.addChangeListener(contextManager);
 			tabbedPane.setOpaque(false);
@@ -98,31 +95,6 @@ public class MainFrame extends JFrame
 			DefaultSettings.centerWindow(this);
 			this.setFocusable(true);
 			this.setFocusableWindowState(true);
-
-//			CmpsMappingPanel cp = null;
-//			try {
-//				cp = new CmpsMappingPanel();
-//				addNewTab(cp);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-
-			//XXX debug
-			//			System.out.println("JPanel bound="+p.getBounds());
-			//			System.out.println("CmpsMappingPanel bound="+cp.getBounds());
-			//			System.out.println("leftrightpane bound="+cp.getComponent(0).getBounds());
-			//			System.out.println("leftrightpane bound="+((JSplitPane)cp.getComponent(0)).getComponent(0).getBounds());
-			//			System.out.println("leftrightpane bound="+((JSplitPane)cp.getComponent(0)).getComponent(1).getBounds());
-			//			System.out.println("leftrightpane bound="+((JSplitPane)cp.getComponent(0)).getComponent(2).getBounds());
-			//			
-			//			System.out.println("sourceLocationArea bound="+cp.sourceLocationArea.getBounds());
-			//			System.out.println("sourceLocationPanel bound="+cp.sourceLocationPanel.getBounds());
-			//			System.out.println("sourceButtonPanel bound="+cp.sourceButtonPanel.getBounds());
-			//			System.out.println("sourceScrollPane bound="+cp.sourceScrollPane.getBounds());
-
-
-
 
 			//helpContentViewer = new HelpContentViewer(this);
 
@@ -144,14 +116,14 @@ public class MainFrame extends JFrame
 	}
 
 	private Component constructCenterPanel() {
+		JPanel rtnPanel=new JPanel();
 		ImageIcon ii1 = new ImageIcon(DefaultSettings.getImage("default_scr.gif"));
 		JLabel baseScreenJLabel = new JLabel(ii1);
 		ii1.setImageObserver(baseScreenJLabel);
-		centerPanel.add(baseScreenJLabel);
-		centerPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-		centerPanel.setOpaque(false);
-
-		return centerPanel;
+		rtnPanel.add(baseScreenJLabel);
+		rtnPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+		rtnPanel.setOpaque(false);
+		return rtnPanel;
 	}
 
 	private JPanel constructNorthPanel() {
@@ -169,10 +141,10 @@ public class MainFrame extends JFrame
 
 	private JPanel constructToolbarPanel()
 	{
-		JPanel mainP = new JPanel(new BorderLayout());
-		mainP.add(ContextManager.getContextManager().getToolBarHandler().getToolBar(), BorderLayout.CENTER);
-		mainP.add(new JPanel(), BorderLayout.EAST);
-		return mainP;
+		JPanel rtnPanel = new JPanel(new BorderLayout());
+		rtnPanel.add(ContextManager.getContextManager().getToolBarHandler().getToolBar(), BorderLayout.CENTER);
+		rtnPanel.add(new JPanel(), BorderLayout.EAST);
+		return rtnPanel;
 	}
 
 	public void updateToolBar(JToolBar newToolBar) {
@@ -207,10 +179,10 @@ public class MainFrame extends JFrame
 		String title = null;
 
 		if (panel instanceof MappingMainPanel) {
-			title = "Untitled_" + (++tabcount) + ".map";
+			title = "Untitled_" + (tabbedPane.getTabCount()+1) + ".map";
 		}
 		else
-			title = "Untitled_" + (++tabcount) + ".dat";
+			title = "Untitled_" + (tabbedPane.getTabCount()+1) + ".dat";
 		tabbedPane.addTab(title, panel);
 		tabbedPane.setSelectedComponent(panel);
 		System.out.println("Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
@@ -224,17 +196,16 @@ public class MainFrame extends JFrame
 		Component comp = tabbedPane.getSelectedComponent();
 		tabbedPane.remove(comp);
 		if (tabbedPane.getTabCount() == 0) {//reset if not tab at all.
-			tabcount = 0;
 			centerPanel.removeAll();
+			ImageIcon imgIcon = new ImageIcon(DefaultSettings.getImage("default_scr.gif"));
+			JLabel baseScreenJLabel = new JLabel(imgIcon);
+			imgIcon.setImageObserver(baseScreenJLabel);
+			centerPanel.add(baseScreenJLabel);
 			centerPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-			//			centerPanel.add(baseScreenJLabel);
-			centerPanel.update(centerPanel.getGraphics());
-			//-------------------------------------------------------------------------------------------------
 		}
 
 		if( comp != null ){
 			tabMap.remove(comp.getClass());
-
 			if (comp instanceof ContextManagerClient) {
 				ContextManager.getContextManager().getContextFileManager().removeFileUsageListener((ContextManagerClient) comp);
 			}
