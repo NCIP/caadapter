@@ -11,6 +11,7 @@ import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.core.FunctionType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 
@@ -33,6 +34,7 @@ public class XQueryBuilder {
 	private Mapping mapping;
 	private StringBuffer sbQuery;
 	private Map<String, LinkType> links;
+	private Map<String, FunctionType>functions;
 	private Map<String, String> varMap;
 	private Stack<String> xpathStack;
 	private Stack<String> varStack;
@@ -46,8 +48,21 @@ public class XQueryBuilder {
 	public XQueryBuilder(Mapping m){
 		this.mapping = m;
 		loadLinks();
+		loadFunctions();
 	}
 
+	private void loadFunctions() {
+		functions = new HashMap<String, FunctionType>();
+		if(mapping.getLinks()==null) {
+			return;
+		}
+		for (Component oneComp : mapping.getComponents().getComponent()) {
+			FunctionType function = oneComp.getFunction();
+			if (function != null) {
+				functions.put(oneComp.getId(), function);
+			}
+		}
+	}
 	private void loadLinks() {
 		this.links = new HashMap<String, LinkType>();
 		if(mapping.getLinks()==null) {
