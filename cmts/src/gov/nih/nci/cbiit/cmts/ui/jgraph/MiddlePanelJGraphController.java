@@ -435,7 +435,8 @@ public class MiddlePanelJGraphController {
 				FunctionType functionType = new FunctionType();
 				functionType.setGroup(functionDef.getGroup());
 				functionType.setName(functionDef.getName());
-
+				functionType.setClazz(functionDef.getClazz());
+				functionType.setMethod(functionDef.getMethod());
 				functionComp.setFunction(functionType);
 				functionComp.setType(ComponentType.FUNCTION);
 				functionComp.setId(functionObject.getFuncionBoxUUID());
