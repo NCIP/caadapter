@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <functions>
-	<function name="constant" group="constant" class="constant"
-		method="null">
+	<function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction"
+		method="retrieveValue">
 		<data name="constant" type="string" input="false" />
 	</function>
 	<function name="changeFormat" group="date" class="date"
