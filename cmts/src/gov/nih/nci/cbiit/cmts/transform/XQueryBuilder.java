@@ -11,9 +11,12 @@ import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.core.FunctionType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.function.FunctionException;
+import gov.nih.nci.cbiit.cmts.function.FunctionInvoker;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +37,9 @@ public class XQueryBuilder {
 	private Mapping mapping;
 	private StringBuffer sbQuery;
 	private Map<String, LinkType> links;
+	private Map<String, LinkType> metaToFunctionLinks;
+	private Map<String, LinkType> functionToFunctionLinks;
+	
 	private Map<String, FunctionType>functions;
 	private Map<String, String> varMap;
 	private Stack<String> xpathStack;
@@ -65,12 +71,21 @@ public class XQueryBuilder {
 	}
 	private void loadLinks() {
 		this.links = new HashMap<String, LinkType>();
+		this.metaToFunctionLinks = new HashMap<String, LinkType>();
+		this.functionToFunctionLinks = new HashMap<String, LinkType>();
 		if(mapping.getLinks()==null) {
 			return;
 		}
 		List<LinkType> links = mapping.getLinks().getLink();
 		for (LinkType l:links) {
-			this.links.put(l.getTarget().getId(), l);
+			if (l.getTarget().getComponentid().length()==1)
+				this.links.put(l.getTarget().getId(), l);
+			else if (l.getSource().getComponentid().length()==1)
+				//metaToFuncionLink
+				metaToFunctionLinks.put(l.getSource().getId(), l);
+			else 
+				//functionToFunctionLink
+				this.functionToFunctionLinks.put(l.getTarget().getComponentid()+":"+l.getTarget().getId(), l);
 		}
 	}
 
@@ -104,17 +119,27 @@ public class XQueryBuilder {
 	 * Case III: Neither the element nor its attribute is mapped. But its descendant
 	 * is mapped
 	 * @param tgt
-	 * @param parentXPath
+	 * @param parentMappedXPath
 	 */
-	private void processTargetElement(ElementMeta tgt,String parentXPath) {
+	private void processTargetElement(ElementMeta tgt,String parentMappedXPath) {
 		xpathStack.push(tgt.getName());
 		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		String tgtMappingSrc=null;
 		LinkType link = links.get(elementXpath);
+//		if (link==null)
+//			link=metaToFunctionLinks.get(elementXpath);
+//		
 		if(link!=null) 
 		{
-			link = links.get(elementXpath);
 			tgtMappingSrc = link.getSource().getId();
+		}
+		else if (metaToFunctionLinks.get(elementXpath)!=null)
+		{
+			sbQuery.append("<"+tgt.getName()+">");
+			pullInlineText(tgt);
+			sbQuery.append("</"+tgt.getName()+">");
+			xpathStack.pop();
+			return;
 		}
 		else if (hasAnyMappedAttribute(tgt)!=null)
 		{
@@ -149,8 +174,8 @@ public class XQueryBuilder {
 
 		sbQuery.append("for $"+var+" in ");
 		String localpath = null;
-		if (parentXPath!=null)
-			localpath =QueryBuilderUtil.retrieveRelativePath(parentXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
+		if (parentMappedXPath!=null)
+			localpath =QueryBuilderUtil.retrieveRelativePath(parentMappedXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
 
 		if(localpath == null) {
 			sbQuery.append("doc($docName)");
@@ -167,7 +192,7 @@ public class XQueryBuilder {
 		processAttributes(tgt, tgtMappingSrc);
 		sbQuery.append(">");
 		
-		pullInlineText(tgt, tgtMappingSrc);
+		pullInlineText(tgt);//, tgtMappingSrc);
 		
 		//child elements
 		for(ElementMeta e:tgt.getChildElement()) 
@@ -185,6 +210,28 @@ public class XQueryBuilder {
 		xpathStack.pop();
 	}
 	
+	private void pullInlineTextFromFunction(ElementMeta tgtMeta, String elementPath)
+	{
+		LinkType link = metaToFunctionLinks.get(elementPath);
+		if (link==null)
+			return;
+		sbQuery.append(retrieveFunctionOutput(link));
+	}
+	
+	private String retrieveFunctionOutput(LinkType link)
+	{
+		FunctionType functionType=functions.get(link.getTarget().getComponentid());
+		Object argList[]=new Object[]{functionType};
+		
+		try {
+			String constantValue=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
+			return constantValue;
+		} catch (FunctionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	/**
 	 * Pull online text
 	 * Case I: The source is an attribute
@@ -192,16 +239,18 @@ public class XQueryBuilder {
 	 * Case III: Both the source and target are an element, but the target does have any child element mapped
 	 * @param tgtMeta
 	 */
-	private void pullInlineText(ElementMeta tgtMeta, String tgtMappingSrc)
+	private void pullInlineText(ElementMeta tgtMeta)//, String tgtMappingSrc)
 	{
 		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		
 		LinkType link = links.get(elementXpath);
 		if (link==null)
-			return;
+		{
+			pullInlineTextFromFunction(tgtMeta, elementXpath);			
+			return ;
+		}
+
  		String srcTextId = link.getSource().getId();
- 		if (srcTextId==null)
- 			return;
  		boolean inlineTextRequred=false;
  		if (srcTextId.indexOf("@")>-1)
  			inlineTextRequred=true;
@@ -229,9 +278,7 @@ public class XQueryBuilder {
 		}
 		else
 		{
-			String localTextpath =QueryBuilderUtil.retrieveRelativePath(tgtMappingSrc, tgtMappingSrc);
-			if(localTextpath!=null)
-				srcDynamicPath=varStack.peek()+localTextpath;
+				srcDynamicPath=varStack.peek();
 		}
 		
 		if (srcDynamicPath!=null)
@@ -251,6 +298,8 @@ public class XQueryBuilder {
 			xpathStack.push(childMeta.getName());
 			String childXPath=QueryBuilderUtil.buildXPath(xpathStack);		
 			if (links.get(childXPath)!=null)
+				rtnValue=true;
+			else if (metaToFunctionLinks.get(childXPath)!=null)
 				rtnValue=true;
 			else if ( hasAnyMappedAttribute(childMeta)!=null)
 				rtnValue=true;
@@ -277,12 +326,20 @@ public class XQueryBuilder {
 
 		String rtnValue=null;
 		for(AttributeMeta a:tgtElement.getAttrData()) 
+		{
 			if(links.get(sb.toString()+"/@"+a.getName())!=null)
 			{
 				LinkType l = links.get(sb.toString()+"/@"+a.getName());
 				String attrMappingSrc = l.getSource().getId();
 				return attrMappingSrc;
 			}
+			else if(metaToFunctionLinks.get(sb.toString()+"/@"+a.getName())!=null)
+			{
+				LinkType l = metaToFunctionLinks.get(sb.toString()+"/@"+a.getName());
+				String attrMappingSrc = l.getSource().getId();
+				return attrMappingSrc;
+			}
+		}
 		
 		return rtnValue;
 	}
@@ -294,7 +351,8 @@ public class XQueryBuilder {
 	private void processAttributes(ElementMeta tgt, String elementMapingSourceId) {
 		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		for(AttributeMeta a:tgt.getAttrData()) {
-			if(links.get(elementXpath+"/@"+a.getName())!=null) {
+			if(links.get(elementXpath+"/@"+a.getName())!=null) 
+			{
 				LinkType l = links.get(elementXpath+"/@"+a.getName());
 				String attrMappingSrc = l.getSource().getId();
 				String var = varStack.peek();
@@ -305,8 +363,13 @@ public class XQueryBuilder {
 				sbQuery.append(" ").append(a.getName()).append("=\"{data(");
 				sbQuery.append("$").append(var).append(localpath);
 				sbQuery.append(")}\"");
-			}else if(a.getFixedValue()!=null) { //use fixed value first
-				sbQuery.append(" ").append(a.getName()).append("=");
+			}
+			else if(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())!=null) {
+				sbQuery.append(" ").append(a.getName()).append("=\"");
+				sbQuery.append(retrieveFunctionOutput(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())));
+				sbQuery.append("\"");
+			}
+			else if(a.getFixedValue()!=null) { //use fixed value first
 				sbQuery.append("\""+a.getFixedValue()+"\"");
 			} 
 			else if(a.getDefaultValue()!=null) {//use default value
