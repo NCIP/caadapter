@@ -62,7 +62,7 @@ public class FunctionBoxUsageManager
         FunctionBoxGraphCell newFunctionBoxInstance = null;
         if (functionDef != null)
         {
-            newFunctionBoxInstance = new FunctionBoxGraphCell(functionDef, viewInfo);
+            newFunctionBoxInstance = new FunctionBoxGraphCell((FunctionDef)functionDef.clone(), viewInfo);
             //register the newly created item in the map.
             functionBoxGraphCellMap.put(newFunctionBoxInstance.getFuncionBoxUUID(), newFunctionBoxInstance);
         }
