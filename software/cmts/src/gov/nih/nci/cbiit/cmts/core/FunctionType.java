@@ -45,9 +45,14 @@ public class FunctionType {
 
     protected List<FunctionData> data;
     @XmlAttribute
+
     protected String name;
     @XmlAttribute
     protected String group;
+    @XmlAttribute(name = "class")
+    protected String clazz;
+    @XmlAttribute
+    protected String method;
 
     /**
      * Gets the value of the data property.
@@ -78,7 +83,23 @@ public class FunctionType {
         return this.data;
     }
 
-    /**
+    public String getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(String implementation) {
+		this.clazz = implementation;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	/**
      * Gets the value of the name property.
      * 
      * @return
