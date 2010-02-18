@@ -185,7 +185,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 		centerPanel.setBorder(getDefaultBorder(1, 0, 1, 0));
 
 //				JPanel leftOuterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, GAP_INTERVAL, GAP_INTERVAL));
-		JPanel leftPanel = new JPanel(new GridLayout(function.getTotalNumberOfDefinedInputs(), 1, GAP_INTERVAL, GAP_INTERVAL));
+		JPanel leftPanel = new JPanel(new GridLayout(function.getInputElements().size(), 1, GAP_INTERVAL, GAP_INTERVAL));
 //				leftPanel.setBackground(backgroundColor);
 		addParameters(leftPanel, function, true);
 //			leftOuterPanel.add(leftPanel);
@@ -194,7 +194,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 //				leftOuterPanel.setBackground(backgroundColor);
 
 //				JPanel rightOuterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, GAP_INTERVAL, GAP_INTERVAL));
-		JPanel rightPanel = new JPanel(new GridLayout(function.getTotalNumberOfDefinedOutputs(), 1, GAP_INTERVAL, GAP_INTERVAL));
+		JPanel rightPanel = new JPanel(new GridLayout(function.getOutputElements().size(), 1, GAP_INTERVAL, GAP_INTERVAL));
 //				rightPanel.setBackground(backgroundColor);
 		addParameters(rightPanel, function, false);
 //			rightOuterPanel.add(rightPanel);
