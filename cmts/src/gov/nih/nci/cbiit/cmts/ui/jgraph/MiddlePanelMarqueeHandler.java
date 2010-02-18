@@ -8,6 +8,8 @@
 
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
+import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAllAction;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
@@ -77,6 +79,17 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			return true;
 		// Find and Remember Port
 		port = getSourcePortAt(e.getPoint());
+		if (port==null)
+			return false;
+		
+		FunctionBoxGraphCell functionCell=(FunctionBoxGraphCell)((DefaultPort)port.getCell()).getParent();
+		FunctionDef functionDef=functionCell.getFunctionDef();
+		if (!functionDef.getName().equals("constant")
+				||!functionDef.getGroup().equals("constant"))
+		{
+			port =null;
+			return false;
+		}
 		// If Port Found and in ConnectMode (=Ports Visible)
 		JGraph graph =controller.getMiddlePanel().getGraph();
 		if (port != null && graph.isPortsVisible())
@@ -142,6 +155,11 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			if (isValidPort(port) && isValidPort(newPort))//newPort == null || newPort != port)
 			{//paint the port and connector if and only if it is valid one
 				// Xor-Paint the old Connector (Hide old Connector)
+				FunctionData targetFunctionPort=(FunctionData)((DefaultPort)newPort.getCell()).getUserObject();
+				if (!targetFunctionPort.isInput())
+				{
+					return;
+				}
 				paintConnector(Color.black, graph.getBackground(), g);
 				// If Port was found then Point to Port Location
 				port = newPort;
