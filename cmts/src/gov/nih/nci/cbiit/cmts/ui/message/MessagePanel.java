@@ -10,7 +10,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.cbiit.cmts.ui.message;
 
 
+import gov.nih.nci.cbiit.cmts.ui.actions.DefaultCloseAction;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
+import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
+import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -45,7 +51,7 @@ import java.util.Map;
  *          revision    $Revision: 1.2 $
  *          date        $Date: 2009-11-24 18:31:25 $
  */
-public class MessagePanel extends JPanel implements ActionListener
+public class MessagePanel extends JPanel implements ActionListener, ContextManagerClient
 {
     private static final String NEXT_ITEM = "Next";
     private static final String PREVIOUS_ITEM = "Previous";
@@ -57,8 +63,6 @@ public class MessagePanel extends JPanel implements ActionListener
 	//private int totalNumberOfMessages = 0;
     private List<String> outputEntryNames = null;
     private boolean isBatchTransform = false;
-
-//&umkis    private int schemaValidationTag = -1;
 
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
@@ -280,8 +284,37 @@ public class MessagePanel extends JPanel implements ActionListener
     public Map getMenuItems(String menu_name)
 	{
 		Action action = null;
-
-		return null;
+		Map <String, Action>actionMap = null;
+		ContextManager contextManager = ContextManager.getContextManager();
+		actionMap = contextManager.getClientMenuActions("MESSAGE", menu_name);
+//		if (MenuConstants.FILE_MENU_NAME.equals(menu_name))
+//		{
+//			JRootPane rootPane = this.getRootPane();
+//			if (rootPane == null){
+//				//rootpane is not null implies this panel is fully displayed;
+//				//on the flip side, if it is null, it implies it is under certain construction.
+//				contextManager.enableAction(ActionConstants.NEW_MAP_FILE, true);
+//				contextManager.enableAction(ActionConstants.OPEN_MAP_FILE, true);
+//				contextManager.enableAction(ActionConstants.CLOSE, false);
+//				contextManager.enableAction(ActionConstants.SAVE, false);
+//				contextManager.enableAction(ActionConstants.SAVE_AS, false);
+//			}else{
+//				contextManager.enableAction(ActionConstants.CLOSE, true);
+//				contextManager.enableAction(ActionConstants.SAVE, true);
+//				contextManager.enableAction(ActionConstants.SAVE_AS, true);
+//			}
+//		}
+//		
+//		//since the action depends on the panel instance,
+//		//the old action instance should be removed
+		if (actionMap!=null)
+			contextManager.removeClientMenuAction("MESSAGE", menu_name, "");
+		
+		action = getDefaultCloseAction();
+		contextManager.addClientMenuAction("MESSAGE", MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
+		action.setEnabled(true);
+		
+		return contextManager.getClientMenuActions("MESSAGE", menu_name);
 	}
 
 /*	public Map getMenuItems_save(String menu_name)
@@ -386,35 +419,6 @@ public class MessagePanel extends JPanel implements ActionListener
 		return result;
 	}
 
-//&umkis    private void confirmSchemaValidation()
-//&umkis    {
-//&umkis    	String validationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
-//&umkis		if ((validationLevel != null)&&(!validationLevel.equalsIgnoreCase(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_2)))
-//&umkis        {
-//&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
-//&umkis            return;
-//&umkis        }
-
-//&umkis        String prop = FileUtil.searchProperty("SchemaValidation");
-//&umkis        if (prop == null) prop = "";
-//&umkis        prop = prop.trim();
-//&umkis        if ((prop.trim().equalsIgnoreCase("true"))||(prop.trim().equalsIgnoreCase("yes")))
-//&umkis        {
-//&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
-//&umkis            return;
-//&umkis        }
-//&umkis        if ((prop.trim().equalsIgnoreCase("no"))||(prop.trim().equalsIgnoreCase("none"))||(prop.trim().equalsIgnoreCase("false")))
-//&umkis        {
-//&umkis            schemaValidationTag = -1;
-//&umkis            return;
-//&umkis        }
-
-//&umkis        if (schemaValidationTag < 0)
-//&umkis        {
-//&umkis            schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
-//&umkis        }
-//&umkis    }
-
 
 	public int getMessageFileType() {
 		return messageFileType;
@@ -422,6 +426,42 @@ public class MessagePanel extends JPanel implements ActionListener
 
 	public void setMessageFileType(int messageFileType) {
 		this.messageFileType = messageFileType;
+	}
+
+	public List<File> getAssociatedFileList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Action getDefaultCloseAction() {
+		// TODO Auto-generated method stub
+//		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
+//		Action closeAction = (Action) actionMap.get(ActionConstants.CLOSE);
+	
+		Action closeAction	=new DefaultCloseAction(MainFrame.getInstance());
+		return closeAction;
+	}
+
+	public Action getDefaultOpenAction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Action getDefaultSaveAction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Action> getToolbarActionList() {
+		// TODO Auto-generated method stub
+		java.util.List<Action> actions = new ArrayList<Action>();
+		actions.add(this.getDefaultCloseAction());
+		return actions;
+	}
+
+	public void reload() throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }
 
