@@ -10,7 +10,7 @@ package gov.nih.nci.cbiit.cmts.ui.jgraph;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPort;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphPortView;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphView;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCellView;
 
 import org.jgraph.graph.*;
 
@@ -34,7 +34,7 @@ public class MiddlePanelJGraphViewFactory extends DefaultCellViewFactory
 	{
 		if (v instanceof FunctionBoxGraphCell)
 		{		
-			return new FunctionBoxGraphView(v);
+			return new FunctionBoxGraphCellView(v);
 		}
 		return super.createVertexView(v);
 	}
