@@ -15,7 +15,7 @@ import gov.nih.nci.cbiit.cmts.function.FunctionException;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultAbstractJgraphAction;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionConstantDefinitionDialog;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionConstantEditionDialog;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 
@@ -70,7 +70,7 @@ public class ConstantEditAction extends DefaultAbstractJgraphAction
 	{
 		JGraph graph = getMiddlePanel().getGraph();		
 		FunctionBoxGraphCell functionBox = (FunctionBoxGraphCell) graph.getSelectionCell();//.getUserObject();
-		FunctionConstantDefinitionDialog dialog = new FunctionConstantDefinitionDialog(new JFrame(), functionBox.getFunctionDef().getName());
+		FunctionConstantEditionDialog dialog = new FunctionConstantEditionDialog(new JFrame(), functionBox.getFunctionDef().getName());
 		dialog.setTitle("Edit Constant...");
 		dialog.setConstantTypeClassString(functionBox.getFunctionDef().getData().get(0).getType(), false);
 		dialog.setConstantValue(functionBox.getFunctionDef().getData().get(0).getValue());
