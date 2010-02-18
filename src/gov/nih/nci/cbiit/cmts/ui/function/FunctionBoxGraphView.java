@@ -138,13 +138,6 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 					mainPanel.setBackground(titleBackgroundColor);
 				}
 				FunctionBoxGraphCell functionCell = (FunctionBoxGraphCell) obj;
-//				Object userObj = functionCell.getUserObject();
-//				if(!(userObj instanceof FunctionBoxUserObject))
-//				{
-//					System.err.println("User Object of FunctionBoxCell is not of type '" + FunctionBoxUserObject.class.getName() + "'");
-//					return null;
-//				}
-
 				//set up the function title
 				String functionName = functionCell.getFunctionDef().getName().toString();
 				JLabel label = new JLabel();
@@ -281,13 +274,10 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 				continue;
 			name = paramMeta.getName();
 			JLabel label = new JLabel();
-			if(i<size-1)
-			{
-				label.setBorder(getDefaultBorder(0, 0, 1, 0));
-			}
-//			Font oldFont = label.getFont();
-//			Log.logInfo(this, "old Font is '" + oldFont + "'");
-//			label.setFont(new Font("customized", Font.PLAIN, 11));
+//			if(i<size-1)
+//			{
+//				label.setBorder(getDefaultBorder(0, 0, 1, 0));
+//			}
 			label.setBackground(localBackGroundColor);
 			label.setText(name);
 			panel.add(label, new GridBagConstraints(0, i, 1, 1, 1.0 / ((double)size), 0.0,
