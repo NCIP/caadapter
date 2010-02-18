@@ -8,8 +8,6 @@
 
 package gov.nih.nci.cbiit.cmts.ui.function;
 
-
-import gov.nih.nci.cbiit.cmts.function.FunctionException;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
@@ -31,7 +29,7 @@ import java.util.Vector;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
-public class FunctionConstantDefinitionDialog extends JDialog implements ActionListener
+public class FunctionConstantEditionDialog extends JDialog implements ActionListener
 {
 	//private static final String TITLE = "Function Constant Definition";
 	private static final Map typeMap = new TreeMap();
@@ -79,7 +77,7 @@ public class FunctionConstantDefinitionDialog extends JDialog implements ActionL
 	 * @see java.awt.GraphicsEnvironment#isHeadless
 	 * @see javax.swing.JComponent#getDefaultLocale
 	 */
-	public FunctionConstantDefinitionDialog(Frame owner, String fName) throws HeadlessException
+	public FunctionConstantEditionDialog(Frame owner, String fName) throws HeadlessException
 	{
 		super(owner, "Function " + fName + " Definition", true);
         subconstructor(fName);
@@ -99,7 +97,7 @@ public class FunctionConstantDefinitionDialog extends JDialog implements ActionL
 	 * @see java.awt.GraphicsEnvironment#isHeadless
 	 * @see javax.swing.JComponent#getDefaultLocale
 	 */
-	public FunctionConstantDefinitionDialog(Dialog owner, String fName) throws HeadlessException
+	public FunctionConstantEditionDialog(Dialog owner, String fName) throws HeadlessException
 	{
 		super(owner, "Function " + fName + " Definition", true);
         subconstructor(fName);

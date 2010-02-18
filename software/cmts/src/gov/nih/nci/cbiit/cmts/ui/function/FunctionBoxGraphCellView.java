@@ -29,10 +29,10 @@ import java.util.Map;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
-public class FunctionBoxGraphView extends VertexView
+public class FunctionBoxGraphCellView extends VertexView
 {
 
-	public FunctionBoxGraphView(Object cell)
+	public FunctionBoxGraphCellView(Object cell)
 	{
 		super(cell);
 	}
