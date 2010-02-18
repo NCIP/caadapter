@@ -16,13 +16,10 @@ import gov.nih.nci.cbiit.cmts.core.ViewType;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
 
-import javax.swing.*;
-
 import org.jgraph.graph.DefaultGraphCell;
 
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +35,8 @@ public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNo
 {
 	private boolean mapped = false;
 
-	private Icon icon = null;
-	private int totalNumberOfDefinedInputs = 0;
-	private int totalNumberOfDefinedOutputs = 0;
-	private List inputElementList = new ArrayList();
-	private List outputElementList = new ArrayList();
+	private List<FunctionData> inputElementList = new ArrayList<FunctionData>();
+	private List<FunctionData> outputElementList = new ArrayList<FunctionData>();
 
 	protected FunctionDef FunctionDef;
 	protected ViewType viewMeta;
@@ -64,38 +58,12 @@ public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNo
 		resetMetas();
 	}
 
-
-	public Icon getIcon()
-	{
-		return icon;
-	}
-
-	public int getTotalNumberOfDefinedInputs()
-	{
-		return totalNumberOfDefinedInputs;
-	}
-
-	public int getTotalNumberOfDefinedOutputs()
-	{
-		return totalNumberOfDefinedOutputs;
-	}
-
-	public int getTotalNumberOfActualInputs()
-	{
-		return inputElementList.size();
-	}
-
-	public int getTotalNumberOfActualOutputs()
-	{
-		return outputElementList.size();
-	}
-
-	public List getInputElementList()
+	public List<FunctionData> getInputElements()
 	{
 		return inputElementList;
 	}
 
-	public List getOutputElementList()
+	public List<FunctionData> getOutputElements()
 	{
 		return outputElementList;
 	}
@@ -128,9 +96,9 @@ public class FunctionBoxGraphCell extends DefaultGraphCell implements MappableNo
 			for (FunctionData fData:FunctionDef.getData())
 			{
 				if (fData.isInput())
-					totalNumberOfDefinedInputs++;
+					inputElementList.add(fData);
 				else
-					totalNumberOfDefinedOutputs++;
+					outputElementList.add(fData);
 			}
 		}
 	}
