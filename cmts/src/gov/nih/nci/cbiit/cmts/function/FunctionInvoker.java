@@ -7,10 +7,7 @@ public class FunctionInvoker {
 
 	public static Object invokeFunctionMethod(String functionName, String methodName, Object argList[]) throws FunctionException
 	{
-		System.out.println("FunctionInvoker.invokeFunctionMethod()...targetClass:"+functionName);
-		System.out.println("FunctionInvoker.invokeFunctionMethod()...targetMethod:"+methodName);
-		System.out.println("FunctionInvoker.invokeFunctionMethod()...arguments: "+argList);
-        Class targetClass;
+       Class targetClass;
 		try {
 			targetClass = Class.forName(functionName);
 			Method[] allMethods=targetClass.getMethods();
