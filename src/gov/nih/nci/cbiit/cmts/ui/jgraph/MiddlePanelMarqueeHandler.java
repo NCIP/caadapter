@@ -83,9 +83,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			return false;
 		
 		FunctionBoxGraphCell functionCell=(FunctionBoxGraphCell)((DefaultPort)port.getCell()).getParent();
-		FunctionDef functionDef=functionCell.getFunctionDef();
-		if (!functionDef.getName().equals("constant")
-				||!functionDef.getGroup().equals("constant"))
+		if (!functionCell.getInputElements().isEmpty())
 		{
 			port =null;
 			return false;
