@@ -11,6 +11,7 @@ import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.core.FunctionData;
 import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.core.FunctionType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
@@ -38,7 +39,7 @@ public class XQueryBuilder {
 	private StringBuffer sbQuery;
 	private Map<String, LinkType> links;
 	private Map<String, LinkType> metaToFunctionLinks;
-	private Map<String, LinkType> functionToFunctionLinks;
+	private Map<String, Map<String, LinkType>> allToFunctionLinks;
 	
 	private Map<String, FunctionType>functions;
 	private Map<String, String> varMap;
@@ -72,7 +73,7 @@ public class XQueryBuilder {
 	private void loadLinks() {
 		this.links = new HashMap<String, LinkType>();
 		this.metaToFunctionLinks = new HashMap<String, LinkType>();
-		this.functionToFunctionLinks = new HashMap<String, LinkType>();
+		allToFunctionLinks = new HashMap<String, Map<String,LinkType>>();
 		if(mapping.getLinks()==null) {
 			return;
 		}
@@ -80,12 +81,18 @@ public class XQueryBuilder {
 		for (LinkType l:links) {
 			if (l.getTarget().getComponentid().length()==1)
 				this.links.put(l.getTarget().getId(), l);
-			else if (l.getSource().getComponentid().length()==1)
-				//metaToFuncionLink
-				metaToFunctionLinks.put(l.getSource().getId(), l);
 			else 
-				//functionToFunctionLink
-				this.functionToFunctionLinks.put(l.getTarget().getComponentid()+":"+l.getTarget().getId(), l);
+			{
+				if (l.getSource().getComponentid().length()==1)
+					//metaToFuncionLink
+					metaToFunctionLinks.put(l.getSource().getId(), l);
+				Map<String, LinkType> linkToOneFunction=(Map<String,LinkType>)allToFunctionLinks.get(l.getTarget().getComponentid());
+				if (linkToOneFunction==null)
+					linkToOneFunction=new HashMap<String, LinkType>();
+ 
+				linkToOneFunction.put(l.getTarget().getId(), l);
+				allToFunctionLinks.put(l.getTarget().getComponentid(), linkToOneFunction);
+			}
 		}
 	}
 
@@ -126,9 +133,7 @@ public class XQueryBuilder {
 		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		String tgtMappingSrc=null;
 		LinkType link = links.get(elementXpath);
-//		if (link==null)
-//			link=metaToFunctionLinks.get(elementXpath);
-//		
+
 		if(link!=null) 
 		{
 			tgtMappingSrc = link.getSource().getId();
@@ -221,7 +226,45 @@ public class XQueryBuilder {
 	private String retrieveFunctionOutput(LinkType link)
 	{
 		FunctionType functionType=functions.get(link.getTarget().getComponentid());
-		Object argList[]=new Object[]{functionType};
+		Map<String, LinkType> linkToFunction=allToFunctionLinks.get(link.getTarget().getComponentid());
+		Map<String,String> parameterMap=new HashMap<String,String>();
+		//process all port related this functionType
+		for(FunctionData fData:functionType.getData())
+		{
+			if (!fData.isInput())
+			{
+				parameterMap.put(fData.getName(), fData.getValue());
+			}
+			else if ((linkToFunction!=null)&(linkToFunction.get(fData.getName())!=null))
+			{
+				LinkType inputLink=linkToFunction.get(fData.getName());
+				if (inputLink.getSource().getComponentid().length()==1)
+				{
+					String linkSrId=linkToFunction.get(fData.getName()).getSource().getId();
+					parameterMap.put(fData.getName(), "{data(doc($docName)/"+linkSrId+")}" );
+				}
+				else
+				{ 
+					//a function is mapped to this input port, 
+					FunctionType inputFunction=functions.get(inputLink.getSource().getComponentid());
+					String inputSrcValue="";
+					System.out
+							.println("XQueryBuilder.retrieveFunctionOutput()..link source:"+inputFunction.getName());
+					Object inputFunctionArgList[]=new Object[]{inputFunction, new HashMap<String,String>()};
+					try {
+						inputSrcValue=(String)FunctionInvoker.invokeFunctionMethod(inputFunction.getClazz(), inputFunction.getMethod(), inputFunctionArgList);
+ 
+					} catch (FunctionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					parameterMap.put(fData.getName(), inputSrcValue);
+				}
+			}
+			else
+				parameterMap.put(fData.getName(), fData.getValue());
+		}
+		Object argList[]=new Object[]{functionType, parameterMap};
 		
 		try {
 			String constantValue=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
