@@ -4,71 +4,92 @@
 		method="retrieveValue">
 		<data name="constant" type="string" input="false" />
 	</function>
-	<function name="changeFormat" group="date" class="date"
+	<function name="currentDate" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+			method="currentDate">
+			<data name="currentDate" type="date" input="false" />
+	</function>
+	<function name="currentDateTime" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+				method="currentDateTime">
+				<data name="currentDateTime" type="date" input="false" />
+	</function>
+	<function name="currentTime" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+				method="currentTime">
+				<data name="currentTime" type="time" input="false" />
+	</function>
+	<function name="changeFormat" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
 		method="changeFormat">
 		<data name="fromFormat" type="string" input="true" />
 		<data name="dateIn" type="string" input="true" />
 		<data name="dateOut" type="string" input="false" />
 	</function>
-	<function name="countDays" group="date" class="date" method="countDays">
-		<data name="fromDate" type="string" input="true" />
-		<data name="toDate" type="string" input="true" />
-		<data name="dayNumber" type="int" input="false" />
+	<function name="countDays" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+		method="countDays">
+		<data name="startDate" type="string" input="true" />
+		<data name="endDate" type="string" input="true" />
+		<data name="duration" type="int" input="false" />
 	</function>
-	<function name="addition" group="math" class="math" method="add">
+	<!-- function name="addition" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="add">
 		<data name="value1" type="double" input="true" />
 		<data name="value2" type="double" input="true" />
 		<data name="sum" type="double" input="false" />
 	</function>
-	<function name="subtract" group="math" class="math" method="subtract">
+	<function name="subtract" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="subtract">
 		<data name="value1" type="double" input="true" />
 		<data name="value2" type="double" input="true" />
 		<data name="difference" type="double" input="false" />
 	</function>
-	<function name="multiply" group="math" class="math" method="multiply">
+	<function name="multiply" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="multiply">
 		<data name="value1" type="double" input="true" />
 		<data name="value2" type="double" input="true" />
 		<data name="product" type="double" input="false" />
 	</function>
-	<function name="divide" group="math" class="math" method="divide">
+	<function name="divide" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="divide">
 		<data name="value1" type="double" input="true" />
 		<data name="value2" type="double" input="true" />
 		<data name="quotient" type="double" input="false" />
 	</function>
-	<function name="round" group="math" class="math" method="round">
+	<function name="round" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="round">
 		<data name="input" type="double" input="true" />
 		<data name="roundDigit" type="int" input="true" />
 		<data name="output" type="double" input="false" />
-	</function>
-	<function name="concatenate" group="string" class="string"
-		method="concatenate">
-		<data name="string1" type="string" input="true" />
-		<data name="string2" type="string" input="true" />
-		<data name="result" type="string" input="false" />
-	</function>
-	<function name="length" group="string" class="string" method="length">
+	</function -->
+	<function name="length" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="stringLength">
 		<data name="string" type="string" input="true" />
-		<data name="length" type="int" input="false" />
+		<data name="result" type="int" input="false" />
 	</function>
-	<function name="substring" group="string" class="string"
-		method="substring">
-		<data name="string1" type="string" input="true" />
-		<data name="startPos" type="int" input="true" />
-		<data name="endPos" type="int" input="true" />
-		<data name="result" type="string" input="false" />
-	</function>
-	<function name="replace" group="string" class="string" method="replace">
-		<data name="string" type="string" input="true" />
-		<data name="fromStr" type="string" input="true" />
-		<data name="toStr" type="string" input="true" />
-		<data name="result" type="string" input="false" />
-	</function>
-	<function name="upper" group="string" class="string" method="upper">
+	<function name="lower" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="toLowerCase">
 		<data name="string" type="string" input="true" />
 		<data name="result" type="string" input="false" />
 	</function>
-	<function name="lower" group="string" class="string" method="lower">
+	<function name="upper" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="toUpperCase">
 		<data name="string" type="string" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+	<function name="concatenate" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="concatenate">
+		<data name="string1" type="string" value="" input="true" />
+		<data name="string2" type="string" value="" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+	<function name="substringAfter" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="substringAfter">
+		<data name="string1" type="string" value="" input="true" />
+		<data name="string2" type="int" value="0" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+		<function name="substringBefore" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="substringBefore">
+		<data name="string1" type="string" value="" input="true" />
+		<data name="string2" type="int" value="0" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+		<function name="substring" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="substring">
+		<data name="string" type="string" value="" input="true" />
+		<data name="start" type="int" value="0" input="true" />
+		<data name="end" type="int" value="0" input="true" />
+		<data name="result" type="string" input="false" />
+	</function>
+	<function name="replace" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="replace">
+		<data name="string" type="string" value="" input="true" />
+		<data name="pattern" type="string" value="" input="true" />
+		<data name="replace" type="string" value="" input="true" />
 		<data name="result" type="string" input="false" />
 	</function>
 </functions>
