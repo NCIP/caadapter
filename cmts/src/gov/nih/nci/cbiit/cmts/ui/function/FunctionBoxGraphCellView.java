@@ -146,7 +146,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 				label.setText(functionName);
 				label.setIcon(imageIcon);
 				mainPanel.add(label, BorderLayout.NORTH);
-				if (functionCell.getFunctionDef().getName().equalsIgnoreCase("constant"))
+				if (functionCell.getInputElements().isEmpty())
 					return renderConstantFunction(functionCell, mainPanel);
 						
 				return renderNormalFunction(functionCell, mainPanel);
