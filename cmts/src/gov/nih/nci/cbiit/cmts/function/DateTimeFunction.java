@@ -12,13 +12,13 @@ public class DateTimeFunction {
 	 * @param functionType
 	 * @return
 	 */
-	public String countDays(FunctionType functionType,  Map paramters)
+	public String countDays(FunctionType functionType,  Map<String, String>  paramters)
 	{
 		//use day-from-date
 		//Example: day-from-date(xs:date("2005-04-23"))
 		//Result: 23
 
-		return "{current-time()}";
+		return "current-time()";
 	}
 	
 	/**
@@ -26,10 +26,10 @@ public class DateTimeFunction {
 	 * @param functionType
 	 * @return
 	 */
-	public String currentDate(FunctionType functionType,  Map paramters)
+	public String currentDate(FunctionType functionType,  Map<String, String>  paramters)
 	{
 		System.out.println("DateTimeFunction.currentDate()...");
-		return "{current-date()}";
+		return "current-date()";
 	}
 	
 
@@ -38,9 +38,9 @@ public class DateTimeFunction {
 	 * @param functionType
 	 * @return
 	 */
-	public String currentDateTime(FunctionType functionType,  Map paramters)
+	public String currentDateTime(FunctionType functionType,  Map<String, String>  paramters)
 	{
-		return "{current-dateTime()}";
+		return "current-dateTime()";
 	}
 	
 	/**
@@ -48,9 +48,9 @@ public class DateTimeFunction {
 	 * @param functionType
 	 * @return
 	 */
-	public String currentTime(FunctionType functionType, Map paramters)
+	public String currentTime(FunctionType functionType, Map<String, String>  paramters)
 	{
-		return "{current-time()}";
+		return "current-time()";
 	}
 	
 }
