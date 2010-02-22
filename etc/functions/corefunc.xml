@@ -16,42 +16,53 @@
 				method="currentTime">
 				<data name="currentTime" type="time" input="false" />
 	</function>
-	<function name="changeFormat" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+	<!--  function name="changeFormat" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
 		method="changeFormat">
 		<data name="fromFormat" type="string" input="true" />
 		<data name="dateIn" type="string" input="true" />
 		<data name="dateOut" type="string" input="false" />
-	</function>
+	</function -->
 	<function name="countDays" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
 		method="countDays">
 		<data name="startDate" type="string" input="true" />
 		<data name="endDate" type="string" input="true" />
 		<data name="duration" type="int" input="false" />
 	</function>
-	<!-- function name="addition" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="add">
-		<data name="value1" type="double" input="true" />
-		<data name="value2" type="double" input="true" />
-		<data name="sum" type="double" input="false" />
+	<function name="abs" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="abs">
+		<data name="input" type="double" input="true" />
+		<data name="output" type="double" input="false" />
 	</function>
-	<function name="subtract" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="subtract">
-		<data name="value1" type="double" input="true" />
-		<data name="value2" type="double" input="true" />
-		<data name="difference" type="double" input="false" />
+		<function name="ceiling" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="ceiling">
+		<data name="input" type="double" input="true" />
+		<data name="output" type="double" input="false" />
 	</function>
-	<function name="multiply" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="multiply">
-		<data name="value1" type="double" input="true" />
-		<data name="value2" type="double" input="true" />
-		<data name="product" type="double" input="false" />
-	</function>
-	<function name="divide" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="divide">
-		<data name="value1" type="double" input="true" />
-		<data name="value2" type="double" input="true" />
-		<data name="quotient" type="double" input="false" />
+		<function name="floor" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="floor">
+		<data name="input" type="double" input="true" />
+		<data name="output" type="double" input="false" />
 	</function>
 	<function name="round" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="round">
 		<data name="input" type="double" input="true" />
-		<data name="roundDigit" type="int" input="true" />
 		<data name="output" type="double" input="false" />
+	</function>
+	<function name="addition" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="addition">
+		<data name="term1" type="double" input="true" />
+		<data name="term2" type="double" input="true" />
+		<data name="sum" type="double" input="false" />
+	</function>
+	<!-- function name="subtraction" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="subtraction">
+		<data name="term1" type="double" input="true" />
+		<data name="term2" type="double" input="true" />
+		<data name="difference" type="double" input="false" />
+	</function>
+	<function name="multiplication" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="multiplication">
+		<data name="factor1" type="double" input="true" />
+		<data name="factor2" type="double" input="true" />
+		<data name="product" type="double" input="false" />
+	</function>
+	<function name="division" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="division">
+		<data name="dividend" type="double" input="true" />
+		<data name="divisor" type="double" input="true" />
+		<data name="quotient" type="double" input="false" />
 	</function -->
 	<function name="length" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="stringLength">
 		<data name="string" type="string" input="true" />
