@@ -14,11 +14,11 @@ public class StringFunction {
 	 * @param paramters
 	 * @return
 	 */
-	public String toLowerCase(FunctionType functionType, Map paramters)
+	public String toLowerCase(FunctionType functionType, Map<String, String> paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string");
-		rtnBf.append("{ lower-case("+reformatStingParameter(stOne)+")}");
+		rtnBf.append("lower-case("+stOne+")");
 		return rtnBf.toString();
 	}
 	/**
@@ -29,23 +29,26 @@ public class StringFunction {
 	 * @param paramters
 	 * @return
 	 */
-	public String toUpperCase(FunctionType functionType, Map paramters)
+	public String toUpperCase(FunctionType functionType, Map<String, String> paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string");
-		rtnBf.append("{ upper-case("+reformatStingParameter(stOne)+")}");
+		rtnBf.append("upper-case("+stOne+")");
 		return rtnBf.toString();
 	}
 	/**
 	 * Returns the length of the specified string. If there is no string argument it returns the length of the string value of the current node
 	 * Example: string-length('Beatles')
 	 * Result: 7
+	 * @param functionType
+	 * @param paramters
+	 * @return
 	 */
-	public String stringLength(FunctionType functionType, Map paramters)
+	public String stringLength(FunctionType functionType, Map<String, String> paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string");
-		rtnBf.append("{ string-length("+reformatStingParameter(stOne)+")}");
+		rtnBf.append("string-length("+stOne+")");
 		return rtnBf.toString();
 	}
 	
@@ -53,15 +56,18 @@ public class StringFunction {
 	 * 	Returns the concatenation of the strings
 	 * 	Example: concat('XPath ','is ','FUN!')
 	 *  Result: 'XPath is FUN!'
-	**/
+	 * @param functionType
+	 * @param paramters
+	 * @return
+	 */
 	
-	public String concatenate(FunctionType functionType, Map paramters)
+	public String concatenate(FunctionType functionType, Map<String, String> paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string1");
 		String stTwo=(String)paramters.get("string2");
 	
-		rtnBf.append("{ concat("+reformatStingParameter(stOne)+"," +reformatStingParameter(stTwo)+")}");
+		rtnBf.append("concat("+stOne+"," +stTwo+")");
 		return rtnBf.toString();
 	}
 	/**
@@ -72,13 +78,13 @@ public class StringFunction {
 	 * @param paramters
 	 * @return
 	 */
-	public String substringBefore(FunctionType functionType, Map paramters)
+	public String substringBefore(FunctionType functionType, Map<String, String> paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string1");
 		String stTwo=(String)paramters.get("string2");
 
-		rtnBf.append("{ substring-before("+reformatStingParameter(stOne)+"," +reformatStingParameter(stTwo)+")}");
+		rtnBf.append("substring-before("+stOne+"," +stTwo+")");
 		return rtnBf.toString();
 	}
 	
@@ -90,13 +96,13 @@ public class StringFunction {
 	 * @param paramters
 	 * @return
 	 */
-	public String substringAfter(FunctionType functionType, Map paramters)
+	public String substringAfter(FunctionType functionType, Map <String, String>paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string1");
 		String stTwo=(String)paramters.get("string2");
 
-		rtnBf.append("{ substring-after("+reformatStingParameter(stOne)+"," +reformatStingParameter(stTwo)+")}");
+		rtnBf.append("substring-after("+stOne+"," +stTwo+")");
 		return rtnBf.toString();
 	}
 	/**
@@ -109,14 +115,14 @@ public class StringFunction {
 	 * @param paramters
 	 * @return
 	 */
-	public String substring(FunctionType functionType, Map paramters)
+	public String substring(FunctionType functionType, Map<String, String> paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string");
 		String stStart=(String)paramters.get("start");
 		String stEnd=(String)paramters.get("end");
-		rtnBf.append("{ substring("+reformatStingParameter(stOne)+"," 
-				+stStart+","+stEnd+")}");//+reformatStingParameter(stStart)+"," +reformatStingParameter(stEnd)+")}");
+		rtnBf.append("substring("+stOne+"," 
+				+stStart+","+stEnd+")");//+reformatStingParameter(stStart)+"," +reformatStingParameter(stEnd)+")}");
 		return rtnBf.toString();
 	}
 	/**
@@ -129,20 +135,14 @@ public class StringFunction {
 	 * @param paramters
 	 * @return
 	 */
-	public String replace(FunctionType functionType, Map paramters)
+	public String replace(FunctionType functionType, Map<String, String> paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string");
 		String stPattern=(String)paramters.get("pattern");
 		String stReplace=(String)paramters.get("replace");
 	
-		rtnBf.append("{ replace("+reformatStingParameter(stOne)+"," +reformatStingParameter(stPattern)+","+reformatStingParameter(stReplace)+")}");
+		rtnBf.append("replace("+stOne+"," +stPattern+","+stReplace+")");
 		return rtnBf.toString();
-	}
-	private String reformatStingParameter(String sIn)
-	{
-		if (sIn.indexOf("}")>-1)
-			return sIn.replace("{"," ").replace("}","");
-		return "\""+sIn +"\"";
 	}
 }
