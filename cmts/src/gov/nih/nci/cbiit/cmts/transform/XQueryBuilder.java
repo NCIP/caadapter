@@ -228,47 +228,50 @@ public class XQueryBuilder {
 		FunctionType functionType=functions.get(link.getTarget().getComponentid());
 		Map<String, LinkType> linkToFunction=allToFunctionLinks.get(link.getTarget().getComponentid());
 		Map<String,String> parameterMap=new HashMap<String,String>();
-		//process all port related this functionType
-		for(FunctionData fData:functionType.getData())
+		//If there is only port in the functionType,
+		//it must be the output port, do nothing
+		if (functionType.getData().size()!=1)
 		{
-			if (!fData.isInput())
+			//process all port related this functionType
+			for(FunctionData fData:functionType.getData())
 			{
-				parameterMap.put(fData.getName(), fData.getValue());
-			}
-			else if ((linkToFunction!=null)&(linkToFunction.get(fData.getName())!=null))
-			{
-				LinkType inputLink=linkToFunction.get(fData.getName());
-				if (inputLink.getSource().getComponentid().length()==1)
+				//only consider input ports
+				if (fData.isInput())
 				{
-					String linkSrId=linkToFunction.get(fData.getName()).getSource().getId();
-					parameterMap.put(fData.getName(), "{data(doc($docName)/"+linkSrId+")}" );
-				}
-				else
-				{ 
-					//a function is mapped to this input port, 
-					FunctionType inputFunction=functions.get(inputLink.getSource().getComponentid());
-					String inputSrcValue="";
-					System.out
-							.println("XQueryBuilder.retrieveFunctionOutput()..link source:"+inputFunction.getName());
-					Object inputFunctionArgList[]=new Object[]{inputFunction, new HashMap<String,String>()};
-					try {
-						inputSrcValue=(String)FunctionInvoker.invokeFunctionMethod(inputFunction.getClazz(), inputFunction.getMethod(), inputFunctionArgList);
- 
-					} catch (FunctionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if ((linkToFunction!=null)&(linkToFunction.get(fData.getName())!=null))
+					{
+						LinkType inputLink=linkToFunction.get(fData.getName());
+						if (inputLink.getSource().getComponentid().length()==1)
+						{
+							String linkSrId=linkToFunction.get(fData.getName()).getSource().getId();
+							parameterMap.put(fData.getName(), "{data(doc($docName)/"+linkSrId+")}" );
+						}
+						else
+						{ 
+							//a function is mapped to this input port, 
+							FunctionType inputFunction=functions.get(inputLink.getSource().getComponentid());
+							String inputSrcValue="";
+							Object inputFunctionArgList[]=new Object[]{inputFunction, new HashMap<String,String>()};
+							try {
+								inputSrcValue=(String)FunctionInvoker.invokeFunctionMethod(inputFunction.getClazz(), inputFunction.getMethod(), inputFunctionArgList);
+		 
+							} catch (FunctionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							parameterMap.put(fData.getName(), inputSrcValue);
+						}
 					}
-					parameterMap.put(fData.getName(), inputSrcValue);
+					else //set the empty "string(()" function as default
+						parameterMap.put(fData.getName(), "string(\"\")");
 				}
 			}
-			else
-				parameterMap.put(fData.getName(), fData.getValue());
 		}
 		Object argList[]=new Object[]{functionType, parameterMap};
 		
 		try {
-			String constantValue=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
-			return constantValue;
+			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
+			return "{"+xqueryString +"}";
 		} catch (FunctionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
