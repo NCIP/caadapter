@@ -8,7 +8,7 @@ public class StringFunction {
 
 	/**
 	 * Converts the string argument to lower-case
-	 * Example: lower-case('The XML')
+	 * Example: toLowerCase('The XML')
 	 * Result: 'the xml'
 	 * @param functionType
 	 * @param paramters
@@ -23,7 +23,7 @@ public class StringFunction {
 	}
 	/**
 	 * Converts the string argument to upper-case
-	 * Example: upper-case('The XML')
+	 * Example: toUpperCase('The XML')
 	 * Result: 'THE XML'
 	 * @param functionType
 	 * @param paramters
@@ -38,7 +38,7 @@ public class StringFunction {
 	}
 	/**
 	 * Returns the length of the specified string. If there is no string argument it returns the length of the string value of the current node
-	 * Example: string-length('Beatles')
+	 * Example: stringLength('Beatles')
 	 * Result: 7
 	 * @param functionType
 	 * @param paramters
@@ -54,7 +54,7 @@ public class StringFunction {
 	
 	/**
 	 * 	Returns the concatenation of the strings
-	 * 	Example: concat('XPath ','is ','FUN!')
+	 * 	Example: concatenate('XPath ','is ','FUN!')
 	 *  Result: 'XPath is FUN!'
 	 * @param functionType
 	 * @param paramters
@@ -72,7 +72,7 @@ public class StringFunction {
 	}
 	/**
 	 * Returns the start of string1 before string2 occurs in it
-	 * Example: substring-before('12/10','/')
+	 * Example: substringBefore('12/10','/')
 	 * Result: '12'
 	 * @param functionType
 	 * @param paramters
@@ -90,7 +90,7 @@ public class StringFunction {
 	
 	/**
 	 * Returns the remainder of string1 after string2 occurs in it
-	 * Example: substring-after('12/10','/')
+	 * Example: substringAfter('12/10','/')
 	 * Result: '10'
 	 * @param functionType
 	 * @param paramters
