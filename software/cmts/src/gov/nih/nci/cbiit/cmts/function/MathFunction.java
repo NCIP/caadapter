@@ -77,21 +77,20 @@ public class MathFunction {
 	 * @param functionType
 	 * @param paramters
 	 * @return
-	 */
-	
+	 */	
 	public String addition(FunctionType functionType, Map<String, String> paramters)
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("term1");
 		String stTwo=(String)paramters.get("term2");
-	
-		rtnBf.append("sum(number("+stOne+"),number(" +stTwo+"))");
+		rtnBf.append("number("+stOne+")+number(" +stTwo+")");
+//		rtnBf.append("sum(number("+stOne+"),number(" +stTwo+"))");
 		return rtnBf.toString();
 	}
 	
 	/**
 	 * 	Returns the difference of the two terms 
-	 * 	Example: sum(-3,5)
+	 * 	Example: subtraction(-3,5)
 	 *  Result: -8
 	 * @param functionType
 	 * @param paramters
@@ -104,13 +103,13 @@ public class MathFunction {
 		String stOne=(String)paramters.get("term1");
 		String stTwo=(String)paramters.get("term2");
 	
-		rtnBf.append("sum(number("+stOne+"),number(" +stTwo+"))");
+		rtnBf.append("number("+stOne+")- number(" +stTwo+")");
 		return rtnBf.toString();
 	}
 	/**
 	 * 	Returns the product of the two factors
-	 * 	Example: concat('XPath ','is ','FUN!')
-	 *  Result: 'XPath is FUN!'
+	 * 	Example: multiplication(-3,5)
+	 *  Result: -15
 	 * @param functionType
 	 * @param paramters
 	 * @return
@@ -122,13 +121,13 @@ public class MathFunction {
 		String stOne=(String)paramters.get("factor1");
 		String stTwo=(String)paramters.get("factor2");
 	
-		rtnBf.append("sum(number("+stOne+"),number(" +stTwo+"))");
+		rtnBf.append("number("+stOne+")* number(" +stTwo+")");
 		return rtnBf.toString();
 	}
 	/**
 	 * 	Returns the quotient of the dividend and divisor arguments
-	 * 	Example: concat('XPath ','is ','FUN!')
-	 *  Result: 'XPath is FUN!'
+	 * 	Example: division(-3,5)
+	 *  Result: -0.6
 	 * @param functionType
 	 * @param paramters
 	 * @return
@@ -140,7 +139,26 @@ public class MathFunction {
 		String stOne=(String)paramters.get("dividend");
 		String stTwo=(String)paramters.get("divisor");
 	
-		rtnBf.append("sum(number("+stOne+"),number(" +stTwo+"))");
+		rtnBf.append("(number("+stOne+") div number(" +stTwo+"))");
+		return rtnBf.toString();
+	}
+	
+	/**
+	 * 	Returns the modulus of the dividend and divisor arguments
+	 * 	Example: modulus(-22,5)
+	 *  Result: -2
+	 * @param functionType
+	 * @param paramters
+	 * @return
+	 */
+	
+	public String modulus(FunctionType functionType, Map<String, String> paramters)
+	{
+		StringBuffer rtnBf=new StringBuffer();
+		String stOne=(String)paramters.get("dividend");
+		String stTwo=(String)paramters.get("divisor");
+	
+		rtnBf.append("(number("+stOne+") mod number(" +stTwo+"))");
 		return rtnBf.toString();
 	}
 }
