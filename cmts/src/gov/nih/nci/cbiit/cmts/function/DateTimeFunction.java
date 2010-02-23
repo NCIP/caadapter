@@ -9,6 +9,8 @@ public class DateTimeFunction {
 	
 	/**
 	 * Returns the duration in days (integer)
+	 * Example: countDays("2010-01-10", "2010-01-20")
+	 * Result: 10
 	 * @param functionType
 	 * @return
 	 */
@@ -17,8 +19,9 @@ public class DateTimeFunction {
 		//use day-from-date
 		//Example: day-from-date(xs:date("2005-04-23"))
 		//Result: 23
-
-		return "current-time()";
+		String startDay=paramters.get("startDate");
+		String endDay=paramters.get("endDate");
+		return "day-from-date(xs:date("+endDay +")) - day-from-date(xs:date("+startDay+"))";
 	}
 	
 	/**
