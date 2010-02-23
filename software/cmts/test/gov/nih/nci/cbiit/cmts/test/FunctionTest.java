@@ -1,5 +1,8 @@
 package gov.nih.nci.cbiit.cmts.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 
@@ -27,6 +30,26 @@ public class FunctionTest
 	 * test invoke function method 
 	 */
 	@Test
+	public void testFunctionMethod()  throws Exception 
+	{
+		String fName="gov.nih.nci.cbiit.cmts.function.DateTimeFunction";
+		String fMethod="countDays";
+		Map<String, String> paramters =new HashMap<String, String>();
+		paramters.put("startDate", "2010-02-10");
+		paramters.put("endDate", "2010-02-20");
+		Object argList[]=new Object[]{null,paramters };
+		
+		try {
+			FunctionInvoker.invokeFunctionMethod(fName, fMethod, argList);
+		} catch (FunctionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * test invoke function method 
+	 */
+	@Test
 	public void testFunctionInvoker()  throws Exception 
 	{
 		String fName="gov.nih.nci.cbiit.cmts.function.DateFunction";
@@ -41,6 +64,5 @@ public class FunctionTest
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 }
