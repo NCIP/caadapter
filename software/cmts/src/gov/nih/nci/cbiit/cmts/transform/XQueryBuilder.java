@@ -42,7 +42,6 @@ public class XQueryBuilder {
 	private Map<String, Map<String, LinkType>> allToFunctionLinks;
 	
 	private Map<String, FunctionType>functions;
-	private Map<String, String> varMap;
 	private Stack<String> xpathStack;
 	private Stack<String> varStack;
 
@@ -112,318 +111,496 @@ public class XQueryBuilder {
 		xpathStack = new Stack<String>();
 		varStack = new Stack<String>();
 		sbQuery = new StringBuffer();
-		varMap=new HashMap<String, String>();
-		sbQuery.append("declare variable $docName as xs:string external;" + sep);
+		sbQuery.append("declare variable $docName as xs:string external;" + sep +"document{");
+		varStack.push("doc($docName)");
 		processTargetElement(tgt.getRootElement(),null);
+		sbQuery.append("}");
 		return sbQuery.toString();
 	}
 	
-
 	/**
 	 * Process a target element:
-	 * Case I: The element is mapped
-	 * Case II: The element is not mapped, but its attribute is mapped
-	 * Case III: Neither the element nor its attribute is mapped. But its descendant
+	 * Case I: The element is mapped to a source node
+	 * Case II: The element is mapped to function output port
+	 * Case II.1: The function does not have input port
+	 * Case II.2: The function has one or more input ports
+	 * Case III: The element is not mapped, but its attribute is mapped
+	 * Case IV: Neither the element nor its attribute is mapped. But its descendant
 	 * is mapped
+	 * Case V: Others, empty element with/without default inline text
 	 * @param tgt
 	 * @param parentMappedXPath
 	 */
 	private void processTargetElement(ElementMeta tgt,String parentMappedXPath) {
 		xpathStack.push(tgt.getName());
 		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
-		String tgtMappingSrc=null;
+		String elementStartTag=" element "+ tgt.getName() + "{";
+		String inlineText="\"\"";
 		LinkType link = links.get(elementXpath);
 
-		if(link!=null) 
-		{
+		if(link!=null) 		
+		{ 	//Case I:
+			//create loop
+			String tgtMappingSrc=null;
 			tgtMappingSrc = link.getSource().getId();
-		}
-		else if (metaToFunctionLinks.get(elementXpath)!=null)
-		{
-			sbQuery.append("<"+tgt.getName()+">");
-			pullInlineText(tgt);
-			sbQuery.append("</"+tgt.getName()+">");
-			xpathStack.pop();
-			return;
-		}
-		else if (hasAnyMappedAttribute(tgt)!=null)
-		{
-			tgtMappingSrc=hasAnyMappedAttribute(tgt);
-		}
-		else if (hasMappedDescenant(tgt))
-		{
-			sbQuery.append("<"+tgt.getName()+">");
-			//child elements
-			for(ElementMeta e:tgt.getChildElement()) 
-				processTargetElement(e, tgtMappingSrc);
-			sbQuery.append("</"+tgt.getName()+">");
+			String var = "$item_temp"+String.valueOf(varStack.size());
+			sbQuery.append("for "+var+" in " +varStack.peek() );
+			String localpath = tgtMappingSrc;
+			if (parentMappedXPath!=null&&tgtMappingSrc!=null)
+				localpath =QueryBuilderUtil.retrieveRelativePath(parentMappedXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
+			sbQuery.append(localpath);
 			
-			xpathStack.pop();
-			return;
+			varStack.push(var);
+			
+			//build the target element
+			sbQuery.append(" return ").append(elementStartTag);//  element "+tgt.getName() +"{");
+			encodeAttribute(tgt, tgtMappingSrc);
+	
+			for(ElementMeta e:tgt.getChildElement()) 
+			{
+				processTargetElement(e, tgtMappingSrc);
+				sbQuery.append(",");
+			}
+			
+			//set online text
+			inlineText=var+"/text()";
+			varStack.pop();
 		}
 		else
 		{
-			//neither the element and its attribute 
-			//nor any of its descendant is mapped,
-			//ignore this element
-			sbQuery.append("<"+tgt.getName()+"/>");
-			xpathStack.pop();
-			return;
-			
+			LinkType fLink = metaToFunctionLinks.get(elementXpath);
+			if (fLink!=null)
+			{
+				//Case II:
+				String functionId=fLink.getTarget().getComponentid();
+				FunctionType inputFunction=functions.get(functionId);
+				if (inputFunction.getData().size()==1)
+				{
+					//Case II.1
+					sbQuery.append(elementStartTag);//" element "+tgt.getName() + " {");
+					//Case III:
+					encodeAttribute(tgt, parentMappedXPath);
+					//Case IV:
+					for(ElementMeta e:tgt.getChildElement()) 
+					{
+						processTargetElement(e, parentMappedXPath);
+						sbQuery.append(",");
+					}
+				
+					//set online text
+					inlineText="data(";
+					inlineText=inlineText+createQueryForFunctionNonInput(fLink);//, parentMappedXPath);
+					inlineText=inlineText+")";
+				}
+				else
+				{
+					//Case II.2
+					//Create a loop to invoke data manipulation function
+//					Map<String, LinkType> linkToFunction=allToFunctionLinks.get(link.getTarget().getComponentid());
+					Map<String,String> parameterMap=new HashMap<String,String>();
+					createQueryForFunctionWithInput(fLink,  parentMappedXPath);
+				}
+			}
+			else
+			{
+				//create empty element 
+				sbQuery.append(elementStartTag);//" element "+tgt.getName() + " {");
+				//Case III:
+				encodeAttribute(tgt, parentMappedXPath);
+				
+				if (hasMappedDescenant(tgt))
+				{
+					//Case IV:
+					for(ElementMeta e:tgt.getChildElement()) 
+					{
+						processTargetElement(e, parentMappedXPath);
+						sbQuery.append(",");
+					}
+				}
+				
+				//Case V
+				//set online text
+				if (tgt.getDefaultValue()!=null)
+					inlineText=tgt.getDefaultValue();
+			}
 		}
-		
-		//create loop to pull source data
-		String var = "item_temp"+String.valueOf(varStack.size());
-		if (xpathStack.size()>1) 
-			sbQuery.append("{");
-
-		sbQuery.append("for $"+var+" in ");
-		String localpath = null;
-		if (parentMappedXPath!=null)
-			localpath =QueryBuilderUtil.retrieveRelativePath(parentMappedXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
-
-		if(localpath == null) {
-			sbQuery.append("doc($docName)");
-			sbQuery.append(tgtMappingSrc);
-		}else {
-			sbQuery.append("$"+varStack.peek()).append(localpath);
-		}
-		sbQuery.append(" return ");
-		varMap.put(tgtMappingSrc, var);
-		varStack.push(var);
-		
-		//start tag and attributes
-		sbQuery.append("<"+tgt.getName());
-		processAttributes(tgt, tgtMappingSrc);
-		sbQuery.append(">");
-		
-		pullInlineText(tgt);//, tgtMappingSrc);
-		
-		//child elements
-		for(ElementMeta e:tgt.getChildElement()) 
-			processTargetElement(e, tgtMappingSrc);
-		
-		//end tag
-		sbQuery.append("</"+tgt.getName()+">");	
-		//close loop
-		if(xpathStack.size()>1) 
-			sbQuery.append("}");
-		sbQuery.append(sep);
-		
-		//clear temporary variable stack
-		varStack.pop();
+		// add inline text, close the element tag
+		sbQuery.append(inlineText).append("}");
 		xpathStack.pop();
 	}
 	
-	private void pullInlineTextFromFunction(ElementMeta tgtMeta, String elementPath)
-	{
-		LinkType link = metaToFunctionLinks.get(elementPath);
-		if (link==null)
-			return;
-		sbQuery.append(retrieveFunctionOutput(link));
-	}
-	
-	private String retrieveFunctionOutput(LinkType link)
-	{
-		FunctionType functionType=functions.get(link.getTarget().getComponentid());
-		Map<String, LinkType> linkToFunction=allToFunctionLinks.get(link.getTarget().getComponentid());
-		Map<String,String> parameterMap=new HashMap<String,String>();
-		//If there is only port in the functionType,
-		//it must be the output port, do nothing
-		if (functionType.getData().size()!=1)
-		{
-			//process all port related this functionType
-			for(FunctionData fData:functionType.getData())
-			{
-				//only consider input ports
-				if (fData.isInput())
-				{
-					if ((linkToFunction!=null)&(linkToFunction.get(fData.getName())!=null))
-					{
-						LinkType inputLink=linkToFunction.get(fData.getName());
-						if (inputLink.getSource().getComponentid().length()==1)
-						{
-							String linkSrId=linkToFunction.get(fData.getName()).getSource().getId();
-							parameterMap.put(fData.getName(), "{data(doc($docName)/"+linkSrId+")}" );
-						}
-						else
-						{ 
-							//a function is mapped to this input port, 
-							FunctionType inputFunction=functions.get(inputLink.getSource().getComponentid());
-							String inputSrcValue="";
-							Object inputFunctionArgList[]=new Object[]{inputFunction, new HashMap<String,String>()};
-							try {
-								inputSrcValue=(String)FunctionInvoker.invokeFunctionMethod(inputFunction.getClazz(), inputFunction.getMethod(), inputFunctionArgList);
-		 
-							} catch (FunctionException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							parameterMap.put(fData.getName(), inputSrcValue);
-						}
-					}
-					else //set the empty "string(()" function as default
-						parameterMap.put(fData.getName(), "string(\"\")");
-				}
-			}
-		}
-		Object argList[]=new Object[]{functionType, parameterMap};
-		
-		try {
-			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
-			return "{"+xqueryString +"}";
-		} catch (FunctionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 	/**
-	 * Pull online text
-	 * Case I: The source is an attribute
-	 * Case II: The source is an element, but the target is a leave element
-	 * Case III: Both the source and target are an element, but the target does have any child element mapped
-	 * @param tgtMeta
+	 * Set values for the attributes of an element
+	 * @param elementMeta - Target Element meta
+	 * @param mappedSourceNodeId - The previously mapped source node path, which is associated with the variable on varStack
 	 */
-	private void pullInlineText(ElementMeta tgtMeta)//, String tgtMappingSrc)
+	private void encodeAttribute(ElementMeta elementMeta, String mappedSourceNodeId)
 	{
-		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
-		
-		LinkType link = links.get(elementXpath);
-		if (link==null)
+		for(AttributeMeta a:elementMeta.getAttrData())
 		{
-			pullInlineTextFromFunction(tgtMeta, elementXpath);			
-			return ;
-		}
-
- 		String srcTextId = link.getSource().getId();
- 		boolean inlineTextRequred=false;
- 		if (srcTextId.indexOf("@")>-1)
- 			inlineTextRequred=true;
- 		else if (tgtMeta.getChildElement().isEmpty())
- 			inlineTextRequred=true;
- 		else if (!hasMappedDescenant(tgtMeta))
- 			inlineTextRequred=true;
- 
-//		if(links.get(elementXpath+"#inlinetext")!=null) 
-//		{ //map inline text for mixed node
-//			srcTextId = links.get(elementXpath+"#inlinetext").getSource().getId();
-//		}
- 
- 		if (!inlineTextRequred)
- 			return;
- 		
-		String srcDynamicPath=null;
-		if (srcTextId.indexOf("@")>-1)
-		{
-			String mappingSrcElementId=srcTextId.substring(0, srcTextId.lastIndexOf("/"));
-			String mappingSrcElementVar=varMap.get(mappingSrcElementId);
-			String srcAttrName=srcTextId.substring(srcTextId.indexOf("@"));
-			if (mappingSrcElementVar!=null)
-				srcDynamicPath=mappingSrcElementVar+"/"+srcAttrName;
-		}
-		else
-		{
-				srcDynamicPath=varStack.peek();
-		}
-		
-		if (srcDynamicPath!=null)
-			sbQuery.append("{data($").append(srcDynamicPath).append(")}");
-		else //use the absolute path of the attribute/element in case its parent element are not mapped
-			sbQuery.append("{data(doc($docName)").append(srcTextId+")}");				
-	}
-/**
- * Check if any descendant is mapped
- * @param tgtElement
- * @return
- */
-	private boolean hasMappedDescenant(ElementMeta tgtElement){
-		boolean rtnValue=false;
-		for (ElementMeta childMeta:tgtElement.getChildElement())
-		{
-			xpathStack.push(childMeta.getName());
-			String childXPath=QueryBuilderUtil.buildXPath(xpathStack);		
-			if (links.get(childXPath)!=null)
-				rtnValue=true;
-			else if (metaToFunctionLinks.get(childXPath)!=null)
-				rtnValue=true;
-			else if ( hasAnyMappedAttribute(childMeta)!=null)
-				rtnValue=true;
-			else if (hasMappedDescenant(childMeta))
-				rtnValue=true;
-
-			xpathStack.pop();
-			if (rtnValue)
-				break;
-		}
-		return rtnValue;
-	}
-	/**
-	 * Check if any attribute is mapped
-	 * @param tgtElement
-	 * @return
-	 */
-	private String hasAnyMappedAttribute(ElementMeta tgtElement)
-	{
-		StringBuilder sb = new StringBuilder();
-		for (String s:xpathStack) {
-			sb.append("/").append(s);
-		}
-
-		String rtnValue=null;
-		for(AttributeMeta a:tgtElement.getAttrData()) 
-		{
-			if(links.get(sb.toString()+"/@"+a.getName())!=null)
-			{
-				LinkType l = links.get(sb.toString()+"/@"+a.getName());
-				String attrMappingSrc = l.getSource().getId();
-				return attrMappingSrc;
-			}
-			else if(metaToFunctionLinks.get(sb.toString()+"/@"+a.getName())!=null)
-			{
-				LinkType l = metaToFunctionLinks.get(sb.toString()+"/@"+a.getName());
-				String attrMappingSrc = l.getSource().getId();
-				return attrMappingSrc;
-			}
-		}
-		
-		return rtnValue;
-	}
-	/**
-	 * Set attribute value
-	 * @param tgt
-	 * @param elementMapingSourceId
-	 */
-	private void processAttributes(ElementMeta tgt, String elementMapingSourceId) {
-		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
-		for(AttributeMeta a:tgt.getAttrData()) {
+			String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+			String attrValue="";
 			if(links.get(elementXpath+"/@"+a.getName())!=null) 
 			{
 				LinkType l = links.get(elementXpath+"/@"+a.getName());
 				String attrMappingSrc = l.getSource().getId();
 				String var = varStack.peek();
 				String localpath = null;
-				if(elementMapingSourceId!=null)
-					localpath =QueryBuilderUtil.retrieveRelativePath(elementMapingSourceId, attrMappingSrc);
-				//xquery data function return the value of an element or attribute
-				sbQuery.append(" ").append(a.getName()).append("=\"{data(");
-				sbQuery.append("$").append(var).append(localpath);
-				sbQuery.append(")}\"");
+				if(mappedSourceNodeId!=null)
+					localpath =QueryBuilderUtil.retrieveRelativePath(mappedSourceNodeId, attrMappingSrc);			
+				attrValue="data("+var;
+				attrValue=attrValue+localpath;
+				attrValue=attrValue+")";
 			}
-			else if(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())!=null) {
-				sbQuery.append(" ").append(a.getName()).append("=\"");
-				sbQuery.append(retrieveFunctionOutput(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())));
-				sbQuery.append("\"");
+			else if(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())!=null) 
+			{	
+				attrValue="data(";
+				attrValue=attrValue+createQueryForFunctionNonInput(metaToFunctionLinks.get(elementXpath+"/@"+a.getName()));//, mappedSourceNodeId);
+				attrValue=attrValue+")";
 			}
 			else if(a.getFixedValue()!=null) { //use fixed value first
-				sbQuery.append("\""+a.getFixedValue()+"\"");
+				attrValue="\""+a.getFixedValue()+"\"";
 			} 
 			else if(a.getDefaultValue()!=null) {//use default value
-				sbQuery.append(" ").append(a.getName()).append("=");
-				sbQuery.append("\""+a.getDefaultValue()+"\"");
+				attrValue="\""+a.getDefaultValue()+"\"";
 			}
+			if (attrValue!=null&&!attrValue.isEmpty())
+				sbQuery.append("attribute "+a.getName() +"{"+attrValue+"},");
 		}
 	}
+	private String createQueryForFunctionNonInput(LinkType link)
+	{
+		FunctionType functionType=functions.get(link.getTarget().getComponentid());
+		if (functionType.getData().size()!=1)
+			return "invalid function:"+functionType.getGroup()+":"+functionType.getName()+":"+functionType.getMethod();
+		Map<String,String> parameterMap=new HashMap<String,String>();
+		Object argList[]=new Object[]{functionType, parameterMap};
+		
+		try {
+			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
+			return xqueryString ;
+		} catch (FunctionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String createQueryForFunctionWithInput(LinkType link, String elementMapingSourceId)
+	{
+		FunctionType functionType=functions.get(link.getTarget().getComponentid());
+		//If there is only port in the functionType,
+		if (functionType.getData().size()==1)
+			return "invalid function:"+functionType.getGroup()+":"+functionType.getName()+":"+functionType.getMethod();
+
+		String var = varStack.peek();
+		Map<String, LinkType> linkToFunction=allToFunctionLinks.get(link.getTarget().getComponentid());
+		Map<String,String> parameterMap=new HashMap<String,String>();
+		//process all port related this functionType
+		for(FunctionData fData:functionType.getData())
+		{
+			//only consider input ports
+			if (!fData.isInput())
+				continue;
+ 
+			if ((linkToFunction!=null)&(linkToFunction.get(fData.getName())!=null))
+			{
+				LinkType inputLink=linkToFunction.get(fData.getName());
+				if (inputLink.getSource().getComponentid().length()==1)
+				{
+					String linkSrId=linkToFunction.get(fData.getName()).getSource().getId();
+					System.out
+							.println("XQueryBuilder.createQueryForFunctionWithInput()..function input link: port:"+fData.getName()+"="+linkSrId);
+					String parameterPath="$"+var;
+					String localpath = null;
+					if(elementMapingSourceId!=null)
+						localpath =QueryBuilderUtil.retrieveRelativePath(elementMapingSourceId, linkSrId);
+					if (localpath!=null)
+						parameterPath=parameterPath+localpath;
+					parameterMap.put(fData.getName(), parameterPath );
+				}
+				else
+				{ 
+					//a function is mapped to this input port, 
+					FunctionType inputFunction=functions.get(inputLink.getSource().getComponentid());
+					String inputSrcValue="";
+					Object inputFunctionArgList[]=new Object[]{inputFunction, new HashMap<String,String>()};
+					try {
+						inputSrcValue=(String)FunctionInvoker.invokeFunctionMethod(inputFunction.getClazz(), inputFunction.getMethod(), inputFunctionArgList);
+ 
+					} catch (FunctionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					parameterMap.put(fData.getName(), inputSrcValue);
+				}
+			}
+ 
+		}
+		Object argList[]=new Object[]{functionType, parameterMap};
+		
+		try {
+			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
+			return xqueryString ;
+		} catch (FunctionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Check if any descendant is mapped
+	 * @param tgtElement
+	 * @return
+	 */
+		private boolean hasMappedDescenant(ElementMeta tgtElement){
+			boolean rtnValue=false;
+			for (ElementMeta childMeta:tgtElement.getChildElement())
+			{
+				xpathStack.push(childMeta.getName());
+				String childXPath=QueryBuilderUtil.buildXPath(xpathStack);		
+				if (links.get(childXPath)!=null)
+					rtnValue=true;
+				else if (metaToFunctionLinks.get(childXPath)!=null)
+					rtnValue=true;
+				else if ( hasAnyMappedAttribute(childMeta)!=null)
+					rtnValue=true;
+				else if (hasMappedDescenant(childMeta))
+					rtnValue=true;
+
+				xpathStack.pop();
+				if (rtnValue)
+					break;
+			}
+			return rtnValue;
+		}
+		/**
+		 * Check if any attribute is mapped
+		 * @param tgtElement
+		 * @return
+		 */
+		private String hasAnyMappedAttribute(ElementMeta tgtElement)
+		{
+			String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+			String rtnValue=null;
+			for(AttributeMeta a:tgtElement.getAttrData()) 
+			{
+				if(links.get(elementXpath+"/@"+a.getName())!=null)
+				{
+					LinkType l = links.get(elementXpath+"/@"+a.getName());
+					String attrMappingSrc = l.getSource().getId();
+					return attrMappingSrc;
+				}
+				else if(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())!=null)
+				{
+					LinkType l = metaToFunctionLinks.get(elementXpath+"/@"+a.getName());
+					String attrMappingSrc = l.getSource().getId();
+					return attrMappingSrc;
+				}
+			}
+			return rtnValue;
+		}
+		
+//	/**
+//	 * Process a target element:
+//	 * Case I: The element is mapped
+//	 * Case II: The element is not mapped, but its attribute is mapped
+//	 * Case III: Neither the element nor its attribute is mapped. But its descendant
+//	 * is mapped
+//	 * @param tgt
+//	 * @param parentMappedXPath
+//	 */
+//	private void processTargetElement_saved(ElementMeta tgt,String parentMappedXPath) {
+//		xpathStack.push(tgt.getName());
+//		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+//		String tgtMappingSrc=null;
+//		LinkType link = links.get(elementXpath);
+//
+//		if(link!=null) 
+//		{
+//			tgtMappingSrc = link.getSource().getId();
+//		}
+//		else if (metaToFunctionLinks.get(elementXpath)!=null)
+//		{
+////			sbQuery.append("<"+tgt.getName()+">");
+////			pullInlineText(tgt, parentMappedXPath);
+////			sbQuery.append("</"+tgt.getName()+">");
+////			xpathStack.pop();
+////			return;
+//		}
+//		else if (hasAnyMappedAttribute(tgt)!=null)
+//		{
+//			tgtMappingSrc=hasAnyMappedAttribute(tgt);
+//		}
+//		else if (hasMappedDescenant(tgt))
+//		{
+//			sbQuery.append("<"+tgt.getName()+">");
+//			//child elements
+//			for(ElementMeta e:tgt.getChildElement()) 
+//				processTargetElement(e, tgtMappingSrc);
+//			sbQuery.append("</"+tgt.getName()+">");
+//			
+//			xpathStack.pop();
+//			return;
+//		}
+//		else
+//		{
+//			//neither the element and its attribute 
+//			//nor any of its descendant is mapped,
+//			//ignore this element
+//			sbQuery.append("<"+tgt.getName()+"/>");
+//			xpathStack.pop();
+//			return;
+//			
+//		}
+//		
+//		//create loop to pull source data
+//		String var = "item_temp"+String.valueOf(varStack.size());
+//		if (xpathStack.size()>1) 
+//			sbQuery.append("{");
+//
+//		sbQuery.append("for $"+var+" in ");
+//		String localpath = null;
+//		if (parentMappedXPath!=null)
+//			localpath =QueryBuilderUtil.retrieveRelativePath(parentMappedXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
+//
+//		if(localpath == null) {
+//			sbQuery.append("doc($docName)");
+//			sbQuery.append(tgtMappingSrc);
+//		}else {
+//			sbQuery.append("$"+varStack.peek()).append(localpath);
+//		}
+//		sbQuery.append(" return ");
+//		varMap.put(tgtMappingSrc, var);
+//		varStack.push(var);
+//		
+//		//start tag and attributes
+//		sbQuery.append("<"+tgt.getName());
+//		processAttributes(tgt, tgtMappingSrc);
+//		sbQuery.append(">");
+//		
+//		pullInlineText(tgt, null);//, tgtMappingSrc);
+//		
+//		//child elements
+//		for(ElementMeta e:tgt.getChildElement()) 
+//			processTargetElement(e, tgtMappingSrc);
+//		
+//		//end tag
+//		sbQuery.append("</"+tgt.getName()+">");	
+//		//close loop
+//		if(xpathStack.size()>1) 
+//			sbQuery.append("}");
+//		sbQuery.append(sep);
+//		
+//		//clear temporary variable stack
+//		varStack.pop();
+//		xpathStack.pop();
+//	}
+	
+//	private void pullInlineTextFromFunction(ElementMeta tgtMeta, String parentMappedPath)
+//	{
+//		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+//		LinkType link = metaToFunctionLinks.get(elementXpath);
+//		if (link==null)
+//			return;
+//		sbQuery.append("{data(");
+//		sbQuery.append(createQueryForFunctionLink(link, parentMappedPath));
+//		sbQuery.append(")}");
+//	}
+	
+
+//	/**
+//	 * Pull online text
+//	 * Case I: The source is an attribute
+//	 * Case II: The source is an element, but the target is a leave element
+//	 * Case III: Both the source and target are an element, but the target does have any child element mapped
+//	 * @param tgtMeta
+//	 */
+//	private void pullInlineText(ElementMeta tgtMeta, String parentMappingPath)
+//	{
+//		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+//		
+//		LinkType link = links.get(elementXpath);
+//		if (link==null)
+//		{
+//			pullInlineTextFromFunction(tgtMeta, parentMappingPath);			
+//			return ;
+//		}
+//
+// 		String srcTextId = link.getSource().getId();
+// 		boolean inlineTextRequred=false;
+// 		if (srcTextId.indexOf("@")>-1)
+// 			inlineTextRequred=true;
+// 		else if (tgtMeta.getChildElement().isEmpty())
+// 			inlineTextRequred=true;
+// 		else if (!hasMappedDescenant(tgtMeta))
+// 			inlineTextRequred=true;
+// 
+////		if(links.get(elementXpath+"#inlinetext")!=null) 
+////		{ //map inline text for mixed node
+////			srcTextId = links.get(elementXpath+"#inlinetext").getSource().getId();
+////		}
+// 
+// 		if (!inlineTextRequred)
+// 			return;
+// 		
+//		String srcDynamicPath=null;
+//		if (srcTextId.indexOf("@")>-1)
+//		{
+//			String mappingSrcElementId=srcTextId.substring(0, srcTextId.lastIndexOf("/"));
+//			String mappingSrcElementVar=varMap.get(mappingSrcElementId);
+//			String srcAttrName=srcTextId.substring(srcTextId.indexOf("@"));
+//			if (mappingSrcElementVar!=null)
+//				srcDynamicPath=mappingSrcElementVar+"/"+srcAttrName;
+//		}
+//		else
+//		{
+//				srcDynamicPath=varStack.peek();
+//		}
+//		
+//		if (srcDynamicPath!=null)
+//			sbQuery.append("{data($").append(srcDynamicPath).append(")}");
+//		else //use the absolute path of the attribute/element in case its parent element are not mapped
+//			sbQuery.append("{data(doc($docName)").append(srcTextId+")}");				
+//	}
+
+	
+//	/**
+//	 * Set attribute value
+//	 * @param tgt
+//	 * @param elementMapingSourceId
+//	 */
+//	private void processAttributes(ElementMeta tgt, String elementMapingSourceId) {
+//		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+//		for(AttributeMeta a:tgt.getAttrData()) {
+//			if(links.get(elementXpath+"/@"+a.getName())!=null) 
+//			{
+//				LinkType l = links.get(elementXpath+"/@"+a.getName());
+//				String attrMappingSrc = l.getSource().getId();
+//				String var = varStack.peek();
+//				String localpath = null;
+//				if(elementMapingSourceId!=null)
+//					localpath =QueryBuilderUtil.retrieveRelativePath(elementMapingSourceId, attrMappingSrc);
+//				//xquery data function return the value of an element or attribute
+//				sbQuery.append(" ").append(a.getName()).append("=\"{data(");
+//				sbQuery.append("$").append(var).append(localpath);
+//				sbQuery.append(")}\"");
+//			}
+//			else if(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())!=null) {
+//				sbQuery.append(" ").append(a.getName()).append("=\"{data{");
+//				sbQuery.append(createQueryForFunctionLink(metaToFunctionLinks.get(elementXpath+"/@"+a.getName()), elementMapingSourceId));
+//				sbQuery.append(")}\"");
+//			}
+//			else if(a.getFixedValue()!=null) { //use fixed value first
+//				sbQuery.append("\""+a.getFixedValue()+"\"");
+//			} 
+//			else if(a.getDefaultValue()!=null) {//use default value
+//				sbQuery.append(" ").append(a.getName()).append("=");
+//				sbQuery.append("\""+a.getDefaultValue()+"\"");
+//			}
+//		}
+//	}
 }
 
 /**
