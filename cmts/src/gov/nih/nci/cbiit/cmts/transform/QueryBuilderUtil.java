@@ -7,24 +7,24 @@ public class QueryBuilderUtil {
 
 	/**
 	 * Retrieve the relative path of an xpath based on current home path
-	 * @param currentHome
-	 * @param path
+	 * @param referencePath
+	 * @param absolutePath
 	 * @return
 	 */
-	public static String  retrieveRelativePath(String currentHome, String path)
+	public static String  retrieveRelativePath(String referencePath, String absolutePath)
 	{
-		
-		if (path.startsWith(currentHome))
+		if (referencePath==null)
+			return absolutePath; //the root element
+		if (absolutePath.startsWith(referencePath))
 		{
-			String pathEnd=path.substring(currentHome.length());
+			String pathEnd=absolutePath.substring(referencePath.length());
 			if (pathEnd.startsWith("/")||pathEnd.equals(""))
 				return pathEnd;
-//			return path.substring(currentHome.length());
 		}
 		
 		StringBuilder ancestorPath = new StringBuilder();
-		StringTokenizer stCur = new StringTokenizer(currentHome, "/");
-		StringTokenizer stNew = new StringTokenizer(path, "/");
+		StringTokenizer stCur = new StringTokenizer(referencePath, "/");
+		StringTokenizer stNew = new StringTokenizer(absolutePath, "/");
  
 		//find the common shared ancestor
 		while(stCur.hasMoreTokens() && stNew.hasMoreTokens()) 
@@ -35,19 +35,22 @@ public class QueryBuilderUtil {
 			else 
 				break;
 		}
-		if (ancestorPath.length()==0)//there not any shared ancestor
-			return null;
-		
-		//There are shared ancestor
 		String ret = "";
-		ret += "/..";
-		while(stCur.hasMoreTokens()) {
+		if (ancestorPath.length()==0)//there not any shared ancestor
+			ret=null;
+		else
+		{
+			
+			//There are shared ancestor
 			ret += "/..";
-			stCur.nextToken();
+			while(stCur.hasMoreTokens()) {
+				ret += "/..";
+				stCur.nextToken();
+			}
+			
+			ret += absolutePath.substring(ancestorPath.toString().length());
 		}
-		
-		ret += path.substring(ancestorPath.toString().length());
-		System.out.println("QueryBuilderUtil.retrieveRelativePath()...return...home="+currentHome+"...path="+path+"..relative="+ret);
+		System.out.println("QueryBuilderUtil.retrieveRelativePath()...return...home="+referencePath+"...path="+absolutePath+"..relative="+ret);
 		return ret;	
 	}
 	
@@ -57,7 +60,6 @@ public class QueryBuilderUtil {
 		for (String s:pathStack) {
 			sb.append("/").append(s);
 		}
-		
 		return sb.toString();
 	}
 }
