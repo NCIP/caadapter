@@ -137,7 +137,6 @@ public class XQueryBuilder {
 		String elementStartTag=" element "+ tgt.getName() + "{";
 		String inlineText="\"\"";
 		LinkType link = links.get(elementXpath);
-
 		if(link!=null) 		
 		{ 	//Case I:
 			//create loop
@@ -151,9 +150,8 @@ public class XQueryBuilder {
 			sbQuery.append(localpath);
 			
 			varStack.push(var);
-			
-			//build the target element
-			sbQuery.append(" return ").append(elementStartTag);//  element "+tgt.getName() +"{");
+			sbQuery.append(" return ");//
+			sbQuery.append(elementStartTag);
 			encodeAttribute(tgt, tgtMappingSrc);
 	
 			for(ElementMeta e:tgt.getChildElement()) 
@@ -177,37 +175,40 @@ public class XQueryBuilder {
 				if (inputFunction.getData().size()==1)
 				{
 					//Case II.1
-					sbQuery.append(elementStartTag);//" element "+tgt.getName() + " {");
-					//Case III:
+					sbQuery.append(elementStartTag);
 					encodeAttribute(tgt, parentMappedXPath);
-					//Case IV:
 					for(ElementMeta e:tgt.getChildElement()) 
 					{
 						processTargetElement(e, parentMappedXPath);
 						sbQuery.append(",");
 					}
-				
 					//set online text
 					inlineText="data(";
-					inlineText=inlineText+createQueryForFunctionNonInput(fLink);//, parentMappedXPath);
+					inlineText=inlineText+createQueryForFunctionNonInput(inputFunction);//, parentMappedXPath);
 					inlineText=inlineText+")";
 				}
 				else
 				{
 					//Case II.2
-					//Create a loop to invoke data manipulation function
-//					Map<String, LinkType> linkToFunction=allToFunctionLinks.get(link.getTarget().getComponentid());
-					Map<String,String> parameterMap=new HashMap<String,String>();
-					createQueryForFunctionWithInput(fLink,  parentMappedXPath);
+					//set inline text
+					//a loop will be create to invoke data manipulation function
+					inlineText=createQueryForFunctionWithInput(fLink,  parentMappedXPath);
+					
+					sbQuery.append(elementStartTag);
+					encodeAttribute(tgt, parentMappedXPath);
+					for(ElementMeta e:tgt.getChildElement()) 
+					{
+						processTargetElement(e, parentMappedXPath);
+						sbQuery.append(",");
+					}
 				}
 			}
 			else
-			{
+			{		
 				//create empty element 
 				sbQuery.append(elementStartTag);//" element "+tgt.getName() + " {");
 				//Case III:
-				encodeAttribute(tgt, parentMappedXPath);
-				
+				encodeAttribute(tgt, parentMappedXPath);				
 				if (hasMappedDescenant(tgt))
 				{
 					//Case IV:
@@ -224,6 +225,7 @@ public class XQueryBuilder {
 					inlineText=tgt.getDefaultValue();
 			}
 		}
+		
 		// add inline text, close the element tag
 		sbQuery.append(inlineText).append("}");
 		xpathStack.pop();
@@ -253,9 +255,10 @@ public class XQueryBuilder {
 				attrValue=attrValue+")";
 			}
 			else if(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())!=null) 
-			{	
+			{	LinkType fLink=metaToFunctionLinks.get(elementXpath+"/@"+a.getName());
+				FunctionType functionType=functions.get(fLink.getTarget().getComponentid());
 				attrValue="data(";
-				attrValue=attrValue+createQueryForFunctionNonInput(metaToFunctionLinks.get(elementXpath+"/@"+a.getName()));//, mappedSourceNodeId);
+				attrValue=attrValue+createQueryForFunctionNonInput(functionType);//, mappedSourceNodeId);
 				attrValue=attrValue+")";
 			}
 			else if(a.getFixedValue()!=null) { //use fixed value first
@@ -268,9 +271,8 @@ public class XQueryBuilder {
 				sbQuery.append("attribute "+a.getName() +"{"+attrValue+"},");
 		}
 	}
-	private String createQueryForFunctionNonInput(LinkType link)
+	private String createQueryForFunctionNonInput(FunctionType functionType)
 	{
-		FunctionType functionType=functions.get(link.getTarget().getComponentid());
 		if (functionType.getData().size()!=1)
 			return "invalid function:"+functionType.getGroup()+":"+functionType.getName()+":"+functionType.getMethod();
 		Map<String,String> parameterMap=new HashMap<String,String>();
@@ -283,7 +285,7 @@ public class XQueryBuilder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return "";
 	}
 	
 	private String createQueryForFunctionWithInput(LinkType link, String elementMapingSourceId)
@@ -297,21 +299,23 @@ public class XQueryBuilder {
 		Map<String, LinkType> linkToFunction=allToFunctionLinks.get(link.getTarget().getComponentid());
 		Map<String,String> parameterMap=new HashMap<String,String>();
 		//process all port related this functionType
-		for(FunctionData fData:functionType.getData())
+		if (linkToFunction!=null)
 		{
-			//only consider input ports
-			if (!fData.isInput())
-				continue;
- 
-			if ((linkToFunction!=null)&(linkToFunction.get(fData.getName())!=null))
+			for(FunctionData fData:functionType.getData())
 			{
-				LinkType inputLink=linkToFunction.get(fData.getName());
+				//only consider input ports
+				if (!fData.isInput())
+					continue;
+				LinkType inputLink=linkToFunction.get(fData.getName());		
+				if (inputLink==null)
+					continue;
+				
 				if (inputLink.getSource().getComponentid().length()==1)
 				{
-					String linkSrId=linkToFunction.get(fData.getName()).getSource().getId();
+					String linkSrId=inputLink.getSource().getId();
 					System.out
 							.println("XQueryBuilder.createQueryForFunctionWithInput()..function input link: port:"+fData.getName()+"="+linkSrId);
-					String parameterPath="$"+var;
+					String parameterPath=var;
 					String localpath = null;
 					if(elementMapingSourceId!=null)
 						localpath =QueryBuilderUtil.retrieveRelativePath(elementMapingSourceId, linkSrId);
@@ -323,22 +327,12 @@ public class XQueryBuilder {
 				{ 
 					//a function is mapped to this input port, 
 					FunctionType inputFunction=functions.get(inputLink.getSource().getComponentid());
-					String inputSrcValue="";
-					Object inputFunctionArgList[]=new Object[]{inputFunction, new HashMap<String,String>()};
-					try {
-						inputSrcValue=(String)FunctionInvoker.invokeFunctionMethod(inputFunction.getClazz(), inputFunction.getMethod(), inputFunctionArgList);
- 
-					} catch (FunctionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					String inputSrcValue=createQueryForFunctionNonInput(inputFunction);
 					parameterMap.put(fData.getName(), inputSrcValue);
 				}
 			}
- 
 		}
-		Object argList[]=new Object[]{functionType, parameterMap};
-		
+		Object argList[]=new Object[]{functionType, parameterMap};	
 		try {
 			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
 			return xqueryString ;
@@ -346,7 +340,7 @@ public class XQueryBuilder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return "";
 	}
 	
 	/**
