@@ -133,36 +133,35 @@ public class XQueryBuilder {
 	 */
 	private void processTargetElement(ElementMeta tgt,String parentMappedXPath) {
 		xpathStack.push(tgt.getName());
-		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+
+		//declar local controlling varables
+		String topVar=varStack.peek();
+		String referencePath=parentMappedXPath;
+		boolean childrenRequired=true;
 		String elementStartTag=" element "+ tgt.getName() + "{";
 		String inlineText="\"\"";
+		
+		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		LinkType link = links.get(elementXpath);
 		if(link!=null) 		
 		{ 	//Case I:
 			//create loop
 			String tgtMappingSrc=null;
 			tgtMappingSrc = link.getSource().getId();
+			if (tgtMappingSrc!=null)
+				referencePath=tgtMappingSrc;
+			
 			String var = "$item_temp"+String.valueOf(varStack.size());
 			sbQuery.append("for "+var+" in " +varStack.peek() );
 			String localpath = tgtMappingSrc;
-			if (parentMappedXPath!=null&&tgtMappingSrc!=null)
+			if (tgtMappingSrc!=null)
 				localpath =QueryBuilderUtil.retrieveRelativePath(parentMappedXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
 			sbQuery.append(localpath);
 			
 			varStack.push(var);
-			sbQuery.append(" return ");//
-			sbQuery.append(elementStartTag);
-			encodeAttribute(tgt, tgtMappingSrc);
-	
-			for(ElementMeta e:tgt.getChildElement()) 
-			{
-				processTargetElement(e, tgtMappingSrc);
-				sbQuery.append(",");
-			}
-			
+			sbQuery.append(" return ");	
 			//set online text
 			inlineText=var+"/text()";
-			varStack.pop();
 		}
 		else
 		{
@@ -175,13 +174,6 @@ public class XQueryBuilder {
 				if (inputFunction.getData().size()==1)
 				{
 					//Case II.1
-					sbQuery.append(elementStartTag);
-					encodeAttribute(tgt, parentMappedXPath);
-					for(ElementMeta e:tgt.getChildElement()) 
-					{
-						processTargetElement(e, parentMappedXPath);
-						sbQuery.append(",");
-					}
 					//set online text
 					inlineText="data(";
 					inlineText=inlineText+createQueryForFunctionNonInput(inputFunction);//, parentMappedXPath);
@@ -193,32 +185,11 @@ public class XQueryBuilder {
 					//set inline text
 					//a loop will be create to invoke data manipulation function
 					inlineText=createQueryForFunctionWithInput(fLink,  parentMappedXPath);
-					
-					sbQuery.append(elementStartTag);
-					encodeAttribute(tgt, parentMappedXPath);
-					for(ElementMeta e:tgt.getChildElement()) 
-					{
-						processTargetElement(e, parentMappedXPath);
-						sbQuery.append(",");
-					}
 				}
 			}
 			else
 			{		
-				//create empty element 
-				sbQuery.append(elementStartTag);//" element "+tgt.getName() + " {");
-				//Case III:
-				encodeAttribute(tgt, parentMappedXPath);				
-				if (hasMappedDescenant(tgt))
-				{
-					//Case IV:
-					for(ElementMeta e:tgt.getChildElement()) 
-					{
-						processTargetElement(e, parentMappedXPath);
-						sbQuery.append(",");
-					}
-				}
-				
+				childrenRequired=hasMappedDescenant(tgt);
 				//Case V
 				//set online text
 				if (tgt.getDefaultValue()!=null)
@@ -226,9 +197,23 @@ public class XQueryBuilder {
 			}
 		}
 		
+		sbQuery.append(elementStartTag);//" element "+tgt.getName() + " {");
+		//Case III:
+		encodeAttribute(tgt, referencePath);				
+		if (childrenRequired)
+		{
+			//Case IV:
+			for(ElementMeta e:tgt.getChildElement()) 
+			{
+				processTargetElement(e, referencePath);
+				sbQuery.append(",");
+			}
+		}
 		// add inline text, close the element tag
 		sbQuery.append(inlineText).append("}");
 		xpathStack.pop();
+		if (!topVar.equals(varStack.peek()))
+			varStack.pop();
 	}
 	
 	/**
@@ -246,12 +231,13 @@ public class XQueryBuilder {
 			{
 				LinkType l = links.get(elementXpath+"/@"+a.getName());
 				String attrMappingSrc = l.getSource().getId();
-				String var = varStack.peek();
+				attrValue="data("+varStack.peek();
 				String localpath = null;
-				if(mappedSourceNodeId!=null)
+//				if(mappedSourceNodeId!=null)
+//				{
 					localpath =QueryBuilderUtil.retrieveRelativePath(mappedSourceNodeId, attrMappingSrc);			
-				attrValue="data("+var;
-				attrValue=attrValue+localpath;
+					attrValue=attrValue+localpath;
+//				}
 				attrValue=attrValue+")";
 			}
 			else if(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())!=null) 
@@ -316,11 +302,8 @@ public class XQueryBuilder {
 					System.out
 							.println("XQueryBuilder.createQueryForFunctionWithInput()..function input link: port:"+fData.getName()+"="+linkSrId);
 					String parameterPath=var;
-					String localpath = null;
-					if(elementMapingSourceId!=null)
-						localpath =QueryBuilderUtil.retrieveRelativePath(elementMapingSourceId, linkSrId);
-					if (localpath!=null)
-						parameterPath=parameterPath+localpath;
+					String localpath =QueryBuilderUtil.retrieveRelativePath(elementMapingSourceId, linkSrId);
+					parameterPath=parameterPath+localpath;
 					parameterMap.put(fData.getName(), parameterPath );
 				}
 				else
