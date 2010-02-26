@@ -76,11 +76,11 @@ public class TransformTest {
 	@Test
 	public void testMappingAndTransformation() throws JAXBException, XQException
 	{
-//		String mappingFile="workingspace/hl7v3/examples/testMapping.xml";//PORT_MT_TO_IN020001mapping.xml";
-//		String mappingFile="workingspace/hl7v3/examples/PORT_MT_TO_IN020001mapping.xml";
-//		String srcFile = "workingspace/hl7v3/examples/PORT_EX020001UV.xml";  
 		String mappingFile="workingspace/simpleMapping/mapping.xml";
 		String srcFile = "workingspace/simpleMapping/shiporder.xml";
+
+//		String mappingFile="workingspace/hl7v3/examples/PORT_MT_TO_IN020001mapping.xml";
+//		String srcFile = "workingspace/hl7v3/examples/PORT_EX020001UV.xml";  
 //		String mappingFile="workingspace/siblingMapping/mapping.xml";
 //		String srcFile = "workingspace/siblingMapping/shiporder.xml";
 //		String mappingFile="workingspace/parentChildInverted/mapping.xml";
@@ -105,33 +105,14 @@ public class TransformTest {
 	@Test
 	public void testXQueryTransform() throws XQException {
 		final String sep = System.getProperty("line.separator");
-		String queryString =
-			"declare variable $docName as xs:string external;" + sep +
-			"for $item_temp0 in doc($docName)/PORT_MT020001UV01.AnnotatedECG return element result {element item {for $item_temp1 in $item_temp0/id return attribute id {data($item_temp1/@root)}, " +
-			"attribute myaattr {\"testing\"}," +
-			" attribute yourAttr {-2+ 5}"+
-			" }}";
-
-//			"<result>" +
-//			"{" +
-//			"      for $item in doc($docName)//item " +
-//			"    where $item/price > 10 " +
-//			"      and $item/quantity > 0 " +
-//			" order by $item/title " +
-//			"   return " +
-//			"<shipitem><name>{$item/title/text()}</name>" +
-//			" <buyer>{data($item/../@orderid)}</buyer>" +
-//			" {for $subItem in $item/../@orderid return <buyer1>{data($subItem)}</buyer1>}" +
-//			" <quantity>{$item/quantity/text()}</quantity></shipitem>" +
-//			"}</result>";
-		
-
+		String queryString ="declare variable $docName as xs:string external; document{ " +
+				"element printorder{attribute orderid{data(doc($docName)/shiporder/@orderid)},attribute printType{data(string(\"localPrintType\"))}, element buyer{concat(doc($docName)/shiporder/orderperson,current-date())}, element address{for $item_temp1 in doc($docName)/shiporder/shipto/name return  element name{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/address return  element street{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/city return  element city{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/country return  element country{$item_temp1/text()},\"\"},for $item_temp1 in doc($docName)/shiporder/item return  element item{ element name{data(string(\"local Name\"))}, element description{concat($item_temp1/title,$item_temp1/note)},for $item_temp2 in $item_temp1/quantity return  element quantity{$item_temp2/text()}, element price{day-from-date(xs:date(string(\"2010-01-25\"))) - day-from-date(xs:date(string(\"2010-01-01\")))}, $item_temp1/text()}}"+
+				"}";
 		
 		System.out.println("TransformTest.testXQueryTransform()\n"+queryString);
 		XQueryTransformer tester= new XQueryTransformer();
-		String srcFile="workingspace/hl7v3/examples/PORT_EX020001UV.xml";
-//		String srcFile = "workingspace/simpleMapping/shiporder.xml";//purchase.xml";
-//		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
+		String srcFile = "workingspace/simpleMapping/shiporder.xml";//purchase.xml";
+ 
 		tester.setFilename(srcFile);
 		tester.setQuery(queryString);
 		System.out.println(tester.executeQuery());
@@ -143,7 +124,7 @@ public class TransformTest {
 		Mapping map = MappingFactory.loadMapping(new File(mapFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
-		//System.out.println("$$$$$$ query: \n"+queryString);
+		System.out.println("$$$$$$ query: \n"+queryString);
 		FileWriter w = new FileWriter("bin/tranform.xq");
 		w.write(queryString);
 		w.close();
