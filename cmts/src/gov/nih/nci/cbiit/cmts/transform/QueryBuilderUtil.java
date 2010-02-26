@@ -36,11 +36,8 @@ public class QueryBuilderUtil {
 				break;
 		}
 		String ret = "";
-		if (ancestorPath.length()==0)//there not any shared ancestor
-			ret=null;
-		else
-		{
-			
+		if (ancestorPath.length()!=0)//there not any shared ancestor
+		{	
 			//There are shared ancestor
 			ret += "/..";
 			while(stCur.hasMoreTokens()) {
