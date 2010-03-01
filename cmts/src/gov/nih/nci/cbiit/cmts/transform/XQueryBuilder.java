@@ -134,34 +134,24 @@ public class XQueryBuilder {
 	private void processTargetElement(ElementMeta tgt,String parentMappedXPath) {
 		xpathStack.push(tgt.getName());
 
-		//declar local controlling varables
-		String topVar=varStack.peek();
-		String referencePath=parentMappedXPath;
-		boolean childrenRequired=true;
-		String elementStartTag=" element "+ tgt.getName() + "{";
 		String inlineText="\"\"";
-		
 		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		LinkType link = links.get(elementXpath);
 		if(link!=null) 		
 		{ 	//Case I:
 			//create loop
-			String tgtMappingSrc=null;
-			tgtMappingSrc = link.getSource().getId();
-			if (tgtMappingSrc!=null)
-				referencePath=tgtMappingSrc;
-			
+			String tgtMappingSrc=link.getSource().getId();
+			String localpath =QueryBuilderUtil.retrieveRelativePath(parentMappedXPath, tgtMappingSrc);
 			String var = "$item_temp"+String.valueOf(varStack.size());
-			sbQuery.append("for "+var+" in " +varStack.peek() );
-			String localpath = tgtMappingSrc;
-			if (tgtMappingSrc!=null)
-				localpath =QueryBuilderUtil.retrieveRelativePath(parentMappedXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
-			sbQuery.append(localpath);
-			
+			sbQuery.append("for "+var+" in " +varStack.peek() );			
+			sbQuery.append(localpath);			
 			varStack.push(var);
+			
 			sbQuery.append(" return ");	
 			//set online text
 			inlineText=var+"/text()";
+			encodeElement(tgt, tgtMappingSrc,inlineText,true);
+			varStack.pop();
 		}
 		else
 		{
@@ -175,9 +165,8 @@ public class XQueryBuilder {
 				{
 					//Case II.1
 					//set online text
-					inlineText="data(";
-					inlineText=inlineText+createQueryForFunctionNonInput(inputFunction);//, parentMappedXPath);
-					inlineText=inlineText+")";
+					inlineText=createQueryForFunctionNonInput(inputFunction);
+					encodeElement(tgt, parentMappedXPath,inlineText,true);
 				}
 				else
 				{
@@ -185,25 +174,35 @@ public class XQueryBuilder {
 					//set inline text
 					//a loop will be create to invoke data manipulation function
 					inlineText=createQueryForFunctionWithInput(fLink,  parentMappedXPath);
+					encodeElement(tgt, parentMappedXPath,inlineText,true);
 				}
 			}
 			else
 			{		
-				childrenRequired=hasMappedDescenant(tgt);
-				//Case V
+				//Case III && IV:
+				//The current element is not mapped, but its attribute or descendant may be mapped
+				boolean childrenRequired=hasMappedDescenant(tgt);
+				
+				//Case V: create an empty element
 				//set online text
 				if (tgt.getDefaultValue()!=null)
 					inlineText=tgt.getDefaultValue();
+				encodeElement(tgt, parentMappedXPath,inlineText,childrenRequired);
 			}
 		}
-		
-		sbQuery.append(elementStartTag);//" element "+tgt.getName() + " {");
-		//Case III:
-		encodeAttribute(tgt, referencePath);				
+		xpathStack.pop();
+	}
+	
+	private void encodeElement(ElementMeta elementMeta, String referencePath,  String inlineText, boolean childrenRequired)
+	{
+		sbQuery.append(" element "+ elementMeta.getName() + "{");
+		//add attributes
+		encodeAttribute(elementMeta, referencePath);	
+
+		//process  children elements if required
 		if (childrenRequired)
 		{
-			//Case IV:
-			for(ElementMeta e:tgt.getChildElement()) 
+			for(ElementMeta e:elementMeta.getChildElement()) 
 			{
 				processTargetElement(e, referencePath);
 				sbQuery.append(",");
@@ -211,13 +210,15 @@ public class XQueryBuilder {
 		}
 		// add inline text, close the element tag
 		sbQuery.append(inlineText).append("}");
-		xpathStack.pop();
-		if (!topVar.equals(varStack.peek()))
-			varStack.pop();
 	}
-	
 	/**
 	 * Set values for the attributes of an element
+	 * Case I: The attribute is mapped from a source item
+	 * Case II.1: The attribute is mapped to the out put port of a function without input port
+	 * Case II.2: The attribute is mapped to the out put port of a function with one or more input ports
+	 * Case III :use fixed value first
+	 * Case IV : use default value
+	 * Case V: Ignore this attribute
 	 * @param elementMeta - Target Element meta
 	 * @param mappedSourceNodeId - The previously mapped source node path, which is associated with the variable on varStack
 	 */
@@ -229,32 +230,42 @@ public class XQueryBuilder {
 			String attrValue="";
 			if(links.get(elementXpath+"/@"+a.getName())!=null) 
 			{
+				//Case I
 				LinkType l = links.get(elementXpath+"/@"+a.getName());
 				String attrMappingSrc = l.getSource().getId();
 				attrValue="data("+varStack.peek();
 				String localpath = null;
-//				if(mappedSourceNodeId!=null)
-//				{
-					localpath =QueryBuilderUtil.retrieveRelativePath(mappedSourceNodeId, attrMappingSrc);			
-					attrValue=attrValue+localpath;
-//				}
+				localpath =QueryBuilderUtil.retrieveRelativePath(mappedSourceNodeId, attrMappingSrc);			
+				attrValue=attrValue+localpath;
 				attrValue=attrValue+")";
 			}
 			else if(metaToFunctionLinks.get(elementXpath+"/@"+a.getName())!=null) 
-			{	LinkType fLink=metaToFunctionLinks.get(elementXpath+"/@"+a.getName());
-				FunctionType functionType=functions.get(fLink.getTarget().getComponentid());
-				attrValue="data(";
-				attrValue=attrValue+createQueryForFunctionNonInput(functionType);//, mappedSourceNodeId);
-				attrValue=attrValue+")";
+			{	
+				//Case II:
+				LinkType fLink=metaToFunctionLinks.get(elementXpath+"/@"+a.getName());
+				String functionId=fLink.getTarget().getComponentid();
+				FunctionType inputFunction=functions.get(functionId);
+				if (inputFunction.getData().size()==1)
+				{
+					//Case II.1: The linked function dose not have input port
+					FunctionType functionType=functions.get(fLink.getTarget().getComponentid());
+					attrValue=attrValue+createQueryForFunctionNonInput(functionType);
+				}
+				else
+				{
+					//Case II.2: The linked function has one or more input ports
+					attrValue=createQueryForFunctionWithInput(fLink,  mappedSourceNodeId);
+				}
 			}
-			else if(a.getFixedValue()!=null) { //use fixed value first
+			else if(a.getFixedValue()!=null) { //Case III
 				attrValue="\""+a.getFixedValue()+"\"";
 			} 
-			else if(a.getDefaultValue()!=null) {//use default value
+			else if(a.getDefaultValue()!=null) {//Case IV
 				attrValue="\""+a.getDefaultValue()+"\"";
 			}
-			if (attrValue!=null&&!attrValue.isEmpty())
-				sbQuery.append("attribute "+a.getName() +"{"+attrValue+"},");
+			else //Case V
+				continue;
+			sbQuery.append("attribute "+a.getName() +"{"+attrValue+"},");
 		}
 	}
 	private String createQueryForFunctionNonInput(FunctionType functionType)
