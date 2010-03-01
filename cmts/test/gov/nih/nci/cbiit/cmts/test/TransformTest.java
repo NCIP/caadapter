@@ -11,7 +11,6 @@ import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
-import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -104,9 +103,8 @@ public class TransformTest {
 	 */
 	@Test
 	public void testXQueryTransform() throws XQException {
-		final String sep = System.getProperty("line.separator");
 		String queryString ="declare variable $docName as xs:string external; document{ " +
-				"element printorder{attribute orderid{data(doc($docName)/shiporder/@orderid)},attribute printType{data(string(\"localPrintType\"))}, element buyer{concat(doc($docName)/shiporder/orderperson,current-date())}, element address{for $item_temp1 in doc($docName)/shiporder/shipto/name return  element name{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/address return  element street{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/city return  element city{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/country return  element country{$item_temp1/text()},\"\"},for $item_temp1 in doc($docName)/shiporder/item return  element item{ element name{data(string(\"local Name\"))}, element description{concat($item_temp1/title,$item_temp1/note)},for $item_temp2 in $item_temp1/quantity return  element quantity{$item_temp2/text()}, element price{day-from-date(xs:date(string(\"2010-01-25\"))) - day-from-date(xs:date(string(\"2010-01-01\")))}, $item_temp1/text()}}"+
+				"element printorder{attribute orderid{data(doc($docName)/shiporder/@orderid)},attribute printType{data(string(\"localPrintType\"))}, element buyer{concat(doc($docName)/shiporder/orderperson,current-date())}, element address{for $item_temp1 in doc($docName)/shiporder/shipto/name return  element name{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/address return  element street{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/city return  element city{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/country return  element country{$item_temp1/text()},\"\"},for $item_temp1 in doc($docName)/shiporder/item return  element item{ element name{data(string(\"local Name\"))}, element description{concat($item_temp1/title,$item_temp1/note)},for $item_temp2 in $item_temp1/quantity return  element quantity{$item_temp2/text()}, element price{ for $i in (\"1\",\"2\",\"3\")let $attrName:=concat(\"attrName\",$i) return attribute {$attrName} {$i}, day-from-date(xs:date(string(\"2010-01-25\"))) - day-from-date(xs:date(string(\"2010-01-01\")))}, $item_temp1/text()}}"+
 				"}";
 		
 		System.out.println("TransformTest.testXQueryTransform()\n"+queryString);
@@ -119,7 +117,7 @@ public class TransformTest {
 	}
 
 	@Test
-	public void testCMPSTransform() throws XQException, JAXBException, IOException {
+	public void testCTransformAndOutput() throws XQException, JAXBException, IOException {
 		String mapFile="workingspace/simpleMapping/mapping1.xml";
 		Mapping map = MappingFactory.loadMapping(new File(mapFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
@@ -133,48 +131,23 @@ public class TransformTest {
 		tester.setFilename("workingspace/simpleMapping/shiporder.xml");
 		tester.setQuery(queryString);
 		System.out.println("TransformTest.testCMPSTransform()..:\n"+tester.executeQuery());
-//		
-//		w = new FileWriter("bin/tranform.out.xml");
-//		w.write(tester.executeQuery());
-//		w.close();
-	}
-
-	@Test
-	public void testCMPSTransform1() throws XQException, JAXBException, IOException {
-		Mapping map = MappingFactory.loadMapping(new File("workingspace/mapping1.xml"));
-		XQueryBuilder builder = new XQueryBuilder(map);
-		String queryString = builder.getXQuery();
-		//System.out.println("$$$$$$ query: \n"+queryString);
-		FileWriter w = new FileWriter("bin/tranform1.xq");
-		w.write(queryString);
-		w.close();
 		
-		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("workingspace/shiporder.xml");
-		tester.setQuery(queryString);
-		w = new FileWriter("bin/tranform1.out.xml");
+		w = new FileWriter("bin/tranform.out.xml");
 		w.write(tester.executeQuery());
 		w.close();
 	}
 
 	@Test
-	public void testCMPSTransform2() throws XQException, JAXBException, IOException {
+	public void testXQueryBuilder() throws XQException, JAXBException, IOException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Unmarshaller u = jc.createUnmarshaller();
-		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("workingspace/mapping2.xml")), Mapping.class);
+		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("workingspace/simpleMapping/mapping.xml")), Mapping.class);
 		Mapping map = m.getValue();
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
-		//System.out.println("$$$$$$ query: \n"+queryString);
+		System.out.println("$$$$$$ query: \n"+queryString);
 		FileWriter w = new FileWriter("bin/tranform2.xq");
 		w.write(queryString);
-		w.close();
-		
-		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("workingspace/shiporder.xml");
-		tester.setQuery(queryString);
-		w = new FileWriter("bin/tranform2.out.xml");
-		w.write(tester.executeQuery());
 		w.close();
 	}
 
