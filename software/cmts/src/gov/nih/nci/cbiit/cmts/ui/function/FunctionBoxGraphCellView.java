@@ -147,7 +147,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 				label.setIcon(imageIcon);
 				mainPanel.add(label, BorderLayout.NORTH);
 				if (functionCell.getInputElements().isEmpty())
-					return renderConstantFunction(functionCell, mainPanel);
+					return renderFunctionWithoutInputPort(functionCell, mainPanel);
 						
 				return renderNormalFunction(functionCell, mainPanel);
 			}
@@ -161,7 +161,7 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 	 * @param mainPanel
 	 * @return this component
 	 */
-	private JComponent renderConstantFunction(FunctionBoxGraphCell function, JPanel mainPanel)
+	private JComponent renderFunctionWithoutInputPort(FunctionBoxGraphCell function, JPanel mainPanel)
 	{
 		FunctionDef functionConstant = function.getFunctionDef();
 		JTextArea area = new JTextArea(functionConstant.getName().toString());
@@ -183,38 +183,14 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 	{
 		JPanel centerPanel = new JPanel(new GridLayout(1, 2));
 		centerPanel.setBorder(getDefaultBorder(1, 0, 1, 0));
-
-//				JPanel leftOuterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, GAP_INTERVAL, GAP_INTERVAL));
 		JPanel leftPanel = new JPanel(new GridLayout(function.getInputElements().size(), 1, GAP_INTERVAL, GAP_INTERVAL));
-//				leftPanel.setBackground(backgroundColor);
 		addParameters(leftPanel, function, true);
-//			leftOuterPanel.add(leftPanel);
-//			addComponentToPanelByGridBagLayout(leftOuterPanel, leftPanel, 0, 1, true);
-//				leftOuterPanel.setBorder(getDefaultBorder(0, 0, 0, 0));
-//				leftOuterPanel.setBackground(backgroundColor);
-
-//				JPanel rightOuterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, GAP_INTERVAL, GAP_INTERVAL));
 		JPanel rightPanel = new JPanel(new GridLayout(function.getOutputElements().size(), 1, GAP_INTERVAL, GAP_INTERVAL));
-//				rightPanel.setBackground(backgroundColor);
-		addParameters(rightPanel, function, false);
-//			rightOuterPanel.add(rightPanel);
-//			addComponentToPanelByGridBagLayout(rightOuterPanel, rightPanel, 0, 1, true);
-//				rightOuterPanel.setBorder(getDefaultBorder(0, 1, 0, 0));
-//				rightOuterPanel.setBackground(backgroundColor);
-
-		//to leave some space between edge and display text.
-//			centerPanel.add(leftPanel);
-//			centerPanel.add(rightPanel);
-//			centerPanel.add(leftOuterPanel);
-//			centerPanel.add(rightOuterPanel);
-
+ 		addParameters(rightPanel, function, false);
 		addComponentToPanelByGridBagLayout(centerPanel, leftPanel, 0, 2, false);
 		addComponentToPanelByGridBagLayout(centerPanel, rightPanel, 1, 2, false);
 
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
-//			mainPanel.add(getSpaceFiller(), BorderLayout.EAST);
-//			mainPanel.add(getSpaceFiller(), BorderLayout.WEST);
-//			this.getViewport().setView(mainPanel);
 		int compSize = this.getComponentCount();
 		if(compSize>0)
 		{//clean up before moving forward
