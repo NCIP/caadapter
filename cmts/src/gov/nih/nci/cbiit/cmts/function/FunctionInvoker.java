@@ -7,9 +7,9 @@ public class FunctionInvoker {
 
 	public static Object invokeFunctionMethod(String functionName, String methodName, Object argList[]) throws FunctionException
 	{
-       Class targetClass;
 		try {
-			targetClass = Class.forName(functionName);
+			// Use Class<?> if the class being modeled is unknown.
+			Class<?> targetClass = Class.forName(functionName);
 			Method[] allMethods=targetClass.getMethods();
 			//find the target method by name
 			Method targetMethod=null;
