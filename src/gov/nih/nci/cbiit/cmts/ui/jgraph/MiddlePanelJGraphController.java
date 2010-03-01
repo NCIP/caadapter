@@ -95,15 +95,22 @@ public class MiddlePanelJGraphController {
 
 		functionViewtype.setX(BigInteger.valueOf((int) startPoint.getX()));
 		functionViewtype.setY(BigInteger.valueOf((int) startPoint.getY()));
-		if (function.getName().equalsIgnoreCase("constant")) {
-			functionViewtype.setHight(BigInteger.valueOf(50));
-			functionViewtype.setWidth(BigInteger.valueOf(100));
-		}
+
 		FunctionBoxGraphCell functionBox = FunctionBoxUsageManager
 				.getInstance().createOneFunctionBoxGraphCell(function,
 						functionViewtype, mappingPanel.getRootContainer());
 		if (functionBox == null) {
 			return false;
+		}
+		if (functionBox.getInputElements().isEmpty())
+		{
+			functionBox.getViewMeta().setHight(BigInteger.valueOf(50));
+			functionBox.getViewMeta().setWidth(BigInteger.valueOf(100));
+		}
+		else
+		{
+			int viewH=functionBox.getInputElements().size()*20 +28;		
+			functionBox.getViewMeta().setHight(BigInteger.valueOf(viewH));
 		}
 		return addFunctionInstance(functionBox);
 	}
