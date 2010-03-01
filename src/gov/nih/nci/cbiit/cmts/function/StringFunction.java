@@ -65,8 +65,11 @@ public class StringFunction {
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		String stOne=(String)paramters.get("string1");
+		if (stOne==null)
+			stOne="\"\"";
 		String stTwo=(String)paramters.get("string2");
-	
+		if (stTwo==null)
+			stTwo="\"\"";
 		rtnBf.append("concat("+stOne+"," +stTwo+")");
 		return rtnBf.toString();
 	}
@@ -122,7 +125,7 @@ public class StringFunction {
 		String stStart=(String)paramters.get("start");
 		String stEnd=(String)paramters.get("end");
 		rtnBf.append("substring("+stOne+"," 
-				+stStart+","+stEnd+")");//+reformatStingParameter(stStart)+"," +reformatStingParameter(stEnd)+")}");
+				+stStart+","+stEnd+")");
 		return rtnBf.toString();
 	}
 	/**
