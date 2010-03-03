@@ -9,7 +9,6 @@
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
-import gov.nih.nci.cbiit.cmts.core.FunctionDef;
 import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAllAction;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
@@ -112,8 +111,10 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			//System.out.println("mouse Left Pressed().");
 			GraphSelectionModel gModel = graph.getSelectionModel();
 			gModel.clearSelection();
-			controller.getMappingPanel().getSourceTree().clearSelection();
-			controller.getMappingPanel().getTargetTree().clearSelection();
+			if(controller.getMappingPanel().getSourceTree()!=null)
+				controller.getMappingPanel().getSourceTree().clearSelection();
+			if(controller.getMappingPanel().getTargetTree()!=null)
+				controller.getMappingPanel().getTargetTree().clearSelection();
 		}
 
 		currentPoint = e.getPoint();
