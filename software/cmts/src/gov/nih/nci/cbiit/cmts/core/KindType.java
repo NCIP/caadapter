@@ -38,7 +38,9 @@ public enum KindType {
     @XmlEnumValue("csv")
     CSV("csv"),
     @XmlEnumValue("core")
-    CORE("core");
+    CORE("core"),
+    @XmlEnumValue("xmi")
+    XMI("xmi");
     private final String value;
 
     KindType(String v) {
