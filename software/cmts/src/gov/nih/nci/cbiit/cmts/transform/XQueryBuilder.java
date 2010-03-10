@@ -131,9 +131,9 @@ public class XQueryBuilder {
 	 * @param tgt
 	 * @param parentMappedXPath
 	 */
-	private void processTargetElement(ElementMeta tgt,String parentMappedXPath) {
+	private boolean processTargetElement(ElementMeta tgt,String parentMappedXPath) {
 		xpathStack.push(tgt.getName());
-
+		boolean elementCreated=false;
 		String inlineText="\"\"";
 		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		LinkType link = links.get(elementXpath);
@@ -152,6 +152,7 @@ public class XQueryBuilder {
 			inlineText=var+"/text()";
 			encodeElement(tgt, tgtMappingSrc,inlineText,true);
 			varStack.pop();
+			elementCreated=true;
 		}
 		else
 		{
@@ -167,6 +168,7 @@ public class XQueryBuilder {
 					//set online text
 					inlineText=createQueryForFunctionNonInput(inputFunction);
 					encodeElement(tgt, parentMappedXPath,inlineText,true);
+					elementCreated=true;
 				}
 				else
 				{
@@ -175,22 +177,31 @@ public class XQueryBuilder {
 					//a loop will be create to invoke data manipulation function
 					inlineText=createQueryForFunctionWithInput(fLink,  parentMappedXPath);
 					encodeElement(tgt, parentMappedXPath,inlineText,true);
+					elementCreated=true;
 				}
 			}
-			else
+			else if (hasMappedDescenant(tgt))
 			{		
 				//Case III && IV:
 				//The current element is not mapped, but its attribute or descendant may be mapped
-				boolean childrenRequired=hasMappedDescenant(tgt);
-				
-				//Case V: create an empty element
 				//set online text
 				if (tgt.getDefaultValue()!=null)
 					inlineText=tgt.getDefaultValue();
-				encodeElement(tgt, parentMappedXPath,inlineText,childrenRequired);
+				encodeElement(tgt, parentMappedXPath,inlineText,true);
+				elementCreated=true;
+			}
+			else if (tgt.getMinOccurs().intValue()>0)
+			{
+				//Case V: create an empty element only if it is mandatory
+				//set online text
+				if (tgt.getDefaultValue()!=null)
+					inlineText=tgt.getDefaultValue();
+				encodeElement(tgt, parentMappedXPath,inlineText,false);
+				elementCreated=true;
 			}
 		}
 		xpathStack.pop();
+		return elementCreated;
 	}
 	
 	private void encodeElement(ElementMeta elementMeta, String referencePath,  String inlineText, boolean childrenRequired)
@@ -204,8 +215,8 @@ public class XQueryBuilder {
 		{
 			for(ElementMeta e:elementMeta.getChildElement()) 
 			{
-				processTargetElement(e, referencePath);
-				sbQuery.append(",");
+				if (processTargetElement(e, referencePath))
+					sbQuery.append(",");
 			}
 		}
 		// add inline text, close the element tag
