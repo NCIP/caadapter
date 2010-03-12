@@ -5,7 +5,7 @@
  -->
 <!-- For questions, e-mail barry.brown@mortara.com -->
 <!-- AnnotatedECG xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 PORI_MT020001.xsd" type="Observation" classCode="OBS" -->
-<PORT_MT020001UV01.AnnotatedECG xmlns:voc="urn:hl7-org:v3/voc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  type="Observation" classCode="OBS">
+<PORT_MT020001UV01.AnnotatedECG xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  type="Observation" classCode="OBS">
 	<id root="61d1a24f-b47e-41aa-ae95-f8ac302f4eeb"/>
 	<code code="93000" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT-4"/>
 	<effectiveTime>
