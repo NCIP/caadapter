@@ -75,17 +75,18 @@ public class TransformTest {
 	@Test
 	public void testMappingAndTransformation() throws JAXBException, XQException
 	{
-		String mappingFile="workingspace/simpleMapping/mapping.xml";
-		String srcFile = "workingspace/simpleMapping/shiporder.xml";
-
+//		String mappingFile="workingspace/simpleMapping/mapping.xml";
+//		String srcFile = "workingspace/simpleMapping/shiporder.xml";
+//		String mappingFile="workingspace/temp/PRPA_MT201305_2009_mapping.xml";
+//		String srcFile = "workingspace/temp/PRPA_MT201305_2009.xml";
 //		String mappingFile="workingspace/hl7v3/examples/PORT_MT_TO_IN020001mapping.xml";
 //		String srcFile = "workingspace/hl7v3/examples/PORT_EX020001UV.xml";  
 //		String mappingFile="workingspace/siblingMapping/mapping.xml";
 //		String srcFile = "workingspace/siblingMapping/shiporder.xml";
 //		String mappingFile="workingspace/parentChildInverted/mapping.xml";
 //		String srcFile = "workingspace/parentChildInverted/order.xml";
-//		String mappingFile="workingspace/ISO_21090/example/mapping.xml";
-//		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
+		String mappingFile="workingspace/ISO_21090/example/mapping.xml";
+		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
 		Mapping map = MappingFactory.loadMapping(new File(mappingFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
@@ -103,13 +104,19 @@ public class TransformTest {
 	 */
 	@Test
 	public void testXQueryTransform() throws XQException {
-		String queryString ="declare variable $docName as xs:string external; document{ " +
-				"element printorder{attribute orderid{data(doc($docName)/shiporder/@orderid)},attribute printType{data(string(\"localPrintType\"))}, element buyer{concat(doc($docName)/shiporder/orderperson,current-date())}, element address{for $item_temp1 in doc($docName)/shiporder/shipto/name return  element name{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/address return  element street{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/city return  element city{$item_temp1/text()},for $item_temp1 in doc($docName)/shiporder/shipto/country return  element country{$item_temp1/text()},\"\"},for $item_temp1 in doc($docName)/shiporder/item return  element item{ element name{data(string(\"local Name\"))}, element description{concat($item_temp1/title,$item_temp1/note)},for $item_temp2 in $item_temp1/quantity return  element quantity{$item_temp2/text()}, element price{ for $i in (\"1\",\"2\",\"3\")let $attrName:=concat(\"attrName\",$i) return attribute {$attrName} {$i}, day-from-date(xs:date(string(\"2010-01-25\"))) - day-from-date(xs:date(string(\"2010-01-01\")))}, $item_temp1/text()}}"+
-				"}";
-		
+		String queryString ="declare default element namespace \"http://cbiit.nci.nih.gov/po.xsd\";"+		
+			"declare namespace xsi= \"http://www.w3.org/2001/XMLSchema-instance\";"+
+			"declare variable $docName as xs:string external;" +
+			" document{ " +
+			"for $item_temp1 in doc($docName)/purchaseOrder return  element shipping{ element orderperson{\"testPerson\"},for $item_temp2 in $item_temp1/shipTo/zip return  element orderpersonid{$item_temp2/text()},for $item_temp2 in $item_temp1/shipTo return  element shipto{for $item_temp3 in $item_temp2/../@orderDate return  element shippingDate{$item_temp3/text()},for $item_temp3 in $item_temp2/name return  element name{$item_temp3/text()},for $item_temp3 in $item_temp2/street return  element address{$item_temp3/text()},for $item_temp3 in $item_temp2/city return  element city{$item_temp3/text()},for $item_temp3 in $item_temp2/@country return  element country{$item_temp3/text()},$item_temp2/text()},for $item_temp2 in $item_temp1/items/item return  element item{for $item_temp3 in $item_temp2/productName return  element title{$item_temp3/text()},for $item_temp3 in $item_temp2/comment return  element note{$item_temp3/text()},for $item_temp3 in $item_temp2/quantity return  element quantity{$item_temp3/text()},for $item_temp3 in $item_temp2/USPrice return  element price{$item_temp3/text()},for $item_temp3 in $item_temp2/shipDate return  element madeTime{$item_temp3/text()},$item_temp2/text()},$item_temp1/text()}"+
+			"}";
+
+		String queryString1="declare default element namespace \"urn:hl7-org:v3\";" +
+				"declare variable $docName as xs:string external;"+
+			"document{  element testRoot{attribute att1 {\"valueOne\"}, current-dateTime()}}";
 		System.out.println("TransformTest.testXQueryTransform()\n"+queryString);
 		XQueryTransformer tester= new XQueryTransformer();
-		String srcFile = "workingspace/simpleMapping/shiporder.xml";//purchase.xml";
+		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
  
 		tester.setFilename(srcFile);
 		tester.setQuery(queryString);
@@ -117,7 +124,7 @@ public class TransformTest {
 	}
 
 	@Test
-	public void testCTransformAndOutput() throws XQException, JAXBException, IOException {
+	public void testTransformAndOutput() throws XQException, JAXBException, IOException {
 		String mapFile="workingspace/simpleMapping/mapping1.xml";
 		Mapping map = MappingFactory.loadMapping(new File(mapFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
