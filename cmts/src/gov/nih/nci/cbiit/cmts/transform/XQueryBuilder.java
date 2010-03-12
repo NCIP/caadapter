@@ -102,15 +102,20 @@ public class XQueryBuilder {
 	public String getXQuery() {
 		List<Component> l = mapping.getComponents().getComponent();
 		Component tgt = null;
+		Component src=null;
 		for (Component c:l) {
-			if (c.getType().equals(ComponentType.TARGET)) {
+			if (c.getType().equals(ComponentType.TARGET)) 
 				tgt = c;
-				break;
-			}
+			else if (c.getType().equals(ComponentType.SOURCE))
+				src=c;
+			
 		}
 		xpathStack = new Stack<String>();
 		varStack = new Stack<String>();
 		sbQuery = new StringBuffer();
+		ElementMeta srcRootMeta=src.getRootElement();
+		if (srcRootMeta!=null&&srcRootMeta.getNameSpace()!=null)
+			sbQuery.append("declare default element namespace \""+srcRootMeta.getNameSpace() +"\";" + sep);
 		sbQuery.append("declare variable $docName as xs:string external;" + sep +"document{");
 		varStack.push("doc($docName)");
 		processTargetElement(tgt.getRootElement(),null);
