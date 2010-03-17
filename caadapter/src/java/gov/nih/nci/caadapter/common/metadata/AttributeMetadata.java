@@ -42,15 +42,19 @@ public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 	}
 
 	public String toString() {  
+		String rtnSt="";
 		if (isDerived()) {
-			return getName() + " (A - Derived)";
+			rtnSt= getName() + " (A - Inherited)";
 		}
-
-        if (isChildTag()){
-			return getName() + " (A)";
+		else  if (isChildTag()){
+        	rtnSt=getName() + " (A)";
 		}
 		else
-			return "@"+getName() + " (A)";
+			rtnSt= "@"+getName() + " (A)";
+        if (this.getDatatype()==null)
+        	return rtnSt;
+        else
+        	return rtnSt+":"+this.getDatatype();
 		//TODO: check for xmi
 	}
 
