@@ -5,17 +5,20 @@ import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import java.util.LinkedHashMap;
 
 public class Iso21090Util {
-	
+	/**
+	 * If the attribute of an object is an ISO 21090 data type, find it and clone it
+	 * @param metaHash
+	 * @param typeName
+	 * @return
+	 */
 	public static ObjectMetadata resolveAttributeDatatype(LinkedHashMap metaHash, String typeName)
 	{
-		System.out.println("Iso21090Util.resolveAttributeDatatype()..search type:"+typeName);
 		for (Object dtKey:metaHash.keySet())
 		{
 			Object dtMeta=metaHash.get(dtKey);
 			if (dtMeta instanceof ObjectMetadata)
 			{
 				ObjectMetadata dtObjectMeta=(ObjectMetadata)dtMeta;
-//				System.out.println("Iso21090Util.resolveAttributeDatatype()..objectName:"+dtObjectMeta.getName());
 				if (dtObjectMeta.getName().equals(typeName))
 					try {
 						return (ObjectMetadata)dtObjectMeta.clone(false);
