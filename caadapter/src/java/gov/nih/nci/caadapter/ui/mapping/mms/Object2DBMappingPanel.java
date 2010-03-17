@@ -20,12 +20,15 @@ import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Iso21090Util;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.HBMGenerateCacoreIntegrator;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
@@ -383,12 +386,33 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		DefaultMutableTreeNode newTreeNode;
 		if (isSourceNode)
-				newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);
+		{
+				newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);	
+				if (newTreeNode.getUserObject() instanceof AttributeMetadata)
+					addIsoComplexTypeAttribute(1,(DefaultSourceTreeNode)newTreeNode, myMap);
+		}
 		else
 			newTreeNode = new DefaultTargetTreeNode(myMap.get(fullName), true);
 	    
         father.add(newTreeNode);
 		return;
+	}
+	
+	private void addIsoComplexTypeAttribute(int attrLevel,DefaultSourceTreeNode elementNode, LinkedHashMap metaHash )
+	{
+		if (attrLevel>3)
+			return;
+
+		AttributeMetadata elementMeta=(AttributeMetadata)elementNode.getUserObject();
+		ObjectMetadata childObject =Iso21090Util.resolveAttributeDatatype(metaHash, elementMeta.getDatatype());
+		if (childObject==null)
+			return;
+		for (AttributeMetadata attrMeta:childObject.getAttributes())
+		{			
+			DefaultSourceTreeNode childAttrNode=new DefaultSourceTreeNode(attrMeta,true);
+			elementNode.add(childAttrNode);
+			addIsoComplexTypeAttribute(attrLevel+1,childAttrNode, metaHash );
+		}
 	}
 
 	protected TreeNode loadTargetTreeData(Object metaInfo, File absoluteFile)
