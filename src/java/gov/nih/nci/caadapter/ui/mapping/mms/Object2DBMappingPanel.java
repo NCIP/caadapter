@@ -26,6 +26,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.HBMGenerateCacoreIntegrator;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
@@ -333,17 +334,17 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
             if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
-				if (myMap.get(key) instanceof gov.nih.nci.caadapter.common.metadata.ObjectMetadata) {
-					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), true, true);
-				} else {
-					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), false, true);
-				}
+				//only directly construct new trerNode for the ObjectMetadata, leave AttributeMeta and AssociateMeta  
+            	//to be constructed indirectly as creating the ObjectMetadata 
+            	if (myMap.get(key) instanceof gov.nih.nci.caadapter.common.metadata.ObjectMetadata) {
+					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(),  true);
+				} 
 			}
 		}
 		return nodes;
 	}
 
-	private void construct_node(TreeNode node, String fullName, int prefixLen, boolean isTable, boolean isSourceNode)
+	private void construct_node(TreeNode node, String fullName, int prefixLen, boolean isSourceNode)
     {
 		String name = fullName.substring(prefixLen, fullName.length());
 		String[] pks = name.split("\\.");
@@ -362,17 +363,19 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 						myMap.get(fullName), true));
 			return;
 		}
-		DefaultMutableTreeNode father = (DefaultMutableTreeNode) node;
+		//find the package tree node of an object;
+		//create the missing nodes
+		DefaultMutableTreeNode packageNode = (DefaultMutableTreeNode) node;
 		for (int i = 0; i < pks.length - 1; i++) {
 			boolean exist = false;
-			Enumeration children = father.children();
+			Enumeration children = packageNode.children();
 			while (children.hasMoreElements()) {
 				DefaultMutableTreeNode current = (DefaultMutableTreeNode) children
 						.nextElement();
 
 				if (current.toString().equals(pks[i])) {
 					exist = true;
-					father = current;
+					packageNode = current;
 					break;
 				}
 			}
@@ -380,27 +383,38 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			if (!exist) {
 				DefaultMutableTreeNode newTreeNode = new DefaultMutableTreeNode(
 						pks[i], true);
-				father.add(newTreeNode);
-				father = newTreeNode;
+				packageNode.add(newTreeNode);
+				packageNode = newTreeNode;
 			}
 		}
 		DefaultMutableTreeNode newTreeNode;
 		if (isSourceNode)
 		{
-				newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);	
-				if (newTreeNode.getUserObject() instanceof AttributeMetadata)
-					addIsoComplexTypeAttribute(1,(DefaultSourceTreeNode)newTreeNode, myMap);
+			newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);	
+			//process Attributes associated with an object
+			ObjectMetadata objectMeta=(ObjectMetadata)newTreeNode.getUserObject();
+			for (AttributeMetadata objectAttr:objectMeta.getAttributes())
+			{
+				DefaultSourceTreeNode attrNode=new DefaultSourceTreeNode(objectAttr, true);
+				addIsoComplexTypeAttribute(1,attrNode, myMap);
+				newTreeNode.add(attrNode);
+			}
+			//process Association associted with an object
+			for (AssociationMetadata asscMeta: objectMeta.getAssociations())
+			{
+				newTreeNode.add(new DefaultSourceTreeNode(asscMeta,false));
+			}
 		}
 		else
 			newTreeNode = new DefaultTargetTreeNode(myMap.get(fullName), true);
 	    
-        father.add(newTreeNode);
+        packageNode.add(newTreeNode);
 		return;
 	}
 	
 	private void addIsoComplexTypeAttribute(int attrLevel,DefaultSourceTreeNode elementNode, LinkedHashMap metaHash )
 	{
-		if (attrLevel>3)
+		if (attrLevel>2)
 			return;
 
 		AttributeMetadata elementMeta=(AttributeMetadata)elementNode.getUserObject();
@@ -427,9 +441,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			String key = (String) keySetIterator.next();
 			if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".")) {
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.common.metadata.ObjectMetadata) {
-					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
+					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(),  false);
 				} else {
-					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), false, false);
+					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(),  false);
 				}
 			}
 		}
