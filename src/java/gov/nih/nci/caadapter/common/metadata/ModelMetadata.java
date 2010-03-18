@@ -301,6 +301,7 @@ public class ModelMetadata {
 	    				thisEnd.setNavigability(assocEnd.isNavigable());
 	    				thisEnd.setBidirectional(other.isNavigable()&&assocEnd.isNavigable());
 	    				sortedModel.add(thisEnd);
+	    				object.addAssociation(thisEnd);
 	    			}
 	    		}
 	    	}
