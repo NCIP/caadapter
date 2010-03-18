@@ -1,29 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="components/common/src"/>
-	<classpathentry kind="src" path="components/hl7Transformation/src"/>
-	<classpathentry kind="src" path="components/hl7Transformation/test/src"/>
-	<classpathentry kind="src" path="components/sdtmTransformation/src"/>
-	<classpathentry kind="src" path="components/sdtmTransformation/test/src"/>
-	<classpathentry kind="src" path="components/modelMapping/src"/>
-	<classpathentry kind="src" path="components/dataviewer/src"/>
-	<classpathentry kind="src" path="components/userInterface/src"/>
-	<classpathentry kind="src" path="components/userInterface/resources"/>
-	<classpathentry kind="src" path="components/webservices/src"/>
-	<classpathentry kind="src" path="gencode"/>
-	<classpathentry kind="src" path="components/common/gencode"/>
-	<classpathentry kind="src" path="components/hl7Transformation/gencode"/>
-	<classpathentry excluding="apiTest/|webServiceClient/TestCaadapterWebservice.java" kind="src" path="demo"/>
-	<classpathentry kind="src" path="etc"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.5.0_10"/>
 	<classpathentry including="LocalCodegenConfig.xml|caadapter-resources.properties|castorbinding.xml|java.policy" kind="src" path="conf"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commonModuleLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/mmsModuleLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/sdtmModuleLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/wsModuleLIb"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/dataviewerLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/uiModuleLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/caadapterProjectLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/axisLib"/>
+	<classpathentry excluding="gov/nih/nci/caadapter/hl7/demo/TestCaadapterWebservice.java" kind="src" path="src/demo"/>
+	<classpathentry kind="src" path="src/resources/etc"/>
+	<classpathentry kind="src" path="gencode"/>
+	<classpathentry excluding="etc/|gencode/" kind="src" path="src/resources"/>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="lib" path="lib/BrowserLauncher2-all-10rc4.jar"/>
+	<classpathentry kind="lib" path="lib/castor-0.9.9.jar"/>
+	<classpathentry kind="lib" path="lib/cmps.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/encoderframework.jar"/>
+	<classpathentry kind="lib" path="lib/encoderfrmwk-xsdextension.jar"/>
+	<classpathentry kind="lib" path="lib/hl7.jar"/>
+	<classpathentry kind="lib" path="lib/hl7encoder-xsdextension.jar"/>
+	<classpathentry kind="lib" path="lib/HL7v2xsd.zip"/>
+	<classpathentry kind="lib" path="lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxen-jdom.jar"/>
+	<classpathentry kind="lib" path="lib/jdom.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/knuHL7V2tree.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-3.1.13-bin.jar"/>
+	<classpathentry kind="lib" path="lib/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="lib/poi-2.5.1-final-20040804.jar"/>
+	<classpathentry kind="lib" path="lib/saxon8.jar"/>
+	<classpathentry kind="lib" path="lib/sdk-codegen.jar"/>
+	<classpathentry kind="lib" path="lib/spring.jar"/>
+	<classpathentry kind="lib" path="lib/xbean.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/xmi.in.out.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="referenceLib/ant.jar"/>
+	<classpathentry kind="lib" path="referenceLib/hl7v2xsd.jar"/>
+	<classpathentry kind="lib" path="referenceLib/jgraph.jar"/>
+	<classpathentry kind="lib" path="referenceLib/sqleonardo.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
