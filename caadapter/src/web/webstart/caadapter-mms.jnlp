@@ -12,9 +12,9 @@ The table below shows the 3 keys that the servlet will look for and substitute:
 -->
 <jnlp spec="1.0+" codebase="$$codebase" href="$$name">
 	<information>
-		<title>caAdapter Model Mapping Services 4.1.1</title>
+		<title>caAdapter ISO Data Type 21090 Mapping Services 4.1.2</title>
 		<vendor>ncicb</vendor>
-		<description>caAdapter Model Mapping Service 4.1.1</description>
+		<description>caAdapter ISO Data Type 21090 Mapping Services 4.1.2</description>
 	</information>
 	<security>
 	   	<all-permissions/>
