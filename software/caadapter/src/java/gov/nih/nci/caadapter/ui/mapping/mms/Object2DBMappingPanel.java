@@ -64,8 +64,10 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -365,8 +367,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		//find the package tree node of an object;
 		//create the missing nodes
+		//in case the object name contains ".", more token should removed from the full name
+		MetaObject meta=(MetaObject)myMap.get(fullName);			
+		StringTokenizer nameToken=new StringTokenizer(meta.getName(), ".");		
+	 
 		DefaultMutableTreeNode packageNode = (DefaultMutableTreeNode) node;
-		for (int i = 0; i < pks.length - 1; i++) {
+		for (int i = 0; i < pks.length - nameToken.countTokens(); i++) {
 			boolean exist = false;
 			Enumeration children = packageNode.children();
 			while (children.hasMoreElements()) {
@@ -396,7 +402,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			for (AttributeMetadata objectAttr:objectMeta.getAttributes())
 			{
 				DefaultSourceTreeNode attrNode=new DefaultSourceTreeNode(objectAttr, true);
-				addIsoComplexTypeAttribute(1,attrNode, myMap);
+				addIsoComplexTypeAttribute(1,attrNode);
 				newTreeNode.add(attrNode);
 			}
 			//process Association associted with an object
@@ -411,24 +417,57 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
         packageNode.add(newTreeNode);
 		return;
 	}
-	
-	private void addIsoComplexTypeAttribute(int attrLevel,DefaultSourceTreeNode elementNode, LinkedHashMap metaHash )
+	/**
+	 * If an object attribute is an ISO data type, add all attributes of the ISO data type as 
+	 * child tree node to the object attribute
+	 * @param attrLevel
+	 * @param elementNode
+	 * @param metaHash
+	 */
+	private void addIsoComplexTypeAttribute(int attrLevel,DefaultSourceTreeNode elementNode )
 	{
 		if (attrLevel>2)
 			return;
 
 		AttributeMetadata elementMeta=(AttributeMetadata)elementNode.getUserObject();
-		ObjectMetadata childObject =Iso21090Util.resolveAttributeDatatype(metaHash, elementMeta.getDatatype());
+		ObjectMetadata childObject =Iso21090Util.resolveAttributeDatatype(elementMeta.getDatatype());
 		if (childObject==null)
+		{
+			addComplexTypeSequence(elementNode);
 			return;
+		}
 		for (AttributeMetadata attrMeta:childObject.getAttributes())
 		{			
 			DefaultSourceTreeNode childAttrNode=new DefaultSourceTreeNode(attrMeta,true);
 			elementNode.add(childAttrNode);
-			addIsoComplexTypeAttribute(attrLevel+1,childAttrNode, metaHash );
+			addIsoComplexTypeAttribute(attrLevel+1,childAttrNode );
 		}
 	}
-
+	/**
+	 * If an object attribute is a sequence of ISO data types, add all elements of the sequence as 
+	 * child tree node to the object attribute. Each child ISO data type is flat down to its bottom
+	 * @param elementNode
+	 * @param metaHash
+	 */
+	private void addComplexTypeSequence(DefaultSourceTreeNode elementNode)
+	{
+		AttributeMetadata elementMeta=(AttributeMetadata)elementNode.getUserObject();
+		List<ObjectMetadata> sequenceObjects =Iso21090Util.findSequenceDatatypes(elementMeta.getDatatype());
+		if (sequenceObjects==null)
+			return;
+			
+		for (ObjectMetadata objectMeta:sequenceObjects)
+		{
+			DefaultSourceTreeNode childObjectNode=new DefaultSourceTreeNode(objectMeta,true);
+			elementNode.add(childObjectNode);			
+			for (AttributeMetadata objectAttr:objectMeta.getAttributes())
+			{
+				DefaultSourceTreeNode attrNode=new DefaultSourceTreeNode(objectAttr, true);
+				addIsoComplexTypeAttribute(1,attrNode);
+				childObjectNode.add(attrNode);
+			}
+		}
+	}
 	protected TreeNode loadTargetTreeData(Object metaInfo, File absoluteFile)
 			throws Exception {
 		TreeNode nodes = new DefaultMutableTreeNode("Data Model");
