@@ -46,6 +46,7 @@ public class WebstartUtil {
 
 	public static void downloadFile(String srcFile, String targetFile)
 	{
+		System.out.println("WebstartUtil.downloadFile()...source file:"+srcFile);
 		try {
 			
 			URL isURL=FileUtil.retrieveResourceURL(srcFile);
