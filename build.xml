@@ -89,6 +89,7 @@
 		<copy file="${caadapter.project.webstart.conf}/${webstart.properties.file}" tofile="${caadapter.project.webstart.build.home}/tmp/caadapter-components.properties"/>
 		<zip destfile="${caadapter.project.webstart.build.home}/caAdapter.jar">
 			<fileset dir="${caadapter.project.webstart.build.home}/tmp"/>
+			<zipfileset dir="workingspace/Object_to_DB_Example" prefix="workingspace/sampleModels"/>
 		</zip>
 		<delete dir="${caadapter.project.webstart.build.home}/tmp"/>
    	</target>
@@ -118,12 +119,8 @@
 				<include name="caAdapter_ui.jar"/>
 			</fileset>
 		</copy>
-
 		<copy file="${caadapter.project.webstart.home}/${webstart.launch.page.file}" todir="${dist.dir}/webstart" />
 		<copy file="${caadapter.project.webstart.home}/${webstart.index.page.file}/" tofile="${dist.dir}/webstart/index.html" />
-		
-        <echo message="-------- Applying Webserver replacement --------"/>
-        <!-- replace file="${dist.dir}/webstart/${webstart.launch.page.file}" token="$WEBSERVER" value="${webserver}"/ -->
 	</target>
 	
 	<target name="webstart:sign_resources">
