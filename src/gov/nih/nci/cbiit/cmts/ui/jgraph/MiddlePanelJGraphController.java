@@ -389,7 +389,7 @@ public class MiddlePanelJGraphController {
 				MappableNode sourceNode = (MappableNode) srcPort
 						.getUserObject();
 				srcComponentId = ((Component) ((ElementMetaLoader.MyTreeObject) ((DefaultMutableTreeNode) sourceNode)
-						.getUserObject()).getRootObj()).getId();
+						.getUserObject()).getRootObject()).getId();
 				srcPath = UIHelper
 						.getPathStringForNode((DefaultMutableTreeNode) sourceNode);
 			}
@@ -408,7 +408,7 @@ public class MiddlePanelJGraphController {
 				MappableNode targetNode = (MappableNode) trgtPort
 						.getUserObject();
 				tgtComponentId = ((Component) ((ElementMetaLoader.MyTreeObject) ((DefaultMutableTreeNode) targetNode)
-						.getUserObject()).getRootObj()).getId();
+						.getUserObject()).getRootObject()).getId();
 				tgtPath = UIHelper
 						.getPathStringForNode((DefaultMutableTreeNode) targetNode);
 			}
@@ -705,7 +705,7 @@ public class MiddlePanelJGraphController {
 			DefaultEdge linkEdge = new MappingGraphLink();
 			AttributeMap lineStyle = UIHelper
 					.getDefaultUnmovableEdgeStyle(((ElementMetaLoader.MyTreeObject) sourceNode
-							.getUserObject()).getObj());
+							.getUserObject()).getUserObject());
 			attributes.put(linkEdge, lineStyle);
 			// return back those being affected.
 			graphCellList.add(sourceCell);
