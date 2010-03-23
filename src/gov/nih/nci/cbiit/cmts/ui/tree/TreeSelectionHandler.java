@@ -49,7 +49,7 @@ public class TreeSelectionHandler implements TreeSelectionListener {
 			}
 			Object newSelection = treeNode.getUserObject();
 			if(newSelection instanceof ElementMetaLoader.MyTreeObject)
-				newSelection = ((ElementMetaLoader.MyTreeObject)newSelection).getObj();		
+				newSelection = ((ElementMetaLoader.MyTreeObject)newSelection).getUserObject();		
 			graphController.getPropertiesSwitchController().setSelectedItem(newSelection);
 		}
 		graphController.getPropertiesSwitchController().getPropertiesPage().updateProptiesDisplay(null);
