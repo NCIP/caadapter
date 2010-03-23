@@ -10,6 +10,7 @@ package gov.nih.nci.cbiit.cmts.ui.dnd;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
+import gov.nih.nci.cbiit.cmts.ui.tree.DefaultMappableTreeNode;
 import gov.nih.nci.cbiit.cmts.ui.tree.DefaultSourceTreeNode;
 
 import java.awt.datatransfer.DataFlavor;
@@ -57,9 +58,13 @@ public class TreeTransferHandler extends TreeDragTransferHandler {
         if (path == null) {
             return false;
         }
-        if(path.getLastPathComponent() instanceof DefaultSourceTreeNode){
+        DefaultMappableTreeNode dropTreeNode=(DefaultMappableTreeNode)path.getLastPathComponent();
+        if(dropTreeNode instanceof DefaultSourceTreeNode){
         	return false;
         }
+        //only one source is allowed for one target node
+        if (dropTreeNode.isMapped())
+        	return false;
         return true;
 	}
 
