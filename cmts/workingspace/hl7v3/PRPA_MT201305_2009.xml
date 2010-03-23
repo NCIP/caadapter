@@ -34,12 +34,45 @@
         <code code="PACKT" codeSystemName="EntityCode" codeSystem="2.16.840.1.113883.5.1060" displayName="Packet"/>
         <name use="L">Time Def Ltd. Co.</name>
         <contactParty classCode="CON">
-            <id root="2.16.840.1.113883.3.26.744" assigningAuthorityName="NCI" extension="17652-756"/>
+            <id root="2.16.840.1.113883.3.26.744" assigningAuthorityName="NCI" extension="17652-001"/>
+            <code code="ERROR" codeSystemName="ERROR" codeSystem="ERROR" displayName="ERROR"/>
+            <addr>
+                <state>MD</state>
+                <county>Montgomery</county>
+                <streetName>Durham St.</streetName>
+                <city>Rockville</city>
+                <postalCode>23456</postalCode>
+                <streetAddressLine>95288</streetAddressLine>
+            </addr>
+            <telecom use="HP" value="tel:1-925-568-3373"/>
+            <contactPerson classCode="PSN" determinerCode="INSTANCE">
+                <name use="L">Gordon P. Saxton</name>
+            </contactPerson>
+        </contactParty>
+        <contactParty classCode="CON">
+            <id root="2.16.840.1.113883.3.26.744" assigningAuthorityName="NCI" extension="17652-002"/>
             <code code="ERROR" codeSystemName="ERROR" codeSystem="ERROR" displayName="ERROR"/>
             <addr>
                 <state>MD</state>
                 <streetName>Durham St.</streetName>
                 <city>Rockville</city>
+                <postalCode>24680</postalCode>
+                <streetAddressLine>95288</streetAddressLine>
+            </addr>
+            <telecom use="HP" value="tel:1-925-568-3373"/>
+            <contactPerson classCode="PSN" determinerCode="INSTANCE">
+                <name use="L">Gordon P. Saxton</name>
+            </contactPerson>
+        </contactParty>
+        <contactParty classCode="CON">
+            <id root="2.16.840.1.113883.3.26.744" assigningAuthorityName="NCI" extension="17652-003"/>
+            <code code="ERROR" codeSystemName="ERROR" codeSystem="ERROR" displayName="ERROR"/>
+            <addr>
+                <state>MD</state>
+                <county>Montgomery</county>
+                <streetName>Durham St.</streetName>
+                <city>Rockville</city>
+                <postalCode>23456</postalCode>
                 <streetAddressLine>95288</streetAddressLine>
             </addr>
             <telecom use="HP" value="tel:1-925-568-3373"/>
