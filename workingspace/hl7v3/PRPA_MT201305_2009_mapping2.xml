@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="C:\project\subversion\software\cmts\workingspace\hl7v3\multicacheschemas\PRPA_MT201305UV02_1.xsd" kind="xml" type="source" id="0">
+        <!-- <component location="C:\project\subversion\software\cmts\workingspace\hl7v3\multicacheschemas\PRPA_MT201305UV02_1.xsd" kind="xml" type="source" id="0"> -->
+        <component location=".\multicacheschemas\PRPA_MT201305UV02_1.xsd" kind="xml" type="source" id="0">
             <rootElement type="PRPA_MT201305UV02.Patient" nameSpace="urn:hl7-org:v3" name="Patient">
                 <attrData isRequired="true" type="RoleClassPatient" name="classCode"/>
                 <childElement minOccurs="0" maxOccurs="-1" isRequired="false" type="CS" nameSpace="urn:hl7-org:v3" name="realmCode">
@@ -19639,7 +19640,8 @@
                 </childElement>
             </rootElement>
         </component>
-        <component location="C:\project\subversion\software\cmts\workingspace\hl7v3\multicacheschemas\PRPA_MT201305UV02_2.xsd" kind="xml" type="target" id="1">
+        <!-- <component location="C:\project\subversion\software\cmts\workingspace\hl7v3\multicacheschemas\PRPA_MT201305UV02_2.xsd" kind="xml" type="target" id="1"> -->
+        <component location=".\multicacheschemas\PRPA_MT201305UV02_2.xsd" kind="xml" type="target" id="1">
             <rootElement type="PRPA_MT201305UV02.Patient" nameSpace="urn:hl7-org:v3" name="Patient">
                 <attrData isRequired="true" type="RoleClassPatient" name="classCode"/>
                 <childElement minOccurs="0" maxOccurs="-1" isRequired="false" type="CS" nameSpace="urn:hl7-org:v3" name="realmCode">
@@ -39546,6 +39548,22 @@
         <link>
             <source id="/Patient/providerOrganization/contactParty/contactPerson/name" componentid="0"/>
             <target id="/Patient/providerOrganization/contactParty/contactPerson/name" componentid="1"/>
+        </link>
+        <link>
+            <source id="/Patient/id/@displayable" componentid="0"/>
+            <target id="/Patient/id/@displayable" componentid="1"/>
+        </link>
+        <link>
+            <source id="/Patient/providerOrganization/contactParty/addr/country" componentid="0"/>
+            <target id="/Patient/providerOrganization/contactParty/addr/country" componentid="1"/>
+        </link>
+        <link>
+            <source id="/Patient/providerOrganization/contactParty/addr/county" componentid="0"/>
+            <target id="/Patient/providerOrganization/contactParty/addr/county" componentid="1"/>
+        </link>
+        <link>
+            <source id="/Patient/providerOrganization/contactParty/addr/postalCode" componentid="0"/>
+            <target id="/Patient/providerOrganization/contactParty/addr/postalCode" componentid="1"/>
         </link>
     </links>
     <views/>
