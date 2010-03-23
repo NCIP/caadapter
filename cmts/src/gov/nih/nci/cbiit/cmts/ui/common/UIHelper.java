@@ -338,7 +338,7 @@ public final class UIHelper
 
 		if(result == null)
 		{
-			System.out.println("Could not find the data obj in the given tree rooted by '" + treeRoot + "'.");
+			System.out.println("UIHelper.constructMappableNodeObjectXmlPath():Could not find the data obj in the given tree rooted by '" + treeRoot + "'. Object"+ dtObjectXmlPath);
 			//Log.logError(internalInstance, (new StringBuilder()).append("Could not find the datatypeBaseObject '").append(dtObjectXmlPath).append("' in the given tree rooted by '").append(treeRoot).append("'.").toString());
 			//Log.logError(internalInstance, (new StringBuilder()).append("treeRoot is of type '").append(treeRoot != null ? treeRoot.getClass().getName() : "null").append("'").toString());
 		}
@@ -397,7 +397,7 @@ public final class UIHelper
 	{
 		Object selfUserObject = treeNode.getUserObject();
 		if(selfUserObject!=null && selfUserObject instanceof ElementMetaLoader.MyTreeObject)
-			selfUserObject = ((ElementMetaLoader.MyTreeObject)selfUserObject).getObj();
+			selfUserObject = ((ElementMetaLoader.MyTreeObject)selfUserObject).getUserObject();
 		boolean boolEquals = selfUserObject==null? userObject==null : selfUserObject.equals(userObject);
 		if(boolEquals)
 		{
@@ -430,7 +430,7 @@ public final class UIHelper
 		Object[] path = node.getUserObjectPath();
 		for(int i=0; i<path.length; i++){
 			if(path[i] instanceof ElementMetaLoader.MyTreeObject){
-				Object obj = ((ElementMetaLoader.MyTreeObject)path[i]).getObj();
+				Object obj = ((ElementMetaLoader.MyTreeObject)path[i]).getUserObject();
 				if(obj instanceof ElementMeta){
 					sb.append("/").append(((ElementMeta)obj).getName());
 				}else if(obj instanceof AttributeMeta){
