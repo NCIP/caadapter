@@ -50,7 +50,7 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 			Object userObj = node.getUserObject();
 			if(userObj instanceof ElementMetaLoader.MyTreeObject)
-				userObj = ((ElementMetaLoader.MyTreeObject)userObj).getObj();
+				userObj = ((ElementMetaLoader.MyTreeObject)userObj).getUserObject();
 			BaseMeta baseMeta=(BaseMeta)userObj;
 			if (baseMeta.getNameSpace()!=null &&!baseMeta.getNameSpace().equals(""))
 				setText(cardinalityView(baseMeta) +" ("+baseMeta.getNameSpace() +")");
