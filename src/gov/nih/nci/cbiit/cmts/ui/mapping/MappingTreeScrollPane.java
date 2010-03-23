@@ -113,7 +113,7 @@ public class MappingTreeScrollPane extends JScrollPane
 				//check the userObject for SDKMeta
 				Object userObject=treeNode.getUserObject();
 				if(userObject instanceof ElementMetaLoader.MyTreeObject)
-					userObject = ((ElementMetaLoader.MyTreeObject)userObject).getObj();
+					userObject = ((ElementMetaLoader.MyTreeObject)userObject).getUserObject();
 //				if (userObject  instanceof ElementMeta )
 //				{
 //					ElementMeta sdkMeta=(ElementMeta)userObject;
