@@ -7,11 +7,11 @@
  */
 package gov.nih.nci.cbiit.cmts.test;
 
-
 import gov.nih.nci.cbiit.cmts.common.XSDParser;
 import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.BaseMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
@@ -20,6 +20,7 @@ import gov.nih.nci.cbiit.cmts.util.FileUtil;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -147,66 +148,39 @@ public class MappingTest {
 	 */
 	@Test
 	public void testMarshalMapping() throws Exception {
-		String srcComponentId = "workingspace/shiporder.xsd";
-		String tgtComponentId = "workingspace/printorder.xsd";
-//		Mapping m = MappingFactory.createMappingFromXSD(
-//				srcComponentId, "shiporder", tgtComponentId, "printorder");
+		String srcComponentId = "workingspace/simpleMapping/shiporder.xsd";
+		String tgtComponentId = "workingspace/simpleMapping/printorder.xsd";
 		Mapping m = new Mapping();
 		m.setComponents(new Mapping.Components());
 		m.setLinks(new Mapping.Links());
 		XSDParser srcP = new XSDParser();
 		srcP.loadSchema(srcComponentId);
-		MappingFactory.loadMetaSourceXSD(m, srcP, null,"shiporder");
+		MappingFactory.loadMetaXSD(m, srcP, null,"shiporder", ComponentType.SOURCE);
 		
 		XSDParser trgtP = new XSDParser();
 		trgtP.loadSchema(tgtComponentId);
-		MappingFactory.loadMetaTargetXSD(m, trgtP,null, "printorder");
+		MappingFactory.loadMetaXSD(m, trgtP,null, "printorder",  ComponentType.TARGET);
 		
 		//add links;
 		m.setLinks(new Mapping.Links());
 		MappingFactory.addLink(m, "0", "/shiporder", "1", "/printorder");
 		MappingFactory.addLink(m, "0", "/shiporder/shipto", "1", "/printorder/address");
 		
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		Marshaller u = jc.createMarshaller();
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement(new QName("mapping"),Mapping.class, m), new File("bin/mapping.out.xml"));
+		MappingFactory.saveMapping(new File("bin/mapping.out.xml"), m);
+//		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+//		Marshaller u = jc.createMarshaller();
+//		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+//		u.marshal(new JAXBElement(new QName("mapping"),Mapping.class, m), new File("bin/mapping.out.xml"));
 	}
 	
-	/**
-	 * test create Mapping from a pair of XSD and marshaling the Mapping 
-	 */
-	@Test
-	public void testMarshalMapping1() throws Exception {
-		String srcComponentId = "workingspace/shiporder.xsd";
-		String tgtComponentId = "workingspace/item.xsd";
-//		Mapping m = MappingFactory.createMappingFromXSD(
-//				srcComponentId, "shiporder", tgtComponentId, "item");
-		Mapping m = new Mapping();
-		m.setComponents(new Mapping.Components());
-		m.setLinks(new Mapping.Links());
-		XSDParser srcP = new XSDParser();
-		srcP.loadSchema(srcComponentId);
-		MappingFactory.loadMetaSourceXSD(m, srcP, null,"shiporder");
-		
-		XSDParser trgtP = new XSDParser();
-		trgtP.loadSchema(tgtComponentId);
-		MappingFactory.loadMetaTargetXSD(m, trgtP,null, "printorder");
-
-		//add links;
-		m.setLinks(new Mapping.Links());
-		
-		MappingFactory.saveMapping(new File("bin/mapping1.out.xml"), m);
-	}
 	
 	/**
 	 * test round trip marshaling and unmarshaling of Mapping 
 	 */
 	@Test
 	public void testUnmarshalMapping() throws Exception {
-		Mapping m = MappingFactory.loadMapping(new File("workingspace/mapping.xml"));
+		Mapping m = MappingFactory.loadMapping(new File("workingspace/ISO_21090/example/mapping.xml"));
 		MappingFactory.saveMapping(new File("bin/mapping_roundtrip.out.xml"), m);
-		//assertEquals(new File("workingspace/mapping.xml").length(), new File("bin/mapping1.out.xml").length());
 	}
 	
 	/**
@@ -223,14 +197,53 @@ public class MappingTest {
 		for(Component c:l)
 			map.put(c.getId(), c);
 		Component c = map.get(cid);
-		BaseMeta b = MappingFactory.findNodeById(c, id);
+		BaseMeta b = findNodeById(c, id);
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller mar = jc.createMarshaller();
 		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		mar.marshal(new JAXBElement(new QName("meta"), b.getClass(), b), new File("bin/mapping_findObj.out.xml"));
 	}
 
-	
+	private BaseMeta findNodeById(Component c, String id){
+	StringTokenizer st = new StringTokenizer(id, "/@");
+	boolean foundRoot = false;
+	ElementMeta e = c.getRootElement();
+	while(st.hasMoreTokens()){
+		String tmp = st.nextToken();
+		if(!foundRoot){
+			if(e.getName().equals(tmp)){
+				foundRoot = true;
+				continue;
+			}else
+				continue;
+		}else{
+			List<ElementMeta> childs = e.getChildElement();
+			ElementMeta found = null;
+			AttributeMeta foundAttr = null;
+			for(ElementMeta i:childs){
+				if(i.getName().equals(tmp)){
+					found = i;
+					break;
+				}
+			}
+			if(found == null && st.hasMoreTokens()){
+				return null;
+			}else if(found == null && !st.hasMoreTokens()){
+				List<AttributeMeta> attrs = e.getAttrData();
+				for(AttributeMeta i:attrs){
+					if(i.getName().equals(tmp)){
+						foundAttr = i;
+						break;
+					}
+				}
+				return foundAttr;
+			}else{
+				e = found;
+			}
+		}
+	}
+	return e;
+}
 }
 
 /**

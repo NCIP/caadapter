@@ -1,39 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="C:\eclipseJ2ee\workspace\cmps\workingspace\siblingMapping\shiporder.xsd" kind="xml" type="source" id="0">
-            <rootElement type="shipordertype" name="shiporder">
-                <attrData isRequired="true" type="orderidtype" name="orderid"/>
-                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="orderperson"/>
-                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="shiptotype" name="shipto">
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="address"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="city"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="country"/>
-                </childElement>
-                <childElement minOccurs="1" maxOccurs="-1" isRequired="true" type="itemtype" name="item">
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="title"/>
-                    <childElement minOccurs="0" maxOccurs="1" isRequired="false" type="stringtype" name="note"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="inttype" name="quantity"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="dectype" name="price"/>
-                </childElement>
-            </rootElement>
+        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\siblingMapping\shiporder.xsd" kind="xml" type="source" id="0">
+            <rootElement type="shipordertype" name="shiporder"/>
         </component>
-        <component location="C:\eclipseJ2ee\workspace\cmps\workingspace\siblingMapping\accounting.xsd" kind="xml" type="target" id="1">
-            <rootElement name="accountingPrint">
-                <childElement minOccurs="1" maxOccurs="-1" isRequired="true" type="accountingtype" name="acctrecord">
-                    <attrData isRequired="true" type="orderidtype" name="orderid"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="buyer"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="street"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="city"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="country"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="productName"/>
-                    <childElement minOccurs="0" maxOccurs="1" isRequired="false" type="stringtype" name="description"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="inttype" name="quantity"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="dectype" name="price"/>
-                </childElement>
-            </rootElement>
+        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\siblingMapping\accounting.xsd" kind="xml" type="target" id="1">
+            <rootElement name="accountingPrint"/>
         </component>
     </components>
     <links>
@@ -86,4 +58,5 @@
             <target id="/accountingPrint/acctrecord" componentid="1"/>
         </link>
     </links>
+    <views/>
 </mapping>
