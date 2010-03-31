@@ -86,13 +86,6 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	private static final String SOURCE_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
 	private static final String TARGET_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
 
-	//	protected TreeCollapseAllAction sourceTreeCollapseAllAction;
-	//	protected TreeExpandAllAction sourceTreeExpandAllAction;
-	//	protected TreeCollapseAllAction targetTreeCollapseAllAction;
-	//	protected TreeExpandAllAction targetTreeExpandAllAction;
-	//	protected MappingFileSynchronizer fileSynchronizer;
-	//	
-
 	private Mapping mapping = null;
 	private File mappingSourceFile = null;
 	private File mappingTargetFile = null;
@@ -438,65 +431,6 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		return sourceScrollPane;
 	}
 
-	/**
-	 * Reload the file specified in the parameter.
-	 * @param changedFileMap
-	 */
-	//	public void reload(Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap)
-	//	{
-	//		/**
-	//		 * Design rationale:
-	//		 * 1) if the changedFileMap is null, simply return;
-	//		 * 2) if the getSaveFile() method does not return null, it implies current panel associates with a mapping file,
-	//		 * just reload the whole mapping file so as to refresh those mapping relationship;
-	//		 * 3) if the getSaveFile() returns null, just reload source and/or target file within the changedFileMap,
-	//		 * and ignore the checking of MappingFileSynchronizer.FILE_TYPE.Mapping_File item in the map;
-	//		 */
-	//		if(changedFileMap==null)
-	//		{
-	//			return;
-	//		}
-	//		File existMapFile = getSaveFile();
-	//		try
-	//		{
-	//			if(existMapFile!=null)
-	//			{
-	//				if(existMapFile.exists())
-	//				{
-	//					processOpenMapFile(existMapFile);
-	//				}
-	//				else
-	//				{//exist map file does not exist anymore
-	//					JOptionPane.showMessageDialog(this, existMapFile.getAbsolutePath() + " does not exist or is not accessible anymore", "File Error", JOptionPane.ERROR_MESSAGE);
-	//					return;
-	//				}
-	//			}
-	//			else
-	//			{//exist map file does not exist, simply reload source and/or target file
-	//				Iterator it = changedFileMap.keySet().iterator();
-	//				while(it.hasNext())
-	//				{
-	//					MappingFileSynchronizer.FILE_TYPE key = (MappingFileSynchronizer.FILE_TYPE) it.next();
-	//					File file = changedFileMap.get(key);
-	//					if(GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Source_File, key))
-	//					{
-	//						processOpenSourceTree(file, true, true);
-	//					}
-	//					else if(GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Target_File, key))
-	//					{
-	//						processOpenTargetTree(file, true, true);
-	//					}
-	//				}//end of while
-	//			}//end of else
-	//		}
-	//		catch (Exception e)
-	//		{
-	//			DefaultSettings.reportThrowableToLogAndUI(this, e, "", this, false, false);
-	//		}
-	//	}
-
-
-
 	public JTree getSourceTree()
 	{
 		return sTree;
@@ -730,7 +664,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
 		 
-		MappingFactory.loadMetaSourceXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName());
+		MappingFactory.loadMetaXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName(), ComponentType.SOURCE);
 
 		buildSourceTree(getMapping(), file, isToResetGraph);
 		return true;
@@ -751,21 +685,11 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		CellRenderXSObject trgtRoot = userSelectRoot(p);
 		if(trgtRoot == null || trgtRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
-		MappingFactory.loadMetaTargetXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName());
+		MappingFactory.loadMetaXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName(), ComponentType.TARGET);
 
 		buildTargetTree(getMapping(), file, isToResetGraph);
 		//		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
 		return true;
-	}
-
-	/**
-	 * Explicitly reload information from the internal given file.
-	 *
-	 * @throws Exception
-	 */
-	public void reload() throws Exception
-	{
-		//		processOpenMapFile(getSaveFile());
 	}
 
 	

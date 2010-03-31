@@ -25,8 +25,6 @@ import gov.nih.nci.cbiit.cmts.core.BaseMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
-import gov.nih.nci.cbiit.cmts.core.FunctionDef;
-import gov.nih.nci.cbiit.cmts.core.FunctionType;
 import gov.nih.nci.cbiit.cmts.core.KindType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
 import gov.nih.nci.cbiit.cmts.core.LinkpointType;
@@ -46,40 +44,54 @@ import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
  */
 public class MappingFactory {
 
-	/**
-	 * load additional source XSD into specified Mapping
-	 * @param m - Mapping object to load into
-	 * @param srcX - source XSD
-	 * @param srcRootNS -- source root element namespace
-	 * @param srcRoot - source root element
-	 */
-	public static void loadMetaSourceXSD(Mapping m, XSDParser srcX, String srcRootNS, String srcRootName) {
-		loadXSD(m, srcX,srcRootNS, srcRootName, ComponentType.SOURCE);
-	}
+//	/**
+//	 * load additional source XSD into specified Mapping
+//	 * @param m - Mapping object to load into
+//	 * @param srcX - source XSD
+//	 * @param srcRootNS -- source root element namespace
+//	 * @param srcRoot - source root element
+//	 */
+//	public static void loadMetaSourceXSD(Mapping m, XSDParser srcX, String srcRootNS, String srcRootName) {
+//		loadXSD(m, srcX,srcRootNS, srcRootName, ComponentType.SOURCE);
+//	}
+//
+//	/**
+//	 * load additional target XSD into specified Mapping
+//	 * @param m - Mapping object to load into
+//	 * @param tgtX - target XSD
+//	 * @param tgtRootNS -- target root element namespace
+//	 * @param tgtRootName - target root element name
+//	 */
+//	public static void loadMetaTargetXSD(Mapping m, XSDParser tgtX, String tgtRootNS, String tgtRootName) {
+//		loadXSD(m, tgtX, tgtRootNS, tgtRootName, ComponentType.TARGET);
+//	}
 
-	/**
-	 * load additional target XSD into specified Mapping
-	 * @param m - Mapping object to load into
-	 * @param tgtX - target XSD
-	 * @param tgtRootNS -- target root element namespace
-	 * @param tgtRootName - target root element name
-	 */
-	public static void loadMetaTargetXSD(Mapping m, XSDParser tgtX, String tgtRootNS, String tgtRootName) {
-		loadXSD(m, tgtX, tgtRootNS, tgtRootName, ComponentType.TARGET);
-	}
+	public static void loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
-	private static void loadXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
+		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
+		if(e==null) 
+			e = schemaParser.getElementMetaFromComplexType(rootNS, root);
 
+		for (Component mapComp:m.getComponents().getComponent())
+		{
+			if (mapComp.getRootElement()!=null
+					&mapComp.getType().equals(type))
+			{
+				//clear the childElement list and attribute list for backward compatible
+				mapComp.getRootElement().getChildElement().clear();
+				mapComp.getRootElement().getChildElement().addAll(e.getChildElement());
+				mapComp.getRootElement().getAttrData().clear();
+				mapComp.getRootElement().getAttrData().addAll(e.getAttrData());
+				return;
+			}
+		}
 		Component endComp = new Component();
 		endComp.setKind(KindType.XML);
 		endComp.setId(getNewComponentId(m));
 		endComp.setLocation(schemaParser.getSchemaURI());
-		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
-		if(e==null) 
-			e = schemaParser.getElementMetaFromComplexType(rootNS, root);
+
 		endComp.setRootElement(e);
 		endComp.setType(type);
-//		if(m.getComponents() == null) m.setComponents(new Components());
 		m.getComponents().getComponent().add(endComp);
 	}
 	
@@ -123,58 +135,35 @@ public class MappingFactory {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Unmarshaller u = jc.createUnmarshaller();
 		JAXBElement<Mapping> jaxbElmt = u.unmarshal(new StreamSource(f), Mapping.class);
+		Mapping mapLoaded=jaxbElmt.getValue();
+		//re-connect the meta structure for source and target schemas
+		for (Component mapComp:mapLoaded.getComponents().getComponent())
+		{
+			if (mapComp.getRootElement()!=null)
+			{
+				XSDParser metaParser = new XSDParser();
+				metaParser.loadSchema(mapComp.getLocation());
+				MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
+			}
+		}
 		return  jaxbElmt.getValue();
 	}
 	
 	public static void saveMapping(File f, Mapping m) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement<Mapping>(new QName("mapping"),Mapping.class, m), f);
-	}
-	
-	
-	public static BaseMeta findNodeById(Component c, String id){
-		StringTokenizer st = new StringTokenizer(id, "/@");
-		boolean foundRoot = false;
-		ElementMeta e = c.getRootElement();
-		while(st.hasMoreTokens()){
-			String tmp = st.nextToken();
-			if(!foundRoot){
-				if(e.getName().equals(tmp)){
-					foundRoot = true;
-					continue;
-				}else
-					continue;
-			}else{
-				List<ElementMeta> childs = e.getChildElement();
-				ElementMeta found = null;
-				AttributeMeta foundAttr = null;
-				for(ElementMeta i:childs){
-					if(i.getName().equals(tmp)){
-						found = i;
-						break;
-					}
-				}
-				if(found == null && st.hasMoreTokens()){
-					return null;
-				}else if(found == null && !st.hasMoreTokens()){
-					List<AttributeMeta> attrs = e.getAttrData();
-					for(AttributeMeta i:attrs){
-						if(i.getName().equals(tmp)){
-							foundAttr = i;
-							break;
-						}
-					}
-					return foundAttr;
-				}else{
-					e = found;
-				}
+		//do not persistent the meta structure
+		for (Component mapComp:m.getComponents().getComponent())
+		{
+			if (mapComp.getRootElement()!=null)
+			{
+				mapComp.getRootElement().getChildElement().clear();
+				mapComp.getRootElement().getAttrData().clear();
 			}
 		}
-		return e;
-	}
-	
+		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+		u.marshal(new JAXBElement<Mapping>(new QName("mapping"),Mapping.class, m), f);
+	}	
 }
 
 /**

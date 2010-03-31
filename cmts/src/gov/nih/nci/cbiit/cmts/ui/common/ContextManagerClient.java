@@ -70,12 +70,6 @@ public interface ContextManagerClient
 	 */
 	List<java.io.File> getAssociatedFileList();
 
-	/**
-	 * Explicitly reload information from the internal given file.
-	 * @throws Exception
-	 */
-	void reload() throws Exception;
-	//public void report();
 
     /**
 	 * Return a list of Action objects that is included in this Context manager.
