@@ -1,41 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="C:\eclipseJ2ee\workspace\cmps\workingspace\simpleMapping\shiporder.xsd" kind="xml" type="source" id="0">
-            <rootElement type="shipordertype" name="shiporder">
-                <attrData isRequired="true" type="orderidtype" name="orderid"/>
-                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="orderperson"/>
-                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="shiptotype" name="shipto">
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="address"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="city"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="country"/>
-                </childElement>
-                <childElement minOccurs="1" maxOccurs="-1" isRequired="true" type="itemtype" name="item">
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="title"/>
-                    <childElement minOccurs="0" maxOccurs="1" isRequired="false" type="stringtype" name="note"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="inttype" name="quantity"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="dectype" name="price"/>
-                </childElement>
-            </rootElement>
+        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\simpleMapping\shiporder.xsd" kind="xml" type="source" id="0">
+            <rootElement type="shipordertype" name="shiporder"/>
         </component>
-        <component location="C:\eclipseJ2ee\workspace\cmps\workingspace\simpleMapping\printorder1.xsd" kind="xml" type="target" id="1">
-            <rootElement type="printordertype" name="printorder">
-                <attrData isRequired="true" type="orderidtype" name="orderid"/>
-                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="buyer"/>
-                <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="addresstype" name="address">
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="name"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="street"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="city"/>
-                    <childElement minOccurs="1" maxOccurs="1" isRequired="true" type="stringtype" name="country"/>
-                </childElement>
-                <childElement minOccurs="1" maxOccurs="-1" isRequired="true" type="itemtype" name="item">
-                    <attrData isRequired="false" type="stringtype" name="name"/>
-                    <attrData isRequired="false" type="inttype" name="quantity"/>
-                    <attrData isRequired="false" type="dectype" name="price"/>
-                    <childElement minOccurs="0" maxOccurs="1" isRequired="false" type="stringtype" name="description"/>
-                </childElement>
-            </rootElement>
+        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\simpleMapping\printorder1.xsd" kind="xml" type="target" id="1">
+            <rootElement type="printordertype" name="printorder"/>
         </component>
     </components>
     <links>
@@ -88,4 +58,5 @@
             <target id="/printorder/item/@price" componentid="1"/>
         </link>
     </links>
+    <views/>
 </mapping>
