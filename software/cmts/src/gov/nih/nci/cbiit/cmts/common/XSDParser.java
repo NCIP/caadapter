@@ -101,11 +101,16 @@ public class XSDParser implements DOMErrorHandler {
 	 * @param schemaURI - XSD URI
 	 */
 	public void loadSchema(String schemaURI) {
-
-		this.schemaURI = schemaURI;
+		String userDirPath=System.getProperty("user.dir");
+		if(debug)
+		System.out.println("XSDParser.loadSchema()..user.dir:"+System.getProperty("user.dir"));
+		if (schemaURI.indexOf(userDirPath)>-1)
+			this.schemaURI=schemaURI.substring(userDirPath.length()+1);
+		else
+			this.schemaURI = schemaURI;
 		// parse document
-		if(debug) System.out.println("Parsing " + schemaURI + "...");
-		model = schemaLoader.loadURI(schemaURI);
+		if(debug) System.out.println("Parsing " + this.schemaURI + "...");
+		model = schemaLoader.loadURI(this.schemaURI);
 
 	}
 
