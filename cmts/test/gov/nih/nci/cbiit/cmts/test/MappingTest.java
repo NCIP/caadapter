@@ -64,7 +64,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/shiporder.xsd");
+		p.loadSchema("workingspace/simpleMapping/shiporder.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
@@ -179,7 +179,7 @@ public class MappingTest {
 	 */
 	@Test
 	public void testUnmarshalMapping() throws Exception {
-		Mapping m = MappingFactory.loadMapping(new File("workingspace/ISO_21090/example/mapping.xml"));
+		Mapping m = MappingFactory.loadMapping(new File("workingspace/simpleMapping/mapping.xml"));
 		MappingFactory.saveMapping(new File("bin/mapping_roundtrip.out.xml"), m);
 	}
 	
