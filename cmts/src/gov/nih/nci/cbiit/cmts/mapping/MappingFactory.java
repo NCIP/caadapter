@@ -8,8 +8,6 @@
 package gov.nih.nci.cbiit.cmts.mapping;
 
 import java.io.File;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -20,8 +18,6 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
 import gov.nih.nci.cbiit.cmts.common.XSDParser;
-import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmts.core.BaseMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
@@ -44,47 +40,26 @@ import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
  */
 public class MappingFactory {
 
-//	/**
-//	 * load additional source XSD into specified Mapping
-//	 * @param m - Mapping object to load into
-//	 * @param srcX - source XSD
-//	 * @param srcRootNS -- source root element namespace
-//	 * @param srcRoot - source root element
-//	 */
-//	public static void loadMetaSourceXSD(Mapping m, XSDParser srcX, String srcRootNS, String srcRootName) {
-//		loadXSD(m, srcX,srcRootNS, srcRootName, ComponentType.SOURCE);
-//	}
-//
-//	/**
-//	 * load additional target XSD into specified Mapping
-//	 * @param m - Mapping object to load into
-//	 * @param tgtX - target XSD
-//	 * @param tgtRootNS -- target root element namespace
-//	 * @param tgtRootName - target root element name
-//	 */
-//	public static void loadMetaTargetXSD(Mapping m, XSDParser tgtX, String tgtRootNS, String tgtRootName) {
-//		loadXSD(m, tgtX, tgtRootNS, tgtRootName, ComponentType.TARGET);
-//	}
-
 	public static void loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
 		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
 		if(e==null) 
 			e = schemaParser.getElementMetaFromComplexType(rootNS, root);
 
-		for (Component mapComp:m.getComponents().getComponent())
-		{
-			if (mapComp.getRootElement()!=null
-					&mapComp.getType().equals(type))
+		if (m.getComponents()!=null)
+			for (Component mapComp:m.getComponents().getComponent())
 			{
-				//clear the childElement list and attribute list for backward compatible
-				mapComp.getRootElement().getChildElement().clear();
-				mapComp.getRootElement().getChildElement().addAll(e.getChildElement());
-				mapComp.getRootElement().getAttrData().clear();
-				mapComp.getRootElement().getAttrData().addAll(e.getAttrData());
-				return;
+				if (mapComp.getRootElement()!=null
+						&mapComp.getType().equals(type))
+				{
+					//clear the childElement list and attribute list for backward compatible
+					mapComp.getRootElement().getChildElement().clear();
+					mapComp.getRootElement().getChildElement().addAll(e.getChildElement());
+					mapComp.getRootElement().getAttrData().clear();
+					mapComp.getRootElement().getAttrData().addAll(e.getAttrData());
+					return;
+				}
 			}
-		}
 		Component endComp = new Component();
 		endComp.setKind(KindType.XML);
 		endComp.setId(getNewComponentId(m));
