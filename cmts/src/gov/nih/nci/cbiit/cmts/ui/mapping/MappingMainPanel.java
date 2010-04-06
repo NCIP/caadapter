@@ -590,7 +590,6 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 
 	protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile)throws Exception
 	{
-		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
 		TreeNode node = null;
 		if(metaInfo instanceof Mapping){
 			Mapping.Components components = ((Mapping)metaInfo).getComponents();
