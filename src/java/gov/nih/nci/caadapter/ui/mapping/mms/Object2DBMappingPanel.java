@@ -327,7 +327,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	protected TreeNode loadSourceTreeData(Object metaInfo, File file)
 			throws Exception {
 		TreeNode nodes = new DefaultMutableTreeNode("Object Model");
-		CumulativeMappingGenerator.init(file.getAbsolutePath());
 		ModelMetadata myModel = CumulativeMappingGenerator.getInstance().getMetaModel();
 		LinkedHashMap myMap = myModel.getModelMetadata();
 
@@ -537,10 +536,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	 */
 	protected boolean processOpenTargetTree(File file, boolean isToResetGraph,
 			boolean supressReportIssuesToUI) throws Exception {
-		String fileExtension = FileUtil.getFileExtension(file, true);
 		// parse the file into a meta object graph.
 		MetaParser parser = null;
-		MetaObject metaInfo = null;
 		BaseResult returnResult = null;
 		returnResult = parser.parse(new FileReader(file));
 		ValidatorResults validatorResults = returnResult.getValidatorResults();
@@ -552,8 +549,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			return false;
 		}
 
-		buildTargetTree(metaInfo, file, isToResetGraph);
-		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
+		buildTargetTree(null, file, isToResetGraph);
+		middlePanel.getMappingDataManager().registerTargetComponent(null, file);
 		return true;
 	}
 
