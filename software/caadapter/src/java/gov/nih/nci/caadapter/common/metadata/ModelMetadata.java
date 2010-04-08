@@ -94,10 +94,12 @@ public class ModelMetadata {
                     if ( str.contains("<XMI.exporter>Enterprise Architect</XMI.exporter>") )
                     {
                         eaExporter = true;
+                        break;
                     }
                 }
                 in.close();
             } catch (IOException e) {
+            	e.printStackTrace();
             }
 
             if ( eaExporter == true ) {
