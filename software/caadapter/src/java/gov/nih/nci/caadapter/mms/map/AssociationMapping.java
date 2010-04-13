@@ -27,17 +27,6 @@ public class AssociationMapping {
 	private AssociationMetadata associationEndMetadata;
 	private ColumnMetadata columnMetadata;
 
-	public AssociationMapping(){
-	}
-
-	/**
-	 *
-	 * @param columnMetadata
-	 */
-	public AssociationMapping(ColumnMetadata columnMetadata, AssociationMetadata associationEndMetadata, AssociationMetadata otherAssociationEndMetadata){
-		this.associationEndMetadata = associationEndMetadata;
-		this.columnMetadata = columnMetadata;
-	}
 
 	public AssociationMetadata getAssociationEndMetadata(){
 		return associationEndMetadata;
@@ -62,16 +51,6 @@ public class AssociationMapping {
 		this.columnMetadata = columnMetadata;
 	}
 
-	/**
-	 * @ colMetdata
-	 */
-	public boolean containsColumnMetadata(ColumnMetadata colMetadata) {
-		boolean containsColumnMetadata = false;
-		if (this.columnMetadata.getXPath().equals(colMetadata.getXPath())) {
-			containsColumnMetadata = true;
-		}
-		return containsColumnMetadata;
-	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
