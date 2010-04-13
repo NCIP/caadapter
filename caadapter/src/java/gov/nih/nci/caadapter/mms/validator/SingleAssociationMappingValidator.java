@@ -7,17 +7,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 package gov.nih.nci.caadapter.mms.validator;
-import java.util.Iterator;
-import java.util.List;
 
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
-import gov.nih.nci.caadapter.mms.map.AttributeMapping;
-import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
-import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 import gov.nih.nci.caadapter.mms.map.AssociationMapping;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 
 /**
  * The purpose of this class is to validate the single association role
@@ -33,81 +25,81 @@ import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 public class SingleAssociationMappingValidator {
 	
 	private String validationErrorMessage;
-	private CumulativeMapping cumulativeMapping;
+//	private CumulativeMapping cumulativeMapping;
 	private AssociationMapping associationMapping;
 	
 	public SingleAssociationMappingValidator(AssociationMapping mapping){
          this.associationMapping = mapping;
 	}
-   /**
-    * This method verifies that the starting end of an association has been
-    * mapped to a database table
-    * Verification Step #1
-    */
+//   /**
+//    * This method verifies that the starting end of an association has been
+//    * mapped to a database table
+//    * Verification Step #1
+//    */
+//
+//    public boolean isAssociationEndObjectDependencyMapped() {
+//		boolean associationEndObjectDependencyMapped = false;
+//		try {
+//			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
+//		} catch (Exception e) {
+//			
+//		}
+//		List dependencyMappings = cumulativeMapping.getDependencyMappings();
+//		
+//		Iterator i = dependencyMappings.iterator();
+//		while (i.hasNext()) {
+//			try {
+//				DependencyMapping m = (DependencyMapping) i.next();
+//				if(m.areMappedEntities(associationMapping.getAssociationEndMetadata().getParentXPath(), associationMapping.getColumnMetadata().getParentXPath())){
+//					associationEndObjectDependencyMapped = true;
+//				}
+//			} catch (Exception e) {
+//				//LOGGER.fine(e.getMessage());
+//				 e.printStackTrace();
+//			}
+//		}
+//		return associationEndObjectDependencyMapped;
+//	}
 
-    public boolean isAssociationEndObjectDependencyMapped() {
-		boolean associationEndObjectDependencyMapped = false;
-		try {
-			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
-		} catch (Exception e) {
-			
-		}
-		List dependencyMappings = cumulativeMapping.getDependencyMappings();
-		
-		Iterator i = dependencyMappings.iterator();
-		while (i.hasNext()) {
-			try {
-				DependencyMapping m = (DependencyMapping) i.next();
-				if(m.areMappedEntities(associationMapping.getAssociationEndMetadata().getParentXPath(), associationMapping.getColumnMetadata().getParentXPath())){
-					associationEndObjectDependencyMapped = true;
-				}
-			} catch (Exception e) {
-				//LOGGER.fine(e.getMessage());
-				 e.printStackTrace();
-			}
-		}
-		return associationEndObjectDependencyMapped;
-	}
+//    /**
+//     * This method verifies that the column being mapped is in fact a foreign key column
+//     * within the table that is belongs to.
+//     * Verification Step #2
+//     */
+//
+//	public boolean isMappedColumnForeignKey(){
+//		boolean isForeignKey = associationMapping.getColumnMetadata().isForeignKey();
+//		return isForeignKey;
+//	}
 
-    /**
-     * This method verifies that the column being mapped is in fact a foreign key column
-     * within the table that is belongs to.
-     * Verification Step #2
-     */
-
-	public boolean isMappedColumnForeignKey(){
-		boolean isForeignKey = associationMapping.getColumnMetadata().isForeignKey();
-		return isForeignKey;
-	}
-
-	 /**
-	  * This method verifies that the column being mapped has not
-	  * been mapped in any other SingleAssociationMapping
-	  * Verification Step #3
-	  */
-	public boolean isColumnPreviouslyMapped(){
-		boolean previouslyMapped = false;
-		try {
-		cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
-		} catch (Exception e){
-			
-		}
-		List singleAssociationMappings = cumulativeMapping.getAssociationMappings();
-		ColumnMetadata colMetadata = associationMapping.getColumnMetadata();
-		Iterator i = singleAssociationMappings.iterator();
-		while (i.hasNext()) {
-			try {
-				AssociationMapping m = (AssociationMapping) i.next();
-				if(m.containsColumnMetadata(colMetadata)) {
-					previouslyMapped = true;
-				}
-			} catch (Exception e) {
-				//LOGGER.fine(e.getMessage());
-				e.printStackTrace();
-			}
-		}
-	 	return previouslyMapped;
-	}
+//	 /**
+//	  * This method verifies that the column being mapped has not
+//	  * been mapped in any other SingleAssociationMapping
+//	  * Verification Step #3
+//	  */
+//	public boolean isColumnPreviouslyMapped(){
+//		boolean previouslyMapped = false;
+//		try {
+//		cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
+//		} catch (Exception e){
+//			
+//		}
+//		List singleAssociationMappings = cumulativeMapping.getAssociationMappings();
+//		ColumnMetadata colMetadata = associationMapping.getColumnMetadata();
+//		Iterator i = singleAssociationMappings.iterator();
+//		while (i.hasNext()) {
+//			try {
+//				AssociationMapping m = (AssociationMapping) i.next();
+//				if(m.containsColumnMetadata(colMetadata)) {
+//					previouslyMapped = true;
+//				}
+//			} catch (Exception e) {
+//				//LOGGER.fine(e.getMessage());
+//				e.printStackTrace();
+//			}
+//		}
+//	 	return previouslyMapped;
+//	}
 	
     public boolean isTargetColumnPrimaryKey() {
     	boolean isPrimaryKey = false;
@@ -115,126 +107,126 @@ public class SingleAssociationMappingValidator {
     }
 
 
-	/**
-	 * This method verifies that the object associated to the single association role name
-	 * has an id attribute that has been mapped to a primary key column of its dependent
-	 * table.
-	 * Verification Step #5
-	 */
+//	/**
+//	 * This method verifies that the object associated to the single association role name
+//	 * has an id attribute that has been mapped to a primary key column of its dependent
+//	 * table.
+//	 * Verification Step #5
+//	 */
+//
+//	public boolean isTargetObjectMappedToPrimaryKey(){
+//
+//		boolean isMappedToPrimaryKey = false;
+//		DependencyMapping targetDependencyMapping = new DependencyMapping();
+//		TableMetadata targetTableMetadata = new TableMetadata();
+//		ColumnMetadata columnMetadata = new ColumnMetadata();
+//
+//		//This target equates to Taxon in the example
+//		String parentXPath = getParentXPath(associationMapping.getColumnMetadata().getXPath());
+//		//Get the table dependency mapping associated with Taxon
+//		try {
+//			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
+//		} catch (Exception e){
+//			
+//		}
+//		List dependencyMappings = cumulativeMapping.getDependencyMappings();
+//		Iterator i = dependencyMappings.iterator();
+//		while (i.hasNext()) {
+//			try {
+//				DependencyMapping m = (DependencyMapping) i.next();
+//				if(m.isAMappedEntities(parentXPath)) {
+//					targetDependencyMapping = m;
+//				}
+//			} catch (Exception e) {
+//				//LOGGER.fine(e.getMessage());
+//				 e.printStackTrace();
+//			}
+//		}
+//
+//		// Get the table
+//		targetTableMetadata = targetDependencyMapping.getTargetDependency();
+//		//Get the column that is the primary key
+//		columnMetadata = targetTableMetadata.getPrimaryKeyColumn();
+//		//check the attribute mappings to see if that column is mapped to Taxon.id
+//	    List attributeMappings = cumulativeMapping.getAttributeMappings();
+//			Iterator j = attributeMappings.iterator();
+//			while (j.hasNext()) {
+//				try {
+//					AttributeMapping m = (AttributeMapping) j.next();
+//					if(m.getColumnMetadata().getXPath().equals(columnMetadata.getXPath()) && m.getAttributeMetadata().getName().equals("id") && m.getAttributeMetadata().getXPath().equals(parentXPath)) {
+//						isMappedToPrimaryKey = true;
+//					}
+//				} catch (Exception e) {
+//					//LOGGER.fine(e.getMessage());
+//					 e.printStackTrace();
+//				}
+//		}
+//		return isMappedToPrimaryKey;
+//	}
 
-	public boolean isTargetObjectMappedToPrimaryKey(){
-
-		boolean isMappedToPrimaryKey = false;
-		DependencyMapping targetDependencyMapping = new DependencyMapping();
-		TableMetadata targetTableMetadata = new TableMetadata();
-		ColumnMetadata columnMetadata = new ColumnMetadata();
-
-		//This target equates to Taxon in the example
-		String parentXPath = getParentXPath(associationMapping.getColumnMetadata().getXPath());
-		//Get the table dependency mapping associated with Taxon
-		try {
-			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
-		} catch (Exception e){
-			
-		}
-		List dependencyMappings = cumulativeMapping.getDependencyMappings();
-		Iterator i = dependencyMappings.iterator();
-		while (i.hasNext()) {
-			try {
-				DependencyMapping m = (DependencyMapping) i.next();
-				if(m.isAMappedEntities(parentXPath)) {
-					targetDependencyMapping = m;
-				}
-			} catch (Exception e) {
-				//LOGGER.fine(e.getMessage());
-				 e.printStackTrace();
-			}
-		}
-
-		// Get the table
-		targetTableMetadata = targetDependencyMapping.getTargetDependency();
-		//Get the column that is the primary key
-		columnMetadata = targetTableMetadata.getPrimaryKeyColumn();
-		//check the attribute mappings to see if that column is mapped to Taxon.id
-	    List attributeMappings = cumulativeMapping.getAttributeMappings();
-			Iterator j = attributeMappings.iterator();
-			while (j.hasNext()) {
-				try {
-					AttributeMapping m = (AttributeMapping) j.next();
-					if(m.getColumnMetadata().getXPath().equals(columnMetadata.getXPath()) && m.getAttributeMetadata().getName().equals("id") && m.getAttributeMetadata().getXPath().equals(parentXPath)) {
-						isMappedToPrimaryKey = true;
-					}
-				} catch (Exception e) {
-					//LOGGER.fine(e.getMessage());
-					 e.printStackTrace();
-				}
-		}
-		return isMappedToPrimaryKey;
-	}
-
-    /**
-	 * This method verifies that the foreign key column being mapped is of the same datatype
-	 * as the primary key column of the table dependency mapped to the return type of the
-	 * role being mapped.
-	 * i.e " GENE_TV.TAXON_ID has the same datatype as TAXON.ID
-	 * Verification Step #6
-	 */
-
-    public boolean isForeignKeyCorrectDatatype() {
-		boolean correctDatatype = false;
-		DependencyMapping targetDependencyMapping = new DependencyMapping();
-		TableMetadata targetTableMetadata = new TableMetadata();
-		ColumnMetadata targetColumnMetadata = new ColumnMetadata();
-		ColumnMetadata columnMetadata = associationMapping.getColumnMetadata();
-		//This target equates to Taxon in the example
-		String parentXPath = getParentXPath(associationMapping.getAssociationEndMetadata().getXPath());
-		//Get the table dependency mapping associated with Taxon
-		try {
-			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
-		} catch (Exception e) {
-			//Add logging here
-		}
-		List dependencyMappings = cumulativeMapping.getDependencyMappings();
-		Iterator i = dependencyMappings.iterator();
-		while (i.hasNext()) {
-			try {
-				DependencyMapping m = (DependencyMapping) i.next();
-				if(m.isAMappedEntities(parentXPath)) {
-					targetDependencyMapping = m;
-				}
-			} catch (Exception e) {
-				//LOGGER.fine(e.getMessage());
-					e.printStackTrace();
-			}
-		}
-
-		// Get the table
-		targetTableMetadata = targetDependencyMapping.getTargetDependency();
-		//Get the column that is the primary key
-		targetColumnMetadata = targetTableMetadata.getPrimaryKeyColumn();
-		//Compare the datatypes
-		if (targetColumnMetadata.getDatatype().equals(columnMetadata.getDatatype())) {
-			correctDatatype = true;
-		}
-		return correctDatatype;
-	}
-
-	 /**
-	  * This method verifies that the foreign key column being mapped is of the same datatype
-	  * as the primary key column of the table dependency mapped to the return type of the
-	  * role being mapped.
-	  * i.e " GENE_TV.TAXON_ID has the same datatype as TAXON.ID
-	  * Verification Step #6
-	  */
-
-	public boolean hasCorrectMultiplicity() {
-		boolean hasCorrectMultiplicity = false;
-		AssociationMetadata thisEnd = associationMapping.getAssociationEndMetadata();
-		if (thisEnd.getMultiplicity() < 2) {
-			hasCorrectMultiplicity = true;
-		}
-		return hasCorrectMultiplicity;
-	}
+//    /**
+//	 * This method verifies that the foreign key column being mapped is of the same datatype
+//	 * as the primary key column of the table dependency mapped to the return type of the
+//	 * role being mapped.
+//	 * i.e " GENE_TV.TAXON_ID has the same datatype as TAXON.ID
+//	 * Verification Step #6
+//	 */
+//
+//    public boolean isForeignKeyCorrectDatatype() {
+//		boolean correctDatatype = false;
+//		DependencyMapping targetDependencyMapping = new DependencyMapping();
+//		TableMetadata targetTableMetadata = new TableMetadata();
+//		ColumnMetadata targetColumnMetadata = new ColumnMetadata();
+//		ColumnMetadata columnMetadata = associationMapping.getColumnMetadata();
+//		//This target equates to Taxon in the example
+//		String parentXPath = getParentXPath(associationMapping.getAssociationEndMetadata().getXPath());
+//		//Get the table dependency mapping associated with Taxon
+//		try {
+//			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
+//		} catch (Exception e) {
+//			//Add logging here
+//		}
+//		List dependencyMappings = cumulativeMapping.getDependencyMappings();
+//		Iterator i = dependencyMappings.iterator();
+//		while (i.hasNext()) {
+//			try {
+//				DependencyMapping m = (DependencyMapping) i.next();
+//				if(m.isAMappedEntities(parentXPath)) {
+//					targetDependencyMapping = m;
+//				}
+//			} catch (Exception e) {
+//				//LOGGER.fine(e.getMessage());
+//					e.printStackTrace();
+//			}
+//		}
+//
+//		// Get the table
+//		targetTableMetadata = targetDependencyMapping.getTargetDependency();
+//		//Get the column that is the primary key
+//		targetColumnMetadata = targetTableMetadata.getPrimaryKeyColumn();
+//		//Compare the datatypes
+//		if (targetColumnMetadata.getDatatype().equals(columnMetadata.getDatatype())) {
+//			correctDatatype = true;
+//		}
+//		return correctDatatype;
+//	}
+//
+//	 /**
+//	  * This method verifies that the foreign key column being mapped is of the same datatype
+//	  * as the primary key column of the table dependency mapped to the return type of the
+//	  * role being mapped.
+//	  * i.e " GENE_TV.TAXON_ID has the same datatype as TAXON.ID
+//	  * Verification Step #6
+//	  */
+//
+//	public boolean hasCorrectMultiplicity() {
+//		boolean hasCorrectMultiplicity = false;
+//		AssociationMetadata thisEnd = associationMapping.getAssociationEndMetadata();
+//		if (thisEnd.getMultiplicity() < 2) {
+//			hasCorrectMultiplicity = true;
+//		}
+//		return hasCorrectMultiplicity;
+//	}
 
     public boolean hasCorrectManyToOneMultiplicity() {
 			boolean hasCorrectMultiplicity = false;
