@@ -11,7 +11,7 @@ package gov.nih.nci.caadapter.ui.mapping.jgraph;
 
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
-import gov.nih.nci.caadapter.mms.map.AssociationMapping;
+import gov.nih.nci.caadapter.ui.common.Iso21090uiUtil;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.caadapter.ui.common.tree.MappingSourceTree;
@@ -30,6 +30,7 @@ import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.metadata.TableMetadata;
+import gov.nih.nci.caadapter.common.util.Iso21090Util;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
@@ -470,22 +471,36 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			if (!(nodeObj instanceof MetaObject))
 				return popupMenu;
 			MetaObject metaObj=(MetaObject)nodeObj;
-//			if (metaObj instanceof AttributeMetadata)
-//				return popupMenu; //no popup for object.attribute
-//			
-			//the following two actions apply to object metadata
+		
+			//the following four actions apply to object metadata
 			ObjectAnnotationAction discValueSettingAction=new ObjectAnnotationAction("Set Discriminator Value", ObjectAnnotationAction.SET_DISCRIMINATOR_VALUE,middlePanel);
             popupMenu.add(new JMenuItem(discValueSettingAction));
             ObjectAnnotationAction discValueRemoveAction=new ObjectAnnotationAction("Remove Discriminator Value", ObjectAnnotationAction.REMOVE_DISCRIMINATOR_VALUE,middlePanel);
             popupMenu.add(new JMenuItem(discValueRemoveAction));
+            ObjectAnnotationAction gNullflavorValueSettingAction=new ObjectAnnotationAction("Set Global NullFlavor Constant", ObjectAnnotationAction.SET_GLOBAL_NULLFLAVOR_CONTANT,middlePanel);
+            popupMenu.add(new JMenuItem(gNullflavorValueSettingAction));
+            ObjectAnnotationAction gNullflavorValueRemoveAction=new ObjectAnnotationAction("Remove Global NullFlavor Constant", ObjectAnnotationAction.REMOVE_GLOBAL_NULLFLAVOR_CONSTANT,middlePanel);
+            popupMenu.add(new JMenuItem(gNullflavorValueRemoveAction));
         	
             popupMenu.addSeparator();
         	
             //add action for attribute
             AttributeAnnotationAction pkSetAction=new AttributeAnnotationAction("Set as Primary Key", AttributeAnnotationAction.SET_AS_PK,middlePanel);
             popupMenu.add(new JMenuItem(pkSetAction));
+            pkSetAction.setAnnotationTagName("id-attribute");
             AttributeAnnotationAction pkUnsetAction=new AttributeAnnotationAction("Unset as Primary Key", AttributeAnnotationAction.REMOVE_PK,middlePanel);
             popupMenu.add(new JMenuItem(pkUnsetAction));
+            pkUnsetAction.setAnnotationTagName("id-attribute");
+            
+            AttributeAnnotationAction constantSetAction=new AttributeAnnotationAction("Set Local Constant Value", AttributeAnnotationAction.SET_CONSTANT_VALUE,middlePanel);
+            popupMenu.add(new JMenuItem(constantSetAction));
+            AttributeAnnotationAction constantRemoveAction=new AttributeAnnotationAction("Remove Local Constant Value", AttributeAnnotationAction.REMOVE_CONSTANT_VALUE,middlePanel);
+            popupMenu.add(new JMenuItem(constantRemoveAction));
+            
+            AttributeAnnotationAction nullflavorSetAction=new AttributeAnnotationAction("Set Local NullFlavor Constant", AttributeAnnotationAction.SET_LOCAL_NULLFLAOVR_CONSTANT,middlePanel);
+            popupMenu.add(new JMenuItem(nullflavorSetAction));
+            AttributeAnnotationAction nullflavorRemoveAction=new AttributeAnnotationAction("Remove Local NullFlavor Constant", AttributeAnnotationAction.REMOVE_LOCAL_NULLFLAOVR_CONSTANT,middlePanel);
+            popupMenu.add(new JMenuItem(nullflavorRemoveAction));
         	
             popupMenu.addSeparator();
             
@@ -542,37 +557,102 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             else 	if (metaObj instanceof AttributeMetadata)
             {
             	
-            	AttributeMetadata attrMetadata = (AttributeMetadata)mutNode.getUserObject();
+            	AttributeMetadata attrMetadata = (AttributeMetadata)mutNode.getUserObject();	
+    			
+            	if (attrMetadata.isDerived())
+    				return popupMenu;
+            	AttributeMetadata annotationAttrMetadat=Iso21090uiUtil.findAnnotationAttribute(mutNode);
+    			boolean isGlobal=false;
+    			if (attrMetadata.getXPath().equals(annotationAttrMetadat.getXPath()))
+    				isGlobal=true;
+ 				UMLAttribute xpathAttr= ModelUtil.findAttribute(modelMetadata.getModel(),annotationAttrMetadat.getXPath());
+				String tagName="mapped-constant:"+XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), annotationAttrMetadat.getXPath());
+//            	UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),attrMetadata.getXPath());
+				//add relative path for local attribute				
+				if (!isGlobal)
+					tagName=tagName+"."+Iso21090uiUtil.findAttributeRelativePath(mutNode);
+				
+//				if (xpathAttr==null) 
+//				{
+//					//fix the bug in ModelUtil, it fails to find a UMLAltribute if the name
+//					//of its parent has "."
+//					xpathAttr=Iso21090uiUtil.findUMLAttributeFromMeta(mutNode);
+//				}
+				if (mutNode.isLeaf())
+            	{
+        			if (isGlobal)
+        			{
+        				constantSetAction.setName("Set Global Constant");
+        				constantRemoveAction.setName("Remove Global Constant");
+        			}
+            		constantSetAction.setEnabled(true);
+            		constantSetAction.setMetaAnnoted(annotationAttrMetadat); 
+            		constantSetAction.setAnnotationTagName(tagName);
+            		if (xpathAttr.getTaggedValue(tagName)!=null)
+            		{
+            			constantRemoveAction.setEnabled(true);
+            			constantRemoveAction.setMetaAnnoted(annotationAttrMetadat);
+            			constantRemoveAction.setAnnotationTagName(tagName);
+            		}
+            	}
+            	else
+            	{
+            		tagName=tagName+".nullFlavor";
+            		nullflavorSetAction.setEnabled(true);
+            		nullflavorSetAction.setMetaAnnoted(annotationAttrMetadat);
+            		nullflavorSetAction.setAnnotationTagName(tagName);
+            		if (xpathAttr.getTaggedValue(tagName)!=null)
+            		{
+            			nullflavorRemoveAction.setEnabled(true);
+            			nullflavorRemoveAction.setMetaAnnoted(annotationAttrMetadat);
+            			nullflavorRemoveAction.setAnnotationTagName(tagName);
+            		}
+            	}
             	if (!attrMetadata.isMapped())
             		return popupMenu;
             	
-        		UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),attrMetadata.getXPath());
-            	UMLTaggedValue pkTag=xpathAttr.getTaggedValue("id-attribute");
+            	tagName="id-attribute";
+            	UMLTaggedValue pkTag=xpathAttr.getTaggedValue(tagName);
             	if (pkTag!=null)
             	{
-            		pkUnsetAction.setMetaAnnoted(attrMetadata);
+            		pkUnsetAction.setMetaAnnoted(annotationAttrMetadat);
             		pkUnsetAction.setEnabled(true);
             	} 
             	else
             	{
-            		UMLClass parentClass=ModelUtil.findClass(modelMetadata.getModel(), attrMetadata.getParentXPath());
+            		UMLClass parentClass=ModelUtil.findClass(modelMetadata.getModel(), annotationAttrMetadat.getParentXPath());
             		for (UMLAttribute sblAttribute:parentClass.getAttributes())
         			{
-        				if (sblAttribute.getTaggedValue("id-attribute")!=null)
+        				if (sblAttribute.getTaggedValue(tagName)!=null)
         					return popupMenu;
         			}	
-                	pkSetAction.setMetaAnnoted(attrMetadata);
+                	pkSetAction.setMetaAnnoted(annotationAttrMetadat);
                 	pkSetAction.setEnabled(true);
             	}
             }
             else  if (metaObj instanceof ObjectMetadata) {
             	
             	ObjectMetadata objectMetadata = (ObjectMetadata)mutNode.getUserObject();
+            	UMLClass objClass=(UMLClass)ModelUtil.findClass(modelMetadata.getModel(), objectMetadata.getXPath());
+            	if (objClass==null)
+            		objClass=objectMetadata.getUmlClass();
+            	//enable GLOBAL_NULLFLAVOR_CONSTANT actions
+            	if (Iso21090Util.resolveAttributeDatatype(objectMetadata.getName())!=null)
+            	{
+            		gNullflavorValueSettingAction.setMetaAnnoted(objectMetadata);
+            		gNullflavorValueSettingAction.setEnabled(true);
+            		String objecttCleanpath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), objectMetadata.getXPath());
+            		UMLTaggedValue globalNullflavorTag=objClass.getTaggedValue("mapped-constant:"+objecttCleanpath+".nullFlavor");
+            		if (globalNullflavorTag!=null)
+                	{
+            			gNullflavorValueRemoveAction.setMetaAnnoted(objectMetadata);
+            			gNullflavorValueRemoveAction.setEnabled(true);
+                	}  
+            	}
             	if (!objectMetadata.isMapped())
             		return popupMenu;
             	
             	//check if this class is a sub-class
-            	UMLClass objClass=(UMLClass)ModelUtil.findClass(modelMetadata.getModel(), objectMetadata.getXPath());
 				List<UMLGeneralization> clazzGs = objClass.getGeneralizations();
 				boolean isRoot=true;
                 for (UMLGeneralization clazzG : clazzGs) {

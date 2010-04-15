@@ -8,9 +8,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Vector;
 
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
@@ -18,8 +15,10 @@ import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.caadapter.ui.mapping.mms.DialogUserInput;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 /**
@@ -36,7 +35,25 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 
 	public static int SET_AS_PK=1;
 	public static int REMOVE_PK=2;
-	
+	public static int SET_CONSTANT_VALUE=3;
+	public static int REMOVE_CONSTANT_VALUE=4;
+	public static int SET_LOCAL_NULLFLAOVR_CONSTANT=5;
+	public static int REMOVE_LOCAL_NULLFLAOVR_CONSTANT=6;
+	private String annotationTagName;
+	/**
+	 * @return the annotationTagName
+	 */
+	public String getAnnotationTagName() {
+		return annotationTagName;
+	}
+
+	/**
+	 * @param annotationTagName the annotationTagName to set
+	 */
+	public void setAnnotationTagName(String annotationTagName) {
+		this.annotationTagName = annotationTagName;
+	}
+
 	/**
 	 * @param actionName
 	 * @param actionType
@@ -58,9 +75,11 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 		ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 		UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),attrMeta.getXPath());
 
-		if (getAnnotationActionType()==REMOVE_PK)
+		if (getAnnotationActionType()==REMOVE_PK
+				||getAnnotationActionType()==REMOVE_CONSTANT_VALUE
+				||getAnnotationActionType()==REMOVE_LOCAL_NULLFLAOVR_CONSTANT)
 		{
-			XMIAnnotationUtil.removeTagValue(xpathAttr, "id-attribute");
+			XMIAnnotationUtil.removeTagValue(xpathAttr, this.getAnnotationTagName());
 			return true;
 		}
 		else if (getAnnotationActionType()==SET_AS_PK)
@@ -68,7 +87,7 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 			String parentFullpath=attrMeta.getParentXPath();
 			String parentCleanpath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), parentFullpath);
 			
-			XMIAnnotationUtil.addTagValue(xpathAttr, "id-attribute", parentCleanpath);
+			XMIAnnotationUtil.addTagValue(xpathAttr, getAnnotationTagName(), parentCleanpath);
 			UMLClass parentClass=ModelUtil.findClass(modelMetadata.getModel(), attrMeta.getParentXPath());
 			//remove all the "discriminator" column
 			for (UMLAttribute sblAttribute:parentClass.getAttributes())
@@ -78,6 +97,27 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 			}		
 			return true;
 		}	
+		else if (getAnnotationActionType()==SET_CONSTANT_VALUE
+				||getAnnotationActionType()==SET_LOCAL_NULLFLAOVR_CONSTANT)
+		{
+			//collect user's input and set tag value
+			UMLTaggedValue tagToSet=xpathAttr.getTaggedValue(this.getAnnotationTagName());
+			String defaultTxt="";
+			if (tagToSet!=null)
+				defaultTxt=tagToSet.getValue();
+			Vector<String> dfValues=new Vector<String>();
+			dfValues.add(defaultTxt);
+			String dialogName="Set Constant Value";
+			if (getAnnotationActionType()==SET_LOCAL_NULLFLAOVR_CONSTANT)
+				dialogName="Set Local Nullflavor Constant";
+			DialogUserInput dialog = new DialogUserInput(null, dfValues, dialogName);
+			if (dialog.getUserInput()!=null)
+			{
+				//annotate object with new tag value
+				XMIAnnotationUtil.addTagValue(xpathAttr, getAnnotationTagName(),(String)dialog.getUserInput());
+				return true;
+			}	
+		}
 			
 		return false;
 	}
