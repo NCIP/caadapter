@@ -11,17 +11,12 @@ import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.mms.DialogUserInput;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
-import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
-
 import java.awt.event.ActionEvent;
 import java.util.Vector;
-
-import javax.swing.JFrame;
 
 /**
  * Description of class definition
@@ -37,6 +32,8 @@ public class ObjectAnnotationAction extends ItemAnnotationAction
 {
 	public static int SET_DISCRIMINATOR_VALUE=1;
 	public static int REMOVE_DISCRIMINATOR_VALUE=2;
+	public static int SET_GLOBAL_NULLFLAVOR_CONTANT=3;
+	public static int REMOVE_GLOBAL_NULLFLAVOR_CONSTANT=4;
 	public ObjectAnnotationAction(String nameTxt,  int actionType, MappingMiddlePanel midPane) 
 	{
 		super(nameTxt, actionType, midPane );
@@ -47,38 +44,48 @@ public class ObjectAnnotationAction extends ItemAnnotationAction
 	 */
 	@Override
 	protected boolean doAction(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub
 		ObjectMetadata objectMeta=(ObjectMetadata)getMetaAnnoted();
 		ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
-		UMLClass umlClass=ModelUtil.findClass(modelMetadata.getModel(), objectMeta.getXPath());
-		
+//		UMLClass umlClass=ModelUtil.findClass(modelMetadata.getModel(), objectMeta.getXPath());
+		UMLClass umlClass=objectMeta.getUmlClass();
+		//default process "discriminator" tag
+		String dialogName="Discriminator Value";
+		String tagName="discriminator";
 		if (this.getAnnotationActionType()==REMOVE_DISCRIMINATOR_VALUE)
 		{
-			XMIAnnotationUtil.removeTagValue(umlClass, "discriminator");
+			XMIAnnotationUtil.removeTagValue(umlClass,tagName);
 			return true;
 		}
-		else if (this.getAnnotationActionType()==SET_DISCRIMINATOR_VALUE)
+		if (this.getAnnotationActionType()==REMOVE_GLOBAL_NULLFLAVOR_CONSTANT)
 		{
-			UMLTaggedValue discTag=umlClass.getTaggedValue("discriminator");
-			String defaultTxt="";
-			if (discTag!=null)
-				defaultTxt=discTag.getValue();
-			Vector dfValues=new Vector();
-			dfValues.add(defaultTxt);
-			DialogUserInput dialog = new DialogUserInput(null, dfValues, "Discriminator Value");
-			if (dialog.getUserInput()!=null)
-			{
-				//annotate object with new tag value
-				XMIAnnotationUtil.addTagValue(umlClass, "discriminator",(String)dialog.getUserInput());
-	        }
-			
+			String objecttCleanpath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), objectMeta.getXPath());
+			tagName="mapped-constant:"+objecttCleanpath+".nullFlavor";
+			XMIAnnotationUtil.removeTagValue(umlClass, tagName);
 			return true;
 		}
+	
+		//add tag
+		if (this.getAnnotationActionType()==SET_GLOBAL_NULLFLAVOR_CONTANT)
+		{
+			String objecttCleanpath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), objectMeta.getXPath());
+			tagName="mapped-constant:"+objecttCleanpath+".nullFlavor";
+			dialogName="Global NullFlavor Constant";			
+		}
+		UMLTaggedValue tagToSet=umlClass.getTaggedValue(tagName);
+		String defaultTxt="";
+		if (tagToSet!=null)
+			defaultTxt=tagToSet.getValue();
+		Vector<String> dfValues=new Vector<String>();
+		dfValues.add(defaultTxt);
+		DialogUserInput dialog = new DialogUserInput(null, dfValues, dialogName);
+		if (dialog.getUserInput()!=null)
+		{
+			//annotate object with new tag value
+			XMIAnnotationUtil.addTagValue(umlClass, tagName,(String)dialog.getUserInput());
+			return true;
+		}			
 		return false;
 	}
-	
- 
-
 }
 
 
