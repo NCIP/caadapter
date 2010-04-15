@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Iso21090Util {
@@ -16,6 +17,7 @@ public class Iso21090Util {
 	private static Hashtable<String, StringTokenizer> sequenceDataypeKeys=new Hashtable<String, StringTokenizer>();
 	private static String AD_SEQUENCE_EXP_NAME="ADXP";
 	private static String EN_SEQUENCE_EXP_NAME="ENXP";
+	public static String ISO21090_DATAYPE_PACKAGE="gov.nih.nci.iso21090";
 	/**
 	 * Hard code: List all possible sub-class type if a sequence of data types is refered
 	 * ADEXP -- sequence of AD type
@@ -82,8 +84,10 @@ public class Iso21090Util {
 	{
 		ModelMetadata myModel = CumulativeMappingGenerator.getInstance().getMetaModel();
 		LinkedHashMap metaHash = myModel.getModelMetadata();
-		for (Object dtKey:metaHash.keySet())
+		for (String dtKey:(Set<String>)metaHash.keySet())
 		{
+			if (dtKey.indexOf(ISO21090_DATAYPE_PACKAGE)<0)
+				continue;
 			Object dtMeta=metaHash.get(dtKey);
 			if (dtMeta instanceof ObjectMetadata)
 			{
