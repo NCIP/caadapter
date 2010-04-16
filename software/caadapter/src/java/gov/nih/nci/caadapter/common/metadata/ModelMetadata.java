@@ -24,6 +24,7 @@ import java.util.TreeSet;
 
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
+import gov.nih.nci.caadapter.common.util.Iso21090Util;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -329,7 +330,29 @@ public class ModelMetadata {
 	}
 
 	private  void initProcessAttribute(UMLAttribute att, ObjectMetadata object, StringBuffer pathKey, boolean derived) {
-		    StringBuffer attributePath = new StringBuffer();
+		   	String upcaseKey=att.getDatatype().getName().toUpperCase();
+		   	if (upcaseKey.startsWith("SEQUENCE"))
+		   	{
+		   		for (int partIndx=0; partIndx<Iso21090Util.findSequenceSize(upcaseKey);partIndx++)
+		   		{
+					StringBuffer attributePath = new StringBuffer();
+				    attributePath.append(pathKey);
+			        AttributeMetadata attMetadata = new AttributeMetadata();
+			        String attIndxName=att.getName()+"["+partIndx+"]";
+			        attMetadata.setName(attIndxName);
+			        attMetadata.setDatatype(att.getDatatype().getName());
+			        attributePath.append(".");
+			        attributePath.append(attIndxName);
+			        attMetadata.setXPath(attributePath.toString());
+			        attMetadata.setXmlPath(attributePath.toString());
+			        attMetadata.setDerived(derived);
+			        sortedModel.add(attMetadata);
+			        object.addAttribute(attMetadata);
+		   		}
+		   		
+		   		return;
+		   	}
+			StringBuffer attributePath = new StringBuffer();
 		    attributePath.append(pathKey);
 	        AttributeMetadata attMetadata = new AttributeMetadata();
 	        attMetadata.setName(att.getName());
