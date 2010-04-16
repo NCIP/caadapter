@@ -398,10 +398,13 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);	
 			//process Attributes associated with an object
 			ObjectMetadata objectMeta=(ObjectMetadata)newTreeNode.getUserObject();
+			int startLevel=0;
+			if (objectMeta.getXPath().indexOf(Iso21090Util.ISO21090_DATAYPE_PACKAGE)>-1)
+				startLevel=1;
 			for (AttributeMetadata objectAttr:objectMeta.getAttributes())
 			{
 				DefaultSourceTreeNode attrNode=new DefaultSourceTreeNode(objectAttr, true);
-				addIsoComplexTypeAttribute(1,attrNode);
+				addIsoComplexTypeAttribute(startLevel,attrNode);
 				newTreeNode.add(attrNode);
 			}
 			//process Association associted with an object
@@ -425,11 +428,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	 */
 	private void addIsoComplexTypeAttribute(int attrLevel,DefaultSourceTreeNode elementNode )
 	{
-		if (attrLevel>2)
+		if (attrLevel>3)
 			return;
 
-		AttributeMetadata elementMeta=(AttributeMetadata)elementNode.getUserObject();
-		ObjectMetadata childObject =Iso21090Util.resolveAttributeDatatype(elementMeta.getDatatype());
+		AttributeMetadata attributeMeta=(AttributeMetadata)elementNode.getUserObject();
+		ObjectMetadata childObject =Iso21090Util.resolveAttributeDatatype(attributeMeta.getDatatype());
 		if (childObject==null)
 		{
 			addComplexTypeSequence(elementNode);
@@ -457,13 +460,13 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			
 		for (ObjectMetadata objectMeta:sequenceObjects)
 		{
-			DefaultSourceTreeNode childObjectNode=new DefaultSourceTreeNode(objectMeta,true);
-			elementNode.add(childObjectNode);			
+//			DefaultSourceTreeNode childObjectNode=new DefaultSourceTreeNode(objectMeta,true);
+//			elementNode.add(childObjectNode);			
 			for (AttributeMetadata objectAttr:objectMeta.getAttributes())
 			{
 				DefaultSourceTreeNode attrNode=new DefaultSourceTreeNode(objectAttr, true);
 				addIsoComplexTypeAttribute(1,attrNode);
-				childObjectNode.add(attrNode);
+				elementNode.add(attrNode);
 			}
 		}
 	}
@@ -685,9 +688,14 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 								DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
 										.get(targetXpath);
 
-								if (sourceNode == null||targetNode == null)
+								if (sourceNode == null)
 								{
-									Log.logInfo(this, "Mapping missing--- source:"+sourceXpath +" ; target:"+targetXpath);
+									Log.logInfo(this, "Mapping source node missing--- source:"+sourceXpath +" ; target:"+targetXpath);
+									continue;
+								}
+								if (targetNode == null)
+								{
+									Log.logInfo(this, "Mapping target node missing--- source:"+sourceXpath +" ; target:"+targetXpath);
 									continue;
 								}
 								SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode.getUserObject();
