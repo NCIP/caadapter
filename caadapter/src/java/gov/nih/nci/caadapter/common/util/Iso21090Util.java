@@ -18,21 +18,31 @@ public class Iso21090Util {
 	private static String AD_SEQUENCE_EXP_NAME="ADXP";
 	private static String EN_SEQUENCE_EXP_NAME="ENXP";
 	public static String ISO21090_DATAYPE_PACKAGE="gov.nih.nci.iso21090";
+	private static final int ENXP_COUNT=5;
+	private static final int ADXP_COUNT=28;
 	/**
 	 * Hard code: List all possible sub-class type if a sequence of data types is refered
 	 * ADEXP -- sequence of AD type
 	 * ENEXP -- sequence of EN types
 	 */
 	static {
-		String SEQUENCE_ADXP_DATA_TYPES="ADXP.ADL;ADXP.AL;ADXP.BNN;ADXP.BNR;ADXP.BNS;ADXP.BR;ADXP.CAR;ADXP.CEN;"+
-		"ADXP.CNT;ADXP.CPA;ADXP.CTY;ADXP.DAL;ADXP.DINST;ADXP.DINSTA;ADXP.DINSTQ;ADXP.DIR;ADXP.DMOD;ADXP.DMODID;ADXP.INT;ADXP.POB;ADXP.PRE;"+
-		"ADXP.SAL;ADXP.STA;ADXP.STB;ADXP.STR;ADXP.STTYP;ADXP.UNID;ADXP.UNIT;ADXP.ZIP";
+//		String SEQUENCE_ADXP_DATA_TYPES="ADXP.ADL;ADXP.AL;ADXP.BNN;ADXP.BNR;ADXP.BNS;ADXP.BR;ADXP.CAR;ADXP.CEN;"+
+//		"ADXP.CNT;ADXP.CPA;ADXP.CTY;ADXP.DAL;ADXP.DINST;ADXP.DINSTA;ADXP.DINSTQ;ADXP.DIR;ADXP.DMOD;ADXP.DMODID;ADXP.INT;ADXP.POB;ADXP.PRE;"+
+//		"ADXP.SAL;ADXP.STA;ADXP.STB;ADXP.STR;ADXP.STTYP;ADXP.UNID;ADXP.UNIT;ADXP.ZIP";
+		String SEQUENCE_ADXP_DATA_TYPES="ADXP";
 		sequenceDataypeKeys.put(AD_SEQUENCE_EXP_NAME, new StringTokenizer(SEQUENCE_ADXP_DATA_TYPES,";"));
 //		String SEQUENCE_EN_DATA_TYPES="EN.ON;EN.PN;EN.TN";
 		String SEQUENCE_EN_DATA_TYPES="ENXP";
 		sequenceDataypeKeys.put(EN_SEQUENCE_EXP_NAME, new StringTokenizer(SEQUENCE_EN_DATA_TYPES,";"));
 	}
 	
+	public  static int findSequenceSize(String typeName)
+	{
+		if (typeName.contains("ADXP"))
+			return ADXP_COUNT;
+		return ENXP_COUNT;
+		
+	}
 	/**
 	 * Find the list of data types when a sequence is required
 	 * @param metaHash MetaData hash of a UML model
