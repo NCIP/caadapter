@@ -434,15 +434,64 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		AttributeMetadata attributeMeta=(AttributeMetadata)elementNode.getUserObject();
 		ObjectMetadata childObject =Iso21090Util.resolveAttributeDatatype(attributeMeta.getDatatype());
 		if (childObject==null)
-		{
-			addComplexTypeSequence(elementNode);
-			return;
+		{			
+			if (Iso21090Util.isCollectionDatatype(attributeMeta.getDatatype()))
+			{
+				addCollectoinStructure(elementNode);
+				return;
+			}
+			else
+			{
+				//process the sequence data
+				//it is a complex datatype with collection of attributes
+				//two data types: AD, EN
+				addComplexTypeSequence(elementNode);
+				return;
+			}
 		}
 		for (AttributeMetadata attrMeta:childObject.getAttributes())
 		{			
 			DefaultSourceTreeNode childAttrNode=new DefaultSourceTreeNode(attrMeta,true);
 			elementNode.add(childAttrNode);
 			addIsoComplexTypeAttribute(attrLevel+1,childAttrNode );
+		}
+	}
+	
+	private void addCollectoinStructure(DefaultSourceTreeNode elementNode)
+	{
+		//Add the content of DSET 
+		ObjectMetadata dsetObject=Iso21090Util.resolveAttributeDatatype("DSET");
+		for (AttributeMetadata attrMeta:dsetObject.getAttributes())
+		{			
+			DefaultSourceTreeNode childAttrNode=new DefaultSourceTreeNode(attrMeta,true);
+			elementNode.add(childAttrNode);
+			if (attrMeta.getDatatype().equals("Set(T)"))
+			{
+				MetaObject collectionMeta=(MetaObject)elementNode.getUserObject();
+				
+				String collectoinElementName=null;
+				if(collectionMeta instanceof AttributeMetadata)
+					collectoinElementName= Iso21090Util.findElementDatatypeName(((AttributeMetadata)collectionMeta).getDatatype());
+				if (collectoinElementName==null)
+					continue;
+				
+				ObjectMetadata collectionElementObject =Iso21090Util.resolveAttributeDatatype(collectoinElementName);
+				//return here if the data type is not define for a colleciton element
+				//case I: ISO21090 data define DSET with type<T> which not defined
+				//case II: Invalid element type
+				if (collectionElementObject==null)
+					continue;
+				
+				//process content of collection element
+				for (AttributeMetadata elmntAttrMeta:collectionElementObject.getAttributes())
+				{			
+					DefaultSourceTreeNode elementAttrNode=new DefaultSourceTreeNode(elmntAttrMeta,true);
+					childAttrNode.add(elementAttrNode);
+					addIsoComplexTypeAttribute(0,elementAttrNode );
+				}				
+			}
+			else
+				addIsoComplexTypeAttribute(0,childAttrNode );
 		}
 	}
 	/**
