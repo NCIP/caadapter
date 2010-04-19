@@ -113,5 +113,22 @@ public class Iso21090Util {
 		}
 		return null;
 	}
+	public static boolean isCollectionDatatype(String dtName)
+	{
+		if (dtName.indexOf("<")<0|dtName.indexOf(">")<0)
+			return false;
+		return true;
+	}
+	public static String findElementDatatypeName(String collectionName)
+	{
+		String rtnName=null;
+		if (collectionName==null)
+			return rtnName;
+		if (collectionName.indexOf("<")<0|collectionName.indexOf(">")<0)
+			return rtnName;
+		rtnName=collectionName.substring(collectionName.indexOf("<")+1, collectionName.indexOf(">"));
+
+		return rtnName;
+	}
 
 }
