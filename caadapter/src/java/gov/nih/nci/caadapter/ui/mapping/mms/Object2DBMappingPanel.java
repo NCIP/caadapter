@@ -32,6 +32,7 @@ import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.ui.common.Iso21090uiUtil;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
 import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
@@ -699,11 +700,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			}
 
 			SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode.getUserObject();
-			SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode.getUserObject();
-
 			sourceSDKMetaData.setMapped(true);
 			//loading XMI and create mapping UI
-			isSuccess = cumulativeMappingGenerator.map(sourceXpath,	targetXpath, false);
+			isSuccess = cumulativeMappingGenerator.map(sourceXpath,	targetXpath,null, null, false);
 			isSuccess = isSuccess&& getMappingDataManager().createMapping(
 							(MappableNode) sourceNode,
 							(MappableNode) targetNode);
@@ -749,7 +748,14 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 								}
 								SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode.getUserObject();
 								sourceSDKMetaData.setMapped(true);
-								isSuccess = cumulativeMappingGenerator.map(sourceXpath, targetXpath, false);
+								AttributeMetadata annotationSDKMetadata=null;
+								String tagRelativePath="";
+								if (sourceSDKMetaData instanceof AttributeMetadata)
+								{
+									annotationSDKMetadata=Iso21090uiUtil.findAnnotationAttribute((DefaultMutableTreeNode)sourceNode);
+									tagRelativePath=Iso21090uiUtil.findAttributeRelativePath((DefaultMutableTreeNode) sourceNode);
+								}
+								isSuccess = cumulativeMappingGenerator.map(((AttributeMetadata)sourceNode.getUserObject()).getXPath(), targetXpath,annotationSDKMetadata.getXPath(),tagRelativePath, false);
 								isSuccess = isSuccess&& 
 										getMappingDataManager().createMapping((MappableNode) sourceNode,(MappableNode) targetNode);
 //								if (!isSuccess)
