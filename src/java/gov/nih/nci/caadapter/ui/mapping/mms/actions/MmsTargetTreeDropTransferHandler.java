@@ -11,7 +11,9 @@ package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.TableMetadata;
+import gov.nih.nci.caadapter.ui.common.Iso21090uiUtil;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -227,8 +229,15 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 						SDKMetaData sourceSDKMetaData = (SDKMetaData)sourceNode.getUserObject();
 						SDKMetaData targetSDKMetaData = (SDKMetaData)targetNode.getUserObject();
 						sourceSDKMetaData.setMapped(true);
+						AttributeMetadata annotationSDKMetadata=null;
+						String tagRelativePath="";
+						if (sourceSDKMetaData instanceof AttributeMetadata)
+						{
+							annotationSDKMetadata=Iso21090uiUtil.findAnnotationAttribute((DefaultMutableTreeNode)sourceNode);
+							tagRelativePath=Iso21090uiUtil.findAttributeRelativePath((DefaultMutableTreeNode) sourceNode);
+						}
 						//create a mapping UI and update the underneath UML model
-						isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath(), true);
+						isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath(),annotationSDKMetadata.getXPath(), tagRelativePath,  true);
 						if (!isSuccess) {
 							sourceSDKMetaData.setMapped(false);
 							JOptionPane.showMessageDialog(getTree().getRootPane().getParent(),
