@@ -38,16 +38,15 @@ public class CumulativeMapping {
 	 *
 	 * @param attributeMapping
 	 */
-	public void addAttributeMapping(AttributeMapping attributeMapping){
+	public void addAttributeMapping(AttributeMapping attributeMapping, String sourcePath){
 		attributeMappings.add(attributeMapping);
 		if (attributeMapping!=null)
 		{
-			sourceHashmap.put(attributeMapping.getAttributeMetadata().getXPath(),
+			sourceHashmap.put(sourcePath,
 					attributeMapping.getColumnMetadata());
 			targetHashmap.put(attributeMapping.getColumnMetadata().getXPath(),
 					attributeMapping.getAttributeMetadata());
 		}
-		
 	}
 
 	/**
@@ -73,6 +72,11 @@ public class CumulativeMapping {
    		singleAssociationMappings.add(associationMapping);
 		if (associationMapping!=null)
 		{
+			if (associationMapping.getAssociationEndMetadata()==null)
+			{
+				System.out.println("CumulativeMapping.addAssociationMapping()..association end is null:"+associationMapping.getColumnMetadata());
+				return;
+			}
 			sourceHashmap.put(associationMapping.getAssociationEndMetadata().getXPath(),
 					associationMapping.getColumnMetadata());
 			targetHashmap.put(associationMapping.getColumnMetadata().getXPath(),
@@ -96,11 +100,11 @@ public class CumulativeMapping {
 	 *
 	 * @param attributeMapping
 	 */
-	public void removeAttributeMapping(AttributeMapping attributeMapping){
+	public void removeAttributeMapping(AttributeMapping attributeMapping, String sourcePath){
 		attributeMappings.remove(attributeMapping);
 		if (attributeMapping!=null)
 		{
-			sourceHashmap.remove(attributeMapping.getAttributeMetadata().getXPath());
+			sourceHashmap.remove(sourcePath);
 			targetHashmap.remove(attributeMapping.getColumnMetadata().getXPath());
 		}
 	}
