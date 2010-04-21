@@ -750,12 +750,15 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 								sourceSDKMetaData.setMapped(true);
 								AttributeMetadata annotationSDKMetadata=null;
 								String tagRelativePath="";
+								String anntationPath="";
 								if (sourceSDKMetaData instanceof AttributeMetadata)
 								{
 									annotationSDKMetadata=Iso21090uiUtil.findAnnotationAttribute((DefaultMutableTreeNode)sourceNode);
+									if (annotationSDKMetadata!=null)
+										anntationPath=annotationSDKMetadata.getXPath();
 									tagRelativePath=Iso21090uiUtil.findAttributeRelativePath((DefaultMutableTreeNode) sourceNode);
 								}
-								isSuccess = cumulativeMappingGenerator.map(((AttributeMetadata)sourceNode.getUserObject()).getXPath(), targetXpath,annotationSDKMetadata.getXPath(),tagRelativePath, false);
+								isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetXpath,anntationPath,tagRelativePath, false);
 								isSuccess = isSuccess&& 
 										getMappingDataManager().createMapping((MappableNode) sourceNode,(MappableNode) targetNode);
 //								if (!isSuccess)
