@@ -8,6 +8,14 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 
 public class Iso21090uiUtil {
+	public static boolean isCollectionDatatype(AttributeMetadata attributeMeta)
+	{
+		if (attributeMeta.getDatatype()==null)
+			return false;
+		if (attributeMeta.getDatatype().startsWith("DSET<"))
+			return true;
+		return false;
+	}
 	public static AttributeMetadata findAnnotationAttribute(DefaultMutableTreeNode localAttributeNode)
 	{
 		AttributeMetadata rtnMeta=(AttributeMetadata)localAttributeNode.getUserObject();

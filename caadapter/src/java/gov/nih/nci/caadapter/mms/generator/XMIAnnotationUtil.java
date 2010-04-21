@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import org.jdom.Element;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
@@ -191,7 +192,10 @@ public class XMIAnnotationUtil {
 		UMLAttribute xpathAttr=ModelUtil.findAttribute(umlModel,targetPath);
 		xpathAttr.removeTaggedValue("implements-association");
 		ModelMetadata modelMeta=CumulativeMappingGenerator.getInstance().getMetaModel();
-		AssociationMetadata asscMeta=(AssociationMetadata)modelMeta.getModelMetadata().get(sourcePath);
+		MetaObject metaObj=(MetaObject)modelMeta.getModelMetadata().get(sourcePath);
+		if (!(metaObj instanceof AssociationMetadata))
+			return true;
+		AssociationMetadata asscMeta=(AssociationMetadata)metaObj;//modelMeta.getModelMetadata().get(sourcePath);
 		if (asscMeta==null)
 			return false;
 		
@@ -284,10 +288,14 @@ public class XMIAnnotationUtil {
 	    	}
 	    }	
 		//check the association end in the Logical Model
+		MetaObject metaObj=(MetaObject)modelMetaHash.get(sourcePath);
+		if (metaObj instanceof AssociationMetadata)
+		{
 		AssociationMetadata asscMeta=(AssociationMetadata)modelMetaHash.get(sourcePath);
 		UMLAssociation umlAssc=asscMeta.getUMLAssociation();
 				
 		addTagValue(umlAssc,"correlation-table",tblClass.getName());
+		}
 		return true;
 	}
 	/**

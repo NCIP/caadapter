@@ -68,16 +68,16 @@ public class CumulativeMapping {
 	 *
 	 * @param singleAssociationMapping
 	 */
-	public void addAssociationMapping(AssociationMapping associationMapping){
+	public void addAssociationMapping(AssociationMapping associationMapping, String sourcePath){
    		singleAssociationMappings.add(associationMapping);
 		if (associationMapping!=null)
 		{
-			if (associationMapping.getAssociationEndMetadata()==null)
-			{
-				System.out.println("CumulativeMapping.addAssociationMapping()..association end is null:"+associationMapping.getColumnMetadata());
-				return;
-			}
-			sourceHashmap.put(associationMapping.getAssociationEndMetadata().getXPath(),
+//			if (associationMapping.getAssociationEndMetadata()==null)
+//			{
+//				System.out.println("CumulativeMapping.addAssociationMapping()..association end is null:"+associationMapping.getColumnMetadata());
+//				return;
+//			}
+			sourceHashmap.put(sourcePath,
 					associationMapping.getColumnMetadata());
 			targetHashmap.put(associationMapping.getColumnMetadata().getXPath(),
 					associationMapping.getAssociationEndMetadata());
@@ -126,11 +126,11 @@ public class CumulativeMapping {
 	 *
 	 * @param singleAssociationMapping
 	 */
-	public void removeAssociationMapping(AssociationMapping associationMapping){
+	public void removeAssociationMapping(AssociationMapping associationMapping, String sourcePath){
 		singleAssociationMappings.remove(associationMapping);
 		if (associationMapping!=null)
 		{
-			sourceHashmap.remove(associationMapping.getAssociationEndMetadata().getXPath());
+			sourceHashmap.remove(sourcePath);
 			targetHashmap.remove(associationMapping.getColumnMetadata().getXPath());
 		}
 	}

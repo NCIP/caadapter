@@ -11,6 +11,7 @@ import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 import gov.nih.nci.caadapter.mms.map.AssociationMapping;
+import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
@@ -20,6 +21,7 @@ import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 import gov.nih.nci.caadapter.mms.validator.AttributeMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.DependencyMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.SingleAssociationMappingValidator;
+import gov.nih.nci.caadapter.ui.common.Iso21090uiUtil;
 import gov.nih.nci.ncicb.xmiinout.domain.*;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
@@ -127,7 +129,10 @@ public boolean unmap(String source, String target, String annotationSite, String
 		else 
 			successfullyUnmapped = unmapAttribute(annotationSite,relativePath, target);
 	} else if (sourceMappingType.equals("association")&& targetMappingType.equals("attribute")) {
-		successfullyUnmapped = unmapAssociation(source, target);
+		if (annotationSite==null||annotationSite.equals(""))
+			successfullyUnmapped = unmapAssociation(source,relativePath, target);
+		else
+			successfullyUnmapped = unmapAssociation(annotationSite,relativePath, target);
 //	} else if (sourceMappingType.equals("manytomanyassociation")&& targetMappingType.equals("attribute")){
 //		successfullyUnmapped = unmapManyToManyAssociation(source, target);
 	} else {
@@ -166,7 +171,7 @@ public boolean map(String source, String target, String annotationSite, String r
 //		successfullyMapped = mapAttribute(source, target, updateModel);
 	} else if (sourceMappingType.equals("association")&& targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
-		successfullyMapped = mapAssociation(source, target, updateModel);
+		successfullyMapped = mapAssociation(source, target, annotationSite, relativePath, updateModel);
 //	} else if (sourceMappingType.equals("manytomanyassociation")&& targetMappingType.equals("attribute")){
 //		//Then the actual components from the UML model are realized
 //		UMLAssociationEnd sourceEnd = getAssociationEnd(source);
@@ -362,10 +367,13 @@ private boolean unmapAttribute(String annotationPath, String relativePath, Strin
  * @param updateModel If the underneath UML should be updated as creating a new mapping
  * @return boolean
  */
-private boolean mapAssociation(String sourceXPath, String targetXPath, boolean updateModel){
+private boolean mapAssociation(String sourceXPath, String targetXPath, String annotationPath, String relativePath, boolean updateModel){
 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
-	AssociationMetadata sourceMetadata = (AssociationMetadata)modelMeta.get(sourceXPath);
+	AssociationMetadata sourceMetadata =null;
+	MetaObject metaSrc=	(MetaObject)modelMeta.get(sourceXPath);
+	if (metaSrc!=null&&(metaSrc instanceof AssociationMetadata ))
+		sourceMetadata=(AssociationMetadata)metaSrc;
 	ColumnMetadata targetMetadata = (ColumnMetadata)modelMeta.get(targetXPath);
 	boolean successfullyMapped = false;
 	AssociationMapping mapping = new AssociationMapping();
@@ -377,9 +385,21 @@ private boolean mapAssociation(String sourceXPath, String targetXPath, boolean u
 	SingleAssociationMappingValidator validator = new SingleAssociationMappingValidator(mapping);
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
-		cumulativeMapping.addAssociationMapping(mapping);
+//		cumulativeMapping.addAssociationMapping(mapping);
+		if (relativePath==null||relativePath.equals(""))
+			cumulativeMapping.addAssociationMapping(mapping, sourceXPath);
+		else
+			cumulativeMapping.addAssociationMapping(mapping, annotationPath);
+
 		if (updateModel)
-			XMIAnnotationUtil.annotateAssociationMapping(metaModel.getModel(),sourceXPath, targetXPath);
+		{
+	
+			if (relativePath==null|relativePath.equals(""))
+				XMIAnnotationUtil.annotateAssociationMapping(metaModel.getModel(),sourceXPath, targetXPath);
+			else
+				XMIAnnotationUtil.annotateAssociationMapping(metaModel.getModel(),annotationPath, targetXPath);
+		}
+			
 	}
 	else {
 		setErrorMessage(validator.getValidationErrorMessage());
@@ -391,12 +411,22 @@ private boolean mapAssociation(String sourceXPath, String targetXPath, boolean u
  * @param targetXPath String
  * @return boolean
  */
-private boolean unmapAssociation(String sourceXPath, String targetXPath){
+private boolean unmapAssociation(String annotationPath, String relativePath, String targetXPath){
 	List<AssociationMapping> singleAssociationMapping = cumulativeMapping.getAssociationMappings();
 	for (AssociationMapping assoS : singleAssociationMapping) {
-		if (assoS.getAssociationEndMetadata().getXPath().equals(sourceXPath) && assoS.getColumnMetadata().getXPath().equals(targetXPath)) {
-			cumulativeMapping.removeAssociationMapping(assoS);
-			return XMIAnnotationUtil.deAnnotateAssociationMapping(metaModel.getModel(), sourceXPath, targetXPath);
+//		if (assoS.getAssociationEndMetadata().getXPath().equals(sourceXPath) && assoS.getColumnMetadata().getXPath().equals(targetXPath)) {
+		if (assoS.getColumnMetadata().getXPath().equals(targetXPath)) 
+		{
+			if (relativePath==null|relativePath.equals(""))
+			{
+				cumulativeMapping.removeAssociationMapping(assoS, annotationPath);
+				return XMIAnnotationUtil.deAnnotateAssociationMapping(metaModel.getModel(), annotationPath, targetXPath);
+			}
+			else
+			{
+				cumulativeMapping.removeAssociationMapping(assoS,  annotationPath);
+				return XMIAnnotationUtil.deAnnotateAssociationMapping(metaModel.getModel(),  annotationPath, targetXPath);
+			}							
 		}
 	}
 	return false;
@@ -430,7 +460,13 @@ private boolean isAttribute(String element){
 		return false;
 	
 	if (foundObject instanceof AttributeMetadata)
-		return true;
+	{
+		if (Iso21090uiUtil.isCollectionDatatype((AttributeMetadata)foundObject))
+			return false;
+		else
+			return true;
+	}
+
 	
 	if(foundObject instanceof ColumnMetadata)
 		return true;
