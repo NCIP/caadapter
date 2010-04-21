@@ -30,6 +30,7 @@ import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
+import gov.nih.nci.caadapter.ui.common.Iso21090uiUtil;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxCell;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxDefaultPort;
@@ -433,8 +434,19 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
 				SDKMetaData sourceSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
 				SDKMetaData targetSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
+				AttributeMetadata annotationSDKMetadata=null;
+				String annotationPath="";
+				String tagRelativePath="";
+				if (sourceSDKMetaData instanceof AttributeMetadata)
+				{
+					annotationSDKMetadata=Iso21090uiUtil.findAnnotationAttribute((DefaultMutableTreeNode) e.getSourceNode());
+					if (sourceSDKMetaData!=null)
+						annotationPath=annotationSDKMetadata.getXPath();
+					tagRelativePath=Iso21090uiUtil.findAttributeRelativePath((DefaultMutableTreeNode) e.getSourceNode());
+				}
 				CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
-				boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
+				boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath(),
+						annotationPath,tagRelativePath);
 				sourceSDKMetaData.setMapped(false);
 			} else if ( middlePanel.getKind().equalsIgnoreCase("SDTM") ) {
 				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
