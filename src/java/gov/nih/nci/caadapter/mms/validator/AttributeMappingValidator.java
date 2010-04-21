@@ -7,17 +7,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 package gov.nih.nci.caadapter.mms.validator;
+import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
-import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
-import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.mms.util.DatatypeCompatablityProperties;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
+
 /**
  * The purpose of this class is to validate that an object attribute
  * linked to a database table column are compatible with respect to
@@ -34,15 +32,15 @@ public class AttributeMappingValidator {
 
 	private String validationErrorMessage;
 	private AttributeMapping mapping;
-    private static Properties datatypeCompatabilityProp;
+//    private static Properties datatypeCompatabilityProp;
     private CumulativeMapping cummulativeMapping;
-	{
-		try{
-			datatypeCompatabilityProp = DatatypeCompatablityProperties.getInstance().getProperties();
-		} catch(Exception e) {
-			//Add logging here
-			}
-	}
+//	{
+//		try{
+//			datatypeCompatabilityProp = DatatypeCompatablityProperties.getInstance().getProperties();
+//		} catch(Exception e) {
+//			//Add logging here
+//			}
+//	}
 
 	public AttributeMappingValidator(AttributeMapping mapping){
 		this.mapping = mapping;
@@ -52,33 +50,57 @@ public class AttributeMappingValidator {
 		this.mapping = mapping;
 	}
 
-
+//	private boolean hasParentsBeenMapped()
+//	{
+//		boolean beenMapped = false;
+//		try {
+//			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		cummulativeMapping.findMappedSource(tgrtPath)
+//		return beenMapped;		
+//	}
 	private boolean hasBeenMapped(){
 		boolean beenMapped = false;
+		validationErrorMessage = "Attribute has already been mapped.";
 		try {
 			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
-		List attributeMappings = cummulativeMapping.getAttributeMappings();
-		Iterator i = attributeMappings.iterator();
-		
-		while (i.hasNext()) {
-			try {
-				AttributeMapping m = (AttributeMapping)i.next();
-				if (m.getAttributeMetadata().getName().equals(mapping.getAttributeMetadata().getName()) && m.getAttributeMetadata().getXPath().equals(mapping.getAttributeMetadata().getXPath())){
-					beenMapped = true;
-				}
-			} catch (Exception e) {
-		            //LOGGER.fine(e.getMessage());
-		            e.printStackTrace();
-			}
-		}
- 		return beenMapped;
+		SDKMetaData trgtMeta=(SDKMetaData)cummulativeMapping.findMappedTarget(mapping.getAttributeMetadata().getXPath());
+		SDKMetaData srcMeta=(SDKMetaData)cummulativeMapping.findMappedSource(mapping.getColumnMetadata().getXPath());
+		if (trgtMeta==null|srcMeta==null)
+			return false;
+		if (!trgtMeta.getXPath().equals(mapping.getColumnMetadata().getXPath()))
+			return false;
+		if (!srcMeta.getXPath().equals(mapping.getAttributeMetadata().getXPath()))
+			return false;
+		beenMapped = true;
+		validationErrorMessage =null;
+		return beenMapped;
+//		List attributeMappings = cummulativeMapping.getAttributeMappings();
+//		Iterator i = attributeMappings.iterator();
+//		
+//		while (i.hasNext()) {
+//			try {
+//				AttributeMapping m = (AttributeMapping)i.next();
+//				if (m.getAttributeMetadata().getName().equals(mapping.getAttributeMetadata().getName()) && m.getAttributeMetadata().getXPath().equals(mapping.getAttributeMetadata().getXPath())){
+//					beenMapped = true;
+//					validationErrorMessage = "Attribute has already been mapped.";
+//					break;
+//				}
+//			} catch (Exception e) {
+//		            //LOGGER.fine(e.getMessage());
+//		            e.printStackTrace();
+//			}
+//		}
+// 		return beenMapped;
 	}
 
     private boolean hasDependencyMapping(){
-		boolean dependencyMapped = false;
+		boolean dependencyMapped = true;
 		try {
 			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e) {
@@ -98,6 +120,9 @@ public class AttributeMappingValidator {
 				e.printStackTrace();
 			}
 		}
+		if (dependencyMapped)
+			return dependencyMapped;
+		//check if the parent attribute is mapped in case it is an ISO 21090 datatype attribute
 		if (!dependencyMapped)
 			this.validationErrorMessage = "Parent object and table are not dependency mapped.";
  		return dependencyMapped;
@@ -108,15 +133,10 @@ public class AttributeMappingValidator {
 		// the parent object and parent table have not been mapped as a dependency
 		// if the attribute has been previously mapped
 		boolean isValidMapping = true;
-		if (!hasDependencyMapping()) {
+		if (!hasDependencyMapping())
 			isValidMapping = false;
-		} 
-
-		if (hasBeenMapped()) {
+		else	if (hasBeenMapped()) 
 		   isValidMapping = false;
-
-		   this.validationErrorMessage = "Attribute has already been mapped.";
-		}
 		return isValidMapping;
 	}
 
