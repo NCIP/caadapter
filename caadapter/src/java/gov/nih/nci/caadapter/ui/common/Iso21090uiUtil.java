@@ -32,7 +32,8 @@ public class Iso21090uiUtil {
 			parentNode=(DefaultMutableTreeNode)parentNode.getParent();
 		}
 		//remove the last attribute name since it is the direct attribute
-		rtnPath=rtnPath.replace(attrMeta.getName()+".","");
+		if (rtnPath.length()>attrMeta.getName().length()+1)
+			rtnPath=rtnPath.substring(attrMeta.getName().length()+1);//rtnPath.replace(attrMeta.getName()+".","");
 		
 		return rtnPath;
 	}
