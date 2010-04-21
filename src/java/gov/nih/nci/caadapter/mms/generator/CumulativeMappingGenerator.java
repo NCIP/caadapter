@@ -107,9 +107,11 @@ public void setErrorMessage(String eMessage) {
  * This method would be used to remove a previously created source to target mapping.
  * @param source Source element to be unmapped
  * @param target Target element to be unmapped
+ * @param annotationSite path the annotation element for ISO 21090 datatype annotation
+ * @param relativePath relative path of the current element to the annotation element
  * @return boolean
  */
-public boolean unmap(String source, String target){
+public boolean unmap(String source, String target, String annotationSite, String relativePath){
 	
 	boolean successfullyUnmapped = false;
 	String sourceMappingType = determineSourceMappingType(source);
@@ -120,7 +122,10 @@ public boolean unmap(String source, String target){
 		UMLClass targetClass = getClass(target);
 		successfullyUnmapped = unmapDependency(sourceClass, source, targetClass, target);
 	} else if (sourceMappingType .equals("attribute") && targetMappingType.equals("attribute")) {
-		successfullyUnmapped = unmapAttribute(source, target);
+		if (annotationSite==null||annotationSite.equals(""))
+			successfullyUnmapped = unmapAttribute(source,relativePath, target);
+		else 
+			successfullyUnmapped = unmapAttribute(annotationSite,relativePath, target);
 	} else if (sourceMappingType.equals("association")&& targetMappingType.equals("attribute")) {
 		successfullyUnmapped = unmapAssociation(source, target);
 //	} else if (sourceMappingType.equals("manytomanyassociation")&& targetMappingType.equals("attribute")){
@@ -135,10 +140,12 @@ public boolean unmap(String source, String target){
 /**
  * @param source Source element to be mapped.
  * @param target Target element to be mapped.
+ * @param annotationSite path the annotation element for ISO 21090 datatype annotation
+ * @param relativePath relative path of the current element to the annotation element
  * @param updateModel If the underneath UML should be updated as creating a new mapping
  * @return boolean 
  */
-public boolean map(String source, String target, boolean updateModel){
+public boolean map(String source, String target, String annotationSite, String relativePath, boolean updateModel){
 	
 	boolean successfullyMapped = false;
 	// The first thing that needs to be determined is what type of mapping is being attempted, i.e. Dependency, Attribute, Associatin, etc.
@@ -154,7 +161,9 @@ public boolean map(String source, String target, boolean updateModel){
 		successfullyMapped = mapDependency(sourceClass, source, targetClass, target, updateModel);		
 	} else if (sourceMappingType.equals("attribute") && targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
-		successfullyMapped = mapAttribute(source, target, updateModel);
+		successfullyMapped = mapAttribute(source, target,annotationSite, relativePath, updateModel);
+
+//		successfullyMapped = mapAttribute(source, target, updateModel);
 	} else if (sourceMappingType.equals("association")&& targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
 		successfullyMapped = mapAssociation(source, target, updateModel);
@@ -175,7 +184,6 @@ public boolean map(String source, String target, boolean updateModel){
  * @return String sourceMappingType
  */
 private String determineSourceMappingType(String source){
-	
 	String mappingType = null;
 	if (isClass(source)){
 		mappingType = "dependency";	
@@ -184,7 +192,6 @@ private String determineSourceMappingType(String source){
 	//} //TO_DO else if (isSingleAssociation(source)&& isManyToManyAssociation(source)){
 	} else 
 		mappingType="association";
-
 	return mappingType;
 }
 
@@ -285,7 +292,7 @@ private boolean unmapDependency(UMLClass source, String sourceXPath, UMLClass ta
  * @param updateModel If the underneath UML should be updated as creating a new mapping
  * @return boolean
  */
-private boolean mapAttribute(String sourcePath, String targetPath, boolean updateModel){
+private boolean mapAttribute(String sourcePath, String targetPath, String annotationPath, String relativePath, boolean updateModel){
 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
 	AttributeMetadata attributeMetadata = (AttributeMetadata)modelMeta.get(sourcePath);
@@ -300,13 +307,22 @@ private boolean mapAttribute(String sourcePath, String targetPath, boolean updat
 	AttributeMappingValidator validator = new AttributeMappingValidator(mapping);
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
-		cumulativeMapping.addAttributeMapping(mapping);
-		//add the tag to the UMLAttribute
+		if (relativePath==null||relativePath.equals(""))
+			cumulativeMapping.addAttributeMapping(mapping, sourcePath);
+		else
+			cumulativeMapping.addAttributeMapping(mapping, annotationPath+"."+relativePath);
+
 		if (updateModel)
 		{
 			UMLAttribute xpathUMLAttribute=ModelUtil.findAttribute(metaModel.getModel(),columnMetadata.getXPath());
 			//remove the leading string:"Logical View.Logical Model." from source path
-			String pureSrcPath=XMIAnnotationUtil.getCleanPath(metaModel.getMmsPrefixObjectModel(),  sourcePath);
+			String pureSrcPath="";
+			
+			if (relativePath==null|relativePath.equals(""))
+				pureSrcPath=XMIAnnotationUtil.getCleanPath(metaModel.getMmsPrefixObjectModel(),  sourcePath);
+			else
+				pureSrcPath=XMIAnnotationUtil.getCleanPath(metaModel.getMmsPrefixObjectModel(),  annotationPath)
+					+"."+relativePath;
 			XMIAnnotationUtil.addTagValue(xpathUMLAttribute, "mapped-attributes", pureSrcPath);
 		}
 	}
@@ -316,17 +332,20 @@ private boolean mapAttribute(String sourcePath, String targetPath, boolean updat
 	return successfullyMapped;
 }
 /**
- * @param sourcePath
- * @param sourcePath
+ * @param annotationPath
+ * @param relativePath
  * @param targetPath
- * @param targetPath
- * @return boolean
  */
-private boolean unmapAttribute(String sourcePath, String targetPath){
+private boolean unmapAttribute(String annotationPath, String relativePath, String targetPath){
 	List<AttributeMapping> attributeMapping = cumulativeMapping.getAttributeMappings();
 	for (AttributeMapping attr : attributeMapping) {
-		if (attr.getAttributeMetadata().getXPath().equals(sourcePath) && attr.getColumnMetadata().getXPath().equals(targetPath)) {
-			cumulativeMapping.removeAttributeMapping(attr);
+//		if (attr.getAttributeMetadata().getXPath().equals(sourcePath) && attr.getColumnMetadata().getXPath().equals(targetPath)) {
+		if (attr.getColumnMetadata().getXPath().equals(targetPath)) {
+			if (relativePath==null|relativePath.equals(""))
+				cumulativeMapping.removeAttributeMapping(attr, annotationPath);
+			else
+				cumulativeMapping.removeAttributeMapping(attr, annotationPath+"."+relativePath);
+
 			//remove "mapped-attributes" tag from UMLModel
 			UMLAttribute xpathAttr=ModelUtil.findAttribute(metaModel.getModel(),attr.getColumnMetadata().getXPath());
 			return XMIAnnotationUtil.removeTagValue(xpathAttr, "mapped-attributes");
@@ -406,20 +425,33 @@ private boolean isClass(String element){
  * @return boolean
  */
 private boolean isAttribute(String element){
-	boolean isAttribute = false;
-	UMLAttribute attribute = null;
-	UMLClass clazz = null;
-	String[] modelElements = element.split("\\.");
-	clazz = findClass(metaModel.getModel(), modelElements, 0, modelElements.length-2);
-	if (clazz!=null){
-		LinkedHashMap modelMeta = metaModel.getModelMetadata();
-		if (modelMeta.get(element)!= null) {
-			if (modelMeta.get(element) instanceof AttributeMetadata) return true;
-			else if (modelMeta.get(element) instanceof ColumnMetadata) return true;
-			else return false;
-		}
-	}		
-	return isAttribute;
+	Object foundObject=metaModel.getModelMetadata().get(element);
+	if (foundObject==null)
+		return false;
+	
+	if (foundObject instanceof AttributeMetadata)
+		return true;
+	
+	if(foundObject instanceof ColumnMetadata)
+		return true;
+	return false;
+//	
+//	UMLAttribute xpathUMLAttribute=ModelUtil.findAttribute(metaModel.getModel(),element);
+//	if (xpathUMLAttribute!=null)
+//		return true;
+//	//	UMLAttribute attribute = null;
+//	UMLClass clazz = null;
+//	String[] modelElements = element.split("\\.");
+//	clazz = findClass(metaModel.getModel(), modelElements, 0, modelElements.length-2);
+//	if (clazz!=null){
+//		LinkedHashMap modelMeta = metaModel.getModelMetadata();
+//		if (modelMeta.get(element)!= null) {
+//			if (modelMeta.get(element) instanceof AttributeMetadata) return true;
+//			else if (modelMeta.get(element) instanceof ColumnMetadata) return true;
+//			else return false;
+//		}
+//	}		
+//	return isAttribute;
 }
 
 /**
@@ -491,7 +523,7 @@ private UMLClass findClass(UMLPackage pkg, String[] className, int start, int en
 		CumulativeMappingGenerator.init("C:/sample.xmi");
       CumulativeMappingGenerator x =CumulativeMappingGenerator.getInstance();
     
-      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene","Logical View.Data Model.GENE", true );
+//      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene","Logical View.Data Model.GENE", true );
 //      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon","Logical View.Data Model.TAXON");
 //      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone","Logical View.Data Model.CLONE");
 //      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome","Logical View.Data Model.CHROMOSOME");
