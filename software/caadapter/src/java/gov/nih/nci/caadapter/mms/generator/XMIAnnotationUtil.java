@@ -16,6 +16,7 @@ import org.jdom.Element;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
@@ -193,8 +194,12 @@ public class XMIAnnotationUtil {
 		xpathAttr.removeTaggedValue("implements-association");
 		ModelMetadata modelMeta=CumulativeMappingGenerator.getInstance().getMetaModel();
 		MetaObject metaObj=(MetaObject)modelMeta.getModelMetadata().get(sourcePath);
-		if (!(metaObj instanceof AssociationMetadata))
-			return true;
+		if (metaObj instanceof AttributeMetadata)
+		{
+			UMLAttribute umlAttribute=ModelUtil.findAttribute(umlModel, sourcePath);
+			return removeTagValue(umlAttribute, "mapped-collection-table");
+		
+		}
 		AssociationMetadata asscMeta=(AssociationMetadata)metaObj;//modelMeta.getModelMetadata().get(sourcePath);
 		if (asscMeta==null)
 			return false;
@@ -295,6 +300,11 @@ public class XMIAnnotationUtil {
 		UMLAssociation umlAssc=asscMeta.getUMLAssociation();
 				
 		addTagValue(umlAssc,"correlation-table",tblClass.getName());
+		}
+		else if (metaObj instanceof AttributeMetadata)
+		{
+			UMLAttribute umlAttribute=ModelUtil.findAttribute(umlModel, sourcePath);
+			addTagValue(umlAttribute,"mapped-collection-table",tblClass.getName());
 		}
 		return true;
 	}
