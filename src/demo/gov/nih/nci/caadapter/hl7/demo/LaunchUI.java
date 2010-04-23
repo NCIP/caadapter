@@ -37,6 +37,7 @@ public class LaunchUI {
         			if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
         				WebstartUtil.downloadFile("V2_to_V3.vom","workingspace/V2_to_V3.vom");
         			WebstartUtil.downloadFile("workingspace/sampleModels/SDKEATemplate.xmi","workingspace/sampleModels/SDKEATemplate.xmi");
+        			WebstartUtil.downloadFile("workingspace/sampleModels/SDKTest.xmi","workingspace/sampleModels/SDKEATest.xmi");
         			WebstartUtil.setWebstartDeployed(true);
         		}
         		
