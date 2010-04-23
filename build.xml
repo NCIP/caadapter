@@ -90,6 +90,7 @@
 		<zip destfile="${caadapter.project.webstart.build.home}/caAdapter.jar">
 			<fileset dir="${caadapter.project.webstart.build.home}/tmp"/>
 			<zipfileset dir="workingspace/Object_to_DB_Example" prefix="workingspace/sampleModels"/>
+			<zipfileset dir="workingspace/ISO21090" prefix="workingspace/sampleModels"/>
 		</zip>
 		<delete dir="${caadapter.project.webstart.build.home}/tmp"/>
    	</target>
