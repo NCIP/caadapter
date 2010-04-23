@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
 [caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
 http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
@@ -28,7 +28,7 @@ public class LaunchUI {
 
 	public static void main(String[] args)
     {
-        try	
+        try
             {
         	System.out.println("LaunchUI.main()..args.length:"+args.length);
         		if (args!=null && args.length>0 && args[0].startsWith("http:")) {
@@ -37,10 +37,10 @@ public class LaunchUI {
         			if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
         				WebstartUtil.downloadFile("V2_to_V3.vom","workingspace/V2_to_V3.vom");
         			WebstartUtil.downloadFile("workingspace/sampleModels/SDKEATemplate.xmi","workingspace/sampleModels/SDKEATemplate.xmi");
-        			WebstartUtil.downloadFile("workingspace/sampleModels/SDKTest.xmi","workingspace/sampleModels/SDKEATest.xmi");
+        			WebstartUtil.downloadFile("workingspace/sampleModels/SDKEATest.xmi","workingspace/sampleModels/SDKEATest.xmi");
         			WebstartUtil.setWebstartDeployed(true);
         		}
-        		
+
 		        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 	        }
             catch (ClassNotFoundException e1)
