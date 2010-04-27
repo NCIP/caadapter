@@ -32,17 +32,22 @@ public class Iso21090uiUtil {
 	{
 		AttributeMetadata attrMeta=(AttributeMetadata)localAttributeNode.getUserObject();
 		String rtnPath=attrMeta.getName();
+		AttributeMetadata parentAttrMeta=null;
 		DefaultMutableTreeNode parentNode =(DefaultMutableTreeNode)localAttributeNode.getParent();
 		while (parentNode.getUserObject() instanceof AttributeMetadata)
 		{
-			attrMeta=(AttributeMetadata)parentNode.getUserObject();
-			rtnPath=attrMeta.getName()+"."+rtnPath;
+			parentAttrMeta=(AttributeMetadata)parentNode.getUserObject();
+			rtnPath=parentAttrMeta.getName()+"."+rtnPath;
 			parentNode=(DefaultMutableTreeNode)parentNode.getParent();
 		}
+		if (parentAttrMeta==null)
+			//the mapped attribute is the direct attribute of object
+			//this attribute is the location of the annotation tag 
+			rtnPath= "";
+		else
 		//remove the last attribute name since it is the direct attribute
-		if (rtnPath.length()>attrMeta.getName().length()+1)
-			rtnPath=rtnPath.substring(attrMeta.getName().length()+1);//rtnPath.replace(attrMeta.getName()+".","");
-		
+//		if (rtnPath.length()>attrMeta.getName().length()+1)
+			rtnPath=rtnPath.substring(parentAttrMeta.getName().length()+1);	
 		return rtnPath;
 	}
 	
