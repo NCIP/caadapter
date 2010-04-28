@@ -6,6 +6,8 @@ import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 
 public class Iso21090uiUtil {
 	public static boolean isCollectionDatatype(AttributeMetadata attributeMeta)
@@ -27,6 +29,28 @@ public class Iso21090uiUtil {
 		}
 		return rtnMeta;
 	}
+	
+	public static UMLAttribute findInheritedAttributeDefinition(UMLModel model, AttributeMetadata attributeMeta, UMLClass holdingObject)
+	{
+        UMLClass superClass=holdingObject;
+        while (superClass !=null){
+        	UMLClass preSuperClass=superClass;
+        	superClass=null;
+			for (UMLGeneralization clazzG : preSuperClass.getGeneralizations()) {
+	        	UMLClass gClass =(UMLClass) clazzG.getSupertype();
+	            if (gClass != preSuperClass) {
+	            	for(UMLAttribute att : gClass.getAttributes()) 
+	            	{
+	            		if (att.getName().equals(attributeMeta.getName()))
+	            			return att;
+	            	}
+	            	superClass=gClass;
+	            } 
+	        }
+        }
+		return null;
+	}
+
 	
 	public static String findAttributeRelativePath(DefaultMutableTreeNode localAttributeNode)
 	{
