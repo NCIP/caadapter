@@ -556,28 +556,23 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             }
             else 	if (metaObj instanceof AttributeMetadata)
             {
-            	
-            	AttributeMetadata attrMetadata = (AttributeMetadata)mutNode.getUserObject();	
-    			
-            	if (attrMetadata.isDerived())
-    				return popupMenu;
+            	AttributeMetadata attrMetadata = (AttributeMetadata)mutNode.getUserObject();	 			
             	AttributeMetadata annotationAttrMetadat=Iso21090uiUtil.findAnnotationAttribute(mutNode);
-    			boolean isGlobal=false;
+            	boolean isGlobal=false;
     			if (attrMetadata.getXPath().equals(annotationAttrMetadat.getXPath()))
     				isGlobal=true;
  				UMLAttribute xpathAttr= ModelUtil.findAttribute(modelMetadata.getModel(),annotationAttrMetadat.getXPath());
 				String tagName="mapped-constant:"+XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), annotationAttrMetadat.getXPath());
-//            	UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),attrMetadata.getXPath());
+
+				if (xpathAttr==null&&annotationAttrMetadat.isDerived())
+				{
+					ObjectMetadata holderObject=(ObjectMetadata)modelMetadata.getModelMetadata().get(annotationAttrMetadat.getParentXPath());
+					xpathAttr=Iso21090uiUtil.findInheritedAttributeDefinition(modelMetadata.getModel(), annotationAttrMetadat, holderObject.getUmlClass());					
+				}
 				//add relative path for local attribute				
 				if (!isGlobal)
 					tagName=tagName+"."+Iso21090uiUtil.findAttributeRelativePath(mutNode);
-				
-//				if (xpathAttr==null) 
-//				{
-//					//fix the bug in ModelUtil, it fails to find a UMLAltribute if the name
-//					//of its parent has "."
-//					xpathAttr=Iso21090uiUtil.findUMLAttributeFromMeta(mutNode);
-//				}
+
 				if (mutNode.isLeaf())
             	{
         			if (isGlobal)

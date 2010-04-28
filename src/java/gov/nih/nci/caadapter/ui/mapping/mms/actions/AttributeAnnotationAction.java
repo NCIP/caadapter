@@ -12,8 +12,10 @@ import java.util.Vector;
 
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
+import gov.nih.nci.caadapter.ui.common.Iso21090uiUtil;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.mms.DialogUserInput;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -74,7 +76,11 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 		AttributeMetadata attrMeta=(AttributeMetadata)this.getMetaAnnoted();;
 		ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 		UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),attrMeta.getXPath());
-
+		if (xpathAttr==null&&attrMeta.isDerived())
+		{
+			ObjectMetadata holderObject=(ObjectMetadata)modelMetadata.getModelMetadata().get(attrMeta.getParentXPath());
+			xpathAttr=Iso21090uiUtil.findInheritedAttributeDefinition(modelMetadata.getModel(), attrMeta, holderObject.getUmlClass());
+		}
 		if (getAnnotationActionType()==REMOVE_PK
 				||getAnnotationActionType()==REMOVE_CONSTANT_VALUE
 				||getAnnotationActionType()==REMOVE_LOCAL_NULLFLAOVR_CONSTANT)
