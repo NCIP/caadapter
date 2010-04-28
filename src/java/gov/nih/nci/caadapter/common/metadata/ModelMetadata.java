@@ -209,48 +209,43 @@ public class ModelMetadata {
                 object.setId(clazz.toString());
                 sortedModel.add(object);
 
-                /* The following code look through the inheritance hierachy and populate
-                 * attributes of all parents to the object
+                /* The following code look through the inheritance hierarchy and populate
+                 * attributes of all super classed to current object
                  */
-                ArrayList<UMLClass> parents = new ArrayList();
                 UMLClass parent = null;
-                UMLClass pre = null;
-                List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
-
-                /* Step 1
-                 * trace to all of the ancesters.
-                 * when clazzG is not empty, it could have supertype, or subtype
+               /*  
+                 *trace to all of the ancestors.
+                 * when class generation list is not empty, it could have supertype, or subtype
                  * To verify it really has a parent, we need to make sure the supertype is different then itself
                  * also, one assumption is one class can only have one supertype
                  */
-                for (UMLGeneralization clazzG : clazzGs) {
-                    parent =(UMLClass) clazzG.getSupertype();
-                    if (parent != clazz) {
+                for (UMLGeneralization clazzG : clazz.getGeneralizations()) {
+                	UMLClass gClass =(UMLClass) clazzG.getSupertype();
+                    if (gClass != clazz) {
+                    	parent=gClass;
                         inheritanceHashMap.put(object.getXPath(),parent.getName());
                         break;
                     }
                 }
-                if (parent!=clazz) {
-                    while (parent != null) {
-                        parents.add(parent);
-                        clazzGs = parent.getGeneralizations();
-                        pre = parent;
-                        parent = null;
-                        for (UMLGeneralization clazzG : clazzGs) {
-                            parent =(UMLClass) clazzG.getSupertype();
-                            if (parent != pre) {break;}
-                        }
-                        if (parent == pre) parent = null;
-                    }
-                    for(UMLClass p : parents) {
-                        for(UMLAttribute att : p.getAttributes()) {
-                        	initProcessAttribute(att, object, pathKey, true);
-                        }
+                while (parent != null) {
+                    for(UMLAttribute att : parent.getAttributes()) 
+                    	initProcessAttribute(att, object, pathKey, true);
+                    
+                    UMLClass preParent = parent;
+                    parent = null;
+                    for (UMLGeneralization clazzG : preParent.getGeneralizations()) 
+                    {
+                    	UMLClass gClass =(UMLClass) clazzG.getSupertype();
+                        if (gClass != preParent) 
+                        {
+                        	parent=gClass;
+                        	break;	
+                        }   	
                     }
                 }
-                for(UMLAttribute att : clazz.getAttributes()) {
+                for(UMLAttribute att : clazz.getAttributes()) 
                 	initProcessAttribute(att, object, pathKey, false);
-                }
+
                 for(UMLAssociation assoc : clazz.getAssociations()) {
                 	initProcessAssociation(assoc, object, pathKey, clazz);
                 }
