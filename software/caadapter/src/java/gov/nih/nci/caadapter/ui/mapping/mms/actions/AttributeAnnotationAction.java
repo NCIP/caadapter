@@ -95,7 +95,7 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 			
 			XMIAnnotationUtil.addTagValue(xpathAttr, getAnnotationTagName(), parentCleanpath);
 			UMLClass parentClass=ModelUtil.findClass(modelMetadata.getModel(), attrMeta.getParentXPath());
-			//remove all the "discriminator" column
+			//remove all the "id-attribute" column
 			for (UMLAttribute sblAttribute:parentClass.getAttributes())
 			{
 				if (!sblAttribute.getName().equals(xpathAttr.getName()))
