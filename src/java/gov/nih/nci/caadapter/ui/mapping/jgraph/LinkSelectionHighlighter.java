@@ -603,7 +603,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             			nullflavorRemoveAction.setAnnotationTagName(tagName);
             		}
             	}
-            	if (!attrMetadata.isMapped())
+            	if (attrMetadata!=annotationAttrMetadat) //.isMapped())
             		return popupMenu;
             	
             	tagName="id-attribute";
