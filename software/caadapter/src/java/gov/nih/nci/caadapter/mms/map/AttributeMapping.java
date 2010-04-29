@@ -25,45 +25,17 @@ public class AttributeMapping {
 	private AttributeMetadata attributeMetadata;
 	private ColumnMetadata columnMetadata;
 
-
-	public AttributeMapping(){
-	}
-
 	/**
-	 * @param attributeMetadata
-	 */
-	public AttributeMapping(AttributeMetadata attributeMetadata) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.attributeMetadata = attributeMetadata;
-	}
-
-	/**
-	 * @param columnMetadata
-	 */
-	public AttributeMapping(ColumnMetadata columnMetadata) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.columnMetadata = columnMetadata;
-	}
-
-	/**
-	 *
-	 * @param attributeMetadata
-	 * @param columnMetadata
-	 */
-	public AttributeMapping(AttributeMetadata attributeMetadata, ColumnMetadata columnMetadata){
-	      this.attributeMetadata = attributeMetadata;
-	      this.columnMetadata = columnMetadata;
-	}
-
-	/**
-	 *
+	 *return attribute metadata associated
 	 */
 	public AttributeMetadata getAttributeMetadata(){
 		return attributeMetadata;
 	}
 
+	/**
+	 * 
+	 * @return column metadata associated
+	 */
 	public ColumnMetadata getColumnMetadata(){
 		return columnMetadata;
 	}
