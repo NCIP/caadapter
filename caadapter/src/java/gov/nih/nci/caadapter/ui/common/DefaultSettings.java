@@ -82,14 +82,6 @@ public class DefaultSettings
 		}
 	}
 
-//	/**
-//	 * Installs all default settings.
-//	 */
-//	public static void installAll()
-//	{
-//		installLookAndFeel();
-//		installFonts();
-//	}
 
 	/**
 	 * Installs the default LookAndFeel.
@@ -161,15 +153,6 @@ public class DefaultSettings
 		//		dumpMap(currentDefaults);
 	}
 
-	//	private static final void dumpMap(Map map)
-	//	{
-	//		Iterator it = map.keySet().iterator();
-	//		while(it!=null && it.hasNext())
-	//		{
-	//			Object key = it.next();
-	//			System.out.println("key='"+key +"',value='"+map.get(key) + "';");
-	//		}
-	//	}
 
 	/**
 	 * Returns the classname without the package.
@@ -350,25 +333,12 @@ public class DefaultSettings
 		for(FileFilter fileFilter:fileFilters)
 		fileChooser.removeChoosableFileFilter(fileFilter);
 
-		//NOTE: Do not manually clear the selection, or should come up better way to clear out the selection memorized in other classes.
-		//clear out the text field after the popup either being cancelled or being selected.
-		//		FileChooserUI fileChooserUI = fileChooser.getUI();
-		//		if (fileChooserUI instanceof BasicFileChooserUI)
-		//		{
-		//			((BasicFileChooserUI) fileChooserUI).setFileName("");
-		//		}
 		System.out
 		.println("DefaultSettings.getUserInputOfFileFromGUI()..currentDir:"+fileChooser.getCurrentDirectory());
 
 		return file;
 	}
 
-	public static final Image getMainframeImage()
-	{
-		//using default imageFile
-		String defaultImageName="caAdapter-icon.gif";
-		return getImage(defaultImageName);
-	}
 
 	/**
 	 * @param imageFileName the name of the file, does not need path information
