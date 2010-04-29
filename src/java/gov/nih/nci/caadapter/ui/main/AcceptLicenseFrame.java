@@ -75,7 +75,7 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 		else
 			licenseFilePath=filePath;
 
-		Image icon = DefaultSettings.getMainframeImage();//using default image file
+		Image icon = DefaultSettings.getImage("caAdapter-icon.gif");//using default image file
 		setIconImage(icon);
 		setSize(600, 400);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
