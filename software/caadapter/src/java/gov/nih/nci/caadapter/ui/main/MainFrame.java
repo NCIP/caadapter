@@ -81,7 +81,7 @@ public class MainFrame extends AbstractMainFrame
 		Container contentPane = this.getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		//set the icon.
-		Image icon = DefaultSettings.getMainframeImage();//using default image file
+		Image icon = DefaultSettings.getImage("caAdapter-icon.gif");//using default image file
 		setIconImage(icon);
 		// set the menu bar.
 		setJMenuBar(frameMenu);
@@ -123,7 +123,7 @@ public class MainFrame extends AbstractMainFrame
     }
 
     private JPanel constructNorthPanel() {
-    	Image bannerImage = DefaultSettings.getImage("NCICBBanner.jpg");
+    	Image bannerImage = DefaultSettings.getImage("NCICBIITBanner.jpg");
 	    ImageIcon imageIcon = new ImageIcon(bannerImage);
 		toolBarPanel = new JPanel(new BorderLayout());
 		JPanel northUpperPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
