@@ -761,14 +761,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 								isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetXpath,anntationPath,tagRelativePath, false);
 								isSuccess = isSuccess&& 
 										getMappingDataManager().createMapping((MappableNode) sourceNode,(MappableNode) targetNode);
-//								if (!isSuccess)
-//								{
-//									//no UI link is created for the mapped table.column 
-//									//"mapped-attributes"/"implements-association"
-//									String prvdTag=tagValue.getName()+":"+tagValue.getValue();
-//									CumulativeMappingGenerator.getInstance().getMetaModel().getPreservedMappedTag().add(prvdTag);
-//									logger.logInfo(this, "No UI link is created, preserve the mapping:"+prvdTag);
-//								}
 							}//tag level loop
 						}//tag list level loop
 					}//attribute level loop
