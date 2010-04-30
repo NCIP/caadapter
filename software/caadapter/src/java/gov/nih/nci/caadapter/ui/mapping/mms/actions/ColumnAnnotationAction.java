@@ -100,8 +100,8 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 			//check if primary key column
 			HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);			
 			
-			Vector<String> dfValues=new Vector<String>(pkSetting.keySet());
-			DialogUserInput dialog = new DialogUserInput(null, dfValues, "Primary Key Generator",DialogUserInput.INPUT_TYPE_CHOOSE );
+			Vector<Object> dfValues=new Vector<Object>(pkSetting.keySet());
+			DialogUserInput dialog = new DialogUserInput(null, null, dfValues, "Primary Key Generator",DialogUserInput.INPUT_TYPE_CHOOSE );
 			if (dialog.getUserInput()!=null)
 			{
 				//annotate object with new tag value

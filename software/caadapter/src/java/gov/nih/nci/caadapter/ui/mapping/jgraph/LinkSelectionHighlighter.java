@@ -488,20 +488,24 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             AttributeAnnotationAction pkSetAction=new AttributeAnnotationAction("Set as Primary Key", AttributeAnnotationAction.SET_AS_PK,middlePanel);
             popupMenu.add(new JMenuItem(pkSetAction));
             pkSetAction.setAnnotationTagName("id-attribute");
-            AttributeAnnotationAction pkUnsetAction=new AttributeAnnotationAction("Unset as Primary Key", AttributeAnnotationAction.REMOVE_PK,middlePanel);
+            AttributeAnnotationAction pkUnsetAction=new AttributeAnnotationAction("Unset as Primary Key", AttributeAnnotationAction.REMOVE_ANNOTATION_TAG,middlePanel);
             popupMenu.add(new JMenuItem(pkUnsetAction));
             pkUnsetAction.setAnnotationTagName("id-attribute");
             
             AttributeAnnotationAction constantSetAction=new AttributeAnnotationAction("Set Local Constant Value", AttributeAnnotationAction.SET_CONSTANT_VALUE,middlePanel);
             popupMenu.add(new JMenuItem(constantSetAction));
-            AttributeAnnotationAction constantRemoveAction=new AttributeAnnotationAction("Remove Local Constant Value", AttributeAnnotationAction.REMOVE_CONSTANT_VALUE,middlePanel);
+            AttributeAnnotationAction constantRemoveAction=new AttributeAnnotationAction("Remove Local Constant Value", AttributeAnnotationAction.REMOVE_ANNOTATION_TAG,middlePanel);
             popupMenu.add(new JMenuItem(constantRemoveAction));
             
-            AttributeAnnotationAction nullflavorSetAction=new AttributeAnnotationAction("Set Local NullFlavor Constant", AttributeAnnotationAction.SET_LOCAL_NULLFLAOVR_CONSTANT,middlePanel);
+            AttributeAnnotationAction nullflavorSetAction=new AttributeAnnotationAction("Set Local NullFlavor Constant", AttributeAnnotationAction.SET_NULLFLAOVR_CONSTANT,middlePanel);
             popupMenu.add(new JMenuItem(nullflavorSetAction));
-            AttributeAnnotationAction nullflavorRemoveAction=new AttributeAnnotationAction("Remove Local NullFlavor Constant", AttributeAnnotationAction.REMOVE_LOCAL_NULLFLAOVR_CONSTANT,middlePanel);
+            AttributeAnnotationAction nullflavorRemoveAction=new AttributeAnnotationAction("Remove Local NullFlavor Constant", AttributeAnnotationAction.REMOVE_ANNOTATION_TAG,middlePanel);
             popupMenu.add(new JMenuItem(nullflavorRemoveAction));
-        	
+            
+            AttributeAnnotationAction elementTypeSetAction=new AttributeAnnotationAction("Set Collection Eelment Type", AttributeAnnotationAction.SET_COLLECTION_ELEMENT_TYPE,middlePanel);
+            popupMenu.add(new JMenuItem(elementTypeSetAction));
+            AttributeAnnotationAction elementTypeRemoveAction=new AttributeAnnotationAction("Remove Collection Eelment Type", AttributeAnnotationAction.REMOVE_ANNOTATION_TAG,middlePanel);
+            popupMenu.add(new JMenuItem(elementTypeRemoveAction));
             popupMenu.addSeparator();
             
         	//The following actions apply for association metadata
@@ -588,6 +592,20 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             			constantRemoveAction.setEnabled(true);
             			constantRemoveAction.setMetaAnnoted(annotationAttrMetadat);
             			constantRemoveAction.setAnnotationTagName(tagName);
+            		}
+            	}
+            	else if (annotationAttrMetadat.getDatatype().equalsIgnoreCase("DSET<AD>")
+            			&&attrMetadata.getDatatype().equalsIgnoreCase("SEQUENCE(ADXP)"))
+            	{
+            		tagName="mapped-collection-element-type:"+attrMetadata.getName();
+            		elementTypeSetAction.setEnabled(true);
+            		elementTypeSetAction.setMetaAnnoted(annotationAttrMetadat);
+            		elementTypeSetAction.setAnnotationTagName(tagName);
+            		if (xpathAttr.getTaggedValue(tagName)!=null)
+            		{
+            			elementTypeRemoveAction.setEnabled(true);
+            			elementTypeRemoveAction.setMetaAnnoted(annotationAttrMetadat);
+            			elementTypeRemoveAction.setAnnotationTagName(tagName);
             		}
             	}
             	else
