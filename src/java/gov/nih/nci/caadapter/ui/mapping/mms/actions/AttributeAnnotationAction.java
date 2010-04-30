@@ -13,6 +13,7 @@ import java.util.Vector;
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.util.Iso21090Util;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
 import gov.nih.nci.caadapter.ui.common.Iso21090uiUtil;
@@ -35,12 +36,12 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 public class AttributeAnnotationAction extends ItemAnnotationAction {
 
-	public static int SET_AS_PK=1;
-	public static int REMOVE_PK=2;
+	public static int REMOVE_ANNOTATION_TAG=1;
+	public static int SET_AS_PK=2;
 	public static int SET_CONSTANT_VALUE=3;
-	public static int REMOVE_CONSTANT_VALUE=4;
-	public static int SET_LOCAL_NULLFLAOVR_CONSTANT=5;
-	public static int REMOVE_LOCAL_NULLFLAOVR_CONSTANT=6;
+	public static int SET_COLLECTION_ELEMENT_TYPE=4;
+ 	public static int SET_NULLFLAOVR_CONSTANT=5;
+ 
 	private String annotationTagName;
 	/**
 	 * @return the annotationTagName
@@ -81,9 +82,7 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 			ObjectMetadata holderObject=(ObjectMetadata)modelMetadata.getModelMetadata().get(attrMeta.getParentXPath());
 			xpathAttr=Iso21090uiUtil.findInheritedAttributeDefinition(modelMetadata.getModel(), attrMeta, holderObject.getUmlClass());
 		}
-		if (getAnnotationActionType()==REMOVE_PK
-				||getAnnotationActionType()==REMOVE_CONSTANT_VALUE
-				||getAnnotationActionType()==REMOVE_LOCAL_NULLFLAOVR_CONSTANT)
+		if (getAnnotationActionType()==REMOVE_ANNOTATION_TAG)
 		{
 			XMIAnnotationUtil.removeTagValue(xpathAttr, this.getAnnotationTagName());
 			return true;
@@ -104,19 +103,33 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 			return true;
 		}	
 		else if (getAnnotationActionType()==SET_CONSTANT_VALUE
-				||getAnnotationActionType()==SET_LOCAL_NULLFLAOVR_CONSTANT)
+				||getAnnotationActionType()==SET_NULLFLAOVR_CONSTANT
+				||getAnnotationActionType()==SET_COLLECTION_ELEMENT_TYPE)
 		{
 			//collect user's input and set tag value
 			UMLTaggedValue tagToSet=xpathAttr.getTaggedValue(this.getAnnotationTagName());
 			String defaultTxt="";
 			if (tagToSet!=null)
 				defaultTxt=tagToSet.getValue();
-			Vector<String> dfValues=new Vector<String>();
+			Vector<Object> dfValues=new Vector<Object>();
 			dfValues.add(defaultTxt);
-			String dialogName="Set Constant Value";
-			if (getAnnotationActionType()==SET_LOCAL_NULLFLAOVR_CONSTANT)
-				dialogName="Set Local Nullflavor Constant";
-			DialogUserInput dialog = new DialogUserInput(null, dfValues, dialogName);
+			String dialogName="Constant Value";
+			int dialogType=DialogUserInput.INPUT_TYPE_TEXT;
+			
+			if (getAnnotationActionType()==SET_NULLFLAOVR_CONSTANT)
+			{
+				dialogName="Nullflavor Constant";
+				dfValues=Iso21090Util.NULL_FLAVORS;
+				dialogType=DialogUserInput.INPUT_TYPE_CHOOSE;
+			}
+			else if (getAnnotationActionType()==SET_COLLECTION_ELEMENT_TYPE)
+			{
+				dialogName="Collection Element Type";
+				dfValues=Iso21090Util.ADXP_SUBTYPES;
+				dialogType=DialogUserInput.INPUT_TYPE_CHOOSE;
+			}
+			DialogUserInput dialog = new DialogUserInput(null,(Object)defaultTxt, dfValues, dialogName, dialogType);
+
 			if (dialog.getUserInput()!=null)
 			{
 				//annotate object with new tag value

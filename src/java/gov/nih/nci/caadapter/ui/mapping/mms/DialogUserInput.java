@@ -62,16 +62,18 @@ public class DialogUserInput extends JDialog implements ActionListener {
 		this(_callingFrame, DefaultObject, "Constant");
 	}
 	public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject, String titleParameter) {
-		this(_callingFrame, DefaultObject, titleParameter, DialogUserInput.INPUT_TYPE_TEXT );
-		
+		this(_callingFrame, DefaultObject, titleParameter, DialogUserInput.INPUT_TYPE_TEXT );	
 	}
-	    public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject, String titleParameter, int userType) {
+	public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject, String titleParameter, int userType) {
+		this(_callingFrame, DefaultObject, null,titleParameter, DialogUserInput.INPUT_TYPE_TEXT );	
+	}
+	    public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject, Vector<Object> chooseObjects, String titleParameter, int userType) {
 	        super(_callingFrame, true);
 	        inputType=userType;
 	        this.setSize(450, 300);
 	        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	        if (inputType==INPUT_TYPE_CHOOSE)
-	        	this.setTitle("Remove "+titleParameter);
+	        	this.setTitle(titleParameter);
 	        else
 	        	this.setTitle("Define "+titleParameter);
 	        
@@ -90,7 +92,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        {
 	        	centerPan.setBorder(new TitledBorder("Input "));
 	        	inputField=new JTextField();
-	        	((JTextField)inputField).setText(((Vector<String>)DefaultObject).get(0));
+	        	((JTextField)inputField).setText((String)DefaultObject);
 	        	inputField.setEnabled(true);
 	        }
 	        else  if (inputType==INPUT_TYPE_SELECTION)
@@ -101,7 +103,9 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        else  if (inputType==INPUT_TYPE_CHOOSE)
 	        {
 	        	centerPan.setBorder(new TitledBorder("Choose"));
-	        	inputField=new JComboBox((Vector<String>)DefaultObject);
+	        	inputField=new JComboBox(chooseObjects);
+	        	if (DefaultObject!=null)
+	        		((JComboBox)inputField).setSelectedItem(DefaultObject);
 	        }
 	        else  if (inputType==INPUT_TYPE_TABBED)
 	        {
