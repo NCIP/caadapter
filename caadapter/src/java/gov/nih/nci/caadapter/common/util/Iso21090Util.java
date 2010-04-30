@@ -5,11 +5,13 @@ import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 public class Iso21090Util {
 	
@@ -20,15 +22,20 @@ public class Iso21090Util {
 	public static String ISO21090_DATAYPE_PACKAGE="gov.nih.nci.iso21090";
 	private static final int ENXP_COUNT=5;
 	private static final int ADXP_COUNT=28;
+	public static Vector<Object> ADXP_SUBTYPES;
+	public static Vector<Object> NULL_FLAVORS;
 	/**
 	 * Hard code: List all possible sub-class type if a sequence of data types is refered
 	 * ADEXP -- sequence of AD type
 	 * ENEXP -- sequence of EN types
 	 */
 	static {
-//		String SEQUENCE_ADXP_DATA_TYPES="ADXP.ADL;ADXP.AL;ADXP.BNN;ADXP.BNR;ADXP.BNS;ADXP.BR;ADXP.CAR;ADXP.CEN;"+
-//		"ADXP.CNT;ADXP.CPA;ADXP.CTY;ADXP.DAL;ADXP.DINST;ADXP.DINSTA;ADXP.DINSTQ;ADXP.DIR;ADXP.DMOD;ADXP.DMODID;ADXP.INT;ADXP.POB;ADXP.PRE;"+
-//		"ADXP.SAL;ADXP.STA;ADXP.STB;ADXP.STR;ADXP.STTYP;ADXP.UNID;ADXP.UNIT;ADXP.ZIP";
+		String ADXP_SUB_TYPES="ADXP.ADL;ADXP.AL;ADXP.BNN;ADXP.BNR;ADXP.BNS;ADXP.BR;ADXP.CAR;ADXP.CEN;"+
+		"ADXP.CNT;ADXP.CPA;ADXP.CTY;ADXP.DAL;ADXP.DINST;ADXP.DINSTA;ADXP.DINSTQ;ADXP.DIR;ADXP.DMOD;ADXP.DMODID;ADXP.INT;ADXP.POB;ADXP.PRE;"+
+		"ADXP.SAL;ADXP.STA;ADXP.STB;ADXP.STR;ADXP.STTYP;ADXP.UNID;ADXP.UNIT;ADXP.ZIP";
+		ADXP_SUBTYPES= fillSelection(new StringTokenizer(ADXP_SUB_TYPES, ";"));
+		String NULL_FLAVOR_CONSTANTS="NI;INV;DER;OTH;NINF;PINF;UNC;MSK;NA;UNK;ASKU;NAV;NASK;QS;TRC;";
+		NULL_FLAVORS = fillSelection(new StringTokenizer(NULL_FLAVOR_CONSTANTS, ";"));
 		String SEQUENCE_ADXP_DATA_TYPES="ADXP";
 		sequenceDataypeKeys.put(AD_SEQUENCE_EXP_NAME, new StringTokenizer(SEQUENCE_ADXP_DATA_TYPES,";"));
 //		String SEQUENCE_EN_DATA_TYPES="EN.ON;EN.PN;EN.TN";
@@ -36,6 +43,17 @@ public class Iso21090Util {
 		sequenceDataypeKeys.put(EN_SEQUENCE_EXP_NAME, new StringTokenizer(SEQUENCE_EN_DATA_TYPES,";"));
 	}
 	
+	private static Vector<Object> fillSelection(StringTokenizer stToken)
+	{
+		Vector<String> rtnVec=new Vector<String>();
+		while (stToken.hasMoreTokens())
+		{
+			rtnVec.add(stToken.nextToken());
+		}
+		Collections.sort(rtnVec);
+		return new Vector<Object>(rtnVec);
+	}
+
 	public  static int findSequenceSize(String typeName)
 	{
 		if (typeName.contains("ADXP"))
