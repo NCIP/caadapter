@@ -75,9 +75,7 @@ public class ObjectAnnotationAction extends ItemAnnotationAction
 		String defaultTxt="";
 		if (tagToSet!=null)
 			defaultTxt=tagToSet.getValue();
-		Vector<String> dfValues=new Vector<String>();
-		dfValues.add(defaultTxt);
-		DialogUserInput dialog = new DialogUserInput(null, dfValues, dialogName);
+		DialogUserInput dialog = new DialogUserInput(null, defaultTxt, dialogName);
 		if (dialog.getUserInput()!=null)
 		{
 			//annotate object with new tag value
