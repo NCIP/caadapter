@@ -230,14 +230,17 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 						SDKMetaData targetSDKMetaData = (SDKMetaData)targetNode.getUserObject();
 						sourceSDKMetaData.setMapped(true);
 						AttributeMetadata annotationSDKMetadata=null;
+						String annotationPath=null;
 						String tagRelativePath="";
 						if (sourceSDKMetaData instanceof AttributeMetadata)
 						{
 							annotationSDKMetadata=Iso21090uiUtil.findAnnotationAttribute((DefaultMutableTreeNode)sourceNode);
 							tagRelativePath=Iso21090uiUtil.findAttributeRelativePath((DefaultMutableTreeNode) sourceNode);
+							if(annotationSDKMetadata!=null)
+								annotationPath=annotationSDKMetadata.getXPath();
 						}
 						//create a mapping UI and update the underneath UML model
-						isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath(),annotationSDKMetadata.getXPath(), tagRelativePath,  true);
+						isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath(),annotationPath, tagRelativePath,  true);
 						if (!isSuccess) {
 							sourceSDKMetaData.setMapped(false);
 							JOptionPane.showMessageDialog(getTree().getRootPane().getParent(),
