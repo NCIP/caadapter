@@ -9,6 +9,7 @@ package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.util.Iso21090Util;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
@@ -65,17 +66,21 @@ public class ObjectAnnotationAction extends ItemAnnotationAction
 		}
 	
 		//add tag
+		int dialogType=DialogUserInput.INPUT_TYPE_TEXT;
+		Vector<Object> dfValues=new Vector<Object>();
 		if (this.getAnnotationActionType()==SET_GLOBAL_NULLFLAVOR_CONTANT)
 		{
 			String objecttCleanpath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), objectMeta.getXPath());
 			tagName="mapped-constant:"+objecttCleanpath+".nullFlavor";
-			dialogName="Global NullFlavor Constant";			
+			dialogName="Global NullFlavor Constant";
+			dfValues=Iso21090Util.NULL_FLAVORS;
+			dialogType=DialogUserInput.INPUT_TYPE_CHOOSE;
 		}
 		UMLTaggedValue tagToSet=umlClass.getTaggedValue(tagName);
 		String defaultTxt="";
 		if (tagToSet!=null)
 			defaultTxt=tagToSet.getValue();
-		DialogUserInput dialog = new DialogUserInput(null, defaultTxt, dialogName);
+		DialogUserInput dialog =new DialogUserInput(null,(Object)defaultTxt, dfValues, dialogName, dialogType);
 		if (dialog.getUserInput()!=null)
 		{
 			//annotate object with new tag value
