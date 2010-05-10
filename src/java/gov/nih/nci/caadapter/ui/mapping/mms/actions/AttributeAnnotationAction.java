@@ -118,7 +118,7 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 			
 			if (getAnnotationActionType()==SET_NULLFLAOVR_CONSTANT)
 			{
-				dialogName="Nullflavor Constant";
+				dialogName="Local NullFlavor Constant";
 				dfValues=Iso21090Util.NULL_FLAVORS;
 				dialogType=DialogUserInput.INPUT_TYPE_CHOOSE;
 			}
