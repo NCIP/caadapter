@@ -124,11 +124,11 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
             DefaultSettings.centerWindow(frame);
             frame.setVisible(true);
 
-            String mappingFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
-			File mappingFile = new File( mappingFileName );
+//            String mappingFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
+//			File mappingFile = new File( mappingFileName );
 			
 			// Create .MAP file with Mapping attribute tagged values			
-			success = saveMappingFile( mappingFile );			
+			success = saveMappingFile( file.getAbsolutePath() );			
 						
 			mappingPanel.setSaveFile(file);
             frame.setVisible( false );
@@ -150,16 +150,16 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean saveMappingFile(File mappingFile) throws Exception 
+	private boolean saveMappingFile(String fileName) throws Exception 
 	{		
 		preActionPerformed(mappingPanel);
 		boolean oldChangeValue = mappingPanel.isChanged();
 		try
 		{
-			String xmiFileName = mappingFile.getAbsolutePath().replaceAll(".map", ".xmi");
+//			String xmiFileName = mappingFile.getAbsolutePath().replaceAll(".map", ".xmi");
 //			CumulativeMappingToMappingFileGenerator.writeMappingFile(mappingFile, xmiFileName);
 			ModelMetadata xmiMetada = CumulativeMappingGenerator.getInstance().getMetaModel();
-			xmiMetada.getHandler().save( xmiFileName);
+			xmiMetada.getHandler().save( fileName);
 			//clear the change flag.
      	    mappingPanel.setChanged(false);
      	   return true;   
