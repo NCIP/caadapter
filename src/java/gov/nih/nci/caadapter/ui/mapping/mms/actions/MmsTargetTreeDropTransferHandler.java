@@ -145,18 +145,20 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 
 		if(targetNode instanceof MappableNode)
-		{//only allows node that is not being mapped, that is, target node could only be mapped once.
-			MappableNode mappableNode = (MappableNode) targetNode;
-			if(mappableNode.isMapped())
-			{
-				if (targetNode.getUserObject() instanceof TableMetadata) 
-				{
-					TableMetadata tm = (TableMetadata)(targetNode.getUserObject());
-					if (tm.hasDiscriminator()) return true;
-					else return false;
-				}
-				return false;
-			}
+		{//map anywhere to anywhere
+			return true;
+			//only allows node that is not being mapped, that is, target node could only be mapped once.
+//			MappableNode mappableNode = (MappableNode) targetNode;
+//			if(mappableNode.isMapped())
+//			{
+//				if (targetNode.getUserObject() instanceof TableMetadata) 
+//				{
+//					TableMetadata tm = (TableMetadata)(targetNode.getUserObject());
+//					if (tm.hasDiscriminator()) return true;
+//					else return false;
+//				}
+//				return false;
+//			}
 		}
 		return true;
 	}
