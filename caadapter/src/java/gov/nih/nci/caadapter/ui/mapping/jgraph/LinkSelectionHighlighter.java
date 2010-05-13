@@ -41,7 +41,6 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 
@@ -91,11 +90,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
 	private MappingMiddlePanel middlePanel;
-	    
-	private boolean graphInSelection = false;
-	private boolean sourceTreeInSelection = false;
-	private boolean targetTreeInSelection = false;
-
 	
 	public LinkSelectionHighlighter(AbstractMappingPanel mappingPanel, JGraph graph, MappingMiddlePanel middlePanel)
 	{
@@ -138,14 +132,26 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		if (mappingPanel.isInDragDropMode())
 	    //if in dragging mode, ignore.
 			return;
-	    
-        if(graphInSelection)
-			return;
 
-		graphInSelection = true;
+		if(e.isAddedCell())
+		{//ignore if it is a clear selection event
+			Object obj = e.getCell();
+			if (obj instanceof DefaultEdge)
+			{//only handles edge, when graph is NOT in CLEAR selection mode.
+				DefaultEdge edge = (DefaultEdge) obj;
+				Object source = edge.getSource();
+				Object target = edge.getTarget();
 
-		if(!sourceTreeInSelection && !targetTreeInSelection)
+				Object sourceUserObject = getUserObject(source);
+				highlightTreeNodeInTree(mappingPanel.getSourceTree(), sourceUserObject);
+				Object targetUserObject = getUserObject(target);
+				highlightTreeNodeInTree(mappingPanel.getTargetTree(), targetUserObject);
+			}
+		}
+		else 
 		{
+			//the graph selection is cleared
+			//clean selection for both target and source tree
             if (mappingPanel.getTargetTree() == null)
             {
                 JOptionPane.showMessageDialog(mappingPanel, "You should input the source file name first(2).", "No Source file", JOptionPane.ERROR_MESSAGE);
@@ -159,29 +165,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             }
             else mappingPanel.getSourceTree().clearSelection();
 		}
-		if(e.isAddedCell())
-		{//ignore if it is a clear selection event
-			Object obj = e.getCell();
-			if (obj instanceof DefaultEdge)
-			{//only handles edge, when graph is NOT in CLEAR selection mode.
-				DefaultEdge edge = (DefaultEdge) obj;
-				Object source = edge.getSource();
-				Object target = edge.getTarget();
-
-				if(!sourceTreeInSelection)
-				{//manually highlight if and only if it is orignated from graph selection.
-					Object sourceUserObject = getUserObject(source);
-					highlightTreeNodeInTree(mappingPanel.getSourceTree(), sourceUserObject);
-				}
-
-				if(!targetTreeInSelection)
-				{//manually highlight if and only if it is orignated from graph selection.
-					Object targetUserObject = getUserObject(target);
-					highlightTreeNodeInTree(mappingPanel.getTargetTree(), targetUserObject);
-				}
-			}
-		}
-		graphInSelection = false;
 	}
 
 	/**
@@ -194,40 +177,29 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		if (mappingPanel.isInDragDropMode())
 		//if in dragging mode, ignore.
 			return;
-		Object eventSource = e.getSource();
+
 		TreePath path = e.getPath();
+		if (path==null)
+			return;
+		
 		Object node = (path==null)? null : path.getLastPathComponent();
-		if(node==null)
-			return;
-	
-		if(graphInSelection )
-		//if graph is in selection, no need to execute further logic; otherwise, we may run into an indefinite loop.
-			return;
-	
 		String searchMode = null;
+		
+		Object eventSource = e.getSource();
 		if(eventSource instanceof MappingSourceTree)
-		{
 			searchMode = MappingViewCommonComponent.SEARCH_BY_SOURCE_NODE;
-			//notify that tree is selection process.
-			//System.out.println( "sourceTreeInSelection is true");
-			sourceTreeInSelection = true;				
-			mappingPanel.getTargetTree().clearSelection();				
-		}
+
 		else if(eventSource instanceof MappingTargetTree)
-		{
 			searchMode = MappingViewCommonComponent.SEARCH_BY_TARGET_NODE;
-			//notify that tree is selection process.
-			targetTreeInSelection = true;
-			mappingPanel.getSourceTree().clearSelection();	
-		}
-	
-		graph.clearSelection();
-	
+				
 		if(e.isAddedPath())
 		{//if not a clear selection event 
 			MappingDataManager dataManager = mappingPanel.getMappingDataManager();
 			List<MappingViewCommonComponent> compList = dataManager.findMappingViewCommonComponentList(node, searchMode);
 			int size = compList.size();
+			if (size==0)
+				graph.clearSelection();
+			
 			for(int i=0; i<size; i++)
 			{
 				MappingViewCommonComponent comp = compList.get(i);
@@ -238,16 +210,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 				}
 			}
 		} 
-		if (eventSource instanceof MappingSourceTree)
-		{
-			//notify that tree is end of selection process.
-			sourceTreeInSelection = false;
-		}
-		else if (eventSource instanceof MappingTargetTree)
-		{
-			//notify that tree is end of selection process.
-			targetTreeInSelection = false;
-		}
 	}
 
 	private Object getUserObject(Object graphOrTreeNode)
