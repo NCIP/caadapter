@@ -1039,13 +1039,6 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			// graph.getGraphLayoutCache().edit(attributes, cs, null, null);
 			graph.getGraphLayoutCache().setSelectsAllInsertedCells(false);
 			result = true;
-			// Log.logInfo(this, "invisible source bounds: '" + GraphConstants.getBounds(sourceCell.getAttributes()) + "'");
-			// Log.logInfo(this, "invisible target bounds: '" + GraphConstants.getBounds(targetCell.getAttributes()) + "'");
-			// }
-			// else
-			// {
-			// result = false;
-			// }
 		} else {
 			result = false;
 		}
@@ -1509,14 +1502,6 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
     private int getMaximalXValueOnPane()
 	{
 		int visibleWidth = (int) this.middlePanel.getGraphScrollPane().getVisibleRect().getWidth();
-		int viewPortVisibleWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getVisibleRect().getWidth();
-		int viewPortViewSizeWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getViewSize().getWidth();
-		int viewPortViewRectWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getViewRect().getWidth();
-		int middlePanelWidth = this.middlePanel.getWidth();
-		// Log.logInfo(this, "middlePanelWidth='" + middlePanelWidth + "',visibleWidth='" + visibleWidth + "'.");
-		// Log.logInfo(this, "viewPortVisibleWidth='" + viewPortVisibleWidth + "',viewPortViewSizeWidth='" + viewPortViewSizeWidth + "'," +
-		// "',viewPortViewRectWidth='" + viewPortViewRectWidth + "'.");
-		// return viewPortVisibleWidth;// - 23;
 		return visibleWidth - 20;
 	}
 }
