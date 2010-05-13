@@ -93,7 +93,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	private MappingMiddlePanel middlePanel;
 	    
 	private boolean graphInSelection = false;
-	private boolean graphInClearSelectionMode = false;
 	private boolean sourceTreeInSelection = false;
 	private boolean targetTreeInSelection = false;
 
@@ -136,35 +135,12 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 */
 	public void valueChanged(GraphSelectionEvent e)
 	{
-//		Log.logInfo(this, "A new Graph Cell is selected. '" + (e == null ? e : e.getCell()) + "'");
-        try
-        {
-            if (mappingPanel.isInDragDropMode())
-		    {//if in dragging mode, ignore.
-			    return;
-		    }
-        }
-        catch(NullPointerException ne)
-        {
-            JOptionPane.showMessageDialog(mappingPanel, "You should input the source and target file names first(2).", "No Source or Target file", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if(graphInSelection)
-		{
-//			Log.logInfo(this, "In graph selection mode, just a re-entry, so ignore.");
+		if (mappingPanel.isInDragDropMode())
+	    //if in dragging mode, ignore.
 			return;
-		}
-		//clear tree selections if and only if the call is NOT orignated from any tree node selection
-		if(sourceTreeInSelection)
-		{//clear the opposite
-			mappingPanel.getTargetTree().clearSelection();
-		}
-
-		if(targetTreeInSelection)
-		{//clear the opposite
-			mappingPanel.getSourceTree().clearSelection();
-		}
+	    
+        if(graphInSelection)
+			return;
 
 		graphInSelection = true;
 
@@ -182,14 +158,11 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
                 return;
             }
             else mappingPanel.getSourceTree().clearSelection();
-
-            //mappingPanel.getTargetTree().clearSelection();
-			//mappingPanel.getSourceTree().clearSelection();
 		}
-		if(!isAClearSelectionEvent(e))
+		if(e.isAddedCell())
 		{//ignore if it is a clear selection event
 			Object obj = e.getCell();
-			if (!graphInClearSelectionMode && obj instanceof DefaultEdge)
+			if (obj instanceof DefaultEdge)
 			{//only handles edge, when graph is NOT in CLEAR selection mode.
 				DefaultEdge edge = (DefaultEdge) obj;
 				Object source = edge.getSource();
@@ -212,22 +185,69 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	}
 
 	/**
-	 * If it is clear selection event, the isAddedXXX() will return false, so the return will be true, i.e., it is a clear selection event.
-	 * @param event
-	 * @return true if it is a clear selection event; otherwise, return false.
+	 * Called whenever the value of the selection changes.
+	 *
+	 * @param e the event that characterizes the change.
 	 */
-	private boolean isAClearSelectionEvent(EventObject event)
+	public void valueChanged(TreeSelectionEvent e)
 	{
-		boolean result = false;
-		if(event instanceof GraphSelectionEvent)
+		if (mappingPanel.isInDragDropMode())
+		//if in dragging mode, ignore.
+			return;
+		Object eventSource = e.getSource();
+		TreePath path = e.getPath();
+		Object node = (path==null)? null : path.getLastPathComponent();
+		if(node==null)
+			return;
+	
+		if(graphInSelection )
+		//if graph is in selection, no need to execute further logic; otherwise, we may run into an indefinite loop.
+			return;
+	
+		String searchMode = null;
+		if(eventSource instanceof MappingSourceTree)
 		{
-			result = !((GraphSelectionEvent) event).isAddedCell();
+			searchMode = MappingViewCommonComponent.SEARCH_BY_SOURCE_NODE;
+			//notify that tree is selection process.
+			//System.out.println( "sourceTreeInSelection is true");
+			sourceTreeInSelection = true;				
+			mappingPanel.getTargetTree().clearSelection();				
 		}
-		else if(event instanceof TreeSelectionEvent)
+		else if(eventSource instanceof MappingTargetTree)
 		{
-			result = !((TreeSelectionEvent) event).isAddedPath();
+			searchMode = MappingViewCommonComponent.SEARCH_BY_TARGET_NODE;
+			//notify that tree is selection process.
+			targetTreeInSelection = true;
+			mappingPanel.getSourceTree().clearSelection();	
 		}
-		return result;
+	
+		graph.clearSelection();
+	
+		if(e.isAddedPath())
+		{//if not a clear selection event 
+			MappingDataManager dataManager = mappingPanel.getMappingDataManager();
+			List<MappingViewCommonComponent> compList = dataManager.findMappingViewCommonComponentList(node, searchMode);
+			int size = compList.size();
+			for(int i=0; i<size; i++)
+			{
+				MappingViewCommonComponent comp = compList.get(i);
+				DefaultEdge linkEdge = comp.getLinkEdge();
+				if(graph!=null)
+				{
+					graph.setSelectionCell(linkEdge);
+				}
+			}
+		} 
+		if (eventSource instanceof MappingSourceTree)
+		{
+			//notify that tree is end of selection process.
+			sourceTreeInSelection = false;
+		}
+		else if (eventSource instanceof MappingTargetTree)
+		{
+			//notify that tree is end of selection process.
+			targetTreeInSelection = false;
+		}
 	}
 
 	private Object getUserObject(Object graphOrTreeNode)
@@ -253,115 +273,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		{//screen out possible graph cell but just leave pure tree node to be highlighted
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;			
 			TreePath treePath = new TreePath(treeNode.getPath());
-			
-			//System.out.println( "HighlightTreeNodeInTree: " + treePath.toString() );
-			
-//			tree.scrollPathToVisible(treePath);
 			tree.setSelectionPath(treePath);
-		}
-	}
-
-	/**
-	 * Called whenever the value of the selection changes.
-	 *
-	 * @param e the event that characterizes the change.
-	 */
-	public void valueChanged(TreeSelectionEvent e)
-	{
-        try
-        {
-            if (mappingPanel.isInDragDropMode())
-		    {//if in dragging mode, ignore.
-			    return;
-		    }
-        }
-        catch(NullPointerException ne)
-        {
-            JOptionPane.showMessageDialog(mappingPanel, "You should input the source and target file names first(1).", "No Source or Target file", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (mappingPanel.isInDragDropMode())
-		{//if in dragging mode, ignore.
-			return;
-		}
-		Object eventSource = e.getSource();
-		TreePath path = e.getPath();
-		Object node = (path==null)? null : path.getLastPathComponent();
-//		Log.logInfo(this, "TreeSelectionSource:'" + (eventSource ==null? "null" : eventSource.getClass().getName()) + "'");
-		
-		//System.out.println( "TreeSelectionSource:'" + (eventSource ==null? "null" : eventSource.getClass().getName()) + "'");
-		
-		if(graphInSelection || sourceTreeInSelection || targetTreeInSelection)
-		{//if graph is in selection, no need to execute further logic; otherwise, we may run into an indefinite loop.
-//			Log.logInfo(this, "In Graph or tree selection mode, so just ignore.");
-			return;
-		}
-		else
-		{
-			if(node==null)
-			{
-				return;
-			}
-
-			String searchMode = null;
-			if(eventSource instanceof MappingSourceTree)
-			{
-				searchMode = MappingViewCommonComponent.SEARCH_BY_SOURCE_NODE;
-				//notify that tree is selection process.
-				//System.out.println( "sourceTreeInSelection is true");
-				sourceTreeInSelection = true;				
-				mappingPanel.getTargetTree().clearSelection();				
-			}
-			else if(eventSource instanceof MappingTargetTree)
-			{
-				searchMode = MappingViewCommonComponent.SEARCH_BY_TARGET_NODE;
-				//notify that tree is selection process.
-				targetTreeInSelection = true;
-				mappingPanel.getSourceTree().clearSelection();	
-			}
-
-			graphInClearSelectionMode = true;
-			graph.clearSelection();
-			graphInClearSelectionMode = false;
-
-			if(!isAClearSelectionEvent(e) && searchMode!=null)
-			{//if not a clear selection event and searchMode is not null.
-				MappingDataManager dataManager = mappingPanel.getMappingDataManager();
-				List<MappingViewCommonComponent> compList = dataManager.findMappingViewCommonComponentList(node, searchMode);
-				int size = compList.size();
-				for(int i=0; i<size; i++)
-				{
-					MappingViewCommonComponent comp = compList.get(i);
-					DefaultEdge linkEdge = comp.getLinkEdge();
-					if(graph!=null)
-					{
-						graph.setSelectionCell(linkEdge);
-					}
-//					else
-//					{//just highlight the tree nodes.
-//						GraphSelectionEvent event = new GraphSelectionEvent(this, new Object[]{linkEdge}, new boolean[]{false});
-//						valueChanged(event);
-//					}
-
-//					//highlight the other tree node correspondingly
-//					JTree treeToBeHighlighted = null;
-//					DefaultMutableTreeNode treeNodeToBeHighlighted = null;
-//					if(searchMode == MappingViewCommonComponent.SEARCH_BY_TARGET_NODE)
-//					{//to highlight source tree
-//						treeToBeHighlighted = mappingPanel.getSourceTree();
-//					}
-				}
-			}//end of if(searchMode!=null)
-			if (eventSource instanceof MappingSourceTree)
-			{
-				//notify that tree is end of selection process.
-				sourceTreeInSelection = false;
-			}
-			else if (eventSource instanceof MappingTargetTree)
-			{
-				//notify that tree is end of selection process.
-				targetTreeInSelection = false;
-			}
 		}
 	}
 
@@ -452,7 +364,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 * Set popup menu for the nodes of source tree 
 	 * @return sourceNodePopup
 	 */
-	protected JPopupMenu createSourcePopupMenu()
+	private JPopupMenu createSourcePopupMenu()
 	{
         JTree sourceTree = mappingPanel.getSourceTree();
         JPopupMenu popupMenu = new JPopupMenu();
@@ -697,7 +609,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 * Create the Popup menu for a target tree node
 	 * @return
 	 */
-	protected JPopupMenu createTargetPopupMenu()
+	private JPopupMenu createTargetPopupMenu()
 	{
 		JPopupMenu popupMenu = new JPopupMenu();
         //Could change this depending on whether lazy/eager
@@ -787,37 +699,8 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 				}
 			}	
 		}
-	
 		return popupMenu;
-	}
-
-	public String parseNode( String node )
-	{
-		node = replace( node, ", ", "." );
-		node = replace( node, "[", " " );
-		node = replace( node, "]", " " );
-        node = replace( node, "(A)", " " );
-        //node = replace( node, ")", " " );
-        node = replace( node, "Data Model.", "" );
-        node = replace( node, "Object Model.", "" );
-        node = node.trim();        
-		return node; 
-	}
-	
-    private static String replace(String str, String pattern, String replace) {
-        int s = 0;
-        int e = 0;
-        StringBuffer result = new StringBuffer();
-    
-        while ((e = str.indexOf(pattern, s)) >= 0) {
-            result.append(str.substring(s, e));
-            result.append(replace);
-            s = e+pattern.length();
-        }
-        result.append(str.substring(s));
-        return result.toString();
-    }
-    
+	}    
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
