@@ -14,6 +14,7 @@ import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
 import gov.nih.nci.caadapter.ui.common.Iso21090uiUtil;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
+import gov.nih.nci.caadapter.ui.common.tree.MappingBaseTree;
 import gov.nih.nci.caadapter.ui.common.tree.MappingSourceTree;
 import gov.nih.nci.caadapter.ui.common.tree.MappingTargetTree;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
@@ -91,7 +92,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	private JGraph graph;
 	private MappingMiddlePanel middlePanel;  
 	private boolean graphInSelection = false;
-	
+
 	public LinkSelectionHighlighter(AbstractMappingPanel mappingPanel, JGraph graph, MappingMiddlePanel middlePanel)
 	{
 		this.middlePanel = middlePanel;
@@ -132,11 +133,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		if (mappingPanel.isInDragDropMode())
 			return;
-		
-		//ignore if it is a clear selection event
+		//clean tree highlight if remove graph highlight
 	    if (!e.isAddedCell())
 	    {
-	    	System.out.println("LinkSelectionHighlighter.valueChanged()..not add Cell:"+graph.getSelectionCount());
 			if (mappingPanel.getTargetTree() == null)
 			{
 				JOptionPane.showMessageDialog(mappingPanel, "You should input the source file name first(2).", "No Source file", JOptionPane.ERROR_MESSAGE);
@@ -164,7 +163,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			DefaultEdge edge = (DefaultEdge) obj;
 			Object source = edge.getSource();
 			Object target = edge.getTarget();
-
 			Object sourceUserObject = getUserObject(source);
 			highlightTreeNodeInTree(mappingPanel.getSourceTree(), sourceUserObject);
 
@@ -187,11 +185,17 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		if (!e.isAddedPath())
 			return;
 		
+		if (graphInSelection)
+			return;
+		graph.clearSelection();
 		Object eventSource = e.getSource();
 		TreePath path = e.getPath();
 		if (path==null)
 			return;
-	
+		//set tree highlight being cleaned as clean graph highlight
+		MappingBaseTree evntTree=(MappingBaseTree)eventSource;
+		evntTree.setSelectionPath(path);
+		
 		String searchMode = null;
 		if(eventSource instanceof MappingSourceTree)
 			searchMode = MappingViewCommonComponent.SEARCH_BY_SOURCE_NODE;
@@ -202,23 +206,12 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		MappingDataManager dataManager = mappingPanel.getMappingDataManager();
 		List<MappingViewCommonComponent> compList = dataManager.findMappingViewCommonComponentList(node, searchMode);
 		int size = compList.size();
-		if (size==0)
-		{
-			//clean graph selection
-			graph.setSelectionCell(null);
-			//clean the OTHER tree
-			if (searchMode.equals(MappingViewCommonComponent.SEARCH_BY_TARGET_NODE))
-				mappingPanel.getSourceTree().clearSelection();
-			else
-				mappingPanel.getTargetTree().clearSelection();
-		}
-
 		for(int i=0; i<size; i++)
 		{
 			MappingViewCommonComponent comp = compList.get(i);
 			DefaultEdge linkEdge = comp.getLinkEdge();
 			if(graph!=null)
-			{
+			{//highlight linkEdge
 				graph.setSelectionCell(linkEdge);
 			}
 		}
