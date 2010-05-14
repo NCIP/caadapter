@@ -9,7 +9,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.common.jgraph;
 
-import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
@@ -31,7 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  * A data container contains mapping information, which is the mapping either from-tree-to-functional-box,
@@ -90,7 +89,17 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 
 			if(SEARCH_BY_SOURCE_NODE.equals(SEARCH_BY))
 			{
-				if(GeneralUtilities.areEqual(comp.getSourceNode(), node))
+				if (node instanceof DefaultSourceTreeNode)
+				{
+					DefaultSourceTreeNode sourceTreeNode=(DefaultSourceTreeNode)node;
+					if (comp.getSourceNode() instanceof DefaultSourceTreeNode )
+					{
+						DefaultSourceTreeNode compSourceTreeNode=(DefaultSourceTreeNode)comp.getSourceNode();
+						if(GeneralUtilities.areEqual(new TreePath(sourceTreeNode.getPath()).toString(), new TreePath(compSourceTreeNode.getPath()).toString()))
+							resultList.add(comp);
+					}
+				}
+				else if(GeneralUtilities.areEqual(comp.getSourceNode(), node))
 				{
 					resultList.add(comp);
 				}
