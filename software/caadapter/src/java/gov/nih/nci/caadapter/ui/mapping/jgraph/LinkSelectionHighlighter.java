@@ -89,7 +89,8 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
-	private MappingMiddlePanel middlePanel;
+	private MappingMiddlePanel middlePanel;  
+	private boolean graphInSelection = false;
 	
 	public LinkSelectionHighlighter(AbstractMappingPanel mappingPanel, JGraph graph, MappingMiddlePanel middlePanel)
 	{
@@ -130,41 +131,47 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	public void valueChanged(GraphSelectionEvent e)
 	{
 		if (mappingPanel.isInDragDropMode())
-	    //if in dragging mode, ignore.
+			return;
+		
+		//ignore if it is a clear selection event
+	    if (!e.isAddedCell())
+	    {
+	    	System.out.println("LinkSelectionHighlighter.valueChanged()..not add Cell:"+graph.getSelectionCount());
+			if (mappingPanel.getTargetTree() == null)
+			{
+				JOptionPane.showMessageDialog(mappingPanel, "You should input the source file name first(2).", "No Source file", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			else 
+				mappingPanel.getTargetTree().clearSelection();
+		  
+			if (mappingPanel.getSourceTree() == null)
+			{
+				JOptionPane.showMessageDialog(mappingPanel, "You should input the target file name first(2).", "No Target file", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			else 
+				mappingPanel.getSourceTree().clearSelection();
+	    	return;
+	    }
+		if(graphInSelection)
 			return;
 
-		if(e.isAddedCell())
-		{//ignore if it is a clear selection event
-			Object obj = e.getCell();
-			if (obj instanceof DefaultEdge)
-			{//only handles edge, when graph is NOT in CLEAR selection mode.
-				DefaultEdge edge = (DefaultEdge) obj;
-				Object source = edge.getSource();
-				Object target = edge.getTarget();
+		graphInSelection = true;
+		Object obj = e.getCell();
+		if (obj instanceof DefaultEdge)
+		{//only handles edge, when graph is NOT in CLEAR selection mode.
+			DefaultEdge edge = (DefaultEdge) obj;
+			Object source = edge.getSource();
+			Object target = edge.getTarget();
 
-				Object sourceUserObject = getUserObject(source);
-				highlightTreeNodeInTree(mappingPanel.getSourceTree(), sourceUserObject);
-				Object targetUserObject = getUserObject(target);
-				highlightTreeNodeInTree(mappingPanel.getTargetTree(), targetUserObject);
-			}
+			Object sourceUserObject = getUserObject(source);
+			highlightTreeNodeInTree(mappingPanel.getSourceTree(), sourceUserObject);
+
+			Object targetUserObject = getUserObject(target);
+			highlightTreeNodeInTree(mappingPanel.getTargetTree(), targetUserObject);
 		}
-		else 
-		{
-			//the graph selection is cleared
-			//clean selection for both target and source tree
-            if (mappingPanel.getTargetTree() == null)
-            {
-                JOptionPane.showMessageDialog(mappingPanel, "You should input the source file name first(2).", "No Source file", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            else mappingPanel.getTargetTree().clearSelection();
-            if (mappingPanel.getSourceTree() == null)
-            {
-                JOptionPane.showMessageDialog(mappingPanel, "You should input the target file name first(2).", "No Target file", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            else mappingPanel.getSourceTree().clearSelection();
-		}
+		graphInSelection = false;
 	}
 
 	/**
@@ -175,41 +182,46 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	public void valueChanged(TreeSelectionEvent e)
 	{
 		if (mappingPanel.isInDragDropMode())
-		//if in dragging mode, ignore.
 			return;
-
+		//ignore if it is a clear selection event
+		if (!e.isAddedPath())
+			return;
+		
+		Object eventSource = e.getSource();
 		TreePath path = e.getPath();
 		if (path==null)
 			return;
-		
-		Object node = (path==null)? null : path.getLastPathComponent();
+	
 		String searchMode = null;
-		
-		Object eventSource = e.getSource();
 		if(eventSource instanceof MappingSourceTree)
 			searchMode = MappingViewCommonComponent.SEARCH_BY_SOURCE_NODE;
-
 		else if(eventSource instanceof MappingTargetTree)
 			searchMode = MappingViewCommonComponent.SEARCH_BY_TARGET_NODE;
-				
-		if(e.isAddedPath())
-		{//if not a clear selection event 
-			MappingDataManager dataManager = mappingPanel.getMappingDataManager();
-			List<MappingViewCommonComponent> compList = dataManager.findMappingViewCommonComponentList(node, searchMode);
-			int size = compList.size();
-			if (size==0)
-				graph.clearSelection();
-			
-			for(int i=0; i<size; i++)
+
+		Object node = (path==null)? null : path.getLastPathComponent();
+		MappingDataManager dataManager = mappingPanel.getMappingDataManager();
+		List<MappingViewCommonComponent> compList = dataManager.findMappingViewCommonComponentList(node, searchMode);
+		int size = compList.size();
+		if (size==0)
+		{
+			//clean graph selection
+			graph.setSelectionCell(null);
+			//clean the OTHER tree
+			if (searchMode.equals(MappingViewCommonComponent.SEARCH_BY_TARGET_NODE))
+				mappingPanel.getSourceTree().clearSelection();
+			else
+				mappingPanel.getTargetTree().clearSelection();
+		}
+
+		for(int i=0; i<size; i++)
+		{
+			MappingViewCommonComponent comp = compList.get(i);
+			DefaultEdge linkEdge = comp.getLinkEdge();
+			if(graph!=null)
 			{
-				MappingViewCommonComponent comp = compList.get(i);
-				DefaultEdge linkEdge = comp.getLinkEdge();
-				if(graph!=null)
-				{
-					graph.setSelectionCell(linkEdge);
-				}
+				graph.setSelectionCell(linkEdge);
 			}
-		} 
+		}
 	}
 
 	private Object getUserObject(Object graphOrTreeNode)
@@ -244,7 +256,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 */
 	public void mouseClicked(MouseEvent e)
 	{
-		// If Right Mouse Button
 		if (SwingUtilities.isRightMouseButton(e))
 		{         						
 			Container parentC = e.getComponent().getParent();
@@ -468,8 +479,10 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             			constantRemoveAction.setAnnotationTagName(tagName);
             		}
             	}
-            	else if (annotationAttrMetadat.getDatatype().equalsIgnoreCase("DSET<AD>")
-            			&&attrMetadata.getDatatype().equalsIgnoreCase("SEQUENCE(ADXP)"))
+				else if (attrMetadata.getDatatype().equalsIgnoreCase("SEQUENCE(ADXP)"))
+//		            	
+//            	else if (annotationAttrMetadat.getDatatype().equalsIgnoreCase("DSET<AD>")
+//            			&&attrMetadata.getDatatype().equalsIgnoreCase("SEQUENCE(ADXP)"))
             	{
             		tagName="mapped-collection-element-type:"+attrMetadata.getName();
             		elementTypeSetAction.setEnabled(true);
