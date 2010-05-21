@@ -13,6 +13,7 @@ import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionManager;
+import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
@@ -226,20 +227,30 @@ public class MapParser {
             FunctionMeta functionMeta = f.getFunctionMeta(kind, group, name);
             functionComponent.setMeta(functionMeta);
 
-            if ("constant".equalsIgnoreCase(functionMeta.getFunctionName()))
+            if ((functionMeta.isFrame())&&(functionMeta.getDataSpec()!=null))
             {
             	if (datatype == null || datavalue== null) {
-    	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file"});
+    	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file (1)"});
+    	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+    	            return;
+            	}
+                FunctionDataSpecExe functionDataSpecExe = new FunctionDataSpecExe(functionMeta.getName(), functionMeta.getDataSpec(), datatype, datavalue);
+                functionComponent.setFunctionDataSpecExe(functionDataSpecExe);
+            }
+            else if ("constant".equalsIgnoreCase(functionMeta.getFunctionName()))
+            {
+            	if (datatype == null || datavalue== null) {
+    	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file (2)"});
     	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
     	            return;
             	}
                 FunctionConstant functionConstant = new FunctionConstant("constant", datatype, datavalue);
                 functionComponent.setFunctionConstant(functionConstant);
             }
-            if("vocabulary".equalsIgnoreCase(functionMeta.getGroupName()))
+            else if("vocabulary".equalsIgnoreCase(functionMeta.getGroupName()))
             {
             	if (datatype == null || datavalue== null) {
-    	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file"});
+    	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file (3)"});
     	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
     	            return;
             	}

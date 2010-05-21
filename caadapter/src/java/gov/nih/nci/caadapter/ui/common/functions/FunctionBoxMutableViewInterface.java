@@ -11,6 +11,7 @@ package gov.nih.nci.caadapter.ui.common.functions;
 
 import gov.nih.nci.caadapter.common.BaseObject;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
+import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.map.View;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
@@ -154,6 +155,18 @@ public interface FunctionBoxMutableViewInterface extends BaseObject
 	 * @param vocabularyMapping
 	 */
     void setFunctionVocabularyMapping(FunctionVocabularyMapping vocabularyMapping);
+
+    /**
+	 * Return the FunctionDataSpecExe instance.
+	 * @return a functionDataSpecExe
+	 */
+	FunctionDataSpecExe getFunctionDataSpecExe();
+
+    /**
+	 * Set a new FunctionDataSpecExe.
+	 * @param functionDataSpecExe
+	 */
+    void setFunctionDataSpecExe(FunctionDataSpecExe functionDataSpecExe);
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
