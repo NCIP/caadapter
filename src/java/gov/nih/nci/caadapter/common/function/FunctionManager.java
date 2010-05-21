@@ -14,11 +14,9 @@ import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.GroupMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.Reader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +62,46 @@ public class FunctionManager
 //        	System.out.println("function spec file Path:"+filePath);
 //            fleFunctionSpec = new File(filePath);          
 //            flrFunctionSpecReader = new FileReader(fleFunctionSpec);
-        	flrFunctionSpecReader=new InputStreamReader( Thread.currentThread().getContextClassLoader().getResourceAsStream(Config.FUNCTION_DEFINITION_FILE_LOCATION) );
+            String core_fls = FileUtil.searchFile(Config.FUNCTION_DEFINITION_FILE_LOCATION);
+            System.out.println("CCCCC : " + Config.FUNCTION_DEFINITION_FILE_LOCATION + ", ;;; " + core_fls);
+
+
+                if (core_fls != null)
+                {
+                    try
+                    {
+                        if ((core_fls.toLowerCase().startsWith("jar:"))||(core_fls.toLowerCase().startsWith("zip:")))
+                        {
+                            flrFunctionSpecReader=new InputStreamReader((new URL(core_fls).openConnection().getInputStream()));
+                        }
+                        else flrFunctionSpecReader=new InputStreamReader(new FileInputStream(core_fls));
+                    }
+                    catch(FileNotFoundException fe)
+                    {
+                        System.out.println("CCCCC : FileNotFoundException");
+                        //throw new NullPointerException(fe.getMessage());
+                    }
+                    catch(IOException fe)
+                    {
+                        System.out.println("CCCC : IOException ");
+                        //throw new NullPointerException(fe.getMessage());
+                    }
+                }
+                if (flrFunctionSpecReader == null)
+                {
+                    URL licenseURL= ClassLoader.getSystemResource(Config.FUNCTION_DEFINITION_FILE_LOCATION);
+                    String filePath=licenseURL.getFile();
+                    try
+                    {
+                        flrFunctionSpecReader=new InputStreamReader(licenseURL.openConnection().getInputStream());
+                    }
+                    catch(IOException fe)
+                    {
+                        System.out.println("CCCC : IOException ");
+                        throw new NullPointerException(fe.getMessage());
+                    }
+                }
+
         }
         //@todo send exceptions into log files.
 

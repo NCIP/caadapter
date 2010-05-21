@@ -10,9 +10,11 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.map.impl;
 
 import gov.nih.nci.caadapter.castor.map.impl.*;
+import gov.nih.nci.caadapter.castor.function.impl.C_dataSpec;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
+import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.map.BaseMapElement;
@@ -173,8 +175,25 @@ public class MapBuilderImpl {
             String stringId=((FunctionComponent)baseComponent).getId();
             cComponent.setId(Integer.valueOf(stringId));
             
-            //if("constant".equalsIgnoreCase(functionMeta.getFunctionName())){
-            if(functionMeta.isConstantFunction())
+
+            if ((functionMeta.isFrame())&&(functionMeta.getDataSpec()!=null))
+            {
+                C_dataSpec dataSpec = functionMeta.getDataSpec();
+                if(dataSpec == null)
+                {
+                    throw new MappingException("A 'dataSpec' element MUST have a defined FunctionDataSpecExe object",null);
+                }
+                FunctionDataSpecExe functionDataSpecExe = ((FunctionComponent)baseComponent).getFunctionDataSpecExe();
+                if(functionDataSpecExe == null){
+                    throw new MappingException("A 'FunctionDataSpecExe' function MUST have a defined FunctionConstant object",null);
+                }
+                //functionMeta.setFunctionDataSpecExe(functionDataSpecExe);
+                C_data cData = new C_data();
+                cData.setType(functionDataSpecExe.getType());
+                cData.setValue(functionDataSpecExe.getValue());
+                cComponent.setC_data(cData);
+            }
+            else if(functionMeta.isConstantFunction())
             {
                 FunctionConstant functionConstant = ((FunctionComponent)baseComponent).getFunctionConstant();
                 if(functionConstant == null){
@@ -185,7 +204,7 @@ public class MapBuilderImpl {
                 cData.setValue(functionConstant.getValue());
                 cComponent.setC_data(cData);
             }
-            if(functionMeta.isFunctionVocabularyMapping())
+            else if(functionMeta.isFunctionVocabularyMapping())
             {
                 FunctionVocabularyMapping vocabularyMapping = ((FunctionComponent)baseComponent).getFunctionVocabularyMapping();
 

@@ -12,6 +12,7 @@ package gov.nih.nci.caadapter.ui.common.functions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
+import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.impl.FunctionMetaImpl;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
@@ -51,7 +52,8 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 	protected FunctionBoxCell functionBoxCell;
 	protected FunctionConstant functionConstant;
     protected FunctionVocabularyMapping functionVocabularyMapping;
-	/**
+    protected FunctionDataSpecExe functionDataSpecExe;
+    /**
 	 * This constuctor is intended to be used when adding a new function on the mapping,
 	 * since at that time, no function component is available but just functionMeta and/or viewMeta.
 	 *
@@ -184,6 +186,7 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 			//new FunctionComponent(functionMeta);
 			functionComponent.setView(viewMeta);
 			functionComponent.setFunctionConstant(getFunctionConstant());
+            functionComponent.setFunctionDataSpecExe(getFunctionDataSpecExe());
             functionComponent.setFunctionVocabularyMapping(getFunctionVocabularyMapping());
         }
 		else if(functionComponent!=null)
@@ -191,6 +194,7 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 			functionComponent.setMeta(this.functionMeta);
 			functionComponent.setView(this.viewMeta);
 			functionComponent.setFunctionConstant(getFunctionConstant());
+            functionComponent.setFunctionDataSpecExe(getFunctionDataSpecExe());
             functionComponent.setFunctionVocabularyMapping(getFunctionVocabularyMapping());
         }
 		return functionComponent;
@@ -207,6 +211,7 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 		setFunctionMeta(functionComponent.getMeta());
 		setViewMeta(functionComponent.getView());
 		setFunctionConstant(functionComponent.getFunctionConstant());
+        setFunctionDataSpecExe(functionComponent.getFunctionDataSpecExe());
         setFunctionVocabularyMapping(functionComponent.getFunctionVocabularyMapping());
     }
 
@@ -280,6 +285,24 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 	}
 
     /**
+	 * Return the FunctionDataSpecExe instance.
+	 * @return a functionDataSpecExe
+	 */
+	public FunctionDataSpecExe getFunctionDataSpecExe()
+    {
+        return functionDataSpecExe;
+    }
+
+    /**
+	 * Set a new FunctionDataSpecExe.
+	 * @param functionDataSpecExe
+	 */
+    public void setFunctionDataSpecExe(FunctionDataSpecExe functionDataSpecExe)
+    {
+        this.functionDataSpecExe = functionDataSpecExe;
+    }
+
+    /**
 	 * Set the map status to new value, which might trigger underline property change.
 	 *
 	 * @param newValue
@@ -347,7 +370,9 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 			{
 				title = "Function " + title;
 			}
-		}
+
+            if (functionDataSpecExe != null) title = title + " (Valued)";
+        }
 		return title;
 	}
 
@@ -361,7 +386,28 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 	public PropertiesResult getPropertyDescriptors() throws Exception
 	{
 		PropertiesResult result = ((FunctionMetaImpl)functionMeta).getPropertyDescriptors();
-		if(functionConstant!=null)
+
+        if(functionDataSpecExe!=null)
+		{
+			List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+
+			Class beanClass = functionDataSpecExe.getClass();//this.getClass();
+			PropertyDescriptor prop = null;
+
+				prop = new PropertyDescriptor("Valued "+functionMeta.getFunctionName()+" Type", beanClass, "getType", null);
+				propList.add(prop);
+
+				prop = new PropertyDescriptor("Valued "+functionMeta.getFunctionName()+" Type", beanClass, "getValue", null);
+				propList.add(prop);
+
+
+			if(propList.size()>0)
+			{
+				result.addPropertyDescriptors(functionDataSpecExe, propList);
+//				result.addPropertyDescriptors(this, propList);
+			}
+		}
+        else if(functionConstant!=null)
 		{
 			List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 //			Class beanClass = this.getClass();
@@ -401,7 +447,7 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 //				result.addPropertyDescriptors(this, propList);
 			}
 		}
-        if(functionVocabularyMapping!=null)
+        else if(functionVocabularyMapping!=null)
 		{
 			List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 
@@ -454,6 +500,30 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 		if(functionConstant!=null)
 		{
 			return functionConstant.getValue();
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+    protected Object getFunctionDataSpecExeType()
+	{
+		if(this.functionDataSpecExe!=null)
+		{
+			return functionDataSpecExe.getType();
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	protected Object getFunctionDataSpecExeValue()
+	{
+		if(functionDataSpecExe!=null)
+		{
+			return functionDataSpecExe.getValue();
 		}
 		else
 		{

@@ -11,6 +11,7 @@ package gov.nih.nci.caadapter.ui.common.functions;
 
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionException;
+import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
@@ -85,12 +86,17 @@ public class FunctionBoxViewUsageManager
         {//just to confirm the system has it.
 
             newFunctionBox = new FunctionBoxMutableViewInterfaceImpl(functionComponent);
-            if(functionMetaFromComponent.isConstantFunction() || functionComponent.getFunctionConstant()!=null)
+            if((functionMetaFromComponent.getDataSpec()!=null) || (functionComponent.getFunctionDataSpecExe()!=null))
+            {
+                //System.out.println("CCCCCx : " + functionComponent.getFunctionConstant().getConstantFunctionName() + ", type="+functionComponent.getFunctionConstant().getType()+ ", value="+functionComponent.getFunctionConstant().getValue());
+                newFunctionBox.setFunctionDataSpecExe(functionComponent.getFunctionDataSpecExe());
+            }
+            else if(functionMetaFromComponent.isConstantFunction() || functionComponent.getFunctionConstant()!=null)
             {
                 //System.out.println("CCCCCx : " + functionComponent.getFunctionConstant().getConstantFunctionName() + ", type="+functionComponent.getFunctionConstant().getType()+ ", value="+functionComponent.getFunctionConstant().getValue());
                 newFunctionBox.setFunctionConstant(functionComponent.getFunctionConstant());
             }
-            if(functionMetaFromComponent.isFunctionVocabularyMapping() || functionComponent.getFunctionVocabularyMapping()!=null)
+            else if(functionMetaFromComponent.isFunctionVocabularyMapping() || functionComponent.getFunctionVocabularyMapping()!=null)
             {
                 newFunctionBox.setFunctionVocabularyMapping(functionComponent.getFunctionVocabularyMapping());
             }
@@ -114,7 +120,48 @@ public class FunctionBoxViewUsageManager
 
         FunctionConstant functionConstant = null;
         FunctionVocabularyMapping vocabularyMapping = null;
-        if(functionMeta.isConstantFunction())
+        FunctionDataSpecExe functionDataSpecExe = null;
+        if ((functionMeta.isFrame())&&(functionMeta.getDataSpec()!=null))
+        {
+            FunctionDataSpecDefinitionDialog dialog = null;
+            if (parentContainer instanceof Frame)
+            {
+                dialog = new FunctionDataSpecDefinitionDialog((Frame) parentContainer, functionMeta.getFunctionName(), functionMeta.getDataSpec());
+            }
+            else if (parentContainer instanceof Dialog)
+            {
+                dialog = new FunctionDataSpecDefinitionDialog((Dialog) parentContainer, functionMeta.getFunctionName(), functionMeta.getDataSpec());
+            }
+            if (dialog != null)
+            {
+                DefaultSettings.centerWindow(dialog);
+                dialog.setVisible(true);
+                if (dialog.isOkButtonClicked())
+                {
+                    String typeValue = "";
+                    if (dialog.getType() != null) typeValue = dialog.getType();
+			        else typeValue = dialog.getFunctionName();
+                    try
+                    {
+                        functionDataSpecExe = new FunctionDataSpecExe(dialog.getFunctionName(), functionMeta.getDataSpec(), typeValue, dialog.getValue());
+                    }
+                    catch(FunctionException fe)
+                    {
+                        JOptionPane.showMessageDialog(parentContainer, fe.getMessage(), "Constant function Creation Failure. : " + dialog.getFunctionName(), JOptionPane.WARNING_MESSAGE);
+                        return null;
+                    }
+                }
+                else
+                {//adding constant was cancelled.
+                    return null;
+                }
+            }
+            else
+            {//adding constant was cancelled.
+                return null;
+            }
+        }
+        else if(functionMeta.isConstantFunction())
         {//a constant function, need to ask for input values
             //following does not work. It only works for one input type only.
 //			Object returnValue = JOptionPane.showInputDialog(getMiddlePanel(), new Object[]{"Type", "Value"},"Define a Constant", JOptionPane.INFORMATION_MESSAGE, null, null, new Object[]{"", ""});
@@ -157,7 +204,7 @@ public class FunctionBoxViewUsageManager
                 return null;
             }
         }
-        if(functionMeta.isFunctionVocabularyMapping())
+        else if(functionMeta.isFunctionVocabularyMapping())
         {
             FunctionVocabularyMappingDefinitionDialog dialog = null;
             FunctionVocabularyMapping functionVocabularyMapping = new FunctionVocabularyMapping();
@@ -208,11 +255,16 @@ public class FunctionBoxViewUsageManager
         if (functionMeta != null)
         {
             newFunctionBoxInstance = new FunctionBoxMutableViewInterfaceImpl(functionMeta, viewInfo);
-            if(functionConstant!=null)
+
+            if(functionDataSpecExe!=null)
+            {//implies the function has a dataspec object
+                newFunctionBoxInstance.setFunctionDataSpecExe(functionDataSpecExe);
+            }
+            else if(functionConstant!=null)
             {//implies the function is a constant function
                 newFunctionBoxInstance.setFunctionConstant(functionConstant);
             }
-            if(vocabularyMapping!=null)
+            else if(vocabularyMapping!=null)
             {//implies the function is a constant function
                 newFunctionBoxInstance.setFunctionVocabularyMapping(vocabularyMapping);
             }

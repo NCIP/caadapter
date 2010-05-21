@@ -10,10 +10,12 @@ package gov.nih.nci.caadapter.hl7.transformation;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.HTML_SpecialCharacterTable;
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionException;
+import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
@@ -26,6 +28,8 @@ import gov.nih.nci.caadapter.hl7.transformation.data.HL7XMLUtil;
 import gov.nih.nci.caadapter.hl7.transformation.data.MutableFlag;
 import gov.nih.nci.caadapter.hl7.transformation.data.NullXMLElement;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
+import gov.nih.nci.caadapter.castor.function.impl.C_dataSpec;
+import gov.nih.nci.caadapter.castor.function.impl.types.OutDataType;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -420,8 +424,8 @@ public class DatatypeProcessor {
 
     private String getFunctionValue(List<CSVSegment> csvSegments, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException
     {
-    	int outputpos = 0;
-    	
+       int outputpos = 0;
+
     	int pos = scsXmlPath.lastIndexOf(".outputs.");
     	outputpos = Integer.valueOf(scsXmlPath.substring(pos+9, scsXmlPath.length()));
     	String fXmlPath = scsXmlPath.substring(0,pos);
@@ -431,81 +435,294 @@ public class DatatypeProcessor {
     		throw new MappingException("count not find function: " + scsXmlPath, null);
 
     	FunctionMeta functionMeta = functionComponent.getMeta();
-    	
-    	// first, is the function a constant?
+
+        String valueDataSpec = null;
+        HTML_SpecialCharacterTable hsct = new HTML_SpecialCharacterTable();
+        List<Class> parameterTypes = null;
+
+        // first, is the function kind of dataspec?
+        while ((functionMeta.isFrame())&&(functionMeta.getDataSpec()!=null))
+        {
+            FunctionDataSpecExe functionDataSpecExe = functionComponent.getFunctionDataSpecExe();
+            if(functionDataSpecExe == null) break;
+            String valueOr = functionDataSpecExe.getValue();
+            //String dType = functionDataSpecExe.getDataSpec().getDatatype().toString();
+            if ((valueOr == null)||(valueOr.trim().equals(""))) break;
+            valueOr = valueOr.trim();
+
+            valueDataSpec = hsct.transformTaggingToString(valueOr);
+            if (functionDataSpecExe.getFunctionName().equalsIgnoreCase("constant")) return valueDataSpec;
+
+            Class[] parameterTypesArr = functionMeta.getParameterTypes();
+            parameterTypes = new ArrayList<Class>();
+            for(Class classO:parameterTypesArr) parameterTypes.add(classO);
+            break;
+        }
+        // first, is the function a constant?
     	if (functionMeta.isConstantFunction()) {
     		FunctionConstant fc = functionComponent.getFunctionConstant();
     		if (fc == null)
     			throw new MappingException("count not find function constant for function: " + functionComponent.getId(), null);
-    		hasUserData.setHasUserMappedData(true);
-    		return fc.getValue();
+    		hasUserData.setHasUserMappedData(false);
+            hasDefaultdata.setHasUserMappedData(true);
+            return fc.getValue();
     	}
 
-    	// for each input find it's input value.
-    	for (int i = 0; i < functionMeta.getInputDefinitionList().size(); i++) {
-    		String inputData = mappings.get("function."+functionComponent.getId()+"."+"inputs"+"."+i);
-    		//ignore if no mapping for an input port
-    		if (inputData==null)
-    		{
-    			inputValues.add(null);
-    			continue;
-    		}
-    		String inputvalue = null;
-    		if (inputData.startsWith("function.")) { //function mapping to target
-    			inputvalue = getFunctionValue(csvSegments,inputData, data, hasUserData, hasDefaultdata);
-    		}
-    		else { //direct mapping from source to target
-    			inputvalue = data.get(inputData);
-    			if (inputvalue == null) { //inverse relationship
-    				CSVField csvField = csvUtil.findCSVField(csvSegments, inputData);
-    				if (csvField!=null)
-    					inputvalue = csvField.getValue();
-//    				if (inputvalue!=null&&!inputvalue.equals("")) 
+        // for each input find it's input value.
+        for (int i = 0; i < functionMeta.getInputDefinitionList().size(); i++) {
+            String inputData = mappings.get("function."+functionComponent.getId()+"."+"inputs"+"."+i);
+            //ignore if no mapping for an input port
+            if (inputData==null)
+            {
+                inputValues.add(null);
+                continue;
+            }
+            String inputvalue = null;
+            if (inputData.startsWith("function.")) { //function mapping to target
+                inputvalue = getFunctionValue(csvSegments,inputData, data, hasUserData, hasDefaultdata);
+            }
+            else { //direct mapping from source to target
+                inputvalue = data.get(inputData);
+                if (inputvalue == null) { //inverse relationship
+                    CSVField csvField = csvUtil.findCSVField(csvSegments, inputData);
+                    if (csvField!=null)
+                        inputvalue = csvField.getValue();
+//    				if (inputvalue!=null&&!inputvalue.equals(""))
 //    					hasUserData.setHasUserMappedData(true);
-    			}
-    			
-    			if (inputvalue!=null&&!inputvalue.equals("")) 
-   					hasUserData.setHasUserMappedData(true);
+                }
 
-    		}
-    		inputValues.add(inputvalue);
-    	}
+                if (inputvalue!=null&&!inputvalue.equals(""))
+                       hasUserData.setHasUserMappedData(true);
 
-    	// It is the FunctionVocabularyMapping?
-    	if (functionMeta.isFunctionVocabularyMapping())
-    	{
-    		FunctionVocabularyMapping vm = functionComponent.getFunctionVocabularyMapping();
-    		if (vm == null)
-    			throw new MappingException("Not found 'Vocabulary' function: " + functionComponent.getId(), null);
-    		if (inputValues.size() != 1)
-    			throw new MappingException("Parameter count of 'Vocabulary' fuction must be 1 but now is "+inputValues.size()+". : " + functionComponent.getId(), null);
+            }
+            //if (inputvalue.startsWith("&%F:")) inputvalue = inputvalue.substring(4);
+            inputValues.add(inputvalue);
+        }
 
-    		String res = "";
-    		try
-    		{
-    			if (functionMeta.getFunctionName().equalsIgnoreCase(vm.getMethodNamePossibleList()[0]))
-    				res = vm.translateValue(inputValues.get(0));
-    			else if (functionMeta.getFunctionName().equalsIgnoreCase(vm.getMethodNamePossibleList()[1]))
-    				res = vm.translateInverseValue(inputValues.get(0));
-    			else throw new MappingException("'"+ functionMeta.getFunctionName() +"' function could not be found in 'Vocabulary' function group : " + functionComponent.getId(), null);
-    		}
-    		catch(FunctionException fe)
-    		{
-    			throw new MappingException(fe.getMessage(), fe, fe.getSeverity());
-    		}
-    		return res;
-    	}
+        // It is the FunctionVocabularyMapping?
+        if (functionMeta.isFunctionVocabularyMapping())
+        {
+            FunctionVocabularyMapping vm = functionComponent.getFunctionVocabularyMapping();
+            if (vm == null)
+                throw new MappingException("Not found 'Vocabulary' function: " + functionComponent.getId(), null);
+            if (inputValues.size() != 1)
+                throw new MappingException("Parameter count of 'Vocabulary' fuction must be 1 but now is "+inputValues.size()+". : " + functionComponent.getId(), null);
 
-    	// pass the input values to the function.compute() function.
-    	Object[] valueArray = null;
-    	String theValue = null;
-    	valueArray = functionMeta.compute(inputValues.toArray());
-    	if (valueArray[outputpos]==null)
-    		return theValue;
-    	theValue = valueArray[outputpos].toString();
+            String res = "";
+            try
+            {
+                if (functionMeta.getFunctionName().equalsIgnoreCase(vm.getMethodNamePossibleList()[0]))
+                    res = vm.translateValue(inputValues.get(0));
+                else if (functionMeta.getFunctionName().equalsIgnoreCase(vm.getMethodNamePossibleList()[1]))
+                    res = vm.translateInverseValue(inputValues.get(0));
+                else throw new MappingException("'"+ functionMeta.getFunctionName() +"' function could not be found in 'Vocabulary' function group : " + functionComponent.getId(), null);
+            }
+            catch(FunctionException fe)
+            {
+                throw new MappingException(fe.getMessage(), fe, fe.getSeverity());
+            }
+            if (res!=null&&!res.equals(""))
+                       hasUserData.setHasUserMappedData(true);
+            return res;
+        }
 
-    	return theValue;
+
+        if (valueDataSpec != null)
+        {
+            String functionName = functionComponent.getMeta().getFunctionName();
+            Class classObj = null;
+            try
+            {
+                OutDataType dType = functionComponent.getFunctionDataSpecExe().getDataSpec().getDatatype();
+
+                if (dType.getType() == OutDataType.DOUBLE_TYPE) classObj = Double.TYPE;
+                else if (dType.getType() == OutDataType.STRING_TYPE) classObj = String.class;
+                else if (dType.getType() == OutDataType.INT_TYPE) classObj = Integer.TYPE;
+            }
+            catch(Exception fe)
+            {
+                classObj = null;
+            }
+            if (classObj == null) throw new FunctionException("classObj of dataspec == null");
+
+            if (functionName.equalsIgnoreCase("changeFormat"))
+            {
+                inputValues.add(0, valueDataSpec);
+                parameterTypes.add(0, classObj);
+            }
+            else if (functionName.equalsIgnoreCase("setprefix"))
+            {
+                inputValues.add(0, valueDataSpec);
+                parameterTypes.add(0, classObj);
+            }
+            else if (functionName.equalsIgnoreCase("nullflavorwith"))
+            {
+                inputValues.add(valueDataSpec);
+                parameterTypes.add(classObj);
+                inputValues.add(null);
+                parameterTypes.add(classObj);
+            }
+            else if (functionName.equalsIgnoreCase("substringwith"))
+            {
+                if ((inputValues == null)||(inputValues.size() == 0)) return "";
+                String val = inputValues.get(0);
+                if ((val == null)||(val.length() == 0)) return "";
+                String from = "";
+                String to = "";
+
+                String delimiter = "~";
+                int idx = valueDataSpec.indexOf(delimiter);
+                if (idx < 0) from = valueDataSpec;
+                else
+                {
+                    from = valueDataSpec.substring(0, idx);
+                    to = valueDataSpec.substring(idx+delimiter.length());
+                }
+                int[] ii  = new int[2];
+                String keyWord = "";
+                String keyWordDef = "indexof:";
+                String keyWordInc = "indexof+:";
+                String keyWordExc = "indexof-:";
+                String idxChar1 = null;
+
+                for (int i=0;i<2;i++)
+                {
+                    String str = from;
+                    if (i == 1)
+                    {
+                        str = to;
+                        if (str.equalsIgnoreCase("end")) str = "" + val.length();
+                    }
+
+                    if (str.toLowerCase().startsWith(keyWordDef)) keyWord = keyWordDef;
+                    else if (str.toLowerCase().startsWith(keyWordExc)) keyWord = keyWordExc;
+                    else if (str.toLowerCase().startsWith(keyWordInc)) keyWord = keyWordInc;
+                    else keyWord = null;
+
+                    if (str.trim().equals(""))
+                    {
+                        if (i==1) ii[i] = val.length();
+                        else ii[i] = 0;
+                    }
+                    else if (keyWord != null)
+                    {
+                        String str1 = str.substring(keyWord.length()).trim();
+                        if (((str1.startsWith("\""))&&(str1.endsWith("\"")))||((str1.startsWith("'"))&&(str1.endsWith("'"))))
+                            str1 = str1.substring(1, str1.length()-1);
+                        String tilde = "&tilde;";
+                        while(true)
+                        {
+                            int idxHy = str1.toLowerCase().indexOf(tilde);
+                            if (idxHy < 0) break;
+                            str1 = str1.substring(0, idxHy) + delimiter + str1.substring(idxHy + tilde.length());
+                        }
+                        if (str1.equals("")) ii[i] = -1;
+                        else
+                        {
+                            if (i==0)
+                            {
+                                idxChar1 = str1;
+                                ii[i] = val.indexOf(str1);
+                                if ((ii[i] >= 0)&&(keyWord.equals(keyWordExc))) ii[i] = ii[i] + str1.length();
+                            }
+                            else
+                            {
+                                int startP = ii[0];
+                                if ((startP >= 0)&&(idxChar1 != null)) startP = startP + idxChar1.length();
+                                if (ii[0] < 0) startP = 0;
+                                String subStr = val.substring(startP);
+                                ii[i] = subStr.indexOf(str1);
+                                if (ii[i] < 0) ii[i] = val.indexOf(str1);
+                                else ii[i] = ii[i] + startP;
+                                if ((ii[i] >= 0)&&(keyWord.equals(keyWordInc))) ii[i] = ii[i] + str1.length();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            ii[i] = Integer.parseInt(str);
+                        }
+                        catch(NumberFormatException ne)
+                        {
+                            ii[i] = -1;
+                        }
+                    }
+                }
+                if (ii[0] == ii[1]) return "";
+                if (ii[0] > ii[1])
+                {
+                    int tt = ii[0];
+                    ii[0] = ii[1];
+                    ii[1] = tt;
+                }
+                if ((ii[0] <= 0)&&(ii[1] >= val.length())) return val;
+                if (ii[0] >= val.length()) return "";
+                if (ii[1] <= 0) return "";
+                if (ii[0] < 0) ii[0] = 0;
+                if (ii[1] > val.length()) ii[1] = val.length();
+                return val.substring(ii[0], ii[1]);
+            }
+            else if (functionName.equalsIgnoreCase("replacewith"))
+            {
+                if ((inputValues == null)||(inputValues.size() == 0)) return "";
+                String val = inputValues.get(0);
+                if ((val == null)||(val.length() == 0)) return "";
+                String from = "";
+                String to = "";
+                int idx = valueDataSpec.indexOf("=>");
+                if (idx < 0) return val;
+                else
+                {
+                    from = valueDataSpec.substring(0, idx).trim();
+                    to = valueDataSpec.substring(idx+2).trim();
+                }
+                if (((from.startsWith("\""))&&(from.endsWith("\"")))||((from.startsWith("'"))&&(from.endsWith("'"))))
+                            from = from.substring(1, from.length()-1);
+                if (((to.startsWith("\""))&&(to.endsWith("\"")))||((to.startsWith("'"))&&(to.endsWith("'"))))
+                            to = to.substring(1, to.length()-1);
+                if ((from.equals(""))||(to.equals(""))) return val;
+                inputValues.add(from);
+                inputValues.add(to);
+                parameterTypes.add(classObj);
+                parameterTypes.add(classObj);
+            }
+            else
+            {
+                inputValues.add(valueDataSpec);
+                parameterTypes.add(classObj);
+//                if (functionComponent.getMeta().getGroupName().toLowerCase().indexOf("math") >= 0)
+//                {
+//                    String fName = functionComponent.getMeta().getName().toLowerCase();
+//                    if (fName.equals("round")) parameterTypes.add(Integer.TYPE);
+//                    else if (fName.indexOf("compute") >= 0) parameterTypes.add(String.class);
+//                    else parameterTypes.add(Double.TYPE);
+//                }
+//                else parameterTypes.add(String.class);
+            }
+        }
+
+
+        // pass the input values to the function.compute() function.
+        Object[] valueArray = null;
+        String theValue = null;
+        if (parameterTypes != null)
+        {
+            Class[] cArr = new Class[parameterTypes.size()];
+            for (int i=0;i<cArr.length;i++) cArr[i] = parameterTypes.get(i);
+            valueArray = functionMeta.compute(inputValues.toArray(), cArr);
+        }
+        else valueArray = functionMeta.compute(inputValues.toArray());
+
+        if (valueArray[outputpos]==null)   return theValue;
+
+        theValue = valueArray[outputpos].toString();
+
+        return theValue;
+
     }
+
     public void processAttributeDefaultValue(boolean forceGenerate, Attribute attr, XMLElement xmlElement, String attributeName, MutableFlag hasDefaultData, String domainName, String codingStrength) 
     {
     	if (forceGenerate) {
