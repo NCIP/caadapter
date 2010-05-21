@@ -19,12 +19,25 @@
   <xs:element name="function">
     <xs:complexType>
       <xs:sequence>
+        <xs:element minOccurs="0" ref="dataSpec"/>
         <xs:element minOccurs="0" ref="inputs"/>
         <xs:element ref="outputs"/>
         <xs:element minOccurs="0" ref="implementation"/>
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="dataFrame" use="optional" type="xs:boolean"/>
       <xs:attribute name="xmlPath" use="required" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataSpec">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" name="typeDef" type="typeDef"/>
+        <xs:element minOccurs="1" name="valueDef" type="typeDef"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="datatype" use="required" type="OutDataType"/>
+      <xs:attribute name="annotation" use="optional" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="inputs">
@@ -47,6 +60,28 @@
       <xs:attribute name="method" use="required" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
+
+    <xs:complexType name="typeDef">
+      <xs:attribute name="fieldType" use="required" type="CaseType"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="isFixed" use="optional" type="xs:boolean"/>
+      <xs:attribute name="default" use="optional" type="xs:string"/>
+      <xs:attribute name="valueArray" use="optional" type="xs:string"/>
+    </xs:complexType>
+
+  <xs:simpleType name="CaseType">
+    <xs:restriction base="xs:string">
+	  <xs:enumeration value="field"/>
+      <xs:enumeration value="combo"/>
+    </xs:restriction>
+   </xs:simpleType>
+  <xs:simpleType name="OutDataType">
+    <xs:restriction base="xs:string">
+	  <xs:enumeration value="string"/>
+      <xs:enumeration value="int"/>
+      <xs:enumeration value="double"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:element name="datapoint">
     <xs:complexType>
       <xs:attribute name="datatype" use="required" type="xs:NCName"/>
