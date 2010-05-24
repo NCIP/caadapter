@@ -18,7 +18,6 @@ import gov.nih.nci.caadapter.castor.map.impl.C_links;
 import gov.nih.nci.caadapter.castor.map.impl.C_mapping;
 import gov.nih.nci.caadapter.castor.map.impl.C_view;
 import gov.nih.nci.caadapter.castor.map.impl.C_views;
-import gov.nih.nci.caadapter.castor.function.impl.C_dataSpec;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
@@ -33,7 +32,6 @@ import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionManager;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.FunctionMetaLookup;
-import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.map.BaseMapElement;
 import gov.nih.nci.caadapter.common.util.Config;
@@ -253,23 +251,13 @@ public class MapParserImpl {
             FunctionMeta functionMeta = f.getFunctionMeta(cComponent.getKind(), cComponent.getGroup(), cComponent.getName());
             functionComponent.setMeta(functionMeta);
 
-            if ((functionMeta.isFrame())&&(functionMeta.getDataSpec()!=null))
-            {
-                C_dataSpec dataSpec = functionMeta.getDataSpec();
-                C_data cData = cComponent.getC_data();
-                if (cData == null) throw new MappingException("A 'constant' function MUST have a defined <data> in the XML.", null);
-                FunctionDataSpecExe functionDataSpecExe = new FunctionDataSpecExe(functionMeta.getName(), dataSpec, cData.getType(), (String) cData.getValue());
-                functionComponent.setFunctionDataSpecExe(functionDataSpecExe);
-                //functionMeta.setFunctionDataSpecExe(functionDataSpecExe);
-            }
-            else if ("constant".equalsIgnoreCase(functionMeta.getGroupName()))
-            {
+            if ("constant".equalsIgnoreCase(functionMeta.getGroupName())) {
                 C_data cData = cComponent.getC_data();
                 if (cData == null) throw new MappingException("A 'constant' function MUST have a defined <data> in the XML.", null);
                 FunctionConstant functionConstant = new FunctionConstant(functionMeta.getFunctionName(), cData.getType(), (String) cData.getValue());
                 functionComponent.setFunctionConstant(functionConstant);
             }
-            else if ("vocabulary".equalsIgnoreCase(functionMeta.getGroupName()))
+            if("vocabulary".equalsIgnoreCase(functionMeta.getGroupName()))
             {
                 C_data cData = cComponent.getC_data();
                 if (cData == null) throw new MappingException("'Vocabulary' function group MUST have a defined <data> in the core XML.", null);

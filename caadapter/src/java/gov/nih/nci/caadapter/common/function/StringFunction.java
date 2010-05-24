@@ -39,23 +39,9 @@ public class StringFunction {
      * @return an String containing the final concatenated String
      */
     public String concat(String strParam1, String strParam2) {
-
-        return concat(strParam1, strParam2, null);
-    }
-    /**
-     * Accepts two String objects.
-     * Returns an Object containing the results of concatenating two strings.
-     *
-     * @param strParam1 the first string to which strParam2 will be concatenated
-     * @param strParam2 the second string that will be appended to strParam1
-     * @param insertChar insert string between strParam1 and strParam2
-     * @return an String containing the final concatenated String
-     */
-    public String concat(String strParam1, String strParam2, String insertChar) {
         if (strParam1 == null) strParam1 = "";
         if (strParam2 == null) strParam2 = "";
-        if (insertChar == null) insertChar = "";
-        return strParam1 + insertChar + strParam2;
+        return strParam1 + strParam2;
     }
 
     /**
@@ -119,8 +105,7 @@ public class StringFunction {
      */
     public List<String> nullFlavor(String dataString, String nullFlavorInput, String nullFlavorDefaultSetting)
     {
-        //System.out.println("##### nullFlavor 1 : " + dataString + ", " + nullFlavorInput + ", " + nullFlavorDefaultSetting);
-        //process source data value
+    	//process source data value
     	String rtnValue1=dataString;
     	if(rtnValue1!=null&&rtnValue1.equalsIgnoreCase(GeneralUtilities.CAADAPTER_DATA_FIELD_NULL))
     	{//Null read from CSV
@@ -131,21 +116,13 @@ public class StringFunction {
     		//Null read from constant Function
     		rtnValue1=null;
     	}
-
-        //set NullFlavorSetting
+    	//set NullFlavorSetting
     	NullFlavorSetting nullSetting=null;
-        String nullFlavorValue = "";
-        if (nullFlavorInput!=null&&!nullFlavorInput.trim().equals(""))
-        {
-            nullSetting=new NullFlavorSetting(nullFlavorInput);//use source data input
-            nullFlavorValue = nullFlavorInput;
-        }
-        else if (nullFlavorDefaultSetting!=null&&!nullFlavorDefaultSetting.trim().equals(""))
-        {
-            nullSetting=new NullFlavorSetting(nullFlavorDefaultSetting);//use user's defaultSetting
-            nullFlavorValue = nullFlavorDefaultSetting;
-        }
-        else
+    	if (nullFlavorInput!=null&&!nullFlavorInput.equals(""))
+    		nullSetting=new NullFlavorSetting(nullFlavorInput);//use source data input
+    	else if (nullFlavorDefaultSetting!=null&&!nullFlavorDefaultSetting.equals(""))
+    		nullSetting=new NullFlavorSetting(nullFlavorDefaultSetting);//use user's defaultSetting
+    	else
     	{
     		//case I:
     		//NullFlavorSetting is not available
@@ -166,27 +143,8 @@ public class StringFunction {
         	//return here, 
         	return nullSettingRtnList;
     	}
-        //System.out.println("##### nullFlavor 2 : " + dataString + ", " + nullFlavorValue);
-        NullFlavorFunctionHelper nfh = new NullFlavorFunctionHelper();
-        if (nfh.isNullFlavorValue(nullFlavorValue))
-        {
-            //System.out.println("##### nullFlavor 3 : " + dataString + ", " + nullFlavorValue);
-            List<String> nullDataRtnList=new ArrayList<String>();
-            if ((dataString==null)||(dataString.equals("")))
-            {
-                nullDataRtnList.add(null);
-                nullDataRtnList.add(nullFlavorValue);
-            }
-            else
-            {
-                nullDataRtnList.add(dataString);
-                nullDataRtnList.add(null);
-            }
-            //System.out.println("##### nullFlavor 3 : " + nullDataRtnList.get(0) + ", " + nullDataRtnList.get(1));
-            return nullDataRtnList;
-        }
-
-        if (dataString==null)
+    	
+    	if (dataString==null)
     	{
     		//case II:
     		//source data is not available,
@@ -311,16 +269,10 @@ public class StringFunction {
 
     public Object replace(String strSource, String strPattern, String strReplacement) {
         if (strSource == null) return "";
-        if ((strSource.length() == 0) || (strPattern == null || strPattern.length() == 0) || (strReplacement == null || strReplacement.length() == 0))
+        if ((strSource.length() == 0) || (strPattern == null || strPattern.length() == 0))
             return strSource;
 
-        while(true)
-        {
-            int idx = strSource.indexOf(strPattern);
-            if (idx < 0) break;
-            strSource = strSource.replace(strPattern, strReplacement);
-        }
-        return strSource;
+        return strSource.replaceAll(strPattern, strReplacement);
     }
 
     /**

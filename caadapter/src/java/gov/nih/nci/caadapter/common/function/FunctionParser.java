@@ -16,8 +16,7 @@ package gov.nih.nci.caadapter.common.function;
  * @version    $Revision: 1.6 $
  * @date       $Date: 2008-09-25 18:57:45 $
 */
-import gov.nih.nci.caadapter.castor.function.impl.C_dataSpec;
-import gov.nih.nci.caadapter.castor.function.impl.TypeDef;
+
 import gov.nih.nci.caadapter.castor.function.impl.C_datapoint;
 import gov.nih.nci.caadapter.castor.function.impl.C_function;
 import gov.nih.nci.caadapter.castor.function.impl.C_functions;
@@ -127,16 +126,6 @@ public class FunctionParser
             }
             functionMeta.setInputDefinitionList(processInputList(functionMeta, c_function.getC_inputs()));  //Set the Input Definition List
             functionMeta.setOutputDefinitionList(processOutputList(functionMeta, c_function.getC_outputs())); //Set the Output Definition List.
-
-            C_dataSpec dataSpec = c_function.getC_dataSpec();
-            if ((dataSpec != null)&&(!dataSpec.getName().trim().equals(""))&&(dataSpec.isValid()))
-            {
-                functionMeta.setDataSpec(dataSpec);
-                ///System.out.println("FFF 9-2 : " + dataSpec.getName() + " is inserted");
-            }
-
-            if (c_function.hasDataFrame()) functionMeta.setIsFrame(true);
-
             alstFunctionMeta.add(functionMeta); //Add a FunctionMetaImpl object to the FunctionMetaImpl object list.
         }
 
