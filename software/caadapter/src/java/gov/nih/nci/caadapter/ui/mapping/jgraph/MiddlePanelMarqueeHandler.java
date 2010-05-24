@@ -10,7 +10,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.jgraph;
 
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
-import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxCell;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxMutableViewInterface;
@@ -59,8 +58,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 
 	private GraphDeleteAction deleteAction;
 	private AddFunctionalBoxAction addFunctionalBoxAction;
-    private DataSpecEditAction dataSpecEditAction;
-    private ConstantEditAction constantEditAction;
+	private ConstantEditAction constantEditAction;
     private VacabularyMappingEditAction vacabularyMappingEditAction;
     private GraphDeleteAllAction deleteAllAction;
     
@@ -313,15 +311,10 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			menuItem = new JMenuItem(addFunctionalBoxAction);
 			popupMenu.add(menuItem);
 
-            //Edit dataspec
-			dataSpecEditAction = new DataSpecEditAction(controller.getMiddlePanel(), controller);
-			menuItem = new JMenuItem(dataSpecEditAction);
-			popupMenu.add(menuItem);
-
             //Edit constant
-//			constantEditAction = new ConstantEditAction(controller.getMiddlePanel(), controller);
-//			menuItem = new JMenuItem(constantEditAction);
-//			popupMenu.add(menuItem);
+			constantEditAction = new ConstantEditAction(controller.getMiddlePanel(), controller);
+			menuItem = new JMenuItem(constantEditAction);
+			popupMenu.add(menuItem);
 
             //Edit constant
 			vacabularyMappingEditAction = new VacabularyMappingEditAction(controller.getMiddlePanel(), controller);
@@ -334,8 +327,8 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
             popupMenu.add(menuItem);
 
         }
-        dataSpecEditAction.setEnabled(false);
-		//constantEditAction.setEnabled(false);
+
+		constantEditAction.setEnabled(false);
         vacabularyMappingEditAction.setEnabled(false);
         boolean graphHasSelection = !graph.isSelectionEmpty();
 		if(graphHasSelection)
@@ -346,18 +339,13 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 				Object userObject = ((FunctionBoxCell) selectedObj).getUserObject();
 				if(userObject instanceof FunctionBoxMutableViewInterface)
 				{
-                    FunctionDataSpecExe dataSpec = ((FunctionBoxMutableViewInterface)userObject).getFunctionDataSpecExe();
-                    FunctionConstant constant = ((FunctionBoxMutableViewInterface)userObject).getFunctionConstant();
-                    FunctionVocabularyMapping vm = ((FunctionBoxMutableViewInterface)userObject).getFunctionVocabularyMapping();
-                    if(dataSpec!=null)
+					FunctionConstant constant = ((FunctionBoxMutableViewInterface)userObject).getFunctionConstant();
+					if(constant!=null)
 					{
-						dataSpecEditAction.setEnabled(true);
+						constantEditAction.setEnabled(true);
 					}
-//                    else if(constant!=null)
-//					{
-//						constantEditAction.setEnabled(true);
-//					}
-                    else if(vm!=null)
+                    FunctionVocabularyMapping vm = ((FunctionBoxMutableViewInterface)userObject).getFunctionVocabularyMapping();
+					if(vm!=null)
 					{
 						vacabularyMappingEditAction.setEnabled(true);
 					}

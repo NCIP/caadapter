@@ -10,7 +10,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.common.functions;
 
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
-import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.util.Config;
@@ -167,19 +166,13 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 				label.setIcon(imageIcon);
 				mainPanel.add(label, BorderLayout.NORTH);
 
-				if(function.getFunctionDataSpecExe()!=null)
+				if(function.getFunctionConstant()!=null)
 				{
-					return renderFunctionDataSpecExe(function, mainPanel);
-				}
-                else if(function.getFunctionConstant()!=null)
-				{
-                    FunctionConstant functionConstant = function.getFunctionConstant();
-                    return renderSpecialFunction(functionConstant.getValue(), mainPanel);
+					return renderConstantFunction(function, mainPanel);
 				}
                 else if(function.getFunctionVocabularyMapping()!=null)
 				{
-                    FunctionVocabularyMapping functionVocabularyMapping = function.getFunctionVocabularyMapping();
-                    return renderSpecialFunction(functionVocabularyMapping.getValue(), mainPanel);
+					return renderVocabularyMappingFunction((function), mainPanel);
 				}
                 else
 				{
@@ -192,72 +185,47 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 
 	/**
 	 * When this function is called, it is pre-determined that the given function is a constant function.
-	 * @param content
+	 * @param function
 	 * @param mainPanel
 	 * @return this component
 	 */
-	private JComponent renderSpecialFunction(String content, JPanel mainPanel)
+	private JComponent renderConstantFunction(FunctionBoxMutableViewInterface function, JPanel mainPanel)
 	{
-		JScrollPane scrollPane = createJScrollPane(content);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
-		mainPanel.setBorder(getDefaultBorder(1, 1, 1, 1));
-		this.setLayout(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
-		this.add(mainPanel, BorderLayout.CENTER);
-
-		return this;
-	}
-    private JScrollPane createJScrollPane(String content)
-	{
-        JTextArea area = new JTextArea(content);
+		FunctionConstant functionConstant = function.getFunctionConstant();
+		JTextArea area = new JTextArea(functionConstant.getValue());
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
 		area.setEditable(false);
 		area.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
 		area.setBorder(getDefaultBorder(1, 0, 1, 0));
 		JScrollPane scrollPane = new JScrollPane(area);
-        return scrollPane;
-    }
-
-    /**
-	 * When this function is called, it is pre-determined that the given function is a constant function.
-	 * @param function
-	 * @param mainPanel
-	 * @return this component
-	 */
-	private JComponent renderFunctionDataSpecExe(FunctionBoxMutableViewInterface function, JPanel mainPanel)
-	{
-		FunctionDataSpecExe functionDataSpecExe = function.getFunctionDataSpecExe();
-		JScrollPane scrollPane = createJScrollPane(functionDataSpecExe.getValue());
-        String fName = functionDataSpecExe.getFunctionName();
-
-        if (fName.toLowerCase().indexOf("nullflavor") >= 0) {}
-        else
-        {
-            mainPanel.add(scrollPane, BorderLayout.CENTER);
-            mainPanel.setBorder(getDefaultBorder(1, 1, 1, 1));
-            this.setLayout(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
-            this.add(mainPanel, BorderLayout.CENTER);
-            return this;
-        }
-
-		mainPanel = createNormalJPanel(function, mainPanel, scrollPane);
-
-        this.setLayout(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
-        //this.add(scrollPane, BorderLayout.NORTH);
-        this.add(mainPanel, BorderLayout.CENTER);
-        return this;
-	}
-
-    private JComponent renderNormalFunction(FunctionBoxMutableViewInterface function, JPanel mainPanel)
-	{
-        mainPanel = createNormalJPanel(function, mainPanel, null);
-        this.setLayout(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
+		mainPanel.add(scrollPane, BorderLayout.CENTER);
+		mainPanel.setBorder(getDefaultBorder(1, 1, 1, 1));
+		this.setLayout(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
 		this.add(mainPanel, BorderLayout.CENTER);
-//			Insets insets = new Insets(5, 5, 5, 5);
+
 		return this;
 	}
 
-    private JPanel createNormalJPanel(FunctionBoxMutableViewInterface function, JPanel mainPanel, JScrollPane scrollPane)
+    private JComponent renderVocabularyMappingFunction(FunctionBoxMutableViewInterface function, JPanel mainPanel)
+	{
+		FunctionVocabularyMapping functionVocabularyMapping = function.getFunctionVocabularyMapping();
+		JTextArea area = new JTextArea(functionVocabularyMapping.getValue());
+		area.setLineWrap(true);
+		area.setWrapStyleWord(true);
+		area.setEditable(false);
+		area.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
+		area.setBorder(getDefaultBorder(1, 0, 1, 0));
+		JScrollPane scrollPane = new JScrollPane(area);
+		mainPanel.add(scrollPane, BorderLayout.CENTER);
+		mainPanel.setBorder(getDefaultBorder(1, 1, 1, 1));
+		this.setLayout(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
+		this.add(mainPanel, BorderLayout.CENTER);
+
+		return this;
+	}
+
+    private JComponent renderNormalFunction(FunctionBoxMutableViewInterface function, JPanel mainPanel)
 	{
 		JPanel centerPanel = new JPanel(new GridLayout(1, 2));
 		centerPanel.setBorder(getDefaultBorder(1, 0, 1, 0));
@@ -289,21 +257,11 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 		addComponentToPanelByGridBagLayout(centerPanel, leftPanel, 0, 2, false);
 		addComponentToPanelByGridBagLayout(centerPanel, rightPanel, 1, 2, false);
 
-        if (scrollPane != null)
-        {
-            JPanel mainPanel2 = new JPanel(new BorderLayout());
-            mainPanel2.add(scrollPane, BorderLayout.NORTH);
-            mainPanel2.add(centerPanel, BorderLayout.CENTER);
-            mainPanel.add(mainPanel2, BorderLayout.CENTER);
-        }
-        else
-        {
-            mainPanel.add(centerPanel, BorderLayout.CENTER);
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
 //			mainPanel.add(getSpaceFiller(), BorderLayout.EAST);
 //			mainPanel.add(getSpaceFiller(), BorderLayout.WEST);
 //			this.getViewport().setView(mainPanel);
-        }
-        int compSize = this.getComponentCount();
+		int compSize = this.getComponentCount();
 		if(compSize>0)
 		{//clean up before moving forward
 			for(int i=0; i<compSize; i++)
@@ -312,8 +270,11 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 			}
 		}
 		mainPanel.setBorder(getDefaultBorder(1, 1, 1, 1));
-        return mainPanel;
-    }
+		this.setLayout(new BorderLayout(GAP_INTERVAL, GAP_INTERVAL));
+		this.add(mainPanel, BorderLayout.CENTER);
+//			Insets insets = new Insets(5, 5, 5, 5);
+		return this;
+	}
 
 //	private JComponent getSpaceFiller()
 //	{

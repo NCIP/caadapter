@@ -10,7 +10,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.map;
 
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
-import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 
@@ -29,7 +28,6 @@ public class FunctionComponent extends BaseComponent {
     public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.7 2008-11-21 16:16:49 wangeug Exp $";
 
     private FunctionConstant functionConstant = null;
-    private FunctionDataSpecExe functionDataSpecExe = null;
     private FunctionVocabularyMapping functionVocabularyMapping = null;
     private String id="";
     private static int idCount=0;
@@ -71,13 +69,6 @@ public class FunctionComponent extends BaseComponent {
 
     public void setFunctionConstant(FunctionConstant functionConstant) {
         this.functionConstant = functionConstant;
-    }
-    public FunctionDataSpecExe getFunctionDataSpecExe() {
-        return functionDataSpecExe;
-    }
-
-    public void setFunctionDataSpecExe(FunctionDataSpecExe functionDataSpecExe) {
-        this.functionDataSpecExe = functionDataSpecExe;
     }
 
     public FunctionVocabularyMapping getFunctionVocabularyMapping() {

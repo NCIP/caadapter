@@ -292,26 +292,6 @@ public class DateFunction
     }
     public String changeFormat(String fromFormat, String inDate) throws FunctionException
     {
-        FunctionException fe = null;
-        try
-        {
-            return changeFormatExe(fromFormat, inDate);
-        }
-        catch(FunctionException fe2)
-        {
-            fe = fe2;
-            try
-            {
-               return changeFormatExe(inDate, fromFormat);
-            }
-            catch(FunctionException fe3)
-            {
-                throw fe;
-            }
-        }
-    }
-    private String changeFormatExe(String fromFormat, String inDate) throws FunctionException
-    {
         //System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYY : Date");
         //if(fromFormat.equals("DD-MON-YYYY")) fromFormat = "dd-MMM-yyyy";
         //if (inDate.equals("")) throw new FunctionException("Year, Month or day data is needed(BBBBB). : " + inDate, 511, new Throwable(), ApplicationException.SEVERITY_LEVEL_WARNING);

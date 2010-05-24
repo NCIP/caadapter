@@ -50,7 +50,7 @@ public class ConstantEditAction extends DefaultAbstractJgraphAction
 	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ConstantEditAction.java,v 1.3 2009-07-10 19:56:23 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Edit Constant...";
-
+	
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.

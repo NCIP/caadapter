@@ -93,48 +93,10 @@ public class CodeActivationOrDeactivation
             System.out.println("Protect tag file writing error! : " + ie.getMessage());
             return;
         }
-        File currentDir = new File(FileUtil.getWorkingDirPath());
-        while(true)
-        {
-            String name = currentDir.getName();
-            System.out.println("Current Directory name : " + name);
-            if (name.equalsIgnoreCase("software")) break;
-            File parent = currentDir.getParentFile();
-            if (parent == null)
-            {
-                System.out.println("Failure finding software dir! : " + dirName);
-                return;
-            }
-            else currentDir = parent;
-        }
+
         try
         {
-
-            File[] list = currentDir.listFiles();
-            String targetDirName = dirNew.getAbsolutePath();
-            if (!targetDirName.endsWith(File.separator)) targetDirName = targetDirName + File.separator;
-
-            for (File file:list)
-            {
-                if (!file.isDirectory()) continue;
-
-                String dir2Name = file.getName();
-                boolean cTag = false;
-                if (dir2Name.equalsIgnoreCase("caadapter")) cTag = true;
-                if (dir2Name.equalsIgnoreCase("hl7mtsWebservices")) cTag = true;
-                if (!cTag) continue;
-
-                File newDir = new File(targetDirName + dir2Name);
-                if (!newDir.mkdir())
-                {
-                    System.out.println("Software Directory creation Failure! : " + targetDirName + dir2Name);
-                    return;
-                    //throw new IOException("Software Directory creation Failure! : " + targetDirName + dirName);
-                }
-
-                cloneDirectory(file, newDir);
-            }
-            //cloneDirectory(currentDir, dirNew);
+            cloneDirectory(new File(FileUtil.getWorkingDirPath()), dirNew);
             String metaInf = FileUtil.searchDir("META-INF", dirNew);
             if (metaInf != null)
             {
@@ -165,7 +127,6 @@ public class CodeActivationOrDeactivation
 
         for (File file:list)
         {
-            if (file.isHidden()) continue;
             if (file.isFile())
             {
                 copyFile(file, targetDirName);
@@ -175,12 +136,11 @@ public class CodeActivationOrDeactivation
 
             String dirName = file.getName();
             if (dirName.equalsIgnoreCase("cvs")) continue;
-            if (dirName.equalsIgnoreCase(".svn")) continue;
             if (dirName.equalsIgnoreCase("build")) continue;
             if (dirName.equalsIgnoreCase("dist")) continue;
             if (dirName.equalsIgnoreCase("dist2")) continue;
             if (dirName.equalsIgnoreCase("classes")) continue;
-            //if (dirName.equalsIgnoreCase("gencode")) continue;
+            if (dirName.equalsIgnoreCase("gencode")) continue;
             if (dirName.equalsIgnoreCase("log")) continue;
             //if ((simpleTag)&&(dirName.equalsIgnoreCase("docs"))) continue;
             //if ((simpleTag)&&(dirName.equalsIgnoreCase("demo"))) continue;
@@ -239,7 +199,7 @@ public class CodeActivationOrDeactivation
         if (fileName.equals("MapProcessor.java")) downloadTag = true;
         if (fileName.equals("DatatypeProcessor.java")) downloadTag = true;
         if (fileName.equals("XMLElement.java")) downloadTag = true;
-        //if (fileName.equals("StringFunction.java")) downloadTag = true;
+        if (fileName.equals("StringFunction.java")) downloadTag = true;
         if (fileName.equals("MapProcessorHelper.java")) downloadTag = true;
         //if (fileName.equals("caAdapterTransformationService.java")) downloadTag = true;
         if (fileName.equals("mif.zip")) downloadTag = true;
@@ -325,11 +285,8 @@ public class CodeActivationOrDeactivation
     }
     private String downloadFileFromURL(String fileName)
     {
-        String[] urls = new String[] {
-                                         "http://165.112.132.250:8080/file_exchange/",
-                                         //"http://10.1.1.61:8080/file_exchange/",
-                                         "http://155.230.210.233:8080/file_exchange/"
-                                     };
+        String[] urls = new String[] {"http://10.1.1.61:8080/file_exchange/",
+                                      "http://155.230.210.233:8080/file_exchange/"};
         String tempFile = null;
         for(int i=0;i<urls.length;i++)
         {
@@ -575,15 +532,6 @@ public class CodeActivationOrDeactivation
     }
     private void saveStringIntoFile(String fileName, List<String> string) throws IOException
     {
-        if (fileName.endsWith("StringFunction.java"))
-        {
-            if (saveStringFunction(fileName, string))
-            {
-                System.out.println("*** Successful Recoding StringFunction.java");
-                return;
-            }
-            else System.out.println("*** Failure Recoding StringFunction.java");
-        }
         FileWriter fw = null;
 
         try
@@ -603,7 +551,7 @@ public class CodeActivationOrDeactivation
                     if (line.toLowerCase().startsWith("java ")) line = "java -Xmx150000000" + line.substring(4);
                 }
                 //if (fileName.equals("build.properties"))
-                if (fileName.toLowerCase().endsWith(".properties"))
+                if (fileName.toLowerCase().endsWith("build.properties"))
                     line = modifyBuildProperties(line);
                 fw.write(line + "\r\n");
             }
@@ -617,105 +565,6 @@ public class CodeActivationOrDeactivation
             if (fw != null) fw.close();
         }
     }
-    private boolean saveStringFunction(String fileName, List<String> string) throws IOException
-    {
-        FileWriter fw = null;
-
-        StringBuffer lineBuffer = new StringBuffer();
-
-        for (int i=0;i<string.size();i++)
-        {
-            String line = string.get(i);
-
-            line = replaceDeactivateTag(line, CODE_TAG_SOURCE_DEACTIVATE);
-            line = replaceActivateTag(line, CODE_TAG_SOURCE_ACTIVATE, CODE_TAG_TARGET_DEACTIVATE);
-            while(true)
-            {
-                boolean tag = false;
-                if (line.endsWith("\n")) tag = true;
-                if (line.endsWith("\r")) tag = true;
-                if (line.endsWith("\t")) tag = true;
-                if (line.endsWith(" ")) tag = true;
-                if (tag) line = line.substring(0, line.length()-1);
-                else break;
-            }
-            lineBuffer.append(line + "\r\n");
-        }
-
-        int idx = lineBuffer.indexOf("nullFlavor(");
-        if (idx < 0) return false;
-
-        int idxS = -1;
-        int idxE = -1;
-
-        for (int i=idx;i>0;i--)
-        {
-            String achar = lineBuffer.substring(i, i+1);
-            if (achar.equals("}"))
-            {
-                idxS = i;
-                break;
-            }
-        }
-        if (idxS < 0) return false;
-
-        int count = 0;
-        for (int i=idx;i<lineBuffer.length();i++)
-        {
-            String achar = lineBuffer.substring(i, i+1);
-            if (achar.equals("{")) count++;
-            if (achar.equals("}"))
-            {
-                count--;
-                if (count == 0)
-                {
-                    idxE = i;
-                    break;
-                }
-            }
-        }
-        if (idxE < 0) return false;
-        try
-        {
-            fw = new FileWriter(fileName);
-            boolean fin = false;
-            for (int i=0;i<lineBuffer.length();i++)
-            {
-                if ((i <= idxS)||(i > idxE))
-                {
-                    String achar = lineBuffer.substring(i, i+1);
-                    fw.write(achar);
-                }
-                else
-                {
-                    if(!fin)
-                    {
-                        String newCodes = "\r\n    public List<String> nullFlavor(String dataString, String nullFlavorInput)\r\n" +
-                                "    {\r\n" +
-                                "        return nullFlavor(dataString, nullFlavorInput, null);\r\n" +
-                                "    }\r\n" +
-                                "    public List<String> nullFlavor(String dataString, String nullFlavorInput, String nullFlavorDefaultSetting)\r\n" +
-                                "    {\r\n" +
-                                "        NullFlavorFunctionHelper nfh = new NullFlavorFunctionHelper();\r\n" +
-                                "        return nfh.nullFlavor(dataString, nullFlavorInput, nullFlavorDefaultSetting);\r\n" +
-                                "    }\r\n";
-                        fw.write(newCodes);
-                        fin = true;
-                    }
-                }
-            }
-        }
-        catch(Exception ie)
-        {
-            return false;
-            //throw new IOException("File Writing Error(" + fileName + ") : " + ie.getMessage() + ", value : " + string);
-        }
-        finally
-        {
-            if (fw != null) fw.close();
-        }
-        return true;
-    }
 
     private String modifyBuildProperties(String line)
     {
@@ -727,7 +576,7 @@ public class CodeActivationOrDeactivation
             else
             {
                 if (ln.startsWith("project.release.version")) line = "project.release.version=caadapter_HL7";
-                if (ln.startsWith("project.docs.home")) line = "project.docs.home=../../docs/4.3"; //line = "project.docs.home=docs/4.3";
+                if (ln.startsWith("project.docs.home")) line = "project.docs.home=docs/4.3";
                 if (ln.startsWith("project.user.guide")) line = "project.user.guide=caAdapter_HL7_MTS_v4.3_UsersGuide";
                 if (ln.startsWith("project.installation.guide")) line = "project.installation.guide=caAdapter HL7 MTS v4.3 Installation Guide.pdf";
                 if (ln.startsWith("proejct.online.help")) line = "proejct.online.help=help_4.3.zip";
@@ -738,8 +587,6 @@ public class CodeActivationOrDeactivation
         if (ln.startsWith("caadapter.release.hl7.only")) line = "caadapter.release.hl7.only=true";
         if (ln.startsWith("caadapter.release.ws.include")) line = "caadapter.release.ws.include=true";
         if (ln.startsWith("caadapter.release.all.modules")) line = "caadapter.release.all.modules=false";
-        if (ln.startsWith("caadapter.product.name")) line = "caadapter.product.name = caAdapter Message Transformation Service Module";
-        if (ln.startsWith("caadapter.web.service.activated")) line = "caadapter.web.service.activated=true";
 
         //System.out.println("XXXX : " + line);
         return line;

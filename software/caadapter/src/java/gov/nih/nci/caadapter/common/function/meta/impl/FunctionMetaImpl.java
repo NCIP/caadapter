@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
 [caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
 http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
@@ -9,16 +9,12 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.common.function.meta.impl;
 
-
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.function.FunctionException;
-import gov.nih.nci.caadapter.common.function.FunctionDataSpecExe;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
-import gov.nih.nci.caadapter.castor.function.impl.C_dataSpec;
-import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
@@ -35,7 +31,7 @@ import java.util.List;
  *
  * @author OWNER: $Author: wangeug $
  * @author LAST UPDATE $Author: wangeug $
- * @since      caAdapter  v4.2
+ * @since      caAdapter  v4.2    
  * @version    $Revision: 1.4 $
  * @date       $Date: 2008-12-04 20:38:36 $
  */
@@ -50,10 +46,6 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
 
     private String groupName;
     private String kind;
-
-    private FunctionDataSpecExe functionDataSpecExe = null;
-    private C_dataSpec dataSpec = null;
-    private boolean isFrame = false;
 
     public FunctionMetaImpl() {
 
@@ -166,6 +158,7 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
         this.name = name;
     }
 
+
     /**
      * This method calls a class and method based on attribute values defined in the function map file implementation.
      * This method is designed to abstract specific Java method calls.
@@ -173,30 +166,14 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
      * @param objArguments - list of method parameters
      * @return objFunctionResult Result of the computation
      */
-    public Object[] compute(Object[] objArguments) throws FunctionException
-    {
-        return compute(objArguments, null);
-    }
-    /**
-     * This method calls a class and method based on attribute values defined in the function map file implementation.
-     * This method is designed to abstract specific Java method calls.
-     *
-     * @param objArguments - list of method parameters
-     * @param parameterTypes - list of parameter types
-     * @return objFunctionResult Result of the computation
-     */
-    public Object[] compute(Object[] objArguments, Class[] parameterTypes) throws FunctionException {
+    public Object[] compute(Object[] objArguments) throws FunctionException {
 
         Class functionClass = null;
         Method functionMethod = null;
-
-        //if (parameterTypes == null) parameterTypes = new Class[this.getSizeOfDefinedInput()];
+        Class[] parameterTypes = new Class[this.getSizeOfDefinedInput()];
         Object[] parameterData = new Object[this.getSizeOfDefinedInput()];
-
         Object[] functionResult = null;
         Object tempResult = null;
-
-        this.getDataSpec();
 
         String functionDescription = "Method [" + this.getImplementationMethod() +
                 "] in Class [" + this.getImplementationClass() + "]";
@@ -209,15 +186,15 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
         }
 
         // 2. Find the parameters types to the method.
-        String listParameterTypes = "parameter types=> ";
-        if (parameterTypes == null) parameterTypes = getParameterTypes();
+        for (int i = 0; i < this.getSizeOfDefinedInput(); i++) {
+            parameterTypes[i] = paramConvert(inputDefinitionList.get(i).getParameterType());
+        }
 
         // 3. Find the method.
-
         try {
             functionMethod = functionClass.getMethod(this.getImplementationMethod(), parameterTypes);
         } catch (NoSuchMethodException e) {
-            throw new FunctionException(functionDescription + " could not be found. : " + listParameterTypes);
+            throw new FunctionException(functionDescription + " could not be found.");
         }
 
         // 4. Parse data to expected format.
@@ -236,12 +213,7 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
         // 5. Invoke the method.
         try {
 
-            if ((this.isFrame())&&(functionDataSpecExe!=null))
-            {
-                C_dataSpec dataSpec = functionDataSpecExe.getDataSpec();
-
-            }
-            else if(this.isFunctionVocabularyMapping())
+            if(this.isFunctionVocabularyMapping())
             {
 
             }
@@ -301,7 +273,7 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
         for (int i = 0; i < data.length; i++) {
         	if (data[i]==null)
         		parsedData[i] =null;
-
+        	
         	else if (classes[i] == String.class) {
                 parsedData[i] = data[i].toString();
             } else if (classes[i] == Integer.TYPE) {
@@ -323,21 +295,6 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
         return parsedData;
     }
 
-    /**
-     * Takes a list of parameters defined in the function map file and corresponding FunctionMeta object
-     * as string values and converts them to thier corresponding datatype.
-     *
-     * @return param definition as a Class
-     */
-    public Class[] getParameterTypes()
-    {
-        Class[] parameterTypes = new Class[this.getSizeOfDefinedInput()];
-        for (int i = 0; i < this.getSizeOfDefinedInput(); i++)
-        {
-            parameterTypes[i] = paramConvert(inputDefinitionList.get(i).getParameterType());
-        }
-        return parameterTypes;
-    }
     /**
      * Takes a list of parameters defined in the function map file and corresponding FunctionMeta object
      * as string values and converts them to thier corresponding datatype.
@@ -367,7 +324,6 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
     public String getTitle() {
         String title = "Properties";
         String localName = getFunctionName();
-
         if (localName != null && localName.toLowerCase().indexOf("const") != -1)
         {
             title = "Constant " + title;
@@ -380,37 +336,8 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
         {
             title = "Function " + title;
         }
-
-        if (this.getDataSpec() != null) title = title + " With DataSpec";
         return title;
     }
-
-    public boolean isFrame()
-    {
-        return isFrame;
-    }
-    public void setIsFrame(boolean frame)
-    {
-        isFrame = frame;
-    }
-    //public FunctionDataSpecExe getFunctionDataSpecExe()
-    //{
-    //    return functionDataSpecExe;
-    //}
-    //public void setFunctionDataSpecExe(FunctionDataSpecExe dataSpec)
-    //{
-    //    this.functionDataSpecExe = dataSpec;
-    //}
-
-    public C_dataSpec getDataSpec()
-    {
-        return dataSpec;
-    }
-    public void setDataSpec(C_dataSpec dataSpec)
-    {
-        this.dataSpec = dataSpec;
-    }
-
 
     /**
      * This functions will return an array of PropertyDescriptor that would
