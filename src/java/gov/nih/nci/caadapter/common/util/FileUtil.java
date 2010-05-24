@@ -372,34 +372,49 @@ public class FileUtil
 
     public static String searchFile(String fileName)
     {
-        File ff = new File(fileName);
-        if ((ff.exists())&&(ff.isFile())) return ff.getAbsolutePath();
-
         return searchFile(null, null, fileName, null, true);
     }
     public static String searchDir(String dirName)
     {
-        File ff = new File(dirName);
-
-        if ((ff.exists())&&(ff.isDirectory())) return ff.getAbsolutePath();
         return searchFile(null, null, dirName, null, false);
     }
     public static String searchFile(String fileName, File startDir)
     {
-        File ff = new File(fileName);
-        if ((ff.exists())&&(ff.isFile())) return ff.getAbsolutePath();
-
         return searchFile(startDir, null, fileName, null, true);
     }
     public static String searchDir(String dirName, File startDir)
     {
-        File ff = new File(dirName);
-
-        if ((ff.exists())&&(ff.isDirectory())) return ff.getAbsolutePath();
         return searchFile(startDir, null, dirName, null, false);
     }
-    private static String searchFile(File startDir, File dir, String fileNameF, List<String> searchedDirList, boolean isFile)
+    private static String searchFile(File startDir, File dir, String fileName, List<String> searchedDirList, boolean isFile)
     {
+        boolean isStart = false;
+        if (searchedDirList == null)
+        {
+            isStart = true;
+            searchedDirList = new ArrayList<String>();
+        }
+        if (fileName == null) return null;
+        fileName = fileName.trim();
+        if (fileName.equals("")) return null;
+
+        File ff = new File(fileName);
+        if ((ff.exists())&&(ff.isFile())) return ff.getAbsolutePath();
+
+        String c = "";
+
+        for (int i=0;i<fileName.length();i++)
+        {
+            String achar = fileName.substring(i, i+1);
+
+            if (achar.equals("/")) c = c + File.separator;
+            else c = c + achar;
+        }
+        fileName = c;
+
+        if (fileName.endsWith(File.separator)) fileName = fileName.substring(0, fileName.length()-File.separator.length());
+        if (fileName.startsWith(File.separator)) fileName = fileName.substring(File.separator.length());
+
         if (dir == null)
         {
             if (startDir != null)
@@ -408,61 +423,20 @@ public class FileUtil
             }
             else
             {
+                File f = new File(fileName);
+                if (f.exists())
+                {
+                    if ((isFile)&&(f.isFile())) return f.getAbsolutePath();
+                    if ((!isFile)&&(f.isDirectory())) return f.getAbsolutePath();
+                }
                 dir = new File(getWorkingDirPath());
                 startDir = dir;
             }
         }
-        if (startDir == null) startDir = dir;
 
         if ((!dir.exists())||(!dir.isDirectory())||(dir.isHidden())) return null;
 
         String dirName = dir.getAbsolutePath();
-        boolean isStart = false;
-        if (searchedDirList == null)
-        {
-            isStart = true;
-            searchedDirList = new ArrayList<String>();
-        }
-        for (String path:searchedDirList)
-        {
-            if (path.equals(dirName)) return null;
-        }
-        //System.out.println("CCCC : " + dirName + ", " + fileNameF);
-        searchedDirList.add(dirName);
-
-        if (fileNameF == null) return null;
-        fileNameF = fileNameF.trim();
-        if (fileNameF.equals("")) return null;
-
-        String c = "";
-        String fileName = fileNameF;
-        String fileNameU = fileNameF;
-
-        if (!File.separator.equals("/"))
-        {
-            for (int i=0;i<fileNameF.length();i++)
-            {
-                String achar = fileNameF.substring(i, i+1);
-
-                if (achar.equals("/")) c = c + File.separator;
-                else c = c + achar;
-            }
-            fileName = c;
-            c = "";
-            for (int i=0;i<fileNameF.length();i++)
-            {
-                String achar = fileNameF.substring(i, i+1);
-
-                if (achar.equals(File.separator)) c = c + "/";
-                else c = c + achar;
-            }
-            fileNameU = c;
-        }
-
-        if (fileName.endsWith(File.separator)) fileName = fileName.substring(0, fileName.length()-File.separator.length());
-        if (fileName.startsWith(File.separator)) fileName = fileName.substring(File.separator.length());
-
-
         if (!dirName.endsWith(File.separator)) dirName = dirName + File.separator;
         File f = new File(dirName + fileName);
 
@@ -471,77 +445,25 @@ public class FileUtil
             if ((isFile)&&(f.isFile())) return f.getAbsolutePath();
             if ((!isFile)&&(f.isDirectory())) return f.getAbsolutePath();
         }
-
+        searchedDirList.add(dir.getAbsolutePath());
         File[] files = dir.listFiles();
-
         if ((files == null)||(files.length == 0)) return null;
-
         for(File file:files)
         {
             String abFileName = file.getAbsolutePath();
 
             if (file.isDirectory())
             {
-                String res = searchFile(startDir, file, fileName, searchedDirList, isFile);
-                if (res != null) return res;
-            }
-            if (!isFile) continue;
-            if ((abFileName.toLowerCase().endsWith(".jar"))||(abFileName.toLowerCase().endsWith(".zip")))
-            {
-                //URL url = FileUtil.retrieveResourceURL(abFileName, "", fileName); ==
-                //if (url != null) return url.toString();
-                ZipFile zip = null;
-                String fN = abFileName;
-                //String pref = "";
-                try
+                boolean isSearchedDir = false;
+                for(String line:searchedDirList)
                 {
-                    if (fN.toLowerCase().endsWith(".zip"))
-                    {
-                        zip = new ZipFile(fN);
-                        //pref = "zip:";
-                    }
-                    else if (fN.toLowerCase().endsWith(".jar"))
-                    {
-                        zip = new JarFile(fN);
-                        //pref = "jar:";
-                    }
-                    else continue;
+                    if (line.equals(abFileName)) isSearchedDir = true;
                 }
-                catch(IOException ie)
+                if (!isSearchedDir)
                 {
-                    continue;
+                    String res = searchFile(startDir, file, fileName, searchedDirList, isFile);
+                    if (res != null) return res;
                 }
-
-                ZipEntry ee = zip.getEntry(fileNameU);
-                if (ee == null)
-                {
-                    Enumeration<? extends ZipEntry> enumer = zip.entries();
-                    List<ZipEntry> listEntry = new ArrayList<ZipEntry>();
-                    while(enumer.hasMoreElements())
-                    {
-                        ZipEntry entry = enumer.nextElement();
-                        if (entry.getName().endsWith(fileNameU)) listEntry.add(entry);
-                    }
-                    if (listEntry.size() == 1) ee = listEntry.get(0);
-
-                    if (ee == null) continue;
-                }
-
-                if ((!File.separator.equals("/"))&&(fN.indexOf(File.separator) >= 0)) fN = fN.replace(File.separator, "/");
-                String uuri = "jar:file:///" + fN + "!/" + ee.getName();
-
-                URL res = null;
-
-                try
-                {
-                    res = new URL(uuri);
-                }
-                catch(MalformedURLException me)
-                {
-                    continue;
-                }
-
-                return res.toString();
             }
         }
         if (isStart)
@@ -1584,7 +1506,6 @@ public class FileUtil
 				//System.out.println("FileUtil.retrieveResourceURL().5.FileUtil.class.getClassLoader().getResource..webstart URL:/"+rscName+"="+rtnURL);
 			}
 		}
-        if (rtnURL!=null) return rtnURL;
 
         String path = FileUtil.searchFile(rscName);
         if (path != null)
@@ -1605,7 +1526,7 @@ public class FileUtil
             //else System.out.println("FileUtil.retrieveResourceURL().7.");
         }
         //else System.out.println("FileUtil.retrieveResourceURL().8.");
-        if (rtnURL == null) System.out.println("This resource file cannot be found : " + rscName);
+        if (rtnURL == null) System.out.println("This resource file cannot be found : " + rtnURL);
         return rtnURL;
     }
     public static URL retrieveResourceURL(String rscName, String middle, String fileName)
@@ -1621,45 +1542,14 @@ public class FileUtil
         else fileName = fileName.trim();
 
         String tt = fileName;
-        if (!middle.equals(""))
-        {
-            if (!middle.endsWith("/")) middle = middle + "/";
-            if (middle.startsWith("/")) middle = middle.substring(1);
-            tt = middle + fileName;
-        }
-
-        URL url = null;
+        if (!middle.equals("")) tt = middle + "/" + fileName;
 
         System.out.println("## Searching Resource ("+tt+") to file : " + rscName);
-        String tempF = null;
-        if ((fileName.equals(""))&&(middle.equals(""))) tempF = rscName;
-        if ((rscName.equals(""))&&(middle.equals(""))) tempF = fileName;
-        if (tempF!=null)
-        {
-            url = retrieveResourceURL(tempF);
-            if (url == null)
-            {
-                String tempFile = searchFile(tempF);
-                if (tempFile != null)
-                {
-                    URL res = null;
-                    try
-                    {
-                        File ff = new File(tempFile);
-                        res = ff.toURI().toURL();
-                    }
-                    catch(MalformedURLException me)
-                    {
-                        res = null;
-                    }
+        if ((fileName.equals(""))&&(middle.equals(""))) return retrieveResourceURL(rscName);
+        if ((rscName.equals(""))&&(middle.equals(""))) return retrieveResourceURL(fileName);
+        URL url = null;
 
-                    if (res != null) url = res;
-                }
-            }
-        }
-
-
-        while(url==null)
+        while(true)
         {
             File ff = new File(rscName);
 

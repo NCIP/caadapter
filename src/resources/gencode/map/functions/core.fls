@@ -1,12 +1,8 @@
 <?xml version="1.0"?>
 <functions>
     <group name="constant" xmlPath="constant">
-		<function name="constant" dataFrame="true" xmlPath="constant.constant">
-            <dataSpec name="constant" datatype="string">
-               <typeDef fieldType="combo" name="type" default="string" valueArray="string,numbers"/>
-               <valueDef fieldType="field" name="value" />
-            </dataSpec>
-            <outputs>
+		<function name="constant" xmlPath="constant.constant">
+			<outputs>
 				<datapoint pos="0" name="constant" datatype="string" xmlPath="constant.constant.outputs.0"/>
 			</outputs>
 		</function>
@@ -19,19 +15,6 @@
 			</inputs>
 			<outputs>
 				<datapoint pos="0" name="dateOut" datatype="string" xmlPath="date.changeFormat.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.DateFunction" method="changeFormat"/>
-		</function>
-        <function name="changeFormatTo" dataFrame="true" xmlPath="date.changeFormatTo">
-            <dataSpec name="changeFormatTo" datatype="string">
-               <typeDef fieldType="field" name="type" isFixed="true" default="dateFormat" />
-               <valueDef fieldType="field" name="value" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="1" name="dateIn" datatype="string" xmlPath="date.changeFormatTo.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="dateOut" datatype="string" xmlPath="date.changeFormatTo.outputs.0"/>
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.DateFunction" method="changeFormat"/>
 		</function>
@@ -57,20 +40,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="add"/>
 		</function>
-        <function name="AddTo" dataFrame="true" xmlPath="math.AddTo">
-            <dataSpec name="AddTo" datatype="double">
-               <typeDef fieldType="field" name="type" isFixed="true" default="number" />
-               <valueDef fieldType="field" name="value" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="Value" datatype="double" xmlPath="math.AddTo.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Sum" datatype="double" xmlPath="math.AddTo.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="add"/>
-		</function>
-        <function name="Subtract" xmlPath="math.Subtract">
+		<function name="Subtract" xmlPath="math.Subtract">
 			<inputs>
 				<datapoint pos="0" name="Value1" datatype="double" xmlPath="math.Subtract.inputs.0"/>
 				<datapoint pos="1" name="Value2" datatype="double" xmlPath="math.Subtract.inputs.1"/>
@@ -80,20 +50,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="subtract"/>
 		</function>
-        <function name="SubtractedBy" dataFrame="true" xmlPath="math.SubtractedBy">
-            <dataSpec name="SubtractedBy" datatype="double">
-               <typeDef fieldType="field" name="type" isFixed="true" default="number" />
-               <valueDef fieldType="field" name="value" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="Value1" datatype="double" xmlPath="math.SubtractedBy.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Difference" datatype="double" xmlPath="math.SubtractedBy.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="subtract"/>
-		</function>
-        <function name="Multiply" xmlPath="math.Multiply">
+		<function name="Multiply" xmlPath="math.Multiply">
 			<inputs>
 				<datapoint pos="0" name="Value1" datatype="double" xmlPath="math.Multiply.inputs.0"/>
 				<datapoint pos="1" name="Value2" datatype="double" xmlPath="math.Multiply.inputs.1"/>
@@ -103,20 +60,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="multiply"/>
 		</function>
-        <function name="MultiplyTo" dataFrame="true" xmlPath="math.MultiplyTo">
-            <dataSpec name="MultiplyTo" datatype="double">
-               <typeDef fieldType="field" name="type" isFixed="true" default="number" />
-               <valueDef fieldType="field" name="value" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="Value1" datatype="double" xmlPath="math.MultiplyTo.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Product" datatype="double" xmlPath="math.MultiplyTo.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="multiply"/>
-		</function>
-        <function name="Divide" xmlPath="math.Divide">
+		<function name="Divide" xmlPath="math.Divide">
 			<inputs>
 				<datapoint pos="0" name="Dividend" datatype="double" xmlPath="math.Divide.inputs.0"/>
 				<datapoint pos="1" name="Divisor" datatype="double" xmlPath="math.Divide.inputs.1"/>
@@ -126,20 +70,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="divide"/>
 		</function>
-        <function name="DividedBy" dataFrame="true" xmlPath="math.DividedBy">
-            <dataSpec name="DividedBy" datatype="double">
-               <typeDef fieldType="field" name="type" isFixed="true" default="number" />
-               <valueDef fieldType="field" name="Divisor" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="Dividend" datatype="double" xmlPath="math.DividedBy.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Quotient" datatype="double" xmlPath="math.DividedBy.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="divide"/>
-		</function>
-        <function name="Round" xmlPath="math.Round">
+		<function name="Round" xmlPath="math.Round">
 			<inputs>
 				<datapoint pos="0" name="Input" datatype="double" xmlPath="math.Round.inputs.0"/>
                 <datapoint pos="1" name="roundDigit" datatype="int" xmlPath="math.Round.inputs.1"/>
@@ -149,70 +80,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="round"/>
 		</function>
-        <function name="RoundWith" dataFrame="true" xmlPath="math.RoundWith">
-            <dataSpec name="RoundWith" datatype="int">
-               <typeDef fieldType="field" name="type" isFixed="true" default="integer" />
-               <valueDef fieldType="field" name="RoundDigit" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="Input" datatype="double" xmlPath="math.RoundWith.inputs.0"/>
-            </inputs>
-			<outputs>
-				<datapoint pos="0" name="Output" datatype="double" xmlPath="math.RoundWith.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="round"/>
-		</function>
-        <function name="Remainder" xmlPath="math.Remainder">
-            <inputs>
-				<datapoint pos="0" name="Dividend" datatype="double" xmlPath="math.Remainder.inputs.0"/>
-				<datapoint pos="1" name="Divisor" datatype="double" xmlPath="math.Remainder.inputs.1"/>
-            </inputs>
-			<outputs>
-				<datapoint pos="0" name="Remainder" datatype="double" xmlPath="math.Remainder.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="remainder"/>
-		</function>
-        <function name="RemainderWith" dataFrame="true" xmlPath="math.RemainderWith">
-            <dataSpec name="RemainderWith" datatype="double">
-               <typeDef fieldType="field" name="type" isFixed="true" default="number" />
-               <valueDef fieldType="field" name="Divisor" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="Dividend" datatype="double" xmlPath="math.RemainderWith.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Remainder" datatype="double" xmlPath="math.RemainderWith.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="remainder"/>
-		</function>
-        <function name="Compute1Var" dataFrame="true" xmlPath="math.Compute1Var">
-            <dataSpec name="Compute1Var" datatype="string" annotation="example: sin(##1)+(14/2.3)">
-               <typeDef fieldType="field" name="type" isFixed="true" default="computingExpression1" />
-               <valueDef fieldType="field" name="Expression" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="variable1" datatype="String" xmlPath="math.Compute1Var.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="result" datatype="double" xmlPath="math.Compute1Var.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="compute"/>
-		</function>
-        <function name="Compute2Var" dataFrame="true" xmlPath="math.Compute2Var">
-            <dataSpec name="Compute2Var" datatype="string" annotation="e.g. sin(##1)+(14/##2)">
-               <typeDef fieldType="field" name="type" isFixed="true" default="computingExpression2" />
-               <valueDef fieldType="field" name="Expression" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="variable1" datatype="String" xmlPath="math.Compute2Var.inputs.0"/>
-				<datapoint pos="1" name="variable2" datatype="String" xmlPath="math.Compute2Var.inputs.1"/>
-            </inputs>
-			<outputs>
-				<datapoint pos="0" name="result" datatype="double" xmlPath="math.Compute2Var.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="compute"/>
-		</function>
-    </group>
+	</group>
 	<group name="string" xmlPath="string">
 		<function name="Concatenate" xmlPath="string.Concatenate">
 			<inputs>
@@ -224,47 +92,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="concat"/>
 		</function>
-        <function name="SetSuffix" dataFrame="true" xmlPath="string.SetSuffix">
-            <dataSpec name="SetSuffix" datatype="string">
-               <typeDef fieldType="field" name="type" isFixed="true" default="string"/>
-               <valueDef fieldType="field" name="value" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="String" datatype="string" xmlPath="string.SetSuffix.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.SetSuffix.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="concat"/>
-		</function>
-        <function name="SetPrefix" dataFrame="true" xmlPath="string.SetPrefix">
-            <dataSpec name="SetPrefix" datatype="string">
-               <typeDef fieldType="field" name="type" isFixed="true" default="string"/>
-               <valueDef fieldType="field" name="value" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="String" datatype="string" xmlPath="string.SetPrefix.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.SetPrefix.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="concat"/>
-		</function>
-        <function name="ConcatenateBetween" dataFrame="true" xmlPath="string.ConcatenateBetween">
-            <dataSpec name="ConcatenateBetween" datatype="string">
-               <typeDef fieldType="field" name="type" isFixed="true" default="string" />
-               <valueDef fieldType="field" name="value" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="String1" datatype="string" xmlPath="string.ConcatenateBetween.inputs.0"/>
-				<datapoint pos="1" name="String2" datatype="string" xmlPath="string.ConcatenateBetween.inputs.1"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.ConcatenateBetween.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="concat"/>
-		</function>
-        <function name="Split" xmlPath="string.Split">
+		<function name="Split" xmlPath="string.Split">
 			<inputs>
 				<datapoint pos="0" name="String1" datatype="string" xmlPath="string.Split.inputs.0"/>
 				<datapoint pos="1" name="Pos" datatype="int" xmlPath="string.Split.inputs.1"/>
@@ -275,21 +103,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="split"/>
 		</function>
-        <function name="SplitWith" dataFrame="true" xmlPath="string.SplitWith">
-            <dataSpec name="SplitWith" datatype="int">
-               <typeDef fieldType="field" name="type" isFixed="true" default="integer" />
-               <valueDef fieldType="field" name="SplitedPosition" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="String1" datatype="string" xmlPath="string.SplitWith.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Result1" datatype="string" xmlPath="string.SplitWith.outputs.0"/>
-				<datapoint pos="1" name="Result2" datatype="string" xmlPath="string.SplitWith.outputs.1"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="split"/>
-		</function>
-        <function name="NullFlavor" xmlPath="string.NullFlavor">
+        	<function name="NullFlavor" xmlPath="string.NullFlavor">
 			<inputs>
 				<datapoint pos="0" name="SourceData" datatype="string" xmlPath="string.NullFlavor.inputs.0"/>
 				<datapoint pos="1" name="NullFlavorInput" datatype="string" xmlPath="string.NullFlavor.inputs.1"/>
@@ -298,20 +112,6 @@
 			<outputs>
 				<datapoint pos="0" name="ValueOut" datatype="string" xmlPath="string.NullFlavor.outputs.0"/>
 				<datapoint pos="1" name="NullFlavorOut" datatype="string" xmlPath="string.NullFlavor.outputs.1"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="nullFlavor"/>
-		</function>
-        <function name="NullFlavorWith" dataFrame="true" xmlPath="string.NullFlavorWith">
-            <dataSpec name="NullFlavorWith" datatype="string">
-               <typeDef fieldType="field" name="type" isFixed="true" default="NullFlavor" />
-               <valueDef fieldType="field" name="NullFlavorValue" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="SourceData" datatype="string" xmlPath="string.NullFlavorWith.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="ValueOut" datatype="string" xmlPath="string.NullFlavorWith.outputs.0"/>
-				<datapoint pos="1" name="NullFlavorOut" datatype="string" xmlPath="string.NullFlavorWith.outputs.1"/>
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="nullFlavor"/>
 		</function>
@@ -335,20 +135,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="substring"/>
 		</function>
-        <function name="SubstringWith" dataFrame="true" xmlPath="string.SubstringWith">
-            <dataSpec name="SubstringWith" datatype="string" annotation="Example: 0~3, 3~end, indexof-:K~indexof+:X">
-               <typeDef fieldType="field" name="type" isFixed="true" default="range" />
-               <valueDef fieldType="field" name="RangeValue" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="String" datatype="string" xmlPath="string.SubstringWith.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.SubstringWith.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="substring"/>
-		</function>
-        <!-- function name="Trim" xmlPath="string.Trim">
+		<!-- function name="Trim" xmlPath="string.Trim">
 			<inputs>
 				<datapoint pos="0" name="String" datatype="string" xmlPath="string.Trim.inputs.0"/>
 			</inputs>
@@ -368,20 +155,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="replace"/>
 		</function>
-        <function name="ReplaceWith" dataFrame="true" xmlPath="string.ReplaceWith">
-            <dataSpec name="ReplaceWith" datatype="string" annotation="Examples: A=>B, tox=>taxy">
-               <typeDef fieldType="field" name="type" isFixed="true" default="replaceChar" />
-               <valueDef fieldType="field" name="Replace" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="String" datatype="string" xmlPath="string.ReplaceWith.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.ReplaceWith.outputs.0"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="replace"/>
-		</function>
-        <function name="Instring" xmlPath="string.Instring">
+		<function name="Instring" xmlPath="string.Instring">
 			<inputs>
 				<datapoint pos="0" name="String" datatype="string" xmlPath="string.Instring.inputs.0"/>
 				<datapoint pos="1" name="Pattern" datatype="string" xmlPath="string.Instring.inputs.1"/>
@@ -391,20 +165,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="instring"/>
 		</function>
-        <function name="InstringWith" dataFrame="true" xmlPath="string.InstringWith">
-            <dataSpec name="InstringWith" datatype="string">
-               <typeDef fieldType="field" name="type" isFixed="true" default="string" />
-               <valueDef fieldType="field" name="pattern" />
-            </dataSpec>
-            <inputs>
-				<datapoint pos="0" name="String" datatype="string" xmlPath="string.InstringWith.inputs.0"/>
-			</inputs>
-			<outputs>
-				<datapoint pos="0" name="Result" datatype="int" xmlPath="string.InstringWith.outputs.1"/>
-			</outputs>
-			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="instring"/>
-		</function>
-        <function name="Upper" xmlPath="string.Upper">
+		<function name="Upper" xmlPath="string.Upper">
 			<inputs>
 				<datapoint pos="0" name="String" datatype="string" xmlPath="string.Upper.inputs.0"/>
 			</inputs>
