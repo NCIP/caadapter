@@ -197,7 +197,10 @@ public class XMIAnnotationUtil {
 		if (metaObj instanceof AttributeMetadata)
 		{
 			UMLAttribute umlAttribute=ModelUtil.findAttribute(umlModel, sourcePath);
-			return removeTagValue(umlAttribute, "mapped-collection-table");
+			if (umlAttribute.getTaggedValue("correlation-table")!=null)
+				return (removeTagValue(umlAttribute, "correlation-table")&&removeTagValue(umlAttribute, "mapped-collection-table"));
+			else
+				return removeTagValue(umlAttribute, "mapped-collection-table");
 		
 		}
 		AssociationMetadata asscMeta=(AssociationMetadata)metaObj;//modelMeta.getModelMetadata().get(sourcePath);
@@ -296,10 +299,9 @@ public class XMIAnnotationUtil {
 		MetaObject metaObj=(MetaObject)modelMetaHash.get(sourcePath);
 		if (metaObj instanceof AssociationMetadata)
 		{
-		AssociationMetadata asscMeta=(AssociationMetadata)modelMetaHash.get(sourcePath);
-		UMLAssociation umlAssc=asscMeta.getUMLAssociation();
-				
-		addTagValue(umlAssc,"correlation-table",tblClass.getName());
+			AssociationMetadata asscMeta=(AssociationMetadata)modelMetaHash.get(sourcePath);
+			UMLAssociation umlAssc=asscMeta.getUMLAssociation();		
+			addTagValue(umlAssc,"correlation-table",tblClass.getName());
 		}
 		else if (metaObj instanceof AttributeMetadata)
 		{
