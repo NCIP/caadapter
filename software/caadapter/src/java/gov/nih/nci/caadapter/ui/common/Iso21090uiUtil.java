@@ -18,6 +18,16 @@ public class Iso21090uiUtil {
 			return true;
 		return false;
 	}
+	public static boolean isDatatypeWithCollectionAttribute(AttributeMetadata attributeMeta)
+	{
+		if (attributeMeta.getDatatype()==null)
+			return false;
+		if (attributeMeta.getDatatype().equals("AD"))
+			return true;
+		if (attributeMeta.getDatatype().equals("EN"))
+			return true;
+		return false;
+	}
 	public static AttributeMetadata findAnnotationAttribute(DefaultMutableTreeNode localAttributeNode)
 	{
 		AttributeMetadata rtnMeta=(AttributeMetadata)localAttributeNode.getUserObject();
