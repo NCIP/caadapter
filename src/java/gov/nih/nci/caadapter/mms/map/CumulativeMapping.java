@@ -11,6 +11,7 @@ import gov.nih.nci.caadapter.common.MetaObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -143,6 +144,19 @@ public class CumulativeMapping {
 	public MetaObject findMappedSource(String tgrtPath)
 	{
 		return targetHashmap.get(tgrtPath);
+	}
+	
+	public List<MetaObject> findMappedSourceOrChild(String sourcePath)
+	{
+		List<MetaObject>rtnList=new ArrayList<MetaObject>();
+		Iterator<String> srcMapKeys=sourceHashmap.keySet().iterator();
+		while (srcMapKeys.hasNext())
+		{
+			String nxtSrcKey=srcMapKeys.next();
+			if (nxtSrcKey.startsWith(sourcePath))
+				rtnList.add(sourceHashmap.get(nxtSrcKey));
+		}
+		return rtnList;
 	}
 }
 /**
