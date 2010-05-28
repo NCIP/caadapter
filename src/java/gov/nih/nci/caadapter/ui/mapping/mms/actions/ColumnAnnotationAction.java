@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
@@ -42,6 +44,12 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 	public static int SET_DISCRIMINATOR_KEY=3;
 	public static int REMOVE_DISCRIMINATOR_KEY=4;
 	
+	public static int SET_INVERSE_KEY=5;
+	public static int REMOVE_INVERSE_KEY=6;
+	
+	public static int SET_IMPLICT_KEY=7;
+	public static int REMOVE_IMPLICT_KEY=8;
+	
 	/**
 	 * @param actionName
 	 * @param actionType
@@ -65,9 +73,32 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 
 		if (getAnnotationActionType()==REMOVE_DISCRIMINATOR_KEY)
 		{
-			UMLTaggedValue discKeyTag=xpathAttr.getTaggedValue("discriminator");
 			XMIAnnotationUtil.removeTagValue(xpathAttr, "discriminator");
 			return true;
+		}
+		else if (getAnnotationActionType()==REMOVE_IMPLICT_KEY)
+		{
+			XMIAnnotationUtil.removeTagValue(xpathAttr, "mapped-attributes");
+			return true;
+		}
+		else if (getAnnotationActionType()==REMOVE_INVERSE_KEY)
+		{
+			XMIAnnotationUtil.removeTagValue(xpathAttr, "inverse-of");
+			return true;
+		}
+		else if (getAnnotationActionType()==REMOVE_PK_GENERATOR)
+		{
+			//check if primary key column
+			HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);			
+			
+			Vector<Object> dfValues=new Vector<Object>(pkSetting.keySet());
+			DialogUserInput dialog = new DialogUserInput(null, null, dfValues, "Primary Key Generator",DialogUserInput.INPUT_TYPE_CHOOSE );
+			if (dialog.getUserInput()!=null)
+			{
+				//annotate object with new tag value
+ 				XMIAnnotationUtil.removePrimaryKey(xpathAttr, (String)dialog.getUserInput());
+	        }
+			
 		}
 		else if (getAnnotationActionType()==SET_DISCRIMINATOR_KEY)
 		{
@@ -95,19 +126,47 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 			}		
 			return true;
 		}
-		else if (getAnnotationActionType()==REMOVE_PK_GENERATOR)
+		else if (getAnnotationActionType()==SET_INVERSE_KEY)
 		{
-			//check if primary key column
-			HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);			
-			
-			Vector<Object> dfValues=new Vector<Object>(pkSetting.keySet());
-			DialogUserInput dialog = new DialogUserInput(null, null, dfValues, "Primary Key Generator",DialogUserInput.INPUT_TYPE_CHOOSE );
-			if (dialog.getUserInput()!=null)
+			UMLClass tableClass=ModelUtil.findClass(modelMetadata.getModel(), columnMeta.getParentXPath());
+				
+			//remove all the "inverse-of" column
+			String inverseValue="";
+			for (UMLAttribute tableColumn:tableClass.getAttributes())
 			{
-				//annotate object with new tag value
- 				XMIAnnotationUtil.removePrimaryKey(xpathAttr, (String)dialog.getUserInput());
-	        }
+				if (tableColumn.getTaggedValue("implements-association")!=null)
+					inverseValue=tableColumn.getTaggedValue("implements-association").getValue();	
+				XMIAnnotationUtil.removeTagValue(tableColumn, "inserse-of");
+			}
+			//set new value
+			XMIAnnotationUtil.addTagValue(xpathAttr, "inverse-of", inverseValue);
+			return true;
+		}
+		else if (getAnnotationActionType()==SET_IMPLICT_KEY)
+		{
+			UMLClass tableClass=ModelUtil.findClass(modelMetadata.getModel(), columnMeta.getParentXPath());
+			//find the implict id
+			TableMetadata tblMeta= (TableMetadata)modelMetadata.getModelMetadata().get(columnMeta.getParentXPath());
 			
+			String implicitKeyValue="";
+			for (UMLAttribute tableColumn:tableClass.getAttributes())
+			{
+				if (tableColumn.getTaggedValue("mapped-attributes")!=null)
+				{
+					String srcKey=tblMeta.getXPath()+"."+tableColumn.getName();
+					AttributeMetadata srcAttr=(AttributeMetadata)CumulativeMappingGenerator.getInstance().getCumulativeMapping().findMappedSource(srcKey);
+					if (srcAttr==null)
+						continue;
+					String newValue=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), srcAttr.getXmlPath());
+					if (implicitKeyValue.equals(""))
+						implicitKeyValue=newValue;
+					else if (newValue.length()<implicitKeyValue.length())
+						implicitKeyValue=newValue;
+				}
+			}
+			//set new value, "<attributefull path>.id" as the implicit primary key
+			XMIAnnotationUtil.addTagValue(xpathAttr, "mapped-attributes", implicitKeyValue+".id");
+			return true;
 		}
 		else if (getAnnotationActionType()==SET_PK_GENERATOR)
 		{

@@ -167,11 +167,93 @@ public boolean map(String source, String target, String annotationSite, String r
 	} else if (sourceMappingType.equals("attribute") && targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
 		successfullyMapped = mapAttribute(source, target,annotationSite, relativePath, updateModel);
+		if(!successfullyMapped)
+			return successfullyMapped;
+		if (!updateModel)
+			return successfullyMapped;
+		if (relativePath==null||relativePath.equals(""))
+			return successfullyMapped;
+		//additional work for ISO datatype -- map collection element with/without join table
+		//case I: the ancestor annotation attribute is mapped 
+		//        set both "mapped-collection-table" and "correlation-table" 
+		//        -- no action
+		//case II: the ancestor annotation attribute is not mapped 
+		//        neither set "mapped-collection-table" nor "correlation-table"
+		//		  -- no action
+		//case III the ancestor annotation attribute is mapped
+		//        only set  "mapped-collection-table" 
+		//case III.a. the attribute is mapped to the same target table
+		//       -- no action, return
+		//case III.b. the attribute is mapped to a different table
+		//       set "correlation-table" with previous "mapped-collection-table"
+		//       and change "mapped-collection-table" value to current table name
 
-//		successfullyMapped = mapAttribute(source, target, updateModel);
+		UMLAttribute annotationAttr=ModelUtil.findAttribute(metaModel.getModel(), annotationSite);
+		if (annotationAttr.getTaggedValue("correlation-table")!=null)		
+			//Case I:
+			return successfullyMapped;
+		if (annotationAttr.getTaggedValue("mapped-collection-table")==null)
+			//Case II:
+			return successfullyMapped;
+		
+		//Case III-- only "mapped-collection-table" is set
+		ColumnMetadata columnMeta=(ColumnMetadata)metaModel.getModelMetadata().get(target);
+		String tblName=columnMeta.getTableMetadata().getName();
+		String tblCollectionName=annotationAttr.getTaggedValue("mapped-collection-table").getValue();
+		if (tblName.equals(tblCollectionName))
+			//Case III.a:
+			return successfullyMapped;
+		
+		//Case III.b, set "correlation-table" and change "mapped-collection-table"
+		XMIAnnotationUtil.addTagValue(annotationAttr, "correlation-table", tblCollectionName);
+		XMIAnnotationUtil.addTagValue(annotationAttr, "mapped-collection-table", tblName);
 	} else if (sourceMappingType.equals("association")&& targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
 		successfullyMapped = mapAssociation(source, target, annotationSite, relativePath, updateModel);
+		if(!successfullyMapped)
+			return successfullyMapped;
+		
+		if (!updateModel)
+			return successfullyMapped;
+		
+		//additional work for ISO datatype -- map collection element with/without join table
+		//case I: no child attribute being mapped -- no action return
+		//case II: child attribute are mapped to the same target table -- no action since it is "mapped-collection-table"
+		//case III: child attribute are mapped to the different table
+		//        set "correlation-table" with previous "mapped-collection-table"
+		//        and change "mapped-collection-table" value to table name of child mapping target.
+		ColumnMetadata columnMeta=(ColumnMetadata)metaModel.getModelMetadata().get(target);
+ 		List<MetaObject>  allMappedTargetMeta=cumulativeMapping.findMappedSourceOrChild(source);
+		if (allMappedTargetMeta==null||allMappedTargetMeta.isEmpty())
+			return successfullyMapped;
+		
+		ColumnMetadata mappedColumnInOtherTable=null;
+		for (MetaObject oneTrgtMeta:allMappedTargetMeta)
+		{
+ 
+			if (oneTrgtMeta instanceof ColumnMetadata)
+			{
+				ColumnMetadata oneTrgtColumn=(ColumnMetadata)oneTrgtMeta;
+				if (!oneTrgtColumn.getParentXPath().equals(columnMeta.getParentXPath()))
+				{
+					mappedColumnInOtherTable=oneTrgtColumn;
+					break;
+				}
+			}
+		}
+		if (mappedColumnInOtherTable==null)
+			//case I and II
+			return successfullyMapped;
+		
+		//case III
+		String otherTblPath=mappedColumnInOtherTable.getParentXPath();
+		TableMetadata otherTblMeta=(TableMetadata)metaModel.getModelMetadata().get(otherTblPath);
+		UMLAttribute annotationAttr=ModelUtil.findAttribute(metaModel.getModel(), annotationSite);
+		//"mapped-collection-table" just being set in mapAssociation() call
+		//copy it to "correlation-table"
+		XMIAnnotationUtil.addTagValue(annotationAttr, "correlation-table", annotationAttr.getTaggedValue("mapped-collection-table").getValue());
+		//change "mapped-collection-table" to the other table
+		XMIAnnotationUtil.addTagValue(annotationAttr, "mapped-collection-table", otherTblMeta.getName());
 //	} else if (sourceMappingType.equals("manytomanyassociation")&& targetMappingType.equals("attribute")){
 //		//Then the actual components from the UML model are realized
 //		UMLAssociationEnd sourceEnd = getAssociationEnd(source);
@@ -300,7 +382,8 @@ private boolean unmapDependency(UMLClass source, String sourceXPath, UMLClass ta
 private boolean mapAttribute(String sourcePath, String targetPath, String annotationPath, String relativePath, boolean updateModel){
 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
-	AttributeMetadata attributeMetadata = (AttributeMetadata)modelMeta.get(sourcePath);
+	AttributeMetadata attributeMetadata = (AttributeMetadata)modelMeta.get(annotationPath);//.get(sourcePath);
+ 
 	ColumnMetadata columnMetadata = (ColumnMetadata)modelMeta.get(targetPath);
 	boolean successfullyMapped = false;
 	AttributeMapping mapping = new AttributeMapping();
@@ -462,6 +545,8 @@ private boolean isAttribute(String element){
 	if (foundObject instanceof AttributeMetadata)
 	{
 		if (Iso21090uiUtil.isCollectionDatatype((AttributeMetadata)foundObject))
+			return false;
+		else if (Iso21090uiUtil.isDatatypeWithCollectionAttribute((AttributeMetadata)foundObject))
 			return false;
 		else
 			return true;
