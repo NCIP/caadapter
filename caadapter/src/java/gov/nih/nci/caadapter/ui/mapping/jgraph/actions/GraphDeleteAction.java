@@ -98,7 +98,7 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 				if (graphCell instanceof DefaultEdge)
 				{					
 					MappingViewCommonComponent viewC = (MappingViewCommonComponent) graphCell.getUserObject();
-					DefaultMutableTreeNode tableTreeNode=(DefaultMutableTreeNode) viewC.getSourceNode();
+					DefaultMutableTreeNode tableTreeNode=(DefaultMutableTreeNode) viewC.getTargetNode();//.getSourceNode();
 					for(int i=0;i<tableTreeNode.getChildCount(); i++)
 					{
 						DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)tableTreeNode.getChildAt(i);
