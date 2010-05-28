@@ -594,12 +594,22 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
     	
         popupMenu.addSeparator();
     	
-    	//The following actions apply for association metadata
+    	//The following actions apply for association column metadata
         ColumnAnnotationAction discKeySettingAction=new ColumnAnnotationAction("Set as Discriminator Key", ColumnAnnotationAction.SET_DISCRIMINATOR_KEY,middlePanel);
         popupMenu.add(new JMenuItem(discKeySettingAction));
         ColumnAnnotationAction discKeyRemoveAction=new ColumnAnnotationAction("Unset as Discriminator Key",  ColumnAnnotationAction.REMOVE_DISCRIMINATOR_KEY,middlePanel);
         popupMenu.add(new JMenuItem(discKeyRemoveAction));
-
+        popupMenu.addSeparator();
+        
+      //The following actions apply for column metadata of table mapped to ISO data type
+        ColumnAnnotationAction isoInverseSettingAction=new ColumnAnnotationAction("Set as Inverse Side", ColumnAnnotationAction.SET_INVERSE_KEY,middlePanel);
+        popupMenu.add(new JMenuItem(isoInverseSettingAction));
+        ColumnAnnotationAction isoInverseRemoveAction=new ColumnAnnotationAction("Unset as Inverse Side",  ColumnAnnotationAction.REMOVE_INVERSE_KEY,middlePanel);
+        popupMenu.add(new JMenuItem(isoInverseRemoveAction));
+        ColumnAnnotationAction isoImplicitKeySettingAction=new ColumnAnnotationAction("Map to Implicit Key", ColumnAnnotationAction.SET_IMPLICT_KEY,middlePanel);
+        popupMenu.add(new JMenuItem(isoImplicitKeySettingAction));
+        ColumnAnnotationAction isoImplicitKeyRemoveAction=new ColumnAnnotationAction("Unmap from Implicit Key",  ColumnAnnotationAction.REMOVE_IMPLICT_KEY,middlePanel);
+        popupMenu.add(new JMenuItem(isoImplicitKeyRemoveAction));
         //Check to see if anything is selected
 		if( targetTree.getLeadSelectionPath() != null )
 		{
@@ -616,7 +626,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 					return popupMenu;
 				
 				UMLTaggedValue mappingAttrTag=xpathAttr.getTaggedValue("mapped-attributes");
-				if (mappingAttrTag!=null)
+ 				if (mappingAttrTag!=null)
 				{
 					//check if primary key column
 					HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);			
@@ -649,6 +659,13 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 							pkSettingAction.setEnabled(true);
 						}
 					}
+					//check if the column is mapped as implicit primary key 
+					AttributeMetadata srcAttr=(AttributeMetadata)CumulativeMappingGenerator.getInstance().getCumulativeMapping().findMappedSource(columnMeta.getXPath());
+					if (srcAttr==null)
+					{
+						isoImplicitKeyRemoveAction.setEnabled(true);
+						isoImplicitKeyRemoveAction.setMetaAnnoted(columnMeta);
+					}
 				}
 				else
 				{
@@ -663,6 +680,22 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 					{
 						discKeySettingAction.setMetaAnnoted(columnMeta);
 						discKeySettingAction.setEnabled(true);
+					}
+					//the inverse-of key column will not map to any thing
+					UMLTaggedValue inverseOfTag=xpathAttr.getTaggedValue("inverse-of");
+					if (inverseOfTag!=null)
+					{
+						isoInverseRemoveAction.setMetaAnnoted(columnMeta);
+						isoInverseRemoveAction.setEnabled(true);
+					}
+					else
+					{
+						isoInverseSettingAction.setMetaAnnoted(columnMeta);
+						isoInverseSettingAction.setEnabled(true);
+
+						//the unmapped column always be a candidate of implicit primary key
+						isoImplicitKeySettingAction.setMetaAnnoted(columnMeta);
+						isoImplicitKeySettingAction.setEnabled(true);
 					}
 				}
 			}	
