@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <root>
+  <usergroup>
+	<description>Admin User Gruop for Security</description>
+	<groupid>1</groupid>
+	<groupname>Admin</groupname>
+	<userdatestamp>
+		<createdate>2008-10-28</createdate>
+		<updatedate>2008-10-28</updatedate>
+		<createdby>testUser</createdby>
+		<updatedby>testUser</updatedby>
+    </userdatestamp>
+  </usergroup>
+</root>

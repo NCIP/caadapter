@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+     xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 ODM1-3-0.xsd"
+
+     ODMVersion="1.3"
+     FileOID="000-00-0000"
+     FileType="Transactional"
+     Description="Sample ItemData Extension"
+
+     AsOfDateTime="2005-03-31T00:00:00"
+     CreationDateTime="2005-04-04T07:57:00" >
+
+   <Study OID="StudyOID">
+
+      <!--
+            GlobalVariables is a REQUIRED section in ODM markup
+        -->
+      <GlobalVariables>
+         <StudyName>RawValue</StudyName>
+         <StudyDescription>This file contains test data</StudyDescription>
+         <ProtocolName>CDISC-Protocol-00-000</ProtocolName>
+      </GlobalVariables>
+
+      <BasicDefinitions />
+
+      <!--
+            Internal ODM markup required metadata
+        -->
+      <MetaDataVersion OID="v1.3.0" Name="Version 1.3.0">
+         <Protocol>
+            <StudyEventRef StudyEventOID="StudyEventOID" OrderNumber="1" Mandatory="Yes" />
+         </Protocol>
+
+         <StudyEventDef OID="StudyEventOID" Name="Study Event Definition" Repeating="Yes" Type="Common">
+            <FormRef FormOID="FormOID" OrderNumber="1" Mandatory="No" />
+         </StudyEventDef>
+
+         <FormDef OID="FormOID" Name="Form Definition" Repeating="Yes">
+            <ItemGroupRef ItemGroupOID="ValueError" Mandatory="No" />
+         </FormDef>
+
+
+         <!--
+               Columns defined in the table
+           -->
+         <ItemGroupDef OID="ValueError" Repeating="Yes"
+                       SASDatasetName="Error"
+                       Name="ItemData Extension"
+                       Domain="RawValue"
+                       Comment="Sample ItemData Extension">
+            <ItemRef ItemOID="ID.VALUE"    OrderNumber="1" Mandatory="No" />
+         </ItemGroupDef>
+
+
+         <!--
+               Column attributes as defined in the table
+               Demonstration of the Description attribute in v1.3.0 (no error reported)
+         -->
+         <ItemDef OID="ID.VALUE" SASFieldName="VALUE" Name="VALUE"   DataType="string" />
+
+
+      </MetaDataVersion>
+   </Study>
+
+       <!--
+         Clinical Data   : ItemData Value
+                           Sample ItemData value clause vs element content
+                           ERRORS ARE GENERATED AT EACH OCCURRENCE INDICATED BELOW.
+                           INVALID CONTENT HAS BEEN COMMENTED OUT FOR ALL BUT THE LAST ERROR MESSAGE.
+
+                           Equivalent/correct content is shown immediately following the error form.
+                           One should note that the element <![CDATA[...]]> construct works in all cases and is
+                           specifically disallowed from the attribute form because it begins with a less than character.
+        -->
+   <ClinicalData StudyOID="StudyOID" MetaDataVersionOID="v1.2.1"> <!-- normative error. MetaDataVersionOID does not match -->
+      <SubjectData SubjectKey="001">
+         <StudyEventData StudyEventOID="StudyEventOID" StudyEventRepeatKey="1">
+            <FormData FormOID="FormOID" FormRepeatKey="1">
+               <ItemGroupData ItemGroupOID="ValueError" ItemGroupRepeatKey="LESS" TransactionType="Insert">
+                  <!--  
+                        ERROR 
+                        Description: F The value of attribute "Value" associated with an element type "ItemData" must not contain the '<' character.
+                        Description: F The content of elements must consist of well-formed character data or markup. 
+                    -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="< less than" / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="&lt; less than" / -->
+                  <!-- ItemDataString ItemOID="ID.VALUE">< less than</ItemDataString -->
+                  <ItemDataString ItemOID="ID.VALUE">&lt; less than</ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE"><![CDATA[< less than]]></ItemDataString>
+               </ItemGroupData>
+                      
+               <ItemGroupData ItemGroupOID="ValueError" ItemGroupRepeatKey="GREATER" TransactionType="Insert">
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="> greater than" / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="&gt; greater than" / -->
+                  <ItemDataString ItemOID="ID.VALUE">&gt; greater than</ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE"><![CDATA[> greater than]]></ItemDataString>
+               </ItemGroupData>
+
+                <ItemGroupData ItemGroupOID="ValueError" ItemGroupRepeatKey="APOS" TransactionType="Insert">
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="' single quote" / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="&apos; single quote" / -->
+                  <ItemDataString ItemOID="ID.VALUE">&apos; single quote</ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE"><![CDATA[> greater than]]></ItemDataString>
+               </ItemGroupData>
+
+               <ItemGroupData ItemGroupOID="ValueError" ItemGroupRepeatKey="QUOT" TransactionType="Insert">
+                  <!--  
+                        ERROR
+                        Description: F Attribute name "double" associated with an element type "ItemData" must be followed by the ' = ' character.
+                                     NOTE also having to "play" with the single and double quoting to get this one right unless escaped properly.
+                    -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="" double quote" / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value='" double quote' / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value='&quot; double quote' / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="&quot; double quote" / -->
+                  <ItemDataString ItemOID="ID.VALUE">&quot; double quote</ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE"><![CDATA[" double quote]]></ItemDataString>
+               </ItemGroupData>
+
+               <ItemGroupData ItemGroupOID="ValueError" ItemGroupRepeatKey="AMP" TransactionType="Insert">
+                  <!--  
+                        ERROR 
+                        Description: F The entity name must immediately follow the '&' in the entity reference. 
+                    -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="& ampersand" / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="&amp; ampersand" / -->
+                  <!-- ItemDataString ItemOID="ID.VALUE">& ampersand</ItemDataString -->
+                  <ItemDataString ItemOID="ID.VALUE">&amp; ampersand</ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE"><![CDATA[& ampersand]]></ItemDataString>
+               </ItemGroupData>
+
+               <ItemGroupData ItemGroupOID="ValueError" ItemGroupRepeatKey="DASH" TransactionType="Insert">
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="= equal" / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="- dash" / -->
+                  <!-- ItemData ItemOID="ID.VALUE"  Value="xx dash dash" / -->
+                  <ItemDataString ItemOID="ID.VALUE">= equal</ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE">- dash</ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE">-- dash dash</ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE"><![CDATA[= equal]]></ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE"><![CDATA[- dash]]></ItemDataString>
+                  <ItemDataString ItemOID="ID.VALUE"><![CDATA[-- dash dash]]></ItemDataString>
+               </ItemGroupData>
+                
+
+                
+               <ItemGroupData ItemGroupOID="ValueError" ItemGroupRepeatKey="CDATA" TransactionType="Insert">
+                  <ItemDataString ItemOID="ID.VALUE">
+                     <![CDATA[
+                     this & that sort of content can simply be typed "as-is" when the CDATA marker methodology is applied.
+                     the big-5
+                          less than     (<)
+                          greater than  (>)
+                          single quote  (') 
+                          double quote  (")
+                          ampersand     (&)
+                     and even the CDATA marker brackets
+                          left bracket  ([)
+                          right bracket (])
+                     are all permitted to appear without any additional escapement.
+                     this is especially important in situations where non "XML-savy" personnel are being charged with the supply of content.
+                     generating applications can automatically emit the beginning & ending CDATA escapement sequences and be assured that no 
+                     additional maniplation of the content's necessary. and, yes, i purposely left out putting another CDATA marker in here ;-)
+                     ]]>
+                  </ItemDataString>
+               </ItemGroupData>
+               
+
+
+               <ItemGroupData ItemGroupOID="ValueError" ItemGroupRepeatKey="VALUECDATA" TransactionType="Insert">
+                  <!-- 
+                        ERROR 
+                        Description: F The value of attribute "Value" associated with an element type "ItemData" must not contain the '<' character. 
+                    -->
+                  <ItemData ItemOID="ID.VALUE"  Value="<![CDATA[this & that]]>" />
+                  <ItemData ItemOID="ID.VALUE"  Value="&lt;![CDATA[this &amp; that]]&gt;" /> <!-- this is not really the intention, is it -->
+                  <!-- ItemDataString ItemOID="ID.VALUE">this &amp; that</ItemDataString -->
+                  <!-- ItemDataString ItemOID="ID.VALUE"><![CDATA[this & that]]></ItemDataString -->
+               </ItemGroupData>
+            </FormData>
+         </StudyEventData>
+      </SubjectData>
+   </ClinicalData>
+
+</ODM>

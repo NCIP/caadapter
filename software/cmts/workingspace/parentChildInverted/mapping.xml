@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
+    <components>
+        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\parentChildInverted\delivery.xsd" kind="xml" type="target" id="0">
+            <rootElement name="deliveries"/>
+        </component>
+        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\parentChildInverted\groupOrder.xsd" kind="xml" type="source" id="1">
+            <rootElement type="shipordertype" name="grouporder"/>
+        </component>
+    </components>
+    <links>
+        <link>
+            <source id="/grouporder" componentid="1"/>
+            <target id="/deliveries" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item" componentid="1"/>
+            <target id="/deliveries/item" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/name" componentid="1"/>
+            <target id="/deliveries/item/shipping/name" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/address" componentid="1"/>
+            <target id="/deliveries/item/shipping/street" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/city" componentid="1"/>
+            <target id="/deliveries/item/shipping/city" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/country" componentid="1"/>
+            <target id="/deliveries/item/shipping/country" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item/price" componentid="1"/>
+            <target id="/deliveries/item/price" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/orderperson" componentid="1"/>
+            <target id="/deliveries/item/buyer" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item/quantity" componentid="1"/>
+            <target id="/deliveries/item/quantity" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item/note" componentid="1"/>
+            <target id="/deliveries/item/description" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/shipto/item/title" componentid="1"/>
+            <target id="/deliveries/item/name" componentid="0"/>
+        </link>
+        <link>
+            <source id="/grouporder/@orderid" componentid="1"/>
+            <target id="/deliveries/item/@orderid" componentid="0"/>
+        </link>
+    </links>
+    <views/>
+</mapping>
