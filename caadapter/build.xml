@@ -252,8 +252,9 @@
 				<include name="*Notes.txt"/>
 				<include name="warning/**"/>
 				<include name="license/**"/>
+		     	<include name="map/**"/>
 			</fileset>
-			<fileset dir="${project.docs.home}">
+			<fileset dir="${project.docs.home}" erroronmissingdir="false">
 				<include name="*Notes.txt"/>
 			</fileset>
 		     <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
@@ -546,7 +547,7 @@
 		 <condition property="caadapter.release.ws.build">	
 				<equals arg1="${caadapter.release.ws.include}" arg2="true"/>
 		</condition>
-		<antcall target="copyRef"></antcall>
+		<!-- antcall target="copyRef"/ -->
 		
 		<!-- if only release MMS module, copy the CaadapterUtil from MMS module -->
 		<condition property="caadapter.release.mms.build">	
@@ -555,9 +556,9 @@
 		<!-- antcall target="copyMMSCaadapterUtil"/ -->
 		
 		<!-- if only release GME module, copy the GME_CaadapterUtil from MMS module -->
-			<condition property="caadapter.release.mms.gme.build">	
-					<equals arg1="${caadapter.release.mms.gme.only}" arg2="true"/>
-			</condition>
+		<condition property="caadapter.release.mms.gme.build">	
+				<equals arg1="${caadapter.release.mms.gme.only}" arg2="true"/>
+		</condition>
 		<antcall target="copyGMECaadapterUtil"/>
 		
 		<!-- if only release HL7 module, copy the CaadapterUtil from HL& module -->
@@ -599,9 +600,9 @@
 		
 	</target>
 	
-	<target name="copyRef" if="ref.sqleonardo">
+	<!-- target name="copyRef" if="ref.sqleonardo">
 		<copy file="${ref_sqleonardo.jar}" tofile="${sqleonardo.jar}"/>
-	</target>
+	</target -->
 
     <target name="clean">
         <echo message="-------- clean ${project.name}  --------"/>
