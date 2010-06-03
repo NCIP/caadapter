@@ -180,6 +180,7 @@
 		<copy todir="${demo.build.working.dir}/conf">
 			<fileset file="${config.dir}/caadapter-components.properties" />
 			<fileset file="${config.dir}/logging.properties" />
+			<fileset file="${config.dir}/CodegenConfig.xml" />
 			<fileset file="${config.dir}/caadapter-resources.properties" />
 			<fileset file="${config.dir}/datatype-core-attributes-default.xml" />
 			<fileset file="${config.dir}/datatype-core-attributes-setting.xml" />
