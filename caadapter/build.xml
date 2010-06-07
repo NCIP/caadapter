@@ -229,7 +229,7 @@
 		<!-- conditionally zip the distributed zip file -->
 		<echo message="Build source distribution for ALL module..."/>
 		<zip destfile="${dist.dir}/${SOURCE_DIST_FILE}" basedir="." 
-			excludes="referenceLIB/**.*, lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, **/gencode/**">
+			excludes="referenceLIB/**.*, lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, gencode/**">
 		</zip>
 	</target>
     
