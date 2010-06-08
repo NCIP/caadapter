@@ -17,7 +17,6 @@ import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.MetaParser;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Iso21090Util;
@@ -185,26 +184,28 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 				(int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
 
 		// construct middle panel
-		JPanel centerFuncationPanel = new JPanel(new BorderLayout(2, 0));
-		JPanel middleContainerPanel = new JPanel(new BorderLayout());
-		// to hold the place equates the source and target button panel so as to
-		// align the drawing the graphs.
-		JLabel placeHolderLabel = new JLabel();
-		placeHolderLabel.setPreferredSize(new Dimension(
-				(int) (Config.FRAME_DEFAULT_WIDTH / 16), 24));
 		middlePanel = new MappingMiddlePanel(this);
 		middlePanel.setKind("o2db");
 		middlePanel.setSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3),
 				(int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
-        JButton generateHMBButton = new JButton("Generate HBM Files");
-		centerFuncationPanel.add(generateHMBButton, BorderLayout.CENTER);
-
-        generateHMBButton.addActionListener(this);
-		centerFuncationPanel.add(placeHolderLabel, BorderLayout.EAST);
-		centerFuncationPanel.setPreferredSize(new Dimension(
+        
+        JPanel centerTopPanel = new JPanel(new BorderLayout(2, 0));
+//        JButton generateHMBButton = new JButton(GENERATE_HBM);
+//        centerTopPanel.add(generateHMBButton, BorderLayout.CENTER);
+//        generateHMBButton.addActionListener(this);
+//        //to hold the place equates the source and target button panel so as to
+//        //align the drawing the graphs.
+//		JLabel placeHolderLabel = new JLabel();
+//		placeHolderLabel.setPreferredSize(new Dimension(
+//				(int) (Config.FRAME_DEFAULT_WIDTH / 16), 24));
+//		
+//		centerTopPanel.add(placeHolderLabel, BorderLayout.EAST);
+		centerTopPanel.setPreferredSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
-		middleContainerPanel.add(centerFuncationPanel, BorderLayout.NORTH);
+		
+		JPanel middleContainerPanel = new JPanel(new BorderLayout());
+		middleContainerPanel.add(centerTopPanel, BorderLayout.NORTH);
 		middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
 
 		JSplitPane rightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
