@@ -18,6 +18,7 @@ import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.metadata.TableMetadata;
+import gov.nih.nci.caadapter.common.util.Iso21090Util;
 import gov.nih.nci.caadapter.mms.validator.AttributeMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.DependencyMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.SingleAssociationMappingValidator;
@@ -547,6 +548,10 @@ private boolean isAttribute(String element){
 		if (Iso21090uiUtil.isCollectionDatatype((AttributeMetadata)foundObject))
 			return false;
 		else if (Iso21090uiUtil.isDatatypeWithCollectionAttribute((AttributeMetadata)foundObject))
+			return false;
+		//expand scope to treat all ISO complex type as association mapping
+		//If an ISO complex is mapped to a table.column, it will create association mapping
+		else if (Iso21090Util.iso21090ComplexTypes.contains(((AttributeMetadata)foundObject).getDatatype()))
 			return false;
 		else
 			return true;
