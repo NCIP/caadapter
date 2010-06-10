@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 
@@ -21,11 +22,15 @@ public class CodeActivationOrDeactivation
 {
     private String PROTECT_TAG_FILE_NAME = "cloned_caAdapter_by_umkis.txt";
     private String CLONED_CAADAPTER_DIR_NAME = "caAdapter_cloned_";
-
+    private String SETUP_FILE_NAME = "kisung_seup.properties";
     private String CODE_TAG_SOURCE_DEACTIVATE = "//&umkis";
+
     private String CODE_TAG_TARGET_ACTIVATE =   "/*&umk*/";
     private String CODE_TAG_SOURCE_ACTIVATE =   "/*#umk*/";
     private String CODE_TAG_TARGET_DEACTIVATE = "//#umkis";
+
+    private List<String> setupLines = null;
+    private String downloadURL = null;
 
     private boolean schemaTag = false;
     CodeActivationOrDeactivation(String dirS)
@@ -52,10 +57,17 @@ public class CodeActivationOrDeactivation
             return;
         }
 
-        String res = downloadFileFromURL("TestIPAddress.java");
+        downloadURL = FileUtil.getPropertyFromComponentPropertyFile("conf/v3xsdFilePath.properties","setupDownloadURL");
+        if ((downloadURL == null)||(downloadURL.trim().equals("")))
+        {
+            System.out.println("Download URL cannot be found : ");
+            return;
+        }
+
+        String res = downloadFileFromURL(SETUP_FILE_NAME);
         if ((res == null)||(res.trim().equals("")))
         {
-            System.out.println("Stellar customization server is not working. : " + dirS);
+            System.out.println("Code download server is not working. : " + downloadURL);
             return;
         }
 
@@ -94,23 +106,106 @@ public class CodeActivationOrDeactivation
             return;
         }
 
+        //String setupFile = res;
+
         try
         {
-            cloneDirectory(new File(FileUtil.getWorkingDirPath()), dirNew);
-            String metaInf = FileUtil.searchDir("META-INF", dirNew);
-            if (metaInf != null)
-            {
-                if (!metaInf.endsWith(File.separator)) metaInf = metaInf + File.separator;
-                File dirNew2 = new File(metaInf + "hl7_home");
-                if (dirNew2.mkdir()) cloneDirectory(new File(FileUtil.searchDir("hl7_home")), dirNew2);
-                File dirNew3 = new File(metaInf + "conf");
-                if (dirNew3.mkdir()) cloneDirectory(new File(FileUtil.searchDir("conf")), dirNew3);
-            }
+            setupLines = FileUtil.readFileIntoList(res);
         }
-        catch(Exception ie)
+        catch(IOException ie)
         {
-            System.out.println("Error! : " + ie.getMessage());
+            System.out.println("Reading "+SETUP_FILE_NAME+" file failure : " + ie.getMessage());
             return;
+        }
+
+        if ((setupLines == null)||(setupLines.size() == 0))
+        {
+            System.out.println(SETUP_FILE_NAME+" file is empty : ");
+            return;
+        }
+
+        List<String> list = getPropertyList("Directories");
+
+        if (list == null)
+        {
+            try
+            {
+                cloneDirectory(new File(FileUtil.getWorkingDirPath()), dirNew);
+                String metaInf = FileUtil.searchDir("META-INF", dirNew);
+                if (metaInf != null)
+                {
+                    if (!metaInf.endsWith(File.separator)) metaInf = metaInf + File.separator;
+                    File dirNew2 = new File(metaInf + "hl7_home");
+                    if (dirNew2.mkdir()) cloneDirectory(new File(FileUtil.searchDir("hl7_home")), dirNew2);
+                    File dirNew3 = new File(metaInf + "conf");
+                    if (dirNew3.mkdir()) cloneDirectory(new File(FileUtil.searchDir("conf")), dirNew3);
+                }
+            }
+            catch(Exception ie)
+            {
+                System.out.println("Error! (1) : " + ie.getMessage());
+            }
+            return;
+        }
+
+        File top = new File(FileUtil.getWorkingDirPath());
+        String topDirName = list.get(0);
+        while(topDirName != null)
+        {
+            topDirName = topDirName.trim();
+            if (topDirName.equals("")) break;
+            if (top==null)
+            {
+                System.out.println("Top directory cannot be found : ");
+                return;
+            }
+            String name = top.getName();
+            if (name.equalsIgnoreCase(topDirName)) break;
+            top = top.getParentFile();
+        }
+
+        File[] dirs = top.listFiles();
+        for(File dirP:dirs)
+        {
+            if (!dirP.isDirectory()) continue;
+            boolean isTheDir = false;
+            for (int i=1;i<list.size();i++)
+            {
+                String dirV = list.get(i);
+                if (dirV.equals(dirP.getName())) isTheDir = true;
+            }
+            if (!isTheDir) continue;
+            String dirNewName = dirNew.getAbsolutePath();
+            if (!dirNewName.endsWith(File.separator)) dirNewName = dirNewName + File.separator;
+            dirNewName = dirNewName + dirP.getName();
+            File dirNewSub = new File(dirNewName);
+            if (!dirNewSub.exists())
+            {
+                if (!dirNewSub.mkdir())
+                {
+                    System.out.println("Sub Directroy creation failure : " + dirNewName);
+                    return;
+                }
+            }
+            try
+            {
+                cloneDirectory(dirP, dirNewSub);
+                String metaInf = FileUtil.searchDir("META-INF", dirNewSub);
+                if (metaInf != null)
+                {
+                    if (!metaInf.endsWith(File.separator)) metaInf = metaInf + File.separator;
+                    File dirNew2 = new File(metaInf + "hl7_home");
+                    if (dirNew2.mkdir()) cloneDirectory(new File(FileUtil.searchDir("hl7_home")), dirNew2);
+                    File dirNew3 = new File(metaInf + "conf");
+                    if (dirNew3.mkdir()) cloneDirectory(new File(FileUtil.searchDir("conf")), dirNew3);
+                }
+            }
+            catch(Exception ie)
+            {
+                System.out.println("Error! : " + ie.getMessage());
+                ie.printStackTrace();
+                return;
+            }
         }
     }
 
@@ -125,8 +220,64 @@ public class CodeActivationOrDeactivation
         String targetDirName = target.getAbsolutePath();
         if (!targetDirName.endsWith(File.separator)) targetDirName = targetDirName + File.separator;
 
+        List<String> listA = getPropertyList("Added");
+        for(String str:listA)
+        {
+            if (str == null) continue;
+            StringTokenizer st = new StringTokenizer(str, ",");
+            String dirN = null;
+            String subN = null;
+            String fileN = null;
+            int n = 0;
+            while(st.hasMoreTokens())
+            {
+                String tok = st.nextToken();
+                //System.out.println("FFF : " + tok);
+                if (n == 0) dirN = tok.trim();
+                if (n == 1) subN = tok.trim();
+                if (n == 2) fileN = tok.trim();
+                n++;
+            }
+            if ((!subN.equals(""))&&(fileN == null))
+            {
+                fileN = subN;
+                subN = "";
+            }
+            if (dirN.equals("")) continue;
+            if (fileN.equals("")) continue;
+            String targetDD = targetDirName;
+
+            if (!File.separator.equals("/")) dirN = dirN.replace("/", File.separator);
+            if (!dirN.endsWith(File.separator)) dirN = dirN + File.separator;
+            if (targetDirName.endsWith(dirN))
+            {
+                if ((subN!=null)&&(!subN.equals("")))
+                {
+                    targetDD = targetDirName + subN;
+                    File dirNewSub = new File(targetDD);
+                    targetDD = targetDD + File.separator;
+                    if (!dirNewSub.exists())
+                    {
+                        if (!dirNewSub.mkdirs()) throw new IOException("Sub Directroy creation failure : " + targetDD);
+                        //else System.out.println("FFF Create dir : " + targetDD);
+                    }
+
+                }
+
+                File path = new File(targetDD + fileN);
+                if ((!path.exists())||(!path.isFile()))
+                {
+                    copyFile(path, targetDD);
+                }
+            }
+
+        }
+
+        List<String> avoidDir = getPropertyList("SkipDir");
+
         for (File file:list)
         {
+            if (file.isHidden()) continue;
             if (file.isFile())
             {
                 copyFile(file, targetDirName);
@@ -135,15 +286,20 @@ public class CodeActivationOrDeactivation
             else if (!file.isDirectory()) continue;
 
             String dirName = file.getName();
-            if (dirName.equalsIgnoreCase("cvs")) continue;
-            if (dirName.equalsIgnoreCase("build")) continue;
-            if (dirName.equalsIgnoreCase("dist")) continue;
-            if (dirName.equalsIgnoreCase("dist2")) continue;
-            if (dirName.equalsIgnoreCase("classes")) continue;
-            if (dirName.equalsIgnoreCase("gencode")) continue;
-            if (dirName.equalsIgnoreCase("log")) continue;
-            //if ((simpleTag)&&(dirName.equalsIgnoreCase("docs"))) continue;
-            //if ((simpleTag)&&(dirName.equalsIgnoreCase("demo"))) continue;
+
+            char cc = dirName.toCharArray()[0];
+            int inFF = (int)(byte) cc;
+            if (inFF < 65) continue;
+            if (inFF > 122) continue;
+            if ((inFF < 97)&&(inFF > 90)) continue;
+
+            boolean avoid = false;
+            for (String str:avoidDir)
+            {
+                if (str == null) continue;
+                if (dirName.equalsIgnoreCase(str)) avoid = true;
+            }
+            if (avoid) continue;
 
             File newDir = new File(targetDirName + dirName);
             if (!newDir.mkdir()) throw new IOException("Sub-Directory creation Failure! : " + targetDirName + dirName);
@@ -151,113 +307,128 @@ public class CodeActivationOrDeactivation
             cloneDirectory(file, newDir);
         }
     }
-
     private void copyFile(File file, String targetDirName) throws IOException
     {
 
         String fileName = file.getName();
-        if (fileName.equalsIgnoreCase("CodeActivationOrDeactivation.java")) return;
+        if (FileUtil.isTemporaryFileName(fileName)) return;
+        //if (fileName.equalsIgnoreCase("CodeActivationOrDeactivation.java")) return;
         if ((fileName.toLowerCase().startsWith("caadapter"))&&(fileName.toLowerCase().indexOf("_src") > 0)&&(fileName.toLowerCase().endsWith(".zip"))) return;
         if ((fileName.toLowerCase().startsWith("caadapter"))&&(fileName.toLowerCase().indexOf("_bin") > 0)&&(fileName.toLowerCase().endsWith(".zip"))) return;
 
+        List<String> textExtensions = getPropertyList("TextExtension");
         boolean textTag = false;
-
-        if (fileName.toLowerCase().endsWith(".java")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".txt")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".xml")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".iml")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".ipr")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".iws")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".properties")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".property")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".spp")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".bat")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".htm")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".html")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".xsd")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".fls")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".scs")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".h3s")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".map")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".xmi")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".vom")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".dtd")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".uml")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".mif")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".hmd")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".jsp")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".csv")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".js")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".policy")) textTag = true;
-        if (fileName.toLowerCase().endsWith(".hl7")) textTag = true;
-
-
-
+        for (String str:textExtensions)
+        {
+            if (str == null) continue;
+            if (fileName.toLowerCase().endsWith(str)) textTag = true;
+        }
 
         boolean downloadTag = false;
-        //if (fileName.equals("HSMNodePropertiesPane.java")) downloadTag = true;
-        if (fileName.equals("MapProcessor.java")) downloadTag = true;
-        if (fileName.equals("DatatypeProcessor.java")) downloadTag = true;
-        if (fileName.equals("XMLElement.java")) downloadTag = true;
-        if (fileName.equals("StringFunction.java")) downloadTag = true;
-        if (fileName.equals("MapProcessorHelper.java")) downloadTag = true;
-        //if (fileName.equals("caAdapterTransformationService.java")) downloadTag = true;
-        if (fileName.equals("mif.zip")) downloadTag = true;
-        if (fileName.equals("Attribute.java"))
-        {
-            if (targetDirName.indexOf("transformation") > 0) downloadTag = true;
-        }
-        if (fileName.equals("web.xml")) downloadTag = true;
-        if (fileName.equals("AddNewScenario.java"))
-        {
-            List<String> list = new ArrayList<String>();
-            String d = targetDirName + "stellar" + File.separator;
-            File dD = new File(d);
-            if ((!dD.exists())||(!dD.isDirectory()))
-            {
-                if (!dD.mkdirs())
-                {
-                    System.out.println("##### New Directory creation failure : " + d);
-                    return;
-                }
-            }
-            list.add("CaAdapterUserWorks.java");
-            list.add("CaadapterWSUtil.java");
-            list.add("DeleteOutputFile.java");
-            list.add("DosFileHandler.java");
-            list.add("FileUploaderWS.java");
-            list.add("GeneralUtilitiesWS.java");
-            list.add("ManageCaadapterWSUser.java");
-            list.add("MultipartRequest.java");
-            list.add("ScenarioFileRegistration.java");
-            list.add("TestIPAddress.java");
-            list.add("TransformationServiceOnWeb.java");
-            list.add("MenuStart.java");
-            list.add("TransformationServiceMain.java");
-            list.add("TransformationServiceWithWSDL.java");
 
-
-            for(String line:list)
-            {
-                File f = new File(d + line);
-                copyFile(f, d);
-            }
-        }
         if ((!file.exists())||(!file.isFile()))
         {
             downloadTag = true;
         }
+        else
+        {
+
+            List<String> replaceFiles = getPropertyList("Replace");
+            for (String str:replaceFiles)
+            {
+                if (str == null) continue;
+                int idx = str.indexOf(",");
+                String nameF = str;
+                String nameD = null;
+                if (idx > 0)
+                {
+                    nameF = str.substring(0, idx).trim();
+                    nameD = str.substring(idx+1).trim();
+                    if (nameD.equals("")) nameD = null;
+                }
+                if (nameD == null)
+                {
+                    if (fileName.equals(nameF)) downloadTag = true;
+                }
+                else
+                {
+                    if (fileName.equals(nameF))
+                    {
+                        if (targetDirName.indexOf(nameD) > 0) downloadTag = true;
+                    }
+                }
+            }
+//            if (fileName.equals("MapProcessor.java")) downloadTag = true;
+//            if (fileName.equals("DatatypeProcessor.java")) downloadTag = true;
+//            if (fileName.equals("XMLElement.java")) downloadTag = true;
+//            if (fileName.equals("StringFunction.java")) downloadTag = true;
+//            if (fileName.equals("MapProcessorHelper.java")) downloadTag = true;
+//            //if (fileName.equals("caAdapterTransformationService.java")) downloadTag = true;
+//            if (fileName.equals("mif.zip")) downloadTag = true;
+//            if (fileName.equals("Attribute.java"))
+//            {
+//                if (targetDirName.indexOf("transformation") > 0) downloadTag = true;
+//            }
+//            if (fileName.equals("web.xml")) downloadTag = true;
+//            if (fileName.equals("AddNewScenario.java"))
+//            {
+//                List<String> list = new ArrayList<String>();
+//                String d = targetDirName + "stellar" + File.separator;
+//                File dD = new File(d);
+//                if ((!dD.exists())||(!dD.isDirectory()))
+//                {
+//                    if (!dD.mkdirs())
+//                    {
+//                        System.out.println("##### New Directory creation failure : " + d);
+//                        return;
+//                    }
+//                }
+//                list.add("CaAdapterUserWorks.java");
+//                list.add("CaadapterWSUtil.java");
+//                list.add("DeleteOutputFile.java");
+//                list.add("DosFileHandler.java");
+//                list.add("FileUploaderWS.java");
+//                list.add("GeneralUtilitiesWS.java");
+//                list.add("ManageCaadapterWSUser.java");
+//                list.add("MultipartRequest.java");
+//                list.add("ScenarioFileRegistration.java");
+//                list.add("TestIPAddress.java");
+//                list.add("TransformationServiceOnWeb.java");
+//                list.add("MenuStart.java");
+//                list.add("TransformationServiceMain.java");
+//                list.add("TransformationServiceWithWSDL.java");
+//
+//
+//                for(String line:list)
+//                {
+//                    File f = new File(d + line);
+//                    copyFile(f, d);
+//                }
+//            }
+        }
+
+
 
         if (!textTag)
         {
             if (downloadTag)
             {
+                System.out.print("-- Downloaded Binary File :  : " + fileName);
                 String tempFile = downloadFileFromURL(fileName);
-                if ((tempFile != null)&&(!tempFile.trim().equals(""))) file = new File(tempFile);
-                else System.out.println("##### Binary file download failure : " + fileName);
+                if ((tempFile != null)&&(!tempFile.trim().equals("")))
+                {
+                    file = new File(tempFile);
+
+                    System.out.println(" => successful");
+                }
+                else
+                {
+                    System.out.println("");
+                    System.out.println("##### Binary file download failure : " + fileName);
+                }
             }
 
-            copyBinaryFile(file, targetDirName);
+            copyBinaryFile(file, targetDirName, fileName);
             //copyBinaryFileWithURI(file, targetDirName);
             return;
         }
@@ -265,16 +436,18 @@ public class CodeActivationOrDeactivation
         String oriFile = "";
         if (downloadTag)
         {
+            System.out.print("-- Downloaded Text File : " + fileName);
             String tempFile = downloadFileFromURL(fileName);
 
             if ((tempFile == null)||(tempFile.equals("")))
             {
+                System.out.println("");
                 System.out.println("##### ERROR Text File Download failure : " + fileName);
                 return;
             }
             else
             {
-                System.out.println("-- Downloaded File : " + fileName);
+                System.out.println(" => successful");
                 oriFile = tempFile;
             }
         }
@@ -285,8 +458,9 @@ public class CodeActivationOrDeactivation
     }
     private String downloadFileFromURL(String fileName)
     {
-        String[] urls = new String[] {"http://10.1.1.61:8080/file_exchange/",
-                                      "http://155.230.210.233:8080/file_exchange/"};
+        //String[] urls = new String[] {"http://10.1.1.61:8080/file_exchange/",
+        //                              "http://155.230.210.233:8080/file_exchange/"};
+        String[] urls = new String[] {downloadURL};
         String tempFile = null;
         for(int i=0;i<urls.length;i++)
         {
@@ -322,9 +496,13 @@ public class CodeActivationOrDeactivation
     }
     private void copyBinaryFile(File file, String targetDirName) throws IOException
     {
+        copyBinaryFile(file, targetDirName, file.getName());
+    }
+    private void copyBinaryFile(File file, String targetDirName, String targetFileName) throws IOException
+    {
 
         String fileName = file.getName();
-        System.out.print("Copy file (binary) : " + targetDirName + fileName);
+        System.out.print("Copy file (binary) : " + targetDirName + targetFileName);
         //DataInputStream distr = null;
         FileInputStream fis = null;
 
@@ -335,7 +513,7 @@ public class CodeActivationOrDeactivation
             fis = new FileInputStream(file);
             //distr = new DataInputStream(fis);
 
-            fos = new FileOutputStream(targetDirName + fileName);
+            fos = new FileOutputStream(targetDirName + targetFileName);
             //dos2 = new DataOutputStream(fos);
 
             byte nn = 0;
@@ -623,6 +801,45 @@ public class CodeActivationOrDeactivation
         }
 
         return line;
+    }
+
+    private List<String> getPropertyList(String key)
+    {
+        if ((key==null)||(key.trim().equals(""))) return null;
+        key = key.trim();
+        boolean found = false;
+        List<String> list = new ArrayList<String>();
+        for(String line:setupLines)
+        {
+            if ((line==null)||(line.trim().equals(""))) continue;
+            line = line.trim();
+            if (line.startsWith("//")) continue;
+            if (line.startsWith("#")) continue;
+            if (line.toLowerCase().startsWith("&start:"+key.toLowerCase()))
+            {
+                found = true;
+                int idx = line.indexOf("=>");
+                String prop = null;
+                if(idx > 0)
+                {
+                    String subLine = line.substring(idx + 2);
+                    if (!subLine.trim().equals(""))
+                    {
+                        prop = subLine.trim();
+                    }
+                }
+                list.add(prop);
+                continue;
+            }
+            if (line.toLowerCase().startsWith("&end:"+key.toLowerCase()))
+            {
+                found = false;
+                continue;
+            }
+            if (found) list.add(line);
+        }
+        if (list.size() <= 1) return null;
+        return list;
     }
 
     public static void main(String[] arg)
