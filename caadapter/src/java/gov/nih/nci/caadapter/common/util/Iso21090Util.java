@@ -24,6 +24,7 @@ public class Iso21090Util {
 	private static final int ADXP_COUNT=28;
 	public static Vector<Object> ADXP_SUBTYPES;
 	public static Vector<Object> NULL_FLAVORS;
+	public static ArrayList<String> iso21090ComplexTypes;
 	/**
 	 * Hard code: List all possible sub-class type if a sequence of data types is refered
 	 * ADEXP -- sequence of AD type
@@ -41,6 +42,19 @@ public class Iso21090Util {
 //		String SEQUENCE_EN_DATA_TYPES="EN.ON;EN.PN;EN.TN";
 		String SEQUENCE_EN_DATA_TYPES="ENXP";
 		sequenceDataypeKeys.put(EN_SEQUENCE_EXP_NAME, new StringTokenizer(SEQUENCE_EN_DATA_TYPES,";"));
+		iso21090ComplexTypes=new ArrayList<String>();
+		String complexTypeNames="AD;ADXP;ADXP.ADL;ADXP.AL;ADXP.BNN;ADXP.BNR;ADXP.BNS;ADXP.BR;ADXP.CAR;ADXP.CEN;ADXP.CNT"+
+		";ADXP.CPA;ADXP.CTY;ADXP.DAL;ADXP.DEL.;ADXP.DINST;ADXP.DINSTA;ADXP.DINSTQ;ADXP.DIR;ADXP.DMOD;ADXP.DMODID;ADXP.POB;ADXP.PRE"+
+		";ADXP.SAL;ADXP.STA;ADXP.STB;ADXP.STR;ADXP.STTYP;ADXP.UNID;ADXP.UNIT;ADXP.zip"+
+		";ANY;BL;BL.NONNULL;Binary;CD;COLL;DSET;ED;ED.TEXT;EN;EN.ON;EN.PN;EN.TN;ENXP"+
+		";II;INT;IVL;IVL<INT>;IVL<PQ>;IVL<REAL>;IVL<TS>;PQ;PQV;QSET;QTY;REAL;SC;ST;ST.NT"+
+		";TEL;TEL.EMAIL;TEL.PERSON;TEL.PHONE;TEL.URL;TS";
+		StringTokenizer typeNameToken=new StringTokenizer(complexTypeNames, ";");
+		
+		while (typeNameToken.hasMoreTokens())
+		{
+			iso21090ComplexTypes.add(typeNameToken.nextToken());
+		}			
 	}
 	
 	private static Vector<Object> fillSelection(StringTokenizer stToken)
