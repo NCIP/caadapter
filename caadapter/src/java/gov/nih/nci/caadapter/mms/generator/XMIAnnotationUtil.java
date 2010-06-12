@@ -206,7 +206,12 @@ public class XMIAnnotationUtil {
 		AssociationMetadata asscMeta=(AssociationMetadata)metaObj;//modelMeta.getModelMetadata().get(sourcePath);
 		if (asscMeta==null)
 			return false;
-		
+		//remove "inverse-of" for many-to-on
+		if (asscMeta.getMultiplicity()==1&&asscMeta.getReciprocalMultiplity()==-1)
+		{
+			xpathAttr.removeTaggedValue("inverse-of");
+		}
+
 		UMLAssociation umlAssc=asscMeta.getUMLAssociation();
 		//check if the association is uni-directional
 		UMLAssociationEnd endOne=(UMLAssociationEnd)umlAssc.getAssociationEnds().get(0);
@@ -277,6 +282,17 @@ public class XMIAnnotationUtil {
 		XMIAnnotationUtil.addTagValue(tblColumn, "implements-association", pureSrcPath);
 		
 		LinkedHashMap modelMetaHash =modelMeta.getModelMetadata();
+		//add inverse of tag if "many-to-one"
+		MetaObject metaEndObj=(MetaObject)modelMetaHash.get(sourcePath);
+		if (metaEndObj instanceof AssociationMetadata)
+		{
+			AssociationMetadata asscEndMeta=(AssociationMetadata)metaEndObj;	
+			if (asscEndMeta.getMultiplicity()==1&&asscEndMeta.getReciprocalMultiplity()==-1)
+			{
+				XMIAnnotationUtil.addTagValue(tblColumn, "inverse-of", pureSrcPath);
+			}
+		}
+			
 		ColumnMetadata columnMeta =(ColumnMetadata)modelMetaHash.get(targetPath);
 		if (columnMeta==null)
 			return false;
