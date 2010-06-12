@@ -61,6 +61,13 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 		// TODO Auto-generated constructor stub
 	}
 
+	private UMLClass retrieveTopSuperClass(UMLClass objectClass)
+	{
+		UMLClass[] superClasses=ModelUtil.getSuperclasses(objectClass);
+		if (superClasses==null||superClasses.length==0)
+			return objectClass;
+		return retrieveTopSuperClass(superClasses[0]);
+	}
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction#doAction(java.awt.event.ActionEvent)
 	 */
@@ -103,21 +110,27 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 		else if (getAnnotationActionType()==SET_DISCRIMINATOR_KEY)
 		{
 			UMLClass tableClass=ModelUtil.findClass(modelMetadata.getModel(), columnMeta.getParentXPath());
-			ArrayList<String> srcObjectPath=new ArrayList<String>();
+			String topSuperPath=null;
 			for (UMLDependency dpd:tableClass.getDependencies())
 			{
 				if (dpd.getStereotype().equalsIgnoreCase("DataSource"))
 				{
 					UMLClass objectClass=(UMLClass)dpd.getSupplier();
-					String objectFullPath=ModelUtil.getFullName(objectClass);
+					UMLClass topSuperClass=retrieveTopSuperClass(objectClass);
+					
+					String objectFullPath=ModelUtil.getFullName(topSuperClass);
 					if (objectFullPath!=null&&objectFullPath.length()>27)
-						srcObjectPath.add(objectFullPath.substring(27));
-					System.out.println("ColumnAnnotationAction.doAction()..src fullName:"+ModelUtil.getFullName(objectClass));
+					{
+						topSuperPath=objectFullPath.substring(27);
+						System.out.println("ColumnAnnotationAction.doAction()..src fullName:"+topSuperPath);
+						break;
+					}
 				}
 			}
-			String newDiscValue=srcObjectPath.get(0);
-			System.out.println("ColumnAnnotationAction.doAction()..:"+columnMeta.getXPath() +"..add tag:discriminator="+newDiscValue);
-			XMIAnnotationUtil.addTagValue(xpathAttr, "discriminator", newDiscValue);
+			if (topSuperPath==null)
+				return false;
+			System.out.println("ColumnAnnotationAction.doAction()..:"+columnMeta.getXPath() +"..add tag:discriminator="+topSuperPath);
+			XMIAnnotationUtil.addTagValue(xpathAttr, "discriminator", topSuperPath);
 			//remove all the "discriminator" column
 			for (UMLAttribute tableColumn:tableClass.getAttributes())
 			{
