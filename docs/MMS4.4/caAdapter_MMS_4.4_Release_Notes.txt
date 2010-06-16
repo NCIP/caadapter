@@ -42,9 +42,7 @@
 ----------------------------------------------------------------
 3.0 Important Remaining Issues
 ----------------------------------------------------------------
-    * Polymorphic association mapping is not implemented.
-    * Workaround solution is provided for mixing use map ISO collection data type 
-	with and without a joint table (see user's guide for detail). 
+    N/A
 ----------------------------------------------------------------
 4.0 Release History
 ----------------------------------------------------------------
