@@ -87,7 +87,8 @@
 			</fileset>
 		</unzip>
 		<copy file="${caadapter.project.webstart.conf}/${webstart.properties.file}" tofile="${caadapter.project.webstart.build.home}/tmp/caadapter-components.properties"/>
-		<zip destfile="${caadapter.project.webstart.build.home}/caAdapter.jar">
+		<zip destfile="${caadapter.project.webstart.build.home}/caAdapter.jar" 
+			whenempty="skip">
 			<fileset dir="${caadapter.project.webstart.build.home}/tmp"/>
 			<zipfileset dir="workingspace/Object_to_DB_Example" prefix="workingspace/sampleModels"/>
 			<zipfileset dir="workingspace/ISO21090" prefix="workingspace/sampleModels"/>
@@ -155,8 +156,14 @@
 			<fileset file="${demo.build.working.dir}/caAdapter_ui.jar" />
 		</copy>
 		
-		<zip destfile="${dist.dir}/${BINARY_DIST_FILE}">
+		<zip destfile="${dist.dir}/${BINARY_DIST_FILE}" whenempty="skip">
 			<zipfileset dir="${demo.build.working.dir}"/>
+			<zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="docs/help"/>
+			<zipfileset dir="${project.docs.home}" prefix="docs">
+				<include name="${project.user.guide}"/>
+				<include name="${project.installation.guide}"/>
+				<include name="${proejct.release.notes}"/>
+			</zipfileset>
  			<zipfileset dir="workingspace/Object_to_DB_Example" prefix="workingspace/sampleModels"/>
 		</zip>
 		<delete dir="${demo.build.working.dir}" failonerror="false" />
@@ -228,8 +235,16 @@
 		</condition>
 		<!-- conditionally zip the distributed zip file -->
 		<echo message="Build source distribution for ALL module..."/>
-		<zip destfile="${dist.dir}/${SOURCE_DIST_FILE}" basedir="." 
-			excludes="referenceLIB/**.*, lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, gencode/**">
+		<zip destfile="${dist.dir}/${SOURCE_DIST_FILE}" whenempty="skip">
+			<zipfileset dir="." 
+				excludes="referenceLIB/**.*, lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, gencode/**">
+			</zipfileset>
+			<zipfileset dir="${project.docs.home}" prefix="docs">
+				<include name="${proejct.online.help}"/>
+				<include name="${project.user.guide}"/>
+				<include name="${project.installation.guide}"/>
+				<include name="${proejct.release.notes}"/>
+			</zipfileset>
 		</zip>
 	</target>
     
@@ -606,12 +621,12 @@
 	</target -->
 
     <target name="clean">
-        <echo message="-------- clean ${project.name}  --------"/>
+        <echo message="-------- clean ${project.name} --------"/>
         <delete dir="${build.dir}" failonerror="false"/>
         <delete dir="${dist.dir}" failonerror="false"/>
         
-		<delete failonerror="false">
-		    <fileset dir="." includes="caadapter*.zip"/>
+	<delete failonerror="false">
+		<fileset dir="." includes="caadapter*.zip"/>
     	</delete>
     </target>
 
