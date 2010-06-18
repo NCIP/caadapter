@@ -80,7 +80,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	private String BUILD_MARKER_IN_SOURCE_HTML_FILE = "<!--$$:BUILD_MARKER;Don't touch this Paragraph-->";
 	private String JDK_VERSION_TAG_IN_SOURCE_HTML_FILE = "JDK ";
 	private String JDK_VERSION_MARKER_IN_SOURCE_HTML_FILE = "<!--$$:JDK_VERSION_MARKER;Don't touch this Paragraph-->";
-	private String COPYRIGHT_YEARS_TAG_IN_SOURCE_HTML_FILE = "Copyright © ";
+	private String COPYRIGHT_YEARS_TAG_IN_SOURCE_HTML_FILE = "Copyright \u00a9 ";
 	private String COPYRIGHT_YEARS_MARKER_IN_SOURCE_HTML_FILE = "<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph-->";
 	private String BACKGROUND_FILE_NAME_TAG_IN_SOURCE_HTML_FILE = "<body background=\"";
 	private String BACKGROUND_FILE_NAME_MARKER_IN_SOURCE_HTML_FILE = "<!--$$:BACKGROUND_FILE_NAME_MARKER;Don't touch this Paragraph-->";
