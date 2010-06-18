@@ -270,7 +270,7 @@
 				<include name="license/**"/>
 		     	<include name="map/**"/>
 			</fileset>
-			<fileset dir="${project.docs.home}" erroronmissingdir="false">
+			<fileset dir="${project.docs.home}">
 				<include name="*Notes.txt"/>
 			</fileset>
 		     <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
