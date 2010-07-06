@@ -62,6 +62,8 @@
 
 		<echo message=""/>
 		<echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
+        <copy file="${caadapter.project.webstart.home}/caadapter-mms.jnlp.template" tofile="${dist.dir}/webstart/caadapter-mms.jnlp" overwrite="true"/>
+        <replace file="${dist.dir}/webstart/caadapter-mms.jnlp" token="WEBSERVER" value="${webserver}"/>
 		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="${caadapter.project.webstart.home}/web.xml">
 			<fileset dir="${dist.dir}/webstart">
 				<exclude name="myKeyStore"/>
