@@ -21,6 +21,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 /**
  * The class defines the default tree cell renderer for mapping panel.
@@ -60,8 +61,26 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 			if (baseMeta instanceof ElementMeta)
 			{
 				if (node.isLeaf())
-					setIcon(elementNodeIcon);				
-			}else if (baseMeta instanceof AttributeMeta){
+					setIcon(elementNodeIcon);
+				
+				if (baseMeta.getName().equals("<choice>"))//(((ElementMeta)baseMeta).isIsChoice()) 
+				{
+					String lbText="<html><font color=blue><I>&lt;choice&gt;</I></font></html>";
+					setText(lbText);
+				}
+				else if (((ElementMeta)baseMeta).isIsChosen())
+				{
+					String lbText="<html><font color=red><b>"+getText()+"</b></font></html>";
+					setText(lbText);
+				}
+				else if (((ElementMeta)baseMeta).getMultiplicityIndex()!=null)
+				{
+					String lbText="<html><i>"+getText()+"</i></html>";
+					setText(lbText);
+				}
+			}
+			else if (baseMeta instanceof AttributeMeta)
+			{
 				setIcon(attributeNodeIcon);
 			}
 		} catch (Exception e) {
