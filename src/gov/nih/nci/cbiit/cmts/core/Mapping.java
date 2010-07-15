@@ -71,6 +71,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "mapping", propOrder = {
     "components",
     "links",
+    "tags",
     "views"
 })
 public class Mapping {
@@ -81,6 +82,8 @@ public class Mapping {
     protected Mapping.Links links;
     @XmlElement(required = true)
     protected Mapping.Views views;
+    @XmlElement(required = true)
+    protected Mapping.Tags tags;
 
     /**
      * Gets the value of the components property.
@@ -128,6 +131,38 @@ public class Mapping {
      */
     public void setLinks(Mapping.Links value) {
         this.links = value;
+    }
+
+    /**
+     * Gets the value of the views property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Mapping.Views }
+     *     
+     */
+    /**
+     * Gets the value of the tags property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Mapping.Tags }
+     *     
+     */
+    public Mapping.Tags getTags() {
+        return tags;
+    }
+
+    /**
+     * Sets the value of the tags property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Mapping.Tags }
+     *     
+     */
+    public void setTags(Mapping.Tags value) {
+        tags = value;
     }
 
     /**
@@ -327,6 +362,63 @@ public class Mapping {
                 view = new ArrayList<ViewType>();
             }
             return this.view;
+        }
+
+    }
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="view" type="{http://cmps.cbiit.nci.nih.gov/core}tagType" maxOccurs="unbounded" minOccurs="0"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "tag"
+    })
+    public static class Tags {
+
+        protected List<TagType> tag;
+
+        /**
+         * Gets the value of the view property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the view property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getView().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link ViewType }
+         * 
+         * 
+         */
+        public List<TagType> getTag() {
+            if (tag == null) {
+                tag = new ArrayList<TagType>();
+            }
+            return this.tag;
         }
 
     }
