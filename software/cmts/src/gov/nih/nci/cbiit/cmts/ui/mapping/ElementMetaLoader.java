@@ -80,8 +80,9 @@ public class ElementMetaLoader implements Serializable
 	
 		List<ElementMeta> childs = s.getChildElement();
 		List<AttributeMeta> fields = s.getAttrData();
-		//Collections.sort(fields, new CSVFieldMetaColumnNumberComparator());
-	
+		//ignore attributes and child elements for not chosen choice element
+		if (s.isIsChoice()&!s.isIsChosen())
+			return node;
 		for (int i = 0; i < fields.size(); i++)
 		{
 			AttributeMeta fieldMeta = fields.get(i);
