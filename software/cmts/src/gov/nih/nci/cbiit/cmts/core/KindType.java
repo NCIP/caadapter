@@ -24,6 +24,9 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;enumeration value="xml"/>
  *     &lt;enumeration value="csv"/>
  *     &lt;enumeration value="core"/>
+ *     &lt;enumeration value="choice"/>
+ *     &lt;enumeration value="abstract"/>
+ *     &lt;enumeration value="clone"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -40,7 +43,13 @@ public enum KindType {
     @XmlEnumValue("core")
     CORE("core"),
     @XmlEnumValue("xmi")
-    XMI("xmi");
+    XMI("xmi"),
+    @XmlEnumValue("choice")
+    CHOICE("choice"),
+    @XmlEnumValue("abstract")
+    ABSTRACT("abstract"),
+    @XmlEnumValue("clone")
+    CLONE("clone");
     private final String value;
 
     KindType(String v) {
