@@ -8,6 +8,9 @@
 package gov.nih.nci.cbiit.cmts.mapping;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.util.Hashtable;
+import java.util.Stack;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -18,6 +21,8 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
 import gov.nih.nci.cbiit.cmts.common.XSDParser;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmts.core.BaseMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
@@ -25,6 +30,7 @@ import gov.nih.nci.cbiit.cmts.core.KindType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
 import gov.nih.nci.cbiit.cmts.core.LinkpointType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.core.TagType;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Components;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
 
@@ -121,9 +127,114 @@ public class MappingFactory {
 				MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
 			}
 		}
+		Hashtable <String, BaseMeta> srcMetaHash=new Hashtable <String, BaseMeta>();
+		Hashtable <String, BaseMeta> trgtMetaHash=new Hashtable <String, BaseMeta>();
+		//pre-process mapping for annotation 
+		for (Component mapComp:mapLoaded.getComponents().getComponent())
+		{
+			Stack<String> elmntTypeStack = new Stack<String>();
+			if (mapComp.getType().value().equals(ComponentType.SOURCE.value()))
+				processMeta(srcMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
+			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
+				processMeta(trgtMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
+		}
+		for (TagType tag:mapLoaded.getTags().getTag())
+		{
+			if (tag.getKind().value().equals(KindType.CLONE.value()))
+			{
+				//process "clone"
+				ElementMeta elmntMeta=null;
+				ElementMeta parentMeta=null;
+				String parentKey=tag.getKey().substring(0, tag.getKey().lastIndexOf("/"));
+				if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
+				{
+					elmntMeta=(ElementMeta)srcMetaHash.get(tag.getKey());
+					parentMeta=(ElementMeta)srcMetaHash.get(parentKey);
+				}
+				else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
+				{
+					elmntMeta=(ElementMeta)trgtMetaHash.get(tag.getKey());
+					parentMeta=(ElementMeta)trgtMetaHash.get(parentKey);
+				}
+				if (elmntMeta==null)
+					continue;
+				int insertingIndx=-1;
+				boolean isSibling=false;
+				for (ElementMeta siblingElmnt:parentMeta.getChildElement())
+				{
+					insertingIndx++;
+					if (siblingElmnt.getName().equals(elmntMeta.getName()))
+					{
+						isSibling=true;
+					} 
+					else if (isSibling)
+						break;
+				}
+				ElementMeta cloneMeta=(ElementMeta)elmntMeta.clone();
+				cloneMeta.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
+				parentMeta.getChildElement().add(insertingIndx, cloneMeta);
+				
+			}
+		}
+		//re-process mapping to include cloned element for "choice" annotation
+		srcMetaHash.clear();
+		trgtMetaHash.clear();
+		for (Component mapComp:mapLoaded.getComponents().getComponent())
+		{
+			Stack<String> elmntTypeStack = new Stack<String>();
+			if (mapComp.getType().value().equals(ComponentType.SOURCE.value()))
+				processMeta(srcMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
+			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
+				processMeta(trgtMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
+		}
+		for (TagType tag:mapLoaded.getTags().getTag())
+		{
+			if (tag.getKind().value().equals(KindType.CHOICE.value()))
+			{
+				//process "choice"
+				ElementMeta elmntMeta=null;
+				if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
+				{
+					elmntMeta=(ElementMeta)srcMetaHash.get(tag.getKey());
+				}
+				else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
+				{
+					elmntMeta=(ElementMeta)trgtMetaHash.get(tag.getKey());
+				}
+				if (elmntMeta!=null)
+					elmntMeta.setIsChosen(new Boolean("true"));	
+			}
+		}
 		return  jaxbElmt.getValue();
 	}
 	
+	private static void processMeta(Hashtable <String, BaseMeta>  metaHash, Stack<String> typeStack, ElementMeta element, String parentPath)
+	{
+		String metaKey=parentPath+"/"+element.getName();
+		metaHash.put(metaKey, element);
+		//process attribute
+		for (AttributeMeta attr:element.getAttrData())
+		{
+			String attrMetaKey=metaKey+"/@"+attr.getName();
+			metaHash.put(attrMetaKey, attr);
+		}
+		String currentType=element.getType();
+		if (typeStack.contains(currentType))
+		{
+			System.out.println("MappingFactory.processMeta()..recursion:"+typeStack.toString() +".."+currentType);
+			return;
+		
+		}
+		if (!element.getName().equals("<choice>"))
+			typeStack.push(currentType);
+		//process child elements
+		for(ElementMeta childElement:element.getChildElement())
+		{
+			processMeta(metaHash,typeStack, childElement, metaKey);
+		}
+		if (!element.getName().equals("<choice>"))
+			typeStack.pop();
+	}
 	public static void saveMapping(File f, Mapping m) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
