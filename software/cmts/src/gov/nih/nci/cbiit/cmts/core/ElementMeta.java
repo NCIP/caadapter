@@ -65,7 +65,9 @@ public class ElementMeta
     @XmlAttribute
     protected String defaultValue;
     @XmlAttribute
-    protected Boolean isChoice;
+    protected Boolean isChoice=false;
+    @XmlAttribute
+    protected Boolean isChosen=false;
     @XmlAttribute
     protected Boolean isEnabled;
     @XmlAttribute
@@ -190,7 +192,14 @@ public class ElementMeta
     public BigInteger getMultiplicityIndex() {
         return multiplicityIndex;
     }
-
+    
+    @Override
+    public String getName()
+    {
+    	if (getMultiplicityIndex()==null)
+    		return super.getName();
+    	return super.getName()+"["+getMultiplicityIndex()+"]";
+    }
     @Override
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		Class beanClass = this.getClass();
@@ -200,6 +209,8 @@ public class ElementMeta
 		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
 		propList.add(new PropertyDescriptor("minOccurs", beanClass, "getMinOccurs", null));
 		propList.add(new PropertyDescriptor("maxOccurs", beanClass, "getMaxOccurs", null));
+		propList.add(new PropertyDescriptor("choiceElement", beanClass, "isIsChoice", null));
+		propList.add(new PropertyDescriptor("multiplicityIndex", beanClass, "multiplicityIndex", null));
 		
 		PropertiesResult result = super.getPropertyDescriptors();
 		result.addPropertyDescriptors(this, propList);
@@ -209,6 +220,18 @@ public class ElementMeta
     public String getTitle() {
 		// TODO Auto-generated method stub
 		return "Element Properties";
+	}
+
+    /**
+     * Gets the value of the isChosen property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsChosen() {
+		return isChosen;
 	}
 
     /**
@@ -294,6 +317,18 @@ public class ElementMeta
     public Boolean isIsValid() {
         return isValid;
     }
+
+    /**
+     * Sets the value of the isChosen property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+	public void setIsChosen(Boolean chosen) {
+		this.isChosen = chosen;
+	}
 
     /**
      * Sets the value of the defaultValue property.
