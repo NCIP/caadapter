@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.XmlType;
     AttributeMeta.class,
     ElementMeta.class
 })
-public abstract class BaseMeta implements Serializable, PropertiesProvider{
+public abstract class BaseMeta implements Serializable, PropertiesProvider, Cloneable{
 
     @XmlAttribute
     private String id;
@@ -182,5 +182,18 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider{
 			return getName();
 		
 		return getNameSpace()+":"+getName();
+	}
+	
+	@Override
+	public Object clone()
+	{
+		try {
+			BaseMeta clonnedObj=(BaseMeta)super.clone();
+			return clonnedObj;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
