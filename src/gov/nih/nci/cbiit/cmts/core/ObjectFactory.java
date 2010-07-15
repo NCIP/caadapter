@@ -114,6 +114,13 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TagType }
+     * 
+     */
+    public TagType createTagType() {
+        return new TagType();
+    }
+    /**
      * Create an instance of {@link LinkpointType }
      * 
      */
