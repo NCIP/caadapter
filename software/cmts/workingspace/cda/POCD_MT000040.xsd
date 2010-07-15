@@ -31,14 +31,18 @@
 *
 ********************************************************************************************************************
 	  -->
+<!-- change log
+	1. set schemaLocation to correct file URI
+	2. comment out line #261 (line #257 in original file) to resolve "out of memory" issue
+-->
 	<xs:annotation>
 		<xs:documentation>Generated using schema builder version 2.0. Stylesheets:
 RoseTreeToMIFStaticModel.xsl version: 1.1
 StaticMifToXsd.xsl version 2.0</xs:documentation>
 	</xs:annotation>
-	<xs:include schemaLocation="../../processable/coreschemas/datatypes.xsd"/>
-	<xs:include schemaLocation="../../processable/coreschemas/voc.xsd"/>
-	<xs:include schemaLocation="../../processable/coreschemas/NarrativeBlock.xsd"/>
+	<xs:include schemaLocation="coreschemas/datatypes.xsd"/>
+	<xs:include schemaLocation="coreschemas/voc.xsd"/>
+	<xs:include schemaLocation="coreschemas/NarrativeBlock.xsd"/>
 	<xs:complexType name="POCD_MT000040.InfrastructureRoot.typeId">
 		<xs:complexContent>
 			<xs:restriction base="II">
@@ -254,7 +258,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="realmCode" type="CS" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="section" type="POCD_MT000040.Section"/>
+			<!-- xs:element name="section" type="POCD_MT000040.Section"/ -->
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="typeCode" type="ActRelationshipHasComponent" use="optional" fixed="COMP"/>
