@@ -9,6 +9,7 @@ package gov.nih.nci.cbiit.cmts.mapping;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Stack;
 
@@ -138,6 +139,7 @@ public class MappingFactory {
 			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
 				processMeta(trgtMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
 		}
+		Collections.sort(mapLoaded.getTags().getTag(),Collections.reverseOrder());
 		for (TagType tag:mapLoaded.getTags().getTag())
 		{
 			if (tag.getKind().value().equals(KindType.CLONE.value()))
@@ -158,16 +160,13 @@ public class MappingFactory {
 				}
 				if (elmntMeta==null)
 					continue;
-				int insertingIndx=-1;
-				boolean isSibling=false;
+				int insertingIndx=0;
+
+				//find the position of the element being cloned
 				for (ElementMeta siblingElmnt:parentMeta.getChildElement())
 				{
 					insertingIndx++;
 					if (siblingElmnt.getName().equals(elmntMeta.getName()))
-					{
-						isSibling=true;
-					} 
-					else if (isSibling)
 						break;
 				}
 				ElementMeta cloneMeta=(ElementMeta)elmntMeta.clone();
