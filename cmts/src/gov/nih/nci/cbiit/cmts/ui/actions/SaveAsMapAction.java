@@ -19,6 +19,7 @@ import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Collections;
 
 /**
  * This class defines a concrete "Save As" action.
@@ -68,7 +69,6 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
-//		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, getUIWorkingDirectoryPath(), Config.MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
 		if(this.mappingPanel!=null)
 		{
 			if(mappingPanel.getSourceTree()==null || mappingPanel.getTargetTree()==null)
@@ -81,21 +81,18 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 		}
 		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, DefaultSettings.MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
 		if (file != null)
-		{
 			setSuccessfullyPerformed(processSaveFile(file));
-		}
-//		else
-//		{
-//			System.out.println(COMMAND_NAME + " command cancelled by user.");
-//		}
+		
 		return isSuccessfullyPerformed();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected boolean processSaveFile(File file) throws Exception
 	{
 		preActionPerformed(mappingPanel);
 		MiddlePanelJGraphController mappingManager = mappingPanel.getGraphController();//.getMiddlePanel().getGraphController();
 		Mapping mappingData = mappingManager.retrieveMappingData(true);
+		Collections.sort(mappingData.getTags().getTag());
 		MappingFactory.saveMapping(file, mappingData);
 		boolean oldChangeValue = mappingPanel.isChanged();
 		try

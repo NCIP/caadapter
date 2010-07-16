@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tagType")
-public class TagType {
+public class TagType implements Comparable {
 
 	@XmlAttribute
     protected ComponentType componentType;
@@ -145,6 +145,26 @@ public class TagType {
      */
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		TagType toCompared=(TagType)arg0;
+
+		int componentTypeCompare=this.getComponentType().compareTo(toCompared.getComponentType());
+		if (componentTypeCompare!=0)
+			return componentTypeCompare;
+		int kindCompare=this.getKind().compareTo(toCompared.getKind());
+		if (kindCompare!=0)
+			return kindCompare;
+		int keyCompare=this.getKey().compareTo(toCompared.getKey());
+		if (keyCompare!=0)
+			return keyCompare;	
+		int valueCompare=this.getValue().compareTo(toCompared.getValue());
+		if (valueCompare!=0)
+			return valueCompare;
+		return 0;
 	}
 
 
