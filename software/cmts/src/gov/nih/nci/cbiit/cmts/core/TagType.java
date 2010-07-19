@@ -97,7 +97,7 @@ public class TagType implements Comparable {
      *     {@link TagKind }
      *     
      */
-    public void setY(KindType value) {
+    public void setKind(KindType value) {
         this.kind = value;
     }
 
