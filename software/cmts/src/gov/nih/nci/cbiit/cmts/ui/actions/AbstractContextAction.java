@@ -67,14 +67,6 @@ public abstract class AbstractContextAction extends AbstractAction
 	 * The flag indicate whether this action is only for authorized user
 	 */
 	private boolean authorizationRequired=false;
-	
-	/**
-	 * Defines an <code>Action</code> object with a default
-	 * description string and default icon.
-	 */
-	protected AbstractContextAction()
-	{
-	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
