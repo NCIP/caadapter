@@ -49,15 +49,9 @@ public class ElementMetaLoader implements Serializable
 		this.nodeMode = mode;
 	}
 
-	/**
-	 * Based on the given object type, this function will convert the meta-data tree to a TreeNode-based tree structure, whose root is the returned TreeNode.
-	 * @param o the meta-data object
-	 * @return the root node representing the TreeNode structure mapping the given meta-data tree.
-	 * @throws NodeLoader.MetaDataloadException
-	 */
-	public TreeNode loadData(Object o)
+	public TreeNode loadDataForRoot(Object o, Object root)
 	{
-		this.nodeRoot = o;
+		nodeRoot = root;
 		if (o instanceof ElementMeta){
 			return processElement((ElementMeta)o);
 		}else if(o instanceof Component){
@@ -66,6 +60,17 @@ public class ElementMetaLoader implements Serializable
 			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
 					"not recognized. " + o);
 		}
+	}
+	/**
+	 * Based on the given object type, this function will convert the meta-data tree to a TreeNode-based tree structure, whose root is the returned TreeNode.
+	 * @param o the meta-data object
+	 * @return the root node representing the TreeNode structure mapping the given meta-data tree.
+	 * @throws NodeLoader.MetaDataloadException
+	 */
+	public TreeNode loadData(Object o)
+	{
+
+		return loadDataForRoot(o, o);
 	}
 
 	/**
