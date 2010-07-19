@@ -28,9 +28,9 @@ import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesPage;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
+import gov.nih.nci.cbiit.cmts.ui.tree.TreeMouseAdapter;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeSelectionHandler;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
-import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -73,11 +73,7 @@ import org.apache.xerces.xs.XSNamedMap;
 public class MappingMainPanel extends JPanel implements ActionListener, ContextManagerClient{
 
 	private static final String Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION = ".map";
-
-	private static final Object CSV_METADATA_FILE_DEFAULT_EXTENTION = ".xsd";
-	private static final Object HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION = ".xsd";
 	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE = "Open source data schema";
-
 	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE = "Open target data schema";
 	private static final String SELECT_CSV_TIP = "select CSV";
 	private static final String SELECT_HMD_TIP = "select HMD";
@@ -180,6 +176,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 
 		//Build the source tree
 		sTree = new MappingSourceTree(middlePanel, nodes);
+		sTree.addMouseListener(new TreeMouseAdapter());
 		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getGraphController());
 		sTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		sTree.setTransferHandler(new TreeDragTransferHandler());
@@ -224,6 +221,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		TreeNode nodes=loadTargetTreeData(metaInfo,absoluteFile);
 		//Build the target tree
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
+		tTree.addMouseListener(new TreeMouseAdapter());
 		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getGraphController());
 		tTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		TreeTransferHandler targetTreeTransferHandler= new TreeTransferHandler(this);
@@ -371,7 +369,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		Action action = null;
 		Map <String, Action>actionMap = null;
 		ContextManager contextManager = ContextManager.getContextManager();
-		actionMap = contextManager.getClientMenuActions("CMPS", menu_name);
+		actionMap = contextManager.getClientMenuActions("CMTS", menu_name);
 		if (MenuConstants.FILE_MENU_NAME.equals(menu_name))
 		{
 			JRootPane rootPane = this.getRootPane();
