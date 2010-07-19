@@ -371,6 +371,9 @@ public class MiddlePanelJGraphController {
 		} else {
 			mappingData.getLinks().getLink().clear();
 		}
+		if (mappingData.getTags()==null)
+			mappingData.setTags(new Mapping.Tags());
+		
 		List<DefaultEdge> graphEdgeLinks = this.getMiddlePanel()
 				.retrieveLinks();
 		for (DefaultEdge linkEdge : graphEdgeLinks) {
