@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\siblingMapping\shiporder.xsd" kind="xml" type="source" id="0">
-            <rootElement type="shipordertype" name="shiporder"/>
+        <component location="workingspace\siblingMapping\shiporder.xsd" kind="xml" type="source" id="0">
+            <rootElement isChosen="false" isChoice="false" type="shipordertype" name="shiporder"/>
         </component>
-        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\siblingMapping\accounting.xsd" kind="xml" type="target" id="1">
-            <rootElement name="accountingPrint"/>
+        <component location="workingspace\siblingMapping\accounting.xsd" kind="xml" type="target" id="1">
+            <rootElement isChosen="false" isChoice="false"  name="accountingPrint"/>
         </component>
     </components>
     <links>
@@ -58,5 +58,6 @@
             <target id="/accountingPrint/acctrecord" componentid="1"/>
         </link>
     </links>
+    <tags/>
     <views/>
 </mapping>

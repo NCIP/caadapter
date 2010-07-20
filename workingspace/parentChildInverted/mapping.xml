@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\parentChildInverted\delivery.xsd" kind="xml" type="target" id="0">
-            <rootElement name="deliveries"/>
+        <component location="workingspace\parentChildInverted\delivery.xsd" kind="xml" type="target" id="0">
+            <rootElement isChosen="false" isChoice="false" name="deliveries"/>
         </component>
-        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\parentChildInverted\groupOrder.xsd" kind="xml" type="source" id="1">
-            <rootElement type="shipordertype" name="grouporder"/>
+        <component location="workingspace\parentChildInverted\groupOrder.xsd" kind="xml" type="source" id="1">
+            <rootElement isChosen="false" isChoice="false" type="shipordertype" name="grouporder"/>
         </component>
     </components>
     <links>
@@ -58,5 +58,6 @@
             <target id="/deliveries/item/@orderid" componentid="0"/>
         </link>
     </links>
+    <tags/>
     <views/>
 </mapping>
