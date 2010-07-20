@@ -211,7 +211,14 @@ public class XQueryBuilder {
 	
 	private void encodeElement(ElementMeta elementMeta, String referencePath,  String inlineText, boolean childrenRequired)
 	{
-		sbQuery.append(" element "+ elementMeta.getName() + "{");
+		//process clone
+		String elementTagName=elementMeta.getName();
+		if (elementMeta.getMultiplicityIndex()!=null
+			&&elementMeta.getMultiplicityIndex().intValue()>0)
+			elementTagName=elementTagName.substring(0,elementTagName.indexOf("[") );
+		
+			
+		sbQuery.append(" element "+ elementTagName + "{");
 		//add attributes
 		encodeAttribute(elementMeta, referencePath);	
 
@@ -220,6 +227,21 @@ public class XQueryBuilder {
 		{
 			for(ElementMeta e:elementMeta.getChildElement()) 
 			{
+				//procee choice
+				if(e.getName().equals("<choice>"))
+				{
+					//do not create xml element, but "<choice>" is part of xmlpath
+					xpathStack.push(e.getName());
+					for (ElementMeta choiceChild:e.getChildElement())
+					{
+						if (!choiceChild.isIsChosen())
+							continue;
+						//create xml element for the chosen child
+						if (processTargetElement(choiceChild, referencePath))
+							sbQuery.append(",");
+					}
+					xpathStack.pop();
+				}
 				if (processTargetElement(e, referencePath))
 					sbQuery.append(",");
 			}

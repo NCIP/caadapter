@@ -7,6 +7,7 @@
 	<classpathentry kind="lib" path="lib/saxon9-xqj.jar"/>
 	<classpathentry kind="lib" path="lib/saxon9.jar"/>
 	<classpathentry kind="lib" path="lib/jgraph.jar"/>
+	<classpathentry kind="lib" path="testLib/junit-4.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/testLib"/>
 	<classpathentry kind="lib" path="lib/xmi.in.out.jar"/>
