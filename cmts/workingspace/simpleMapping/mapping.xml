@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\simpleMapping\shiporder.xsd" kind="xml" type="source" id="0">
-            <rootElement type="shipordertype" name="shiporder"/>
+        <component location="workingspace\simpleMapping\shiporder.xsd" kind="xml" type="source" id="0">
+            <rootElement isChosen="false" isChoice="false" type="shipordertype" name="shiporder"/>
         </component>
-        <component location="C:\eclipseJ2ee\workspace\cmtsSvn\workingspace\simpleMapping\printorder.xsd" kind="xml" type="target" id="1">
-            <rootElement type="printordertype" name="printorder"/>
+        <component location="workingspace\simpleMapping\printorder.xsd" kind="xml" type="target" id="1">
+            <rootElement isChosen="false" isChoice="false" type="printordertype" name="printorder"/>
         </component>
         <component type="function" id="1266939166165">
             <function method="countDays" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction" group="dateTime" name="countDays">
@@ -168,6 +168,7 @@
             <target id="/printorder/item/quantity" componentid="1"/>
         </link>
     </links>
+    <tags/>
     <views>
         <view width="140" hight="68" y="289" x="127" componentid="1266939166165"/>
         <view width="100" hight="50" y="258" x="21" componentid="1266939169821"/>
