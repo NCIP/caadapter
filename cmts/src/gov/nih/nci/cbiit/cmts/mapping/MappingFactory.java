@@ -220,7 +220,7 @@ public class MappingFactory {
 		String currentType=element.getType();
 		if (typeStack.contains(currentType))
 		{
-			System.out.println("MappingFactory.processMeta()..recursion:"+typeStack.toString() +".."+currentType);
+//			System.out.println("MappingFactory.processMeta()..recursion:"+typeStack.toString() +".."+currentType);
 			return;
 		
 		}
