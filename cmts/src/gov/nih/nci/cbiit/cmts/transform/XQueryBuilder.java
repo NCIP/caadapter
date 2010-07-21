@@ -242,7 +242,7 @@ public class XQueryBuilder {
 					}
 					xpathStack.pop();
 				}
-				if (processTargetElement(e, referencePath))
+				else if (processTargetElement(e, referencePath))
 					sbQuery.append(",");
 			}
 		}
