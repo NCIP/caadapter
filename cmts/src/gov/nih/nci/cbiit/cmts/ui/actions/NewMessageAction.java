@@ -11,6 +11,7 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.transform.TransformationUtil;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
@@ -100,7 +101,7 @@ public class NewMessageAction extends AbstractContextAction
 			String srcFile = FileUtil.getRelativePath(w.getDataFile());
 			tester.setFilename(srcFile);
 			tester.setQuery(queryString);
-			String xmlResult=tester.executeQuery();
+			String xmlResult=TransformationUtil.formatXqueryResult(tester.executeQuery());
 			newMsgPane.setMessageText(xmlResult);
 			FileWriter writer = new FileWriter(w.getDestFile());
 			writer.write(xmlResult);
