@@ -68,7 +68,7 @@ import java.util.List;
  * 
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since CMPS v1.0
+ * @since CMTS v1.0
  * @version $Revision: 1.14 $
  * @date $Date: 2009-12-02 18:48:44 $
  * 

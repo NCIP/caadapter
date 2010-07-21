@@ -30,7 +30,7 @@ import java.util.Iterator;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.2 $
  * @date       $Date: 2008-12-09 19:04:17 $
  */
@@ -48,7 +48,7 @@ public class ContextFileManager
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/common/ContextFileManager.java,v 1.2 2008-12-09 19:04:17 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/common/ContextFileManager.java,v 1.2 2008-12-09 19:04:17 linc Exp $";
 
 	private Map <File, java.util.Set<ContextManagerClient>> fileUsageMap = null;
 

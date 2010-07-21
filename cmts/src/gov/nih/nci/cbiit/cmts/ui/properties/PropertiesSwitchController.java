@@ -15,7 +15,7 @@ package gov.nih.nci.cbiit.cmts.ui.properties;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.2 $
  * @date       $Date: 2009-10-28 16:46:28 $
  */

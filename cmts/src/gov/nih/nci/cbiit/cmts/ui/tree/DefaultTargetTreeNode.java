@@ -13,7 +13,7 @@ package gov.nih.nci.cbiit.cmts.ui.tree;
  * One of primary reasons to have a distinct class is for differentiation purpose for future use of instanceof, for example.
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-10-27 20:06:30 $
  *

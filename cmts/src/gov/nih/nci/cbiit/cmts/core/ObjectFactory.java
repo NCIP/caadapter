@@ -31,8 +31,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _Mapping_QNAME = new QName("http://cmps.cbiit.nci.nih.gov/core", "mapping");
-    private final static QName _Functions_QNAME = new QName("http://cmps.cbiit.nci.nih.gov/core", "functions");
+    private final static QName _Mapping_QNAME = new QName("http://cmts.cbiit.nci.nih.gov/core", "mapping");
+    private final static QName _Functions_QNAME = new QName("http://cmts.cbiit.nci.nih.gov/core", "functions");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: gov.nih.nci.cbiit.cmts.core
@@ -164,7 +164,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link Mapping }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://cmps.cbiit.nci.nih.gov/core", name = "mapping")
+    @XmlElementDecl(namespace = "http://cmts.cbiit.nci.nih.gov/core", name = "mapping")
     public JAXBElement<Mapping> createMapping(Mapping value) {
         return new JAXBElement<Mapping>(_Mapping_QNAME, Mapping.class, null, value);
     }
@@ -173,7 +173,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link FunctionMeta }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://cmps.cbiit.nci.nih.gov/core", name = "functions")
+    @XmlElementDecl(namespace = "http://cmts.cbiit.nci.nih.gov/core", name = "functions")
     public JAXBElement<FunctionMeta> createFunctions(FunctionMeta value) {
         return new JAXBElement<FunctionMeta>(_Functions_QNAME, FunctionMeta.class, null, value);
     }

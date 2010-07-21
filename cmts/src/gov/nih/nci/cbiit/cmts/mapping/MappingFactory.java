@@ -36,11 +36,11 @@ import gov.nih.nci.cbiit.cmts.core.Mapping.Components;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
 
 /**
- * This class is used to generate CMPS Mapping
+ * This class is used to generate CMTS Mapping
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.6 $
  * @date       $Date: 2009-10-15 18:36:23 $
  *

@@ -25,7 +25,7 @@ import java.util.Set;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */
@@ -43,7 +43,7 @@ public class FunctionBoxGraphPortView extends PortView
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/function/FunctionBoxDefaultPortView.java,v 1.1 2008-12-29 22:18:18 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/function/FunctionBoxDefaultPortView.java,v 1.1 2008-12-29 22:18:18 linc Exp $";
 
 	/**
 	 * Default size for all ports is 6.

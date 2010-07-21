@@ -34,7 +34,7 @@ import org.junit.Test;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.8 $
  * @date       $Date: 2009-12-01 16:45:45 $
  *
@@ -137,7 +137,7 @@ public class TransformTest {
 		XQueryTransformer tester= new XQueryTransformer();
 		tester.setFilename("workingspace/simpleMapping/shiporder.xml");
 		tester.setQuery(queryString);
-		System.out.println("TransformTest.testCMPSTransform()..:\n"+tester.executeQuery());
+		System.out.println("TransformTest.testCMTSTransform()..:\n"+tester.executeQuery());
 		
 		w = new FileWriter("bin/tranform.out.xml");
 		w.write(tester.executeQuery());
