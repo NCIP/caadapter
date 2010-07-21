@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core">
+    <components>
+        <component location="workingspace\cda\CDA.xsd" kind="xml" type="target" id="0">
+            <rootElement isChosen="false" isChoice="false" type="POCD_MT000040.ClinicalDocument" nameSpace="urn:hl7-org:v3" name="ClinicalDocument"/>
+        </component>
+        <component location="workingspace\cda\shiporder.xsd" kind="xml" type="source" id="1">
+            <rootElement isChosen="false" isChoice="false" type="shipordertype" name="shiporder"/>
+        </component>
+    </components>
+    <links>
+        <link>
+            <source id="/shiporder" componentid="1"/>
+            <target id="/ClinicalDocument" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/@orderid" componentid="1"/>
+            <target id="/ClinicalDocument/@classCode" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/orderperson" componentid="1"/>
+            <target id="/ClinicalDocument/@moodCode" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto" componentid="1"/>
+            <target id="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/name" componentid="1"/>
+            <target id="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody/typeId/@root" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/address" componentid="1"/>
+            <target id="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody/@moodCode" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/city" componentid="1"/>
+            <target id="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody/text/@mediaType" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/country" componentid="1"/>
+            <target id="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody/text/@compression" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/item" componentid="1"/>
+            <target id="/ClinicalDocument/authorization" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/title" componentid="1"/>
+            <target id="/ClinicalDocument/authorization/typeId/@root" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/note" componentid="1"/>
+            <target id="/ClinicalDocument/authorization/typeId/@extension" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/quantity" componentid="1"/>
+            <target id="/ClinicalDocument/authorization/realmCode/@code" componentid="0"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/price" componentid="1"/>
+            <target id="/ClinicalDocument/authorization/@typeCode" componentid="0"/>
+        </link>
+    </links>
+    <tags>
+        <tag value="true" key="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody" kind="choice" componentType="target"/>
+    </tags>
+    <views/>
+</mapping>
