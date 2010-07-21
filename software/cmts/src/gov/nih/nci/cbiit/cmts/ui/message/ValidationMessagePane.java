@@ -61,7 +61,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/message/ValidationMessagePane.java,v 1.1 2009-11-10 19:13:33 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/message/ValidationMessagePane.java,v 1.1 2009-11-10 19:13:33 wangeug Exp $";
 
 	private JPanel navigationPanel = null;
 	private JPanel levelPanel = null;

@@ -5,5 +5,5 @@
 // Generated on: 2008.12.23 at 11:43:13 AM EST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://cmps.cbiit.nci.nih.gov/core")
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://cmts.cbiit.nci.nih.gov/core")
 package gov.nih.nci.cbiit.cmts.core;

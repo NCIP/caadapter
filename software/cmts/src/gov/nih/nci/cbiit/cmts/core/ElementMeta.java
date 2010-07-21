@@ -28,10 +28,10 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="elementMeta">
  *   &lt;complexContent>
- *     &lt;extension base="{http://cmps.cbiit.nci.nih.gov/core}baseMeta">
+ *     &lt;extension base="{http://cmts.cbiit.nci.nih.gov/core}baseMeta">
  *       &lt;sequence>
- *         &lt;element name="attrData" type="{http://cmps.cbiit.nci.nih.gov/core}attributeMeta" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="childElement" type="{http://cmps.cbiit.nci.nih.gov/core}elementMeta" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="attrData" type="{http://cmts.cbiit.nci.nih.gov/core}attributeMeta" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="childElement" type="{http://cmts.cbiit.nci.nih.gov/core}elementMeta" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="multiplicityIndex" type="{http://www.w3.org/2001/XMLSchema}integer" />
  *       &lt;attribute name="isSimple" type="{http://www.w3.org/2001/XMLSchema}boolean" />

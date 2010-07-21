@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-09 19:04:17 $
  */
@@ -46,7 +46,7 @@ public abstract class DefaultContextCloseAction extends DefaultCloseAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/actions/DefaultContextCloseAction.java,v 1.1 2008-12-09 19:04:17 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/actions/DefaultContextCloseAction.java,v 1.1 2008-12-09 19:04:17 linc Exp $";
 
 	private transient ContextManagerClient contextClient;
 	protected transient  JFrame mainFrame;

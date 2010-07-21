@@ -25,7 +25,7 @@ import java.util.Map;
  * This class defines a cutomized view implementation for functional box.
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-29 22:18:18 $
  */

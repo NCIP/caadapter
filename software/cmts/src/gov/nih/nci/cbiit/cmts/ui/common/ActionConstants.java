@@ -14,7 +14,7 @@ package gov.nih.nci.cbiit.cmts.ui.common;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.3 $
  * @date       $Date: 2008-12-09 19:04:17 $
  */
@@ -34,16 +34,13 @@ public interface ActionConstants
 	String HELP_TOPIC = "HELP_TOPIC";
 
 	String HELP = "Help - Contents and Index...";
-	//String HELP_MANAGER = "Help Mgr";
-	//String HELP_MANAGER2 = "Help Content Manager";   // For Tool Tip
-
 	String GENERATE_REPORT = "Generate Report...";
 	String VALIDATE = "Validate";
 	String ANOTATE = "Anotate";
 	String REFRESH = "Refresh";
-	String NEW_MAP_FILE = "New Map file";
-	String OPEN_MAP_FILE = "Open Map file";
-	String NEW_MESSAGE_FILE = "New message transformation";
+	String NEW_MAP_FILE = "New Map File";
+	String OPEN_MAP_FILE = "Open Map File";
+	String NEW_MESSAGE_FILE = "New Message Transformation";
 }
 
 /**

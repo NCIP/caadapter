@@ -28,7 +28,7 @@ import java.awt.Font;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.5 $
  * @date       $Date: 2009-11-09 18:33:59 $
  *

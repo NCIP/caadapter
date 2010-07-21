@@ -24,7 +24,7 @@ import java.util.ArrayList;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.2 $
  * @date       $Date: 2009-11-23 18:32:47 $
  */

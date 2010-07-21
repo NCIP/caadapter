@@ -26,12 +26,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;choice>
- *         &lt;element name="rootElement" type="{http://cmps.cbiit.nci.nih.gov/core}elementMeta"/>
- *         &lt;element name="function" type="{http://cmps.cbiit.nci.nih.gov/core}functionType"/>
+ *         &lt;element name="rootElement" type="{http://cmts.cbiit.nci.nih.gov/core}elementMeta"/>
+ *         &lt;element name="function" type="{http://cmts.cbiit.nci.nih.gov/core}functionType"/>
  *       &lt;/choice>
  *       &lt;attribute name="id" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="type" type="{http://cmps.cbiit.nci.nih.gov/core}componentType" />
- *       &lt;attribute name="kind" type="{http://cmps.cbiit.nci.nih.gov/core}kindType" />
+ *       &lt;attribute name="type" type="{http://cmts.cbiit.nci.nih.gov/core}componentType" />
+ *       &lt;attribute name="kind" type="{http://cmts.cbiit.nci.nih.gov/core}kindType" />
  *       &lt;attribute name="location" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>

@@ -23,12 +23,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
 
 import javax.swing.*;
 
-import java.awt.Event;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +34,7 @@ import java.util.Map;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.1 $
  * @date       $Date: 2009-11-23 18:30:56 $
  */
@@ -65,8 +60,6 @@ public class MainMenuBar extends JMenuBar
 		menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
 
 		add(constructFileMenu());
-		//add(constructReportMenu());
-		//		constructActionMap();
 	}
 
 
@@ -149,19 +142,6 @@ public class MainMenuBar extends JMenuBar
 		return fileMenu;
 	}
 
-//	private JMenu constructReportMenu()
-//	{
-//		JMenu reportMenu = new JMenu(MenuConstants.REPORT_MENU_NAME);
-//		reportMenu.setMnemonic('R');
-//		reportMenu.setEnabled(false);
-//		// first is just place holder.
-//		JMenuItem generateReportMenuItem = new JMenuItem((Action) null);
-//		reportMenu.add(generateReportMenuItem);
-//		menuItemMap.put(ActionConstants.GENERATE_REPORT, generateReportMenuItem);
-//		menuMap.put(MenuConstants.REPORT_MENU_NAME, reportMenu);
-//		return reportMenu;
-//	}
-
 
 	private JMenu constructNewMenu()
 	{
@@ -190,36 +170,11 @@ public class MainMenuBar extends JMenuBar
 
 		return openMenu;
 	}
-	private static int findKeyStrokeIndex(int indx)
-	{
-		if (indx==0)
-			return KeyEvent.VK_0;
-		else if (indx==1)
-			return KeyEvent.VK_1;
-		else if (indx==2)
-			return KeyEvent.VK_2;
-		else if (indx==3)
-			return KeyEvent.VK_3;
-		else if (indx==4)
-			return KeyEvent.VK_4;
-		else if (indx==5)
-			return KeyEvent.VK_5;
-		else if (indx==6)
-			return KeyEvent.VK_6;
-		else if (indx==7)
-			return KeyEvent.VK_7;
-		else if (indx==8)
-			return KeyEvent.VK_8;
-		else if (indx==9)
-			return KeyEvent.VK_9;
-		return  KeyEvent.VK_0;
-	}
-	
-	
+		
     private JMenu constructNewCmpsMenu()
     {
     	//user should be authorized to use HL7 artifacts
-        JMenu newGroup = new JMenu("CMPS");
+        JMenu newGroup = new JMenu("CMTS");
         newGroup.setMnemonic('N');
 
         NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);

@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="attributeMeta">
  *   &lt;complexContent>
- *     &lt;extension base="{http://cmps.cbiit.nci.nih.gov/core}baseMeta">
+ *     &lt;extension base="{http://cmts.cbiit.nci.nih.gov/core}baseMeta">
  *       &lt;attribute name="isRequired" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="isEnabled" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="isValid" type="{http://www.w3.org/2001/XMLSchema}boolean" />
