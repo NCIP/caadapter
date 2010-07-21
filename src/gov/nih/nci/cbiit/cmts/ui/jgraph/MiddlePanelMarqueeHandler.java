@@ -41,7 +41,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.4 $
  * @date       $Date: 2009-10-30 15:25:59 $
  *

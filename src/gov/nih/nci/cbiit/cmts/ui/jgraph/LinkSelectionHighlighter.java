@@ -35,7 +35,7 @@ import org.jgraph.graph.DefaultPort;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.7 $
  * @date       $Date: 2009-12-01 17:17:38 $
  */
@@ -53,7 +53,7 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.7 2009-12-01 17:17:38 wangeug Exp $";  
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/jgraph/LinkSelectionHighlighter.java,v 1.7 2009-12-01 17:17:38 wangeug Exp $";  
 	private MiddlePanelJGraphController graphController;
 	public LinkSelectionHighlighter(MiddlePanelJGraphController controller)
 	{

@@ -24,7 +24,7 @@ import net.sf.saxon.xqj.SaxonXQDataSource;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.3 $
  * @date       $Date: 2008-10-22 19:01:17 $
  *

@@ -20,11 +20,11 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import gov.nih.nci.cbiit.cmts.core.*; 
 
 /**
- * This class parses XSD into CMPS Core Model object
+ * This class parses XSD into CMTS Core Model object
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.15 $
  * @date       $Date: 2009-11-24 16:00:59 $
  *
@@ -139,7 +139,7 @@ public class XSDParser implements DOMErrorHandler {
 	}
 	
 	/**
-	 * get CMPS Core Model Object corresponding to the specified root element
+	 * get CMTS Core Model Object corresponding to the specified root element
 	 * @param namespace - root element namespace
 	 * @param name - root element name
 	 * @return ElementMeta object
@@ -160,7 +160,7 @@ public class XSDParser implements DOMErrorHandler {
 	}
 
 	/**
-	 * get CMPS Core Model Object corresponding to the specified complex type
+	 * get CMTS Core Model Object corresponding to the specified complex type
 	 * @param namespace - complex type namespace
 	 * @param name - complex type name
 	 * @return ElementMeta object

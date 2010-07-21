@@ -18,7 +18,7 @@ import javax.swing.*;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.1 $
  * @date       $Date: 2008-12-10 15:43:02 $
  */

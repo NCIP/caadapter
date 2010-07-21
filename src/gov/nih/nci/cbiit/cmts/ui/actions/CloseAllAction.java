@@ -26,7 +26,7 @@ import java.util.ArrayList;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.2 $
  * @date       $Date: 2009-11-23 18:32:47 $
  */
@@ -38,7 +38,7 @@ public class CloseAllAction extends AbstractContextAction
 //	protected static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F4, Event.CTRL_MASK, false);
 
 	private static final String LOGID = "$RCSfile: CloseAllAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/actions/CloseAllAction.java,v 1.2 2009-11-23 18:32:47 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/actions/CloseAllAction.java,v 1.2 2009-11-23 18:32:47 wangeug Exp $";
 
 	protected MainFrame mainFrame = null;
 

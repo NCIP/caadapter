@@ -65,7 +65,7 @@ import org.apache.xerces.xs.XSNamedMap;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.16 $
  * @date       $Date: 2009-12-02 18:53:16 $
  *
@@ -391,16 +391,16 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		//since the action depends on the panel instance,
 		//the old action instance should be removed
 		if (actionMap!=null)
-			contextManager.removeClientMenuAction("CMPS", menu_name, "");
+			contextManager.removeClientMenuAction("CMTS", menu_name, "");
 		
 		action = new SaveMapAction(this);
-		contextManager.addClientMenuAction("CMPS", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
+		contextManager.addClientMenuAction("CMTS", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
 		action.setEnabled(true);
 		action = new SaveAsMapAction(this);
-		contextManager.addClientMenuAction("CMPS", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE_AS, action);
+		contextManager.addClientMenuAction("CMTS", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE_AS, action);
 		action.setEnabled(true);
 
-		actionMap = contextManager.getClientMenuActions("CMPS", menu_name);
+		actionMap = contextManager.getClientMenuActions("CMTS", menu_name);
 		return actionMap;
 	}
 	public MappingMiddlePanel getMiddlePanel() {

@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="componentType" type="{http://cmps.cbiit.nci.nih.gov/core}componentKind" />
- *       &lt;attribute name="kind" type="{http://cmps.cbiit.nci.nih.gov/core}tagKind" />
+ *       &lt;attribute name="componentType" type="{http://cmts.cbiit.nci.nih.gov/core}componentKind" />
+ *       &lt;attribute name="kind" type="{http://cmts.cbiit.nci.nih.gov/core}tagKind" />
  *       &lt;attribute name="key" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="value" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>

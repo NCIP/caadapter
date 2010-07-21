@@ -26,7 +26,7 @@ import java.util.Collections;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.4 $
  * @date       $Date: 2009-11-03 18:30:56 $
  */

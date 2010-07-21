@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="component" type="{http://cmps.cbiit.nci.nih.gov/core}component" maxOccurs="unbounded" minOccurs="0"/>
+ *                   &lt;element name="component" type="{http://cmts.cbiit.nci.nih.gov/core}component" maxOccurs="unbounded" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="link" type="{http://cmps.cbiit.nci.nih.gov/core}linkType" maxOccurs="unbounded" minOccurs="0"/>
+ *                   &lt;element name="link" type="{http://cmts.cbiit.nci.nih.gov/core}linkType" maxOccurs="unbounded" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -53,7 +53,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="view" type="{http://cmps.cbiit.nci.nih.gov/core}viewType" maxOccurs="unbounded" minOccurs="0"/>
+ *                   &lt;element name="view" type="{http://cmts.cbiit.nci.nih.gov/core}viewType" maxOccurs="unbounded" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -200,7 +200,7 @@ public class Mapping {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="component" type="{http://cmps.cbiit.nci.nih.gov/core}component" maxOccurs="unbounded" minOccurs="0"/>
+     *         &lt;element name="component" type="{http://cmts.cbiit.nci.nih.gov/core}component" maxOccurs="unbounded" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -259,7 +259,7 @@ public class Mapping {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="link" type="{http://cmps.cbiit.nci.nih.gov/core}linkType" maxOccurs="unbounded" minOccurs="0"/>
+     *         &lt;element name="link" type="{http://cmts.cbiit.nci.nih.gov/core}linkType" maxOccurs="unbounded" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -318,7 +318,7 @@ public class Mapping {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="view" type="{http://cmps.cbiit.nci.nih.gov/core}viewType" maxOccurs="unbounded" minOccurs="0"/>
+     *         &lt;element name="view" type="{http://cmts.cbiit.nci.nih.gov/core}viewType" maxOccurs="unbounded" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -375,7 +375,7 @@ public class Mapping {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="view" type="{http://cmps.cbiit.nci.nih.gov/core}tagType" maxOccurs="unbounded" minOccurs="0"/>
+     *         &lt;element name="view" type="{http://cmts.cbiit.nci.nih.gov/core}tagType" maxOccurs="unbounded" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>

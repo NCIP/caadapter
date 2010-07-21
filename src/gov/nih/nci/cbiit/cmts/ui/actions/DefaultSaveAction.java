@@ -24,7 +24,7 @@ import java.awt.event.KeyEvent;
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
- * @since     CMPS v1.0
+ * @since     CMTS v1.0
  * @version    $Revision: 1.2 $
  * @date       $Date: 2009-11-23 18:32:47 $
  */
@@ -37,7 +37,7 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 	public static final String TOOL_TIP_DESCRIPTION = "Save";
 
 	private static final String LOGID = "$RCSfile: DefaultSaveAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/actions/DefaultSaveAction.java,v 1.2 2009-11-23 18:32:47 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/actions/DefaultSaveAction.java,v 1.2 2009-11-23 18:32:47 wangeug Exp $";
 
 	/**
 	 * Defines an <code>Action</code> object with a default
