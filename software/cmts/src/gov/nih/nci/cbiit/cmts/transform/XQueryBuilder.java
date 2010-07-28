@@ -154,7 +154,10 @@ public class XQueryBuilder {
 			
 			sbQuery.append(" return ");	
 			//set online text
-			inlineText=var+"/text()";
+			if (localpath.contains("@"))
+				inlineText="data("+var+")";
+			else
+				inlineText=var+"/text()";
 			encodeElement(tgt, tgtMappingSrc,inlineText,true);
 			varStack.pop();
 			elementCreated=true;
