@@ -17,6 +17,7 @@ import javax.xml.xquery.XQResultSequence;
 
 import javax.xml.namespace.QName;
 
+import net.sf.saxon.Configuration;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
 /**
@@ -31,26 +32,27 @@ import net.sf.saxon.xqj.SaxonXQDataSource;
  */
 public class XQueryTransformer {
 	// Filename for XML document to query
-	private String filename;
+	private String sourceFileName;
 	
 	// Data Source for querying
-	private SaxonXQDataSource dataSource;
+//	private SaxonXQDataSource dataSource;
 
 	// Connection for querying
 	private XQConnection conn;
 
 	// Query String
 	private String queryString;
-	
-	// Prepared Query
-	private XQPreparedExpression exp;
+//	
+//	// Prepared Query
+//	private XQPreparedExpression exp;
 	
 	/**
 	 * constructor
 	 * @throws XQException
 	 */
 	public XQueryTransformer() throws XQException {
-		dataSource = new SaxonXQDataSource();
+		Configuration  saxonConfig=new Configuration();
+		SaxonXQDataSource dataSource = new SaxonXQDataSource(saxonConfig);
 		conn = dataSource.getConnection();
 	}
 
@@ -58,21 +60,14 @@ public class XQueryTransformer {
 	 * @return the filename
 	 */
 	public final String getFilename() {
-		return filename;
+		return sourceFileName;
 	}
 
 	/**
 	 * @param filename the filename to set
 	 */
-	public final void setFilename(String filename) {
-		this.filename = filename;
-	}
-
-	/**
-	 * @return the dataSource
-	 */
-	public final SaxonXQDataSource getDataSource() {
-		return dataSource;
+	public final void setSourceFileName(String filename) {
+		this.sourceFileName = filename;
 	}
 
 	/**
@@ -87,23 +82,35 @@ public class XQueryTransformer {
 	 * @param queryString
 	 * @throws XQException
 	 */
-	public void setQuery(String queryString) throws XQException {
-		exp = conn.prepareExpression(queryString);
-		this.queryString = queryString;
+	public void setQuery(String query) throws XQException {
+		queryString=query;
 	}
 	
 	/**
-	 * execute XQuery
+	 * execute XQuery with pre-set query and source file
+	 * @see #executeQuery(String, String)
 	 * @return
 	 * @throws XQException
 	 */
 	public String executeQuery() throws XQException {
-		exp.bindString(new QName("docName"), filename,
+		return executeQuery(queryString, sourceFileName);
+	}
+
+	/**
+	 * execute XQuery
+	 * @param query query string to execute
+	 * @param sourceFile name of source file
+	 * @return
+	 * @throws XQException
+	 */
+	public String executeQuery(String query, String sourceFile) throws XQException {
+		XQPreparedExpression exp=conn.prepareExpression(query);
+		exp.bindString(new QName("docName"), sourceFile,
 				conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
 		XQResultSequence result = exp.executeQuery();
 		return result.getSequenceAsString(new Properties());
 	}
-
+	
 	/**
 	 * test method
 	 * @param args
@@ -117,7 +124,7 @@ public class XQueryTransformer {
 		try {
 			String xmlFilename = args[0];
 			XQueryTransformer tester= new XQueryTransformer();
-			tester.setFilename(xmlFilename);
+			tester.setSourceFileName(xmlFilename);
 
 			final String sep = System.getProperty("line.separator");
 			String queryString =
