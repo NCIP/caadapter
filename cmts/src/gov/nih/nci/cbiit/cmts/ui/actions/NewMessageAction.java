@@ -9,11 +9,18 @@
 package gov.nih.nci.cbiit.cmts.ui.actions;
 
 
+import gov.nih.nci.caadapter.common.csv.CSVDataResult;
+import gov.nih.nci.caadapter.common.csv.CsvReader;
+import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
+import gov.nih.nci.cbiit.cmts.common.XSDParser;
+import gov.nih.nci.cbiit.cmts.core.ComponentType;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
-import gov.nih.nci.cbiit.cmts.transform.TransformationUtil;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.transform.csv.CsvData2XmlConverter;
+import gov.nih.nci.cbiit.cmts.transform.csv.CsvXsd2MetadataConverter;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
@@ -26,7 +33,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.InputStream;
+
+import junit.framework.Assert;
 
 /**
  * This class defines the new message transformation action.
@@ -99,9 +110,41 @@ public class NewMessageAction extends AbstractContextAction
 			System.out.println("$$$$$$ query: \n"+queryString);
 			XQueryTransformer tester= new XQueryTransformer();
 			String srcFile = FileUtil.getRelativePath(w.getDataFile());
-			tester.setFilename(srcFile);
+			if (srcFile.endsWith("csv"))
+			{
+				//parse csv data 
+				String xsdFile="";
+		    	String xsdRoot="";
+				for (gov.nih.nci.cbiit.cmts.core.Component comp:map.getComponents().getComponent())
+				{
+					if (comp.getType().equals(ComponentType.SOURCE))
+					{
+						xsdFile=comp.getLocation();
+						xsdRoot=comp.getRootElement().getName();
+					}	
+				}
+		    	
+				XSDParser p = new XSDParser();
+				p.loadSchema(xsdFile);
+				ElementMeta element = p.getElementMeta(null, xsdRoot);
+				CsvXsd2MetadataConverter converter=new CsvXsd2MetadataConverter(element);
+				CSVMeta csvMeta= converter.getCSVMeta();
+				
+		    	String tempXmlSrc=null;
+				InputStream  sourceDataStream = new FileInputStream(srcFile);
+				CsvReader reader = new CsvReader(sourceDataStream, csvMeta);
+				
+				while(reader.hasMoreRecord())
+				{
+					CSVDataResult nextResult=reader.getNextRecord();
+					CsvData2XmlConverter xmlConverter=new CsvData2XmlConverter(nextResult);
+					tempXmlSrc=xmlConverter.writeXml2File(null);
+				}
+				srcFile=tempXmlSrc;
+			}
+			tester.setSourceFileName(srcFile);
 			tester.setQuery(queryString);
-			String xmlResult=TransformationUtil.formatXqueryResult(tester.executeQuery());
+			String xmlResult=tester.executeQuery();
 			newMsgPane.setMessageText(xmlResult);
 			FileWriter writer = new FileWriter(w.getDestFile());
 			writer.write(xmlResult);

@@ -9,6 +9,7 @@ package gov.nih.nci.cbiit.cmts.test;
 
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.transform.TransformationUtil;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
 
@@ -93,9 +94,7 @@ public class TransformTest {
 		System.out.println("$$$$$$ query: \n"+queryString);
 		XQueryTransformer tester= new XQueryTransformer();
 
-		tester.setFilename(srcFile);
-		tester.setQuery(queryString);
-		String xmlResult=tester.executeQuery();
+		String xmlResult=tester.executeQuery(queryString, srcFile);
 		System.out.println("TransformTest.testMappingAndTransformation()\n"+xmlResult);
 	}
 	/**
@@ -118,7 +117,7 @@ public class TransformTest {
 		XQueryTransformer tester= new XQueryTransformer();
 		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
  
-		tester.setFilename(srcFile);
+		tester.setSourceFileName(srcFile);
 		tester.setQuery(queryString);
 		System.out.println(tester.executeQuery());
 	}
@@ -135,12 +134,12 @@ public class TransformTest {
 		w.close();
 		
 		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("workingspace/simpleMapping/shiporder.xml");
+		tester.setSourceFileName("workingspace/simpleMapping/shiporder.xml");
 		tester.setQuery(queryString);
-		System.out.println("TransformTest.testCMTSTransform()..:\n"+tester.executeQuery());
+		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.executeQuery()));
 		
 		w = new FileWriter("bin/tranform.out.xml");
-		w.write(tester.executeQuery());
+		w.write(TransformationUtil.formatXqueryResult(tester.executeQuery()));
 		w.close();
 	}
 
