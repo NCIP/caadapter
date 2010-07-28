@@ -93,7 +93,7 @@ public class XQueryTransformer {
 	 * @throws XQException
 	 */
 	public String executeQuery() throws XQException {
-		return executeQuery(queryString, sourceFileName);
+		return TransformationUtil.formatXqueryResult(executeQuery(queryString, sourceFileName));
 	}
 
 	/**
