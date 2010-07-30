@@ -262,8 +262,18 @@ public class XSDParser implements DOMErrorHandler {
 		if (l==null||l.isEmpty())
 			return l;
 		ElementMeta e = (ElementMeta)l.get(0);
+		boolean setOccurs=false;
+		if (item.getTerm() instanceof XSModelGroup)
+		{
+			short comp = ((XSModelGroup)item.getTerm()).getCompositor();
+			if (comp==XSModelGroup.COMPOSITOR_CHOICE)
+				setOccurs=true;
+		}
 		if (item.getTerm()!=null&&item.getTerm().getName()!=null&&
 				item.getTerm().getName().equals(e.getName()))
+			setOccurs=true;
+		
+		if (setOccurs)
 		{
 			int maxOccur = item.getMaxOccurs();
 			int minOccur = item.getMinOccurs();
