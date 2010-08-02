@@ -38,6 +38,7 @@ import java.util.Map;
  * @version    $Revision: 1.1 $
  * @date       $Date: 2009-11-23 18:30:56 $
  */
+@SuppressWarnings("serial")
 public class MainMenuBar extends JMenuBar 
 {
 
@@ -192,9 +193,15 @@ public class MainMenuBar extends JMenuBar
         NewTransformationAction newCsvMessage = new NewTransformationAction(ActionConstants.NEW_CSV_Transformation, mainFrame);
         JMenuItem newCsvTransformationItem = new JMenuItem(newCsvMessage);
         actionMap.put(ActionConstants.NEW_CSV_Transformation, newCsvMessage);
-        menuItemMap.put(ActionConstants.NEW_CSV_Transformation, newCsvTransformationItem);
-        
+        menuItemMap.put(ActionConstants.NEW_CSV_Transformation, newCsvTransformationItem);  
         newGroup.add(newCsvTransformationItem);
+        
+        NewTransformationAction newHl7v2Message = new NewTransformationAction(ActionConstants.NEW_HL7_V2_Transformation, mainFrame);
+        JMenuItem newHl7v2TransformationItem = new JMenuItem(newHl7v2Message);
+        actionMap.put(ActionConstants.NEW_CSV_Transformation, newHl7v2Message);
+        menuItemMap.put(ActionConstants.NEW_CSV_Transformation, newHl7v2TransformationItem);  
+        newGroup.add(newHl7v2TransformationItem);
+        
         return newGroup;
     }
 

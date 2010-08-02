@@ -42,6 +42,7 @@ public interface ActionConstants
 	String OPEN_MAP_FILE = "Open Map File";
 	String NEW_XML_Transformation = "New XML Transformation";
 	String NEW_CSV_Transformation = "New CSV Transformation";
+	String NEW_HL7_V2_Transformation = "New HL7 v2 Transformation";
 }
 
 /**

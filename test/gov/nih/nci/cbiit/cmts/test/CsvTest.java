@@ -78,7 +78,6 @@ public class CsvTest {
 			Assert.assertNotNull(nextResult);
 		}
 		XQueryTransformer tester= new XQueryTransformer();
-
 		String xmlResult=tester.executeQuery(queryString, tempXmlSrc);
 		System.out.println("TransformTest.testMappingAndTransformation()\n"+TransformationUtil.formatXqueryResult(xmlResult));
 		File tmpFile=new File(tempXmlSrc);

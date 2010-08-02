@@ -116,10 +116,7 @@ public class TransformTest {
 		System.out.println("TransformTest.testXQueryTransform()\n"+queryString);
 		XQueryTransformer tester= new XQueryTransformer();
 		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
- 
-		tester.setSourceFileName(srcFile);
-		tester.setQuery(queryString);
-		System.out.println(tester.executeQuery());
+		System.out.println(tester.executeQuery(srcFile, queryString));
 	}
 
 	@Test
@@ -134,12 +131,11 @@ public class TransformTest {
 		w.close();
 		
 		XQueryTransformer tester= new XQueryTransformer();
-		tester.setSourceFileName("workingspace/simpleMapping/shiporder.xml");
-		tester.setQuery(queryString);
-		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.executeQuery()));
+		String dataSource="workingspace/simpleMapping/shiporder.xml";
+ 		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.Transfer(dataSource, mapFile)));
 		
 		w = new FileWriter("bin/tranform.out.xml");
-		w.write(TransformationUtil.formatXqueryResult(tester.executeQuery()));
+		w.write(tester.Transfer(dataSource, mapFile));
 		w.close();
 	}
 
