@@ -64,6 +64,7 @@
     </links>
     <tags>
         <tag value="true" key="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody" kind="choice" componentType="target"/>
+        <tag value="1" key="/ClinicalDocument/author/assignedAuthor/representedOrganization/addr/&lt;choice&gt;" kind="clone" componentType="target"/>
     </tags>
     <views/>
 </mapping>
