@@ -63,10 +63,6 @@ public abstract class AbstractContextAction extends AbstractAction
 	 */
 	private boolean successfullyPerformed = false;
 
-	/**
-	 * The flag indicate whether this action is only for authorized user
-	 */
-	private boolean authorizationRequired=false;
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
@@ -297,14 +293,6 @@ public abstract class AbstractContextAction extends AbstractAction
 			container = new JFrame();
 		}
 		return container;
-	}
-
-	public boolean isAuthorizationRequired() {
-		return authorizationRequired;
-	}
-
-	public void setAuthorizationRequired(boolean authorizationRequired) {
-		this.authorizationRequired = authorizationRequired;
 	}
 }
 /**

@@ -55,6 +55,7 @@ public class DefaultSettings
 
     private static final UIDefaults newDefaults = new UIDefaults(uiDefaults);
     public static final String MAP_FILE_DEFAULT_EXTENTION = ".xml";
+    public static final String XML_DATA_FILE_DEFAULT_EXTENSTION = ".xml";
     public static final String CSV_DATA_FILE_DEFAULT_EXTENSTION = ".csv";
     public static final String CSV_METADATA_FILE_DEFAULT_EXTENTION = ".scs";
     public static final String OPEN_DIALOG_TITLE_FOR_CSV_FILE = "Open csv file";
@@ -92,15 +93,6 @@ public class DefaultSettings
             return defaultFileChooser;
         }
     }
-
-//	/**
-//	 * Installs all default settings.
-//	 */
-//	public static void installAll()
-//	{
-//		installLookAndFeel();
-//		installFonts();
-//	}
 
     /**
      * Installs the default LookAndFeel.
@@ -172,16 +164,6 @@ public class DefaultSettings
         currentDefaults.put("win.messagebox.font", newFont);
         //		dumpMap(currentDefaults);
     }
-
-    //	private static final void dumpMap(Map map)
-    //	{
-    //		Iterator it = map.keySet().iterator();
-    //		while(it!=null && it.hasNext())
-    //		{
-    //			Object key = it.next();
-    //			System.out.println("key='"+key +"',value='"+map.get(key) + "';");
-    //		}
-    //	}
 
     /**
      * Returns the classname without the package.
@@ -361,17 +343,6 @@ public class DefaultSettings
         //clear out the file filter after usage.
         for(FileFilter fileFilter:fileFilters)
         fileChooser.removeChoosableFileFilter(fileFilter);
-
-        //NOTE: Do not manually clear the selection, or should come up better way to clear out the selection memorized in other classes.
-        //clear out the text field after the popup either being cancelled or being selected.
-        //		FileChooserUI fileChooserUI = fileChooser.getUI();
-        //		if (fileChooserUI instanceof BasicFileChooserUI)
-        //		{
-        //			((BasicFileChooserUI) fileChooserUI).setFileName("");
-        //		}
-        System.out
-        .println("DefaultSettings.getUserInputOfFileFromGUI()..currentDir:"+fileChooser.getCurrentDirectory());
-
         return file;
     }
 
@@ -561,7 +532,6 @@ public class DefaultSettings
         dlg.setVisible(true);
         if(p.getValue().equals(Integer.valueOf(JOptionPane.OK_OPTION))) {
             return c.getSelectedItem();
-//			return (String)c.getSelectedItem();
         }
         return null;
 
