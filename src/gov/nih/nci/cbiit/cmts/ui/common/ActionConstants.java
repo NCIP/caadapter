@@ -40,7 +40,8 @@ public interface ActionConstants
 	String REFRESH = "Refresh";
 	String NEW_MAP_FILE = "New Map File";
 	String OPEN_MAP_FILE = "Open Map File";
-	String NEW_MESSAGE_FILE = "New Message Transformation";
+	String NEW_XML_Transformation = "New XML Transformation";
+	String NEW_CSV_Transformation = "New CSV Transformation";
 }
 
 /**

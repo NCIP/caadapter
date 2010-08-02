@@ -10,6 +10,7 @@ package gov.nih.nci.cbiit.cmts.ui.message;
 
 
 import gov.nih.nci.cbiit.cmts.ui.actions.BrowseMessageAction;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
@@ -94,7 +95,12 @@ public class OpenMessageFrontPage extends JPanel
 		String result = null;
 		if(DATA_FILE_BROWSE_MODE.equals(browseMode))
 		{
-			result = DefaultSettings.MAP_FILE_DEFAULT_EXTENTION;
+			if (openWizardTitle.equals(ActionConstants.NEW_CSV_Transformation))
+					result=DefaultSettings.CSV_DATA_FILE_DEFAULT_EXTENSTION;
+			else if (openWizardTitle.equals(ActionConstants.NEW_XML_Transformation))
+				result = DefaultSettings.XML_DATA_FILE_DEFAULT_EXTENSTION;
+			else
+				result = DefaultSettings.XML_DATA_FILE_DEFAULT_EXTENSTION;
 		}
 		else if(MAP_FILE_BROWSE_MODE.equals(browseMode))
 		{
