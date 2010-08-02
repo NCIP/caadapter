@@ -16,7 +16,7 @@ import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAsAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.ExitAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
-import gov.nih.nci.cbiit.cmts.ui.actions.NewMessageAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.NewTransformationAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
@@ -149,7 +149,7 @@ public class MainMenuBar extends JMenuBar
 		//System.out.println("Activated components:\n" + CaadapterUtil.getAllActivatedComponents());
 		menuMap.put(MenuConstants.NEW_MENU_NAME, newGroup);
 		
-        newGroup.add(constructNewCmpsMenu());
+        newGroup.add(constructNewCmtsMenu());
 
 		return newGroup;
 	}
@@ -171,26 +171,30 @@ public class MainMenuBar extends JMenuBar
 		return openMenu;
 	}
 		
-    private JMenu constructNewCmpsMenu()
+    private JMenu constructNewCmtsMenu()
     {
     	//user should be authorized to use HL7 artifacts
         JMenu newGroup = new JMenu("CMTS");
         newGroup.setMnemonic('N');
 
         NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
-        newMapAction.setAuthorizationRequired(true);
         JMenuItem newCmpsMapItem = new JMenuItem(newMapAction);
         actionMap.put(ActionConstants.NEW_MAP_FILE, newMapAction);
         menuItemMap.put(ActionConstants.NEW_MAP_FILE, newCmpsMapItem);
         newGroup.add(newCmpsMapItem);
         
-        NewMessageAction newMessage = new NewMessageAction(mainFrame);
-        newMessage.setAuthorizationRequired(true);
-        JMenuItem newCmpsMessageItem = new JMenuItem(newMessage);
-        actionMap.put(ActionConstants.NEW_MESSAGE_FILE, newMessage);
-        menuItemMap.put(ActionConstants.NEW_MESSAGE_FILE, newCmpsMessageItem);
-        newGroup.add(newCmpsMessageItem);
+        NewTransformationAction newXmlMessage = new NewTransformationAction(ActionConstants.NEW_XML_Transformation, mainFrame);
+        JMenuItem newXmlTransformationItem = new JMenuItem(newXmlMessage);
+        actionMap.put(ActionConstants.NEW_XML_Transformation, newXmlMessage);
+        menuItemMap.put(ActionConstants.NEW_XML_Transformation, newXmlTransformationItem);
+        newGroup.add(newXmlTransformationItem);
         
+        NewTransformationAction newCsvMessage = new NewTransformationAction(ActionConstants.NEW_CSV_Transformation, mainFrame);
+        JMenuItem newCsvTransformationItem = new JMenuItem(newCsvMessage);
+        actionMap.put(ActionConstants.NEW_CSV_Transformation, newCsvMessage);
+        menuItemMap.put(ActionConstants.NEW_CSV_Transformation, newCsvTransformationItem);
+        
+        newGroup.add(newCsvTransformationItem);
         return newGroup;
     }
 
