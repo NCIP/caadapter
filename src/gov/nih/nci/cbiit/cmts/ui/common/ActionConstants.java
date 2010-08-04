@@ -38,11 +38,11 @@ public interface ActionConstants
 	String VALIDATE = "Validate";
 	String ANOTATE = "Anotate";
 	String REFRESH = "Refresh";
-	String NEW_MAP_FILE = "New Map File";
-	String OPEN_MAP_FILE = "Open Map File";
-	String NEW_XML_Transformation = "New XML Transformation";
-	String NEW_CSV_Transformation = "New CSV Transformation";
-	String NEW_HL7_V2_Transformation = "New HL7 v2 Transformation";
+	String NEW_MAP_FILE = "Transformation Mapping";
+	String OPEN_MAP_FILE = "Open Transformation Mapping";
+	String NEW_XML_Transformation = "XML to XML Transformation";
+	String NEW_CSV_Transformation = "CSV to XML Transformation";
+	String NEW_HL7_V2_Transformation = "HL7 v2 to XML Transformation";
 }
 
 /**

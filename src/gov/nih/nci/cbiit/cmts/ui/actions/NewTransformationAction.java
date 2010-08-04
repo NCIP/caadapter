@@ -36,10 +36,16 @@ import java.io.FileWriter;
  */
 @SuppressWarnings("serial")
 public class NewTransformationAction extends AbstractContextAction
-		{
-//	private static final String COMMAND_NAME = ActionConstants.NEW_XML_Transformation;
-	private static final Character COMMAND_MNEMONIC = new Character('M');
-	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.CTRL_MASK, false);
+{
+
+	private static final Character XML_COMMAND_MNEMONIC = new Character('X');
+	private static final KeyStroke XML_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false);
+
+	private static final Character CSV_COMMAND_MNEMONIC = new Character('C');
+	private static final KeyStroke CSV_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false);
+
+	private static final Character HL7_COMMAND_MNEMONIC = new Character('H');
+	private static final KeyStroke HL7_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK, false);
 
 	private MainFrame mainFrame;
 	private String transformationType=ActionConstants.NEW_XML_Transformation;
@@ -71,8 +77,23 @@ public class NewTransformationAction extends AbstractContextAction
 		super(name, icon);
 		transformationType=name;
 		this.mainFrame = mainFrame;
-		setMnemonic(COMMAND_MNEMONIC);
-		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
+		if (transformationType==null
+				||transformationType==""
+					||transformationType==ActionConstants.NEW_XML_Transformation)
+		{
+			setMnemonic(XML_COMMAND_MNEMONIC);
+			setAcceleratorKey(XML_ACCELERATOR_KEY_STROKE);
+		}
+		else if (transformationType==ActionConstants.NEW_CSV_Transformation)
+		{
+			setMnemonic(CSV_COMMAND_MNEMONIC);
+			setAcceleratorKey(CSV_ACCELERATOR_KEY_STROKE);
+		}
+		else if (transformationType==ActionConstants.NEW_HL7_V2_Transformation)
+		{
+			setMnemonic(HL7_COMMAND_MNEMONIC);
+			setAcceleratorKey(HL7_ACCELERATOR_KEY_STROKE);
+		}
 		setActionCommandType(DESKTOP_ACTION_TYPE);
 		//do not know how to set the icon location name, or just do not matter.
 	}
@@ -100,46 +121,6 @@ public class NewTransformationAction extends AbstractContextAction
 			else
 				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);
 
-//			Mapping map = MappingFactory.loadMapping(w.getMapFile());
-//			XQueryBuilder builder = new XQueryBuilder(map);
-//			String queryString = builder.getXQuery();
-//			System.out.println("$$$$$$ query: \n"+queryString);
-//			XQueryTransformer tester= new XQueryTransformer();
-//			String srcFile = FileUtil.getRelativePath(w.getDataFile());
-//			if (transformationType.equals(ActionConstants.NEW_CSV_Transformation))
-//			{
-//				//parse csv data 
-//				String xsdFile="";
-//		    	String xsdRoot="";
-//				for (gov.nih.nci.cbiit.cmts.core.Component comp:map.getComponents().getComponent())
-//				{
-//					if (comp.getType().equals(ComponentType.SOURCE))
-//					{
-//						xsdFile=comp.getLocation();
-//						xsdRoot=comp.getRootElement().getName();
-//					}	
-//				}
-//		    	
-//				XSDParser p = new XSDParser();
-//				p.loadSchema(xsdFile);
-//				ElementMeta element = p.getElementMeta(null, xsdRoot);
-//				CsvXsd2MetadataConverter converter=new CsvXsd2MetadataConverter(element);
-//				CSVMeta csvMeta= converter.getCSVMeta();
-//				
-//		    	String tempXmlSrc=null;
-//				InputStream  sourceDataStream = new FileInputStream(srcFile);
-//				CsvReader reader = new CsvReader(sourceDataStream, csvMeta);
-//				
-//				while(reader.hasMoreRecord())
-//				{
-//					CSVDataResult nextResult=reader.getNextRecord();
-//					CsvData2XmlConverter xmlConverter=new CsvData2XmlConverter(nextResult);
-//					tempXmlSrc=xmlConverter.writeXml2File(null);
-//				}
-//				srcFile=tempXmlSrc;
-//			}
-//			tester.setSourceFileName(srcFile);
-//			tester.setQuery(queryString);
 			String sourceFile = FileUtil.getRelativePath(w.getDataFile());
 			String mappingFile=FileUtil.getRelativePath(w.getMapFile());
 			String xmlResult=transformer.Transfer(sourceFile, mappingFile); 
