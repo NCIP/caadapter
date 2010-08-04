@@ -124,7 +124,8 @@ public class MainMenuBar extends JMenuBar
 		// link them together
 		JMenu fileMenu = new JMenu(MenuConstants.FILE_MENU_NAME);
 		fileMenu.setMnemonic('F');
-		fileMenu.add(constructNewMenu());
+//		fileMenu.add(constructNewMenu());
+		fileMenu.add(constructNewCmtsMenu());
 		fileMenu.addSeparator();
 		fileMenu.add(constructOpenMenu());
 		fileMenu.addSeparator();
@@ -175,7 +176,7 @@ public class MainMenuBar extends JMenuBar
     private JMenu constructNewCmtsMenu()
     {
     	//user should be authorized to use HL7 artifacts
-        JMenu newGroup = new JMenu("CMTS");
+        JMenu newGroup = new JMenu("New");
         newGroup.setMnemonic('N');
 
         NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);

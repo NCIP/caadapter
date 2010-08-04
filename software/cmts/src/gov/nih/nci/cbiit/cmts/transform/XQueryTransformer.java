@@ -98,10 +98,11 @@ public class XQueryTransformer implements TransformationService {
 		// TODO Auto-generated method stub
 		try {
 			Mapping map = MappingFactory.loadMapping(new File(mappingFile));
+			// parse raw data to a temporary file
+			//if source is HL7 v2, the target namespace is set as null
+			String tempXmlSrc = parseRawData(sourceFile, map);
 			XQueryBuilder builder = new XQueryBuilder(map);
 			String queryString = builder.getXQuery();
-			// parse csv data to a temporary file
-			String tempXmlSrc = parseRawData(sourceFile, map);
 			String xmlResult = executeQuery(queryString, tempXmlSrc);
 			if (isTemporaryFileCreated()) {
 				File tmpFile = new File(tempXmlSrc);
