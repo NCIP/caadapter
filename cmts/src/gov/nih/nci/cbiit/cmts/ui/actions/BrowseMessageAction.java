@@ -98,8 +98,12 @@ public class BrowseMessageAction extends AbstractContextAction
     public String getOpenDialogTitle(String fileExtension)
     {
         String scrTitle = "";
-        if (fileExtension.equals(DefaultSettings.CSV_DATA_FILE_DEFAULT_EXTENSTION)) scrTitle = DefaultSettings.OPEN_DIALOG_TITLE_FOR_CSV_FILE;
-        else if (fileExtension.equals(DefaultSettings.MAP_FILE_DEFAULT_EXTENTION)) scrTitle = DefaultSettings.OPEN_DIALOG_TITLE_FOR_MAP_FILE;
+        if (fileExtension.equals(DefaultSettings.CSV_DATA_FILE_DEFAULT_EXTENSTION)) 
+        	scrTitle = DefaultSettings.OPEN_DIALOG_TITLE_FOR_CSV_FILE;
+        else if (fileExtension.equals(DefaultSettings.HL7_V2_DATA_FILE_DEFAULT_EXTENSTION)) 
+        	scrTitle = DefaultSettings.OPEN_DIALOG_TITLE_FOR_HL7_FILE;
+        else if (fileExtension.equals(DefaultSettings.MAP_FILE_DEFAULT_EXTENTION)) 
+        	scrTitle = DefaultSettings.OPEN_DIALOG_TITLE_FOR_MAP_FILE;
         else scrTitle = "Open";
 
         return scrTitle;

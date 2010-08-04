@@ -54,13 +54,14 @@ public class DefaultSettings
     };
 
     private static final UIDefaults newDefaults = new UIDefaults(uiDefaults);
-    public static final String MAP_FILE_DEFAULT_EXTENTION = ".xml";
+    public static final String MAP_FILE_DEFAULT_EXTENTION = ".map";
     public static final String XML_DATA_FILE_DEFAULT_EXTENSTION = ".xml";
     public static final String CSV_DATA_FILE_DEFAULT_EXTENSTION = ".csv";
     public static final String HL7_V2_DATA_FILE_DEFAULT_EXTENSTION = ".hl7";
     public static final String CSV_METADATA_FILE_DEFAULT_EXTENTION = ".scs";
-    public static final String OPEN_DIALOG_TITLE_FOR_CSV_FILE = "Open csv file";
-    public static final String OPEN_DIALOG_TITLE_FOR_MAP_FILE = "Open mapping file";
+    public static final String OPEN_DIALOG_TITLE_FOR_CSV_FILE = "Open CSV File";
+    public static final String OPEN_DIALOG_TITLE_FOR_HL7_FILE = "Open HL7 v2 File";
+    public static final String OPEN_DIALOG_TITLE_FOR_MAP_FILE = "Open Mapping File";
     public static final Color DEFAULT_READ_ONLY_BACK_GROUND_COLOR = Color.LIGHT_GRAY;
     public static final String FUNCTION_DEFINITION_FILE_LOCATION = "etc/functions/corefunc.xml";
     private static JFileChooser defaultFileChooser;
