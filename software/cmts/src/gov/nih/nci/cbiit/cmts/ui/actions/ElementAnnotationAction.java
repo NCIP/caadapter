@@ -81,6 +81,7 @@ public class ElementAnnotationAction extends AbstractContextAction {
 			int maxMultiple=MappingAnnotationUtil.findMaxMultiplicityIndex(parentElement, annotateElement.getName());
 			ElementMeta clonedMeta=(ElementMeta)annotateElement.clone();
 			clonedMeta.setMultiplicityIndex(BigInteger.valueOf(maxMultiple+1));
+			parentElement.getChildElement().add(clonedMeta);
 			DefaultMutableTreeNode clonedNode = (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(clonedMeta, rootComponent);
 
 			String lastClonedName=annotateElement.getName();
