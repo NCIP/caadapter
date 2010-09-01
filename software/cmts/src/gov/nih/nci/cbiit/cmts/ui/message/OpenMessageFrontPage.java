@@ -31,9 +31,9 @@ import java.io.File;
 public class OpenMessageFrontPage extends JPanel
 {
 
-	public static final String DATA_FILE_BROWSE_MODE = "Data File";
-	public static final String MAP_FILE_BROWSE_MODE = "Map Specification";
-	public static final String DEST_FILE_BROWSE_MODE = "Result File";
+	private final String DATA_FILE_BROWSE_MODE = "Source Data File";
+	private final String MAP_FILE_BROWSE_MODE = "Transformation Mapping File";
+	public static final String DEST_FILE_BROWSE_MODE = "Target Data File";
 	private JTextField dataFileInputField;
 	private JTextField mapFileInputField;
 	private JTextField destFileInputField;
@@ -124,15 +124,18 @@ public class OpenMessageFrontPage extends JPanel
 	{
 		if (DATA_FILE_BROWSE_MODE.equals(browseMode))
 		{
-			this.setDataFile(file);
+			dataFile=file;
+			setFileTextFieldFile(dataFileInputField, file);
 		}
 		else if (MAP_FILE_BROWSE_MODE.equals(browseMode))
 		{
-			this.setMapFile(file);
+			mapFile=file;
+			setFileTextFieldFile(mapFileInputField, file);
 		}
 		else if (DEST_FILE_BROWSE_MODE.equals(browseMode))
 		{
-			this.setDestFile(file);
+			destFile=file;
+			setFileTextFieldFile(destFileInputField, file);
 		}
 		else
 		{
@@ -165,11 +168,6 @@ public class OpenMessageFrontPage extends JPanel
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
-
-			//        	if(tempFile.exists()){
-			//        		if( JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(this, getDestFile()+" exists, do you want to overwrite it?"))
-			//        			return false;
-			//        	}
 			return true;
 		}
 
@@ -270,42 +268,15 @@ public class OpenMessageFrontPage extends JPanel
 		return destFile;
 	}
 
-	protected void setMapFile(File mapFile)
+	private void setFileTextFieldFile(JTextField field, File dataFile)
 	{
-		this.mapFile = mapFile;
-		if (mapFile != null)
-		{
-			mapFileInputField.setText(mapFile.getAbsolutePath());
-		}
-		else
-		{
-			mapFileInputField.setText("");
-		}
-	}
-
-	protected void setDataFile(File dataFile)
-	{
-		this.dataFile = dataFile;
 		if (dataFile != null)
 		{
-			dataFileInputField.setText(dataFile.getAbsolutePath());
+			field.setText(dataFile.getAbsolutePath());
 		}
 		else
 		{
-			dataFileInputField.setText("");
-		}
-	}
-
-	protected void setDestFile(File destFile)
-	{
-		this.destFile = destFile;
-		if (destFile != null)
-		{
-			destFileInputField.setText(destFile.getAbsolutePath());
-		}
-		else
-		{
-			destFileInputField.setText("");
+			field.setText("");
 		}
 	}
 }

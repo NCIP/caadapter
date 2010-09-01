@@ -31,8 +31,6 @@ public class OpenMessageWizard extends JDialog implements ActionListener
 	private boolean okButtonClicked = false;
 	private OpenMessageFrontPage frontPage;
 
-	public static final String TITLE = "Select Data Input and Map Specification...";
-
 	public OpenMessageWizard(Frame owner, String title, boolean modal) throws HeadlessException
 	{
 		super(owner, title, modal);
@@ -121,17 +119,6 @@ public class OpenMessageWizard extends JDialog implements ActionListener
 		dispose();
 	}
 
-//	public static void main(String[] args)
-//	{
-//		OpenHL7MessageWizard openWizard = new OpenHL7MessageWizard((Frame) null, "test openWizard", true);
-//		DefaultSettings.centerWindow(openWizard);
-//		openWizard.setVisible(true);
-//		if(openWizard.isOkButtonClicked())
-//		{
-//			Log.logInfo(openWizard, "Data file selected: '" + openWizard.getDataFile().getAbsolutePath());
-//			Log.logInfo(openWizard, "Map specification selected: '" + openWizard.getMapFile().getAbsolutePath());
-//		}
-//	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $

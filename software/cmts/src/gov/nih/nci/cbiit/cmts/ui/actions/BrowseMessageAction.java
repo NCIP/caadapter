@@ -30,7 +30,6 @@ import java.io.File;
 public class BrowseMessageAction extends AbstractContextAction
 {
 
-	private static final String COMMAND_NAME = "Browse...";
 	private static final Character COMMAND_MNEMONIC = new Character('B');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
 
@@ -43,7 +42,7 @@ public class BrowseMessageAction extends AbstractContextAction
 	 */
 	public BrowseMessageAction(OpenMessageFrontPage frontPage, String browseMode)
 	{
-		this(COMMAND_NAME, frontPage, browseMode);
+		this("Browse...", frontPage, browseMode);
 	}
 
 	/**
@@ -81,7 +80,7 @@ public class BrowseMessageAction extends AbstractContextAction
 		String fileExtension = frontPage.getFileExtension(browseMode);
 
         File file = DefaultSettings.getUserInputOfFileFromGUI(frontPage, //FileUtil.getUIWorkingDirectoryPath(),
-				fileExtension, getOpenDialogTitle(fileExtension), browseMode.equals(OpenMessageFrontPage.DEST_FILE_BROWSE_MODE), browseMode.equals(OpenMessageFrontPage.DEST_FILE_BROWSE_MODE));
+				fileExtension, getOpenDialogTitle(browseMode), browseMode.equals(OpenMessageFrontPage.DEST_FILE_BROWSE_MODE), browseMode.equals(OpenMessageFrontPage.DEST_FILE_BROWSE_MODE));
 		if (file != null)
 		{
 			frontPage.setUserSelectionFile(file, browseMode);
@@ -90,22 +89,20 @@ public class BrowseMessageAction extends AbstractContextAction
 		else
 		{
 			setSuccessfullyPerformed(false);
-			//			Log.logInfo(this, "Open command cancelled by user.");
 		}
 		return isSuccessfullyPerformed();
 	}
 
-    public String getOpenDialogTitle(String fileExtension)
+	/**
+	 * Set dialog title based on data file type
+	 * @param browseMode
+	 * @return
+	 */
+    private String getOpenDialogTitle(String browseMode)
     {
-        String scrTitle = "";
-        if (fileExtension.equals(DefaultSettings.CSV_DATA_FILE_DEFAULT_EXTENSTION)) 
-        	scrTitle = DefaultSettings.OPEN_DIALOG_TITLE_FOR_CSV_FILE;
-        else if (fileExtension.equals(DefaultSettings.HL7_V2_DATA_FILE_DEFAULT_EXTENSTION)) 
-        	scrTitle = DefaultSettings.OPEN_DIALOG_TITLE_FOR_HL7_FILE;
-        else if (fileExtension.equals(DefaultSettings.MAP_FILE_DEFAULT_EXTENTION)) 
-        	scrTitle = DefaultSettings.OPEN_DIALOG_TITLE_FOR_MAP_FILE;
-        else scrTitle = "Open";
-
+        String scrTitle = "Open";
+        if (browseMode!=null)
+        	scrTitle=scrTitle+" "+browseMode;
         return scrTitle;
     }
 
