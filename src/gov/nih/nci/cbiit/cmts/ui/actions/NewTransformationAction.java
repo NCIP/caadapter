@@ -128,11 +128,11 @@ public class NewTransformationAction extends AbstractContextAction
 			FileWriter writer = new FileWriter(w.getDestFile());
 			writer.write(xmlResult);
 			writer.close();
-			
+			JOptionPane.showMessageDialog(mainFrame, "Transformation has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);				
 		}
+		else
+			JOptionPane.showMessageDialog(mainFrame, "Transformation has cancelled !", "Cancel Complete", JOptionPane.INFORMATION_MESSAGE);
 		setSuccessfullyPerformed(true);
-		JOptionPane.showMessageDialog(mainFrame, "Transformation has completed successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
-		
 		return isSuccessfullyPerformed();
 	}
 
