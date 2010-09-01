@@ -240,7 +240,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 	protected boolean doAction(ActionEvent e)
 	{
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
-				DefaultSettings.MAP_FILE_DEFAULT_EXTENTION, "Open mapping", false, false);
+				DefaultSettings.MAP_FILE_DEFAULT_EXTENTION, "Open Transformation Mapping", false, false);
 		if (file != null)
 		{
 			openFile = file;
@@ -254,10 +254,6 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 				e1.printStackTrace();
 			}
 		}
-//		else
-//		{
-//			Log.logInfo(this, "Open command cancelled by user.");
-//		}
 		return isSuccessfullyPerformed();
 	}
 
