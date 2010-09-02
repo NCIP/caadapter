@@ -4,6 +4,7 @@ import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.core.KindType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.core.TagType;
 import gov.nih.nci.cbiit.cmts.mapping.MappingAnnotationUtil;
 import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
@@ -73,11 +74,11 @@ public class ElementAnnotationAction extends AbstractContextAction {
 			newNodeType=ElementMetaLoader.TARGET_MODE;
 		}
 		String nodePath=UIHelper.getPathStringForNode(treeNode);
+		ElementMetaLoader.MyTreeObject parentNodeObj=(ElementMetaLoader.MyTreeObject)parentNode.getUserObject();
+		ElementMeta parentElement=(ElementMeta)parentNodeObj.getUserObject();
 		switch (getAnnotationType())
 		{
 		case CLONE_ADD_ACTION:
-			ElementMetaLoader.MyTreeObject parentNodeObj=(ElementMetaLoader.MyTreeObject)parentNode.getUserObject();
-			ElementMeta parentElement=(ElementMeta)parentNodeObj.getUserObject();
 			int maxMultiple=MappingAnnotationUtil.findMaxMultiplicityIndex(parentElement, annotateElement.getName());
 			ElementMeta clonedMeta=(ElementMeta)annotateElement.clone();
 			clonedMeta.setMultiplicityIndex(BigInteger.valueOf(maxMultiple+1));
@@ -108,11 +109,38 @@ public class ElementAnnotationAction extends AbstractContextAction {
 			break;
 		case CLONE_REMOVE_ACTION:	
 			treeModel.removeNodeFromParent(treeNode);
+			parentElement.getChildElement().remove(annotateElement);
+			//adjust the multiplicity of other cloned element
+			String clonedName=annotateElement.getName().substring(0,annotateElement.getName().lastIndexOf("["));	
+			for (ElementMeta childMeta:parentElement.getChildElement())
+			{
+				if(childMeta.getName().startsWith(clonedName+"["))
+				{
+					//decrease one for all other cloned if index >current index
+					int chldIndex=childMeta.getMultiplicityIndex().intValue();
+					if (chldIndex>annotateElement.getMultiplicityIndex().intValue())
+						childMeta.setMultiplicityIndex(BigInteger.valueOf(chldIndex-1));
+ 				}
+			}
+			treeModel.reload(parentNode);
 			//remove "[indx]" from the cloned node path
 			String cloneKey=nodePath.substring(0, nodePath.lastIndexOf("["));
 			MappingAnnotationUtil.removeTag(mappingData, compType, KindType.CLONE, cloneKey, ""+annotateElement.getMultiplicityIndex());
-			break;
-			
+			//adjust index value of mapping annotation tags
+			for (TagType tag:mappingData.getTags().getTag())
+			{
+				if (tag.getComponentType().equals(compType)
+						&&tag.getKind().equals(KindType.CLONE)
+						&&tag.getKey().equals(cloneKey))
+				{
+					int tagIndx=Integer.valueOf(tag.getValue());
+					if (tagIndx>annotateElement.getMultiplicityIndex().intValue())
+					{
+						tag.setValue(""+(tagIndx-1));
+					}
+				}
+			}
+			break;		
 		case CHOICE_SELECT_ACTION:
 			//de-select all other sibling nodes
 			for (int siblingIndx=0;siblingIndx<parentNode.getChildCount();siblingIndx++)
@@ -158,10 +186,6 @@ public class ElementAnnotationAction extends AbstractContextAction {
 	protected Component getAssociatedUIComponent() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public Mapping getMappingData() {
-		return mappingData;
 	}
 
 
