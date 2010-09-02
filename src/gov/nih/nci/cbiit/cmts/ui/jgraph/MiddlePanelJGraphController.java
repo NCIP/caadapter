@@ -364,6 +364,8 @@ public class MiddlePanelJGraphController {
 	 * @return mapping relation consolidated.
 	 */
 	public Mapping retrieveMappingData(boolean refresh) {
+		if (!refresh)
+			return mappingData;
 
 		// clear out the data before adding.
 		if (mappingData.getLinks() == null) {
