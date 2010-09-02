@@ -9,8 +9,10 @@ package gov.nih.nci.cbiit.cmts.mapping;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Stack;
 
 import javax.xml.bind.JAXBContext;
@@ -238,16 +240,35 @@ public class MappingFactory {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
 		//do not persistent the meta structure
+		Hashtable<String, List<ElementMeta>> rootChildListHash=new Hashtable<String, List<ElementMeta>>();
+		Hashtable<String, List<AttributeMeta>> rootAttrListHash=new Hashtable<String, List<AttributeMeta>>();
 		for (Component mapComp:m.getComponents().getComponent())
 		{
 			if (mapComp.getRootElement()!=null)
 			{
+				List<ElementMeta> childList=new ArrayList<ElementMeta>();
+				childList.addAll(mapComp.getRootElement().getChildElement());
+				rootChildListHash.put(mapComp.getLocation()+mapComp.getId(), childList);
 				mapComp.getRootElement().getChildElement().clear();
+				
+				List<AttributeMeta> AttrList=new ArrayList<AttributeMeta>();
+				AttrList.addAll(mapComp.getRootElement().getAttrData());
+				rootAttrListHash.put(mapComp.getLocation()+mapComp.getId(), AttrList);
 				mapComp.getRootElement().getAttrData().clear();
 			}
 		}
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement<Mapping>(new QName("mapping"),Mapping.class, m), f);
+		
+		//put the unmarshalled children back
+		for (Component mapComp:m.getComponents().getComponent())
+		{
+			if (mapComp.getRootElement()!=null)
+			{
+				mapComp.getRootElement().getChildElement().addAll(rootChildListHash.get(mapComp.getLocation()+mapComp.getId()));
+				mapComp.getRootElement().getAttrData().addAll(rootAttrListHash.get(mapComp.getLocation()+mapComp.getId()));
+			}
+		}
 	}	
 }
 
