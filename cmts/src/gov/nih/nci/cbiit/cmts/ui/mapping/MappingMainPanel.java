@@ -630,7 +630,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	 */
 	public void processOpenMapFile(File file) throws Exception
 	{
-		System.out.println("CmpsMappingPanel.processOpenMapFile()...:"+file.getAbsolutePath());
+		
 		long stTime=System.currentTimeMillis();
 		// parse the file.
 		Mapping mapping = MappingFactory.loadMapping(file);
@@ -642,7 +642,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		getGraphController().setMappingData(mapping);
 		setSaveFile(file);
 		getMiddlePanel().renderInJGraph();
-		System.out.println("CmpsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
+		System.out.println("CmtsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
 	}
 
 
