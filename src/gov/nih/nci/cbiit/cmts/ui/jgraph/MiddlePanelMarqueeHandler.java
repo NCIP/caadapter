@@ -9,10 +9,10 @@
 package gov.nih.nci.cbiit.cmts.ui.jgraph;
 
 import gov.nih.nci.cbiit.cmts.core.FunctionData;
-import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAction;
-import gov.nih.nci.cbiit.cmts.ui.actions.GraphDeleteAllAction;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionBoxGraphCell;
 import gov.nih.nci.cbiit.cmts.ui.function.action.ConstantEditAction;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.action.GraphDeleteAction;
+import gov.nih.nci.cbiit.cmts.ui.jgraph.action.GraphDeleteAllAction;
 
 import javax.swing.SwingUtilities;
 import javax.swing.JPopupMenu;
