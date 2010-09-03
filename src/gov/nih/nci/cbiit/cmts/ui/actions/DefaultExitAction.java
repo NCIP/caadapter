@@ -27,7 +27,7 @@ import java.awt.event.WindowEvent;
  * @version    $Revision: 1.2 $
  * @date       $Date: 2009-11-23 18:32:47 $
  */
-public class ExitAction extends AbstractContextAction
+public class DefaultExitAction extends AbstractContextAction
 {
 	private static final String COMMAND_NAME = "      " + ActionConstants.EXIT;
 	private static final Character COMMAND_MNEMONIC = new Character('E');
@@ -39,7 +39,7 @@ public class ExitAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public ExitAction(MainFrame mainFrame)
+	public DefaultExitAction(MainFrame mainFrame)
 	{
 		this(COMMAND_NAME, mainFrame);
 	}
@@ -48,7 +48,7 @@ public class ExitAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public ExitAction(String name, MainFrame mainFrame)
+	public DefaultExitAction(String name, MainFrame mainFrame)
 	{
 		this(name, (Icon) null, mainFrame);
 	}
@@ -57,7 +57,7 @@ public class ExitAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public ExitAction(String name, Icon icon, MainFrame mainFrame)
+	public DefaultExitAction(String name, Icon icon, MainFrame mainFrame)
 	{
 		super(name, icon);
 		this.mainFrame = mainFrame;
