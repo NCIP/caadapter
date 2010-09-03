@@ -10,11 +10,11 @@ package gov.nih.nci.cbiit.cmts.ui.main;
 
 
 import gov.nih.nci.cbiit.cmts.ui.actions.AbstractContextAction;
-import gov.nih.nci.cbiit.cmts.ui.actions.CloseAllAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.DefaultCloseAllAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultCloseAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAsAction;
-import gov.nih.nci.cbiit.cmts.ui.actions.ExitAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.DefaultExitAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewTransformationAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
@@ -113,11 +113,11 @@ public class MainMenuBar extends JMenuBar
 		JMenuItem closeMenuItem = new JMenuItem(defaultCloseAction);
 		actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
 		menuItemMap.put(ActionConstants.CLOSE, closeMenuItem);
-		CloseAllAction closeAllAction = new CloseAllAction(mainFrame);
+		DefaultCloseAllAction closeAllAction = new DefaultCloseAllAction(mainFrame);
 		JMenuItem closeAllMenuItem = new JMenuItem(closeAllAction);
 		actionMap.put(ActionConstants.CLOSE_ALL, closeAllAction);
 		menuItemMap.put(ActionConstants.CLOSE_ALL, closeAllMenuItem);
-		ExitAction exitAction = new ExitAction(mainFrame);
+		DefaultExitAction exitAction = new DefaultExitAction(mainFrame);
 		JMenuItem exitMenuItem = new JMenuItem(exitAction);
 		actionMap.put(ActionConstants.EXIT, exitAction);
 		menuItemMap.put(ActionConstants.EXIT, exitMenuItem);
