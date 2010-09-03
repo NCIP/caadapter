@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * @version    $Revision: 1.2 $
  * @date       $Date: 2009-11-23 18:32:47 $
  */
-public class CloseAllAction extends AbstractContextAction
+public class DefaultCloseAllAction extends AbstractContextAction
 {
 	protected static final String COMMAND_NAME = ActionConstants.CLOSE_ALL;
 	protected static final Character COMMAND_MNEMONIC = new Character('A');
@@ -42,17 +42,17 @@ public class CloseAllAction extends AbstractContextAction
 
 	protected MainFrame mainFrame = null;
 
-	public CloseAllAction(MainFrame mainFrame)
+	public DefaultCloseAllAction(MainFrame mainFrame)
 	{
 		this(COMMAND_NAME, mainFrame);
 	}
 
-	public CloseAllAction(String name, MainFrame mainFrame)
+	public DefaultCloseAllAction(String name, MainFrame mainFrame)
 	{
 		this(name, IMAGE_ICON , mainFrame);
 	}
 
-	public CloseAllAction(String name, Icon icon, MainFrame mainFrame)
+	public DefaultCloseAllAction(String name, Icon icon, MainFrame mainFrame)
 	{
 		super(name, icon);
 		this.mainFrame = mainFrame;
