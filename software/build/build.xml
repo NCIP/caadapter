@@ -68,7 +68,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
-	<property name="caadapter-api.base.dir" value="${software.dir}/caadapter" />
+	<property name="caadapter-api.base.dir" value="${software.dir}/cmts" />
 	<property name="caadapter-webapp.base.dir" value="${software.dir}/caadapter" />
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
@@ -228,8 +228,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	</target>
 
 	<target name="clean">
-	<delete dir="${dist.dir}" failonerror="false" />
-	<delete dir="${temp.dir}" />
+		<delete dir="${dist.dir}" failonerror="false" />
+		<delete dir="${temp.dir}" />
+		<delete dir="${target.dir}" failonerror="false" />
 	</target>
 
 	<target name="init" description="Sets up build are and initalizes variables">
@@ -307,13 +308,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			/>
 	</target>
 
-	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="
-		validate:pre:build,
- 		clean,
- 		init,
- 		keygen,
- 		build:caadapter-webapp
-		" >
+	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" 
+		depends="validate:pre:build,clean,build:caadapter-webapp">
 	</target>
 
 	<target name="build:caadapter-api" depends="init" description="Call api sub-projects build target to produce artifiacts">
@@ -326,8 +322,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	</target>
 	
 	<target name="build:caadapter-webapp" 
-		depends="init, 
-		build:caadapter-api" 
+		depends="build:caadapter-api,keygen" 
 		description="Call webapp sub-projects build target to produce artifiacts">
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${caadapter-webapp.build.file}" target="${caadapter-webapp.build.target}" dir="${caadapter-webapp.base.dir}">
