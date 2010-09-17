@@ -61,6 +61,10 @@ public class MainMenuBar extends JMenuBar
 		menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
 
 		add(constructFileMenu());
+		JMenu helpMenu=new JMenu("Help");
+		helpMenu.add(new JMenuItem("About caAdapter CMTS"));
+		helpMenu.add(new JMenuItem("Help - Content and Index"));
+		add(helpMenu);
 	}
 
 
