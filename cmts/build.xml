@@ -1,4 +1,4 @@
-<project name="CMPS" default="jar" basedir=".">
+<project name="Common Mapping and Transformation Service" default="jar" basedir=".">
 
 	<!-- Tell ant to use my environment variables -->
 	<property environment="env" />
@@ -13,6 +13,12 @@
 		<!-- pathelement path="${src.dir}" /-->
 	</path>
 
+	<target name="build:caadapter-api" depends="init">
+		<echo message="build:caadapter-api is called :dist.dir =${dist.dir}"/>
+		<antcall target="dist_src"/>
+		<antcall target="dist_bin"/>
+   	</target>
+   	
 	<pathconvert pathsep=" " targetos="unix" property="distribution.manifest.class.property" refid="project.class.path">
 		<!-- make paths relative-->
 		<map from="${basedir}/lib" to="./lib" />
@@ -28,7 +34,7 @@
 		</delete>
 	</target>
 
-	<target name="prep">
+	<target name="init">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist.dir}" />
 		<tstamp>
@@ -45,7 +51,7 @@
 			<arg value="etc/schema/dataModel.xsd" />
 		</exec>
 	</target>
-	<target name="compile" depends="prep">
+	<target name="compile" depends="init">
 		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="on">
 			<include name="**/*.java" />
 			<classpath refid="project.class.path" />
@@ -128,8 +134,8 @@
 		</jar>
 	</target>
 
-	<target name="dist-bin" depends="jar" description="create the binary distribution">
-		<zip destfile="cmts_1_0_Bin_${DATE}.zip">
+	<target name="dist_bin" depends="jar" description="create the binary distribution">
+		<zip destfile="${dist.dir}/cmts_${release.version}_Bin_${DATE}.zip">
 			<zipfileset dir="${lib.dir}" prefix="lib"/>
 			<zipfileset dir="${dist.dir}" prefix="lib">
 				<include name="cmts.jar" />
@@ -146,15 +152,12 @@
 		</zip>
 	</target>
 	
-	<target name="dist-src" depends="clean, prep" description="create the source distribution">
-		<zip destfile="cmts__1_0_Src_${DATE}.zip" basedir="${basedir}">
+	<target name="dist_src" depends="clean, init" description="create the source distribution">
+		<zip destfile="${dist.dir}/cmts_${release.version}_Src_${DATE}.zip" basedir="${basedir}">
 			<exclude name="bin/**" />
 			<exclude name="build/**" />
 			<exclude name="dist/**" />
 			<exclude name="**/CVS/**" />
 		</zip>
 	</target>
-
-	<target name="main" depends="clean, prep, compile, jar" />
-
 </project>
