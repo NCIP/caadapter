@@ -15,5 +15,14 @@
 	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="lib/jaxen-jdom.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caAdapter.jar"/>
+	<classpathentry kind="lib" path="lib/castor-0.9.9.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="testLib/hl7v2xsd.zip"/>
+	<classpathentry kind="lib" path="lib/encoderframework.jar"/>
+	<classpathentry kind="lib" path="lib/encoderfrmwk-xsdextension.jar"/>
+	<classpathentry kind="lib" path="lib/hl7.jar"/>
+	<classpathentry kind="lib" path="lib/hl7encoder-xsdextension.jar"/>
+	<classpathentry kind="lib" path="lib/xbean.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
