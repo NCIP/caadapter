@@ -69,7 +69,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
 	<property name="caadapter-api.base.dir" value="${software.dir}/cmts" />
-	<property name="caadapter-webapp.base.dir" value="${software.dir}/caadapter" />
+	<property name="caadapter-webapp.base.dir" value="${software.dir}/cmts" />
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
 	<property name="caadapter-webapp.build.file" value="build.xml" />
@@ -128,7 +128,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<!-- Hot deploy variables -->
 	<property name="jboss.deploy.dir"  value="${jboss.home}/server/${jboss.server.name}/deploy"/>
 	<!-- property name="caadapter-webapp.name"  value="caadapter-webapp"/ -->
-	<property name="caadapter-webapp.name"  value="caadapter-mms"/>
+	<property name="caadapter-webapp.name"  value="caadapter-cmts"/>
 	<property name="caadapter-webapp.file.name"  value="${caadapter-webapp.name}.war"/>
 	<property name="caadapter-webapp.src.dir" value="${caadapter-webapp.base.dir}/src/web"/>
 
