@@ -95,11 +95,11 @@
 		<javadoc destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="CMPS">
 
 			<packageset dir="${src.dir}" defaultexcludes="yes">
-				<include name="gov/nih/nci/cbiit/cmps/**" />
+				<include name="gov/nih/nci/cbiit/cmts/**" />
 			</packageset>
 
 			<doctitle>
-				CMPS
+				CMTS
 			</doctitle>
 			<bottom>
 
@@ -123,7 +123,7 @@
 			<!-- fileset dir="${src.dir}" excludes="**/*.java" /-->
 		</jar>
 		<jar destfile="${dist.dir}/cmts-resources.jar">
-			<fileset dir="resources" excludes="**/CVS/**" />
+			<fileset dir="${resources.dir}" excludes="**/CVS/**" />
 		</jar>
 		<jar destfile="${dist.dir}/cmtsUI.jar">
 			<fileset dir="${build.dir}" includes="**/ui/**" />
@@ -132,6 +132,7 @@
 				<attribute name="Class-Path" value=". lib/cmts.jar lib/cmts-resources.jar ${distribution.manifest.class.property}" />
 			</manifest>
 		</jar>
+		<delete dir="${build.dir}" failonerror="false"/>
 	</target>
 
 	<target name="dist_bin" depends="jar" description="create the binary distribution">
@@ -160,4 +161,79 @@
 			<exclude name="**/CVS/**" />
 		</zip>
 	</target>
+	
+	<target name="build:caadapter-webstart" depends="webstart:copy_resources" >	
+		<antcall target="webstart:sign_resources">
+			<param name="RESOURCE_HOME" value="${dist.dir}/webstart"/>
+		</antcall>
+
+		<echo message=""/>
+		<echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
+		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="${web.src.dir}/web.xml">
+			<fileset dir="${dist.dir}/webstart">
+				<exclude name="myKeyStore"/>
+			</fileset>
+			<fileset dir="${web.src.dir}">
+					<include name="**/*.html"/>
+					<include name="**/*.jnlp"/>
+			</fileset>
+			<!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
+			<lib dir="${web.src.dir}/WEB-INF/lib">
+				<include name="jardiff.jar"/>
+				<include name="jnlp.jar"/>
+				<include name="jnlp-servlet.jar"/>
+			</lib>
+			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
+		</war>
+		<delete dir="${dist.dir}/webstart" failonerror="false"/>
+	</target>
+   	
+	<target name="webstart:copy_resources" description="Perpare web start resources...">  
+		<echo message="build:webstart --copy resource"/>
+		<copy todir="${dist.dir}/webstart" failonerror="false">
+			<fileset dir="${lib.dir}">
+				<include name="caAdapter.jar"/>
+				<include name="castor-0.9.9.jar"/>
+				<include name="commons-logging-1.0.4.jar"/>
+				<include name="dom4j-1.4.jar"/>
+				<include name="encoderframework.jar"/>
+				<include name="encoderfrmwk-xsdextension.jar"/>
+				<include name="hl7.jar"/>
+				<include name="hl7encoder-xsdextension.jar"/>
+				<include name="jaxen-jdom.jar"/>
+				<include name="jdom.jar"/>
+				<include name="jgraph.jar"/>	
+				<include name="log4j-1.2.8.jar"/>
+				<include name="saxon9.jar"/>
+				<include name="saxon9-xqj.jar"/>
+				<include name="xbean.jar"/>
+				<include name="xercesImpl.jar"/>
+			</fileset>
+			<fileset dir="${dist.dir}/../caadapter-api">
+				<include name="cmts.jar"/>
+				<include name="cmtsUI.jar"/>
+				<include name="cmts-resources.jar"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="webstart:sign_resources">
+    	<available file="${jar-signing.keystore.abs-location}" property="digital-keys.exist"/>
+
+	    <antcall target="generate-keys"/>
+	    <echo message="digitally signing...${RESOURCE_HOME}"/>
+
+	    <echo message="Key Store: ${jar-signing.keystore.abs-location}"/>
+	    <echo message="-------- Signing all jar files --------"/>
+	    <signjar alias="${jar-signing.keystore.alias}" storepass="${jar-signing.keystore.password}" keystore="${jar-signing.keystore.abs-location}" lazy="false">
+		   	<fileset dir="${RESOURCE_HOME}" includes="*.jar, *.zip"/>
+	    </signjar>
+	</target>
+
+	<target name="generate-keys"  unless="digital-keys.exist" description="generate sign keys" >
+        <echo message=""/>
+        <echo message="-------- Create a keyStore *disabled--------"/>
+    	<delete file="${signjar.keystore}"/>
+	   	<genkey alias="${jar-signing.keystore.alias}" storepass="${jar-signing.keystore.password}" keystore="${jar-signing.keystore.abs-location}" dname="CN=${certificate.subject.CN}, OU=${certificate.subject.OU}, O=${certificate.subject.O}, C=${certificate.subject.C}"/>
+    </target>     	
 </project>
