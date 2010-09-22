@@ -24,8 +24,7 @@
 	</security>
 	<resources>
 		<j2se version="1.6+" />		
-		<!-- jar href="caAdapter.jar"/ -->  
-		<jar href="castor-0.9.9.jar"/>
+		<jar href="caAdapter.jar"/>  
 		<jar href="cmts.jar"/>
 		<jar href="cmtsUI.jar"/>
 		<jar href="cmts-resources.jar"/>
