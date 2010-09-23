@@ -33,8 +33,8 @@
  		<table cellpadding="3" cellspacing="0" border="0" class="dataTable" width="100%">
 			<tr><th class="dataTableHeader" scope="col" align="center">Scenario Name</th>
 				<th class="dataTableHeader" scope="col" align="center">Map File (<i>map</i>)</th>
-				<th class="dataTableHeader" scope="col" align="center">Source Specification (<i>scs</i>)</th>
-				<th class="dataTableHeader" scope="col" align="center">Target Specification (<i>h3s</i>)</th>
+				<th class="dataTableHeader" scope="col" align="center">Source Schema File (<i>xsd</i>)</th>
+				<th class="dataTableHeader" scope="col" align="center">Target Schema File (<i>xsd</i>)</th>
 				<!-- th class="dataTableHeader" scope="col" align="center">Vocabulary Mappings (<i>vom</i>)</th -->
 				<th class="dataTableHeader" scope="col" align="center">Date Created</th>
 			</tr>
