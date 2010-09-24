@@ -184,7 +184,12 @@
 				<include name="jnlp-servlet.jar"/>
 			</lib>
 			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
-		</war>
+		</war>	
+		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">	
+			<property name="ws.module.name" value="caadapterWS-cmts" />
+			<property name="project.dist.dir" value="${dist.dir}" />
+		</ant>
+		
 		<delete dir="${dist.dir}/webstart" failonerror="false"/>
 	</target>
    	
@@ -193,7 +198,6 @@
 		<copy todir="${dist.dir}/webstart" failonerror="false">
 			<fileset dir="${lib.dir}">
 				<include name="caAdapter.jar"/>
-				<include name="castor-0.9.9.jar"/>
 				<include name="commons-logging-1.0.4.jar"/>
 				<include name="dom4j-1.4.jar"/>
 				<include name="encoderframework.jar"/>
@@ -235,5 +239,23 @@
         <echo message="-------- Create a keyStore *disabled--------"/>
     	<delete file="${signjar.keystore}"/>
 	   	<genkey alias="${jar-signing.keystore.alias}" storepass="${jar-signing.keystore.password}" keystore="${jar-signing.keystore.abs-location}" dname="CN=${certificate.subject.CN}, OU=${certificate.subject.OU}, O=${certificate.subject.O}, C=${certificate.subject.C}"/>
-    </target>     	
+    </target>
+    
+        
+	<target name="copy.built.ws.module" if="caadapter.release.ws.build">
+		<ant antfile="${ws.module.build}"/>
+		<echo message="copy ws...."/>
+		<copy todir="${dist.dir}">
+			<fileset dir="${ws.module.home}/dist">
+				<include name="**/caAdapterWS.war"/>
+			</fileset>
+		</copy>
+		<echo message="deploy ws....:{j2ee.server.deploy.dir}"/>
+		<copy todir="${j2ee.server.deploy.dir}">
+			<fileset dir="${ws.module.home}/dist">
+				<include name="**/caAdapterWS.war"/>
+			</fileset>
+		</copy>
+	</target>
+
 </project>
