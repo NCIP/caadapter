@@ -67,12 +67,6 @@
         <servlet-class>gov.nih.nci.cbiit.cmts.ws.servlet.AddNewScenario</servlet-class>
         <load-on-startup>1</load-on-startup>
    	</servlet>
-   	<!-- Servlet: Validate User -->
-   	<servlet>
-        <servlet-name>validateUser</servlet-name>
-        <servlet-class>gov.nih.nci.caadapter.ws.validateUser</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
     
     <!-- Servlet: Axis Engine -->
     <servlet>
@@ -95,10 +89,6 @@
     <servlet-mapping>
         <servlet-name>AddNewScenario</servlet-name>
         <url-pattern>/AddNewScenario</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>validateUser</servlet-name>
-        <url-pattern>/validateUser</url-pattern>
     </servlet-mapping>
   	<servlet-mapping>
     	<servlet-name>action</servlet-name>
