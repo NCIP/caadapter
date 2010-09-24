@@ -7,7 +7,7 @@
 -->
 <project name="caadapterWS-cmts" default="package.war" basedir=".">
 	<description>
-		webservices
+		Common Mapping and Transformaton Service : Web services
 	</description>	
   
   <!-- Define project properties !-->
@@ -18,7 +18,7 @@
   <property name="module.dist.dir" value="${ws.module.home}/dist"/>
   <property name="module.lib.dir" value="${ws.module.home}/lib"/>
   <property name="module.src.dir" value="${ws.module.home}/src"/>
-
+  <property name="project.dist.dir" value="C:/apps/caadapter-webapp/jboss-4.0.5.GA/server/default/deploy"/>
   
   <path id="module.class.path">
   	<fileset dir="${module.lib.dir}">
@@ -28,6 +28,10 @@
   	<fileset dir="${ws.module.home}/WebRoot/WEB-INF/lib">
   		<include name="**/*.jar"/>
   		<include name="**/*.zip"/>
+  	</fileset>
+  	<fileset dir="${ws.module.home}/../../lib">
+	  		<include name="**/*.jar"/>
+	  		<include name="**/*.zip"/>
   	</fileset>
   </path>
 
@@ -40,7 +44,40 @@
   		<exclude name="test/**"/>
   	</javac>
    </target>
-   
+
+  <target name="package.war" depends="compile.source" description ="Create ebservice war file ...${module.dist.dir}/${ws.module.name}.war">
+  	<war destfile="${module.dist.dir}/${ws.module.name}.war" webxml="${ws.module.home}/WebRoot/WEB-INF/web.xml">
+		<zipfileset dir="${ws.module.home}/WebRoot" />
+		<!-- exclude log4j.jar fix error
+		java.lang.ClassCastException: org.jboss.logging.appender.DailyRollingFileAppender cannot be cast to org.apache.log4j.Appender
+		-->
+		<!-- exclude commons-logging-1.0.4.jar fix error
+		org.apache.commons.modeler.BaseModelMBean] Exception invoking method addChild
+org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging.LogConfigurationException: Invalid class loader hierarchy.  You have more than one version of 'org.apache.commons.logging.Log' visible, which is not allowed. (Caused by org.apache.commons.logging.LogConfigurationException: Invalid class loader hierarchy.  You have more than one version of 'org.apache.commons.logging.Log' visible, which is not allowed.) (Caused by org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging.LogConfigurationException: Invalid class loader hierarchy.  You have more than one version of 'org.apache.commons.logging.Log' visible, which is not allowed. (Caused by org.apache.commons.logging.LogConfigurationException: Invalid class loader hierarchy.  You have more than one version of 'org.apache.commons.logging.Log' visible, which is not allowed.))
+		-->
+		<lib dir="${module.lib.dir}" >
+			<exclude name="commons-logging-1.0.4.jar"/>
+			<exclude name="log4j-1.2.8.jar"/>
+		</lib>
+		<lib dir="${ws.module.home}/axislib" >
+			<exclude name="commons-logging-1.0.4.jar"/>
+			<exclude name="log4j-1.2.8.jar"/>
+		</lib>
+		<lib dir="${ws.module.home}/../../lib" >
+			<exclude name="commons-logging-1.0.4.jar"/>
+			<exclude name="log4j-1.2.8.jar"/>
+			<exclude name="jgraph.jar"/>
+		</lib>
+		<classes dir="${module.build.dir}" />
+		<classes dir="${module.src.dir}" >
+			<include name="**/*.properties"/>
+		</classes>
+	</war>
+	<copy overwrite="true" file="${module.dist.dir}/${ws.module.name}.war"
+		tofile="${project.dist.dir}/${ws.module.name}.war"/>
+	<antcall target="clean"/>
+  </target>
+
   <target name="init">
       	<echo message="-------- initialize ${ws.module.name}  --------"/>
       	<mkdir dir="${module.build.dir}"/>
@@ -51,26 +88,5 @@
   	<echo message="-------- clean ${ws.module.name}  --------"/>
       	<delete dir="${module.build.dir}"/>
       	<delete dir="${module.dist.dir}"/>
-  </target>
-  
-  <target name="package.war" depends="compile.source" description ="Create ebservice war file ...${module.dist.dir}/${ws.module.name}.war">
-  	<war destfile="${module.dist.dir}/${ws.module.name}.war" webxml="${ws.module.home}/WebRoot/WEB-INF/web.xml">
-		<!-- fileset dir="${dist.dir}/webstart">
-			<exclude name="myKeyStore"/>
-		</fileset -->
-		<zipfileset dir="${ws.module.home}/WebRoot" />
-		<lib dir="${module.lib.dir}" >
-			<exclude name="commons-logging-1.0.4.jar"/>
-		</lib>
-		<lib dir="${ws.module.home}/axislib" >
-			<exclude name="commons-logging-1.0.4.jar"/>
-		</lib>
-		<classes dir="${module.build.dir}" />
-		<classes dir="${module.src.dir}" >
-			<include name="**/*.properties"/>
-		</classes>
-	</war>
-	<copy overwrite="true" file="${module.dist.dir}/${ws.module.name}.war"
-		tofile="C:/apps/caadapter-webapp/jboss-4.0.5.GA/server/default/deploy/${ws.module.name}.war"/>
   </target>
 </project>
