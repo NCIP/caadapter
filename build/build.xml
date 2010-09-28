@@ -574,7 +574,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
  		dist:upgrade:tier:jboss
 		"/>
 
-	<target name="deploy:local:install" depends="build:all,dist:installer:prep" description="Installs and configures the application and required binaries and re-creates the datbase  on the local machine. Used for developer desktops and ci environments.">
+	<!-- target name="deploy:local:install" depends="build:all,dist:installer:prep" description="Installs and configures the application and required binaries and re-creates the datbase  on the local machine. Used for developer desktops and ci environments." -->
+	<target name="deploy:local:install" depends="dist:installer:prep" description="Installs and configures the application and required binaries and re-creates the datbase  on the local machine. Used for developer desktops and ci environments.">
 		<!--
 		  * Requires a database installation.
 		  * Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).
