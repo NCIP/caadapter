@@ -1,7 +1,7 @@
 # Add the following to the .bash_profile for the user to setup the environment to run hudson
 
 ANT_HOME=/usr/local/ant-1.7.0
-JAVA_HOME=/usr/jdk1.5.0_10/
+JAVA_HOME=/usr/jdk1.6.0_03/
 GLOBUS_LOCATION=/usr/local/ws-core-4.0.3
 MAVEN_HOME=/usr/local/apache-maven-2.0.8
 HUDSON_HOME=$HOME/hudson_data
