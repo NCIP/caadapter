@@ -1,12 +1,16 @@
 <project name="Common Mapping and Transformation Service" default="jar" basedir=".">
+	
 
 	<!-- Tell ant to use my environment variables -->
 	<property environment="env" />
-
 	<property file="./build.properties" />
 	<property name="build.compiler" value="modern" />
 	<path id="project.class.path">
 		<fileset dir="./lib">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+		<fileset dir="./jaxb">
 			<include name="**/*.jar" />
 			<include name="**/*.zip" />
 		</fileset>
@@ -35,6 +39,12 @@
 	</target>
 
 	<target name="init">
+	<echo message="java.endorsed.dirs:${java.endorsed.dirs}"/>
+		<echo message="java.specification.version:${java.specification.version}"/>
+		<echo message="java.vm.name:${java.vm.name}"/>
+		<echo message="java.vm.specification.version:${java.vm.specification.version}"/>
+		<echo message="java.vm.version:${java.vm.version}"/>
+		<echo message="java.ext.dirs:${java.ext.dirs}"/>
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist.dir}" />
 		<tstamp>
@@ -42,7 +52,7 @@
 		</tstamp>
 	</target>
 
-	<target name="codegen">
+	<target name="codegena">
 		<!-- xjc schema="etc/schema/dataModel.xsd" target="src" /-->
 		<exec executable="xjc">
 			<arg value="-d" />
@@ -53,6 +63,7 @@
 	</target>
 	<target name="compile" depends="init">
 		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="on">
+			<!--fork="yes" executable="C:\Program%20Files\Java\jre1.6.0_03\bin\javac.exe" -->
 			<include name="**/*.java" />
 			<classpath refid="project.class.path" />
 		</javac>
