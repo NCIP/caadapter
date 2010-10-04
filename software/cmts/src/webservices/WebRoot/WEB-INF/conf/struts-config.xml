@@ -10,6 +10,10 @@
   			<form-property name="itemType" type="java.lang.String"/>
   			<form-property name="results" type="java.lang.String"/>
         </form-bean>
+        <form-bean name="addScenarioRegistrationForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="scenarioName" type="java.lang.String"/>
+			<form-property name="results" type="java.lang.String"/>
+        </form-bean>
   </form-beans>
 
 <global-forwards type="org.apache.struts.action.ActionForward">
@@ -27,7 +31,14 @@
    <action path="/home" forward="Tiles.Home.Page"/> 
    <action path="/searchScenario" forward="Tiles.Scenario.Search.Page"/>
    <action path="/addScenario" forward="Tiles.Scenario.Add.Page"/> 
-   
+   <!-- action path="/addScenario" 
+		type="gov.nih.nci.cbiit.cmts.ws.action.ScenarioManagerAction" 
+		name="addScenarioRegistrationForm" 
+		scope="request" 
+		parameter="method"> 	
+		<forward name="success" path="Tiles.Scenario.Add.Page"/>
+		<forward name="failure" path="Tiles.ErrorMsg.Page"/>
+   </action -->
    <action path="/browseScenario" 
    		type="gov.nih.nci.cbiit.cmts.ws.action.ScenarioManagerAction" 
    		name="listScenarioRegistrationForm" 
