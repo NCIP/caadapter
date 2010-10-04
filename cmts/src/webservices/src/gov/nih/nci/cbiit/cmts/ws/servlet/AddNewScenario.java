@@ -37,7 +37,6 @@ import org.jdom.output.XMLOutputter;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -53,10 +52,7 @@ import org.xml.sax.SAXParseException;
  */
 
 public class AddNewScenario extends HttpServlet {
-    private String MSName;
-    private String scsFileName;
-    private String h3sFileName;
-    private String mappingFileName;
+
     private String path;
 
 	   /** **********************************************************
@@ -88,7 +84,6 @@ public class AddNewScenario extends HttpServlet {
                   return;
               }
               */
-        	  String name = "EMPTY";
 
 	    	  // Create a factory for disk-based file items
 	    	  DiskFileItemFactory  factory = new DiskFileItemFactory();
@@ -97,73 +92,109 @@ public class AddNewScenario extends HttpServlet {
 	    	  ServletFileUpload upload = new ServletFileUpload(factory);
 
 	    	  // Parse the request
-	    	  List /* FileItem */ items = upload.parseRequest(req);
+	    	  List <FileItem> /* FileItem */ items =upload.parseRequest(req);
 
 	    	  // Process the uploaded items
-	    	  Iterator iter = items.iterator();
+	    	  String scenarioName=""; //mapping scenario name
+	    	  Iterator <FileItem> iter = items.iterator();
 	    	  while (iter.hasNext()) {
 	    		  FileItem item = (FileItem) iter.next();
 
 	    		  if (item.isFormField()) {
-	    			  if (item.getFieldName().equals("MSName")) {
-	    				  MSName = item.getString();
-	    				  path = System.getProperty("gov.nih.nci.caadapter.path");
+	    			  if (item.getFieldName().equals("scenarioName")) {
+	    				  scenarioName = item.getString();
+	    				  path = System.getProperty("gov.nih.nci.cbiit.cmts.path");
 	    				  if (path==null)
-	    					  path=ScenarioUtil.SCENARIO_HOME;
+	    					  path=ScenarioUtil.CMTS_SCENARIO_HOME;
 	    				  File scnHome=new File(path);
 	    				  if (!scnHome.exists())
 	    					  scnHome.mkdir();
-	    				  path=path+"/";
-	    				  System.out.println(path);
-	    				  boolean exists = (new File(path+ MSName)).exists();
-	    				    if (exists) {
-	    				    	System.out.println("Scenario exists, overwriting ... ...");
-	    				    	String errMsg="Scenario exists, not able to save:"+MSName;
+	    				  String scenarioPath=path+File.separator +scenarioName;
+	    				  System.out.println("AddNewScenario.doPost()...scenarioPath:"+scenarioPath);
+	    				  boolean exists = (new File(scenarioPath)).exists();
+	    				  if (exists) 
+	    				  {
+	    				    	String errMsg="Scenario exists, not able to save:"+scenarioName;
+	    				    	System.out.println("AddNewScenario.doPost()...:"+errMsg);
 	    				    	req.setAttribute("rtnMessage", errMsg);
-	    				    	 res.sendRedirect("errormsg.do");
-	    				    	 return;
-	    				    } else {
-	    				    	boolean success = (new File(path+MSName)).mkdir();
-	    				        if (!success) {
-		    				    	System.out.println("New scenario, Creating ... ...");
+	    				    	res.sendRedirect("errormsg.do");
+	    				    	return;
+	    				  } else {
+	    				    	boolean success = (new File(scenarioPath)).mkdir();
+	    				        if (!success) 
+	    				        {
+	    				        	String errMsg="Faild to create scenario:"+scenarioName;
+		    				    	System.out.println("AddNewScenario.doPost()...:"+errMsg);
+		    				    	req.setAttribute("rtnMessage", errMsg);
+		    				    	res.sendRedirect("errormsg.do");
+		    				    	return;
 	    				        }
-	    				    }
+	    				        success = (new File(scenarioPath+File.separator+"source")).mkdir();
+	    				        if (!success) 
+	    				        {
+	    				        	String errMsg="Faild to create source schema folder:"+scenarioName;
+		    				    	System.out.println("AddNewScenario.doPost()...:"+errMsg);
+		    				    	req.setAttribute("rtnMessage", errMsg);
+		    				    	res.sendRedirect("errormsg.do");
+		    				    	return;
+	    				        }
+	    				        
+	    				        success = (new File(scenarioPath+File.separator+"target")).mkdir();
+	    				        if (!success) 
+	    				        {
+	    				        	String errMsg="Faild to create target schema folder:"+scenarioName;
+		    				    	System.out.println("AddNewScenario.doPost()...:"+errMsg);
+		    				    	req.setAttribute("rtnMessage", errMsg);
+		    				    	res.sendRedirect("errormsg.do");
+		    				    	return;
+	    				        }
+	    				  }
 
 	    			  }
 	    		  } else {
-	    			  System.out.println(item.getFieldName());
-	    			  name = item.getFieldName();
+	    			  String fieldName = item.getFieldName();
 
 	    			  String filePath = item.getName();
 	    			  String fileName=extractOriginalFileName(filePath);
 	    			  System.out.println("AddNewScenario.doPost()..original file Name:"+fileName);
 	    			  if (fileName==null||fileName.equals(""))
 	    				  continue;
-	    			  String uploadedFilePath=path+MSName+"/"+ fileName;
-	    			  System.out.println("AddNewScenario.doPost()...write data to file:"+uploadedFilePath);
-	    			  File uploadedFile = new File(uploadedFilePath);
-	    			  if (name.equals("mappingFileName")) {
+	    			  String uploadedFilePath=path+File.separator+scenarioName+File.separator+ fileName;
+	    			  if (fieldName.equals("mappingFileName")) {
+	    				  System.out.println("AddNewScenario.doPost()...mapping file:"+uploadedFilePath);
 	    				  String uploadedMapBak=uploadedFilePath+ ".bak";
 	    				  //write bak of Mapping file
 	    				  item.write(new File(uploadedMapBak));
 	    				  updateMapping(uploadedMapBak);
 	    			  }
-	    			  else
-	    				  item.write(uploadedFile);
+	    			  else if (fieldName.equals("sourceXsdName"))
+	    			  {
+	    				  uploadedFilePath=path+File.separator+scenarioName+File.separator+"source"+File.separator+fileName;
+	    				  
+		    			  System.out.println("AddNewScenario.doPost()..source schema file:"+uploadedFilePath);
+	    				  item.write(new File(uploadedFilePath));
+	    			  }
+	    			  else if (fieldName.equals("targetXsdName"))
+	    			  {
+	    				  uploadedFilePath=path+File.separator+scenarioName+File.separator+"target"+File.separator+fileName;
+	    				  
+		    			  System.out.println("AddNewScenario.doPost()..source schema file:"+uploadedFilePath);
+		    			  item.write(new File(uploadedFilePath));
+	    			  }
 	    		  }
 	    	  }
-	    	  ScenarioUtil.addNewScenarioRegistration(MSName);
+	    	  ScenarioUtil.addNewScenarioRegistration(scenarioName);
 	    	  res.sendRedirect("successmsg.do");
 
 		}catch(NullPointerException ne) {
 	            System.out.println("Error in doPost: " + ne);
 	            req.setAttribute("rtnMessage", ne.getMessage());
-		    	  res.sendRedirect("errormsg.do");
+		    	res.sendRedirect("errormsg.do");
 	        }
 		catch(Exception e) {
             System.out.println("Error in doPost: " + e);
             req.setAttribute("rtnMessage", e.getMessage());
-              res.sendRedirect("error.do");
+            res.sendRedirect("error.do");
         }
 	   }
 
@@ -190,42 +221,43 @@ public class AddNewScenario extends HttpServlet {
 	     * @param  mapplingFileName  mapping file name
 	     */
 	    public void updateMapping(String mapplingBakFileName) throws Exception{
+	    	
 	    	Document xmlDOM = readFile(mapplingBakFileName);
-
 	    	NodeList components = xmlDOM.getElementsByTagName("component");
 	    	for(int i = 0; i< components.getLength();i++) {
 	    		Element component = (Element)components.item(i);
 	    		//update location of SCS, H3S
 	    		Attr locationAttr = component.getAttributeNode("location");
-	    		Attr kindAttr = component.getAttributeNode("kind");
+	    		Attr typeAttr = component.getAttributeNode("type");
+	    	
 	    		if (locationAttr!=null)
 	    		{
-	    			String cmpKind="";
-	    			if (kindAttr!=null)
-	    				cmpKind=kindAttr.getValue();
-	    			if (cmpKind!=null&&cmpKind.equalsIgnoreCase("v2"))
+	    			String cmpType="";
+	    			if (typeAttr!=null)
+	    				cmpType=typeAttr.getValue();
+	    			if (cmpType!=null&&cmpType.equalsIgnoreCase("v2"))
 	    				continue;
 			    	String localName=extractOriginalFileName(locationAttr.getValue());
-			    	locationAttr.setValue(localName);
+			    	locationAttr.setValue(cmpType+File.separator+localName);
 	    		}
-	    		//update VOM reference
-	    		Attr groupAttr = component.getAttributeNode("group");
-	    		if (groupAttr!=null
-	    				&&groupAttr.getValue()!=null
-	    				&&groupAttr.getValue().equalsIgnoreCase("vocabulary"))
-	    		{
-	    			NodeList chldComps = component.getElementsByTagName("data");
-	    			for(int j=0;j<chldComps.getLength();j++)
-	    			{
-	    				Element chldElement = (Element)chldComps.item(j);
-	    				Attr valueAttr=chldElement.getAttributeNode("value");
-	    				if (valueAttr!=null)
-	    				{
-	    					String localFileName=extractOriginalFileName(valueAttr.getValue());
-	    					valueAttr.setValue(localFileName);
-	    				}
-	    			}
-	    		}
+//	    		//update VOM reference
+//	    		Attr groupAttr = component.getAttributeNode("group");
+//	    		if (groupAttr!=null
+//	    				&&groupAttr.getValue()!=null
+//	    				&&groupAttr.getValue().equalsIgnoreCase("vocabulary"))
+//	    		{
+//	    			NodeList chldComps = component.getElementsByTagName("data");
+//	    			for(int j=0;j<chldComps.getLength();j++)
+//	    			{
+//	    				Element chldElement = (Element)chldComps.item(j);
+//	    				Attr valueAttr=chldElement.getAttributeNode("value");
+//	    				if (valueAttr!=null)
+//	    				{
+//	    					String localFileName=extractOriginalFileName(valueAttr.getValue());
+//	    					valueAttr.setValue(localFileName);
+//	    				}
+//	    			}
+//	    		}
 	    	}
 	    	System.out.println("AddNewScenario.updateMapping()..mapbakfile:"+mapplingBakFileName);
 

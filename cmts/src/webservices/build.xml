@@ -38,7 +38,7 @@
   <target name="compile.source" depends="init" description="compile the source">
   	<javac destdir="${module.build.dir}" target="${project.build.target.version}"
   		classpathref="module.class.path"
-  		   fork="yes" debug="on">
+  		   fork="no" debug="on">
  		<!-- src path="${module.gencode.dir}"/ -->
  		<src path="${module.src.dir}"/>
   		<exclude name="test/**"/>

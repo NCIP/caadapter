@@ -10,7 +10,7 @@
 				<h2><bean:write name="rtnMessage"/></h2>
 			</logic:present>
 			<logic:notPresent name="rtnMessage">
-						Unable to Login. Please try again.
+						Error. Please try again.
 			</logic:notPresent>
 		</tr>												
  </table>

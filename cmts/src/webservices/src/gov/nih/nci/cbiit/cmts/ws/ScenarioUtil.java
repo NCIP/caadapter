@@ -10,9 +10,20 @@ package gov.nih.nci.cbiit.cmts.ws;
 import gov.nih.nci.cbiit.cmts.ws.object.ScenarioRegistration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Description of class definition
@@ -25,7 +36,7 @@ import java.util.List;
  */
 
 public class ScenarioUtil {
-	public static final String SCENARIO_HOME="ScenarioRegistration";
+	public static final String CMTS_SCENARIO_HOME="cmtsScenarioRegistration";
 	private static ArrayList<ScenarioRegistration> regList;
 
 	public static ScenarioRegistration findScenario(String scenarioName) throws Exception
@@ -52,7 +63,7 @@ public class ScenarioUtil {
 	private static void initRepository()throws Exception
 	{
 
-		File scnHomeFolder = (new File(SCENARIO_HOME));
+		File scnHomeFolder = (new File(CMTS_SCENARIO_HOME));
 		System.out.println("ScenarioUtil.initRepository()..initialize repository");
 		if (!scnHomeFolder.exists())
 			throw new Exception ("Web Service Registration System is down, please try it later!");
@@ -60,16 +71,16 @@ public class ScenarioUtil {
 		for (File childFile:scnHomeFolder.listFiles())
 		{
 			String scnName=childFile.getName();
-			ScenarioRegistration oneReg=loadScenarioRegistration(SCENARIO_HOME+"/"+ scnName);
+			ScenarioRegistration oneReg=loadScenarioRegistration(CMTS_SCENARIO_HOME+"/"+ scnName);
 			oneReg.setName(scnName);
 			regList.add(oneReg);
 		}
  	}
 
-	public static void addNewScenarioRegistration(String scnName)
+	public static void addNewScenarioRegistration(String scnName) throws ParserConfigurationException, SAXException, IOException
 	{
 		System.out.println("ScenarioUtil.addNewScenarioRegistration()..add scenario into respository:"+scnName);
-		String scnPath=SCENARIO_HOME+"/"+scnName;
+		String scnPath=CMTS_SCENARIO_HOME+"/"+scnName;
 		ScenarioRegistration oneReg=loadScenarioRegistration(scnPath);
 		oneReg.setName(scnName);
 		try {
@@ -80,7 +91,7 @@ public class ScenarioUtil {
 		}
 	}
 
-	private static ScenarioRegistration loadScenarioRegistration(String scenarioName)
+	private static ScenarioRegistration loadScenarioRegistration(String scenarioName) throws ParserConfigurationException, SAXException, IOException
 	{
 		ScenarioRegistration oneReg=new ScenarioRegistration();
 		File scenarioFolder=new File(scenarioName);
@@ -99,21 +110,28 @@ public class ScenarioUtil {
 		for (File childFile:scenarioFolder.listFiles())
 		{
 			String chldFileName=childFile.getName();
-			if (chldFileName.endsWith(".h3s")
-					||chldFileName.endsWith(".H3S"))
-				oneReg.setTargetFile(chldFileName);
-			else if (chldFileName.endsWith(".map")
+			if (chldFileName.endsWith(".map")
 					||chldFileName.endsWith(".map"))
+			{
 				oneReg.setMappingFile(chldFileName);
+				System.out.println("ScenarioUtil.loadScenarioRegistration()..mapping:"+chldFileName);
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                //dbf.setValidating(true);
+                DocumentBuilder db = dbf.newDocumentBuilder();
 
-			else if (chldFileName.endsWith(".scs")
-					||chldFileName.endsWith(".SCS"))
-				oneReg.setSourceSpecFile(chldFileName);
-
-			else if (chldFileName.endsWith(".vom")
-					||chldFileName.endsWith(".VOM"))
-				oneReg.addVocabuaryMappingFile(chldFileName);
-
+                Document xmlDOM = db.parse(childFile);
+		    	NodeList components =xmlDOM.getElementsByTagName("component");
+		    	for(int i = 0; i< components.getLength();i++) {
+		    		Element component = (Element)components.item(i);
+		    		//update location of SCS, H3S
+		    		Attr locationAttr = component.getAttributeNode("location");
+		    		Attr typeAttr = component.getAttributeNode("type");
+		    		if (typeAttr.getValue().equals("source"))
+		    			oneReg.setSourceSpecFile(locationAttr.getValue());
+		    		else if (typeAttr.getValue().equals("target"))
+		    			oneReg.setTargetFile(locationAttr.getValue());
+		    	}
+			}
 		}
 
 		return oneReg;

@@ -117,7 +117,7 @@
     </servlet-mapping-->   
     <servlet-mapping >
         <servlet-name>AxisServlet</servlet-name>
-        <url-pattern>/ws/*</url-pattern>
+        <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddNewScenario</servlet-name>
