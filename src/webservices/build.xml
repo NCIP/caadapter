@@ -18,7 +18,7 @@
   <property name="module.dist.dir" value="${ws.module.home}/dist"/>
   <property name="module.lib.dir" value="${ws.module.home}/lib"/>
   <property name="module.src.dir" value="${ws.module.home}/src"/>
-  <property name="project.dist.dir" value="C:/apps/caadapter-webapp/jboss-4.0.5.GA/server/default/deploy"/>
+  <property name="project.dist.dir" value="C:/apps/caadapter-webapp/jboss-5.1.0.GA/server/default/deploy"/>
   
   <path id="module.class.path">
   	<fileset dir="${module.lib.dir}">
@@ -58,6 +58,8 @@ org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging
 		<lib dir="${module.lib.dir}" >
 			<exclude name="commons-logging-1.0.4.jar"/>
 			<exclude name="log4j-1.2.8.jar"/>
+			<exclude name="servlet.jar"/>
+
 		</lib>
 		<lib dir="${ws.module.home}/axislib" >
 			<exclude name="commons-logging-1.0.4.jar"/>
@@ -67,6 +69,7 @@ org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging
 			<exclude name="commons-logging-1.0.4.jar"/>
 			<exclude name="log4j-1.2.8.jar"/>
 			<exclude name="jgraph.jar"/>
+			<exclude name="xercesImpl.jar"/>
 		</lib>
 		<classes dir="${module.build.dir}" />
 		<classes dir="${module.src.dir}" >
