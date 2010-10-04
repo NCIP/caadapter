@@ -14,16 +14,16 @@
 				<FORM ACTION="AddNewScenario" ENCTYPE="multipart/form-data" METHOD=POST>
 					<table boarder=0>
 					<tr>
-					<td>Mapping Scenario Name:</td><td> <input type=text name="MSName"><br></td>
+					<td>Mapping Scenario Name:</td><td> <input type=text name="scenarioName"><br></td>
 					</tr>
 					<tr>
 					<td>Mapping File(map):</td><td><INPUT TYPE=FILE NAME=mappingFileName></td>
 					</tr>
 					<tr>
-					<td>Source Schema File(xsd):</td><td><INPUT TYPE=FILE NAME=scsFileName></td>
+					<td>Source Schema File(xsd):</td><td><INPUT TYPE=FILE NAME=sourceXsdName></td>
 					</tr>
 					<tr>
-					<td>Target Schema File(xsd):</td><td><INPUT TYPE=FILE NAME=h3sFileName></td>
+					<td>Target Schema File(xsd):</td><td><INPUT TYPE=FILE NAME=targetXsdName></td>
 					</tr>
 					<!-- tr>
 						<td>Vocabulary mapping file:</td><td><INPUT TYPE=FILE NAME=vocabularyMappingFileName></td>

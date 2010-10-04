@@ -33,9 +33,9 @@
   <parameter name="allowedMethods" value="getVersion"/>
   <parameter name="className" value="org.apache.axis.Version"/>
  </service>
- <service name="caAdapterTransformationService" provider="java:RPC">
+ <service name="cmtsTransformationService" provider="java:RPC">
   <parameter name="allowedMethods" value="*"/>
-  <parameter name="className" value="gov.nih.nci.caadapter.ws.caAdapterTransformationService"/>
+  <parameter name="className" value="gov.nih.nci.cbiit.cmts.ws.TransformationWebService"/>
  </service>
  <transport name="http">
   <requestFlow>

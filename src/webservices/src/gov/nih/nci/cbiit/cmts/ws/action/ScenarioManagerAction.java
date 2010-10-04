@@ -19,18 +19,36 @@ package gov.nih.nci.cbiit.cmts.ws.action;
 import gov.nih.nci.cbiit.cmts.ws.ScenarioUtil;
 import gov.nih.nci.cbiit.cmts.ws.object.ScenarioRegistration;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.apache.struts.validator.DynaValidatorActionForm;
+import org.jdom.JDOMException;
+import org.jdom.input.DOMBuilder;
+import org.jdom.output.XMLOutputter;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 public class ScenarioManagerAction extends DispatchAction {
 
 	/**
@@ -80,8 +98,8 @@ public class ScenarioManagerAction extends DispatchAction {
 		request.setAttribute("results", rtnList);
 		return mapping.findForward("success");
 //	     return mapping.findForward("failure");
-	 }
-
+	 } 
+	
 }
 
 
