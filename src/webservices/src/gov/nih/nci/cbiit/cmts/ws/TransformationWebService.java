@@ -7,19 +7,21 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.cbiit.cmts.ws;
 
-import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
-import gov.nih.nci.caadapter.hl7.transformation.TransformationServiceUtil;
+import gov.nih.nci.cbiit.cmts.transform.TransformationService;
+import gov.nih.nci.cbiit.cmts.transform.TransformerFactory;
 import gov.nih.nci.cbiit.cmts.ws.object.ScenarioRegistration;
-import gov.nih.nci.caadapter.common.util.FileUtil;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import javax.xml.xquery.XQException;
 
 /**
- * caadapter Commong Mapping and Transformation Service module
- * Web Service to provide transformation service
- *
+ * caadapter Commong Mapping and Transformation Service module Web Service to
+ * provide transformation service
+ * 
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: altturbo $
  * @version $Revision: 1.15 $
@@ -27,127 +29,81 @@ import java.util.ArrayList;
  * @since caadapter v1.3.1
  */
 
-public class TransformationWebService
-{
-    /**
-     * caadapter Commong Mapping and Transformation Service module
-     * Web Service to provide transformation service
-     *
-     * @param mappingScenario The name of the mapping scenario 
-     * @param csvString csv data in String format 
-     * @return A collection of the transformed HL7 v3 message
-     */
-    public ArrayList<String> transformationService(String mappingScenario, String sourceDataString)
-    {
-        return transformationService(mappingScenario, sourceDataString, null);
+public class TransformationWebService {
+	/**
+	 * caadapter Commong Mapping and Transformation Service module Web Service
+	 * to provide transformation service
+	 * 
+	 * @param mappingScenario
+	 *            The name of the mapping scenario
+	 * @param sourceDataString
+	 *            source data in String format
+	 * @param sourceType valid formats are: XML, CSV, HL7_v2
+	 * @return A collection of the transformed XML message
+	 */
+	public ArrayList<String> transformationService(String mappingScenario,
+			String sourceDataString, String sourceType) {
 
-    }
-	private ArrayList<String> transformationService(String mappingScenario, String sourceDataString, String controlMessage)
-    {
+		ArrayList<String> result = new ArrayList<String>();
+		System.out.println("TransformationWebService.transformationService...scenarioName:"+mappingScenario);
+	    System.out.println("TransformationWebService.transformationService...sourceString:"+sourceDataString);
+	    System.out.println("TransformationWebService.transformationService...sourceType:"+sourceType);
+		ScenarioRegistration scenario=null;
+		try {
+			scenario = ScenarioUtil.findScenario(mappingScenario);
+			System.out
+					.println("TransformationWebService.transformationService()...found mapping scenario:"+scenario);
+			if (scenario == null) {
+				result.add("Scenario is not found:" + mappingScenario);
+				return result;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		  ArrayList<String> result = new ArrayList<String>(); 
+		String fileName="xmlFile"+Calendar.getInstance().getTimeInMillis();
+        FileWriter fw = null;
+        
+        try
+        {
+            fw = new FileWriter(new File(fileName));
+            fw.write(sourceDataString);
+            fw.close();
+        }
+        catch(Exception ie)
+        {
+        	result.add("File Writing Error(" + fileName + ") : " + ie.getMessage() );
+    		return result;
+        }
+        File tempSourceFile=new File(fileName);
+        if (!tempSourceFile.exists())
+        {
+        	result.add("source data is empty: " + sourceDataString );
+    		return result;
+        }
 
-          String controlMessageFile = null;
-            if ((controlMessage != null)&&(!controlMessage.trim().equals("")))
-            {
-                try
-                {
-                    controlMessageFile = FileUtil.saveStringIntoTemporaryFile(controlMessage);
-                }
-                catch(IOException ie)
-                {
-                    controlMessageFile = null;
-                }
-            }
-          try {
-			  ScenarioRegistration scenario=ScenarioUtil.findScenario(mappingScenario);
-			  if (scenario==null)
-			  {
-				  result.add("Scenario is not found:"+mappingScenario);
-				  return result;
-			  }
-			  String path =ScenarioUtil.CMTS_SCENARIO_HOME;
-			  String scenarioPath=path+"/"+mappingScenario;
-			  boolean exists = (new File(scenarioPath)).exists();
-			  if (exists) 
-			  {
-				  System.out.println("caAdapterTransformationService.transformationService()..path:"+path);
-				  String mappingFileName = scenarioPath+"/"+scenario.getMappingFile();
-				  System.out.println("mapping file:"+mappingFileName);
-	
+        try {
+        	String mappingFilePath=ScenarioUtil.CMTS_SCENARIO_HOME+File.separator+scenario.getName()
+        	+File.separator+scenario.getMappingFile();
+			result=transferData(mappingFilePath, tempSourceFile.getPath(), sourceType);
+		} catch (XQException e) {
+			e.printStackTrace();
+			result.add("error in transfering: " + e.getMessage() );
+		}
+		tempSourceFile.delete();
+		return result;
+	}
 
-                  String tempCSVFile = FileUtil.getTemporaryFileName(".csv");
-                  FileUtil.saveStringIntoTemporaryFile(tempCSVFile, sourceDataString);
+	private ArrayList<String> transferData(String mappingFile, String sourceDataFile, String sourceDataType) throws XQException
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		TransformationService transformer =TransformerFactory.getTransformer(sourceDataType) ;
+		System.out.println("TransformationWebService.transferData()...sourceFile:"+sourceDataFile);
+		String xmlResult=transformer.Transfer(sourceDataFile, mappingFile);
+		System.out.println("TransformationWebService.transferData()...resultData:"+xmlResult);
 
-                  TransformationService transformationService =
-					  new TransformationService(mappingFileName,tempCSVFile);
-
-                  String outputZip = FileUtil.getTemporaryFileName(".zip");
-                  transformationService.setOutputFile(new File(outputZip));
-                  System.out.println("caAdapterTransformationService.transformationService()2..start transformation");
-
-                  transformationService.process(controlMessageFile);
-
-                  File outputZipFile = new File(outputZip);
-                  if ((!outputZipFile.exists())||(!outputZipFile.isFile()))
-                  {
-                      result.add("Output Zip generating failure : " + outputZip);
-                      return result;
-                  }
-
-                  int n = -1;
-                  while(true)
-                  {
-                      String xmlMsg = "";
-                      String nam = "" + n;
-                      if (n < 0) nam = "i";
-                      n++;
-                      try
-                      {
-                          xmlMsg = TransformationServiceUtil.readFromZip(outputZipFile , nam + ".xml");
-                      }
-                      catch (Exception ie)
-                      {
-                          xmlMsg = null;
-                      }
-                      if ((xmlMsg == null)||(xmlMsg.trim().equals("")))
-                      {
-                          if (nam.equals("i"))
-                          {
-                              if (controlMessageFile == null) continue;
-                              else
-                              {
-                                  result.add("Failure of Control Message Wrapping. Please, check the control message.");
-                                  return result;
-                              }
-                          }
-                          else break;
-                      }
-
-                      if (nam.equals("i"))
-                      {
-                          result.add(xmlMsg);
-                          result.add("\n\n control message wrapping has done.");
-                          return result;
-                      }
-
-                      result.add(xmlMsg);
-                  }
-                  outputZipFile.delete();
-                  System.out.println("caAdapterTransformationService.transformationService()2..generated message count:"+result.size());
-
-				  result.add("\n\n "+result.size()+" payload message(s) processed");
-				  return result;
-			  } else {
-				  result.add("Scenario files are not found:"+scenarioPath);
-				  return result;
-			  }
-		  }catch(Exception e)
-		  {
-			  result.add(e.getStackTrace().toString());
-			  e.printStackTrace();
-		  }
-		  result.add("no HL7 message");
-		  return result;
+		result.add(xmlResult);
+		return result;
 	}
 }
