@@ -5,14 +5,12 @@ The contents of this file are subject to the caAdapter Software License (the "Li
 http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
-package gov.nih.nci.caadapter.hl7.demo;
+package gov.nih.nci.cbiit.cmts.test.ws.client;
 
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.axis.encoding.XMLType;
 import javax.xml.rpc.ParameterMode;
-import javax.xml.namespace.QName;
-import org.apache.axis.utils.Options;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,7 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class TestCaadapterWebservice {
+public class CmtsWebserviceClient {
 
 	public static String buildCsvString(String fileName)
 	{
@@ -35,7 +33,7 @@ public class TestCaadapterWebservice {
         		fi =new FileInputStream(srcFile);
         	}
 			else
-				fi=TestCaadapterWebservice.class.getClassLoader().getResource(fileName).openStream();
+				fi=CmtsWebserviceClient.class.getClassLoader().getResource(fileName).openStream();
 			InputStreamReader reader=new InputStreamReader(fi);
 			BufferedReader bfReader=new BufferedReader(reader);
 			String lineSt;
@@ -55,24 +53,25 @@ public class TestCaadapterWebservice {
 	
   public static void main(String[] args) {
     try {
-//      String endpointURL = " http://cbioqa101.nci.nih.gov:49080/caAdapterWS/ws/caAdapterTransformationService";
-//      String endpointURL = " http://cbiovdev5054.nci.nih.gov/caAdapterWS/ws/caAdapterTransformationService";
-//        String endpointURL = " http://caadapter-stage.nci.nih.gov/caAdapterWS/ws/caAdapterTransformationService";
-//        String endpointURL = " http://caadapter.nci.nih.gov/caAdapterWS/ws/caAdapterTransformationService";
-      if (args.length<3)
+      
+//      String endpointURL = "http://localhost:30210/caadapterWS-cmts/services/cmtsTransformationService";
+      if (args.length<4)
       {
-    	  System.out.println("TestCaadapterWebservice Usage:[scenarioName][cvsString]|[endURL]");
+    	  System.out.println("TestCaadapterWebservice Usage:[scenarioName]|[sourceString]|[sourceType]|[endURL]");
     	  return;
       }
-      System.out.println("TestCaadapterWebservice...scenarioName:"+args[0]);
-      System.out.println("TestCaadapterWebservice...cvsString:"+args[1]);
-      System.out.println("TestCaadapterWebservice...endURL:"+args[2]);
+      System.out.println("CmtsWebserviceClient.main...scenarioName:"+args[0]);
+      System.out.println("CmtsWebserviceClient.main...sourceString:"+args[1]);
+      System.out.println("CmtsWebserviceClient.main...sourecType:"+args[2]);
+      System.out.println("CmtsWebserviceClient.main...endURL:"+args[3]);
       
       //read WS paramters
       String scenarioName= args[0];
-      String cvsFileName=args[1];
-      String csvString =TestCaadapterWebservice.buildCsvString(cvsFileName);      
-      String endpointURL =args[2];
+      String sourceDataFileName=args[1];
+      String sourceDataString =CmtsWebserviceClient.buildCsvString(sourceDataFileName);      
+      String sourceType=args[2];
+      String endpointURL =args[3];
+      
       
       //build service call
       Service service = new Service();
@@ -80,10 +79,11 @@ public class TestCaadapterWebservice {
       call.setTargetEndpointAddress(new java.net.URL(endpointURL));
       String methodName = "transformationService";
       call.setOperationName(methodName);
-      call.addParameter("parameter_name", XMLType.XSD_STRING,ParameterMode.IN );
-      call.addParameter("csvstringname",  XMLType.XSD_STRING, ParameterMode.IN );
+      call.addParameter("mappingScenario", XMLType.XSD_STRING,ParameterMode.IN );
+      call.addParameter("sourceDataString",  XMLType.XSD_STRING, ParameterMode.IN );
+      call.addParameter("sourceType", XMLType.XSD_STRING,ParameterMode.IN );
       call.setReturnClass(java.util.ArrayList.class);
-      ArrayList res = (ArrayList)call.invoke(new Object[]{scenarioName,csvString});
+      ArrayList res = (ArrayList)call.invoke(new Object[]{scenarioName,sourceDataString, sourceType});
       System.out.println(res);
     }catch(Exception e) {
      	 e.printStackTrace();
