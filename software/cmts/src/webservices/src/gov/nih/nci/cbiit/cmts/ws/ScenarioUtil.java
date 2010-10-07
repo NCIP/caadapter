@@ -66,7 +66,11 @@ public class ScenarioUtil {
 		File scnHomeFolder = (new File(CMTS_SCENARIO_HOME));
 		System.out.println("ScenarioUtil.initRepository()..initialize repository");
 		if (!scnHomeFolder.exists())
-			throw new Exception ("Web Service Registration System is down, please try it later!");
+		{
+			System.out.println("ScenarioUtil.initRepository()...Web Service Registration System is down, please try it later!");
+
+			return;
+		}
 		regList=new ArrayList<ScenarioRegistration>();
 		for (File childFile:scnHomeFolder.listFiles())
 		{
@@ -83,8 +87,15 @@ public class ScenarioUtil {
 		String scnPath=CMTS_SCENARIO_HOME+"/"+scnName;
 		ScenarioRegistration oneReg=loadScenarioRegistration(scnPath);
 		oneReg.setName(scnName);
+		if (regList!=null)
+		{
+			regList.add(oneReg);
+			return;
+		}
+		//the latest scenario information has been saved into repository
+		//just load it from XML data repository
 		try {
-			ScenarioUtil.retrieveScenarioRegistrations().add(oneReg);
+			ScenarioUtil.retrieveScenarioRegistrations();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
