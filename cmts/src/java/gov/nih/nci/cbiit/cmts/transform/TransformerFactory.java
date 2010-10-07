@@ -14,6 +14,12 @@ public class TransformerFactory {
 			return new Hl7v2XmlTransformer();
  		else if (transformerType.equals(TransformationService.TRANSFER_CSV_TO_XML))
  			return new Csv2XmlTransformer();
+ 		else if (transformerType.equalsIgnoreCase("XML"))
+ 			return new XQueryTransformer();
+		else if (transformerType.equalsIgnoreCase("CSV"))
+ 			return new Csv2XmlTransformer();
+ 		else if (transformerType.toUpperCase().contains("HL7"))
+ 			return new Hl7v2XmlTransformer();
 		
 		return new XQueryTransformer();
 	}
