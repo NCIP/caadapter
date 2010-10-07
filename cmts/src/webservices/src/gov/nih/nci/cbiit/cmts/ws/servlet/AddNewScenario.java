@@ -165,7 +165,7 @@ public class AddNewScenario extends HttpServlet {
 	    				  String uploadedMapBak=uploadedFilePath+ ".bak";
 	    				  //write bak of Mapping file
 	    				  item.write(new File(uploadedMapBak));
-	    				  updateMapping(uploadedMapBak);
+	    				  updateMapping(uploadedMapBak, path+File.separator+scenarioName);
 	    			  }
 	    			  else if (fieldName.equals("sourceXsdName"))
 	    			  {
@@ -220,7 +220,7 @@ public class AddNewScenario extends HttpServlet {
 	     *
 	     * @param  mapplingFileName  mapping file name
 	     */
-	    public void updateMapping(String mapplingBakFileName) throws Exception{
+	    public void updateMapping(String mapplingBakFileName, String fileHome) throws Exception{
 	    	
 	    	Document xmlDOM = readFile(mapplingBakFileName);
 	    	NodeList components = xmlDOM.getElementsByTagName("component");
@@ -238,7 +238,7 @@ public class AddNewScenario extends HttpServlet {
 	    			if (cmpType!=null&&cmpType.equalsIgnoreCase("v2"))
 	    				continue;
 			    	String localName=extractOriginalFileName(locationAttr.getValue());
-			    	locationAttr.setValue(cmpType+File.separator+localName);
+			    	locationAttr.setValue(fileHome+File.separator+cmpType+File.separator+localName);
 	    		}
 //	    		//update VOM reference
 //	    		Attr groupAttr = component.getAttributeNode("group");
