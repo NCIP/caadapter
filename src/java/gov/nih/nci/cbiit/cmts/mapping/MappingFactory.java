@@ -115,11 +115,16 @@ public class MappingFactory {
 		m.getLinks().getLink().add(l);
 	}
 	
-	public static Mapping loadMapping(File f) throws JAXBException{
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+	public static Mapping loadMapping(File f)throws JAXBException{
+		System.out.println("MappingFactory.loadMapping()...mappingFile:"+f.getAbsolutePath());
+		JAXBContext jc=null;		
+//			jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+		jc=com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.newInstance("gov.nih.nci.cbiit.cmts.core");
+
 		Unmarshaller u = jc.createUnmarshaller();
 		JAXBElement<Mapping> jaxbElmt = u.unmarshal(new StreamSource(f), Mapping.class);
 		Mapping mapLoaded=jaxbElmt.getValue();
+		System.out.println("MappingFactory.loadMapping()...mapLoaded:"+mapLoaded);
 		//re-connect the meta structure for source and target schemas
 		for (Component mapComp:mapLoaded.getComponents().getComponent())
 		{
