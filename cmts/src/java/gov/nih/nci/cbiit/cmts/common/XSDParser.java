@@ -62,17 +62,15 @@ public class XSDParser implements DOMErrorHandler {
 
 			schemaLoader = impl.createXSLoader(null);
 
-			DOMConfiguration config = schemaLoader.getConfig();
-
-			// create Error Handler
-			DOMErrorHandler errorHandler = this;
-
-			// set error handler
-			config.setParameter("error-handler", errorHandler);
-
-			// set validation feature
-			config.setParameter("validate", Boolean.TRUE);
-
+//			DOMConfiguration config = schemaLoader.getConfig();
+//
+//			// create Error Handler
+//			DOMErrorHandler errorHandler = this;
+//			// set error handler
+//			config.setParameter("error-handler", errorHandler);
+//			// set validation feature
+//			config.setParameter("validate",Boolean.TRUE);
+System.out.println("XSDParser.XSDParser()...set vaidate");
 			ctStack = new Stack<String>();
 			elStack = new Stack<String>();
 		} catch (ClassCastException e) {
