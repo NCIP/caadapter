@@ -48,18 +48,10 @@
   <target name="package.war" depends="compile.source" description ="Create ebservice war file ...${module.dist.dir}/${ws.module.name}.war">
   	<war destfile="${module.dist.dir}/${ws.module.name}.war" webxml="${ws.module.home}/WebRoot/WEB-INF/web.xml">
 		<zipfileset dir="${ws.module.home}/WebRoot" />
-		<!-- exclude log4j.jar fix error
-		java.lang.ClassCastException: org.jboss.logging.appender.DailyRollingFileAppender cannot be cast to org.apache.log4j.Appender
-		-->
-		<!-- exclude commons-logging-1.0.4.jar fix error
-		org.apache.commons.modeler.BaseModelMBean] Exception invoking method addChild
-org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging.LogConfigurationException: Invalid class loader hierarchy.  You have more than one version of 'org.apache.commons.logging.Log' visible, which is not allowed. (Caused by org.apache.commons.logging.LogConfigurationException: Invalid class loader hierarchy.  You have more than one version of 'org.apache.commons.logging.Log' visible, which is not allowed.) (Caused by org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging.LogConfigurationException: Invalid class loader hierarchy.  You have more than one version of 'org.apache.commons.logging.Log' visible, which is not allowed. (Caused by org.apache.commons.logging.LogConfigurationException: Invalid class loader hierarchy.  You have more than one version of 'org.apache.commons.logging.Log' visible, which is not allowed.))
-		-->
 		<lib dir="${module.lib.dir}" >
 			<exclude name="commons-logging-1.0.4.jar"/>
 			<exclude name="log4j-1.2.8.jar"/>
 			<exclude name="servlet.jar"/>
-
 		</lib>
 		<lib dir="${ws.module.home}/axislib" >
 			<exclude name="commons-logging-1.0.4.jar"/>
@@ -72,6 +64,9 @@ org.apache.commons.logging.LogConfigurationException: org.apache.commons.logging
 			<exclude name="xercesImpl.jar"/>
 		</lib>
 		<classes dir="${module.build.dir}" />
+		<classes dir="${basedir}/../../bin" >
+			<include name="**/*.class"/>
+		</classes>
 		<classes dir="${module.src.dir}" >
 			<include name="**/*.properties"/>
 		</classes>
