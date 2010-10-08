@@ -39,7 +39,7 @@
   	<javac destdir="${module.build.dir}" target="${project.build.target.version}"
   		classpathref="module.class.path"
   		   fork="no" debug="on">
- 		<!-- src path="${module.gencode.dir}"/ -->
+ 		<src path="${ws.module.home}/../java"/>
  		<src path="${module.src.dir}"/>
   		<exclude name="test/**"/>
   	</javac>
@@ -62,11 +62,10 @@
 			<exclude name="log4j-1.2.8.jar"/>
 			<exclude name="jgraph.jar"/>
 			<exclude name="xercesImpl.jar"/>
+			<exclude name="rt.jar"/>
 		</lib>
 		<classes dir="${module.build.dir}" />
-		<classes dir="${basedir}/../../bin" >
-			<include name="**/*.class"/>
-		</classes>
+
 		<classes dir="${module.src.dir}" >
 			<include name="**/*.properties"/>
 		</classes>
