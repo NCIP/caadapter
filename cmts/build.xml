@@ -105,7 +105,9 @@
     		
 	<target name="dist_bin" depends="jar" description="create the binary distribution">
 		<zip destfile="${dist.dir}/cmts_${release.version}_Bin_${DATE}.zip">
-			<zipfileset dir="${lib.dir}" prefix="lib"/>
+			<zipfileset dir="${lib.dir}" prefix="lib">
+				<exclude name="rt.jar"/>
+			</zipfileset>
 			<zipfileset dir="${dist.dir}" prefix="lib">
 				<include name="cmts.jar" />
 				<include name="cmts-resources.jar" />
@@ -165,23 +167,27 @@
 	</target>
 
 	<target name="init" depends="clean">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<echo message="java.class.path:${java.class.path}"/>
+		<tstamp>
+			<format property="DATE" pattern="MM-dd-yy" locale="en_us" />
+		</tstamp>
+		<echo message="env:${env}"/>
 		<echo message="java.endorsed.dirs:${java.endorsed.dirs}"/>
 		<echo message="java.specification.version:${java.specification.version}"/>
 		<echo message="java.vm.name:${java.vm.name}"/>
 		<echo message="java.vm.specification.version:${java.vm.specification.version}"/>
 		<echo message="java.vm.version:${java.vm.version}"/>
 		<echo message="java.ext.dirs:${java.ext.dirs}"/>
-		<mkdir dir="${build.dir}" />
-		<mkdir dir="${dist.dir}" />
-		<tstamp>
-			<format property="DATE" pattern="MM-dd-yy" locale="en_us" />
-		</tstamp>
 	</target>
 	<target name="compile" depends="init">
-		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="on">
-			<!--fork="yes" executable="C:\Program%20Files\Java\jre1.6.0_03\bin\javac.exe" -->
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="off">
+			<!-- fork="yes" executable="c:\java\jdk1.6.0_20\bin\javac" -->
 			<include name="**/*.java" />
-			<classpath refid="project.class.path" />
+			<classpath>
+				<path refid="project.class.path" />
+			</classpath>
 		</javac>
 	</target>
 
