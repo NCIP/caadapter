@@ -19,6 +19,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class 
@@ -40,7 +41,7 @@ public class MainFrame extends JFrame
 
 	private JPanel currentToolBarPanel;
 
-	private java.util.Map<Class, JComponent> tabMap;
+	private Map<Class, JComponent> tabMap;
 
 	private static MainFrame instance = null;
 
@@ -70,7 +71,7 @@ public class MainFrame extends JFrame
 			contextManager.setMenu(frameMenu);
 			contextManager.setToolBarHandler(new MainToolBarHandler());
 			contextManager.initContextManager(this);
-			this.setTitle("caAdapter Common Mapping and Transformation Services");
+			this.setTitle("caAdapter Common Mapping and Transformation Service (CMTS)");
 			Container contentPane = this.getContentPane();
 			contentPane.setLayout(new BorderLayout());
 			//set the icon.
