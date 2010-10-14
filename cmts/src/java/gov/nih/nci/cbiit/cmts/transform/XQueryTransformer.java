@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.xml.validation.Schema;
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQException;
 import javax.xml.xquery.XQItemType;
@@ -39,13 +40,11 @@ import net.sf.saxon.xqj.SaxonXQDataSource;
  */
 public class XQueryTransformer implements TransformationService {
 
-	// Data Source for querying
-	// private SaxonXQDataSource dataSource;
-
+	private Mapping mapping;
 	// Connection for querying
 	private XQConnection conn;
 	private boolean temporaryFileCreated = false;
-
+	
 	public boolean isTemporaryFileCreated() {
 		return temporaryFileCreated;
 	}
@@ -97,11 +96,11 @@ public class XQueryTransformer implements TransformationService {
 	public String Transfer(String sourceFile, String mappingFile) {
 		// TODO Auto-generated method stub
 		try {
-			Mapping map = MappingFactory.loadMapping(new File(mappingFile));
+			mapping = MappingFactory.loadMapping(new File(mappingFile));
 			// parse raw data to a temporary file
 			//if source is HL7 v2, the target namespace is set as null
-			String tempXmlSrc = parseRawData(sourceFile, map);
-			XQueryBuilder builder = new XQueryBuilder(map);
+			String tempXmlSrc = parseRawData(sourceFile, mapping);
+			XQueryBuilder builder = new XQueryBuilder(mapping);
 			String queryString = builder.getXQuery();
 			String xmlResult = executeQuery(queryString, tempXmlSrc);
 			if (isTemporaryFileCreated()) {
@@ -142,6 +141,12 @@ public class XQueryTransformer implements TransformationService {
 			throws JAXBException, IOException, ApplicationException {
 		// do nothing
 		return sourceRawDataFile;
+	}
+
+	@Override
+	public Mapping getTransformationMapping() {
+		// TODO Auto-generated method stub
+		return mapping;
 	}
 }
 
