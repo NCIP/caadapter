@@ -9,6 +9,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.cbiit.cmts.ui.message;
 
+
+import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,20 +122,20 @@ public class DefaultMessageTableModel extends AbstractTableModel
 		try
         {
             Object obj = messageList.get(rowIndex);
-//            if (obj instanceof ValidatorResult)
-//            {
-//            	ValidatorResult rslt=(ValidatorResult)obj;
-//            	if (columnIndex==0)
-//            		return rslt.getLevel();
-//            	else
-//            		return rslt.getMessage();
-//            	
-//            }
-//            else
-//            {
-//            	if (columnIndex==0)
-//            		return "";
-//            }
+            if (obj instanceof ApplicationResult)
+            {
+            	ApplicationResult rslt=(ApplicationResult)obj;
+            	if (columnIndex==0)
+            		return rslt.getLevel();
+            	else
+            		return rslt.getMessage();
+            	
+            }
+            else
+            {
+            	if (columnIndex==0)
+            		return "";
+            }
 		    return obj;
         }
         catch(IndexOutOfBoundsException ie)

@@ -281,6 +281,10 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
         scrollPane.getViewport().setView(outputMessageArea);
     }
 
+    public void setValidationMessage(List validationMessage)
+    {
+    	validationMessagePane.setMessageList(validationMessage);	
+    }
     public Map getMenuItems(String menu_name)
 	{
 		Action action = null;
