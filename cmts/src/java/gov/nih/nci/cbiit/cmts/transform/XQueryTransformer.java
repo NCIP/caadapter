@@ -8,11 +8,18 @@
 package gov.nih.nci.cbiit.cmts.transform;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.cbiit.cmts.common.ApplicationMessage;
+import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
+import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
+import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.xml.validation.Schema;
@@ -143,6 +150,35 @@ public class XQueryTransformer implements TransformationService {
 		return sourceRawDataFile;
 	}
 
+	public List<ApplicationResult> validateXmlData(Mapping maping, String xmlData)
+	{
+		List<ApplicationResult> rtnList=new ArrayList<ApplicationResult>();
+		//using validator
+		String targetSchema=null;
+		for (gov.nih.nci.cbiit.cmts.core.Component mapComp:maping.getComponents().getComponent())
+		{
+			if (mapComp.getRootElement()!=null
+					&&mapComp.getType().equals(ComponentType.TARGET))
+			{
+				targetSchema=mapComp.getLocation();
+				continue;
+			}
+		}
+		XsdSchemaErrorHandler xsdErrorHandler=new XsdSchemaErrorHandler();
+		Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, xsdErrorHandler);
+		ApplicationMessage xsdInfor=new ApplicationMessage("Target XSD Schema Validation");
+		rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xsdInfor));
+		rtnList.addAll(xsdErrorHandler.getErrorMessage());
+
+		XsdSchemaErrorHandler xmlErrorHandler=new XsdSchemaErrorHandler();
+		XsdSchemaSaxValidator.validateXmlData(schema, xmlData, xmlErrorHandler);
+		ApplicationMessage xmlInfor=new ApplicationMessage("Result XML Data Validation");
+		rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xmlInfor));
+
+		rtnList.addAll(xmlErrorHandler.getErrorMessage());
+		
+		return rtnList;
+	}
 	@Override
 	public Mapping getTransformationMapping() {
 		// TODO Auto-generated method stub
