@@ -1,0 +1,55 @@
+package gov.nih.nci.cbiit.cmts.common;
+
+import gov.nih.nci.caadapter.common.Log;
+ 
+public class ApplicationResult {
+
+	
+    private Level level;
+    private ApplicationMessage message;
+
+    public ApplicationResult()
+    {
+    }
+
+    public ApplicationResult(Level level, ApplicationMessage message)
+	{
+		this(level, message, false);
+	}
+
+	public ApplicationResult(Level level, ApplicationMessage message, boolean toLogMessage)
+    {
+        this.level = level;
+        this.message = message;
+
+        //TODO: Need to re-design: Consolidate the ApplicationException Level with ValidatorResult Level
+        //Only log Fetal, Error and WARNING level now
+        if(toLogMessage && (Level.FATAL == level || Level.ERROR == level))
+        {
+            Log.logError(this, message);
+        }
+        else if (toLogMessage && Level.WARNING == level)
+        {
+            Log.logWarning(this, message);
+        }
+    }
+
+    public static enum Level
+    {
+        FATAL,
+        ERROR,
+        WARNING,
+        INFO,
+        ALL
+    }
+
+    public Level getLevel()
+    {
+        return level;
+    }
+
+    public ApplicationMessage getMessage()
+    {
+        return message;
+    }
+}

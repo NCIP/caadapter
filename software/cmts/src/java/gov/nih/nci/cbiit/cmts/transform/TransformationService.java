@@ -1,5 +1,8 @@
 package gov.nih.nci.cbiit.cmts.transform;
 
+import java.util.List;
+
+import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 
 public interface TransformationService {
@@ -7,6 +10,7 @@ public interface TransformationService {
 	public final static String TRANSFER_CSV_TO_XML="CSV_TO_XML";
 	public final static String TRANSFER_HL7_v2_TO_XML="HL7_V2_TO_XML";
 	
+	public List<ApplicationResult> validateXmlData(Mapping mapping, String xmlData);
 	public Mapping getTransformationMapping();
 	
 	/**

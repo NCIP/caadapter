@@ -20,7 +20,8 @@ import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import javax.swing.*;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileWriter;
@@ -128,6 +129,8 @@ public class NewTransformationAction extends AbstractContextAction
 			FileWriter writer = new FileWriter(w.getDestFile());
 			writer.write(xmlResult);
 			writer.close();
+
+			newMsgPane.setValidationMessage( transformer.validateXmlData(transformer.getTransformationMapping(),xmlResult));
 			JOptionPane.showMessageDialog(mainFrame, "Transformation has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);				
 		}
 		else
