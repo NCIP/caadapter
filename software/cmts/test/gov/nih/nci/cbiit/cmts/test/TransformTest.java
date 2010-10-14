@@ -7,11 +7,15 @@
  */
 package gov.nih.nci.cbiit.cmts.test;
 
+import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.transform.TransformationUtil;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
+import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,6 +26,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
 import javax.xml.xquery.XQException;
 
 import org.junit.After;
@@ -29,6 +34,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.ErrorHandler;
 
 /**
  * This class 
@@ -121,7 +127,7 @@ public class TransformTest {
 
 	@Test
 	public void testTransformAndOutput() throws XQException, JAXBException, IOException {
-		String mapFile="workingspace/simpleMapping/mapping1.xml";
+		String mapFile="workingspace/simpleMapping/mapping.map";
 		Mapping map = MappingFactory.loadMapping(new File(mapFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
@@ -135,8 +141,25 @@ public class TransformTest {
  		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.Transfer(dataSource, mapFile)));
 		
 		w = new FileWriter("bin/tranform.out.xml");
-		w.write(tester.Transfer(dataSource, mapFile));
+		String result=tester.Transfer(dataSource, mapFile);
+		w.write(result);
 		w.close();
+		
+		//using validator
+		String targetSchema=null;
+		Mapping maping=tester.getTransformationMapping();
+		for (Component mapComp:maping.getComponents().getComponent())
+		{
+			if (mapComp.getRootElement()!=null
+					&&mapComp.getType().equals(ComponentType.TARGET))
+			{
+				targetSchema=mapComp.getLocation();
+			}
+		}
+		ErrorHandler handler=new XsdSchemaErrorHandler();
+		
+		Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, handler);
+		XsdSchemaSaxValidator.validateXmlData(schema, result, handler);
 	}
 
 	@Test
