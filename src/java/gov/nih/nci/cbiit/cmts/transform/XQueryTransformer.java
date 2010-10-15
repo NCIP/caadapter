@@ -166,10 +166,13 @@ public class XQueryTransformer implements TransformationService {
 		}
 		XsdSchemaErrorHandler xsdErrorHandler=new XsdSchemaErrorHandler();
 		Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, xsdErrorHandler);
-		ApplicationMessage xsdInfor=new ApplicationMessage("Target XSD Schema Validation");
-		rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xsdInfor));
-		rtnList.addAll(xsdErrorHandler.getErrorMessage());
-
+		if (!xsdErrorHandler.getErrorMessage().isEmpty())
+		{
+			//add xsd schema validation message only if error occurs
+			ApplicationMessage xsdInfor=new ApplicationMessage("Target XSD Schema Validation");
+			rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xsdInfor));
+			rtnList.addAll(xsdErrorHandler.getErrorMessage());
+		}
 		XsdSchemaErrorHandler xmlErrorHandler=new XsdSchemaErrorHandler();
 		XsdSchemaSaxValidator.validateXmlData(schema, xmlData, xmlErrorHandler);
 		ApplicationMessage xmlInfor=new ApplicationMessage("Result XML Data Validation");
