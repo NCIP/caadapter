@@ -10,6 +10,10 @@ package gov.nih.nci.cbiit.cmts.transform.validation;
  * @date $Date: 2010-10-14 19:01:17 $
  * 
  */
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.StringReader;
+
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Schema;
 import javax.xml.XMLConstants;
@@ -20,22 +24,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.validation.Validator;
-import java.io.*;
 public class XsdSchemaSaxValidator {
 	
-  public static void main(String[] a) {
-    if (a.length<2) {
-      System.out.println("Usage:");
-      System.out.println("java XsdSchemaValidator schema_file_name "
-        + "xml_file_name");
-    } else {
-      String schemaName = a[0];
-      String xmlName = a[1];
-      Schema schema = loadSchema(schemaName, null);
-      validateXmlFile(schema, xmlName, null);
-    }
-  }
-  
   public static void validateXmlSource(Schema schema,SAXSource saxSource, ErrorHandler errorHandler)
   {
 	    try {
