@@ -21,6 +21,7 @@ import gov.nih.nci.cbiit.cmts.function.FunctionInvoker;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -141,6 +142,22 @@ public class XQueryBuilder {
 		String inlineText="\"\"";
 		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		LinkType link = links.get(elementXpath);
+        boolean findUnder = false;
+        if(link==null)
+        {
+            Set<String> set = links.keySet();
+            Object[] objs = set.toArray();
+
+            for(Object obj:objs)
+            {
+                String str = (String) obj;
+                if (str.startsWith(elementXpath))
+                {
+                    findUnder = true;
+                    break;
+                }
+            }
+        }
 		if(link!=null) 		
 		{ 	//Case I:
 			//create loop
@@ -199,13 +216,22 @@ public class XQueryBuilder {
 			}
 			else if (tgt.getMinOccurs().intValue()>0)
 			{
-				//Case V: create an empty element only if it is mandatory
+				//Case IV: create an empty element only if it is mandatory
 				//set online text
 				if (tgt.getDefaultValue()!=null)
 					inlineText=tgt.getDefaultValue();
 				encodeElement(tgt, parentMappedXPath,inlineText,false);
 				elementCreated=true;
 			}
+            else if (findUnder)
+            {
+                //Case V: create an element if a link of which id starts with this finding key
+                //set online text
+                if (tgt.getDefaultValue()!=null)
+                    inlineText=tgt.getDefaultValue();
+                encodeElement(tgt, parentMappedXPath,inlineText,false);
+                elementCreated=true;
+            }
 		}
 		xpathStack.pop();
 		return elementCreated;
