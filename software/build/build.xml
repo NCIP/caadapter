@@ -5,7 +5,7 @@ $Id: build.xml 1968 2009-08-25 13:12:21Z saksass $
 $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-template/software/build/build.xml $
 -->
 
-<project name="build-bda-template" default="build:all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
+<project name="caAdapter Common Mapping and Transformation (CMTS)" default="build:all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
 	<description>
 		This build file is part of the bda-build-template project.  This is the master build file for the project.  It should be placed in project/software/.  This script wrappers sub projects to build, test and inspect code.  Additionally this project manges creation of distributions and deployment locally or remotely.  Deployments will call the install.xml from the distribution to install or upgrade the application.  Lastly this script will run include targets that require manipulation of containers (selenium tests because they require starting the application server container (and require a fully deployed application which this process is responsible for). This build script assumes two sub-projects caadapter-webapp and caadapter-api. The API targets are commented out and can be removed if not needed.  Also support for both tomcat and jboss download, install and configure are included.  These scripts require Java, Ant, Database and SVN to work.
 	</description>
