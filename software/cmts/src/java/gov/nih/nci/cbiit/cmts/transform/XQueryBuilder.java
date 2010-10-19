@@ -256,7 +256,7 @@ public class XQueryBuilder {
 			for(ElementMeta e:elementMeta.getChildElement()) 
 			{
 				//procee choice
-				if(e.getName().equals("<choice>"))
+				if(e.getName().startsWith("<choice>"))//.equals("<choice>"))
 				{
 					//do not create xml element, but "<choice>" is part of xmlpath
 					xpathStack.push(e.getName());
