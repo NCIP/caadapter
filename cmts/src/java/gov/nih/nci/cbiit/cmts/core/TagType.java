@@ -8,12 +8,9 @@
 
 package gov.nih.nci.cbiit.cmts.core;
 
-import java.math.BigInteger;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -40,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tagType")
-public class TagType implements Comparable {
+public class TagType implements Comparable<TagType> {
 
 	@XmlAttribute
     protected ComponentType componentType;
@@ -148,19 +145,31 @@ public class TagType implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
+	/**
+	 * The comparing precedence from lower to higher
+	 * 0 -- componentType; enumValues: source, taret, function
+	 * 1 -- key; allowing value: entry's xpath
+	 * 2 -- componentKind; enumValues: choice, clone
+	 * 3 -- value; the ordered ASCII characters 
+	 */
+	public int compareTo(TagType arg0) {
 		// TODO Auto-generated method stub
 		TagType toCompared=(TagType)arg0;
 
 		int componentTypeCompare=this.getComponentType().compareTo(toCompared.getComponentType());
 		if (componentTypeCompare!=0)
 			return componentTypeCompare;
-		int kindCompare=this.getKind().compareTo(toCompared.getKind());
-		if (kindCompare!=0)
-			return kindCompare;
+//		int kindCompare=this.getKind().compareTo(toCompared.getKind());
+//		if (kindCompare!=0)
+//			return kindCompare;
 		int keyCompare=this.getKey().compareTo(toCompared.getKey());
 		if (keyCompare!=0)
 			return keyCompare;	
+		
+		int kindCompare=this.getKind().compareTo(toCompared.getKind());
+		if (kindCompare!=0)
+			return kindCompare;
+		
 		int valueCompare=this.getValue().compareTo(toCompared.getValue());
 		if (valueCompare!=0)
 			return valueCompare;
