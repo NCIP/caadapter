@@ -338,7 +338,7 @@ public final class UIHelper
 
 		if(result == null)
 		{
-			System.out.println("UIHelper.constructMappableNodeObjectXmlPath():Could not find the data obj in the given tree rooted by '" + treeRoot + "'. Object"+ dtObjectXmlPath);
+			System.out.println("UIHelper.constructMappableNodeObjectXmlPath():Could not find the data obj in the given tree rooted by '" + treeRoot + "'. path:"+ dtObjectXmlPath);
 			//Log.logError(internalInstance, (new StringBuilder()).append("Could not find the datatypeBaseObject '").append(dtObjectXmlPath).append("' in the given tree rooted by '").append(treeRoot).append("'.").toString());
 			//Log.logError(internalInstance, (new StringBuilder()).append("treeRoot is of type '").append(treeRoot != null ? treeRoot.getClass().getName() : "null").append("'").toString());
 		}
