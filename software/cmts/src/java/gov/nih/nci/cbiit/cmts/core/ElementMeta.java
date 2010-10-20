@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 
 /**
  * <p>Java class for elementMeta complex type.
@@ -477,4 +479,42 @@ public class ElementMeta
     		rtBuffer.append(getMaxOccurs()+"]");
     	return rtBuffer.toString();
     }
+	
+	@Override
+	public Object clone()
+	{
+		System.out.println("ElementMeta.deepClone()...ElementMeta:"+this.getName());
+		try {
+//			ElementMeta clonnedObj=(ElementMeta)super.clone();//
+			ElementMeta clonnedObj=(ElementMeta)BeanUtils.cloneBean(this);
+			clonnedObj.setIsChosen(false);
+			clonnedObj.setIsChoice(this.isIsChoice());
+			clonnedObj.setIsEnabled(this.isIsEnabled());
+			clonnedObj.setIsFixed(this.isIsFixed());
+			clonnedObj.setIsRecursive(this.isIsRecursive());
+			clonnedObj.setIsRequired(this.isIsRequired());
+			clonnedObj.setIsSimple(this.isIsSimple());
+			clonnedObj.setIsValid(this.isIsValid());
+
+			for (AttributeMeta attrMeta:this.getAttrData())
+			{
+				clonnedObj.getAttrData().add((AttributeMeta)attrMeta.clone());
+			}
+
+			//deep cloning of all children elements
+			//clone all child elements and add them to the cloned Element meta
+			//deep cloning will be terminated if no child element exist
+			
+			for (ElementMeta childMeta:this.getChildElement())
+			{		
+				clonnedObj.getChildElement().add((ElementMeta)childMeta.clone());
+			}
+
+			return clonnedObj;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
