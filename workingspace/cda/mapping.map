@@ -17,6 +17,16 @@
                 <data input="false" type="String" value="Spanish" name="constant"/>
             </function>
         </component>
+        <component type="function" id="1287604461982">
+            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
+                <data input="false" type="String" value="Some" name="constant"/>
+            </function>
+        </component>
+        <component type="function" id="1287604489347">
+            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
+                <data input="false" type="String" value="," name="constant"/>
+            </function>
+        </component>
     </components>
     <links>
         <link>
@@ -57,35 +67,38 @@
         </link>
         <link>
             <source id="/shiporder/shipto/name" componentid="1"/>
-            <target id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/@determinerCode" componentid="0"/>
-        </link>
-        <link>
-            <source id="/shiporder/shipto/address" componentid="1"/>
             <target id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;/family" componentid="0"/>
         </link>
         <link>
-            <source id="/shiporder/shipto/city" componentid="1"/>
-            <target id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[1]/given" componentid="0"/>
+            <source id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;/family/@language" componentid="0"/>
+            <target id="constant" componentid="1287427528877"/>
         </link>
         <link>
             <source id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[1]/given/@language" componentid="0"/>
             <target id="constant" componentid="1287427552892"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;/family/@language" componentid="0"/>
-            <target id="constant" componentid="1287427528877"/>
+            <source id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[1]/given" componentid="0"/>
+            <target id="constant" componentid="1287604461982"/>
+        </link>
+        <link>
+            <source id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[2]/delimiter" componentid="0"/>
+            <target id="constant" componentid="1287604489347"/>
         </link>
     </links>
     <tags>
         <tag value="true" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson" kind="choice" componentType="target"/>
         <tag value="1" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;" kind="clone" componentType="target"/>
+        <tag value="2" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;" kind="clone" componentType="target"/>
         <tag value="true" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;/family" kind="choice" componentType="target"/>
         <tag value="true" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[1]/given" kind="choice" componentType="target"/>
-        <tag value="1" key="/ClinicalDocument/author/assignedAuthor/representedOrganization/addr/&lt;choice&gt;" kind="clone" componentType="target"/>
+        <tag value="true" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[2]/delimiter" kind="choice" componentType="target"/>
         <tag value="true" key="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody" kind="choice" componentType="target"/>
     </tags>
     <views>
         <view width="100" hight="50" y="244" x="94" componentid="1287427528877"/>
         <view width="100" hight="50" y="379" x="200" componentid="1287427552892"/>
+        <view width="100" hight="50" y="418" x="190" componentid="1287604461982"/>
+        <view width="100" hight="50" y="318" x="161" componentid="1287604489347"/>
     </views>
 </mapping>
