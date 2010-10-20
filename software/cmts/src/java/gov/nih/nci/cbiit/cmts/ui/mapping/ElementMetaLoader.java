@@ -86,8 +86,16 @@ public class ElementMetaLoader implements Serializable
 		List<ElementMeta> childs = s.getChildElement();
 		List<AttributeMeta> fields = s.getAttrData();
 		//ignore attributes and child elements for not chosen choice element
-		if (s.isIsChoice()&!s.isIsChosen())
-			return node;
+		try {
+			if (s.isIsChoice()&!s.isIsChosen())
+				return node;
+		} catch ( NullPointerException np) {
+			
+			System.out.println("ElementMetaLoader.processElement()..:meta:"+s);
+			np.printStackTrace();
+			// TODO: handle exception
+		}
+
 		for (int i = 0; i < fields.size(); i++)
 		{
 			AttributeMeta fieldMeta = fields.get(i);
