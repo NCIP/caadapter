@@ -146,74 +146,120 @@ public class MappingFactory {
 			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
 				processMeta(trgtMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
 		}
-		Collections.sort(mapLoaded.getTags().getTag(),Collections.reverseOrder());
+		//sort tags with precedence from low to high
+		// 0 -- componentType; enumValues: source, taret, function
+		// 1 -- key; allowing value: entry's xpath
+		// 2 -- componentKind; enumValues: choice, clone
+		// 3 -- value; the ordered ASCII characters 
+		Collections.sort(mapLoaded.getTags().getTag());
 		for (TagType tag:mapLoaded.getTags().getTag())
 		{
-			if (tag.getKind().value().equals(KindType.CLONE.value()))
+			if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
 			{
-				//process "clone"
-				ElementMeta elmntMeta=null;
-				ElementMeta parentMeta=null;
-				String parentKey=tag.getKey().substring(0, tag.getKey().lastIndexOf("/"));
-				if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
-				{
-					elmntMeta=(ElementMeta)srcMetaHash.get(tag.getKey());
-					parentMeta=(ElementMeta)srcMetaHash.get(parentKey);
-				}
-				else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
-				{
-					elmntMeta=(ElementMeta)trgtMetaHash.get(tag.getKey());
-					parentMeta=(ElementMeta)trgtMetaHash.get(parentKey);
-				}
-				if (elmntMeta==null)
-					continue;
-				int insertingIndx=0;
+				processAnnotationTag (tag,srcMetaHash);
+			}
+			else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
+			{
+				processAnnotationTag (tag,trgtMetaHash);
+			}
+		} 
 
-				//find the position of the element being cloned
-				for (ElementMeta siblingElmnt:parentMeta.getChildElement())
-				{
-					insertingIndx++;
-					if (siblingElmnt.getName().equals(elmntMeta.getName()))
-						break;
-				}
-				ElementMeta cloneMeta=(ElementMeta)elmntMeta.clone();
-				cloneMeta.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
-				parentMeta.getChildElement().add(insertingIndx, cloneMeta);
-				
-			}
-		}
+		Collections.sort(mapLoaded.getTags().getTag(),Collections.reverseOrder());
+//		for (TagType tag:mapLoaded.getTags().getTag())
+//		{
+//			if (tag.getKind().value().equals(KindType.CLONE.value()))
+//			{
+//				//process "clone"
+//				ElementMeta elmntMeta=null;
+//				ElementMeta parentMeta=null;
+//				String parentKey=tag.getKey().substring(0, tag.getKey().lastIndexOf("/"));
+//				if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
+//				{
+//					elmntMeta=(ElementMeta)srcMetaHash.get(tag.getKey());
+//					parentMeta=(ElementMeta)srcMetaHash.get(parentKey);
+//				}
+//				else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
+//				{
+//					elmntMeta=(ElementMeta)trgtMetaHash.get(tag.getKey());
+//					parentMeta=(ElementMeta)trgtMetaHash.get(parentKey);
+//				}
+//				if (elmntMeta==null)
+//					continue;
+//				int insertingIndx=0;
+//
+//				//find the position of the element being cloned
+//				for (ElementMeta siblingElmnt:parentMeta.getChildElement())
+//				{
+//					insertingIndx++;
+//					if (siblingElmnt.getName().equals(elmntMeta.getName()))
+//						break;
+//				}
+//				ElementMeta cloneMeta=(ElementMeta)elmntMeta.clone();
+//				cloneMeta.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
+//				parentMeta.getChildElement().add(insertingIndx, cloneMeta);
+//				
+//			}
+//		}
 		//re-process mapping to include cloned element for "choice" annotation
-		srcMetaHash.clear();
-		trgtMetaHash.clear();
-		for (Component mapComp:mapLoaded.getComponents().getComponent())
-		{
-			Stack<String> elmntTypeStack = new Stack<String>();
-			if (mapComp.getType().value().equals(ComponentType.SOURCE.value()))
-				processMeta(srcMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
-			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
-				processMeta(trgtMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
-		}
-		for (TagType tag:mapLoaded.getTags().getTag())
-		{
-			if (tag.getKind().value().equals(KindType.CHOICE.value()))
-			{
-				//process "choice"
-				ElementMeta elmntMeta=null;
-				if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
-				{
-					elmntMeta=(ElementMeta)srcMetaHash.get(tag.getKey());
-				}
-				else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
-				{
-					elmntMeta=(ElementMeta)trgtMetaHash.get(tag.getKey());
-				}
-				if (elmntMeta!=null)
-					elmntMeta.setIsChosen(new Boolean("true"));	
-			}
-		}
+//		srcMetaHash.clear();
+//		trgtMetaHash.clear();
+//		for (Component mapComp:mapLoaded.getComponents().getComponent())
+//		{
+//			Stack<String> elmntTypeStack = new Stack<String>();
+//			if (mapComp.getType().value().equals(ComponentType.SOURCE.value()))
+//				processMeta(srcMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
+//			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
+//				processMeta(trgtMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
+//		}
+//		for (TagType tag:mapLoaded.getTags().getTag())
+//		{
+//			if (tag.getKind().value().equals(KindType.CHOICE.value()))
+//			{
+//				//process "choice"
+//				ElementMeta elmntMeta=null;
+//				if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
+//				{
+//					elmntMeta=(ElementMeta)srcMetaHash.get(tag.getKey());
+//				}
+//				else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
+//				{
+//					elmntMeta=(ElementMeta)trgtMetaHash.get(tag.getKey());
+//				}
+//				if (elmntMeta!=null)
+//					elmntMeta.setIsChosen(new Boolean("true"));	
+//			}
+//		}
 		return  jaxbElmt.getValue();
 	}
 	
+	private static void processAnnotationTag(TagType tag, Hashtable <String, BaseMeta>  metaHash)
+	{
+		String parentKey=tag.getKey().substring(0, tag.getKey().lastIndexOf("/"));
+		ElementMeta elmntMeta=(ElementMeta)metaHash.get(tag.getKey());
+		ElementMeta parentMeta=(ElementMeta)metaHash.get(parentKey);
+		if (tag.getKind().value().equals(KindType.CLONE.value()))
+		{
+			ElementMeta cloneElement=(ElementMeta)elmntMeta.clone();
+			int insertingIndx=0;
+
+			//find the position of the element being cloned
+			for (ElementMeta siblingElmnt:parentMeta.getChildElement())
+			{
+				insertingIndx++;
+				if (siblingElmnt.getName().equals(elmntMeta.getName()))
+					break;
+			}
+			cloneElement.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
+			parentMeta.getChildElement().add(insertingIndx+cloneElement.getMultiplicityIndex().intValue()-1, cloneElement);
+			processMeta(metaHash,new Stack<String>(), cloneElement,parentKey );
+		}
+		else if (tag.getKind().value().equals(KindType.CHOICE.value()))
+		{
+			System.out.println("MappingFactory.processAnnotationTag()..choosen element:"+tag.getKey());
+			elmntMeta.setIsChosen(true);
+		}
+ 
+	}
 	private static void processMeta(Hashtable <String, BaseMeta>  metaHash, Stack<String> typeStack, ElementMeta element, String parentPath)
 	{
 		String metaKey=parentPath+"/"+element.getName();
@@ -227,18 +273,18 @@ public class MappingFactory {
 		String currentType=element.getType();
 		if (typeStack.contains(currentType))
 		{
-//			System.out.println("MappingFactory.processMeta()..recursion:"+typeStack.toString() +".."+currentType);
+			System.out.println("MappingFactory.processMeta()..recursion:"+typeStack.toString() +".."+currentType);
 			return;
 		
 		}
-		if (!element.getName().equals("<choice>"))
+		if (!element.getName().startsWith("<choice>"))//.equals("<choice>"))
 			typeStack.push(currentType);
 		//process child elements
 		for(ElementMeta childElement:element.getChildElement())
 		{
 			processMeta(metaHash,typeStack, childElement, metaKey);
 		}
-		if (!element.getName().equals("<choice>"))
+		if (!element.getName().startsWith("<choice>"))//.equals("<choice>"))
 			typeStack.pop();
 	}
 	public static void saveMapping(File f, Mapping m) throws JAXBException {
