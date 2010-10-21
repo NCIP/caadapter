@@ -103,7 +103,7 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 		else if (baseMeta instanceof AttributeMeta )
 		{
 			AttributeMeta attMeta=(AttributeMeta)baseMeta;
-			if (attMeta.isIsRequired())
+			if (attMeta.isRequired())
 	    		rtBuffer.append(" [Required");
 	    	else
 	    		rtBuffer.append(" [Optional");

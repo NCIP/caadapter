@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Stack;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -140,11 +139,10 @@ public class MappingFactory {
 		//pre-process mapping for annotation 
 		for (Component mapComp:mapLoaded.getComponents().getComponent())
 		{
-			Stack<String> elmntTypeStack = new Stack<String>();
 			if (mapComp.getType().value().equals(ComponentType.SOURCE.value()))
-				processMeta(srcMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
+				processMeta(srcMetaHash, mapComp.getRootElement(),"");
 			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
-				processMeta(trgtMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
+				processMeta(trgtMetaHash,mapComp.getRootElement(),"");
 		}
 		//sort tags with precedence from low to high
 		// 0 -- componentType; enumValues: source, taret, function
@@ -164,7 +162,7 @@ public class MappingFactory {
 			}
 		} 
 
-		Collections.sort(mapLoaded.getTags().getTag(),Collections.reverseOrder());
+//		Collections.sort(mapLoaded.getTags().getTag(),Collections.reverseOrder());
 //		for (TagType tag:mapLoaded.getTags().getTag())
 //		{
 //			if (tag.getKind().value().equals(KindType.CLONE.value()))
@@ -251,7 +249,7 @@ public class MappingFactory {
 			}
 			cloneElement.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
 			parentMeta.getChildElement().add(insertingIndx+cloneElement.getMultiplicityIndex().intValue()-1, cloneElement);
-			processMeta(metaHash,new Stack<String>(), cloneElement,parentKey );
+			processMeta(metaHash, cloneElement,parentKey );
 		}
 		else if (tag.getKind().value().equals(KindType.CHOICE.value()))
 		{
@@ -260,32 +258,25 @@ public class MappingFactory {
 		}
  
 	}
-	private static void processMeta(Hashtable <String, BaseMeta>  metaHash, Stack<String> typeStack, ElementMeta element, String parentPath)
+	private static void processMeta(Hashtable <String, BaseMeta>  metaHash, ElementMeta element, String parentPath)
 	{
 		String metaKey=parentPath+"/"+element.getName();
+		element.setId(metaKey);
 		metaHash.put(metaKey, element);
+		if (element.isIsRecursive()&&element.isIsEnabled()) //typeStack.contains(currentType))
+			return;
 		//process attribute
 		for (AttributeMeta attr:element.getAttrData())
 		{
 			String attrMetaKey=metaKey+"/@"+attr.getName();
+			attr.setId(attrMetaKey);
 			metaHash.put(attrMetaKey, attr);
 		}
-		String currentType=element.getType();
-		if (typeStack.contains(currentType))
-		{
-			System.out.println("MappingFactory.processMeta()..recursion:"+typeStack.toString() +".."+currentType);
-			return;
-		
-		}
-		if (!element.getName().startsWith("<choice>"))//.equals("<choice>"))
-			typeStack.push(currentType);
 		//process child elements
 		for(ElementMeta childElement:element.getChildElement())
 		{
-			processMeta(metaHash,typeStack, childElement, metaKey);
+			processMeta(metaHash, childElement, metaKey);
 		}
-		if (!element.getName().startsWith("<choice>"))//.equals("<choice>"))
-			typeStack.pop();
 	}
 	public static void saveMapping(File f, Mapping m) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
