@@ -80,19 +80,17 @@ public class AttributeMeta
 
 	@Override
 	public PropertiesResult getPropertyDescriptors() throws Exception {
-		Class beanClass = this.getClass();
+		Class<?> beanClass = this.getClass();
 
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-//		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));	
-//		propList.add( new PropertyDescriptor("Id", beanClass, "getId", null));
-//		propList.add(new PropertyDescriptor("IdSpec", beanClass, "getIdSpec", null));
-//		
-		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));	
 		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
+		propList.add( new PropertyDescriptor("Enabled", beanClass, "isIsEnabled", null));
 		propList.add( new PropertyDescriptor("Fixed Value", beanClass, "getFixedValue", null));
+		propList.add( new PropertyDescriptor("Fixed", beanClass, "isIsFixed", null));
+		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));
 		propList.add(new PropertyDescriptor("Valid", beanClass, "isIsValid", null));
 
-		PropertiesResult result =super.getPropertyDescriptors();// new PropertiesResult();
+		PropertiesResult result =super.getPropertyDescriptors();
 		result.addPropertyDescriptors(this, propList);
 		return result;
 	}
