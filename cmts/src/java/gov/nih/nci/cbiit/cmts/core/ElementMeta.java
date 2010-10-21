@@ -75,7 +75,7 @@ public class ElementMeta
     @XmlAttribute
     protected Boolean isFixed;
     @XmlAttribute
-    protected Boolean isRecursive;
+    protected Boolean isRecursive =false;
     @XmlAttribute
     protected Boolean isRequired;
     @XmlAttribute
@@ -204,15 +204,21 @@ public class ElementMeta
     }
     @Override
 	public PropertiesResult getPropertyDescriptors() throws Exception {
-		Class beanClass = this.getClass();
+		Class<?> beanClass = this.getClass();
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 	
-		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));	
+		propList.add(new PropertyDescriptor("Choice Element", beanClass, "isIsChoice", null));
+		propList.add(new PropertyDescriptor("Chosen", beanClass, "isIsChosen", null));
 		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
+		propList.add(new PropertyDescriptor("Enabled", beanClass, "isIsEnabled", null));
+		propList.add(new PropertyDescriptor("Fixed", beanClass, "isIsFixed", null));
 		propList.add(new PropertyDescriptor("minOccurs", beanClass, "getMinOccurs", null));
 		propList.add(new PropertyDescriptor("maxOccurs", beanClass, "getMaxOccurs", null));
-		propList.add(new PropertyDescriptor("choiceElement", beanClass, "isIsChoice", null));
-		propList.add(new PropertyDescriptor("multiplicityIndex", beanClass, "multiplicityIndex", null));
+		propList.add(new PropertyDescriptor("Multiplicity Index", beanClass, "getMultiplicityIndex", null));
+		propList.add(new PropertyDescriptor("Recursive", beanClass, "isIsRecursive", null));
+		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));
+		propList.add(new PropertyDescriptor("Simple Type", beanClass, "isIsSimple", null));
+		propList.add(new PropertyDescriptor("Valid", beanClass, "isIsValid", null));
 		
 		PropertiesResult result = super.getPropertyDescriptors();
 		result.addPropertyDescriptors(this, propList);

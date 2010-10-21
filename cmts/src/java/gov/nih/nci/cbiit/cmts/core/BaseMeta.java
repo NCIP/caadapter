@@ -107,12 +107,12 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 	}
 
 	public PropertiesResult getPropertyDescriptors() throws Exception {
-		Class beanClass = this.getClass();
+		Class<?> beanClass = this.getClass();
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-		propList.add(new PropertyDescriptor("Name Space", beanClass, "getNameSpace", null));
-		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));
 		propList.add( new PropertyDescriptor("Id", beanClass, "getId", null));
-		propList.add(new PropertyDescriptor("IdSpec", beanClass, "getIdSpec", null));
+		propList.add(new PropertyDescriptor("Id Spec", beanClass, "getIdSpec", null));
+		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));
+		propList.add(new PropertyDescriptor("Name Space", beanClass, "getNameSpace", null));
 		propList.add(new PropertyDescriptor("Type", beanClass, "getType", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
