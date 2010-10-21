@@ -12,7 +12,6 @@ import java.math.BigInteger;
 import java.util.*;
 
 import org.apache.xerces.xs.*;
-import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMError;
 import org.w3c.dom.DOMErrorHandler;
 import org.w3c.dom.DOMException;
@@ -221,6 +220,12 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
 			ret = new ElementMeta();
 			ret.setNameSpace(item.getNamespace());
 			ret.setName(item.getName());
+			ret.setIsSimple(false);
+			//if recursive use return here
+			if(recursive){
+				ret.setIsRecursive(true);
+				return ret;
+			}
 			List<ElementMeta> childs = ret.getChildElement();
 			List<AttributeMeta> attrs = ret.getAttrData(); 
 			List<BaseMeta> l = processList(item.getAttributeUses(), depth);
@@ -232,10 +237,6 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
 				}
 			}
 
-			//if recursive use return here
-			if(recursive){
-				return ret;
-			}
 			l = processParticle(item.getParticle(), depth);
 			if(l==null) return ret;
 			for (BaseMeta b:l) {
@@ -276,7 +277,7 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
 			int maxOccur = item.getMaxOccurs();
 			int minOccur = item.getMinOccurs();
 			boolean unbound = item.getMaxOccursUnbounded();
-			e.setIsRequired(minOccur>0);
+			e.setRequired(minOccur>0);
 			e.setMaxOccurs(BigInteger.valueOf(maxOccur));
 			e.setMinOccurs(BigInteger.valueOf(minOccur));
 			if(unbound) e.setMaxOccurs(BigInteger.valueOf(-1));
@@ -343,7 +344,7 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
 		AttributeMeta ret = new AttributeMeta();
 		ret.setNameSpace(attr.getNamespace());
 		ret.setName(attr.getName());
-		ret.setIsRequired(item.getRequired());
+		ret.setRequired(item.getRequired());
 
 		ret.setType((attr.getTypeDefinition().getNamespace()==null||attr.getTypeDefinition().getNamespace().equals(defaultNS))?
 				attr.getTypeDefinition().getName()

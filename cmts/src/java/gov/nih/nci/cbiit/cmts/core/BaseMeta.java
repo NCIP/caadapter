@@ -54,13 +54,30 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
     @XmlAttribute
     private String id;
     @XmlAttribute
-    private String idSpec;
+    private String idSpec="X-path";
     @XmlAttribute
+    private String defaultValue;
+	@XmlAttribute
     private String name;
 	@XmlAttribute
     private String nameSpace;
+    @XmlAttribute
+    private Boolean required;
 	@XmlAttribute
     private String type;
+	
+    public Boolean isRequired() {
+		return required;
+	}
+	public void setRequired(Boolean isRequired) {
+		this.required = isRequired;
+	}
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
     /**
      * Gets the value of the id property.
      * 
@@ -81,11 +98,7 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
      *     
      */
     public String getIdSpec() {
-        if (idSpec == null) {
-            return "xmlPath";
-        } else {
             return idSpec;
-        }
     }
     /**
      * Gets the value of the name property.
@@ -109,10 +122,12 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		Class<?> beanClass = this.getClass();
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
 		propList.add( new PropertyDescriptor("Id", beanClass, "getId", null));
 		propList.add(new PropertyDescriptor("Id Spec", beanClass, "getIdSpec", null));
 		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));
 		propList.add(new PropertyDescriptor("Name Space", beanClass, "getNameSpace", null));
+		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));
 		propList.add(new PropertyDescriptor("Type", beanClass, "getType", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);

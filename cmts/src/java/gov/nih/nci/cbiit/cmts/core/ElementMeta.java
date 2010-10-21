@@ -65,23 +65,15 @@ public class ElementMeta
     protected List<AttributeMeta> attrData;
     protected List<ElementMeta> childElement;
     @XmlAttribute
-    protected String defaultValue;
-    @XmlAttribute
     protected Boolean isChoice=false;
     @XmlAttribute
     protected Boolean isChosen=false;
     @XmlAttribute
-    protected Boolean isEnabled;
-    @XmlAttribute
-    protected Boolean isFixed;
+    protected Boolean isEnabled=false;
     @XmlAttribute
     protected Boolean isRecursive =false;
     @XmlAttribute
-    protected Boolean isRequired;
-    @XmlAttribute
-    protected Boolean isSimple;
-    @XmlAttribute
-    protected Boolean isValid;
+    protected Boolean isSimple=true;
     @XmlAttribute
     protected BigInteger maxOccurs;
     @XmlAttribute
@@ -147,17 +139,6 @@ public class ElementMeta
         return this.childElement;
     }
 
-    /**
-     * Gets the value of the defaultValue property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDefaultValue() {
-        return defaultValue;
-    }
 
     /**
      * Gets the value of the maxOccurs property.
@@ -209,17 +190,14 @@ public class ElementMeta
 	
 		propList.add(new PropertyDescriptor("Choice Element", beanClass, "isIsChoice", null));
 		propList.add(new PropertyDescriptor("Chosen", beanClass, "isIsChosen", null));
-		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
 		propList.add(new PropertyDescriptor("Enabled", beanClass, "isIsEnabled", null));
-		propList.add(new PropertyDescriptor("Fixed", beanClass, "isIsFixed", null));
 		propList.add(new PropertyDescriptor("minOccurs", beanClass, "getMinOccurs", null));
 		propList.add(new PropertyDescriptor("maxOccurs", beanClass, "getMaxOccurs", null));
 		propList.add(new PropertyDescriptor("Multiplicity Index", beanClass, "getMultiplicityIndex", null));
 		propList.add(new PropertyDescriptor("Recursive", beanClass, "isIsRecursive", null));
 		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));
 		propList.add(new PropertyDescriptor("Simple Type", beanClass, "isIsSimple", null));
-		propList.add(new PropertyDescriptor("Valid", beanClass, "isIsValid", null));
-		
+			
 		PropertiesResult result = super.getPropertyDescriptors();
 		result.addPropertyDescriptors(this, propList);
 		return result;
@@ -266,17 +244,6 @@ public class ElementMeta
         return isEnabled;
     }
 
-    /**
-     * Gets the value of the isFixed property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsFixed() {
-        return isFixed;
-    }
 
     /**
      * Gets the value of the isRecursive property.
@@ -291,18 +258,6 @@ public class ElementMeta
     }
 
     /**
-     * Gets the value of the isRequired property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsRequired() {
-        return isRequired;
-    }
-
-    /**
      * Gets the value of the isSimple property.
      * 
      * @return
@@ -314,17 +269,6 @@ public class ElementMeta
         return isSimple;
     }
 
-    /**
-     * Gets the value of the isValid property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsValid() {
-        return isValid;
-    }
 
     /**
      * Sets the value of the isChosen property.
@@ -337,18 +281,6 @@ public class ElementMeta
 	public void setIsChosen(Boolean chosen) {
 		this.isChosen = chosen;
 	}
-
-    /**
-     * Sets the value of the defaultValue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDefaultValue(String value) {
-        this.defaultValue = value;
-    }
 
     /**
      * Sets the value of the isChoice property.
@@ -374,17 +306,6 @@ public class ElementMeta
         this.isEnabled = value;
     }
 
-    /**
-     * Sets the value of the isFixed property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsFixed(Boolean value) {
-        this.isFixed = value;
-    }
 
     /**
      * Sets the value of the isRecursive property.
@@ -399,18 +320,6 @@ public class ElementMeta
     }
 
     /**
-     * Sets the value of the isRequired property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsRequired(Boolean value) {
-        this.isRequired = value;
-    }
-
-    /**
      * Sets the value of the isSimple property.
      * 
      * @param value
@@ -422,17 +331,6 @@ public class ElementMeta
         this.isSimple = value;
     }
 
-    /**
-     * Sets the value of the isValid property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsValid(Boolean value) {
-        this.isValid = value;
-    }
 
     /**
      * Sets the value of the maxOccurs property.
@@ -489,18 +387,15 @@ public class ElementMeta
 	@Override
 	public Object clone()
 	{
-		System.out.println("ElementMeta.deepClone()...ElementMeta:"+this.getName());
 		try {
-//			ElementMeta clonnedObj=(ElementMeta)super.clone();//
+//			ElementMeta clonnedObj=(ElementMeta)super.clone();
 			ElementMeta clonnedObj=(ElementMeta)BeanUtils.cloneBean(this);
 			clonnedObj.setIsChosen(false);
 			clonnedObj.setIsChoice(this.isIsChoice());
 			clonnedObj.setIsEnabled(this.isIsEnabled());
-			clonnedObj.setIsFixed(this.isIsFixed());
 			clonnedObj.setIsRecursive(this.isIsRecursive());
-			clonnedObj.setIsRequired(this.isIsRequired());
+			clonnedObj.setRequired(this.isRequired());
 			clonnedObj.setIsSimple(this.isIsSimple());
-			clonnedObj.setIsValid(this.isIsValid());
 
 			for (AttributeMeta attrMeta:this.getAttrData())
 			{
