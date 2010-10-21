@@ -176,51 +176,51 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 		return sourceNode;
 	}
 
-	public Object getSourceNodeParent()
-	{
-		if (sourceNode instanceof DefaultMutableTreeNode)
-		{
-			Object nodeObj=((DefaultMutableTreeNode)sourceNode).getUserObject();
-			if (nodeObj instanceof ElementMeta)
-			{
-				ElementMeta dtObj=(ElementMeta)nodeObj;
-				return dtObj.getId();
-			}
-			else if (nodeObj instanceof AttributeMeta)
-			{
-				AttributeMeta metaObj=(AttributeMeta)nodeObj;
-				return metaObj.getId();
-			}
-			else
-				return ((DefaultMutableTreeNode)sourceNode).getParent();
-		}
-		return sourceNode;
-	}
+//	public Object getSourceNodeParent()
+//	{
+//		if (sourceNode instanceof DefaultMutableTreeNode)
+//		{
+//			Object nodeObj=((DefaultMutableTreeNode)sourceNode).getUserObject();
+//			if (nodeObj instanceof ElementMeta)
+//			{
+//				ElementMeta dtObj=(ElementMeta)nodeObj;
+//				return dtObj.getId();
+//			}
+//			else if (nodeObj instanceof AttributeMeta)
+//			{
+//				AttributeMeta metaObj=(AttributeMeta)nodeObj;
+//				return metaObj.getId();
+//			}
+//			else
+//				return ((DefaultMutableTreeNode)sourceNode).getParent();
+//		}
+//		return sourceNode;
+//	}
 	public MappableNode getTargetNode()
 	{
 		return targetNode;
 	}
 
-	public Object getTargetNodeParent()
-	{
-		if (targetNode instanceof DefaultMutableTreeNode)
-		{
-			Object nodeObj=((DefaultMutableTreeNode)targetNode).getUserObject();
-			if (nodeObj instanceof ElementMeta)
-			{
-				ElementMeta dtObj=(ElementMeta)nodeObj;
-				return dtObj.getId();
-			}
-			else if (nodeObj instanceof AttributeMeta)
-			{
-				AttributeMeta metaObj=(AttributeMeta)nodeObj;
-				return metaObj.getId();
-			}
-			else
-				return ((DefaultMutableTreeNode)sourceNode).getParent();
-		}
-		return targetNode;
-	}
+//	public Object getTargetNodeParent()
+//	{
+//		if (targetNode instanceof DefaultMutableTreeNode)
+//		{
+//			Object nodeObj=((DefaultMutableTreeNode)targetNode).getUserObject();
+//			if (nodeObj instanceof ElementMeta)
+//			{
+//				ElementMeta dtObj=(ElementMeta)nodeObj;
+//				return dtObj.getId();
+//			}
+//			else if (nodeObj instanceof AttributeMeta)
+//			{
+//				AttributeMeta metaObj=(AttributeMeta)nodeObj;
+//				return metaObj.getId();
+//			}
+//			else
+//				return ((DefaultMutableTreeNode)sourceNode).getParent();
+//		}
+//		return targetNode;
+//	}
 
 	public DefaultGraphCell getSourceCell()
 	{

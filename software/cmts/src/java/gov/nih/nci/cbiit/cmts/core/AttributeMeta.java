@@ -46,30 +46,11 @@ import javax.xml.bind.annotation.XmlType;
 public class AttributeMeta
     extends BaseMeta
 {
-
-    @XmlAttribute
-    protected String defaultValue;
     protected String fixedValue;
-    @XmlAttribute
-    protected Boolean isEnabled;
     @XmlAttribute
     protected Boolean isFixed;
     @XmlAttribute
-    protected Boolean isRequired;
-    @XmlAttribute
     protected Boolean isValid;
-
-    /**
-     * Gets the value of the defaultValue property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDefaultValue() {
-        return defaultValue;
-    }
 
 	/**
 	 * @return the fixedValue
@@ -83,11 +64,8 @@ public class AttributeMeta
 		Class<?> beanClass = this.getClass();
 
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
-		propList.add( new PropertyDescriptor("Enabled", beanClass, "isIsEnabled", null));
 		propList.add( new PropertyDescriptor("Fixed Value", beanClass, "getFixedValue", null));
 		propList.add( new PropertyDescriptor("Fixed", beanClass, "isIsFixed", null));
-		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));
 		propList.add(new PropertyDescriptor("Valid", beanClass, "isIsValid", null));
 
 		PropertiesResult result =super.getPropertyDescriptors();
@@ -100,17 +78,6 @@ public class AttributeMeta
 		return "Attribute Properties";
 	}
 
-    /**
-     * Gets the value of the isEnabled property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsEnabled() {
-        return isEnabled;
-    }
 
     /**
      * Gets the value of the isFixed property.
@@ -124,17 +91,6 @@ public class AttributeMeta
         return isFixed;
     }
 
-    /**
-     * Gets the value of the isRequired property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsRequired() {
-        return isRequired;
-    }
 
     /**
      * Gets the value of the isValid property.
@@ -148,17 +104,6 @@ public class AttributeMeta
         return isValid;
     }
 
-    /**
-     * Sets the value of the defaultValue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDefaultValue(String value) {
-        this.defaultValue = value;
-    }
 
     /**
 	 * @param fixedValue the fixedValue to set
@@ -167,17 +112,6 @@ public class AttributeMeta
 		this.fixedValue = fixedValue;
 	}
 
-    /**
-     * Sets the value of the isEnabled property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsEnabled(Boolean value) {
-        this.isEnabled = value;
-    }
 
     /**
      * Sets the value of the isFixed property.
@@ -191,18 +125,6 @@ public class AttributeMeta
         this.isFixed = value;
     }
     
-    /**
-     * Sets the value of the isRequired property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsRequired(Boolean value) {
-        this.isRequired = value;
-    }
-
 	/**
      * Sets the value of the isValid property.
      * 
@@ -221,7 +143,7 @@ public class AttributeMeta
     	StringBuffer rtBuffer=new StringBuffer();
     	rtBuffer.append(super.toString());
  
-    	if (isIsRequired())
+    	if (isRequired())
     		rtBuffer.append(" [Required");
     	else
     		rtBuffer.append(" [Optional");
