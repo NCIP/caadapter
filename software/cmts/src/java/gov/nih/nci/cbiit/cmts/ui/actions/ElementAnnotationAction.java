@@ -29,6 +29,9 @@ public class ElementAnnotationAction extends AbstractContextAction {
 	public final static int CLONE_REMOVE_ACTION=1;
 	public final static int CHOICE_SELECT_ACTION=2;
 	public final static int CHOICE_DESELECT_ACTION=3;
+	public final static int RECURSION_ENABLE_ACTION=4;
+	public final static int RECURSION_DISABLE_ACTION=5;
+	
 	private static final long serialVersionUID = -8974807457591325892L;
 	private int annotationType;
 	private Mapping mappingData;
@@ -172,7 +175,40 @@ public class ElementAnnotationAction extends AbstractContextAction {
 			treeModel.reload(treeNode);
 			MappingAnnotationUtil.removeTag(mappingData, compType, KindType.CHOICE, nodePath, "true");
 			break;
+		case RECURSION_ENABLE_ACTION:
+			DefaultMutableTreeNode recursiveNode=parentNode;
+			ElementMeta recursiveMeta=parentElement;
+			while (!recursiveMeta.getType().equals(annotateElement.getType()))
+			{
+				recursiveNode=(DefaultMutableTreeNode)recursiveNode.getParent();
+				ElementMetaLoader.MyTreeObject rpNodeObj=(ElementMetaLoader.MyTreeObject)recursiveNode.getUserObject();
+				recursiveMeta=(ElementMeta)rpNodeObj.getUserObject();
+			}
+			String oldElementId=annotateElement.getId();
+			annotateElement=(ElementMeta)recursiveMeta.clone();
+			annotateElement.setId(oldElementId);
+			MappingAnnotationUtil.enableRecursiveElementMeta(annotateElement);
+			DefaultMutableTreeNode newRecursiveNode = (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(annotateElement, rootComponent);
+
+			//replace the old tree node with new recursive node
+			int oldNodeIndx=parentNode.getIndex(treeNode);
+			parentNode.insert(newRecursiveNode, oldNodeIndx);
+			newRecursiveNode.setParent(parentNode);
+			parentNode.remove(treeNode);
+			treeModel.reload(parentNode);
+			annotateElement.setIsRecursive(true);
+			annotateElement.setIsEnabled(true);
 			
+			MappingAnnotationUtil.addTag(mappingData, compType, KindType.RECURSION, nodePath, "true");
+			break;
+		case RECURSION_DISABLE_ACTION:
+			annotateElement.setIsEnabled(false);
+			treeNode.removeAllChildren();
+			annotateElement.getAttrData().clear();
+			annotateElement.getChildElement().clear();
+			treeModel.reload(treeNode);
+			MappingAnnotationUtil.removeTag(mappingData, compType, KindType.RECURSION, nodePath, "true");
+			break;
 		}
 		return true;
 	}
