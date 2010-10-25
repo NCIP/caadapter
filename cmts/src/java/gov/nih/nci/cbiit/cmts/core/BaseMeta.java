@@ -127,7 +127,7 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 		propList.add(new PropertyDescriptor("Id Spec", beanClass, "getIdSpec", null));
 		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));
 		propList.add(new PropertyDescriptor("Name Space", beanClass, "getNameSpace", null));
-		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));
+		propList.add(new PropertyDescriptor("Required", beanClass, "isRequired", null));
 		propList.add(new PropertyDescriptor("Type", beanClass, "getType", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);

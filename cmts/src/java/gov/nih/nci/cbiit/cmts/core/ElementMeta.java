@@ -195,7 +195,6 @@ public class ElementMeta
 		propList.add(new PropertyDescriptor("maxOccurs", beanClass, "getMaxOccurs", null));
 		propList.add(new PropertyDescriptor("Multiplicity Index", beanClass, "getMultiplicityIndex", null));
 		propList.add(new PropertyDescriptor("Recursive", beanClass, "isIsRecursive", null));
-		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));
 		propList.add(new PropertyDescriptor("Simple Type", beanClass, "isIsSimple", null));
 			
 		PropertiesResult result = super.getPropertyDescriptors();
