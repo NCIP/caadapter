@@ -2,10 +2,10 @@
 <mapping xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core">
     <components>
         <component location="workingspace\cda\CDA.xsd" kind="xml" type="target" id="0">
-            <rootElement isChosen="false" isChoice="false" type="POCD_MT000040.ClinicalDocument" nameSpace="urn:hl7-org:v3" name="ClinicalDocument"/>
+            <rootElement isSimple="true" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" type="POCD_MT000040.ClinicalDocument" nameSpace="urn:hl7-org:v3" name="ClinicalDocument" idSpec="X-path" id="/ClinicalDocument"/>
         </component>
         <component location="workingspace\cda\shiporder.xsd" kind="xml" type="source" id="1">
-            <rootElement isChosen="false" isChoice="false" type="shipordertype" name="shiporder"/>
+            <rootElement isSimple="true" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" type="shipordertype" name="shiporder" idSpec="X-path" id="/shiporder"/>
         </component>
         <component type="function" id="1287427528877">
             <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
@@ -25,6 +25,11 @@
         <component type="function" id="1287604489347">
             <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
                 <data input="false" type="String" value="," name="constant"/>
+            </function>
+        </component>
+        <component type="function" id="1287761017433">
+            <function method="currentDate" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction" group="dateTime" name="currentDate">
+                <data input="false" type="date" name="currentDate"/>
             </function>
         </component>
     </components>
@@ -74,16 +79,20 @@
             <target id="constant" componentid="1287427528877"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[1]/given/@language" componentid="0"/>
-            <target id="constant" componentid="1287427552892"/>
-        </link>
-        <link>
             <source id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[1]/given" componentid="0"/>
             <target id="constant" componentid="1287604461982"/>
         </link>
         <link>
             <source id="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[2]/delimiter" componentid="0"/>
             <target id="constant" componentid="1287604489347"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/address" componentid="1"/>
+            <target id="/ClinicalDocument/title" componentid="0"/>
+        </link>
+        <link>
+            <source id="/ClinicalDocument/code/translation/translation/@codeSystemVersion" componentid="0"/>
+            <target id="currentDate" componentid="1287761017433"/>
         </link>
     </links>
     <tags>
@@ -93,6 +102,8 @@
         <tag value="true" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;/family" kind="choice" componentType="target"/>
         <tag value="true" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[1]/given" kind="choice" componentType="target"/>
         <tag value="true" key="/ClinicalDocument/author/assignedAuthor/&lt;choice&gt;/assignedPerson/name/&lt;choice&gt;[2]/delimiter" kind="choice" componentType="target"/>
+        <tag value="true" key="/ClinicalDocument/code/translation/translation" kind="recursion" componentType="target"/>
+        <tag value="true" key="/ClinicalDocument/code/translation/translation/translation" kind="recursion" componentType="target"/>
         <tag value="true" key="/ClinicalDocument/component/&lt;choice&gt;/nonXMLBody" kind="choice" componentType="target"/>
     </tags>
     <views>
@@ -100,5 +111,6 @@
         <view width="100" hight="50" y="379" x="200" componentid="1287427552892"/>
         <view width="100" hight="50" y="418" x="190" componentid="1287604461982"/>
         <view width="100" hight="50" y="318" x="161" componentid="1287604489347"/>
+        <view width="100" hight="50" y="99" x="207" componentid="1287761017433"/>
     </views>
 </mapping>
