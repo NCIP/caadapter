@@ -132,7 +132,8 @@ public class XQueryBuilder {
 	 * Case III: The element is not mapped, but its attribute is mapped
 	 * Case IV: Neither the element nor its attribute is mapped. But its descendant
 	 * is mapped
-	 * Case V: Others, empty element with/without default inline text
+	 * Case V: create an empty element if it is mandatory
+	 * Case VI: Others, empty element with/without default inline text
 	 * @param tgt
 	 * @param parentMappedXPath
 	 */
@@ -204,7 +205,7 @@ public class XQueryBuilder {
 					elementCreated=true;
 				}
 			}
-			else if (hasMappedDescenant(tgt))
+			else if (hasMappedDescenant(tgt)||hasAnyMappedAttribute(tgt)!=null)
 			{		
 				//Case III && IV:
 				//The current element is not mapped, but its attribute or descendant may be mapped
@@ -216,7 +217,7 @@ public class XQueryBuilder {
 			}
 			else if (tgt.getMinOccurs().intValue()>0)
 			{
-				//Case IV: create an empty element only if it is mandatory
+				//Case V: create an empty element only if it is mandatory
 				//set online text
 				if (tgt.getDefaultValue()!=null)
 					inlineText=tgt.getDefaultValue();
@@ -225,7 +226,7 @@ public class XQueryBuilder {
 			}
             else if (findUnder)
             {
-                //Case V: create an element if a link of which id starts with this finding key
+                //Case VI: create an element if a link of which id starts with this finding key
                 //set online text
                 if (tgt.getDefaultValue()!=null)
                     inlineText=tgt.getDefaultValue();
