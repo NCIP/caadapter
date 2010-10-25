@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;enumeration value="choice"/>
  *     &lt;enumeration value="abstract"/>
  *     &lt;enumeration value="clone"/>
+ *     &lt;enumeration value="recursion"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -49,7 +50,9 @@ public enum KindType {
     @XmlEnumValue("abstract")
     ABSTRACT("abstract"),
     @XmlEnumValue("clone")
-    CLONE("clone");
+    CLONE("clone"),
+    @XmlEnumValue("recursion")
+    RECURSION("recursion");
     private final String value;
 
     KindType(String v) {

@@ -1,5 +1,6 @@
 package gov.nih.nci.cbiit.cmts.mapping;
 
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.core.KindType;
@@ -8,6 +9,19 @@ import gov.nih.nci.cbiit.cmts.core.TagType;
 
 public class MappingAnnotationUtil {
 
+	public static void enableRecursiveElementMeta(ElementMeta element)
+	{
+		for(AttributeMeta attrMeta:element.getAttrData())
+		{
+			attrMeta.setId(element.getId()+"/@"+attrMeta.getName());
+		}
+		
+		for (ElementMeta childElement:element.getChildElement())
+		{
+			childElement.setId(element.getId()+"/"+childElement.getName());
+			enableRecursiveElementMeta(childElement);
+		}
+	}
 	public static int findMaxMultiplicityIndex(ElementMeta parentElement, String childName)
 	{
 		int rtnIndx=0;

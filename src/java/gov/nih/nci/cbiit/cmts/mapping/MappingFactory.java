@@ -140,9 +140,15 @@ public class MappingFactory {
 		for (Component mapComp:mapLoaded.getComponents().getComponent())
 		{
 			if (mapComp.getType().value().equals(ComponentType.SOURCE.value()))
-				processMeta(srcMetaHash, mapComp.getRootElement(),"");
+			{
+				mapComp.getRootElement().setId("/"+mapComp.getRootElement().getName());
+				processMeta(srcMetaHash, mapComp.getRootElement());
+			}
 			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
-				processMeta(trgtMetaHash,mapComp.getRootElement(),"");
+			{
+				mapComp.getRootElement().setId("/"+mapComp.getRootElement().getName());
+				processMeta(trgtMetaHash,mapComp.getRootElement());
+			}
 		}
 		//sort tags with precedence from low to high
 		// 0 -- componentType; enumValues: source, taret, function
@@ -161,72 +167,6 @@ public class MappingFactory {
 				processAnnotationTag (tag,trgtMetaHash);
 			}
 		} 
-
-//		Collections.sort(mapLoaded.getTags().getTag(),Collections.reverseOrder());
-//		for (TagType tag:mapLoaded.getTags().getTag())
-//		{
-//			if (tag.getKind().value().equals(KindType.CLONE.value()))
-//			{
-//				//process "clone"
-//				ElementMeta elmntMeta=null;
-//				ElementMeta parentMeta=null;
-//				String parentKey=tag.getKey().substring(0, tag.getKey().lastIndexOf("/"));
-//				if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
-//				{
-//					elmntMeta=(ElementMeta)srcMetaHash.get(tag.getKey());
-//					parentMeta=(ElementMeta)srcMetaHash.get(parentKey);
-//				}
-//				else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
-//				{
-//					elmntMeta=(ElementMeta)trgtMetaHash.get(tag.getKey());
-//					parentMeta=(ElementMeta)trgtMetaHash.get(parentKey);
-//				}
-//				if (elmntMeta==null)
-//					continue;
-//				int insertingIndx=0;
-//
-//				//find the position of the element being cloned
-//				for (ElementMeta siblingElmnt:parentMeta.getChildElement())
-//				{
-//					insertingIndx++;
-//					if (siblingElmnt.getName().equals(elmntMeta.getName()))
-//						break;
-//				}
-//				ElementMeta cloneMeta=(ElementMeta)elmntMeta.clone();
-//				cloneMeta.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
-//				parentMeta.getChildElement().add(insertingIndx, cloneMeta);
-//				
-//			}
-//		}
-		//re-process mapping to include cloned element for "choice" annotation
-//		srcMetaHash.clear();
-//		trgtMetaHash.clear();
-//		for (Component mapComp:mapLoaded.getComponents().getComponent())
-//		{
-//			Stack<String> elmntTypeStack = new Stack<String>();
-//			if (mapComp.getType().value().equals(ComponentType.SOURCE.value()))
-//				processMeta(srcMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
-//			else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
-//				processMeta(trgtMetaHash,elmntTypeStack, mapComp.getRootElement(),"");
-//		}
-//		for (TagType tag:mapLoaded.getTags().getTag())
-//		{
-//			if (tag.getKind().value().equals(KindType.CHOICE.value()))
-//			{
-//				//process "choice"
-//				ElementMeta elmntMeta=null;
-//				if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
-//				{
-//					elmntMeta=(ElementMeta)srcMetaHash.get(tag.getKey());
-//				}
-//				else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
-//				{
-//					elmntMeta=(ElementMeta)trgtMetaHash.get(tag.getKey());
-//				}
-//				if (elmntMeta!=null)
-//					elmntMeta.setIsChosen(new Boolean("true"));	
-//			}
-//		}
 		return  jaxbElmt.getValue();
 	}
 	
@@ -248,36 +188,76 @@ public class MappingFactory {
 					break;
 			}
 			cloneElement.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
+			cloneElement.setId(parentMeta.getId()+"/"+cloneElement.getName());
 			parentMeta.getChildElement().add(insertingIndx+cloneElement.getMultiplicityIndex().intValue()-1, cloneElement);
-			processMeta(metaHash, cloneElement,parentKey );
+			processMeta(metaHash, cloneElement );
 		}
 		else if (tag.getKind().value().equals(KindType.CHOICE.value()))
 		{
-			System.out.println("MappingFactory.processAnnotationTag()..choosen element:"+tag.getKey());
+//			System.out.println("MappingFactory.processAnnotationTag()..choosen element:"+tag.getKey());
 			elmntMeta.setIsChosen(true);
+		}
+		else if (tag.getKind().value().equals(KindType.RECURSION.value()))
+		{
+			
+			ElementMeta recursiveMeta=searchRecursiveAncestor(metaHash, elmntMeta, elmntMeta.getType());
+			ElementMeta recursiveMetaClone=(ElementMeta)recursiveMeta.clone();
+			
+			//add the cloned Attributes and childElement to 
+			//the recursive element, then it will be referred by parent elementMeta
+			elmntMeta.getAttrData().addAll(recursiveMetaClone.getAttrData());
+			elmntMeta.getChildElement().addAll(recursiveMetaClone.getChildElement());
+			
+			processMeta(metaHash, elmntMeta);
+			elmntMeta.setIsEnabled(true);
 		}
  
 	}
-	private static void processMeta(Hashtable <String, BaseMeta>  metaHash, ElementMeta element, String parentPath)
+	/**
+	 * Recursive search ancestor element meta to find the recursive type
+	 * @param metaHash
+	 * @param element
+	 * @param recursionType
+	 * @return
+	 */
+	private static ElementMeta searchRecursiveAncestor(Hashtable <String, BaseMeta>  metaHash, ElementMeta element, String recursionType)
 	{
-		String metaKey=parentPath+"/"+element.getName();
-		element.setId(metaKey);
-		metaHash.put(metaKey, element);
+		ElementMeta parentMeta;
+		String parentKey=element.getId().substring(0,element.getId().lastIndexOf("/"));
+		parentMeta=(ElementMeta)metaHash.get(parentKey);
+		if (parentMeta==null)
+			return parentMeta;
+		else if (parentMeta.getType().equals(element.getType()))
+			return parentMeta;		
+		return searchRecursiveAncestor(metaHash,  parentMeta, recursionType);
+	}
+	
+	/**
+	 * Set unique ID for each element meta and attribute meta, these IDs are 
+	 * referred as processing links
+	 * @param metaHash
+	 * @param element
+	 */
+	private static void processMeta(Hashtable <String, BaseMeta>  metaHash, ElementMeta element)
+	{
+		metaHash.put(element.getId(), element);
 		if (element.isIsRecursive()&&element.isIsEnabled()) //typeStack.contains(currentType))
 			return;
 		//process attribute
 		for (AttributeMeta attr:element.getAttrData())
 		{
-			String attrMetaKey=metaKey+"/@"+attr.getName();
+			String attrMetaKey=element.getId()+"/@"+attr.getName();
 			attr.setId(attrMetaKey);
 			metaHash.put(attrMetaKey, attr);
 		}
 		//process child elements
 		for(ElementMeta childElement:element.getChildElement())
 		{
-			processMeta(metaHash, childElement, metaKey);
+			childElement.setId(element.getId()+"/"+childElement.getName());
+			processMeta(metaHash, childElement);
 		}
 	}
+	
 	public static void saveMapping(File f, Mapping m) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
