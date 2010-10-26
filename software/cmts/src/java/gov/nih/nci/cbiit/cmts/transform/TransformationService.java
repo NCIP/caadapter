@@ -8,7 +8,10 @@ import gov.nih.nci.cbiit.cmts.core.Mapping;
 public interface TransformationService {
 	public final static String TRANSFER_XML_TO_XML="XML_TO_XML";
 	public final static String TRANSFER_CSV_TO_XML="CSV_TO_XML";
-	public final static String TRANSFER_HL7_v2_TO_XML="HL7_V2_TO_XML";
+	public final static String TRANSFER_HL7_V2_TO_XML="HL7_V2_TO_XML";
+	public final static String TRANSFER_XML_TO_CDA="XML_TO_CDA";
+	public final static String TRANSFER_CSV_TO_CDA="CSV_TO_CDA";
+	public final static String TRANSFER_HL7_V2_TO_CDA="HL7_V2_TO_CDA";
 	
 	public List<ApplicationResult> validateXmlData(Mapping mapping, String xmlData);
 	public Mapping getTransformationMapping();
@@ -21,5 +24,5 @@ public interface TransformationService {
 	 */
 	public String Transfer(String sourceFile, String mappingFile);
 	
-	
+	public boolean isPresentable();
 }

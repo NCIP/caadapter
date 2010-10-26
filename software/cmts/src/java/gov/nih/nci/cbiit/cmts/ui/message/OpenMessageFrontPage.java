@@ -96,11 +96,14 @@ public class OpenMessageFrontPage extends JPanel
 		String result = null;
 		if(DATA_FILE_BROWSE_MODE.equals(browseMode))
 		{
-			if (openWizardTitle.equals(ActionConstants.NEW_CSV_Transformation))
+			if (openWizardTitle.equals(ActionConstants.NEW_CSV_Transformation)
+					||openWizardTitle.equals(ActionConstants.NEW_CSV_CDA_Transformation))
 				result=DefaultSettings.CSV_DATA_FILE_DEFAULT_EXTENSTION;
-			else 	if (openWizardTitle.equals(ActionConstants.NEW_HL7_V2_Transformation))
+			else 	if (openWizardTitle.equals(ActionConstants.NEW_HL7_V2_Transformation)
+					||openWizardTitle.equals(ActionConstants.NEW_HL7_V2_CDA_Transformation))
 				result=DefaultSettings.HL7_V2_DATA_FILE_DEFAULT_EXTENSTION;
-			else if (openWizardTitle.equals(ActionConstants.NEW_XML_Transformation))
+			else if (openWizardTitle.equals(ActionConstants.NEW_XML_Transformation)
+					||openWizardTitle.equals(ActionConstants.NEW_XML_CDA_Transformation))
 				result = DefaultSettings.XML_DATA_FILE_DEFAULT_EXTENSTION;
 			else
 				result = DefaultSettings.XML_DATA_FILE_DEFAULT_EXTENSTION;

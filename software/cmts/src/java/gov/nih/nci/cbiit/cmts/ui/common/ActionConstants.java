@@ -43,6 +43,10 @@ public interface ActionConstants
 	String NEW_XML_Transformation = "XML to XML Transformation";
 	String NEW_CSV_Transformation = "CSV to XML Transformation";
 	String NEW_HL7_V2_Transformation = "HL7 v2 to XML Transformation";
+	String NEW_XML_CDA_Transformation = "XML to CDA Transformation";
+	String NEW_CSV_CDA_Transformation = "CSV to CDA Transformation";
+	String NEW_HL7_V2_CDA_Transformation = "HL7 v2 to CDA Transformation";
+	
 }
 
 /**
