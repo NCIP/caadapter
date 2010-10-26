@@ -49,8 +49,7 @@ public class XsdSchemaSaxValidator {
   }
   
   public static void validateXmlFile(Schema schema, String xmlName, ErrorHandler errorHandler) {
-	  System.out.println("XsdSchemaSaxValidator.validateXml()..xml:"+xmlName);
-      // preparing the XML file as a SAX source
+	  // preparing the XML file as a SAX source
       try {
 		SAXSource source = new SAXSource(
 		    new InputSource(new java.io.FileInputStream(xmlName)));
@@ -62,7 +61,7 @@ public class XsdSchemaSaxValidator {
   }
   
   public static void validateXmlData(Schema schema, String xmlData, ErrorHandler errorHandler) {
-	  System.out.println("XsdSchemaSaxValidator.validateXml()..xml:"+xmlData);
+//	  System.out.println("XsdSchemaSaxValidator.validateXml()..xml:"+xmlData);
       // preparing the XML file as a SAX source
    	  StringReader stReader=new StringReader(xmlData);
    	  InputSource inSrc =new InputSource(stReader);
