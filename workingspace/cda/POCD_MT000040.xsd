@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xs:schema targetNamespace="urn:hl7-org:v3" xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:hl7-org:v3" elementFormDefault="qualified">
 	<!--
 *****************************************************************************************************************
 * XML schema for message type POCD_MT000040.
@@ -31,10 +31,6 @@
 *
 ********************************************************************************************************************
 	  -->
-<!-- change log
-	1. set schemaLocation to correct file URI
-	2. comment out line #261 (line #257 in original file) to resolve "out of memory" issue
--->
 	<xs:annotation>
 		<xs:documentation>Generated using schema builder version 2.0. Stylesheets:
 RoseTreeToMIFStaticModel.xsl version: 1.1
@@ -65,13 +61,15 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="languageCode" type="CS" minOccurs="0"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
 			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
+			<!--
 			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+            -->
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="x_ActClassDocumentEntryAct" use="required"/>
@@ -211,6 +209,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="copyTime" type="TS" minOccurs="0"/>
 			<xs:element name="recordTarget" type="POCD_MT000040.RecordTarget" maxOccurs="unbounded"/>
 			<xs:element name="author" type="POCD_MT000040.Author" maxOccurs="unbounded"/>
+			<!--
 			<xs:element name="dataEnterer" type="POCD_MT000040.DataEnterer" minOccurs="0"/>
 			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="custodian" type="POCD_MT000040.Custodian"/>
@@ -222,6 +221,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="documentationOf" type="POCD_MT000040.DocumentationOf" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="relatedDocument" type="POCD_MT000040.RelatedDocument" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="authorization" type="POCD_MT000040.Authorization" minOccurs="0" maxOccurs="unbounded"/>
+            -->
 			<xs:element name="componentOf" type="POCD_MT000040.Component1" minOccurs="0"/>
 			<xs:element name="component" type="POCD_MT000040.Component2"/>
 		</xs:sequence>
@@ -258,7 +258,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="realmCode" type="CS" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- xs:element name="section" type="POCD_MT000040.Section"/ -->
+			<xs:element name="section" type="POCD_MT000040.Section"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="typeCode" type="ActRelationshipHasComponent" use="optional" fixed="COMP"/>
@@ -272,15 +272,17 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="sequenceNumber" type="INT" minOccurs="0"/>
 			<xs:element name="seperatableInd" type="BL" minOccurs="0"/>
 			<xs:choice>
-				<xs:element name="act" type="POCD_MT000040.Act"/>
+				<!--<xs:element name="act" type="POCD_MT000040.Act"/>-->
 				<xs:element name="encounter" type="POCD_MT000040.Encounter"/>
 				<xs:element name="observation" type="POCD_MT000040.Observation"/>
 				<xs:element name="observationMedia" type="POCD_MT000040.ObservationMedia"/>
-				<xs:element name="organizer" type="POCD_MT000040.Organizer"/>
+				<!--<xs:element name="organizer" type="POCD_MT000040.Organizer"/>-->
 				<xs:element name="procedure" type="POCD_MT000040.Procedure"/>
+				<!--
 				<xs:element name="regionOfInterest" type="POCD_MT000040.RegionOfInterest"/>
 				<xs:element name="substanceAdministration" type="POCD_MT000040.SubstanceAdministration"/>
 				<xs:element name="supply" type="POCD_MT000040.Supply"/>
+                -->
 			</xs:choice>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -422,6 +424,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="effectiveTime" type="IVL_TS" minOccurs="0"/>
 			<xs:element name="priorityCode" type="CE" minOccurs="0"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
+			<!--
 			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
@@ -430,6 +433,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+            -->
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="ActClass" use="required"/>
@@ -465,15 +469,17 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:choice>
-				<xs:element name="act" type="POCD_MT000040.Act"/>
+				<!--<xs:element name="act" type="POCD_MT000040.Act"/>-->
 				<xs:element name="encounter" type="POCD_MT000040.Encounter"/>
 				<xs:element name="observation" type="POCD_MT000040.Observation"/>
 				<xs:element name="observationMedia" type="POCD_MT000040.ObservationMedia"/>
-				<xs:element name="organizer" type="POCD_MT000040.Organizer"/>
+				<!--<xs:element name="organizer" type="POCD_MT000040.Organizer"/>-->
 				<xs:element name="procedure" type="POCD_MT000040.Procedure"/>
+				<!--
 				<xs:element name="regionOfInterest" type="POCD_MT000040.RegionOfInterest"/>
 				<xs:element name="substanceAdministration" type="POCD_MT000040.SubstanceAdministration"/>
 				<xs:element name="supply" type="POCD_MT000040.Supply"/>
+                -->
 			</xs:choice>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -755,6 +761,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="methodCode" type="CE" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="targetSiteCode" type="CD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
+			<!--
 			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
@@ -763,6 +770,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+            -->
 			<xs:element name="referenceRange" type="POCD_MT000040.ReferenceRange" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -779,6 +787,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="languageCode" type="CS" minOccurs="0"/>
 			<xs:element name="value" type="ED"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
+			<!--
 			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
@@ -787,6 +796,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+            -->
 		</xs:sequence>
 		<xs:attribute name="ID" type="xs:ID"/>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
