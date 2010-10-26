@@ -82,18 +82,10 @@ public class TransformTest {
 	@Test
 	public void testMappingAndTransformation() throws JAXBException, XQException
 	{
-//		String mappingFile="workingspace/simpleMapping/mapping.xml";
-//		String srcFile = "workingspace/simpleMapping/shiporder.xml";
-//		String mappingFile="workingspace/temp/PRPA_MT201305_2009_mapping.xml";
-//		String srcFile = "workingspace/temp/PRPA_MT201305_2009.xml";
-//		String mappingFile="workingspace/hl7v3/examples/PORT_MT_TO_IN020001mapping.xml";
-//		String srcFile = "workingspace/hl7v3/examples/PORT_EX020001UV.xml";  
-//		String mappingFile="workingspace/siblingMapping/mapping.xml";
-//		String srcFile = "workingspace/siblingMapping/shiporder.xml";
-//		String mappingFile="workingspace/parentChildInverted/mapping.xml";
-//		String srcFile = "workingspace/parentChildInverted/order.xml";
-		String mappingFile="workingspace/ISO_21090/example/mapping.xml";
-		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
+		String mappingFile="workingspace/cda/mapping.map";
+		String srcFile = "workingspace/cda/shiporder.xml";
+//		String mappingFile="workingspace/ISO_21090/example/mapping.xml";
+//		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
 		Mapping map = MappingFactory.loadMapping(new File(mappingFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
@@ -138,7 +130,7 @@ public class TransformTest {
 		
 		XQueryTransformer tester= new XQueryTransformer();
 		String dataSource="workingspace/simpleMapping/shiporder.xml";
- 		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.Transfer(dataSource, mapFile)));
+ 		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.Transfer(dataSource, mapFile), false));
 		
 		w = new FileWriter("bin/tranform.out.xml");
 		String result=tester.Transfer(dataSource, mapFile);
@@ -164,10 +156,11 @@ public class TransformTest {
 
 	@Test
 	public void testXQueryBuilder() throws XQException, JAXBException, IOException {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		Unmarshaller u = jc.createUnmarshaller();
-		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("workingspace/simpleMapping/mapping.xml")), Mapping.class);
-		Mapping map = m.getValue();
+//		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+//		Unmarshaller u = jc.createUnmarshaller();
+//		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("workingspace/cda/mapping.map")), Mapping.class);
+		String mappingFile="workingspace/cda/mapping.map";
+		Mapping map=MappingFactory.loadMapping(new File(mappingFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
 		System.out.println("$$$$$$ query: \n"+queryString);
