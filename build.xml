@@ -59,6 +59,7 @@
 		<copy todir="${dist.dir}/webstart" failonerror="false">
 			<fileset dir="${lib.dir}">
 				<include name="caAdapter.jar"/>
+				<include name="commons-beanutils.jar"/>
 				<include name="commons-logging-1.0.4.jar"/>
 				<include name="dom4j-1.4.jar"/>
 				<include name="encoderframework.jar"/>
