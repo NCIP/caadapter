@@ -203,10 +203,28 @@ public class MainMenuBar extends JMenuBar
         
         NewTransformationAction newHl7v2Message = new NewTransformationAction(ActionConstants.NEW_HL7_V2_Transformation, mainFrame);
         JMenuItem newHl7v2TransformationItem = new JMenuItem(newHl7v2Message);
-        actionMap.put(ActionConstants.NEW_CSV_Transformation, newHl7v2Message);
-        menuItemMap.put(ActionConstants.NEW_CSV_Transformation, newHl7v2TransformationItem);  
+        actionMap.put(ActionConstants.NEW_HL7_V2_Transformation, newHl7v2Message);
+        menuItemMap.put(ActionConstants.NEW_HL7_V2_Transformation, newHl7v2TransformationItem);  
         newGroup.add(newHl7v2TransformationItem);
+ 
+        newGroup.addSeparator();
+        NewTransformationAction xmlToCdaMessage = new NewTransformationAction(ActionConstants.NEW_XML_CDA_Transformation, mainFrame);
+        JMenuItem newXmlToCdaTransformationItem = new JMenuItem(xmlToCdaMessage);
+        actionMap.put(ActionConstants.NEW_XML_CDA_Transformation, xmlToCdaMessage);
+        menuItemMap.put(ActionConstants.NEW_XML_CDA_Transformation, newXmlToCdaTransformationItem);  
+        newGroup.add(newXmlToCdaTransformationItem);
+
+        NewTransformationAction csvToCdaMessage = new NewTransformationAction(ActionConstants.NEW_CSV_CDA_Transformation , mainFrame);
+        JMenuItem newCsvToCdaTransformationItem = new JMenuItem(csvToCdaMessage);
+        actionMap.put(ActionConstants.NEW_CSV_CDA_Transformation, csvToCdaMessage);
+        menuItemMap.put(ActionConstants.NEW_CSV_CDA_Transformation, newXmlToCdaTransformationItem);  
+        newGroup.add(newCsvToCdaTransformationItem);
         
+        NewTransformationAction hl7v2ToCdaMessage = new NewTransformationAction(ActionConstants.NEW_HL7_V2_CDA_Transformation, mainFrame);
+        JMenuItem newHl77v2ToCdaTransformationItem = new JMenuItem(hl7v2ToCdaMessage);
+        actionMap.put(ActionConstants.NEW_HL7_V2_CDA_Transformation, hl7v2ToCdaMessage);
+        menuItemMap.put(ActionConstants.NEW_HL7_V2_CDA_Transformation, newXmlToCdaTransformationItem);  
+        newGroup.add(newHl77v2ToCdaTransformationItem);
         return newGroup;
     }
 

@@ -118,6 +118,7 @@ public class XQueryBuilder {
 			sbQuery.append("declare default element namespace \""+srcRootMeta.getNameSpace() +"\";" + sep);
 		sbQuery.append("declare variable $docName as xs:string external;" + sep +"document{");
 		varStack.push("doc($docName)");
+		System.out.println("XQueryBuilder.getXQuery()...:"+tgt.getRootElement().getNameSpace());
 		processTargetElement(tgt.getRootElement(),null);
 		sbQuery.append("}");
 		return sbQuery.toString();

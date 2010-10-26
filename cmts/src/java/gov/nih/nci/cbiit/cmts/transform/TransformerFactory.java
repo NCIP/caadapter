@@ -10,10 +10,25 @@ public class TransformerFactory {
 	{
 		if (transformerType.equals(TransformationService.TRANSFER_XML_TO_XML))
  			return new XQueryTransformer();
-		else if (transformerType.equals(TransformationService.TRANSFER_HL7_v2_TO_XML))
+		else if (transformerType.equals(TransformationService.TRANSFER_HL7_V2_TO_XML))
 			return new Hl7v2XmlTransformer();
  		else if (transformerType.equals(TransformationService.TRANSFER_CSV_TO_XML))
  			return new Csv2XmlTransformer();
+ 		else if (transformerType.equals(TransformationService.TRANSFER_XML_TO_CDA))
+ 		{	XQueryTransformer rtnTransformer= new XQueryTransformer();
+ 			rtnTransformer.setPresentable(true);
+ 			return rtnTransformer;
+ 		}
+ 		else if (transformerType.equals(TransformationService.TRANSFER_CSV_TO_CDA))
+ 		{	XQueryTransformer rtnTransformer= new Csv2XmlTransformer();
+ 			rtnTransformer.setPresentable(true);
+ 			return rtnTransformer;
+ 		}
+ 		else if (transformerType.equals(TransformationService.TRANSFER_HL7_V2_TO_CDA))
+ 		{	XQueryTransformer rtnTransformer= new Hl7v2XmlTransformer();
+ 			rtnTransformer.setPresentable(true);
+ 			return rtnTransformer;
+ 		}
  		else if (transformerType.equalsIgnoreCase("XML"))
  			return new XQueryTransformer();
 		else if (transformerType.equalsIgnoreCase("CSV"))
