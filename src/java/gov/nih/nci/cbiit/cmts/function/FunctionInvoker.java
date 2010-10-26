@@ -15,13 +15,14 @@ public class FunctionInvoker {
 			Method targetMethod=null;
 			for (Method oneMethod:allMethods)
 			{
-				if (oneMethod.getName().equals(methodName)){
+                //System.out.println("method Name: " + oneMethod.getName());
+                if (oneMethod.getName().trim().equals(methodName.trim())){
 					targetMethod=oneMethod;
 					break;
 				}
 			}
 			if (targetMethod==null)
-				throw new FunctionException("Not found method:"+methodName);	        
+				throw new FunctionException("Not found method("+functionName+"):"+methodName);
 	        Object retObj  = targetMethod.invoke(targetClass.newInstance(), argList);
 	        System.out.println("FunctionInvoker.invokeFunctionMethod()...return:"+retObj);
 	        return retObj;
