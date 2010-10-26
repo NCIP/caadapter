@@ -24,7 +24,7 @@ public class FunctionInvoker {
 			if (targetMethod==null)
 				throw new FunctionException("Not found method("+functionName+"):"+methodName);
 	        Object retObj  = targetMethod.invoke(targetClass.newInstance(), argList);
-	        System.out.println("FunctionInvoker.invokeFunctionMethod()...return:"+retObj);
+//	        System.out.println("FunctionInvoker.invokeFunctionMethod()...return:"+retObj);
 	        return retObj;
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

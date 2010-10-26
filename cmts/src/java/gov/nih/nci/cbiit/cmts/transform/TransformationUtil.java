@@ -5,8 +5,6 @@ import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -48,25 +46,24 @@ public class TransformationUtil {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return e.getMessage();
 		}
-
-		return rtnSb.toString();
 	}
 	
-	public static String formatXmlDocument(String xmlData, boolean processable) throws Exception {
+	private static String formatXmlDocument(String xmlData, boolean processable) throws Exception {
 	    SAXBuilder builder = new SAXBuilder();
 	   	StringReader stReader=new StringReader(xmlData);
 	   	InputSource inSrc =new InputSource(stReader);
 	    Document document = builder.build(inSrc);
 	    if (processable)
 	    {
-		    Map<String, String> styleMap=new HashMap<String, String>();
+	    	HashMap<String, String> styleMap=new HashMap<String, String>();
 		    styleMap.put("type", CDA_STYLE_TYPE);
 		    styleMap.put("href", CDA_STYLE_REF);
 		    ProcessingInstruction styleIns=new ProcessingInstruction(CDA_STYLE_TARGET, styleMap);
 		    document.addContent(0,styleIns);
-	    }
-	    resetNamespace(document.getRootElement(), Namespace.getNamespace(CDA_STYLE_NAMESPACE));
+		    resetNamespace(document.getRootElement(), Namespace.getNamespace(CDA_STYLE_NAMESPACE));
+	    }    
 	    XMLOutputter xmlOutputter = new XMLOutputter();
 	    StringWriter writer=new StringWriter();
 	    xmlOutputter.output(document,writer);
@@ -77,9 +74,8 @@ public class TransformationUtil {
 	private static void resetNamespace(Element elmnt, Namespace ns)
 	{
 		elmnt.setNamespace(ns);
-		for (Element child:(List<Element>)elmnt.getChildren())
-			resetNamespace(child,ns);
-
+		for (Object child:elmnt.getChildren())
+			resetNamespace((Element)child,ns);
 	}
 
 }
