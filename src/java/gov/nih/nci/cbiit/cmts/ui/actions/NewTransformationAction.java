@@ -118,7 +118,13 @@ public class NewTransformationAction extends AbstractContextAction
 			if (transformationType.equals(ActionConstants.NEW_CSV_Transformation))
 				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_CSV_TO_XML);
 			else if (transformationType.equals(ActionConstants.NEW_HL7_V2_Transformation))
-				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_HL7_v2_TO_XML);
+				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_HL7_V2_TO_XML);
+			else if (transformationType.equals(ActionConstants.NEW_XML_CDA_Transformation))
+				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_CDA); 
+			else if (transformationType.equals(ActionConstants.NEW_CSV_CDA_Transformation))
+				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_CSV_TO_CDA); 
+			else if (transformationType.equals(ActionConstants.NEW_HL7_V2_CDA_Transformation))
+				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_HL7_V2_TO_CDA); 
 			else
 				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);
 

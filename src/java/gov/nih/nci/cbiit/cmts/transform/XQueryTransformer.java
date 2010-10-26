@@ -52,6 +52,8 @@ public class XQueryTransformer implements TransformationService {
 	private XQConnection conn;
 	private boolean temporaryFileCreated = false;
 	
+	private boolean presentable=false;
+	
 	public boolean isTemporaryFileCreated() {
 		return temporaryFileCreated;
 	}
@@ -96,7 +98,7 @@ public class XQueryTransformer implements TransformationService {
 				.createAtomicType(XQItemType.XQBASETYPE_STRING));
 		XQResultSequence result = exp.executeQuery();
 		String rawResult = result.getSequenceAsString(new Properties());
-		return TransformationUtil.formatXqueryResult(rawResult);
+		return TransformationUtil.formatXqueryResult(rawResult, isPresentable());
 	}
 
 	@Override
@@ -182,10 +184,20 @@ public class XQueryTransformer implements TransformationService {
 		
 		return rtnList;
 	}
+	public void setPresentable(boolean presentable) {
+		this.presentable = presentable;
+	}
+
 	@Override
 	public Mapping getTransformationMapping() {
 		// TODO Auto-generated method stub
 		return mapping;
+	}
+
+	@Override
+	public boolean isPresentable() {
+		// TODO Auto-generated method stub
+		return presentable;
 	}
 }
 
