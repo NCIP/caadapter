@@ -16,7 +16,7 @@
 <jnlp spec="1.0+" codebase="$$codebase" href="$$name">
 	<information>
 		<title>caAdapter Common Mapping and Transformation Service</title>
-		<vendor>nci cbiit</vendor>
+		<vendor>NCI CBIIT</vendor>
 		<description>Common Mapping and Transformation Service</description>
 	</information>
 	<security>
@@ -28,6 +28,7 @@
 		<jar href="cmts.jar"/>
 		<jar href="cmtsUI.jar"/>
 		<jar href="cmts-resources.jar"/>
+		<jar href="commons-beanutils.jar"/>
 		<jar href="commons-logging-1.0.4.jar"/>
 		<jar href="dom4j-1.4.jar"/>
 		<jar href="encoderframework.jar"/>
