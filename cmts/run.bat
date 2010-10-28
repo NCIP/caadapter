@@ -1,1 +1,1 @@
-java -Xms521m -jar cmtsUI.jar
+java -Xmx521m -jar cmtsUI.jar
