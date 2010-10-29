@@ -112,6 +112,7 @@ public class NewTransformationAction extends AbstractContextAction
 		w.setVisible(true);
 		if(w.isOkButtonClicked()){
 			MessagePanel newMsgPane=new MessagePanel();
+			newMsgPane.setTransformationType(transformationType);
 			
 			mainFrame.addNewTab(newMsgPane);
 			TransformationService transformer;
@@ -132,6 +133,9 @@ public class NewTransformationAction extends AbstractContextAction
 			String mappingFile=FileUtil.getRelativePath(w.getMapFile());
 			String xmlResult=transformer.Transfer(sourceFile, mappingFile); 
 			newMsgPane.setMessageText(xmlResult);
+			newMsgPane.setSourceDataURI(sourceFile);
+			newMsgPane.setTransformationMappingURI(mappingFile);
+			newMsgPane.setTargetDataFile(w.getDestFile());
 			FileWriter writer = new FileWriter(w.getDestFile());
 			writer.write(xmlResult);
 			writer.close();
