@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formulas>
+	<formula type="math">
+		<annotation>Dubois & Dubois formula</annotation>
+		<term type="expression" name="BSA1" description="(sqrt(m))" operation="multiplication">
+			<term type="number" name="factor">0.00718</term>
+			<term type="expression" name="factor">
+				<operation>power</operation>
+				<term type="varialbe" name="base" description="(kg)">weight</term>
+				<term type="number" name="index">0.425</term>
+			</term>
+			<term type="expression" name="factor">
+				<operation>power</operation>
+				<term type="varialbe" name="base" description="(cm)">height</term>
+				<term type="number" name="index">0.725</term>
+			</term>
+		</term>
+	</formula>
+	<formula type="math">
+		<annotation>alternatively epxressed Dubois & Dubois formula</annotation>
+		<term type="expression" name="BSA2" description="(sqrt(m))" operation="division">
+			<term type="expression" name="dividend" operation="multiplication">
+				<term type="expression" name="factor" operation="power">
+					<term type="varialbe" name="base" description="(kg)">weight</term>
+					<term type="number" name="index">0.425</term>
+				</term>
+				<term type="expression" name="factor" operation="power">
+					<term type="varialbe" name="base" description="(cm)">height</term>
+					<term type="number" name="index">0.725</term>
+				</term>
+			</term>
+			<term type="number" name="divisor">139.2</term>
+		</term>
+	</formula>
+	<formula type="math">
+		<annotation>Mosteller formula: used by Pharmacy and Therapeutics Committee of Cross Cancer Institue, Edmonton, Alberta, Canada</annotation>
+		<term type="expression" name="BSA3" description="(sqrt(m))" operation="sqrt">
+			<operation>sqrt</operation>
+			<term type="expression" name="base" operation="division">
+				<term type="expression" name="dividend" operation="multiplication">
+					<term type="varialbe" name="factor" description="(kg)">weight</term>
+					<term type="varialbe" name="factor" description="(cm)">height</term>
+				</term>
+				<term type="number" name="divisor">3600</term>
+			</term>	
+		</term>
+	</formula>
+	<formula type="math">
+		<annotation>testing formula:addition</annotation>
+		<term type="expression" name="testAdd" description="()" operation="addition">
+			<term type="number" name="addend">1234</term>
+			<term type="variable" name="addend">xyx</term>
+		</term>
+	</formula>
+	<formula type="math">
+		<annotation>testing formula:substraction</annotation>
+		<term type="expression" name="testSub" description="()" operation="substraction">
+			<term type="number" name="minuend">1234</term>
+			<term type="variable" name=" subtrahend">xyx</term>
+		</term>
+	</formula>
+	<formula type="math">
+		<annotation>testing formula:exponential</annotation>
+		<term type="expression" name="testExp" description="()" operation="exponential">
+			<term type="number" name="index">1234</term>
+		</term>
+	</formula>
+</formulas>
