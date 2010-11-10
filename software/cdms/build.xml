@@ -1,0 +1,246 @@
+<project name="Common Mapping and Transformation Service" default="jar" basedir=".">
+	<!-- Tell ant to use my environment variables -->
+	<property environment="env" />
+	<property file="./build.properties" />
+	<property name="build.compiler" value="modern" />
+	<path id="project.class.path">
+		<fileset dir="./lib">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+	</path>
+
+	<target name="build:caadapter-api" depends="init">
+		<echo message="build:caadapter-api is called :dist.dir =${dist.dir}"/>
+		<antcall target="dist_src"/>
+		<antcall target="dist_bin"/>
+   	</target>
+   	
+	<pathconvert pathsep=" " targetos="unix" property="distribution.manifest.class.property" refid="project.class.path">
+		<!-- make paths relative-->
+		<map from="${basedir}/lib" to="./lib" />
+		<map from="${basedir}" to="." />
+	</pathconvert>
+
+	
+	<target name="build:caadapter-wars" depends="webstart:copy_resources" >	
+		<antcall target="webstart:sign_resources">
+			<param name="RESOURCE_HOME" value="${dist.dir}/webstart"/>
+		</antcall>
+
+		<echo message=""/>
+		<echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
+		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="${web.src.dir}/web.xml">
+			<fileset dir="${dist.dir}/webstart">
+				<exclude name="myKeyStore"/>
+			</fileset>
+			<fileset dir="${web.src.dir}">
+					<include name="**/*.html"/>
+					<include name="**/*.jnlp"/>
+			</fileset>
+			<!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
+			<lib dir="${web.src.dir}/WEB-INF/lib">
+				<include name="jardiff.jar"/>
+				<include name="jnlp.jar"/>
+				<include name="jnlp-servlet.jar"/>
+			</lib>
+			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
+		</war>	
+		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">	
+			<property name="ws.module.name" value="caadapterWS-cmts" />
+			<property name="project.dist.dir" value="${dist.dir}" />
+		</ant>
+		
+		<delete dir="${dist.dir}/webstart" failonerror="false"/>
+	</target>
+   	
+	<target name="webstart:copy_resources" description="Perpare web start resources...">  
+		<echo message="build:webstart --copy resource"/>
+		<copy todir="${dist.dir}/webstart" failonerror="false">
+			<fileset dir="${lib.dir}">
+				<include name="caAdapter.jar"/>
+				<include name="commons-beanutils.jar"/>
+				<include name="commons-logging-1.0.4.jar"/>
+				<include name="dom4j-1.4.jar"/>
+				<include name="encoderframework.jar"/>
+				<include name="encoderfrmwk-xsdextension.jar"/>
+				<include name="hl7.jar"/>
+				<include name="hl7encoder-xsdextension.jar"/>
+				<include name="jaxen-jdom.jar"/>
+				<include name="jdom.jar"/>
+				<include name="jgraph.jar"/>	
+				<include name="log4j-1.2.8.jar"/>
+				<include name="saxon9.jar"/>
+				<include name="saxon9-xqj.jar"/>
+				<include name="xbean.jar"/>
+				<include name="xercesImpl.jar"/>
+			</fileset>
+			<fileset dir="${dist.dir}/../caadapter-api">
+				<include name="cmts.jar"/>
+				<include name="cmtsUI.jar"/>
+				<include name="cmts-resources.jar"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="webstart:sign_resources">
+    	<available file="${jar-signing.keystore.abs-location}" property="digital-keys.exist"/>
+
+	    <antcall target="generate-keys"/>
+	    <echo message="digitally signing...${RESOURCE_HOME}"/>
+
+	    <echo message="Key Store: ${jar-signing.keystore.abs-location}"/>
+	    <echo message="-------- Signing all jar files --------"/>
+	    <signjar alias="${jar-signing.keystore.alias}" storepass="${jar-signing.keystore.password}" keystore="${jar-signing.keystore.abs-location}" lazy="false">
+		   	<fileset dir="${RESOURCE_HOME}" includes="*.jar, *.zip"/>
+	    </signjar>
+	</target>
+
+	<target name="generate-keys"  unless="digital-keys.exist" description="generate sign keys" >
+        <echo message=""/>
+        <echo message="-------- Create a keyStore *disabled--------"/>
+    	<delete file="${signjar.keystore}"/>
+	   	<genkey alias="${jar-signing.keystore.alias}" storepass="${jar-signing.keystore.password}" keystore="${jar-signing.keystore.abs-location}" dname="CN=${certificate.subject.CN}, OU=${certificate.subject.OU}, O=${certificate.subject.O}, C=${certificate.subject.C}"/>
+    </target>
+    
+    		
+	<target name="dist_bin" depends="jar" description="create the binary distribution">
+		<zip destfile="${dist.dir}/cmts_${release.version}_Bin_${DATE}.zip">
+			<zipfileset dir="${lib.dir}" prefix="lib">
+				<exclude name="rt.jar"/>
+			</zipfileset>
+			<zipfileset dir="${dist.dir}" prefix="lib">
+				<include name="cmts.jar" />
+				<include name="cmts-resources.jar" />
+			</zipfileset>
+			<zipfileset dir="${dist.dir}">
+				<include name="cmtsUI.jar" />
+			</zipfileset>
+			<zipfileset dir="${basedir}">
+				<include name="workingspace/**" />
+				<include name="*.bat" />
+				<include name="etc/**" />
+			</zipfileset>
+		</zip>
+	</target>
+
+	<target name="dist_src" depends="clean, init" description="create the source distribution">
+		<zip destfile="${dist.dir}/cmts_${release.version}_Src_${DATE}.zip" basedir="${basedir}">
+			<exclude name="bin/**" />
+			<exclude name="build/**" />
+			<exclude name="dist/**" />
+			<exclude name="**/CVS/**" />
+		</zip>
+	</target>
+	
+	<target name="jar" depends="compile" description="create the distribution jars">
+		<echo> ${distribution.manifest.class.property} </echo>
+		<!-- copy todir="${build.dir}">
+			<fileset dir="resources">
+				<exclude name="**/CVS/**" />
+			</fileset>
+		</copy -->
+		<jar destfile="${dist.dir}/cmts.jar">
+			<fileset dir="${build.dir}" excludes="**/Test.class **/ui/**" />
+			<!-- fileset dir="${basedir}" includes="config/*.*" /-->
+			<!-- fileset dir="${etc.dir}" excludes="**/ucum-expression.xml" /-->
+			<!-- fileset dir="${src.dir}" excludes="**/*.java" /-->
+		</jar>
+		<jar destfile="${dist.dir}/cmts-resources.jar">
+			<fileset dir="${resources.dir}" excludes="**/CVS/**" />
+		</jar>
+		<jar destfile="${dist.dir}/cmtsUI.jar">
+			<fileset dir="${build.dir}" includes="**/ui/**" />
+			<manifest>
+				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cmts.ui.main.MainFrame" />
+				<attribute name="Class-Path" value=". lib/cmts.jar lib/cmts-resources.jar ${distribution.manifest.class.property}" />
+			</manifest>
+		</jar>
+		<delete dir="${build.dir}" failonerror="false"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${build.dir}" includeEmptyDirs="true" />
+		<delete dir="${dist.dir}" includeEmptyDirs="true" />
+		<delete>
+			<fileset dir="." includes="*.zip" />
+		</delete>
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<echo message="java.class.path:${java.class.path}"/>
+		<tstamp>
+			<format property="DATE" pattern="MM-dd-yy" locale="en_us" />
+		</tstamp>
+		<echo message="env:${env}"/>
+		<echo message="java.endorsed.dirs:${java.endorsed.dirs}"/>
+		<echo message="java.specification.version:${java.specification.version}"/>
+		<echo message="java.vm.name:${java.vm.name}"/>
+		<echo message="java.vm.specification.version:${java.vm.specification.version}"/>
+		<echo message="java.vm.version:${java.vm.version}"/>
+		<echo message="java.ext.dirs:${java.ext.dirs}"/>
+	</target>
+	<target name="compile" depends="init">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="off">
+			<!-- fork="yes" executable="c:\java\jdk1.6.0_20\bin\javac" -->
+			<include name="**/*.java" />
+			<classpath>
+				<path refid="project.class.path" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="compile-test" depends="compile">
+		<javac srcdir="${test.dir}" destdir="${build.dir}" debug="on" deprecation="on">
+			<include name="**/*.java" />
+			<classpath>
+				<path refid="project.class.path" />
+				<pathelement location="${build.dir}" />
+			</classpath>
+		</javac>
+	</target>
+	<target name="test" depends="compile-test">
+		<junit>
+			<classpath>
+				<path refid="project.class.path" />
+				<pathelement location="${build.dir}" />
+			</classpath>
+
+			<formatter type="plain" />
+
+			<!-- test name="gov.nih.nci.cbiit.cmts.test.MappingTest" haltonfailure="no" outfile="result">
+				<formatter type="xml" />
+			</test -->
+
+			<batchtest fork="yes" todir="bin">
+				<formatter type="xml" />
+				<fileset dir="${test.dir}">
+					<include name="**/*Test*.java" />
+					<exclude name="**/AllTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="doc" description="Generate JavaDoc">
+		<mkdir dir="${javadoc.dir}" />
+		<javadoc destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="CMPS">
+
+			<packageset dir="${src.dir}" defaultexcludes="yes">
+				<include name="gov/nih/nci/cbiit/cmts/**" />
+			</packageset>
+
+			<doctitle>
+				CMTS
+			</doctitle>
+			<bottom>
+
+			</bottom>
+			<tag name="todo" scope="all" description="To do:" />
+			<link href="http://java.sun.com/javase/6/docs/api/" />
+		</javadoc>
+	</target>
+
+</project>
