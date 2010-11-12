@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formula type="math" name="BSA1">
+	<annotation>Dubois  Dubois formula</annotation>
+	<expression type="expression" name="BSA1" description="(m^2)" operation="multiplication">
+		<term type="constant" name="factor" value="0.00718" />
+		<term type="expression" name="factor" operation="multiplication">
+			<term type="expression" name="factor" operation="power">
+				<term type="varialbe" name="base" description="(kg)" value="weight"/> 
+				<term type="constant" name="index" value="0.425"/>
+			</term>
+			<term type="expression" name="factor" operation="power">
+				<term type="varialbe" name="base" description="(cm^2)" value="height"/>
+				<term type="constant" name="index" value="0.725"/>
+			</term>
+		</term>
+	</expression>
+</formula>
