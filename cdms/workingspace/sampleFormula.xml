@@ -4,13 +4,11 @@
 		<annotation>Dubois & Dubois formula</annotation>
 		<term type="expression" name="BSA1" description="(sqrt(m))" operation="multiplication">
 			<term type="number" name="factor">0.00718</term>
-			<term type="expression" name="factor">
-				<operation>power</operation>
+			<term type="expression" name="factor"operation="power">
 				<term type="varialbe" name="base" description="(kg)">weight</term>
 				<term type="number" name="index">0.425</term>
 			</term>
-			<term type="expression" name="factor">
-				<operation>power</operation>
+			<term type="expression" name="factor" operation="power">
 				<term type="varialbe" name="base" description="(cm)">height</term>
 				<term type="number" name="index">0.725</term>
 			</term>
