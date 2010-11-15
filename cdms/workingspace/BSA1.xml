@@ -5,11 +5,11 @@
 		<term type="constant" name="factor" value="0.00718" />
 		<term type="expression" name="factor" operation="multiplication">
 			<term type="expression" name="factor" operation="power">
-				<term type="varialbe" name="base" description="(kg)" value="weight"/> 
+				<term type="variable" name="base" description="(kg)" value="weight"/> 
 				<term type="constant" name="index" value="0.425"/>
 			</term>
 			<term type="expression" name="factor" operation="power">
-				<term type="varialbe" name="base" description="(cm^2)" value="height"/>
+				<term type="variable" name="base" description="(cm)" value="height"/>
 				<term type="constant" name="index" value="0.725"/>
 			</term>
 		</term>

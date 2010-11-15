@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formula type="math" name="BSA3">
+	<annotation>Mosteller formula: used by Pharmacy and Therapeutics Committee of Cross Cancer Institue, Edmonton, Alberta, Canada</annotation>
+	<expression type="expression" name="BSA3" description="(m^2)" operation="squareRoot">
+		<term type="expression" name="base" operation="division">
+			<term type="expression" name="dividend" operation="multiplication">
+					<term type="variable" name="factor" description="(kg)" value="weight"/> 
+					<term type="variable" name="factor" description="(cm)" value="height"/>
+			</term>
+			<term type="constant" name="divisor" value="3600" />
+		</term>
+	</expression>
+</formula>

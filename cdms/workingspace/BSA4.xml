@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formula type="math" name="BSA4">
+	<annotation>Haycock formula</annotation>
+	<expression type="expression" name="BSA4" description="(m^2)" operation="multiplication">
+		<term type="constant" name="factor" value="0.024265" />
+		<term type="expression" name="factor" operation="multiplication">
+			<term type="expression" name="factor" operation="power">
+				<term type="variable" name="base" description="(kg)" value="weight"/> 
+				<term type="constant" name="index" value="0.5378"/>
+			</term>
+			<term type="expression" name="factor" operation="power">
+				<term type="variable" name="base" description="(cm)" value="height"/>
+				<term type="constant" name="index" value="0.3964"/>
+			</term>
+		</term>
+	</expression>
+</formula>

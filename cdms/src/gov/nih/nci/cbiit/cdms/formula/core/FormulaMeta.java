@@ -41,6 +41,12 @@ public class FormulaMeta extends BaseMeta {
 		this.type = type;
 	}
 	 
+	@Override
+	public String formatJavaStatement() {
+		// TODO Auto-generated method stub
+		return getExpression().formatJavaStatement();
+	}
+
 	public String toString()
 	{
 		StringBuffer rtnBf=new StringBuffer();

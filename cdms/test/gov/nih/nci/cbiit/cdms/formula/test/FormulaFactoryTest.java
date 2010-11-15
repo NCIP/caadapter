@@ -2,6 +2,7 @@ package gov.nih.nci.cbiit.cdms.formula.test;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.bind.JAXBException;
 
@@ -14,6 +15,27 @@ import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 import org.junit.Test;
 
 public class FormulaFactoryTest {
+	
+	/**
+	 * test XSD parsing and marshaling of the generated Model Object
+	 * @throws JAXBException 
+	 */
+	@Test
+	public void testExcute() throws JAXBException
+	{
+		HashMap<String, String> paramHash=new HashMap<String, String>();
+		String testFile="workingspace/BSA8.xml";
+		FormulaMeta myFormula=FormulaFactory.loadFormula(new File(testFile));
+		System.out.println("FormulaFactoryTest.testExcute()...formula:"+myFormula);
+		System.out.println("FormulaFactoryTest.testExcute()...javaSt:"+myFormula.formatJavaStatement());
+		System.out.println("FormulaFactoryTest.testExcute()...paramter:"+myFormula.getExpression().listParameters());
+		paramHash.put("weight", "5");
+		paramHash.put("height", "3");		
+		
+		System.out.println("FormulaFactoryTest.testExcute()...result:"+myFormula.getExpression().excute(paramHash));	
+
+	}
+	
 
 	/**
 	 * test XSD parsing and marshaling of the generated Model Object
@@ -22,11 +44,10 @@ public class FormulaFactoryTest {
 	@Test
 	public void testLoading() throws JAXBException
 	{
-		String testFile="workingspace/sampleMultiplication.xml";
-		
-
+		String testFile="workingspace/logFormula.xml";
 		FormulaMeta myFormula=FormulaFactory.loadFormula(new File(testFile));
 		System.out.println("FormulaFactoryTest.testLoading()..:"+myFormula.toString());
+		System.out.println("FormulaFactoryTest.testLoading().. java Statement:"+myFormula.formatJavaStatement());
 	}
 	
 	/**
