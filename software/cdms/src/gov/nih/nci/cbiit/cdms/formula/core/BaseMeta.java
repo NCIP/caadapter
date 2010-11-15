@@ -27,6 +27,7 @@ public abstract class BaseMeta implements Serializable, Cloneable{
 		this.name = name;
 	}
 	
+	public abstract String formatJavaStatement();
 	@Override
 	public Object clone()
 	{

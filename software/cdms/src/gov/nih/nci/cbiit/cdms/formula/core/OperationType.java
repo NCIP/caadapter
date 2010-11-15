@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 public enum OperationType {
     @XmlEnumValue("addition")
-    ADDITION("math"),
-    @XmlEnumValue("substraction")
-    SUBSTRACTION("substraction"),
+    ADDITION("addition"),
+    @XmlEnumValue("subtraction")
+    SUBTRACTION("subtraction"),
     @XmlEnumValue("multiplication")
     MULTIPLICATION("multiplication"),
     @XmlEnumValue("division")
@@ -24,6 +24,9 @@ public enum OperationType {
     SQUAREROOT("squareRoot"),
     @XmlEnumValue("exponential")
     EXPONENTIAL("exponential"),
+    @XmlEnumValue("logarithm")
+    LOGARITHM("logarithm"),
+    
     @XmlEnumValue("trigonometric")
     TRIGONoMETRIC("trigonometric");
 	
@@ -42,10 +45,10 @@ public enum OperationType {
     {
     	if (value().equals(ADDITION.value))
     		return " + ";
-    	else if (value().equals(SUBSTRACTION.value))
+    	else if (value().equals(SUBTRACTION.value))
     		return " - ";
     	else if (value().equals(MULTIPLICATION.value))
-    		return " X ";
+    		return " * ";
     	else if (value().equals(DIVISION.value()))
     		return " / ";
     	else if (value().equals(POWER.value))

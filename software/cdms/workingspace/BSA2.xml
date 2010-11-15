@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formula type="math" name="BSA2">
+	<annotation>Dubois  Dubois formula: Alternative</annotation>
+	<expression type="expression" name="BSA2" description="(m^2)" operation="division">
+		<term type="expression" name="dividend" operation="multiplication">
+			<term type="expression" name="factor" operation="power">
+				<term type="variable" name="base" description="(kg)" value="weight"/> 
+				<term type="constant" name="index" value="0.425"/>
+			</term>
+			<term type="expression" name="factor" operation="power">
+				<term type="variable" name="base" description="(cm)" value="height"/>
+				<term type="constant" name="index" value="0.725"/>
+			</term>
+		</term>
+		<term type="constant" name="divisor" value="139.2" />
+	</expression>
+</formula>

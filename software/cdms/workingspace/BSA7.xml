@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formula type="math" name="BSA7">
+	<annotation>Fujimoto formula</annotation>
+	<expression type="expression" name="BSA7" description="(m^2)" operation="multiplication">
+		<term type="constant" name="factor" value="0.008883" />
+		<term type="expression" name="factor" operation="multiplication">
+			<term type="expression" name="factor" operation="power">
+				<term type="variable" name="base" description="(cm)" value="height"/> 
+				<term type="constant" name="index" value="0.663"/>
+			</term>
+			<term type="expression" name="factor" operation="power">
+				<term type="variable" name="base" description="(kg)" value="weight"/>
+				<term type="constant" name="index" value="0.444"/>
+			</term>
+		</term>
+	</expression>
+</formula>
