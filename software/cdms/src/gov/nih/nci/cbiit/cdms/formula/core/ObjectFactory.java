@@ -25,6 +25,15 @@ public class ObjectFactory {
     private final static QName _FORMULA_QNAME = new QName("http://cdms.cbiit.nci.nih.gov/core", "formula");
     private final static QName _EXPRESSION_QNAME = new QName("http://cdms.cbiit.nci.nih.gov/core", "expression");
     
+    
+    /**
+     * Create an instance of {@formula FormulaStore }
+     * 
+     */
+    public FormulaStore createFormulaStore() {
+        return new FormulaStore();
+    }
+    
  
     /**
      * Create an instance of {@formula FormulaMeta }

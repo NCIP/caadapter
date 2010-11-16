@@ -2,6 +2,7 @@ package gov.nih.nci.cbiit.cdms.formula.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -55,6 +56,28 @@ public class TermMeta extends BaseMeta{
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public HashMap<String, String>paramters()
+	{
+		HashMap<String, String> rtnHash=new HashMap<String, String>();
+		if (getType().equals(TermType.VARIABLE))
+			rtnHash.put(getName(), getValue());
+			
+		if (getTerm()==null)
+			return rtnHash;
+		for (TermMeta childTerm:getTerm())
+		{
+			Iterator<String> it=childTerm.paramters().keySet().iterator();
+			while(it.hasNext())
+			{
+				String pKey=it.next();
+				rtnHash.put(pKey, childTerm.paramters().get(pKey));
+			}
+		}
+//			rtnList.addAll(childTerm.listParameters());
+ 
+		return rtnHash;
 	}
 	
 	public List<String> listParameters()

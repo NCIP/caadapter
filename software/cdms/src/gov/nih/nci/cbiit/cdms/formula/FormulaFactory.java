@@ -1,13 +1,13 @@
 package gov.nih.nci.cbiit.cdms.formula;
 
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.io.ObjectInputStream.GetField;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -18,7 +18,41 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
 public class FormulaFactory {
+	private static FormulaStore commonStore;
+	private static FormulaStore localStore;
+	
+	public static FormulaStore getLocalStore()
+	{
+		if (localStore==null)
+		{
+			localStore=new FormulaStore();
+			localStore.setName("No Formula Defined");
 
+		}
+		return localStore;
+	}
+	
+	public static FormulaStore  getCommonStore()
+	{
+		if (commonStore==null)
+			try {
+				commonStore=loadFormulaStore(new File("dataStore/commonFormulae.xml"));
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return commonStore;
+	}
+
+	public static FormulaStore loadFormulaStore(File f) throws JAXBException
+	{
+		JAXBContext jc=getJAXBContext();
+		Unmarshaller u=jc.createUnmarshaller();
+		JAXBElement<FormulaStore> jaxbFormula=u.unmarshal(new StreamSource(f), FormulaStore.class);
+		return jaxbFormula.getValue();
+	}
+	
 	public static FormulaMeta loadFormula(File f) throws JAXBException
 	{
 		JAXBContext jc=getJAXBContext();
