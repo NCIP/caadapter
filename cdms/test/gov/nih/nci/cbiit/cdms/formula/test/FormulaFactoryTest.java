@@ -1,6 +1,7 @@
 package gov.nih.nci.cbiit.cdms.formula.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,8 +27,6 @@ public class FormulaFactoryTest {
 		HashMap<String, String> paramHash=new HashMap<String, String>();
 		String testFile="workingspace/BSA8.xml";
 		FormulaMeta myFormula=FormulaFactory.loadFormula(new File(testFile));
-		System.out.println("FormulaFactoryTest.testExcute()...formula:"+myFormula);
-		System.out.println("FormulaFactoryTest.testExcute()...javaSt:"+myFormula.formatJavaStatement());
 		System.out.println("FormulaFactoryTest.testExcute()...paramter:"+myFormula.getExpression().listParameters());
 		paramHash.put("weight", "5");
 		paramHash.put("height", "3");		
@@ -44,10 +43,11 @@ public class FormulaFactoryTest {
 	@Test
 	public void testLoading() throws JAXBException
 	{
-		String testFile="workingspace/logFormula.xml";
+		String testFile="workingspace/BSA7.xml";
 		FormulaMeta myFormula=FormulaFactory.loadFormula(new File(testFile));
-		System.out.println("FormulaFactoryTest.testLoading()..:"+myFormula.toString());
-		System.out.println("FormulaFactoryTest.testLoading().. java Statement:"+myFormula.formatJavaStatement());
+		System.out.println("FormulaFactoryTest.testLoading()..:\n"+myFormula.toString());
+		System.out.println("FormulaFactoryTest.testLoading().. java Statement:\n"+myFormula.formatJavaStatement());
+		System.out.println("FormulaFactoryTest.testLoading().. XML:\n"+FormulaFactory.convertFormulaToXml(myFormula));
 	}
 	
 	/**
@@ -59,11 +59,22 @@ public class FormulaFactoryTest {
 	{
 		String outFile="workingspace/savedExample.xml";
 		
-
-		FormulaMeta myFormula=new FormulaMeta();
-		myFormula.setName("testForula");
-		myFormula.setType(FormulaType.MATH);
-		myFormula.setAnnotation("This is a formula created from scratch..");
+		FormulaMeta formula=createTestingFormula();
+		try {
+			FormulaFactory.saveFormula(formula, new File(outFile));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private FormulaMeta createTestingFormula()
+	{
+		
+		FormulaMeta formula=new FormulaMeta();
+		formula.setName("testForula");
+		formula.setType(FormulaType.MATH);
+		formula.setAnnotation("This is a formula created from scratch..");
 		
 		//the following create formula expression
 		TermMeta formulaExpression=new TermMeta();
@@ -71,7 +82,7 @@ public class FormulaFactoryTest {
 		formulaExpression.setType(TermType.EXPRESSION);
 		formulaExpression.setOperation(OperationType.ADDITION);
 		formulaExpression.setTerm(new ArrayList<TermMeta>());
-		myFormula.setExpression(formulaExpression);
+		formula.setExpression(formulaExpression);
 		
 		
 		//the following add terms to formula expression
@@ -87,7 +98,6 @@ public class FormulaFactoryTest {
 		
 		formulaExpression.getTerm().add(addend1);
 		formulaExpression.getTerm().add(addend2);
-		
-		FormulaFactory.saveFormula(myFormula, new File(outFile));
+		return formula;
 	}
 }
