@@ -1,7 +1,12 @@
 package gov.nih.nci.cbiit.cdms.formula.core;
 
-import java.io.Serializable;
+import gov.nih.nci.cbiit.cdms.formula.gui.properties.PropertiesProvider;
+import gov.nih.nci.cbiit.cdms.formula.gui.properties.PropertiesResult;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.beans.PropertyDescriptor;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -15,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
 	TermMeta.class
 }
 )
-public abstract class BaseMeta implements Serializable, Cloneable{
+public abstract class BaseMeta implements PropertiesProvider, Serializable, Cloneable{
     @XmlAttribute
 	private String name;
 
@@ -28,6 +33,13 @@ public abstract class BaseMeta implements Serializable, Cloneable{
 	}
 	
 	public abstract String formatJavaStatement();
+	
+	@Override
+	public String toString()
+	{
+		return name;
+		
+	}
 	@Override
 	public Object clone()
 	{
@@ -39,5 +51,20 @@ public abstract class BaseMeta implements Serializable, Cloneable{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class<?> beanClass = this.getClass();
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		
+		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));
+		PropertiesResult result = new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "Base Meta Properties";
 	}
 }

@@ -1,6 +1,12 @@
 package gov.nih.nci.cbiit.cdms.formula.core;
 
 
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.List;
+
+import gov.nih.nci.cbiit.cdms.formula.gui.properties.PropertiesResult;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -53,5 +59,25 @@ public class FormulaMeta extends BaseMeta {
 		rtnBf.append(this.getName() + " = ");
 		rtnBf.append(this.getExpression().toString());
 		return rtnBf.toString();
+	}
+
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "Formula Properties";
+	}
+
+	@Override
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class<?> beanClass = this.getClass();
+
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add( new PropertyDescriptor("Type", beanClass, "getType", null));
+		propList.add( new PropertyDescriptor("Annotation", beanClass, "getAnnotation", null));
+		propList.add( new PropertyDescriptor("Expression", beanClass, "getExpression", null));
+		PropertiesResult result =super.getPropertyDescriptors();
+		
+		result.addPropertyDescriptors(this, propList);
+		return result;
 	}
 }
