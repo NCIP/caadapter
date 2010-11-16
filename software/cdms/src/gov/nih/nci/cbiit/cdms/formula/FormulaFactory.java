@@ -3,6 +3,10 @@ package gov.nih.nci.cbiit.cdms.formula;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.io.ObjectInputStream.GetField;
 
 import javax.xml.bind.JAXBContext;
@@ -23,12 +27,36 @@ public class FormulaFactory {
 		return jaxbFormula.getValue();
 	}
 	
-	public static void saveFormula(FormulaMeta formula, File f) throws JAXBException
+	public static String convertFormulaToXml(FormulaMeta formula)
+	{
+		StringWriter writer=new StringWriter();
+		try {
+			writerFormula(formula, writer);
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return writer.getBuffer().toString();
+	}
+	
+	private static void writerFormula(FormulaMeta formula, Writer writer) throws JAXBException
 	{
 		JAXBContext jc=getJAXBContext();
 		Marshaller m = jc.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		m.marshal(new JAXBElement<FormulaMeta>(new QName("formula"),FormulaMeta.class, formula), f);
+		m.marshal(new JAXBElement<FormulaMeta>(new QName("formula"),FormulaMeta.class, formula), writer);
+	}
+	
+	public static void saveFormula(FormulaMeta formula, File f) throws JAXBException, IOException
+	{
+		FileWriter writer =new FileWriter(f);
+		writerFormula(formula, writer);
+		writer.close();
+//		JAXBContext jc=getJAXBContext();
+//		Marshaller m = jc.createMarshaller();
+//		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+//		m.marshal(new JAXBElement<FormulaMeta>(new QName("formula"),FormulaMeta.class, formula), f);
 	}
 	
 	private static JAXBContext getJAXBContext() throws JAXBException
