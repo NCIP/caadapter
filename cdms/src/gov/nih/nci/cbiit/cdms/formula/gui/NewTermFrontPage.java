@@ -1,5 +1,9 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
+import gov.nih.nci.cbiit.cdms.formula.core.TermType;
+import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemListener;
@@ -15,7 +19,8 @@ import java.awt.event.ItemEvent;
 public class NewTermFrontPage extends JPanel
 {
     public static final String[] TYPES = new String[] {NodeContentElement.TYPES[0], NodeContentElement.TYPES[2], NodeContentElement.TYPES[3], NodeContentElement.TYPES[4], "Vriable Definition"};
-
+    //public static final String[] TYPES = new String[] {"Formula", NodeContentElement.TYPES[2], NodeContentElement.TYPES[3], NodeContentElement.TYPES[4], "Vriable Definition"};
+    //public static String[] TYPES = new String[] {"Formula", "Term" ,"Expression", "Variable", "Number"};
     private final String TYPE_MODE = "Type";
     private final String NAME_MODE = "Name";
 
@@ -82,18 +87,21 @@ public class NewTermFrontPage extends JPanel
         JLabel dataFileLabel = new JLabel(TYPE_MODE);
         centerPanel.add(dataFileLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-        typeComboBox = new JComboBox();
-        if (givenType == null)
+        if (typeComboBox == null)
         {
-            for(int i=1;i<(TYPES.length-1);i++) typeComboBox.addItem(TYPES[i]);
-            typeComboBox.setEditable(true);
-            if (currentType.equals("")) currentType = TYPES[1];
-        }
-        else
-        {
-            typeComboBox.addItem(givenType);
-            typeComboBox.setEditable(false);
-            currentType = givenType;
+            typeComboBox = new JComboBox();
+            if (givenType == null)
+            {
+                for(int i=1;i<(TYPES.length-1);i++) typeComboBox.addItem(TYPES[i]);
+                typeComboBox.setEditable(true);
+                if (currentType.equals("")) currentType = TYPES[1];
+            }
+            else
+            {
+                typeComboBox.addItem(givenType);
+                typeComboBox.setEditable(false);
+                currentType = givenType;
+            }
         }
         for(String typ:TYPES) typeComboBox.addItem(typ);
         if (!currentType.equals("")) typeComboBox.setSelectedItem(currentType);
@@ -204,6 +212,7 @@ public class NewTermFrontPage extends JPanel
         if (currentType.equals(TYPES[1]))   //Expression
         {
             nameField.setEnabled(true);
+            variableComboBox.setEnabled(false);
             operationComboBox.setEnabled(true);
             descriptionField.setEnabled(false);
             valueField.setEnabled(false);
@@ -211,7 +220,8 @@ public class NewTermFrontPage extends JPanel
         }
         else if (currentType.equals(TYPES[2]))  //Variable
         {
-            nameField.setEnabled(false);
+            nameField.setEnabled(true);
+            variableComboBox.setEnabled(true);
             operationComboBox.setEnabled(false);
             descriptionField.setEnabled(true);
             valueField.setEnabled(false);
@@ -219,6 +229,7 @@ public class NewTermFrontPage extends JPanel
         else if (currentType.equals(TYPES[3]))  // Number
         {
             nameField.setEnabled(true);
+            variableComboBox.setEnabled(false);
             operationComboBox.setEnabled(false);
             descriptionField.setEnabled(true);
             valueField.setEnabled(true);
@@ -226,11 +237,12 @@ public class NewTermFrontPage extends JPanel
         else if (currentType.equals(TYPES[4]))  // Variable definition
         {
             nameField.setEnabled(true);
+            variableComboBox.setEnabled(false);
             operationComboBox.setEnabled(false);
             descriptionField.setEnabled(true);
             valueField.setEnabled(true);
         }
-        variableComboBox.setEnabled(!nameField.isEnabled());
+
         destLabelName.setEnabled(nameField.isEnabled());
         destLabelVariable.setEnabled(variableComboBox.isEnabled());
         destLabelOperation.setEnabled(operationComboBox.isEnabled());
@@ -238,6 +250,47 @@ public class NewTermFrontPage extends JPanel
         destLabelValue.setEnabled(valueField.isEnabled());
     }
 
+    public TermMeta getTermMeta()
+    {
+        TermMeta term = null;
+        if (currentType.equals(TYPES[0]))  //Formula
+        {
+            return null;
+        }
+        else if (currentType.equals(TYPES[1]))   //Expression
+        {
+            term = new TermMeta();
+            term.setType(TermType.EXPRESSION);
+            term.setName(nameField.getText());
+            term.setOperation(OperationType.getOperationTypeWithSymbol((String)operationComboBox.getSelectedItem()));
+        }
+        else if (currentType.equals(TYPES[2]))  //Variable
+        {
+            term = new TermMeta();
+            term.setType(TermType.VARIABLE);
+            term.setName(nameField.getText());
+            term.setValue((String)variableComboBox.getSelectedItem());
+            term.setDescription(descriptionField.getText());
+
+        }
+        else if (currentType.equals(TYPES[3]))  // Number
+        {
+            term = new TermMeta();
+            term.setType(TermType.CONSTANT);
+            term.setName(nameField.getText());
+            term.setValue(valueField.getText());
+
+        }
+        else if (currentType.equals(TYPES[4]))  // Variable definition
+        {
+            return null;
+            //element = new NodeContentElement(currentType, nameField.getText(), valueField.getText());
+            //element.setNodeDescription(descriptionField.getText());
+        }
+        else return null;
+        //if (!element.isValid()) return null;
+        return term;
+    }
     public NodeContentElement getNodeContentElement()
     {
         NodeContentElement element = null;
@@ -251,7 +304,8 @@ public class NewTermFrontPage extends JPanel
         }
         else if (currentType.equals(TYPES[2]))  //Variable
         {
-            element = new NodeContentElement(currentType, (String)variableComboBox.getSelectedItem(), descriptionField.getText());
+            element = new NodeContentElement(currentType, nameField.getText(), descriptionField.getText());
+            element.setNodeValue((String)variableComboBox.getSelectedItem());
         }
         else if (currentType.equals(TYPES[3]))  // Number
         {
