@@ -1,5 +1,7 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
+import gov.nih.nci.cbiit.cdms.formula.gui.action.ExecuteFormulaAction;
+
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +15,8 @@ import javax.swing.JMenuItem;
 
 public class MenuBarMain extends JMenuBar implements ActionListener {
 
-	public MenuBarMain()
+	
+	public MenuBarMain(JFrame frame)
 	{
 		super();
 		add(createNewMenu());
@@ -48,7 +51,7 @@ public class MenuBarMain extends JMenuBar implements ActionListener {
 	{
 		JMenu rtnMenu=new JMenu ("Run");
 		
-		JMenuItem excItem=new JMenuItem("Execute Formula");
+		JMenuItem excItem=new JMenuItem(new ExecuteFormulaAction("Execute Formula"));
 		rtnMenu.add(excItem);
 		return rtnMenu;
 		

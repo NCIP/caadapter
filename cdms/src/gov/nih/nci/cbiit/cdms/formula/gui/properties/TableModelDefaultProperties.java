@@ -1,5 +1,7 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.properties;
 
+import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 
@@ -145,20 +147,10 @@ import javax.swing.table.AbstractTableModel;
 					{
 						Method getterMethod = propDescriptor.getReadMethod();
 						if (getterMethod == null)
-						{
-//							System.out.println("getterMethod is null");
 							return emptyContent;
-						}
-						else
-						{
-//							System.out.println("getterMethod is '" + getterMethod + "'.");
-						}
 						Object targetItem = propertiesResult.getTargetObject(propDescriptor);
 						if(targetItem==null)
-						{
-//							System.out.println("No item is selected.");
 							return result;
-						}
 						try
 						{
 							result = getterMethod.invoke(targetItem, new Object[0]);
@@ -169,17 +161,14 @@ import javax.swing.table.AbstractTableModel;
 							//Log.logException(this, e);
 						}
 						if (result == null)
-						{
-		//                System.out.println("Value is: '"+obj+"'");
 							result = emptyContent;
-						}
-						else
-						{
-		//                System.out.println("Value is: '"+obj+"' of type"+obj.getClass().getName());
-						}
+
 						break;
 					}//end of case 1:
 			}
+			if (result instanceof TermMeta)
+				result =((TermMeta)result).getDescription();
+				
 			return result;
 		}
 
