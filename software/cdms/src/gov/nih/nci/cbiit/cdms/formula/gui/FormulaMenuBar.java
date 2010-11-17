@@ -2,6 +2,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.gui.constants.ActionConstants;
 import gov.nih.nci.cbiit.cdms.formula.gui.constants.MenuConstants;
+import gov.nih.nci.cbiit.cdms.formula.gui.action.OpenFormulaAction;
 
 import javax.swing.*;
 import java.util.Map;
@@ -28,12 +29,15 @@ public class FormulaMenuBar extends MenuBar
     private MenuItem newMenuItem;
     private MenuItem exitMenuItem;
     private MenuItem closeMenuItem;
+    private MenuItem openMenuItem;
+    private MenuItem saveMenuItem;
+    private MenuItem saveAsMenuItem;
     private MenuItem calculateMenuItem;
-    private FormulaMainPanel formulaMain;
+    private FormulaMainPanel mainPanel;
 
     public FormulaMenuBar(FormulaMainPanel mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
-        this.formulaMain = mf;//contextManager.getMainFrame();
+        this.mainPanel = mf;//contextManager.getMainFrame();
         initialize();
     }
 
@@ -103,15 +107,15 @@ public class FormulaMenuBar extends MenuBar
         //actionMap.put(ActionConstants.SAVE, defaultSaveAction);
         menuItemMap.put("New", newMenuItem);
         //DefaultSaveAsAction defaultSaveAsAction = new DefaultSaveAsAction(mainFrame);
-        MenuItem openMenuItem = new MenuItem("Open");
+        openMenuItem = new MenuItem("Open");
         //actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
         menuItemMap.put(ActionConstants.OPEN, openMenuItem);
-        //DefaultCloseAction defaultCloseAction = new DefaultCloseAction(mainFrame);
-        MenuItem saveMenuItem = new MenuItem("Save");
+        //OpenFormulaAction openAction = new OpenFormulaAction(mainPanel);
+        saveMenuItem = new MenuItem("Save");
         //actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
         menuItemMap.put(ActionConstants.SAVE, saveMenuItem);
         //DefaultCloseAllAction closeAllAction = new DefaultCloseAllAction(mainFrame);
-        MenuItem saveAsMenuItem = new MenuItem("Save As");
+        saveAsMenuItem = new MenuItem("Save As");
         //actionMap.put(ActionConstants.CLOSE_ALL, closeAllAction);
         menuItemMap.put(ActionConstants.CLOSE_ALL, saveAsMenuItem);
         //FormulaExitAction exitAction = new FormulaExitAction(formulaMain);
@@ -332,6 +336,18 @@ public class FormulaMenuBar extends MenuBar
     public MenuItem getCalculateMenuItem()
     {
         return calculateMenuItem;
+    }
+    public MenuItem getOpenMenuItem()
+    {
+        return openMenuItem;
+    }
+    public MenuItem getSaveMenuItem()
+    {
+        return saveMenuItem;
+    }
+    public MenuItem getSaveAsMenuItem()
+    {
+        return saveAsMenuItem;
     }
     public MenuItem getExitMenuItem()
     {

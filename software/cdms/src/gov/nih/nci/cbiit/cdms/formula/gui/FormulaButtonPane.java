@@ -1,5 +1,10 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
+import gov.nih.nci.cbiit.cdms.formula.core.TermType;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,7 +35,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
     public static int MODE_TERM = 2;
 
     private int mode = MODE_UNDECIDED;
-
+    private String UNDECIDED_MARK = "--";
     NodeContentElement contentElement = null;
     Frame frame = null;
     Dialog dialog = null;
@@ -129,7 +134,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         }
         if (oper == null)
         {
-            mainButton = new JButton("--");
+            mainButton = new JButton(UNDECIDED_MARK);
             mainButton.setBackground(new Color(200, 255, 255));
 
         }
@@ -226,6 +231,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
                     return;
                 }
                 if (!concretePanel(ele)) return;
+
                 mode = MODE_TERM;
             }
             else if (mode == MODE_TERM)
@@ -275,14 +281,14 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             //String oper = element.getOperator();
             refreshPanel();
             //initialConcretPanel(oper);
-            contentElement = null;
+            contentElement = element;
             mainButton = null;
             //this.updateUI();
             //System.out.println("TTTTT : FF2 " + oper);
         }
         else if (element.getNodeType().equals(NodeContentElement.TYPES[3]))
         {
-            mainButton.setText("Var:"+element.getNodeName());
+            mainButton.setText("Var:"+element.getNodeValue());
             contentElement = element;
             mainButton.setBackground(new Color(245, 200, 240));
             mainButton.updateUI();
@@ -379,7 +385,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         }
         else
         {
-            if (oper.equalsIgnoreCase("pow"))
+            if ((oper.equalsIgnoreCase("pow"))||(oper.equalsIgnoreCase("logarithm")))
             {
 
             }
@@ -415,7 +421,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
                     this.add(setupTwoPanel(oper, operatorButtonPanes.get(i), termButtonPanes.get(i)));
                 }
             }
-            else if (oper.equalsIgnoreCase("pow"))
+            else if ((oper.equalsIgnoreCase("pow"))||(oper.equalsIgnoreCase("logarithm")))
             {
                 this.setLayout(new GridLayout(1, 2));
                 JPanel panelL = new JPanel(new BorderLayout());
@@ -613,6 +619,10 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         termButtonPanes = termButtonPanesT;
         refreshPanel();
     }
+//    public String generateJavaExpression()
+//    {
+//        String xml = rootPanel.getFormulaXMLText();
+//    }
     public String generateJavaExpression()
     {
         String cont = "";
@@ -642,34 +652,278 @@ public class FormulaButtonPane extends JPanel implements ActionListener
     }
     public String generateXML(int depth)
     {
-        String space = "";
-        for(int i=0;i<depth;i++) space = space + "   ";
-        depth++;
-        String cont = "";
-        String rr = "";
+        String oneStepSapce = "   ";
+        String contn = "";
+        String termTag = "term";
+        String tail = "";
 
-        if (contentElement != null)
+        if (depth == 0)
         {
-            if (contentElement.getNodeType().equals(NodeContentElement.TYPES[3])) rr = contentElement.getNodeName();
-            else rr = contentElement.getNodeValue();
+            if ((mainButton != null)&&(mainButton.getText().trim().equals("--"))) return "";
+            contn = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                    "<formula type=\"math\" name=\""+rootPanel.getFormulaName()+"\">\n" +
+                    oneStepSapce + "<annotation>"+rootPanel.getFormulaaAnnotation()+"</annotation>\n";
+            termTag = "expression";
+            tail = "</formula>\n";
         }
-        else if (mainButton != null) rr = mainButton.getText();
+        String space = "";
+        for(int i=0;i<(depth+1);i++) space = space + oneStepSapce;
 
-        cont = space + "<term:" + rr + ">\n";
-        if (priorTermButtonPane != null) cont = cont + priorTermButtonPane.generateXML(depth);
-        else return space + "<term:" + rr + "/>\n";
+        depth++;
+
+        String type = "";
+        String header = "";
+        String footer = "";
+
+        if ((contentElement == null)||((mainButton != null)&&(mainButton.getText().trim().equals("--"))))
+        {
+
+            type = "UNDECIDED";
+            header = space + "<" + termTag + " type=\"" + type + "\"/>\n";
+            //footer = "";
+        }
+        else if (contentElement.getNodeType().equals(NodeContentElement.TYPES[2]))
+        {
+            type = "expression";
+            String descrip = "";
+            String dd = contentElement.getNodeDescription();
+            if ((dd != null)&&(!dd.trim().equals(""))) descrip = "\" description=\"" + contentElement.getNodeDescription();
+            header = space + "<" + termTag + " type=\"" + type + "\" name=\"" + contentElement.getNodeName() + descrip + "\" operation=\"" + contentElement.getOperatorName().toLowerCase() + "\">\n";
+            footer = space + "</" + termTag + ">\n";
+
+        }
+        else if (contentElement.getNodeType().equals(NodeContentElement.TYPES[3]))
+        {
+            type = "variable";
+            String descrip = "";
+            String dd = contentElement.getNodeDescription();
+            if ((dd != null)&&(!dd.trim().equals(""))) descrip = "\" description=\"" + contentElement.getNodeDescription();
+            header = space + "<" + termTag + " type=\"" + type + "\" name=\"" + contentElement.getNodeName() + "\" value=\"" +contentElement.getNodeValue()+ descrip + "\"/>\n";
+        }
+        else if (contentElement.getNodeType().equals(NodeContentElement.TYPES[4]))
+        {
+            type = "constant";
+            header = space + "<" + termTag + " type=\"" + type + "\" name=\"" + contentElement.getNodeName() + "\" value=\"" +contentElement.getNodeValue()+ "\"/>\n";
+        }
+        else
+        {
+            type = "INVALID";
+            header = space + "<" + termTag + " type=\"" + type + "\"/>\n";
+        }
+
+        if (footer.equals("")) return header;
+
+        String middle = "";
+        if (priorTermButtonPane == null)
+        {
+            middle = space + "<" + termTag + " type=\"INVALID_NULL_PRIORPANE\"/>\n";
+        }
+        else
+        {
+            middle = priorTermButtonPane.generateXML(depth);
+        }
+
+        if ((termButtonPanes != null)&&(termButtonPanes.size() > 0))
+        {
+            if (termButtonPanes.get(0).getMode() != MODE_UNUSED)
+            {
+                middle = middle + termButtonPanes.get(0).generateXML(depth);
+            }
+        }
+
+        contn = contn + header + middle + footer + tail;
+
+        return contn;
+    }
+
+    public boolean isReadyToCalculate()
+    {
+        if (mainButton != null)
+        {
+            if (mainButton.getText().equals(UNDECIDED_MARK)) return false;
+            else return true;
+        }
+        if (priorTermButtonPane == null) return false;
+
+        if (!priorTermButtonPane.isReadyToCalculate()) return false;
+
         if ((operatorButtonPanes != null)&&(operatorButtonPanes.size() > 0))
         {
             int n = 0;
             for (FormulaButtonPane p:operatorButtonPanes)
             {
-                cont = cont + space + "   <term:" + p.getOperator() + "/>\n";
-                cont = cont + termButtonPanes.get(n).generateXML(depth);
-                n++;
+                if (!p.isReadyToCalculate()) return false;
+                if (!termButtonPanes.get(n).isReadyToCalculate()) return false;
+            }
+        }
+        return true;
+    }
+    public Double calculate(java.util.List<Double> values)
+    {
+        if (!isReadyToCalculate()) return null;
+        java.util.List<String> variables = rootPanel.getVariableNames();
+        if ((values == null)||(values.size() == 0)) return null;
+        if ((variables == null)||(variables.size() == 0)) return null;
+        if (values.size() != variables.size()) return null;
+
+        if (mainButton != null)
+        {
+            if (contentElement == null) return null;
+            if (contentElement.getNodeType().equals(NodeContentElement.TYPES[4]))
+            {
+                double val = 0.0;
+                try
+                {
+                    val = Double.parseDouble(contentElement.getNodeValue());
+                }
+                catch(NumberFormatException ne)
+                {
+                    return null;
+                }
+                return new Double(val);
+            }
+            else if (contentElement.getNodeType().equals(NodeContentElement.TYPES[3]))
+            {
+                String vName = contentElement.getNodeName();
+                for (int i=0;i<variables.size();i++)
+                {
+                   if (vName.equals(variables.get(i))) return values.get(i);
+                }
+                return null;
+            }
+        }
+        double ds = 0.0;
+        if (priorTermButtonPane == null) return null;
+
+        Double dbl = priorTermButtonPane.calculate(values);
+        if (dbl == null) return null;
+        ds = dbl.doubleValue();
+
+        if ((operatorButtonPanes != null)&&(operatorButtonPanes.size() > 0))
+        {
+            int n = 0;
+            for (FormulaButtonPane p:operatorButtonPanes)
+            {
+                String oper = p.getOperator();
+                if (oper == null) return null;
+
+                if (oper.equals("sqrt"))
+                {
+                    ds = Math.sqrt(ds);
+                    continue;
+                }
+                //else if (oper.equals("rad"))
+                //{
+                //    ds = Math.rad(ds);
+                //    continue;
+                //}
+                else if (oper.equals("log10"))
+                {
+                    ds = Math.log10(ds);
+                    continue;
+                }
+                else if (oper.equals("log"))
+                {
+                    ds = Math.log(ds);
+                    continue;
+                }
+                else if (oper.equals("exp"))
+                {
+                    ds = Math.exp(ds);
+                    continue;
+                }
+                else if (oper.equals("sin"))
+                {
+                    ds = Math.sin(ds);
+                    continue;
+                }
+                else if (oper.equals("cos"))
+                {
+                    ds = Math.cos(ds);
+                    continue;
+                }
+                else if (oper.equals("tan"))
+                {
+                    ds = Math.tan(ds);
+                    continue;
+                }
+
+                Double dbl2 = termButtonPanes.get(n).calculate(values);
+                if (dbl2 == null) return null;
+
+                if (oper.equals("+")) ds = ds + dbl2;
+                else if (oper.equals("-")) ds = ds - dbl2;
+                else if (oper.equals("*")) ds = ds * dbl2;
+                else if (oper.equals("/")) ds = ds / dbl2;
+                else if (oper.equals("%")) ds = ds % dbl2;
+                else if (oper.equals("pow")) ds = Math.pow(ds, dbl2);
+
             }
         }
 
-        cont = cont + space + "</term:" + rr + ">\n";
-        return cont;
+        return ds;
+    }
+
+    public boolean invokeTermMeta(TermMeta meta)
+    {
+        if (!concretePanel(NodeContentElement.convertMetaToElement(meta))) return false;
+
+        java.util.List<TermMeta> childM = meta.getTerm();
+        if (((childM == null)||(childM.size() == 0))&&(priorTermButtonPane == null)) return true;
+
+        if (priorTermButtonPane != null)
+        {
+            if ((childM == null)||(childM.size() == 0))
+            {
+                System.out.println("###No Child TermMeta.");
+                return false;
+            }
+        }
+        else
+        {
+            if ((childM != null)&&(childM.size() > 1))
+            {
+                System.out.println("###Not null but no button");
+                return false;
+            }
+        }
+        if ((termButtonPanes == null)||(termButtonPanes.size() == 0)||(termButtonPanes.get(0).getMode() == MODE_UNUSED))
+        {
+            if ((childM != null)&&(childM.size() > 1))
+            {
+                System.out.println("###Excess Child Term");
+                return false;
+            }
+        }
+        else
+        {
+            if ((childM == null)||(childM.size() <= 1))
+            {
+                System.out.println("###Less Child Term");
+                return false;
+            }
+
+        }
+        for(int i=0;i<childM.size();i++)
+        {
+            TermMeta oneMeta = childM.get(i);
+            if (oneMeta.getType().equals(TermType.VARIABLE))
+            {
+                rootPanel.addVariableDefinitions(oneMeta.getValue(), oneMeta.getDescription());
+            }
+            if (i == 0)
+            {
+                if (!priorTermButtonPane.invokeTermMeta(oneMeta)) return false;
+
+            }
+            else
+            {
+                if (termButtonPanes.get(i-1).getMode() != MODE_UNUSED)
+                {
+                    if (!termButtonPanes.get(i-1).invokeTermMeta(oneMeta)) return false;
+                }
+            }
+        }
+        return true;
     }
 }

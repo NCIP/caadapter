@@ -1,5 +1,9 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
+import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.TermType;
+import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
+
 /**
  * Created by IntelliJ IDEA.
  * User: umkis
@@ -23,7 +27,8 @@ public class NodeContentElement
             "Exponential",
             "Sine",
             "Cosine",
-            "Tangent"};
+            "Tangent",
+            "Logarithm"};
     public static String[] OPERATIONS = new String[]
                {"+",
                 "-",
@@ -33,18 +38,19 @@ public class NodeContentElement
                 "sqrt",
                 "rad",
                 "pow",
-                "log10",       
+                "log10",
                 "exp",
                 "sin",
                 "con",
-                "tan"};
+                "tan",
+                "logarithm"};
 
 
   private String nodeType;
   private String nodeName;
   private String nodeValue;
   private String nodeDescription;
-    private String nodeOperator;
+  private String nodeOperator;
 
 
   NodeContentElement()
@@ -185,6 +191,8 @@ public class NodeContentElement
         {
             if (nodeName == null) return false;
             if (nodeName.trim().equals("")) return false;
+            if (nodeValue == null) return false;
+            if (nodeValue.trim().equals("")) return false;
         }
         else if (getNodeType().equals(NodeContentElement.TYPES[4]))
         {
@@ -229,6 +237,73 @@ public class NodeContentElement
           return "Num:" + this.getNodeValue();
       }
       else return "** Invlaid Type:" + type;
+    }
+    public TermMeta convertToMeta()
+    {
+        TermMeta term = null;
+        if (nodeType.equals(TYPES[0]))  //Formula
+        {
+            return null;
+        }
+        else if (nodeType.equals(TYPES[1]))   //Term
+        {
+            return null;
+        }
+        else if (nodeType.equals(TYPES[2]))   //Expression
+        {
+            term = new TermMeta();
+            term.setType(TermType.EXPRESSION);
+            term.setName(this.getNodeName());
+            term.setOperation(OperationType.getOperationTypeWithSymbol(this.getOperator()));
+        }
+        else if (nodeType.equals(TYPES[3]))  //Variable
+        {
+            term = new TermMeta();
+            term.setType(TermType.VARIABLE);
+            term.setName(this.getNodeName());
+            term.setValue(this.getNodeValue());
+            term.setDescription(this.getNodeDescription());
+
+        }
+        else if (nodeType.equals(TYPES[3]))  // Number
+        {
+            term = new TermMeta();
+            term.setType(TermType.CONSTANT);
+            term.setName(this.getNodeName());
+            term.setValue(this.getNodeValue());
+
+        }
+        else if (nodeType.equals(TYPES[4]))  // Variable definition
+        {
+            return null;
+            //element = new NodeContentElement(currentType, nameField.getText(), valueField.getText());
+            //element.setNodeDescription(descriptionField.getText());
+        }
+        else return null;
+        //if (!element.isValid()) return null;
+        return term;
+    }
+
+    public static NodeContentElement convertMetaToElement(TermMeta term)
+    {
+        NodeContentElement ele = null;
+        if (term.getType().equals(TermType.EXPRESSION))
+        {
+            ele = new NodeContentElement(TYPES[2], term.getName(), term.getOperation().operatorSymbol());
+            ele.setNodeDescription(term.getDescription());
+        }
+        else if (term.getType().equals(TermType.VARIABLE))    //Variable
+        {
+            ele = new NodeContentElement(TYPES[3], term.getName(), term.getDescription());
+            ele.setNodeValue(term.getValue());
+        }
+        else if (term.getType().equals(TermType.CONSTANT))   // Number
+        {
+            ele = new NodeContentElement(TYPES[4], term.getName(), term.getValue());
+        }
+        else return null;
+
+        return ele;
     }
 }
 

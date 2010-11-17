@@ -21,7 +21,7 @@ public class FormulaMainFrame extends JFrame //implements ActionListener
         this.setTitle("Formula Generator");
         this.getContentPane().setLayout(new GridLayout());
         this.getContentPane().add(m, "Center");
-        this.setSize(600, 600);
+        this.setSize(850, 730);
         addWindowListener(new WinCloseExit(this));
         this.setVisible(true);
 
