@@ -12,9 +12,10 @@ import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));//new BorderLayout());
         JButton okButton = new JButton("Run");
         okButton.addActionListener(this);
-        JButton cancelButton = new JButton("CANCEL");
+        JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(this);
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
@@ -77,43 +78,51 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
         pack();
 	}
 
-	private void initParameterPanel(JPanel panel)
+	private void initParameterPanel(JPanel centerPanel)
 	{
         if (formula==null)
         	return;
 
         paramFieldHash=new HashMap<String, JTextField>();
-        panel.setLayout(new GridLayout(3,2));
-        int startP=50;
-		for (String  pName:formula.getExpression().listParameters())
+        
+        centerPanel.setLayout(new GridBagLayout());
+        Insets insets = new Insets(5, 25, 25, 50);
+        int i=0;
+		JLabel tLabel=new JLabel("Parameter");
+		JLabel inputLabel=new JLabel("User Input");
+ 
+
+        centerPanel.add(tLabel, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(inputLabel, new GridBagConstraints(1, i, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        i++;
+  		for (String  pName:formula.getExpression().listParameters())
 		{
-			JLabel pLabel=new JLabel(pName);
-			pLabel.setLocation(50, startP);
+			JLabel pLabel=new JLabel(pName +":");
 			JTextField pField=new JTextField("");
-			pField.setPreferredSize(new Dimension(125, 25));
-			pField.setLocation(150, startP);
-			pField.setAutoscrolls(false);
-			panel.add(pLabel);
-			panel.add(pField);
 			paramFieldHash.put(pName, pField);
-			startP=startP+50;
+
+            centerPanel.add(pLabel, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+            centerPanel.add(pField, new GridBagConstraints(1, i, 2, 1, 1.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+            i++;
 		}
 		
-		JLabel pLabel=new JLabel("Result:  ");
-		pLabel.setLocation(50, startP);
+		JLabel pLabel=new JLabel(formula.getName()+formula.getExpression().getDescription() +":");
 		resultField=new JTextField("      " );
-		resultField.setPreferredSize(new Dimension(125, 25));
-		resultField.setLocation(150, startP);
-		
-		panel.add(pLabel);
-		panel.add(resultField);
- 
+		resultField.setEditable(false);
+        centerPanel.add(pLabel, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(resultField, new GridBagConstraints(1, i, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if (arg0.getActionCommand().equals("CANCEL"))
+		if (arg0.getActionCommand().equals("Cancel"))
 			this.dispose();
 		else if (arg0.getActionCommand().equals("Run"))
 		{
