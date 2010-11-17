@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formulaStore name="Common Formula">
+	<formula type="math" name="BSA1">
+		<annotation>Dubois  Dubois formula</annotation>
+		<expression type="expression" name="BSA1" description="(m^2)" operation="multiplication">
+			<term type="constant" name="factor" value="0.00718" />
+			<term type="expression" name="factor" operation="multiplication">
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(kg)" value="weight"/> 
+					<term type="constant" name="index" value="0.425"/>
+				</term>
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(cm)" value="height"/>
+					<term type="constant" name="index" value="0.725"/>
+				</term>
+			</term>
+		</expression>
+	</formula>
+	<formula type="math" name="BSA2">
+		<annotation>Dubois  Dubois formula: Alternative</annotation>
+		<expression type="expression" name="BSA2" description="(m^2)" operation="division">
+			<term type="expression" name="dividend" operation="multiplication">
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(kg)" value="weight"/> 
+					<term type="constant" name="index" value="0.425"/>
+				</term>
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(cm)" value="height"/>
+					<term type="constant" name="index" value="0.725"/>
+				</term>
+			</term>
+			<term type="constant" name="divisor" value="139.2" />
+		</expression>
+	</formula>
+	<formula type="math" name="BSA3">
+		<annotation>Mosteller formula: used by Pharmacy and Therapeutics Committee of Cross Cancer Institue, Edmonton, Alberta, Canada</annotation>
+		<expression type="expression" name="BSA3" description="(m^2)" operation="squareRoot">
+			<term type="expression" name="base" operation="division">
+				<term type="expression" name="dividend" operation="multiplication">
+						<term type="variable" name="factor" description="(kg)" value="weight"/> 
+						<term type="variable" name="factor" description="(cm)" value="height"/>
+				</term>
+				<term type="constant" name="divisor" value="3600" />
+			</term>
+		</expression>
+	</formula>
+	<formula type="math" name="BSA4">
+		<annotation>Haycock formula</annotation>
+		<expression type="expression" name="BSA4" description="(m^2)" operation="multiplication">
+			<term type="constant" name="factor" value="0.024265" />
+			<term type="expression" name="factor" operation="multiplication">
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(kg)" value="weight"/> 
+					<term type="constant" name="index" value="0.5378"/>
+				</term>
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(cm)" value="height"/>
+					<term type="constant" name="index" value="0.3964"/>
+				</term>
+			</term>
+		</expression>
+	</formula>
+	<formula type="math" name="BSA5">
+		<annotation>Gehan and George formula</annotation>
+		<expression type="expression" name="BSA5" description="(m^2)" operation="multiplication">
+			<term type="constant" name="factor" value="0.0235" />
+			<term type="expression" name="factor" operation="multiplication">
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(kg)" value="weight"/> 
+					<term type="constant" name="index" value="0.51456"/>
+				</term>
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(cm)" value="height"/>
+					<term type="constant" name="index" value="0.42246"/>
+				</term>
+			</term>
+		</expression>
+	</formula>
+	<formula type="math" name="BSA6">
+		<annotation>Boyd formula</annotation>
+		<expression type="expression" name="BSA6" description="(m^2)" operation="multiplication">
+			<term type="constant" name="factor" value="0.0003207" />
+			<term type="expression" name="factor" operation="multiplication">
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" value="weight" description="(kg)" /> 
+					<term type="expression" name="index" operation="subtraction" >
+						<term type="constant" name="minuend" value="0.7285" />  
+						<term type="expression" name="subtrahend" operation="multiplication">
+							<term type="constant" name="factor" value="0.0188"/> 						
+							<term type="expression" name="factor" operation="logarithm">
+								<term type="constant" name="base" value="10"/> 
+								<term type="variable" name="index" value="weight" description="(kg)" /> 
+							</term> 
+						</term>	
+					</term>
+				</term>
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" value="height" description="(cm)" />
+					<term type="constant" name="index" value="0.3" />
+				</term> 
+			</term> 
+		</expression>
+	</formula>
+	<formula type="math" name="BSA7">
+		<annotation>Fujimoto formula</annotation>
+		<expression type="expression" name="BSA7" description="(m^2)" operation="multiplication">
+			<term type="constant" name="factor" value="0.008883" />
+			<term type="expression" name="factor" operation="multiplication">
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(cm)" value="height"/> 
+					<term type="constant" name="index" value="0.663"/>
+				</term>
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(kg)" value="weight"/>
+					<term type="constant" name="index" value="0.444"/>
+				</term>
+			</term>
+		</expression>
+	</formula>
+	<formula type="math" name="BSA8">
+		<annotation>Takahira Formula </annotation>
+		<expression type="expression" name="BSA8" description="(m^2)" operation="multiplication">
+			<term type="constant" name="factor" value="0.007241" />
+			<term type="expression" name="factor" operation="multiplication">
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(cm)" value="height"/> 
+					<term type="constant" name="index" value="0.725"/>
+				</term>
+				<term type="expression" name="factor" operation="power">
+					<term type="variable" name="base" description="(kg)" value="weight"/>
+					<term type="constant" name="index" value="0.425"/>
+				</term>
+			</term>
+		</expression>
+	</formula>
+</formulaStore>

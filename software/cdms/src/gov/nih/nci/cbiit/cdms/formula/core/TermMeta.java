@@ -58,28 +58,7 @@ public class TermMeta extends BaseMeta{
 		this.description = description;
 	}
 	
-	public HashMap<String, String>paramters()
-	{
-		HashMap<String, String> rtnHash=new HashMap<String, String>();
-		if (getType().equals(TermType.VARIABLE))
-			rtnHash.put(getName(), getValue());
-			
-		if (getTerm()==null)
-			return rtnHash;
-		for (TermMeta childTerm:getTerm())
-		{
-			Iterator<String> it=childTerm.paramters().keySet().iterator();
-			while(it.hasNext())
-			{
-				String pKey=it.next();
-				rtnHash.put(pKey, childTerm.paramters().get(pKey));
-			}
-		}
-//			rtnList.addAll(childTerm.listParameters());
- 
-		return rtnHash;
-	}
-	
+
 	public List<String> listParameters()
 	{
 		ArrayList<String> rtnList=new ArrayList<String>();
@@ -89,7 +68,13 @@ public class TermMeta extends BaseMeta{
 		if (getTerm()==null)
 			return rtnList;
 		for (TermMeta childTerm:getTerm())
-			rtnList.addAll(childTerm.listParameters());
+		{
+			List<String> childP=childTerm.listParameters();
+			for (String p:childP)
+				if (!rtnList.contains(p))
+					rtnList.add(p);
+		}
+			
  
 		return rtnList;
 			

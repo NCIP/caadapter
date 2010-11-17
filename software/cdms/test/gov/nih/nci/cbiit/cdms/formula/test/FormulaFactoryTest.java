@@ -9,6 +9,7 @@ import javax.xml.bind.JAXBException;
 
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaType;
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
@@ -16,6 +17,25 @@ import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 import org.junit.Test;
 
 public class FormulaFactoryTest {
+	
+	
+
+	/**
+	 * test loading formula store
+	 * @throws JAXBException 
+	 */
+	@Test
+	public void testFormulaStoreLoading() throws JAXBException
+	{
+		String testFile="dataStore/commonFormulae.xml";
+		FormulaStore myStore=FormulaFactory.loadFormulaStore(new File(testFile));
+		for (FormulaMeta formula:myStore.getFormula())
+		{
+			System.out.println("FormulaFactoryTest.testLoading()..:\n"+formula.toString());
+			System.out.println("FormulaFactoryTest.testLoading().. java Statement:\n"+formula.formatJavaStatement());
+			System.out.println("FormulaFactoryTest.testLoading().. XML:\n"+FormulaFactory.convertFormulaToXml(formula));
+		}
+	}
 	
 	/**
 	 * test XSD parsing and marshaling of the generated Model Object
