@@ -8,17 +8,12 @@ import gov.nih.nci.cbiit.cdms.formula.gui.tree.TreeNodeFormulaStore;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.io.File;
 
-import javax.swing.CellRendererPane;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.xml.bind.JAXBException;
 
 
 public class PanelMainFrame extends JPanel {
@@ -62,7 +57,7 @@ public class PanelMainFrame extends JPanel {
 		localTree.addTreeSelectionListener(rightSplit);
 		localTree.addTreeSelectionListener(centralSplit);
 		JScrollPane localScroll =new JScrollPane(localTree);
-		localScroll.setPreferredSize(new Dimension(150,200));
+		localScroll.setPreferredSize(new Dimension(150,350));
 		leftSplit.add(localScroll);
 		
 		TreeNodeFormulaStore commonStoreNode= new TreeNodeFormulaStore(FormulaFactory.getCommonStore());
@@ -72,7 +67,7 @@ public class PanelMainFrame extends JPanel {
 		commonStoreTree.addTreeSelectionListener(rightSplit);
 		commonStoreTree.addTreeSelectionListener(centralSplit);
 		JScrollPane commonScroll =new JScrollPane(commonStoreTree);
-		commonScroll.setPreferredSize(new Dimension(150,250));
+		commonScroll.setPreferredSize(new Dimension(150,150));
 		leftSplit.add( commonScroll);
 		
 
