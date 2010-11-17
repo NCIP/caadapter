@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "term", propOrder = {
-	"term",
+	"term"
 })
 
 public class TermMeta extends BaseMeta{
