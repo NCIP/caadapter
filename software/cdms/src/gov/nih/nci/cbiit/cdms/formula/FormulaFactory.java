@@ -3,11 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -20,7 +16,7 @@ import javax.xml.transform.stream.StreamSource;
 public class FormulaFactory {
 	private static FormulaStore commonStore;
 	private static FormulaStore localStore;
-	
+
 	public static FormulaStore getLocalStore()
 	{
 		if (localStore==null)
@@ -31,7 +27,7 @@ public class FormulaFactory {
 		}
 		return localStore;
 	}
-	
+
 	public static FormulaStore  getCommonStore()
 	{
 		if (commonStore==null)
@@ -52,7 +48,7 @@ public class FormulaFactory {
 		JAXBElement<FormulaStore> jaxbFormula=u.unmarshal(new StreamSource(f), FormulaStore.class);
 		return jaxbFormula.getValue();
 	}
-	
+
 	public static FormulaMeta loadFormula(File f) throws JAXBException
 	{
 		JAXBContext jc=getJAXBContext();
@@ -60,8 +56,15 @@ public class FormulaFactory {
 		JAXBElement<FormulaMeta> jaxbFormula=u.unmarshal(new StreamSource(f), FormulaMeta.class);
 		return jaxbFormula.getValue();
 	}
-	
-	public static String convertFormulaToXml(FormulaMeta formula)
+    public static FormulaMeta loadFormula(String str) throws JAXBException
+	{
+		JAXBContext jc=getJAXBContext();
+		Unmarshaller u=jc.createUnmarshaller();
+		JAXBElement<FormulaMeta> jaxbFormula=u.unmarshal(new StreamSource(new CharArrayReader(str.toCharArray())), FormulaMeta.class);
+		return jaxbFormula.getValue();
+	}
+
+    public static String convertFormulaToXml(FormulaMeta formula)
 	{
 		StringWriter writer=new StringWriter();
 		try {
@@ -70,10 +73,10 @@ public class FormulaFactory {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return writer.getBuffer().toString();
 	}
-	
+
 	private static void writerFormula(FormulaMeta formula, Writer writer) throws JAXBException
 	{
 		JAXBContext jc=getJAXBContext();
