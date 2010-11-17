@@ -15,7 +15,7 @@ public class FrameMain extends JFrame {
 	{
 		super();
 		this.setTitle("caAdapter Formula Service");
-		setSize(600, 600);
+		setSize(800, 640);
 	    addWindowListener(new WindowAdapterMain());
 		//centralize the window
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

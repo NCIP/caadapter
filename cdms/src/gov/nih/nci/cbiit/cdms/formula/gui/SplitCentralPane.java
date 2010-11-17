@@ -33,7 +33,7 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 		topPanel.setBorder(BorderFactory.createTitledBorder(""));
 		topLabel=new JLabel();
 		topPanel.add(topLabel, BorderLayout.CENTER);
-		topPanel.setPreferredSize(new Dimension(200, 200));
+		topPanel.setPreferredSize(new Dimension(450, 350));
 		
 		add(topPanel);
 		JPanel lowPanel=new JPanel();
@@ -46,7 +46,7 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 		xmlScroll.setViewportView(formulaXml);
 		lowPanel.add(xmlScroll, BorderLayout.CENTER);
 		add(lowPanel);
-		this.setMinimumSize(new Dimension(200, 500));
+		this.setMinimumSize(new Dimension(450, 150));
 	}
 	
 	

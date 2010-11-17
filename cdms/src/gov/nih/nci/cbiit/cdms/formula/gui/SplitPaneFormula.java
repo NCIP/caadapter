@@ -29,12 +29,12 @@ public class SplitPaneFormula extends JSplitPane implements TreeSelectionListene
 		super(JSplitPane.VERTICAL_SPLIT);
 		topPanel=new JPanel();
 		topPanel.setBorder(BorderFactory.createTitledBorder("Parameters"));
-		topPanel.setPreferredSize(new Dimension(200, 200));
+		topPanel.setPreferredSize(new Dimension(120, 150));
 		add(topPanel);
 		lowPanel=new PanelDefaultProperties(null);
 		
 		add(lowPanel);
-		this.setMinimumSize(new Dimension(200, 500));
+		this.setMinimumSize(new Dimension(120, 350));
 	}
 	@Override
 	public void valueChanged(TreeSelectionEvent arg0) {
