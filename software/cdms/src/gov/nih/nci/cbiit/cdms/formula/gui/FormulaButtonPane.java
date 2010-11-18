@@ -135,7 +135,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         if (oper == null)
         {
             mainButton = new JButton(UNDECIDED_MARK);
-            mainButton.setBackground(new Color(200, 255, 255));
+            //mainButton.setBackground(new Color(200, 255, 255));
 
         }
         else
@@ -143,7 +143,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             String operText = oper;
             if (oper.length() > 1) operText = oper + "(";
             mainButton = new JButton(operText);
-            mainButton.setBackground(new Color(240, 225, 200));
+            //mainButton.setBackground(new Color(240, 225, 200));
             mode = MODE_OPERATOR;
         }
 
@@ -290,7 +290,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         {
             mainButton.setText("Var:"+element.getNodeValue());
             contentElement = element;
-            mainButton.setBackground(new Color(245, 200, 240));
+            //mainButton.setBackground(new Color(245, 200, 240));
             mainButton.updateUI();
             rootPanel.refreshContents();
         }
@@ -298,7 +298,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         {
             mainButton.setText(element.getNodeValue());
             contentElement = element;
-            mainButton.setBackground(new Color(243, 225, 200));
+            //mainButton.setBackground(new Color(243, 225, 200));
             mainButton.updateUI();
             rootPanel.refreshContents();
         }

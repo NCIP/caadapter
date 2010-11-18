@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "formula", propOrder = {
 	"annotation",
-	"expression",
+	"expression"
 })
 public class FormulaMeta extends BaseMeta {
 	private TermMeta expression;
@@ -26,7 +26,7 @@ public class FormulaMeta extends BaseMeta {
 		return expression;
 	}
 
-	public void setExpression(TermMeta formula) 
+	public void setExpression(TermMeta formula)
 	{
 		expression = formula;
 	}
@@ -46,7 +46,7 @@ public class FormulaMeta extends BaseMeta {
 	public void setType(FormulaType type) {
 		this.type = type;
 	}
-	 
+
 	@Override
 	public String formatJavaStatement() {
 		// TODO Auto-generated method stub
@@ -77,7 +77,7 @@ public class FormulaMeta extends BaseMeta {
 		//retrieve the expression term for "description"
 		propList.add( new PropertyDescriptor("Description", beanClass, "getExpression", null));
 		PropertiesResult result =super.getPropertyDescriptors();
-		
+
 		result.addPropertyDescriptors(this, propList);
 		return result;
 	}
