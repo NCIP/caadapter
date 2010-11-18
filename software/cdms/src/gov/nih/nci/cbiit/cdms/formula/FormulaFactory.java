@@ -2,8 +2,11 @@ package gov.nih.nci.cbiit.cdms.formula;
 
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
+import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
+import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 
 import java.io.*;
+import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -16,7 +19,32 @@ import javax.xml.transform.stream.StreamSource;
 public class FormulaFactory {
 	private static FormulaStore commonStore;
 	private static FormulaStore localStore;
+	private static HashMap<String, TermMeta> expressionTemplate;
 
+	public static TermMeta createTemplateTerm(OperationType type)
+	{
+		if (expressionTemplate==null
+				||
+				expressionTemplate.isEmpty())
+		{
+			try {
+				FormulaStore templateStore=loadFormulaStore(new File("dataStore/expressionTemplate.xml"));
+				expressionTemplate=new HashMap<String, TermMeta>();
+				for (FormulaMeta formula:templateStore.getFormula())
+				{
+					String expressionKey=formula.getExpression().getOperation().value();
+					expressionTemplate.put(expressionKey, formula.getExpression());
+				}
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		TermMeta expressionTerm=expressionTemplate.get(type.value());
+		if (expressionTerm!=null)
+			return (TermMeta)expressionTerm.clone();
+		return null;
+	}
 	public static void updateLocalStore(FormulaStore store)
 	{
 		if (store!=null)

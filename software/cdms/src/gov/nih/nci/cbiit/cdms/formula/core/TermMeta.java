@@ -176,10 +176,35 @@ public class TermMeta extends BaseMeta{
 		return rtnBf.toString();
 	}
 	
+	@Override
+	public Object clone()
+	{
+		try {
+			TermMeta clonnedObj=(TermMeta)super.clone();
+			//deep cloning
+			clonnedObj.setTerm(new ArrayList<TermMeta>());
+			
+			if (this.getTerm()!=null)
+			{
+				for (TermMeta childTerm:this.getTerm())
+				{
+					TermMeta clonnedChild=(TermMeta)childTerm.clone();
+					clonnedObj.getTerm().add(clonnedChild);
+				}
+			}
+
+			return clonnedObj;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public String toString()
 	{
 		StringBuffer rtnBf=new StringBuffer();
-		if (getTerm()==null)
+		if (getTerm()==null||getTerm().isEmpty())
 			rtnBf.append(getValue());
 		else
 		{

@@ -1,11 +1,6 @@
 package gov.nih.nci.cbiit.cdms.formula.core;
 
-import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
-
-@XmlType(name = "operationType")
-@XmlEnum
 
 public enum OperationType {
     @XmlEnumValue("addition")
