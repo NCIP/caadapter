@@ -3,7 +3,6 @@ package gov.nih.nci.cbiit.cdms.formula.core;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Enumeration;
 
 @XmlType(name = "operationType")
 @XmlEnum
