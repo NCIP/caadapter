@@ -13,7 +13,7 @@ public class FrameMain extends JFrame {
 
 	private static FrameMain singletonFrameMain;
 	private PanelMainFrame mainPanel;
-	
+
 	public FrameMain()
 	{
 		super();
@@ -26,10 +26,10 @@ public class FrameMain extends JFrame {
 		setLocation(screenSize.width / 2 - (frameSize.width / 2), screenSize.height / 2 - (frameSize.height / 2));
 		//set menu
 		this.setJMenuBar(new MenuBarMain(this));
-		mainPanel=new PanelMainFrame();
+		mainPanel=new PanelMainFrame(this);
 		this.getContentPane().add(mainPanel);
 	}
-	
+
 	public PanelMainFrame getMainPanel() {
 		return mainPanel;
 	}

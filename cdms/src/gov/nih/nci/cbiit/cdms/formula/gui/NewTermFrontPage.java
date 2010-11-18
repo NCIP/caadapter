@@ -214,7 +214,7 @@ public class NewTermFrontPage extends JPanel
             nameField.setEnabled(true);
             variableComboBox.setEnabled(false);
             operationComboBox.setEnabled(true);
-            descriptionField.setEnabled(false);
+            descriptionField.setEnabled(true);
             valueField.setEnabled(false);
 
         }

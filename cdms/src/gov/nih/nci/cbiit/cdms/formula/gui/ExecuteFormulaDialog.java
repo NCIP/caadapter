@@ -26,7 +26,7 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 	private FormulaMeta formula;
 	private JTextField resultField;
 	private HashMap <String, JTextField> paramFieldHash;
-	public ExecuteFormulaDialog(JFrame owner, String title, boolean modal) 
+	public ExecuteFormulaDialog(JFrame owner, String title, boolean modal)
 	{
 		super(owner, title,modal);
 		mainFrame=(FrameMain)owner;
@@ -35,10 +35,10 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 				owner.getY()+owner.getHeight()/4);
 		setSize((int)owner.getSize().getWidth()/2,
 				(int)owner.getSize().getHeight()/2);
-		
-		
+
+
 	}
-	
+
 	private void initUI()
 	{
 		PanelMainFrame mainPanel =mainFrame.getMainPanel();
@@ -49,11 +49,12 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 //				mainPanel=(PanelMainFrame)com;
 //			}
 //		}
-		
+
 		if (mainPanel==null)
 			return;
-		SplitCentralPane centerPane=mainPanel.getCentralSplit();
-		BaseMeta baseMeta=centerPane.getControllMeta();
+		//SplitCentralPane centerPane=mainPanel.getCentralSplit();
+        FormulaMainPanel centerPane=mainPanel.getCentralSplit();
+        BaseMeta baseMeta=centerPane.getControllMeta();
 		if (baseMeta!=null)
 			setTitle(this.getTitle() +":"+baseMeta.getName());
 
@@ -64,12 +65,12 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
         cancelButton.addActionListener(this);
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
-        
+
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
         if (baseMeta instanceof FormulaMeta)
 			formula=(FormulaMeta)baseMeta;
-		
+
         JPanel centerPanel = new JPanel();
         if (formula==null)
         	centerPanel.add(new JLabel ("Please select your formula !"));
@@ -84,13 +85,13 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
         	return;
 
         paramFieldHash=new HashMap<String, JTextField>();
-        
+
         centerPanel.setLayout(new GridBagLayout());
         Insets insets = new Insets(5, 25, 25, 50);
         int i=0;
 		JLabel tLabel=new JLabel("Parameter");
 		JLabel inputLabel=new JLabel("User Input");
- 
+
 
         centerPanel.add(tLabel, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -109,7 +110,7 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
                     GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
             i++;
 		}
-		
+
 		JLabel pLabel=new JLabel(formula.getName()+formula.getExpression().getDescription() +":");
 		resultField=new JTextField("      " );
 		resultField.setEditable(false);

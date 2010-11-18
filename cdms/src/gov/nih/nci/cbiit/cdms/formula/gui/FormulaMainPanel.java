@@ -1,12 +1,16 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.OpenFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.SaveAsFormulaAction;
 
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.xml.bind.JAXBException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -23,7 +27,7 @@ import java.io.IOException;
  * Time: 9:50:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public class FormulaMainPanel extends JPanel implements ActionListener
+public class FormulaMainPanel extends JPanel implements ActionListener, TreeSelectionListener
 {
     String formulaName = "BSA_Valdo";
     String formulaAnnotation = null;
@@ -46,6 +50,7 @@ public class FormulaMainPanel extends JPanel implements ActionListener
     private JTextArea xmlTextArea;
 
     private JButton addVariableButton;
+    private BaseMeta controllMeta = null;
 
     private File currentFile = null;
 
@@ -109,11 +114,18 @@ public class FormulaMainPanel extends JPanel implements ActionListener
         JPanel lowerPanel = new JPanel(new BorderLayout());
         lowerPanel.add(northPanel2, BorderLayout.NORTH);
         lowerPanel.add(js, BorderLayout.CENTER);
-        TestFileButtonPanel testButtonPanel = new TestFileButtonPanel(this);
-        lowerPanel.add(testButtonPanel, BorderLayout.SOUTH);
-        this.setLayout(new GridLayout(2, 1));
-        this.add(upperPanel);
-        this.add(lowerPanel);
+        //TestFileButtonPanel testButtonPanel = new TestFileButtonPanel(this);
+        //lowerPanel.add(testButtonPanel, BorderLayout.SOUTH);
+        //this.setLayout(new GridLayout(2, 1));
+        //this.add(upperPanel);
+        //this.add(lowerPanel);
+
+        JSplitPane centerSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upperPanel,lowerPanel);
+        //centerSplit.add(upperPanel);
+        //centerSplit.add(lowerPanel);
+        centerSplit.setDividerLocation(0.5);
+        this.setLayout(new GridLayout());
+        this.add(centerSplit);
     }
 
     private JPanel createHeadButtonPane()
@@ -182,7 +194,7 @@ public class FormulaMainPanel extends JPanel implements ActionListener
                 return;
             }
             CalculateWizard wizard = new CalculateWizard(parentFrame, "Input Test Parameter",this, true);
-            wizard.setSize(300, (60 * (variableDefinitions.size() + 1)));
+            wizard.setSize(300, (45 * (variableDefinitions.size() + 1)) + 60);
             wizard.setVisible(true);
             //if (!wizard.isCreateTermButtonClicked()) return;
         }
@@ -328,6 +340,41 @@ public class FormulaMainPanel extends JPanel implements ActionListener
         }
         return false;
     }
+    public boolean openWithString(String str)
+    {
+        if ((str == null)||(str.trim().equals("")))
+        {
+            JOptionPane.showMessageDialog(this, "XML document is null or empty.", "Null XML", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        FormulaMeta myFormula = null;
+        try
+        {
+            myFormula = FormulaFactory.loadFormula(str);
+        }
+        catch(JAXBException je)
+        {
+            JOptionPane.showMessageDialog(this, "JAXBException : " + je.getMessage(), "Formula Open Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        createNewFormulaPanel(myFormula.getName(), myFormula.getAnnotation());
+        variableDefinitions = new ArrayList<NodeContentElement>();
+
+        if (headButtonPane.invokeTermMeta(myFormula.getExpression()))
+        {
+            currentFile = null;
+            String tt = "";
+            for (NodeContentElement elem:variableDefinitions)
+            {
+                tt = tt + ", " + elem.getNodeName();
+            }
+            variableField.setText(tt.substring(2));
+            refreshContents();
+            return true;
+        }
+        return false;
+    }
 
     public void addVariableDefinitions(String s,String d)
     {
@@ -396,5 +443,33 @@ public class FormulaMainPanel extends JPanel implements ActionListener
             return null;
         }
         return myFormula.getExpression().excute(params);
+    }
+
+    public void valueChanged(TreeSelectionEvent arg0)
+    {
+		// TODO Auto-generated method stub
+
+		JTree slctTree=(JTree)arg0.getSource();
+		slctTree.getLastSelectedPathComponent();
+		DefaultMutableTreeNode slectTreeNode=(DefaultMutableTreeNode)slctTree.getLastSelectedPathComponent();
+		Object slctObj=slectTreeNode.getUserObject();
+		if (slctObj instanceof BaseMeta)
+		{
+            controllMeta=(BaseMeta)slctObj;
+            if (controllMeta instanceof FormulaMeta)
+            {
+                FormulaMeta formula=(FormulaMeta)controllMeta;
+                //topLabel.setText(formula.toString());
+                //formulaLabel.setText(formula.formatJavaStatement());
+                this.openWithString(FormulaFactory.convertFormulaToXml(formula));
+            }
+            //controllMeta=(BaseMeta)slctObj;
+			//updataDisplayPane();
+		}
+	}
+
+    public BaseMeta getControllMeta()
+    {
+        return controllMeta;
     }
 }
