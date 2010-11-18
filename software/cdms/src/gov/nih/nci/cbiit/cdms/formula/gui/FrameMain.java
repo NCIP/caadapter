@@ -11,6 +11,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class FrameMain extends JFrame {
 
+	private static FrameMain singletonFrameMain;
 	public FrameMain()
 	{
 		super();
@@ -27,6 +28,12 @@ public class FrameMain extends JFrame {
 		this.getContentPane().add(new PanelMainFrame());
 	}
 	
+	public static FrameMain getSingletonInstance()
+	{
+		if (singletonFrameMain==null)
+			singletonFrameMain=new FrameMain();
+		return singletonFrameMain;
+	}
     public static void main(String[] args)
     {
     	try {
@@ -44,8 +51,7 @@ public class FrameMain extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		FrameMain frame=new FrameMain();
-    	FormulaGuiUtil.setMainFrame(frame);
+		FrameMain frame=FrameMain.getSingletonInstance();
     	frame.setVisible(true);
     }
 }
