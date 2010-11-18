@@ -41,14 +41,14 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 	
 	private void initUI()
 	{
-		PanelMainFrame mainPanel =null;
-		for (Component com:mainFrame.getContentPane().getComponents())
-		{
-			if (com instanceof PanelMainFrame)
-			{
-				mainPanel=(PanelMainFrame)com;
-			}
-		}
+		PanelMainFrame mainPanel =mainFrame.getMainPanel();
+//		for (Component com:mainFrame.getContentPane().getComponents())
+//		{
+//			if (com instanceof PanelMainFrame)
+//			{
+//				mainPanel=(PanelMainFrame)com;
+//			}
+//		}
 		
 		if (mainPanel==null)
 			return;

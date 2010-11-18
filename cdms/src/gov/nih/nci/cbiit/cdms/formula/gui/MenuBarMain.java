@@ -1,6 +1,8 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.gui.action.ExecuteFormulaAction;
+import gov.nih.nci.cbiit.cdms.formula.gui.action.OpenFormulaStoreAction;
+import gov.nih.nci.cbiit.cdms.formula.gui.action.SaveFormulaStoreAction;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -31,15 +33,16 @@ public class MenuBarMain extends JMenuBar implements ActionListener {
 		JMenuItem newItem=new JMenuItem("New Formula");
 		rtnMenu.add(newItem);
 		
-		JMenuItem openItem=new JMenuItem("Open Formula");
+		
+		JMenuItem openItem=new JMenuItem(new OpenFormulaStoreAction("Open Formula Store"));
 		rtnMenu.add(openItem);
-		JMenuItem saveItem=new JMenuItem("Save Formual");
+		JMenuItem saveItem=new JMenuItem(new SaveFormulaStoreAction("Save"));
 		rtnMenu.add(saveItem);
-		JMenuItem saveAsItem=new JMenuItem("Save As ...");
+		JMenuItem saveAsItem=new JMenuItem(new SaveFormulaStoreAction("Save As ... ", false));
 		rtnMenu.add(saveAsItem);
 		rtnMenu.addSeparator();
 		JMenuItem closeItem=new JMenuItem("Close");
-		rtnMenu.add(closeItem);
+//		rtnMenu.add(closeItem);
 		JMenuItem exitItem=new JMenuItem("Exit");
 		exitItem.addActionListener(this);
 		rtnMenu.add(exitItem);

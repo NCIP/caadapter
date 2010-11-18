@@ -17,6 +17,11 @@ public class FormulaFactory {
 	private static FormulaStore commonStore;
 	private static FormulaStore localStore;
 
+	public static void updateLocalStore(FormulaStore store)
+	{
+		if (store!=null)
+			localStore=store;
+	}
 	public static FormulaStore getLocalStore()
 	{
 		if (localStore==null)
@@ -49,6 +54,23 @@ public class FormulaFactory {
 		return jaxbFormula.getValue();
 	}
 
+	/**
+	 * Save a local formula store into a file
+	 * @param store local formula store 
+	 * @param targetFile target XML file to save
+	 * @throws IOException 
+	 * @throws JAXBException 
+	 */
+	public static void saveFormulaStore(FormulaStore store, File targetFile) throws IOException, JAXBException
+	{
+		FileWriter writer =new FileWriter(targetFile);
+		JAXBContext jc=getJAXBContext();
+		Marshaller m = jc.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+		m.marshal(new JAXBElement<FormulaStore>(new QName("formulaStore"),FormulaStore.class, store), writer);
+		writer.close();
+	}
+	
 	public static FormulaMeta loadFormula(File f) throws JAXBException
 	{
 		JAXBContext jc=getJAXBContext();

@@ -1,24 +1,31 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
+import gov.nih.nci.cbiit.cdms.formula.common.util.DefaultSettings;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
+import gov.nih.nci.cbiit.cdms.formula.gui.constants.ActionConstants;
 import gov.nih.nci.cbiit.cdms.formula.gui.tree.CellRenderFormula;
 import gov.nih.nci.cbiit.cdms.formula.gui.tree.TreeMouseAdapter;
 import gov.nih.nci.cbiit.cdms.formula.gui.tree.TreeNodeFormulaStore;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeModel;
+import javax.xml.bind.JAXBException;
 
 
 public class PanelMainFrame extends JPanel {
 
-	private FormulaStore localStore=null;
+	private JTree localTree=null;
+	private File localStoreFile=null;
 	private SplitPaneFormula rightSplit;
 	private SplitCentralPane centralSplit;
 	public PanelMainFrame()
@@ -31,6 +38,57 @@ public class PanelMainFrame extends JPanel {
 		return centralSplit;
 	}
 
+	/**
+	 * Save local formula store into a local file
+	 * @param sameStore If save the local store to its original file 
+	 */
+	public void saveLocalFormulaStore(boolean sameStore)
+	{
+		if (!sameStore||localStoreFile==null)
+		{
+	        File file = DefaultSettings.getUserInputOfFileFromGUI(this, 
+	                ActionConstants.FORMULA_FILE_EXTENSION, "Save Formula Store", true, false);
+	        if (file != null)
+	        {
+	        	localStoreFile=file;
+	        }
+		}
+    	TreeNodeFormulaStore localTreeNode=(TreeNodeFormulaStore)localTree.getModel().getRoot();
+    	FormulaStore localStore=(FormulaStore)localTreeNode.getUserObject();
+    	try {
+			FormulaFactory.saveFormulaStore(localStore, localStoreFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * Open a local file as local formula store
+	 * @param file
+	 */
+	public void openLocalFormulaStore(File file)
+	{
+		try {
+			FormulaStore newStore=FormulaFactory.loadFormulaStore(file);
+			if (newStore!=null)
+			{
+				FormulaFactory.updateLocalStore(newStore);
+				localStoreFile=file;
+			}
+			
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		TreeNodeFormulaStore newStoreNode= new TreeNodeFormulaStore(FormulaFactory.getLocalStore());
+
+		DefaultTreeModel treeModel=(DefaultTreeModel)localTree.getModel();
+		treeModel.setRoot(newStoreNode);
+		localTree.setSelectionRow(0);
+	}
 	private void initUI()
 	{
 		this.setLayout(new BorderLayout());
@@ -39,8 +97,7 @@ public class PanelMainFrame extends JPanel {
 		centerRightSplit.add(centralSplit);
 		centerRightSplit.add(rightSplit);
 		add(centerRightSplit, BorderLayout.CENTER);
- 
-	}
+ 	}
 	
 	private JSplitPane createLeftJSplitPane()
 	{
@@ -48,10 +105,9 @@ public class PanelMainFrame extends JPanel {
 		centralSplit=new SplitCentralPane();
 		
 		JSplitPane leftSplit=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		localStore=FormulaFactory.getLocalStore();
 		
-		TreeNodeFormulaStore localStoreNode= new TreeNodeFormulaStore(localStore);
-		JTree localTree = new JTree(localStoreNode);
+		TreeNodeFormulaStore localStoreNode= new TreeNodeFormulaStore(FormulaFactory.getLocalStore());
+		localTree = new JTree(localStoreNode);
 		localTree.setCellRenderer(new CellRenderFormula());
 		localTree.addMouseListener(new TreeMouseAdapter());
 		localTree.addTreeSelectionListener(rightSplit);
@@ -69,9 +125,7 @@ public class PanelMainFrame extends JPanel {
 		JScrollPane commonScroll =new JScrollPane(commonStoreTree);
 		commonScroll.setPreferredSize(new Dimension(150,150));
 		leftSplit.add( commonScroll);
-		
-
-		
+			
 		return leftSplit;
 	}
 	
