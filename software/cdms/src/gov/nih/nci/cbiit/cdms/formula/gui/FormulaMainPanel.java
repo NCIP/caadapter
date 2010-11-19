@@ -76,6 +76,7 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
 //        saveAsMenu.addActionListener(this);
 
         initialize();
+        centerPanel.setPreferredSize(new Dimension(450, 350));
     }
 
     private void initialize()

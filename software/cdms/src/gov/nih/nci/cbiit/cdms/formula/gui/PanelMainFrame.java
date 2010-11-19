@@ -106,7 +106,9 @@ public class PanelMainFrame extends JPanel {
 		add(createLeftJSplitPane(),  BorderLayout.WEST);
 		JSplitPane centerRightSplit =new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		centerRightSplit.add(centralSplit);
+		centralSplit.setPreferredSize(new Dimension(450, 450));
 		centerRightSplit.add(rightSplit);
+		rightSplit.setPreferredSize(new Dimension(120, 450));
 		add(centerRightSplit, BorderLayout.CENTER);
  	}
 
