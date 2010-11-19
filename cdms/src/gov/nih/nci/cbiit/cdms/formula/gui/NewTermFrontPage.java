@@ -93,7 +93,7 @@ public class NewTermFrontPage extends JPanel
             if (givenType == null)
             {
                 for(int i=1;i<(TYPES.length-1);i++) typeComboBox.addItem(TYPES[i]);
-                typeComboBox.setEditable(true);
+                typeComboBox.setEditable(false);
                 if (currentType.equals("")) currentType = TYPES[1];
             }
             else
@@ -103,7 +103,7 @@ public class NewTermFrontPage extends JPanel
                 currentType = givenType;
             }
         }
-        for(String typ:TYPES) typeComboBox.addItem(typ);
+        //for(String typ:TYPES) typeComboBox.addItem(typ);
         if (!currentType.equals("")) typeComboBox.setSelectedItem(currentType);
 
         typeComboBox.setPreferredSize(new Dimension(350, 25));

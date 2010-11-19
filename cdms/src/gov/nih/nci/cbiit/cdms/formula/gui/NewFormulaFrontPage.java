@@ -2,6 +2,8 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +19,8 @@ public class NewFormulaFrontPage extends JPanel
     private final String ANNOTATION_MODE = "Annotation";
 
     private JTextField formulaNameField;
+    private JComboBox expressionTypeField;
+    private JTextField varuableListField;
     private JTextField annotationField;
 
     //private String formulaName;
@@ -49,12 +53,29 @@ public class NewFormulaFrontPage extends JPanel
         //centerPanel.add(dataFileBrowseButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
         //		GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 
-        JLabel mapFileLabel = new JLabel(ANNOTATION_MODE);
-        centerPanel.add(mapFileLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+        JLabel expressionTypeLabel = new JLabel("Expression Type");
+        centerPanel.add(expressionTypeLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        expressionTypeField = new JComboBox();
+        for(String typ:NodeContentElement.OPERATION_NAMES) expressionTypeField.addItem(typ);
+        expressionTypeField.setPreferredSize(new Dimension(350, 25));
+        centerPanel.add(expressionTypeField, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
+        JLabel mapFileLabel = new JLabel("Variable List");
+        centerPanel.add(mapFileLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        varuableListField = new JTextField();
+        varuableListField.setPreferredSize(new Dimension(350, 25));
+        centerPanel.add(varuableListField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
+        JLabel variablesLabel = new JLabel(ANNOTATION_MODE);
+        centerPanel.add(variablesLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
         annotationField = new JTextField();
         annotationField.setPreferredSize(new Dimension(350, 25));
-        centerPanel.add(annotationField, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
+        centerPanel.add(annotationField, new GridBagConstraints(1, 3, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
         //JButton mapFileBrowseButton = new JButton(ANNOTATION_MODE);
         //centerPanel.add(mapFileBrowseButton, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
@@ -83,12 +104,33 @@ public class NewFormulaFrontPage extends JPanel
     {
         return annotationField.getText();
     }
+    public java.util.List<NodeContentElement> getVariableList()
+    {
+        String line = varuableListField.getText();
+        if (line == null) return null;
+        if (line.trim().equals("")) return null;
+        java.util.List<NodeContentElement> list = new ArrayList<NodeContentElement>();
+        StringTokenizer st = new StringTokenizer(line, ",");
+        while(st.hasMoreTokens())
+        {
+            NodeContentElement ele = new NodeContentElement(NodeContentElement.TYPES[3], st.nextToken().trim(), "variable");
+            list.add(ele);
+        }
+        return list;
+    }
+    public String getFirstExpression()
+    {
+        return (String) expressionTypeField.getSelectedItem();
+    }
 
     public boolean validateInputFields()
     {
         String name = getFormulaName();
         if (name == null) return false;
         if (name.trim().equals("")) return false;
+        String line = varuableListField.getText();
+        if (line == null) return false;
+        if (line.trim().equals("")) return false;
         return true;
     }
 

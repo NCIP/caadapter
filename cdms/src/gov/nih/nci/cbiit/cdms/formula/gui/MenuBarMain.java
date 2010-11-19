@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.ExecuteFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.OpenFormulaStoreAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.SaveFormulaStoreAction;
+import gov.nih.nci.cbiit.cdms.formula.gui.action.NewFormulaStoreAction;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -30,7 +31,7 @@ public class MenuBarMain extends JMenuBar implements ActionListener {
 	{
 		JMenu rtnMenu=new JMenu ("File");
 		
-		JMenuItem newItem=new JMenuItem("New Formula");
+		JMenuItem newItem=new JMenuItem(new NewFormulaStoreAction("New Formula"));
 		rtnMenu.add(newItem);
 		
 		

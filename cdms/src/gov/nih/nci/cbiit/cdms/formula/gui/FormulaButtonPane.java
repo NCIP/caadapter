@@ -161,8 +161,9 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             //System.out.println("TTTTT : FF " + mode);
             if (mode == MODE_OPERATOR)
             {
-                int ans = JOptionPane.showConfirmDialog(this, "Are you sure to insert another operator?", "Insert Operator", JOptionPane.YES_NO_OPTION);
-                if (ans != JOptionPane.YES_OPTION) return;
+                //int ans = JOptionPane.showConfirmDialog(this, "Are you sure to insert another operator?", "Insert Operator", JOptionPane.YES_NO_OPTION);
+                int ans = JOptionPane.showConfirmDialog(this, "Are you sure to delete this operator?", "Delete Operator", JOptionPane.YES_NO_OPTION);
+                                if (ans != JOptionPane.YES_OPTION) return;
                 String delMenu = "   D: Delete this Expression\n";
 //                if (parent.getOperatorButtonPanes().size()==1)
 //                {
@@ -180,7 +181,8 @@ public class FormulaButtonPane extends JPanel implements ActionListener
 //                             "   6: Add '*' Before this Expression\n" +
 //                             "   7: Add '/' After this Expression\n" +
 //                             "   8: Add '/' Before this Expression";
-                String opt = JOptionPane.showInputDialog(this, mes, "Select Menu", JOptionPane.QUESTION_MESSAGE);
+                String opt = "D";
+                //opt = JOptionPane.showInputDialog(this, mes, "Select Menu", JOptionPane.QUESTION_MESSAGE);
 
                 if (opt == null) opt = "";
                 else opt = opt.trim();
@@ -193,7 +195,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
                 }
                 if (opt.equalsIgnoreCase("D"))
                 {
-                    int ans2 = JOptionPane.showConfirmDialog(this, "Are you sure to delete this expression?", "Delete Expression", JOptionPane.YES_NO_OPTION);
+                    int ans2 = JOptionPane.showConfirmDialog(this, "Really, are you sure to delete this expression?", "Delete Confirm", JOptionPane.YES_NO_OPTION);
                     if (ans2 != JOptionPane.YES_OPTION) return;
                     deleteOneExpression();
                     return;
@@ -221,8 +223,10 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             {
                 //System.out.println("TTTTT : FF1 " + mode);
                 NewTermWizard wizard = null;
-                if (frame != null) wizard = new NewTermWizard(frame, rootPanel, true);
-                else if (dialog != null) wizard = new NewTermWizard(dialog, rootPanel, true);
+                String givenType = null;
+                if (parent == null) givenType = NodeContentElement.TYPES[2];
+                if (frame != null) wizard = new NewTermWizard(frame, rootPanel, givenType, true);
+                else if (dialog != null) wizard = new NewTermWizard(dialog, rootPanel, givenType, true);
                 if (!wizard.isCreateTermButtonClicked()) return;
                 NodeContentElement ele = wizard.getNodeContentElement();
                 if (ele == null)
@@ -231,6 +235,8 @@ public class FormulaButtonPane extends JPanel implements ActionListener
                     return;
                 }
                 if (!concretePanel(ele)) return;
+
+
 
                 mode = MODE_TERM;
             }
@@ -249,10 +255,11 @@ public class FormulaButtonPane extends JPanel implements ActionListener
                     return;
                 }
                 if (!concretePanel(ele)) return;
+
             }
         }
     }
-    private boolean concretePanel(NodeContentElement element)
+    public boolean concretePanel(NodeContentElement element)
     {
 
         if (element.getNodeType().equals(NodeContentElement.TYPES[0]))
@@ -268,23 +275,43 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         else if (element.getNodeType().equals(NodeContentElement.TYPES[2]))
         {
             //System.out.println("TTTTT : FF1 " + mode + element.getNodeType());
+            if (operatorButtonPanes != null) return true;
             priorTermButtonPane = new FormulaButtonPane(rootPanel, this);
 
-            operatorButtonPanes = new ArrayList<FormulaButtonPane>();
+            if (operatorButtonPanes == null) operatorButtonPanes = new ArrayList<FormulaButtonPane>();
+            else
+            {
+                System.out.println("*****$$$ + " + operatorButtonPanes.size() + ", " + element.getNodeName());
+                if (operatorButtonPanes.size() == 10)
+                {
+//                    try
+//                    {
+//                        throw new Exception("");
+//                    }
+//                    catch(Exception s)
+//                    {
+//                        s.printStackTrace();
+//                        return false;
+//                    }
+                }
+            }
             FormulaButtonPane operatorButtonPane = new FormulaButtonPane(rootPanel, this, element);
             operatorButtonPanes.add(operatorButtonPane);
 
-            termButtonPanes = new ArrayList<FormulaButtonPane>();
+            if (termButtonPanes == null) 
+                termButtonPanes = new ArrayList<FormulaButtonPane>();
             FormulaButtonPane termButtonPane = new FormulaButtonPane(rootPanel, this);
             termButtonPanes.add(termButtonPane);
             //this.removeAll();
             //String oper = element.getOperator();
+            mode = MODE_TERM;
             refreshPanel();
             //initialConcretPanel(oper);
             contentElement = element;
             mainButton = null;
             //this.updateUI();
-            //System.out.println("TTTTT : FF2 " + oper);
+            //System.out.println("TTTTT : FF2 : " + element.getOperator());
+
         }
         else if (element.getNodeType().equals(NodeContentElement.TYPES[3]))
         {
@@ -400,6 +427,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
     }
     private void refreshPanel()
     {
+        //System.out.println(==);
         if (priorTermButtonPane == null) return;
 
         this.removeAll();
@@ -675,10 +703,10 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         String header = "";
         String footer = "";
 
-        if ((contentElement == null)||((mainButton != null)&&(mainButton.getText().trim().equals("--"))))
+        if ((contentElement == null)||((mainButton != null)&&(mainButton.getText().trim().equals(UNDECIDED_MARK))))
         {
 
-            type = "UNDECIDED";
+            type = "unknown";
             header = space + "<" + termTag + " type=\"" + type + "\"/>\n";
             //footer = "";
         }
@@ -866,8 +894,9 @@ public class FormulaButtonPane extends JPanel implements ActionListener
 
     public boolean invokeTermMeta(TermMeta meta)
     {
+        if (meta.getType().equals(TermType.UNKNOWN)) return true;
         if (!concretePanel(NodeContentElement.convertMetaToElement(meta))) return false;
-
+        
         java.util.List<TermMeta> childM = meta.getTerm();
         if (((childM == null)||(childM.size() == 0))&&(priorTermButtonPane == null)) return true;
 
