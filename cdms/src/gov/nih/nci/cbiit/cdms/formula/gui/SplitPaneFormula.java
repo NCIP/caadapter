@@ -70,4 +70,9 @@ public class SplitPaneFormula extends JSplitPane implements TreeSelectionListene
 		lowPanel.updateProptiesDisplay(controllMeta);
 		this.updateUI();
 	}
+
+    public PanelDefaultProperties getPropertiePanel()
+    {
+        return lowPanel;
+    }
 }

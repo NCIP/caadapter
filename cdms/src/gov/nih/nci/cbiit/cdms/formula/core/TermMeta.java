@@ -1,9 +1,12 @@
 package gov.nih.nci.cbiit.cdms.formula.core;
 
+import gov.nih.nci.cbiit.cdms.formula.gui.properties.PropertiesResult;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.beans.PropertyDescriptor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -220,5 +223,35 @@ public class TermMeta extends BaseMeta{
 			 rtnBf.append(getDescription());
 		
 		return rtnBf.toString();
+	}
+
+    	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+
+            if (getType().equals(TermType.EXPRESSION)) return "Operator Properties";
+            if (getType().equals(TermType.CONSTANT)) return "Constant Properties";
+            if (getType().equals(TermType.VARIABLE)) return "Variable Properties";
+        return "Term Properties";
+	}
+
+	@Override
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class<?> beanClass = this.getClass();
+
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+        //propList.add( new PropertyDescriptor("Name", beanClass, "getName", null));
+        propList.add( new PropertyDescriptor("Type", beanClass, "getType", null));
+        if (getType().equals(TermType.EXPRESSION)) propList.add( new PropertyDescriptor("Operator", beanClass, "getOperation", null));
+        propList.add( new PropertyDescriptor("Value", beanClass, "getValue", null));
+		//retrieve the expression term for "description"
+        String descType = "Description";
+        //if (getType().equals(TermType.CONSTANT)) descType = "Unit";
+        if (getType().equals(TermType.VARIABLE)) descType = "Unit";
+        propList.add( new PropertyDescriptor(descType, beanClass, "getDescription", null));
+		PropertiesResult result =super.getPropertyDescriptors();
+
+		result.addPropertyDescriptors(this, propList);
+		return result;
 	}
 }
