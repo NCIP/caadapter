@@ -265,15 +265,15 @@ public class NodeContentElement
             term.setDescription(this.getNodeDescription());
 
         }
-        else if (nodeType.equals(TYPES[3]))  // Number
+        else if (nodeType.equals(TYPES[4]))  // Number
         {
             term = new TermMeta();
             term.setType(TermType.CONSTANT);
             term.setName(this.getNodeName());
             term.setValue(this.getNodeValue());
-
+            term.setDescription(this.getNodeDescription());
         }
-        else if (nodeType.equals(TYPES[4]))  // Variable definition
+        else if (nodeType.equals(TYPES[5]))  // Variable definition
         {
             return null;
             //element = new NodeContentElement(currentType, nameField.getText(), valueField.getText());

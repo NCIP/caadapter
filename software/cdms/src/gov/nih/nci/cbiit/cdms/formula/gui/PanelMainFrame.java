@@ -143,7 +143,12 @@ public class PanelMainFrame extends JPanel {
 		return leftSplit;
 	}
 
-	private FormulaMainPanel createCenterJSplitPane()
+    public SplitPaneFormula getRightSplitPanel()
+    {
+        return rightSplit;
+    }
+
+    private FormulaMainPanel createCenterJSplitPane()
 	{
         return new FormulaMainPanel(parentFrame);
 //		JSplitPane centerSplit=new JSplitPane(JSplitPane.VERTICAL_SPLIT);

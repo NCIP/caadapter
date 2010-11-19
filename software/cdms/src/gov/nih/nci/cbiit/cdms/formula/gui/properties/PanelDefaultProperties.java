@@ -16,8 +16,11 @@ public class PanelDefaultProperties extends JPanel {
 
 		private TitledBorder titledBorder = null;
 		private TableModelDefaultProperties tableModel;
+        JScrollPane scrollPane;
 
-		/**
+    private BaseMeta controllMeta;
+
+        /**
 		 * Creates a new <code>JPanel</code> with a double buffer
 		 * and a flow layout.
 		 */
@@ -30,8 +33,9 @@ public class PanelDefaultProperties extends JPanel {
 		private void initialize(BaseMeta meta)
 		{
 	        setLayout(new BorderLayout());
-	        JScrollPane scrollPane = new JScrollPane();
-			tableModel = new TableModelDefaultProperties();//propertiesController);
+	        //JScrollPane scrollPane = new JScrollPane();
+            scrollPane = new JScrollPane();
+            tableModel = new TableModelDefaultProperties();//propertiesController);
 			JTable propertiesTable = new JTable(tableModel);
 			propertiesTable.setShowGrid(true);
 			ListSelectionModel tableListSelectionModel = propertiesTable.getSelectionModel();
@@ -48,12 +52,19 @@ public class PanelDefaultProperties extends JPanel {
 
 		public void updateProptiesDisplay(BaseMeta controllMeta )
 		{
-			titledBorder.setTitle(controllMeta.getTitle());	
+            titledBorder = BorderFactory.createTitledBorder(controllMeta.getTitle());
+            scrollPane.setBorder(titledBorder);
+            //titledBorder.setTitle(controllMeta.getTitle());	
 			try {
 				tableModel.setPropertiesResult(controllMeta.getPropertyDescriptors());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+            this.controllMeta = controllMeta;
+        }
+        public BaseMeta getCurrentBaseMeta()
+        {
+            return controllMeta;
+        }
 }

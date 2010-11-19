@@ -4,6 +4,7 @@ import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
+import gov.nih.nci.cbiit.cdms.formula.gui.listener.FormulaMouseListener;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -150,6 +151,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         this.setLayout(new GridLayout());
         this.add(mainButton, "Center");
         mainButton.addActionListener(this);
+        mainButton.addMouseListener(new FormulaMouseListener(this));
 
 
     }
@@ -896,7 +898,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
     {
         if (meta.getType().equals(TermType.UNKNOWN)) return true;
         if (!concretePanel(NodeContentElement.convertMetaToElement(meta))) return false;
-        
+
         java.util.List<TermMeta> childM = meta.getTerm();
         if (((childM == null)||(childM.size() == 0))&&(priorTermButtonPane == null)) return true;
 
