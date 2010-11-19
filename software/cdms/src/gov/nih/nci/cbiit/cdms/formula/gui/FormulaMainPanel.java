@@ -27,26 +27,26 @@ import java.io.IOException;
  * Time: 9:50:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public class FormulaMainPanel extends JPanel implements ActionListener, TreeSelectionListener
+public class FormulaMainPanel extends JPanel implements TreeSelectionListener//, ActionListener,
 {
-    String formulaName = "BSA_Valdo";
+    String formulaName = null;
     String formulaAnnotation = null;
     java.util.List<NodeContentElement> variableDefinitions = new ArrayList<NodeContentElement>();
-    java.util.List<Double> variableValues = new ArrayList<Double>();
 
-    private MenuItem newMenu;
-    private MenuItem exitMenu;
-    private MenuItem closeMenu;
-    private MenuItem calculateMenu;
-    private MenuItem openMenu;
-    private MenuItem saveMenu;
-    private MenuItem saveAsMenu;
+
+//    private MenuItem newMenu;
+//    private MenuItem exitMenu;
+//    private MenuItem closeMenu;
+//    private MenuItem calculateMenu;
+//    private MenuItem openMenu;
+//    private MenuItem saveMenu;
+//    private MenuItem saveAsMenu;
     private Frame parentFrame;
 
     private FormulaButtonPane headButtonPane;
     private JPanel centerPanel;
     private JTextField variableField;
-    private JTextField javaExpressionField;
+    private JTextArea javaExpressionTextArea;
     private JTextArea xmlTextArea;
 
     private JButton addVariableButton;
@@ -57,23 +57,23 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
     FormulaMainPanel(Frame fr)
     {
         parentFrame = fr;
-        FormulaMenuBar frameMenu=new FormulaMenuBar(this);
-
-        parentFrame.setMenuBar(frameMenu);
-        newMenu = frameMenu.getNewMenuItem();
-        newMenu.addActionListener(this);
-        exitMenu = frameMenu.getExitMenuItem();
-        exitMenu.addActionListener(this);
-        closeMenu = frameMenu.getCloseMenuItem();
-        closeMenu.addActionListener(this);
-        calculateMenu = frameMenu.getCalculateMenuItem();
-        calculateMenu.addActionListener(this);
-        openMenu = frameMenu.getOpenMenuItem();
-        openMenu.addActionListener(this);
-        saveMenu = frameMenu.getSaveMenuItem();
-        saveMenu.addActionListener(this);
-        saveAsMenu = frameMenu.getSaveAsMenuItem();
-        saveAsMenu.addActionListener(this);
+//        FormulaMenuBar frameMenu=new FormulaMenuBar(this);
+//
+//        parentFrame.setMenuBar(frameMenu);
+//        newMenu = frameMenu.getNewMenuItem();
+//        newMenu.addActionListener(this);
+//        exitMenu = frameMenu.getExitMenuItem();
+//        exitMenu.addActionListener(this);
+//        closeMenu = frameMenu.getCloseMenuItem();
+//        closeMenu.addActionListener(this);
+//        calculateMenu = frameMenu.getCalculateMenuItem();
+//        calculateMenu.addActionListener(this);
+//        openMenu = frameMenu.getOpenMenuItem();
+//        openMenu.addActionListener(this);
+//        saveMenu = frameMenu.getSaveMenuItem();
+//        saveMenu.addActionListener(this);
+//        saveAsMenu = frameMenu.getSaveAsMenuItem();
+//        saveAsMenu.addActionListener(this);
 
         initialize();
     }
@@ -82,11 +82,11 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
     {
         JPanel northPanel1 = new JPanel(new BorderLayout());
         variableField = new JTextField();
-        addVariableButton = new JButton("Add Variable");
-        northPanel1.add(addVariableButton, BorderLayout.EAST);
+        //addVariableButton = new JButton("Add Variable");
+        //northPanel1.add(addVariableButton, BorderLayout.EAST);
         northPanel1.add(variableField, BorderLayout.CENTER);
-        northPanel1.add(new JLabel("Variable(s) "), BorderLayout.WEST);
-        addVariableButton.addActionListener(this);
+        northPanel1.add(new JLabel("   Variable(s) "), BorderLayout.WEST);
+        //addVariableButton.addActionListener(this);
         variableField.setEditable(false);
 
         centerPanel = new JPanel(new GridLayout());
@@ -98,22 +98,28 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
         upperPanel.add(centerPanel, BorderLayout.CENTER);
 
         JPanel northPanel2 = new JPanel(new BorderLayout());
-        javaExpressionField = new JTextField();
-        northPanel2.add(javaExpressionField, BorderLayout.CENTER);
-        northPanel2.add(new JLabel("Java Expression "), BorderLayout.WEST);
-        javaExpressionField.setEditable(false);
+        javaExpressionTextArea = new JTextArea();
+        JScrollPane js1 = new JScrollPane(javaExpressionTextArea);
+
+        javaExpressionTextArea.setEditable(false);
+        js1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        //js1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        northPanel2.add(js1, BorderLayout.CENTER);
+        northPanel2.add(new JLabel("   Java Expression "), BorderLayout.WEST);
+
 
         xmlTextArea = new JTextArea();
-        JScrollPane js = new JScrollPane(xmlTextArea);
+        JScrollPane js2 = new JScrollPane(xmlTextArea);
         //js.setHorizontalScrollBar(new JScrollBar());
         xmlTextArea.setEditable(false);
-        js.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        js2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         //js.setVerticalScrollBar(new JScrollBar());
-        js.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        js2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         JPanel lowerPanel = new JPanel(new BorderLayout());
         lowerPanel.add(northPanel2, BorderLayout.NORTH);
-        lowerPanel.add(js, BorderLayout.CENTER);
+        lowerPanel.add(js2, BorderLayout.CENTER);
         //TestFileButtonPanel testButtonPanel = new TestFileButtonPanel(this);
         //lowerPanel.add(testButtonPanel, BorderLayout.SOUTH);
         //this.setLayout(new GridLayout(2, 1));
@@ -127,9 +133,13 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
         this.setLayout(new GridLayout());
         this.add(centerSplit);
     }
-
-    private JPanel createHeadButtonPane()
+//    private JPanel createHeadButtonPane()
+//    {
+//        return createHeadButtonPane(null);
+//    }
+    private JPanel createHeadButtonPane(NodeContentElement firstExpression)
     {
+
         JPanel thisPane = new JPanel();
         thisPane.setLayout(new BorderLayout());
         JButton nameButton = new JButton(formulaName);
@@ -140,70 +150,75 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
         panel.add(equalButton, BorderLayout.WEST);
         thisPane.add(nameButton, BorderLayout.WEST);
         thisPane.add(panel, BorderLayout.CENTER);
+
+        if (firstExpression != null)
+        {
+            headButtonPane.concretePanel(firstExpression);
+        }
+
         return thisPane;
     }
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getSource() == addVariableButton)
-        {
-            NewTermWizard wizard = new NewTermWizard(parentFrame, this, NewTermFrontPage.TYPES[4], true);
-            if (!wizard.isCreateTermButtonClicked()) return;
-
-            NodeContentElement ele = new NodeContentElement(NodeContentElement.TYPES[3], wizard.getTermName(), wizard.getFrontPage().getTermDescription());
-            variableDefinitions.add(ele);
-            String tt = "";
-            for (NodeContentElement elem:variableDefinitions)
-            {
-                tt = tt + ", " + elem.getNodeName();
-            }
-            variableField.setText(tt.substring(2));
-        }
-        if (e.getSource() == newMenu)
-        {
-            createNewFormulaPanel();
-        }
-        if (e.getSource() == openMenu)
-        {
-            OpenFormulaAction openAction = new OpenFormulaAction(this);
-            openAction.actionPerformed(e);
-        }
-        if (e.getSource() == saveMenu)
-        {
-            SaveAsFormulaAction saveAction = new SaveAsFormulaAction("Save", this, currentFile);
-            saveAction.actionPerformed(e);
-        }
-        if (e.getSource() == saveAsMenu)
-        {
-            SaveAsFormulaAction saveAction = new SaveAsFormulaAction("Save", this);
-            saveAction.actionPerformed(e);
-        }
-        if (e.getSource() == exitMenu)
-        {
-            parentFrame.dispose();
-        }
-        if (e.getSource() == calculateMenu)
-        {
-            if (headButtonPane == null)
-            {
-                JOptionPane.showMessageDialog(this, "No Formula is Ready.", "No Formula Exist", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (variableDefinitions.size() == 0)
-            {
-                JOptionPane.showMessageDialog(this, "No Variable is Ready.", "No Variable Exist", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            CalculateWizard wizard = new CalculateWizard(parentFrame, "Input Test Parameter",this, true);
-            wizard.setSize(300, (45 * (variableDefinitions.size() + 1)) + 60);
-            wizard.setVisible(true);
-            //if (!wizard.isCreateTermButtonClicked()) return;
-        }
-    }
+    //public void actionPerformed(ActionEvent e)
+    //{
+//        if (e.getSource() == addVariableButton)
+//        {
+//            NewTermWizard wizard = new NewTermWizard(parentFrame, this, NewTermFrontPage.TYPES[4], true);
+//            if (!wizard.isCreateTermButtonClicked()) return;
+//
+//            NodeContentElement ele = new NodeContentElement(NodeContentElement.TYPES[3], wizard.getTermName(), wizard.getFrontPage().getTermDescription());
+//            variableDefinitions.add(ele);
+//            String tt = "";
+//            for (NodeContentElement elem:variableDefinitions)
+//            {
+//                tt = tt + ", " + elem.getNodeName();
+//            }
+//            variableField.setText(tt.substring(2));
+//        }
+//        if (e.getSource() == newMenu)
+//        {
+//            createNewFormulaPanel();
+//        }
+//        if (e.getSource() == openMenu)
+//        {
+//            OpenFormulaAction openAction = new OpenFormulaAction(this);
+//            openAction.actionPerformed(e);
+//        }
+//        if (e.getSource() == saveMenu)
+//        {
+//            SaveAsFormulaAction saveAction = new SaveAsFormulaAction("Save", this, currentFile);
+//            saveAction.actionPerformed(e);
+//        }
+//        if (e.getSource() == saveAsMenu)
+//        {
+//            SaveAsFormulaAction saveAction = new SaveAsFormulaAction("Save", this);
+//            saveAction.actionPerformed(e);
+//        }
+//        if (e.getSource() == exitMenu)
+//        {
+//            parentFrame.dispose();
+//        }
+//        if (e.getSource() == calculateMenu)
+//        {
+//            if (headButtonPane == null)
+//            {
+//                JOptionPane.showMessageDialog(this, "No Formula is Ready.", "No Formula Exist", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+//            if (variableDefinitions.size() == 0)
+//            {
+//                JOptionPane.showMessageDialog(this, "No Variable is Ready.", "No Variable Exist", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+//            CalculateWizard wizard = new CalculateWizard(parentFrame, "Input Test Parameter",this, true);
+//            wizard.setSize(300, (45 * (variableDefinitions.size() + 1)) + 60);
+//            wizard.setVisible(true);
+//            //if (!wizard.isCreateTermButtonClicked()) return;
+//        }
+    //}
     public java.util.List<String> getVariableNames()
     {
         java.util.List<String> list = new ArrayList<String>();
-        //list.add("Hight");
-        //list.add("Weight");
+
         for (NodeContentElement elem:variableDefinitions)
         {
             list.add(elem.getNodeName());
@@ -231,7 +246,7 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
         catch(JAXBException je)
         {
             System.out.println("====== JAXBException: " + je.getMessage() + "\n" + rr);
-            javaExpressionField.setText(headButtonPane.generateJavaExpression());
+            javaExpressionTextArea.setText(headButtonPane.generateJavaExpression());
             je.printStackTrace();
             return;
         }
@@ -246,57 +261,71 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
         try
         {
             expr = myFormula.formatJavaStatement();
-            javaExpressionField.setText(expr);
+            javaExpressionTextArea.setText(expr);
         }
         catch(Exception ee)
         {
-            javaExpressionField.setText("ERROR: "+headButtonPane.generateJavaExpression());
+            javaExpressionTextArea.setText("ERROR: "+headButtonPane.generateJavaExpression());
         }
 
     }
-    private void createNewFormulaPanel()
+    public void createNewFormulaPanel()
     {
+
         createNewFormulaPanel(null, null);
     }
 
     private void createNewFormulaPanel(String formName, String annot)
     {
+
         if (headButtonPane != null)
         {
             int ans = JOptionPane.showConfirmDialog(this, "A Formula is already exist in the panel. Are you sure to discard this?", "Discard Current Formula?", JOptionPane.YES_NO_OPTION);
             if (ans != JOptionPane.YES_OPTION) return;
         }
 
+        //NewFormulaWizard wizard = null;
+        NodeContentElement firstExpression = null;
         if ((formName == null)||(formName.trim().equals("")))
         {
-            if (variableDefinitions.size() == 0)
-            {
-                JOptionPane.showMessageDialog(this, "Define variable(s) first.", "No Variable", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+//            if (variableDefinitions.size() == 0)
+//            {
+//                JOptionPane.showMessageDialog(this, "Define variable(s) first.", "No Variable", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
 
             NewFormulaWizard wizard = new NewFormulaWizard(parentFrame, "Create a NEW Formula", true);
-            wizard.setSize(350, 150);
+            wizard.setSize(320, 200);
             wizard.setVisible(true);
             wizard.setLocation((new Double(this.getLocation().getX())).intValue() + 20, (new Double(this.getLocation().getX())).intValue() + 20);
             if (!wizard.isCreateTermButtonClicked()) return;
+
+            variableDefinitions = wizard.getFrontPage().getVariableList();
+            String tt = "";
+            for (NodeContentElement elem:variableDefinitions)
+            {
+                tt = tt + ", " + elem.getNodeName();
+            }
+            variableField.setText(tt.substring(2));
+
             formulaAnnotation = wizard.getAnnotation();
             formulaName = wizard.getFormulaName();
+            firstExpression = new NodeContentElement(NodeContentElement.TYPES[2], formulaName,wizard.getFrontPage().getFirstExpression());
         }
         else
         {
             formulaName = formName;
             formulaAnnotation = annot;
+            firstExpression = null;
         }
         //System.out.println("GGGG : " + formulaAnnotation + ", " + formulaName);
         centerPanel.removeAll();
         centerPanel.setLayout(new GridLayout());
         //JScrollPane js = new JScrollPane(createHeadButtonPane());
 
-        JScrollPane js = new JScrollPane(createHeadButtonPane());
+        JScrollPane js = new JScrollPane(createHeadButtonPane(firstExpression));
+
         js.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-
 
         centerPanel.add(js);
         centerPanel.updateUI();
@@ -323,6 +352,7 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
             JOptionPane.showMessageDialog(this, "JAXBException : " + je.getMessage(), "Formula Open Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+
         createNewFormulaPanel(myFormula.getName(), myFormula.getAnnotation());
         variableDefinitions = new ArrayList<NodeContentElement>();
 
@@ -358,6 +388,7 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
             JOptionPane.showMessageDialog(this, "JAXBException : " + je.getMessage(), "Formula Open Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        
         createNewFormulaPanel(myFormula.getName(), myFormula.getAnnotation());
         variableDefinitions = new ArrayList<NodeContentElement>();
 
@@ -421,7 +452,7 @@ public class FormulaMainPanel extends JPanel implements ActionListener, TreeSele
         catch(JAXBException je)
         {
             System.out.println("====== JAXBException: " + je.getMessage() + "\n" + rr);
-            javaExpressionField.setText(headButtonPane.generateJavaExpression());
+            javaExpressionTextArea.setText(headButtonPane.generateJavaExpression());
             je.printStackTrace();
             return null;
         }

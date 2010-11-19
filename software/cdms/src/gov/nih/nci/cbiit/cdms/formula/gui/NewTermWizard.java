@@ -28,7 +28,7 @@ public class NewTermWizard extends JDialog implements ActionListener
             throws HeadlessException
     {
         super(frame, TITLE, modal);
-        this.type = type;
+        //this.type = type;
 
         mainPanel = mainP;
         initialize();
@@ -37,7 +37,7 @@ public class NewTermWizard extends JDialog implements ActionListener
             throws HeadlessException
     {
         super(dialog, TITLE, modal);
-        this.type = type;
+        //this.type = type;
 
         mainPanel = mainP;
         initialize();

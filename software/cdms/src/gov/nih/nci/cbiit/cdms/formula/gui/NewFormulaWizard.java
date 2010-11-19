@@ -14,7 +14,7 @@ import java.awt.*;
  */
 public class NewFormulaWizard extends JDialog implements ActionListener
 {
-    private static final String CREATE_TERM_COMMAND = "Create Term";
+    private static final String CREATE_TERM_COMMAND = "Create Formula";
 
     private static final String CANCEL_COMMAND = "Cancel";
     private boolean createButtonClicked = false;
@@ -94,15 +94,14 @@ public class NewFormulaWizard extends JDialog implements ActionListener
         {
             if(!frontPage.validateInputFields())
             {
-                JOptionPane.showMessageDialog(this, "Formulr name is null or blank", "Null formula name", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Formula name or variable list is null.", "Null Mandatory data", JOptionPane.ERROR_MESSAGE);
 
                 createButtonClicked = false;
                 return;
             }
             else
             {
-
-                createButtonClicked = true;
+               createButtonClicked = true;
             }
         }
         else if (CANCEL_COMMAND.equals(command))
