@@ -1,12 +1,12 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
-import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
-import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
-import gov.nih.nci.cbiit.cdms.formula.gui.listener.FormulaMouseListener;
+import gov.nih.nci.cbiit.cdms.formula.gui.listener.FormulaButtonMouseListener;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.Border;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.*;
@@ -151,7 +151,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         this.setLayout(new GridLayout());
         this.add(mainButton, "Center");
         mainButton.addActionListener(this);
-        mainButton.addMouseListener(new FormulaMouseListener(this));
+        mainButton.addMouseListener(new FormulaButtonMouseListener(this));
 
 
     }
@@ -283,19 +283,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             if (operatorButtonPanes == null) operatorButtonPanes = new ArrayList<FormulaButtonPane>();
             else
             {
-                System.out.println("*****$$$ + " + operatorButtonPanes.size() + ", " + element.getNodeName());
-                if (operatorButtonPanes.size() == 10)
-                {
-//                    try
-//                    {
-//                        throw new Exception("");
-//                    }
-//                    catch(Exception s)
-//                    {
-//                        s.printStackTrace();
-//                        return false;
-//                    }
-                }
+                System.out.println("***** Somthing wrong : " + operatorButtonPanes.size() + ", " + element.getNodeName());
             }
             FormulaButtonPane operatorButtonPane = new FormulaButtonPane(rootPanel, this, element);
             operatorButtonPanes.add(operatorButtonPane);
@@ -433,46 +421,103 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         if (priorTermButtonPane == null) return;
 
         this.removeAll();
-        if (operatorButtonPanes.size() == 0)
+        if ((operatorButtonPanes == null)||(operatorButtonPanes.size() == 0))
         {
-            this.setLayout(new GridLayout());
-            this.add(priorTermButtonPane, "Center");
+//            this.setLayout(new GridLayout());
+//            this.add(priorTermButtonPane, "Center");
+
+            this.setLayout(new BorderLayout());
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.add(priorTermButtonPane, BorderLayout.WEST);
+            this.add(panel, BorderLayout.CENTER);
         }
         else
         {
             String oper = operatorButtonPanes.get(0).getOperator();
             if (oper.length() == 1)
             {
-                if (oper.equals("/")) this.setLayout(new GridLayout((operatorButtonPanes.size() + 1), 1));
-                else this.setLayout(new GridLayout(1,(operatorButtonPanes.size() + 1)));
-                this.add(setupOnePanel(oper, priorTermButtonPane));
-                for (int i=0;i<operatorButtonPanes.size();i++)
+                if (oper.equals("/"))
                 {
-                    this.add(setupTwoPanel(oper, operatorButtonPanes.get(i), termButtonPanes.get(i)));
+                    this.setLayout(new GridLayout((operatorButtonPanes.size() + 1), 1));
+                    this.add(setupOnePanel(oper, priorTermButtonPane));
+                    for (int i=0;i<operatorButtonPanes.size();i++)
+                    {
+                        this.add(setupTwoPanel(oper, operatorButtonPanes.get(i), termButtonPanes.get(i)));
+                    }
                 }
+                else
+                //else this.setLayout(new GridLayout(1,(operatorButtonPanes.size() + 1)));
+                {
+                    this.setLayout(new BorderLayout());
+                    this.add(setupOnePanel(oper, priorTermButtonPane), BorderLayout.WEST);
+
+                    JPanel[] panels = new JPanel[operatorButtonPanes.size()];
+                    for (int i=0;i<operatorButtonPanes.size();i++)
+                    {
+                        panels[i] = new JPanel(new BorderLayout());
+                        panels[i].add(setupTwoPanel(oper, operatorButtonPanes.get(i), termButtonPanes.get(i)), BorderLayout.WEST);
+                        if (i == 0) continue;
+                        panels[i-1].add(panels[i], BorderLayout.CENTER);
+                    }
+                    this.add(panels[0], BorderLayout.CENTER);
+                }
+
             }
             else if ((oper.equalsIgnoreCase("pow"))||(oper.equalsIgnoreCase("logarithm")))
             {
-                this.setLayout(new GridLayout(1, 2));
+//                this.setLayout(new GridLayout(1, 2));
+//                JPanel panelL = new JPanel(new BorderLayout());
+//                JPanel panelR = new JPanel(new BorderLayout());
+//                panelL.add(operatorButtonPanes.get(0), BorderLayout.WEST);
+//                panelL.add(setupOnePanel(oper, priorTermButtonPane), BorderLayout.CENTER);
+//                panelR.add(new JButton(")"), BorderLayout.EAST);
+//                panelR.add(setupOnePanel(oper, termButtonPanes.get(0)), BorderLayout.CENTER);
+//
+//                this.add(panelL);
+//                this.add(panelR);
+
+                this.setLayout(new BorderLayout());
+
                 JPanel panelL = new JPanel(new BorderLayout());
                 JPanel panelR = new JPanel(new BorderLayout());
                 panelL.add(operatorButtonPanes.get(0), BorderLayout.WEST);
                 panelL.add(setupOnePanel(oper, priorTermButtonPane), BorderLayout.CENTER);
-
                 panelR.add(new JButton(")"), BorderLayout.EAST);
                 panelR.add(setupOnePanel(oper, termButtonPanes.get(0)), BorderLayout.CENTER);
-                this.add(panelL);
-                this.add(panelR);
+
+                this.add(panelL, BorderLayout.WEST);
+                JPanel panelL2 = new JPanel(new BorderLayout());
+                panelL2.add(panelR, BorderLayout.WEST);
+                this.add(panelL2, BorderLayout.CENTER);
             }
             else
             {
+//                this.setLayout(new BorderLayout());
+//                this.add(operatorButtonPanes.get(0), BorderLayout.WEST);
+//                this.add(setupOnePanel(oper, priorTermButtonPane), BorderLayout.CENTER);
+//                termButtonPanes.get(0).setUnused(")");
+//                this.add(termButtonPanes.get(0), BorderLayout.EAST);
+//
                 this.setLayout(new BorderLayout());
-                this.add(operatorButtonPanes.get(0), BorderLayout.WEST);
-                this.add(setupOnePanel(oper, priorTermButtonPane), BorderLayout.CENTER);
+                JPanel panel1 = new JPanel(new BorderLayout());
+                panel1.add(operatorButtonPanes.get(0), BorderLayout.WEST);
+                JPanel panel2 = new JPanel(new BorderLayout());
+                panel2.add(setupOnePanel(oper, priorTermButtonPane), BorderLayout.WEST);
+                panel1.add(panel2, BorderLayout.CENTER);
                 termButtonPanes.get(0).setUnused(")");
-                this.add(termButtonPanes.get(0), BorderLayout.EAST);
+                JPanel panel3 = new JPanel(new BorderLayout());
+                panel3.add(termButtonPanes.get(0), BorderLayout.WEST);
+                panel2.add(panel3, BorderLayout.CENTER);
+                this.add(panel1, BorderLayout.CENTER);
             }
         }
+        TitledBorder border = BorderFactory.createTitledBorder("");
+        Border border2 = BorderFactory.createMatteBorder(1,1,1,1,Color.LIGHT_GRAY);
+        border.setBorder(border2);
+        //Border border = BorderFactory.createMatteBorder(1,1,1,1,Color.LIGHT_GRAY);
+
+        this.setBorder(border);
+
         this.updateUI();
         rootPanel.refreshContents();
     }
