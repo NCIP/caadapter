@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.gui.view.FormulaPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -20,8 +21,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class SplitCentralPane extends JSplitPane implements TreeSelectionListener {
 
-	private JPanel topPanel;
-	private JLabel topLabel;
+	private JScrollPane topScroll;
 	private JLabel formulaLabel;
 	private JTextArea formulaXml;
 	private BaseMeta controllMeta;
@@ -29,13 +29,11 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 	public SplitCentralPane()
 	{
 		super(JSplitPane.VERTICAL_SPLIT);
-		topPanel=new JPanel();
+		FormulaPanel topPanel=new FormulaPanel(null);
 		topPanel.setBorder(BorderFactory.createTitledBorder(""));
-		topLabel=new JLabel();
-		topPanel.add(topLabel, BorderLayout.CENTER);
 		topPanel.setPreferredSize(new Dimension(450, 350));
-		
-		add(topPanel);
+		topScroll=new JScrollPane(topPanel);
+		add(topScroll);
 		JPanel lowPanel=new JPanel();
 		lowPanel.setLayout(new BorderLayout());
 		lowPanel.setBorder(BorderFactory.createEtchedBorder());
@@ -75,14 +73,15 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 		if (controllMeta instanceof FormulaMeta)
 		{
 			FormulaMeta formula=(FormulaMeta)controllMeta;
-			topLabel.setText(formula.toString());
+			FormulaPanel newFormulaPanel=new FormulaPanel(formula);
+			topScroll.getViewport().setView(newFormulaPanel);
+			topScroll.validate();
 			formulaLabel.setText(formula.formatJavaStatement());
 			formulaXml.setText(FormulaFactory.convertFormulaToXml(formula));
 		}
 		else
 		{
-			topLabel.setText("<html>"+controllMeta.toString()+"</html>");
-			formulaLabel.setText(controllMeta.toString());
+			formulaLabel.setText(controllMeta.formatJavaStatement());
 			formulaXml.setText("");
 		}
 		this.updateUI();
