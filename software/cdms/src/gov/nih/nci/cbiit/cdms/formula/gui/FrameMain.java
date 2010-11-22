@@ -26,7 +26,7 @@ public class FrameMain extends JFrame {
 		setLocation(screenSize.width / 2 - (frameSize.width / 2), screenSize.height / 2 - (frameSize.height / 2));
 		//set menu
 		this.setJMenuBar(new MenuBarMain(this));
-		mainPanel=new PanelMainFrame(this);
+		mainPanel=new PanelMainFrame();//this);
 		this.getContentPane().add(mainPanel);
 	}
 
