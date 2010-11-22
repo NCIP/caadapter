@@ -77,7 +77,7 @@ public enum OperationType {
         else if (value().equals(SUBTRACTION.value))
             return " - ";
         else if (value().equals(MULTIPLICATION.value))
-            return " * ";
+            return "\u00D7";
         else if (value().equals(DIVISION.value()))
             return " / ";
         else if (value().equals(POWER.value))
