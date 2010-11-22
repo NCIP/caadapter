@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -42,18 +41,10 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 	private void initUI()
 	{
 		PanelMainFrame mainPanel =mainFrame.getMainPanel();
-//		for (Component com:mainFrame.getContentPane().getComponents())
-//		{
-//			if (com instanceof PanelMainFrame)
-//			{
-//				mainPanel=(PanelMainFrame)com;
-//			}
-//		}
 
 		if (mainPanel==null)
 			return;
-		//SplitCentralPane centerPane=mainPanel.getCentralSplit();
-        FormulaMainPanel centerPane=mainPanel.getCentralSplit();
+		SplitCentralPane centerPane=mainPanel.getCentralSplit();
         BaseMeta baseMeta=centerPane.getControllMeta();
 		if (baseMeta!=null)
 			setTitle(this.getTitle() +":"+baseMeta.getName());
