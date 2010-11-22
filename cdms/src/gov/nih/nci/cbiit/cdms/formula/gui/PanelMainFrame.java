@@ -12,7 +12,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -26,26 +25,15 @@ public class PanelMainFrame extends JPanel {
 	private JTree localTree=null;
 	private File localStoreFile=null;
 	private SplitPaneFormula rightSplit;
-	//private SplitCentralPane centralSplit;
-    private FormulaMainPanel centralSplit;
+	private SplitCentralPane centralSplit;
 
-    private Frame parentFrame;
-//    public PanelMainFrame()
-//	{
-//		super();
-//		initUI();
-//	}
-    public PanelMainFrame(Frame frame)
+    public PanelMainFrame()
 	{
 		super();
-        parentFrame = frame;
-        initUI();
+		initUI();
 	}
 
-//    public SplitCentralPane getCentralSplit() {
-//		return centralSplit;
-//	}
-    public FormulaMainPanel getCentralSplit() {
+    public SplitCentralPane getCentralSplit() {
 		return centralSplit;
 	}
 
@@ -115,8 +103,7 @@ public class PanelMainFrame extends JPanel {
 	private JSplitPane createLeftJSplitPane()
 	{
 		rightSplit=new SplitPaneFormula();
-		//centralSplit=new SplitCentralPane();
-        centralSplit=createCenterJSplitPane();
+		centralSplit=new SplitCentralPane();
 
         JSplitPane leftSplit=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
@@ -143,18 +130,10 @@ public class PanelMainFrame extends JPanel {
 		return leftSplit;
 	}
 
+
     public SplitPaneFormula getRightSplitPanel()
     {
         return rightSplit;
     }
-
-    private FormulaMainPanel createCenterJSplitPane()
-	{
-        return new FormulaMainPanel(parentFrame);
-//		JSplitPane centerSplit=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-//		centerSplit.add(new JButton("Uper"));
-//		centerSplit.add(new JButton("Down"));
-//		return centerSplit;
-	}
 
 }
