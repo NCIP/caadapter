@@ -227,7 +227,7 @@ public class OpenFormulaAction extends AbstractAction
 
             try {
 
-               isSuccessfullyDone = mainPanel.openFile(file);
+//               isSuccessfullyDone = mainPanel.openFile(file);
                openFile = file;
             } catch (Exception e1) {
                 // TODO Auto-generated catch block

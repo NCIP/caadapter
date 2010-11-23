@@ -18,6 +18,10 @@ public class FormulaStore extends BaseMeta {
 		return formula;
 	}
 
+	public void setFormula(List<FormulaMeta> formula) {
+		this.formula = formula;
+	}
+
 	@Override
 	public String formatJavaStatement() {
 		// TODO Auto-generated method stub

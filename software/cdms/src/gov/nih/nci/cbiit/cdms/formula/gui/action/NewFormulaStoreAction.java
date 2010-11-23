@@ -1,13 +1,10 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.action;
 
 import gov.nih.nci.cbiit.cdms.formula.gui.FrameMain;
-import gov.nih.nci.cbiit.cdms.formula.gui.PanelMainFrame;
-import gov.nih.nci.cbiit.cdms.formula.gui.constants.ActionConstants;
-import gov.nih.nci.cbiit.cdms.formula.common.util.DefaultSettings;
+import gov.nih.nci.cbiit.cdms.formula.gui.NewFormulaWizard;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,8 +25,12 @@ public class NewFormulaStoreAction extends AbstractAction
     public void actionPerformed(ActionEvent arg0)
     {
        FrameMain mainFrame=FrameMain.getSingletonInstance();
-
-       mainFrame.getMainPanel().getCentralSplit().createNewFormulaPanel();
+       NewFormulaWizard wizard = new NewFormulaWizard(mainFrame, "Create New Formula", true);
+       wizard.setLocation(mainFrame.getX()+mainFrame.getWidth()/4,
+    		   mainFrame.getY()+mainFrame.getHeight()/4);
+       wizard.setSize((int)mainFrame.getSize().getWidth()/2,
+				(int)mainFrame.getSize().getHeight()/2);
+       wizard.setVisible(true);
     }
 }
 
