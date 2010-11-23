@@ -1,9 +1,22 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.StringTokenizer;
+import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaType;
+import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
+import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
+
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,126 +27,137 @@ import java.util.ArrayList;
  */
 public class NewFormulaFrontPage extends JPanel
 {
-
-    private final String FORMULA_NAME_MODE = "Formula Name";
-    private final String ANNOTATION_MODE = "Annotation";
-
+    private JTextField fStoreNameField;
+    private JTextField fStoreStatusField;
+    
     private JTextField formulaNameField;
-    private JComboBox expressionTypeField;
-    private JTextField varuableListField;
+    private JComboBox expressionTypeList;
+    private JTextField formulaStatusField;
     private JTextField annotationField;
 
-    //private String formulaName;
-    //private String annotation;
-
-    private String wizardTitle;
     /**
      * Creates a new <code>JPanel</code> with a double buffer
      * and a flow layout.
      */
     public NewFormulaFrontPage(NewFormulaWizard wizard)
     {
-        wizardTitle=wizard.getTitle();
         initialize();
     }
 
     private void initialize()
     {
-        this.setLayout(new BorderLayout());//new FlowLayout(FlowLayout.LEADING));
+        this.setLayout(new BorderLayout());
         JPanel centerPanel = new JPanel(new GridBagLayout());
-        Insets insets = new Insets(5, 5, 5, 5);
-        JLabel dataFileLabel = new JLabel(FORMULA_NAME_MODE);
-        centerPanel.add(dataFileLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        Insets insetsLabel= new Insets(5, 5, 5, 5);
+        Insets insetsField = new Insets(5, 5, 5, 25);
+        
+        JLabel formulaStoreLabel=new JLabel ("Formula Store Name");
+        fStoreNameField=new JTextField();
+        FormulaStore fs=FormulaFactory.getLocalStore();
+        if (fs!=null)
+        {
+        	fStoreNameField.setText(fs.getName());
+        	fStoreNameField.setEditable(false);
+        }
+        
+        centerPanel.add(formulaStoreLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
+        centerPanel.add(fStoreNameField, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
+
+        JLabel formulaStoreStatus=new JLabel ("Formula Store Status");
+        fStoreStatusField=new JTextField("draft");
+        fStoreStatusField.setEditable(false);
+        centerPanel.add(formulaStoreStatus, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
+        centerPanel.add(fStoreStatusField, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
+
+        JLabel seperatorLabel=new JLabel ( "     ");
+        JLabel seperatorLabelright=new JLabel ( "     ");
+        centerPanel.add(seperatorLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
+        centerPanel.add(seperatorLabelright, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
+
+        
+        JLabel dataFileLabel = new JLabel("Formula Name");
+        centerPanel.add(dataFileLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
         formulaNameField = new JTextField();
-        formulaNameField.setPreferredSize(new Dimension(350, 25));
-        centerPanel.add(formulaNameField, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-        //JButton dataFileBrowseButton = new JButton(FORMULA_NAME_MODE);
-        //centerPanel.add(dataFileBrowseButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-        //		GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(formulaNameField, new GridBagConstraints(1, 3, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
-        JLabel expressionTypeLabel = new JLabel("Expression Type");
-        centerPanel.add(expressionTypeLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-        expressionTypeField = new JComboBox();
-        for(String typ:NodeContentElement.OPERATION_NAMES) expressionTypeField.addItem(typ);
-        expressionTypeField.setPreferredSize(new Dimension(350, 25));
-        centerPanel.add(expressionTypeField, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        JLabel expressionTypeLabel = new JLabel("Expression Type",JLabel.RIGHT);
+        centerPanel.add(expressionTypeLabel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
+        expressionTypeList = new JComboBox();
+        for (OperationType type:OperationType.values())
+        	expressionTypeList.addItem(type);
+        
+        centerPanel.add(expressionTypeList, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
-        JLabel mapFileLabel = new JLabel("Variable List");
-        centerPanel.add(mapFileLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-        varuableListField = new JTextField();
-        varuableListField.setPreferredSize(new Dimension(350, 25));
-        centerPanel.add(varuableListField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        JLabel formulaStatusLabel = new JLabel("Formula Status");
+        centerPanel.add(formulaStatusLabel, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
+        formulaStatusField = new JTextField("draft");
+        formulaStatusField.setEditable(false);
+        centerPanel.add(formulaStatusField, new GridBagConstraints(1, 5, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
-        JLabel variablesLabel = new JLabel(ANNOTATION_MODE);
-        centerPanel.add(variablesLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        JLabel variablesLabel = new JLabel("Annotation");
+        centerPanel.add(variablesLabel, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
         annotationField = new JTextField();
-        annotationField.setPreferredSize(new Dimension(350, 25));
-        centerPanel.add(annotationField, new GridBagConstraints(1, 3, 2, 1, 1.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-        //JButton mapFileBrowseButton = new JButton(ANNOTATION_MODE);
-        //centerPanel.add(mapFileBrowseButton, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
-        //		GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(annotationField, new GridBagConstraints(1, 6, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
-        //JLabel destFileLabel = new JLabel(DEST_FILE_BROWSE_MODE);
-        //centerPanel.add(destFileLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-        //		GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-        //destFileInputField = new JTextField();
-        //destFileInputField.setPreferredSize(new Dimension(350, 25));
-        //centerPanel.add(destFileInputField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
-        //		GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-        //JButton destFileBrowseButton = new JButton(new BrowseMessageAction(this, DEST_FILE_BROWSE_MODE));
-        //centerPanel.add(destFileBrowseButton, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
-        //		GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
         this.add(centerPanel, BorderLayout.CENTER);
     }
 
 
-    public String getFormulaName()
+
+    public String validateInputFields()
     {
-        return formulaNameField.getText();
+    	StringBuffer rtnB=new StringBuffer();
+    	
+    	String fsName = fStoreNameField.getText();
+    	if (fsName == null||fsName.trim().equals("")) 
+    		rtnB.append("Set name for the new formula store!!\n");
+        String name = formulaNameField.getText();
+        if (name == null||name.trim().equals("")) 
+        	rtnB.append("Set name for the new formula !!\n");
+  
+        return rtnB.toString();
     }
 
-    public String getAnnotation()
+    public void createNewFormula()
     {
-        return annotationField.getText();
-    }
-    public java.util.List<NodeContentElement> getVariableList()
-    {
-        String line = varuableListField.getText();
-        if (line == null) return null;
-        if (line.trim().equals("")) return null;
-        java.util.List<NodeContentElement> list = new ArrayList<NodeContentElement>();
-        StringTokenizer st = new StringTokenizer(line, ",");
-        while(st.hasMoreTokens())
-        {
-            NodeContentElement ele = new NodeContentElement(NodeContentElement.TYPES[3], st.nextToken().trim(), "variable");
-            list.add(ele);
+        FormulaStore fs=FormulaFactory.getLocalStore();
+        if (fs==null)
+        {	
+        	fs=new FormulaStore();
+        	fs.setName(fStoreNameField.getText());
+        	ArrayList<FormulaMeta> fsFormulas=new ArrayList<FormulaMeta>();
+        	fs.setFormula(fsFormulas);
         }
-        return list;
-    }
-    public String getFirstExpression()
-    {
-        return (String) expressionTypeField.getSelectedItem();
-    }
+        OperationType type=(OperationType)expressionTypeList.getSelectedItem();
+		FormulaMeta formula=new FormulaMeta();
+		formula.setName(formulaNameField.getText());
+		formula.setType(FormulaType.MATH);
+		formula.setAnnotation(annotationField.getText());
+ 
+		//the following create formula expression
+		TermMeta formulaExpression=FormulaFactory.createTemplateTerm(type);
+		formulaExpression.setName(formulaNameField.getText());
+		formula.setExpression(formulaExpression);
+		fs.getFormula().add(formula);
+		FormulaFactory.updateLocalStore(fs);
 
-    public boolean validateInputFields()
-    {
-        String name = getFormulaName();
-        if (name == null) return false;
-        if (name.trim().equals("")) return false;
-        String line = varuableListField.getText();
-        if (line == null) return false;
-        if (line.trim().equals("")) return false;
-        return true;
-    }
-
+		PanelMainFrame mainPanel= FrameMain.getSingletonInstance().getMainPanel();
+  	   	mainPanel.localFormulaStoreUpdated(fs, formula);
+     }
 
 }
 
