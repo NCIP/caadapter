@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 public class FormulaPanel extends JPanel{
 
-	private JLabel nameLabel;
 	private BaseMeta controlMeta;
+	private JLabel nameLabel;
 	private TermView termView;
 	
 	public FormulaPanel(BaseMeta formula)
@@ -22,22 +22,42 @@ public class FormulaPanel extends JPanel{
 		super();
 		this.setSize(350,250);
 		controlMeta=formula;
-		initUI();
-	}
-	
-	private void initUI()
-	{
 		if (controlMeta==null)
 			return;
 		if (controlMeta instanceof FormulaMeta)
 			initFormulaUI((FormulaMeta) controlMeta);
 		else
-		{	nameLabel=new JLabel("Formula Store:"+controlMeta.getName());
+		{	
+			nameLabel=new JLabel("Formula Store:"+controlMeta.getName());
 			nameLabel.setLocation(this.getX()+this.getWidth()/2,
 					this.getY()+this.getHeight()/2-25);
 			this.add(nameLabel);
 		}
-		
+	}
+	
+	private void drawDivider(TermView view, int x0, int y0, Graphics g)
+	{
+		g.drawLine(x0, y0, x0+view.getWidth(), y0);
+	}
+
+	private void drawSquareRoot(TermView view, int x0, int y0, Graphics g)
+	{
+		//            p2-----------------p1
+		//			  *
+		//           *
+		//          *
+		//   p4*  *
+		//    * **
+		// p5*   * p3
+		Point p1=new Point(x0+view.getWidth()-5, y0-10);
+		Point p2=new Point(x0, y0-10);
+		Point p3=new Point(x0-5, y0+view.getHeight()-10);
+		Point p4=new Point(x0-10, y0+view.getHeight()-15);
+		Point p5=new Point(x0-15, y0+view.getHeight()-10);
+		g.drawLine(p1.x,p1.y, p2.x, p2.y);
+		g.drawLine(p2.x,p2.y, p3.x, p3.y);
+		g.drawLine(p3.x,p3.y, p4.x, p4.y);
+		g.drawLine(p4.x,p4.y, p5.x, p5.y);		
 	}
 
 	private void initFormulaUI(FormulaMeta f)
@@ -55,33 +75,8 @@ public class FormulaPanel extends JPanel{
 		ViewMouseAdapter mouseListener=new ViewMouseAdapter();
 		processViewComponents(termView, mouseListener);
 	}
-
-	/**
-	 * use the the mouse listener instance for all TermView UI components
-	 * @param view
-	 * @param listener
-	 */
-	private void processViewComponents(TermView view, ViewMouseAdapter listener)
-	{
-		if (view==null)
-			return;
-		System.out.println("FormulaPanel.processViewComponents()...:"+view);
-		if (view.getTermUiComponent()!=null)
-		{
-			add(view.getTermUiComponent());
-			view.getTermUiComponent().addMouseListener(listener);
-			return;
-		}
-				
-		processViewComponents(view.getFirtTermView(), listener);
-		if (view.getTermOperatioinComponent()!=null)
-		{
-			add(view.getTermOperatioinComponent());
-			view.getTermOperatioinComponent().addMouseListener(listener);
-		}
-		processViewComponents(view.getSecondTermView(), listener);
-	}
 	
+	@Override
 	protected void paintComponent(Graphics arg0) {
 		// TODO Auto-generated method stub
 		super.paintComponent(arg0);	
@@ -121,31 +116,29 @@ public class FormulaPanel extends JPanel{
 		positionTermUiComponent(view.getSecondTermView(), x0, y0, g);
 	}
 	
-	private void drawDivider(TermView view, int x0, int y0, Graphics g)
+	/**
+	 * use the the mouse listener instance for all TermView UI components
+	 * @param view
+	 * @param listener
+	 */
+	private void processViewComponents(TermView view, ViewMouseAdapter listener)
 	{
-//		System.out.println("FormulaPanel.drawDivider()..draw divider"+view);
-		g.drawLine(x0, y0, x0+view.getWidth(), y0);
-	}
-	
-	private void drawSquareRoot(TermView view, int x0, int y0, Graphics g)
-	{
-//		System.out.println("FormulaPanel.drawSquareRoot()..draw divider"+view);
-//		System.out.println("FormulaPanel.drawSquareRoot()..(x0,y0) =("+x0+","+y0+")");
-		//            p2-----------------p1
-		//			  *
-		//           *
-		//          *
-		//   p4*  *
-		//    * **
-		// p5*   * p3
-		Point p1=new Point(x0+view.getWidth()-5, y0-10);
-		Point p2=new Point(x0, y0-10);
-		Point p3=new Point(x0-5, y0+view.getHeight()-10);
-		Point p4=new Point(x0-10, y0+view.getHeight()-15);
-		Point p5=new Point(x0-15, y0+view.getHeight()-10);
-		g.drawLine(p1.x,p1.y, p2.x, p2.y);
-		g.drawLine(p2.x,p2.y, p3.x, p3.y);
-		g.drawLine(p3.x,p3.y, p4.x, p4.y);
-		g.drawLine(p4.x,p4.y, p5.x, p5.y);		
+		if (view==null)
+			return;
+		System.out.println("FormulaPanel.processViewComponents()...:"+view);
+		if (view.getTermUiComponent()!=null)
+		{
+			add(view.getTermUiComponent());
+			view.getTermUiComponent().addMouseListener(listener);
+			return;
+		}
+				
+		processViewComponents(view.getFirtTermView(), listener);
+		if (view.getTermOperatioinComponent()!=null)
+		{
+			add(view.getTermOperatioinComponent());
+			view.getTermOperatioinComponent().addMouseListener(listener);
+		}
+		processViewComponents(view.getSecondTermView(), listener);
 	}
 }
