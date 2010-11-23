@@ -37,18 +37,15 @@ public class NewFormulaWizard extends JDialog implements ActionListener
         JPanel southPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));//new BorderLayout());
         JButton okButton = new JButton(CREATE_TERM_COMMAND);
-        okButton.setMnemonic('O');
         okButton.addActionListener(this);
         JButton cancelButton = new JButton(CANCEL_COMMAND);
-        cancelButton.setMnemonic('C');
         cancelButton.addActionListener(this);
         JPanel tempPanel = new JPanel(new GridLayout(1, 2));
         tempPanel.add(okButton);
         tempPanel.add(cancelButton);
-        buttonPanel.add(tempPanel);//, BorderLayout.EAST);
+        buttonPanel.add(tempPanel);
         southPanel.add(buttonPanel, BorderLayout.NORTH);
         contentPane.add(southPanel, BorderLayout.SOUTH);
-        pack();
     }
 
 
@@ -64,7 +61,6 @@ public class NewFormulaWizard extends JDialog implements ActionListener
             if(errMsg.equals(""))
             {
             	frontPage.createNewFormula();
-
             }
             else
             {

@@ -1,5 +1,9 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.view;
 
+import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.gui.EditTermWizard;
+import gov.nih.nci.cbiit.cdms.formula.gui.FrameMain;
+
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,7 +22,16 @@ public class ViewMouseAdapter extends MouseAdapter {
 		
 		if (e.getClickCount()==2)
 		{
-			System.out.println("ViewMouseAdapter.mouseClicked()..double click:"+e.getSource());
+			
+			TermUiComponent metaUi=(TermUiComponent)e.getSource();
+			System.out.println("ViewMouseAdapter.mouseClicked()..double click:"+metaUi.getViewMeta());
+			FrameMain mainFrame=FrameMain.getSingletonInstance();
+			EditTermWizard wizard = new EditTermWizard(mainFrame, metaUi.getViewMeta(), "givenType", true);
+		    wizard.setLocation(mainFrame.getX()+mainFrame.getWidth()/4,
+		    		   mainFrame.getY()+mainFrame.getHeight()/4);
+		       wizard.setSize((int)mainFrame.getSize().getWidth()/2,
+						(int)mainFrame.getSize().getHeight()/2);
+		       wizard.setVisible(true);
 		}
 		else if (SwingUtilities.isRightMouseButton(e))
 		{   
@@ -39,5 +52,4 @@ public class ViewMouseAdapter extends MouseAdapter {
 		
 		}
 	}
-
 }

@@ -34,20 +34,20 @@ public class TermView {
 		switch(term.getOperation())
 		{
 			case  ADDITION:
-				termOperatioinComponent=new JLabel(
-						 term.getOperation().toString(), JLabel.CENTER );
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString(), JLabel.CENTER, term );
 				break;
 			case  SUBTRACTION:
-				termOperatioinComponent=new JLabel(
-						 term.getOperation().toString(), JLabel.CENTER  );
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString(), JLabel.CENTER, term  );
 				break;
 			case  MULTIPLICATION:
-				termOperatioinComponent=new JLabel(
-						 term.getOperation().toString(), JLabel.CENTER  );
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString(), JLabel.CENTER, term);
 				break;
 			case  EXPONENTIAL:
-				termOperatioinComponent=new JLabel(
-						 term.getOperation().toString(), JLabel.CENTER  );
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString(), JLabel.CENTER, term);
 				break;
 			default: break;
 		}
@@ -97,7 +97,7 @@ public class TermView {
 			return;
 		if (meta.getType().value().equals(TermType.UNKNOWN.value()))
 		{	
-			termUiComponent=new JLabel(meta.getName());
+			termUiComponent=new TermUiComponent(meta.getName(), term);
 			width=meta.getName().length()*5+VIEW_COMPONENT_PADDING;
 			height= VIEW_COMPONENT_HEIGHT;
 		}
@@ -105,7 +105,7 @@ public class TermView {
 				||(meta.getType().value().equals(TermType.VARIABLE.value())))
 		{
 			
-			termUiComponent=new JLabel(meta.getValue());
+			termUiComponent=new TermUiComponent(meta.getValue(), term);
 			width=meta.getValue().length()*5+VIEW_COMPONENT_PADDING;
 			System.out.println("TermView.processTermMeta()...width:"+width);
 			height= VIEW_COMPONENT_HEIGHT;
