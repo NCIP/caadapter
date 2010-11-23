@@ -53,7 +53,7 @@ public class FormulaButtonMouseListener implements MouseListener
             termMeta = new TermMeta();
             FormulaButtonPane parentPane = parentButton.getParentPane();
             String name = null;
-            if (parentPane != null) name = parentPane.getAssignedTermName(parentButton);
+//            if (parentPane != null) name = parentPane.getAssignedTermName(parentButton);
             if (name == null) name = "";
             termMeta.setType(TermType.UNKNOWN);
             termMeta.setName(name);
