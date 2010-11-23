@@ -168,7 +168,7 @@ public class TermMeta extends BaseMeta{
 		}
 		else
 		{
-			if (getTerm()==null)
+			if (getTerm()==null||getTerm().isEmpty())
 				return rtnBf.toString();
 			rtnBf.append(getTerm().get(0).formatJavaStatement());
 			if (getOperation()!=null)

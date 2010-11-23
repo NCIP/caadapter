@@ -21,14 +21,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class ExecuteFormulaDialog extends JDialog implements ActionListener {
-	private FrameMain mainFrame;
+//	private FrameMain mainFrame;
 	private FormulaMeta formula;
 	private JTextField resultField;
 	private HashMap <String, JTextField> paramFieldHash;
 	public ExecuteFormulaDialog(JFrame owner, String title, boolean modal)
 	{
 		super(owner, title,modal);
-		mainFrame=(FrameMain)owner;
+//		mainFrame=(FrameMain)owner;
 		initUI();
 		setLocation(owner.getX()+owner.getWidth()/4,
 				owner.getY()+owner.getHeight()/4);
@@ -40,7 +40,7 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 
 	private void initUI()
 	{
-		PanelMainFrame mainPanel =mainFrame.getMainPanel();
+		PanelMainFrame mainPanel =FrameMain.getSingletonInstance().getMainPanel();
 
 		if (mainPanel==null)
 			return;
@@ -49,7 +49,7 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 		if (baseMeta!=null)
 			setTitle(this.getTitle() +":"+baseMeta.getName());
 
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));//new BorderLayout());
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
         JButton okButton = new JButton("Run");
         okButton.addActionListener(this);
         JButton cancelButton = new JButton("Cancel");

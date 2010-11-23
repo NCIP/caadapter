@@ -14,7 +14,7 @@ public class FrameMain extends JFrame {
 	private static FrameMain singletonFrameMain;
 	private PanelMainFrame mainPanel;
 
-	public FrameMain()
+	private FrameMain()
 	{
 		super();
 		this.setTitle("caAdapter Data Derivation Service");

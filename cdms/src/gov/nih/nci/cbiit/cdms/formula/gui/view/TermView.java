@@ -30,11 +30,11 @@ public class TermView {
 System.out.println("TermView.TermView()..:"+term +
 		"..("+x +", "+y+")");
 		processTermMeta(term);
-		ViewMouseAdapter mouseListener=new ViewMouseAdapter();
-		if (termUiComponent!=null)
-			termUiComponent.addMouseListener(mouseListener);
-		if (termOperatioinComponent!=null)
-			termOperatioinComponent.addMouseListener(mouseListener);
+//		ViewMouseAdapter mouseListener=new ViewMouseAdapter();
+//		if (termUiComponent!=null)
+//			termUiComponent.addMouseListener(mouseListener);
+//		if (termOperatioinComponent!=null)
+//			termOperatioinComponent.addMouseListener(mouseListener);
 	}
 	
 	private void buildOperationComponent()
@@ -108,7 +108,7 @@ System.out.println("TermView.TermView()..:"+term +
 		if (meta.getType().value().equals(TermType.UNKNOWN.value()))
 		{	
 			termUiComponent=new JLabel(meta.getName());
-			width=meta.getValue().length()*5+VIEW_COMPONENT_PADDING;
+			width=meta.getName().length()*5+VIEW_COMPONENT_PADDING;
 			height= VIEW_COMPONENT_HEIGHT;
 		}
 		else if (meta.getType().value().equals(TermType.CONSTANT.value())

@@ -2,6 +2,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.common.util.DefaultSettings;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 import gov.nih.nci.cbiit.cdms.formula.gui.constants.ActionConstants;
 import gov.nih.nci.cbiit.cdms.formula.gui.tree.CellRenderFormula;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.xml.bind.JAXBException;
 
@@ -77,16 +79,35 @@ public class PanelMainFrame extends JPanel {
 				FormulaFactory.updateLocalStore(newStore);
 				localStoreFile=file;
 			}
-
+			localFormulaStoreUpdated(newStore, null);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+	
+	public void localFormulaStoreUpdated(FormulaStore fs, FormulaMeta selectedFormula)
+	{
 		TreeNodeFormulaStore newStoreNode= new TreeNodeFormulaStore(FormulaFactory.getLocalStore());
 
 		DefaultTreeModel treeModel=(DefaultTreeModel)localTree.getModel();
 		treeModel.setRoot(newStoreNode);
-		localTree.setSelectionRow(0);
+		if (selectedFormula==null)
+			localTree.setSelectionRow(0);
+		else
+		{
+			DefaultMutableTreeNode rootNode=(DefaultMutableTreeNode)treeModel.getRoot();
+			for (int i=0;i<rootNode.getChildCount();i++)
+			{
+				DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)rootNode.getChildAt(i);
+				if (childNode.getUserObject().equals(selectedFormula))
+				{
+					localTree.setSelectionRow(i);
+					break;
+				}
+			}
+		}
 	}
 	private void initUI()
 	{
