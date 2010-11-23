@@ -7,6 +7,8 @@ import gov.nih.nci.cbiit.cdms.formula.gui.NodeContentElement;
 import gov.nih.nci.cbiit.cdms.formula.gui.properties.PanelDefaultProperties;
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
@@ -42,27 +44,51 @@ public class FormulaButtonMouseListener implements MouseListener
 
     public void mouseEntered(MouseEvent ae)
     {
+        //System.out.println("ww1");
+        TermMeta termMeta = null;
         NodeContentElement element = parentButton.getNodeContentElement();
-        if (element == null) return;
-
-        //System.out.println("TTTT4 element " + element.toString() + " : " + element.convertToMeta());
-        TermMeta termMeta = element.convertToMeta();
-        if (termMeta == null) return;
-
+        if (element != null) termMeta = element.convertToMeta();
+        if (termMeta == null)
+        {
+            termMeta = new TermMeta();
+            FormulaButtonPane parentPane = parentButton.getParentPane();
+            String name = null;
+            if (parentPane != null) name = parentPane.getAssignedTermName(parentButton);
+            if (name == null) name = "";
+            termMeta.setType(TermType.UNKNOWN);
+            termMeta.setName(name);
+        }
+        //System.out.println("ww2");
         try
         {
             propertiePanel = FrameMain.getSingletonInstance().getMainPanel().getRightSplitPanel().getPropertiePanel();
             beforeMeta = propertiePanel.getCurrentBaseMeta();
+
+            if (beforeMeta instanceof FormulaMeta) {} //System.out.println(" FormulaMeta meta name");
+            else beforeMeta = null;
         }
         catch(Exception ee)
         {
             beforeMeta = null;
-            propertiePanel = null;
-            return;
         }
 
-        propertiePanel.updateProptiesDisplay(element.convertToMeta());
+        if (beforeMeta == null)
+        {
+            try
+            {
+                //System.out.println(" not FormulaMeta meta name = ");
+                FormulaMainPanel p = parentButton.getRootPanel();
+                beforeMeta = p.getFormulaMeta();
+            }
+            catch(Exception ee1)
+            {
+                beforeMeta = null;
+                propertiePanel = null;
+                return;
+            }
+        }
 
+        propertiePanel.updateProptiesDisplay(termMeta);
     }
     public void mouseExited(MouseEvent ae)
     {

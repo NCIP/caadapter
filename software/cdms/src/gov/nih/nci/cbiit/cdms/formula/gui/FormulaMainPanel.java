@@ -2,6 +2,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaType;
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.OpenFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.SaveAsFormulaAction;
@@ -53,6 +54,7 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
     private BaseMeta controllMeta = null;
 
     private File currentFile = null;
+    private FormulaMeta formulaMeta = null;
 
     FormulaMainPanel(Frame fr)
     {
@@ -312,6 +314,12 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
             formulaAnnotation = wizard.getAnnotation();
             formulaName = wizard.getFormulaName();
             firstExpression = new NodeContentElement(NodeContentElement.TYPES[2], formulaName,wizard.getFrontPage().getFirstExpression());
+
+            formulaMeta = new FormulaMeta();
+            formulaMeta.setName(formulaName);
+            formulaMeta.setAnnotation(formulaAnnotation);
+            formulaMeta.setType(FormulaType.MATH);
+            formulaMeta.setExpression(firstExpression.convertToMeta());
         }
         else
         {
@@ -367,6 +375,7 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
             }
             variableField.setText(tt.substring(2));
             refreshContents();
+            formulaMeta = myFormula;
             return true;
         }
         return false;
@@ -403,6 +412,7 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
             }
             variableField.setText(tt.substring(2));
             refreshContents();
+            formulaMeta = myFormula;
             return true;
         }
         return false;
@@ -438,7 +448,7 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
     {
         return variableDefinitions;
     }
-    public FormulaMeta getFormulaMeta()
+    public FormulaMeta getFormulaMeta2()
     {
         String rr = xmlTextArea.getText();
         if ((rr == null)||(rr.trim().equals(""))) return null;
@@ -503,5 +513,9 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
     public BaseMeta getControllMeta()
     {
         return controllMeta;
+    }
+    public FormulaMeta getFormulaMeta()
+    {
+        return formulaMeta;
     }
 }

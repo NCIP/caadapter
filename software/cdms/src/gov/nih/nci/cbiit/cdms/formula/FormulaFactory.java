@@ -32,7 +32,8 @@ public class FormulaFactory {
 				expressionTemplate=new HashMap<String, TermMeta>();
 				for (FormulaMeta formula:templateStore.getFormula())
 				{
-					String expressionKey=formula.getExpression().getOperation().value();
+                    //System.out.println(" RRR : " + formula.getName() + ", getExpression().getName()=" + formula.getExpression().getName());
+                    String expressionKey=formula.getExpression().getOperation().value();
 					expressionTemplate.put(expressionKey, formula.getExpression());
 				}
 			} catch (JAXBException e) {
@@ -40,7 +41,8 @@ public class FormulaFactory {
 				e.printStackTrace();
 			}
 		}
-		TermMeta expressionTerm=expressionTemplate.get(type.value());
+        //System.out.println(" RRR : Term Value=" + type);
+        TermMeta expressionTerm=expressionTemplate.get(type.value());
 		if (expressionTerm!=null)
 			return (TermMeta)expressionTerm.clone();
 		return null;

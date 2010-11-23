@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
+import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +43,8 @@ public class NewTermFrontPage extends JPanel
     private String currentType = "";
     private String givenType = null;
     FormulaMainPanel mainPanel = null;
+
+
     //private String annotation;
 
     //private String wizardTitle;
@@ -169,7 +172,7 @@ public class NewTermFrontPage extends JPanel
                     GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
         //System.out.println("   CCC current=" + currentType);
                     setContentActivations();
-
+                    setAssignedTermName();
 
 
 
@@ -194,7 +197,18 @@ public class NewTermFrontPage extends JPanel
                        //initialize(nameField.getText());
 
                    setContentActivations();
-
+                   String type = (String) typeComboBox.getSelectedItem();
+                   setAssignedTermName();
+               }
+           }
+        );
+        operationComboBox.addItemListener
+        (
+           new ItemListener()
+           {
+               public void itemStateChanged(ItemEvent e)
+               {
+                     setAssignedTermName();
                }
            }
         );
@@ -249,7 +263,28 @@ public class NewTermFrontPage extends JPanel
         destLabelDescription.setEnabled(descriptionField.isEnabled());
         destLabelValue.setEnabled(valueField.isEnabled());
     }
+    private void setAssignedTermName()
+    {
+        while(true)
+        {
+            FormulaButtonPane buttonPane = parentTermWizard.getButtonPane();
+            FormulaButtonPane parentPane = buttonPane.getParentPane();
+            if (parentPane == null) break;
 
+            String name = parentPane.getAssignedTermName(buttonPane);
+            if (name == null) break;
+
+            nameField.setText(name);
+            nameField.setEditable(false);
+            return;
+        }
+        if (nameField.isEnabled())
+        {
+            nameField.setText("");
+            nameField.setEditable(true);
+        }
+        //setContentActivations();
+    }
     public TermMeta getTermMeta()
     {
         TermMeta term = null;
@@ -301,6 +336,7 @@ public class NewTermFrontPage extends JPanel
         else if (currentType.equals(TYPES[1]))   //Expression
         {
             element = new NodeContentElement(currentType, nameField.getText(), (String)operationComboBox.getSelectedItem());
+            element.setNodeDescription(descriptionField.getText());
         }
         else if (currentType.equals(TYPES[2]))  //Variable
         {
@@ -353,8 +389,38 @@ public class NewTermFrontPage extends JPanel
         if (name.trim().equals("")) return false;
         return true;
     }
+    public void setContentElement(NodeContentElement contentElement)
+    {
+        if (contentElement == null) return;
+        String type = contentElement.getNodeType();
+        
+        typeComboBox.setSelectedItem(type);
+        setAssignedTermName();
+        if (type.equals(TYPES[0]))  //Formula
+        {
+            if (nameField.isEditable()) nameField.setText(contentElement.getNodeName());
+            descriptionField.setText(contentElement.getNodeDescription());
+        }
+        else if (type.equals(TYPES[1]))   //Expression
+        {
+            if (nameField.isEditable()) nameField.setText(contentElement.getNodeName());
+            descriptionField.setText(contentElement.getNodeDescription());
+            operationComboBox.setSelectedItem(contentElement.getOperatorName());
 
-
+        }
+        else if (type.equals(TYPES[2]))  //Variable
+        {
+            if (nameField.isEditable()) nameField.setText(contentElement.getNodeName());
+            descriptionField.setText(contentElement.getNodeDescription());
+            variableComboBox.setSelectedItem(contentElement.getNodeValue());
+        }
+        else if (type.equals(TYPES[3]))  // Number
+        {
+            if (nameField.isEditable()) nameField.setText(contentElement.getNodeName());
+            descriptionField.setText(contentElement.getNodeDescription());
+            valueField.setText(contentElement.getNodeValue());
+        }
+    }
 }
 
 

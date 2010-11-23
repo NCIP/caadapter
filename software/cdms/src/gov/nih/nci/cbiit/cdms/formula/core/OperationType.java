@@ -67,6 +67,17 @@ public enum OperationType {
         else if (str.equals("exp")) return EXPONENTIAL;
         else if (str.equals("logarithm")) return LOGARITHM;
 
+        else if (str.equalsIgnoreCase("addition")) return ADDITION;
+        else if (str.equalsIgnoreCase("subtraction")) return SUBTRACTION;
+        else if (str.equalsIgnoreCase("multiplication")) return MULTIPLICATION;
+        else if (str.equalsIgnoreCase("division")) return DIVISION;
+        else if (str.equalsIgnoreCase("power")) return POWER;
+        else if (str.equalsIgnoreCase("radical")) return RADICAL;
+        else if (str.equalsIgnoreCase("squareRoot")) return SQUAREROOT;
+        else if (str.equalsIgnoreCase("exponential")) return EXPONENTIAL;
+        else if (str.equalsIgnoreCase("logarithm")) return LOGARITHM;
+        else if (str.equalsIgnoreCase("trigonometric")) return TRIGONOMETRIC;
+
         return null;
     }
 

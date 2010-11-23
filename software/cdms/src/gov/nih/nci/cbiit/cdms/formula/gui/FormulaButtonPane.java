@@ -2,7 +2,9 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
+import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
 import gov.nih.nci.cbiit.cdms.formula.gui.listener.FormulaButtonMouseListener;
+import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -36,7 +38,8 @@ public class FormulaButtonPane extends JPanel implements ActionListener
     public static int MODE_TERM = 2;
 
     private int mode = MODE_UNDECIDED;
-    private String UNDECIDED_MARK = "--";
+    private String UNDECIDED_MARK = "<?>";
+    private String VARIABLE_TAG = "";
     NodeContentElement contentElement = null;
     Frame frame = null;
     Dialog dialog = null;
@@ -127,6 +130,10 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             }
         }
 
+        priorTermButtonPane = null;
+        operatorButtonPanes = null;
+        termButtonPanes = null;
+        
         this.removeAll();
         String oper = null;
         if (contentElement != null)
@@ -165,7 +172,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             {
                 //int ans = JOptionPane.showConfirmDialog(this, "Are you sure to insert another operator?", "Insert Operator", JOptionPane.YES_NO_OPTION);
                 int ans = JOptionPane.showConfirmDialog(this, "Are you sure to delete this operator?", "Delete Operator", JOptionPane.YES_NO_OPTION);
-                                if (ans != JOptionPane.YES_OPTION) return;
+                if (ans != JOptionPane.YES_OPTION) return;
                 String delMenu = "   D: Delete this Expression\n";
 //                if (parent.getOperatorButtonPanes().size()==1)
 //                {
@@ -223,12 +230,12 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             }
             else if (mode == MODE_UNDECIDED)
             {
-                //System.out.println("TTTTT : FF1 " + mode);
+                System.out.println("TTTTT : FF1 " + mode);
                 NewTermWizard wizard = null;
                 String givenType = null;
                 if (parent == null) givenType = NodeContentElement.TYPES[2];
-                if (frame != null) wizard = new NewTermWizard(frame, rootPanel, givenType, true);
-                else if (dialog != null) wizard = new NewTermWizard(dialog, rootPanel, givenType, true);
+                if (frame != null) wizard = new NewTermWizard(frame, this, givenType, true);
+                else if (dialog != null) wizard = new NewTermWizard(dialog, this, givenType, true);
                 if (!wizard.isCreateTermButtonClicked()) return;
                 NodeContentElement ele = wizard.getNodeContentElement();
                 if (ele == null)
@@ -244,11 +251,13 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             }
             else if (mode == MODE_TERM)
             {
+                System.out.println("TTTTT : FF2 " + mode);
                 int ans = JOptionPane.showConfirmDialog(this, "This button is already defined. Are you sure to Modify?", "Modify Term", JOptionPane.YES_NO_OPTION);
                 if (ans != JOptionPane.YES_OPTION) return;
                 NewTermWizard wizard = null;
-                if (frame != null) wizard = new NewTermWizard(frame, rootPanel, true);
-                else if (dialog != null) wizard = new NewTermWizard(dialog, rootPanel, true);
+                if (frame != null) wizard = new NewTermWizard(frame, this, true, contentElement);
+                else if (dialog != null) wizard = new NewTermWizard(dialog, this, true, contentElement);
+                //wizard.setContentElement(contentElement);
                 if (!wizard.isCreateTermButtonClicked()) return;
                 NodeContentElement ele = wizard.getNodeContentElement();
                 if (ele == null)
@@ -305,10 +314,11 @@ public class FormulaButtonPane extends JPanel implements ActionListener
         }
         else if (element.getNodeType().equals(NodeContentElement.TYPES[3]))
         {
-            mainButton.setText("Var:"+element.getNodeValue());
+            mainButton.setText(VARIABLE_TAG + element.getNodeValue());
             contentElement = element;
             //mainButton.setBackground(new Color(245, 200, 240));
             mainButton.updateUI();
+            mode = MODE_TERM;
             rootPanel.refreshContents();
         }
         else if (element.getNodeType().equals(NodeContentElement.TYPES[4]))
@@ -317,6 +327,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             contentElement = element;
             //mainButton.setBackground(new Color(243, 225, 200));
             mainButton.updateUI();
+            mode = MODE_TERM;
             rootPanel.refreshContents();
         }
         else
@@ -585,6 +596,8 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             return;
         }
         parent.deleteOneOperaor(this);
+        mode = MODE_UNDECIDED;
+        rootPanel.refreshContents();
     }
     protected void deleteOneOperaor(FormulaButtonPane operP)
     {
@@ -1001,5 +1014,47 @@ public class FormulaButtonPane extends JPanel implements ActionListener
             }
         }
         return true;
+    }
+
+    public String getAssignedTermName(FormulaButtonPane childPane)
+    {
+        NodeContentElement element = getNodeContentElement();
+
+        OperationType oType = OperationType.getOperationTypeWithSymbol(element.getOperator());
+        if (oType == null) return null;
+        TermMeta tMeta = FormulaFactory.createTemplateTerm(oType);
+        java.util.List<TermMeta> metas = tMeta.getTerm();
+        if ((metas == null)||(metas.size() == 0)) return null;
+        String[] names = new String[metas.size()];
+        int n = 0;
+        for(TermMeta meta:metas)
+        {
+           names[n] = meta.getName();
+           //System.out.println("Term Name: " + meta.getName());
+           n++;
+        }
+
+        boolean isPrior = false;
+        if (priorTermButtonPane == null) return null;
+        if (priorTermButtonPane == childPane) isPrior = true;
+        else
+        {   boolean found = false;
+            if ((termButtonPanes == null)||(termButtonPanes.size() == 0)) return null;
+            for (FormulaButtonPane pane:termButtonPanes)
+            {
+                if (pane == childPane) found = true;
+            }
+            if (!found) return null;
+        }
+
+        try
+        {
+            if (isPrior) return names[0];
+            else return names[1];
+        }
+        catch(ArrayIndexOutOfBoundsException ae)
+        {
+            return null;
+        }
     }
 }
