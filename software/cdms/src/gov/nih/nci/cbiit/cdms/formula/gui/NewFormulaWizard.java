@@ -15,29 +15,15 @@ import java.awt.*;
 public class NewFormulaWizard extends JDialog implements ActionListener
 {
     private static final String CREATE_TERM_COMMAND = "Create Formula";
-
     private static final String CANCEL_COMMAND = "Cancel";
-    private boolean createButtonClicked = false;
     private NewFormulaFrontPage frontPage;
-    //FormulaMain formulaMain;
-    //FormulaTreeEditor formulaEditor;
+
 
     public NewFormulaWizard(Frame owner, String title, boolean modal) throws HeadlessException
     {
         super(owner, title, modal);
-        //formulaMain = main;
         initialize();
     }
-
-    public NewFormulaWizard(Dialog owner, String title, boolean modal)
-            throws HeadlessException
-    {
-        super(owner, title, modal);
-        //formulaMain = main;
-        initialize();
-    }
-
-
 
 
     private void initialize()
@@ -65,24 +51,6 @@ public class NewFormulaWizard extends JDialog implements ActionListener
         pack();
     }
 
-    public String getFormulaName()
-    {
-        return frontPage.getFormulaName();
-    }
-
-    public String getAnnotation()
-    {
-        return frontPage.getAnnotation();
-    }
-    public NewFormulaFrontPage getFrontPage()
-    {
-        return frontPage;
-    }
-
-    public boolean isCreateTermButtonClicked()
-    {
-        return createButtonClicked;
-    }
 
     /**
      * Invoked when an action occurs.
@@ -92,25 +60,17 @@ public class NewFormulaWizard extends JDialog implements ActionListener
         String command = e.getActionCommand();
         if (CREATE_TERM_COMMAND.equals(command))
         {
-            if(!frontPage.validateInputFields())
+        	String errMsg=frontPage.validateInputFields();
+            if(errMsg.equals(""))
             {
-                JOptionPane.showMessageDialog(this, "Formula name or variable list is null.", "Null Mandatory data", JOptionPane.ERROR_MESSAGE);
+            	frontPage.createNewFormula();
 
-                createButtonClicked = false;
-                return;
             }
             else
             {
-               createButtonClicked = true;
+                JOptionPane.showMessageDialog(this, errMsg, "Null Mandatory data", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        }
-        else if (CANCEL_COMMAND.equals(command))
-        {
-            createButtonClicked = false;
-        }
-        else
-        {
-            System.err.println("Strange command '" + command + "'?");
         }
         setVisible(false);
         dispose();

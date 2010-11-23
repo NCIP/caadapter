@@ -52,10 +52,16 @@ public class FormulaPanel extends JPanel{
 		nameLabel=new JLabel(lbText);
 		add(nameLabel);
 		termView=new TermView(f.getExpression(), 50, -5);
-		processViewComponents(termView);
+		ViewMouseAdapter mouseListener=new ViewMouseAdapter();
+		processViewComponents(termView, mouseListener);
 	}
 
-	private void processViewComponents(TermView view)
+	/**
+	 * use the the mouse listener instance for all TermView UI components
+	 * @param view
+	 * @param listener
+	 */
+	private void processViewComponents(TermView view, ViewMouseAdapter listener)
 	{
 		if (view==null)
 			return;
@@ -63,13 +69,17 @@ public class FormulaPanel extends JPanel{
 		if (view.getTermUiComponent()!=null)
 		{
 			add(view.getTermUiComponent());
+			view.getTermUiComponent().addMouseListener(listener);
 			return;
 		}
 				
-		processViewComponents(view.getFirtTermView());
+		processViewComponents(view.getFirtTermView(), listener);
 		if (view.getTermOperatioinComponent()!=null)
+		{
 			add(view.getTermOperatioinComponent());
-		processViewComponents(view.getSecondTermView());
+			view.getTermOperatioinComponent().addMouseListener(listener);
+		}
+		processViewComponents(view.getSecondTermView(), listener);
 	}
 	
 	protected void paintComponent(Graphics arg0) {
