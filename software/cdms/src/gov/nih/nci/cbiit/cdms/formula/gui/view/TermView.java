@@ -13,28 +13,20 @@ import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 public class TermView {
 	public static int VIEW_COMPONENT_HEIGHT=15;
 	public static int VIEW_COMPONENT_PADDING=5;
-	private TermView firtTermView;
 	
+	private TermView firtTermView;
 	private TermView secondTermView;
  	private TermMeta term;
 	private JComponent termOperatioinComponent;
-
 	private JComponent termUiComponent;
-	
 	private int x, y, width, height;
+	
 	public TermView(TermMeta meta, int locationX, int locationY)
 	{
 		term=meta;	
 		x=locationX;
 		y=locationY;
-System.out.println("TermView.TermView()..:"+term +
-		"..("+x +", "+y+")");
 		processTermMeta(term);
-//		ViewMouseAdapter mouseListener=new ViewMouseAdapter();
-//		if (termUiComponent!=null)
-//			termUiComponent.addMouseListener(mouseListener);
-//		if (termOperatioinComponent!=null)
-//			termOperatioinComponent.addMouseListener(mouseListener);
 	}
 	
 	private void buildOperationComponent()
@@ -73,8 +65,6 @@ System.out.println("TermView.TermView()..:"+term +
 	public TermView getSecondTermView() {
 		return secondTermView;
 	}
-
- 
 
 	public TermMeta getTerm() {
 		return term;
@@ -156,10 +146,6 @@ System.out.println("TermView.TermView()..:"+term +
 			if (termOperatioinComponent!=null)
 				width=width+termOperatioinComponent.getWidth()+VIEW_COMPONENT_PADDING;
 		}
-	}
-
-	public void setTerm(TermMeta term) {
-		this.term = term;
 	}
 	
 	public String toString()
