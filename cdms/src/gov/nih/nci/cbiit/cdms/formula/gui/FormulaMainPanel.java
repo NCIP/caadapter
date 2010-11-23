@@ -2,7 +2,6 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
-import gov.nih.nci.cbiit.cdms.formula.core.FormulaType;
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.OpenFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.SaveAsFormulaAction;
@@ -54,7 +53,6 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
     private BaseMeta controllMeta = null;
 
     private File currentFile = null;
-    private FormulaMeta formulaMeta = null;
 
     FormulaMainPanel(Frame fr)
     {
@@ -272,151 +270,8 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
         }
 
     }
-    public void createNewFormulaPanel()
-    {
 
-        createNewFormulaPanel(null, null);
-    }
 
-    private void createNewFormulaPanel(String formName, String annot)
-    {
-
-        if (headButtonPane != null)
-        {
-            int ans = JOptionPane.showConfirmDialog(this, "A Formula is already exist in the panel. Are you sure to discard this?", "Discard Current Formula?", JOptionPane.YES_NO_OPTION);
-            if (ans != JOptionPane.YES_OPTION) return;
-        }
-
-        //NewFormulaWizard wizard = null;
-        NodeContentElement firstExpression = null;
-        if ((formName == null)||(formName.trim().equals("")))
-        {
-//            if (variableDefinitions.size() == 0)
-//            {
-//                JOptionPane.showMessageDialog(this, "Define variable(s) first.", "No Variable", JOptionPane.ERROR_MESSAGE);
-//                return;
-//            }
-
-            NewFormulaWizard wizard = new NewFormulaWizard(parentFrame, "Create a NEW Formula", true);
-            wizard.setSize(320, 200);
-            wizard.setVisible(true);
-            wizard.setLocation((new Double(this.getLocation().getX())).intValue() + 20, (new Double(this.getLocation().getX())).intValue() + 20);
-            if (!wizard.isCreateTermButtonClicked()) return;
-
-            variableDefinitions = wizard.getFrontPage().getVariableList();
-            String tt = "";
-            for (NodeContentElement elem:variableDefinitions)
-            {
-                tt = tt + ", " + elem.getNodeName();
-            }
-            variableField.setText(tt.substring(2));
-
-            formulaAnnotation = wizard.getAnnotation();
-            formulaName = wizard.getFormulaName();
-            firstExpression = new NodeContentElement(NodeContentElement.TYPES[2], formulaName,wizard.getFrontPage().getFirstExpression());
-
-            formulaMeta = new FormulaMeta();
-            formulaMeta.setName(formulaName);
-            formulaMeta.setAnnotation(formulaAnnotation);
-            formulaMeta.setType(FormulaType.MATH);
-            formulaMeta.setExpression(firstExpression.convertToMeta());
-        }
-        else
-        {
-            formulaName = formName;
-            formulaAnnotation = annot;
-            firstExpression = null;
-        }
-        //System.out.println("GGGG : " + formulaAnnotation + ", " + formulaName);
-        centerPanel.removeAll();
-        centerPanel.setLayout(new GridLayout());
-        //JScrollPane js = new JScrollPane(createHeadButtonPane());
-
-        JScrollPane js = new JScrollPane(createHeadButtonPane(firstExpression));
-
-        js.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-        centerPanel.add(js);
-        centerPanel.updateUI();
-    }
-    public boolean openFile(File f)
-    {
-        if (f == null)
-        {
-            JOptionPane.showMessageDialog(this, "Input file object is null.", "Null Input File", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if ((!f.exists())||(!f.isFile()))
-        {
-            JOptionPane.showMessageDialog(this, "This File is not exist. : " + f.getAbsolutePath(), "Not Found File", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        FormulaMeta myFormula = null;
-        try
-        {
-            myFormula = FormulaFactory.loadFormula(f);
-        }
-        catch(JAXBException je)
-        {
-            JOptionPane.showMessageDialog(this, "JAXBException : " + je.getMessage(), "Formula Open Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        createNewFormulaPanel(myFormula.getName(), myFormula.getAnnotation());
-        variableDefinitions = new ArrayList<NodeContentElement>();
-
-        if (headButtonPane.invokeTermMeta(myFormula.getExpression()))
-        {
-            currentFile = f;
-            String tt = "";
-            for (NodeContentElement elem:variableDefinitions)
-            {
-                tt = tt + ", " + elem.getNodeName();
-            }
-            variableField.setText(tt.substring(2));
-            refreshContents();
-            formulaMeta = myFormula;
-            return true;
-        }
-        return false;
-    }
-    public boolean openWithString(String str)
-    {
-        if ((str == null)||(str.trim().equals("")))
-        {
-            JOptionPane.showMessageDialog(this, "XML document is null or empty.", "Null XML", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        FormulaMeta myFormula = null;
-        try
-        {
-            myFormula = FormulaFactory.loadFormula(str);
-        }
-        catch(JAXBException je)
-        {
-            JOptionPane.showMessageDialog(this, "JAXBException : " + je.getMessage(), "Formula Open Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        
-        createNewFormulaPanel(myFormula.getName(), myFormula.getAnnotation());
-        variableDefinitions = new ArrayList<NodeContentElement>();
-
-        if (headButtonPane.invokeTermMeta(myFormula.getExpression()))
-        {
-            currentFile = null;
-            String tt = "";
-            for (NodeContentElement elem:variableDefinitions)
-            {
-                tt = tt + ", " + elem.getNodeName();
-            }
-            variableField.setText(tt.substring(2));
-            refreshContents();
-            formulaMeta = myFormula;
-            return true;
-        }
-        return false;
-    }
 
     public void addVariableDefinitions(String s,String d)
     {
@@ -448,7 +303,7 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
     {
         return variableDefinitions;
     }
-    public FormulaMeta getFormulaMeta2()
+    public FormulaMeta getFormulaMeta()
     {
         String rr = xmlTextArea.getText();
         if ((rr == null)||(rr.trim().equals(""))) return null;
@@ -503,7 +358,7 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
                 FormulaMeta formula=(FormulaMeta)controllMeta;
                 //topLabel.setText(formula.toString());
                 //formulaLabel.setText(formula.formatJavaStatement());
-                this.openWithString(FormulaFactory.convertFormulaToXml(formula));
+//                this.openWithString(FormulaFactory.convertFormulaToXml(formula));
             }
             //controllMeta=(BaseMeta)slctObj;
 			//updataDisplayPane();
@@ -513,9 +368,5 @@ public class FormulaMainPanel extends JPanel implements TreeSelectionListener//,
     public BaseMeta getControllMeta()
     {
         return controllMeta;
-    }
-    public FormulaMeta getFormulaMeta()
-    {
-        return formulaMeta;
     }
 }
