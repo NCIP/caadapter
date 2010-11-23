@@ -255,6 +255,7 @@ public class NodeContentElement
             term.setType(TermType.EXPRESSION);
             term.setName(this.getNodeName());
             term.setOperation(OperationType.getOperationTypeWithSymbol(this.getOperator()));
+            term.setDescription(this.getNodeDescription());
         }
         else if (nodeType.equals(TYPES[3]))  //Variable
         {

@@ -21,53 +21,58 @@ public class NewTermWizard extends JDialog implements ActionListener
     private NewTermFrontPage frontPage;
 
 
-    FormulaMainPanel mainPanel = null;
+    //FormulaMainPanel mainPanel2 = null;
+    FormulaButtonPane buttonPane = null;
     String type = null;
 
-    public NewTermWizard(Frame frame, FormulaMainPanel mainP, boolean modal)
+    public NewTermWizard(Frame frame, FormulaButtonPane mainP, boolean modal, NodeContentElement element)
             throws HeadlessException
     {
         super(frame, TITLE, modal);
         //this.type = type;
 
-        mainPanel = mainP;
-        initialize();
+        buttonPane = mainP;
+        initialize(element);
     }
-    public NewTermWizard(Dialog dialog, FormulaMainPanel mainP, boolean modal)
+    public NewTermWizard(Dialog dialog, FormulaButtonPane mainP, boolean modal, NodeContentElement element)
             throws HeadlessException
     {
         super(dialog, TITLE, modal);
         //this.type = type;
 
-        mainPanel = mainP;
-        initialize();
+        buttonPane = mainP;
+        initialize(element);
     }
-    public NewTermWizard(Frame frame, FormulaMainPanel mainP, String type, boolean modal)
+    public NewTermWizard(Frame frame, FormulaButtonPane mainP, String type, boolean modal)
             throws HeadlessException
     {
         super(frame, TITLE, modal);
         this.type = type;
 
-        mainPanel = mainP;
+        buttonPane = mainP;
         initialize();
     }
-    public NewTermWizard(Dialog dialog, FormulaMainPanel mainP, String type, boolean modal)
+    public NewTermWizard(Dialog dialog, FormulaButtonPane mainP, String type, boolean modal)
             throws HeadlessException
     {
         super(dialog, TITLE, modal);
         this.type = type;
 
-        mainPanel = mainP;
+        buttonPane = mainP;
         initialize();
     }
-
 
     private void initialize()
+    {
+        initialize(null);
+    }
+
+    private void initialize(NodeContentElement element)
     {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
-        frontPage = new NewTermFrontPage(mainPanel, this, type);
+        frontPage = new NewTermFrontPage(buttonPane.getRootPanel(), this, type);
 
 
         contentPane.add(frontPage, BorderLayout.CENTER);
@@ -86,7 +91,9 @@ public class NewTermWizard extends JDialog implements ActionListener
         buttonPanel.add(tempPanel);//, BorderLayout.EAST);
         southPanel.add(buttonPanel, BorderLayout.NORTH);
         contentPane.add(southPanel, BorderLayout.SOUTH);
+        if (element != null) setContentElement(element);
         pack();
+
         this.setSize(340,350);
         this.setVisible(true);
     }
@@ -171,5 +178,12 @@ public class NewTermWizard extends JDialog implements ActionListener
         setVisible(false);
         dispose();
     }
-
+    public FormulaButtonPane getButtonPane()
+    {
+        return buttonPane;
+    }
+    public void setContentElement(NodeContentElement contentElement)
+    {
+        frontPage.setContentElement(contentElement);
+    }
 }

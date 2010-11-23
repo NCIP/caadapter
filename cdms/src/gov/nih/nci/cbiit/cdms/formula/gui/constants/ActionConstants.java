@@ -40,5 +40,6 @@ public interface ActionConstants
     String FORMULA_FILE_EXTENSION = ".xml";
     String TEMPORARY_FILE_PREFIX = "TEMPcaAdapter";
     String TEMPORARY_FILE_EXTENSION = ".tmp";
+    String CAADAPTER_HOME_DIR_TAG = "{caAdapter_Home}";
 
 }
