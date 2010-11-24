@@ -49,17 +49,17 @@ public class ViewMouseAdapter extends MouseAdapter {
 			}
 			// Create PopupMenu for the Cell
 			JPopupMenu popupMenu =new JPopupMenu();
-			JMenuItem editItem=new JMenuItem("Edit");
+			JMenuItem editItem=new JMenuItem("Edit Term");
 			editItem.setEnabled(false);
 			popupMenu.add(editItem); 
-			JMenuItem deleteItem=new JMenuItem("Delete");
+			JMenuItem deleteItem=new JMenuItem("Delete Term");
 			deleteItem.setEnabled(false);
 			
-			if (formula.getStatus()==FormulaStatus.DRAFT)
-			{
-					editItem.setEnabled(true);
-					deleteItem.setEnabled(true);
-			}
+//			if (formula.getStatus()==FormulaStatus.DRAFT)
+//			{
+//					editItem.setEnabled(true);
+//					deleteItem.setEnabled(true);
+//			}
 			popupMenu.add(deleteItem);
 			popupMenu.show(e.getComponent(), e.getX(), e.getY());
 		

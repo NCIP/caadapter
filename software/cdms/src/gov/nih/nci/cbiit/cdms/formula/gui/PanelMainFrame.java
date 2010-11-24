@@ -39,7 +39,11 @@ public class PanelMainFrame extends JPanel {
 		return centralSplit;
 	}
 
-    public void selectedTermUpdated()
+    public JTree getLocalTree() {
+		return localTree;
+	}
+
+	public void selectedTermUpdated()
     {
     	int[] localTreeIndx=localTree.getSelectionRows();
     	//at select the root node
