@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<formulaStore name="gugk" xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core" xmlns:ns3="http://cdms.cbiit.nci.nih.gov/core">
+    <formula type="math" name="jkh">
+        <annotation></annotation>
+        <expression description="()" type="expression" operation="addition" name="jkh">
+            <term type="unknown" name="addend"/>
+            <term description="hh" type="expression" operation="subtraction" name="addend">
+                <term description="" value="yu" type="variable" name="minuend"/>
+                <term type="unknown" name="subtrahend"/>
+            </term>
+        </expression>
+    </formula>
+</formulaStore>

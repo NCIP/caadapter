@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <formulaStore name="Expression Templates" xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core" xmlns:ns3="http://cdms.cbiit.nci.nih.gov/core">
-	<formula type="math" name="addTemplate">
+	<formula type="math" name="addTemplate"  status="final">
 		<annotation>template formula:addition</annotation>
 		<expression type="expression" name="addTemplate" description="()" operation="addition">
 			<term type="unknown" name="addend"/>
 			<term type="unknown" name="addend"/>
 		</expression>
 	</formula>
-	<formula type="math" name="subTemplate">
+	<formula type="math" name="subTemplate" status="final">
 		<annotation>template formula:substraction</annotation>
 		<expression type="expression" name="subTemplate" description="()" operation="subtraction">
 			<term type="unknown" name="minuend"/>
 			<term type="unknown" name="subtrahend"/>
 		</expression>
 	</formula>
-	<formula type="math" name="multiplicationTempplate">
+	<formula type="math" name="multiplicationTempplate" status="final">
 		<annotation>template formula:substraction</annotation>
 		<expression type="expression" name="subTemplate" description="()" operation="multiplication">
 			<term type="unknown" name="factor"/>
 			<term type="unknown" name="factor"/>
 		</expression>
 	</formula>
-	<formula type="math" name="divisionTemplate">
+	<formula type="math" name="divisionTemplate" status="final">
 		<annotation>template formula:substraction</annotation>
 		<expression type="expression" name="subTemplate" description="()" operation="division">
 			<term type="unknown" name="dividend"/>
@@ -29,35 +29,35 @@
 		</expression>
 	</formula>
 	
-	<formula type="math" name="expTemplate">
+	<formula type="math" name="expTemplate" status="final">
 		<annotation>template formula:exponential</annotation>
 		<expression type="expression" name="expTemplate" description="()" operation="exponential">
 			<term type="unknown" name="base"/>
 			<term type="unknown" name="exponent"/>
 		</expression>
 	</formula>
-	<formula type="math" name="logarithmTemplate">
+	<formula type="math" name="logarithmTemplate" status="final">
 		<annotation>template formula:logarithm</annotation>
 		<expression type="expression" name="logarithmTemplate" description="()" operation="logarithm">
 			<term type="unknown" name="base"/>
 			<term type="unknown" name="argument"/>
 		</expression>
 	</formula>
-	<formula type="math" name="powerTemplate">
+	<formula type="math" name="powerTemplate" status="final">
 		<annotation>template formula:power</annotation>
 		<expression type="expression" name="powerTemplate" description="()" operation="power">
 			<term type="unknown" name="base"/>
 			<term type="unknown" name="index"/>
 		</expression>
 	</formula>
-	<formula type="math" name="radicalTemplate">
+	<formula type="math" name="radicalTemplate" status="final">
 		<annotation>template formula:radical</annotation>
 		<expression type="expression" name="expTemplate" description="()" operation="radical">
 			<term type="unknown" name="argument"/>
 			<term type="unknown" name="index"/>
 		</expression>
 	</formula>
-	<formula type="math" name="squareRootTemplate">
+	<formula type="math" name="squareRootTemplate" status="final">
 		<annotation>template formula:squareRoot</annotation>
 		<expression type="expression" name="expTemplate" description="()" operation="squareRoot">
 			<term type="unknown" name="argument"/>

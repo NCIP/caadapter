@@ -22,6 +22,9 @@ public class FormulaMeta extends BaseMeta {
 	private String annotation;
     @XmlAttribute
 	private FormulaType type;
+    @XmlAttribute
+	private FormulaStatus status;
+ 
 	public TermMeta getExpression() {
 		return expression;
 	}
@@ -37,6 +40,14 @@ public class FormulaMeta extends BaseMeta {
 
 	public void setAnnotation(String annotation) {
 		this.annotation = annotation;
+	}
+
+	public FormulaStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(FormulaStatus status) {
+		this.status = status;
 	}
 
 	public FormulaType getType() {
@@ -72,7 +83,8 @@ public class FormulaMeta extends BaseMeta {
 		Class<?> beanClass = this.getClass();
 
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-		propList.add( new PropertyDescriptor("Type", beanClass, "getType", null));
+		propList.add( new PropertyDescriptor("Group", beanClass, "getType", null));
+		propList.add( new PropertyDescriptor("Status", beanClass, "getStatus", null));
 		propList.add( new PropertyDescriptor("Annotation", beanClass, "getAnnotation", null));
 		//retrieve the expression term for "description"
 		propList.add( new PropertyDescriptor("Description", beanClass, "getExpression", null));

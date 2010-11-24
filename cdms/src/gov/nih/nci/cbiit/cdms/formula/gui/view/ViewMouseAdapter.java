@@ -1,6 +1,8 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.view;
 
-import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaStatus;
 import gov.nih.nci.cbiit.cdms.formula.gui.EditTermWizard;
 import gov.nih.nci.cbiit.cdms.formula.gui.FrameMain;
 
@@ -19,10 +21,15 @@ public class ViewMouseAdapter extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		super.mouseClicked(e);
-		
+		BaseMeta baseMeta=FrameMain.getSingletonInstance().getMainPanel().getCentralSplit().getControllMeta();
+		if (!(baseMeta instanceof FormulaMeta))
+			return;
+
+		FormulaMeta formula=(FormulaMeta)baseMeta;
 		if (e.getClickCount()==2)
 		{
-			
+			if (formula.getStatus()!=FormulaStatus.DRAFT)
+				return;
 			TermUiComponent metaUi=(TermUiComponent)e.getSource();
 			System.out.println("ViewMouseAdapter.mouseClicked()..double click:"+metaUi.getViewMeta());
 			FrameMain mainFrame=FrameMain.getSingletonInstance();
@@ -47,6 +54,12 @@ public class ViewMouseAdapter extends MouseAdapter {
 			popupMenu.add(editItem); 
 			JMenuItem deleteItem=new JMenuItem("Delete");
 			deleteItem.setEnabled(false);
+			
+			if (formula.getStatus()==FormulaStatus.DRAFT)
+			{
+					editItem.setEnabled(true);
+					deleteItem.setEnabled(true);
+			}
 			popupMenu.add(deleteItem);
 			popupMenu.show(e.getComponent(), e.getX(), e.getY());
 		

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <formulaStore name="Common Formula">
-	<formula type="math" name="PI Monthly">
+	<formula type="math" name="PI Monthly" status="final">
 		<annotation>Principal and Interest Monthly Payment</annotation>
 		<expression type="expression" name="PI Monthly" description="($)" operation="multiplication">
 			<term type="expression" name="factor" operation="multiplication">
@@ -25,7 +25,7 @@
 			</term>
 		</expression>
 	</formula>
-	<formula type="math" name="FahrenheitToCelsius">
+	<formula type="math" name="FahrenheitToCelsius" status="final">
 		<annotation>Convert Fahrenheit Degree to Celsius Degree</annotation>
 		<expression type="expression" name="FahrenheitToCelsius" description="(C)" operation="division">
 			<term type="expression" name="dividend" operation="multiplication">

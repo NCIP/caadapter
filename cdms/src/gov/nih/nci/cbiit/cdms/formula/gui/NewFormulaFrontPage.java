@@ -2,6 +2,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaStatus;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaType;
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
@@ -28,11 +29,10 @@ import javax.swing.JTextField;
 public class NewFormulaFrontPage extends JPanel
 {
     private JTextField fStoreNameField;
-    private JTextField fStoreStatusField;
     
     private JTextField formulaNameField;
     private JComboBox expressionTypeList;
-    private JTextField formulaStatusField;
+    private JComboBox formulaStatusList;
     private JTextField annotationField;
 
     /**
@@ -65,14 +65,6 @@ public class NewFormulaFrontPage extends JPanel
         centerPanel.add(fStoreNameField, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
-        JLabel formulaStoreStatus=new JLabel ("Formula Store Status");
-        fStoreStatusField=new JTextField("draft");
-        fStoreStatusField.setEditable(false);
-        centerPanel.add(formulaStoreStatus, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
-        centerPanel.add(fStoreStatusField, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
-
         JLabel seperatorLabel=new JLabel ( "     ");
         JLabel seperatorLabelright=new JLabel ( "     ");
         centerPanel.add(seperatorLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
@@ -101,9 +93,11 @@ public class NewFormulaFrontPage extends JPanel
         JLabel formulaStatusLabel = new JLabel("Formula Status");
         centerPanel.add(formulaStatusLabel, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
-        formulaStatusField = new JTextField("draft");
-        formulaStatusField.setEditable(false);
-        centerPanel.add(formulaStatusField, new GridBagConstraints(1, 5, 2, 1, 1.0, 0.0,
+        formulaStatusList = new JComboBox();
+        	for(FormulaStatus status:FormulaStatus.values())
+        		formulaStatusList.addItem(status);
+        formulaStatusList.setEditable(false);
+        centerPanel.add(formulaStatusList, new GridBagConstraints(1, 5, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
         JLabel variablesLabel = new JLabel("Annotation");
@@ -147,7 +141,7 @@ public class NewFormulaFrontPage extends JPanel
 		formula.setName(formulaNameField.getText());
 		formula.setType(FormulaType.MATH);
 		formula.setAnnotation(annotationField.getText());
- 
+		formula.setStatus((FormulaStatus)formulaStatusList.getSelectedItem());
 		//the following create formula expression
 		TermMeta formulaExpression=FormulaFactory.createTemplateTerm(type);
 		formulaExpression.setName(formulaNameField.getText());
