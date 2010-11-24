@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <formulaStore name="Body Surface Area" xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core" xmlns:ns3="http://cdms.cbiit.nci.nih.gov/core">
-    <formula type="math" name="BSA1">
+    <formula type="math" name="BSA1" status="complete">
         <annotation>Dubois  Dubois formula</annotation>
         <expression description="(m^2)" type="expression" operation="multiplication" name="BSA1">
             <term value="0.00718" type="constant" name="factor"/>
@@ -16,7 +16,7 @@
             </term>
         </expression>
     </formula>
-    <formula type="math" name="BSA2">
+    <formula type="math" name="BSA2" status="complete">
         <annotation>Dubois  Dubois formula: Alternative</annotation>
         <expression description="(m^2)" type="expression" operation="division" name="BSA2">
             <term type="expression" operation="multiplication" name="dividend">
@@ -32,7 +32,7 @@
             <term value="139.2" type="constant" name="divisor"/>
         </expression>
     </formula>
-    <formula type="math" name="BSA3">
+    <formula type="math" name="BSA3" status="complete">
         <annotation>Mosteller formula: used by Pharmacy and Therapeutics Committee of Cross Cancer Institue, Edmonton, Alberta, Canada</annotation>
         <expression description="(m^2)" type="expression" operation="squareRoot" name="BSA3">
             <term type="expression" operation="division" name="base">
@@ -44,7 +44,7 @@
             </term>
         </expression>
     </formula>
-    <formula type="math" name="BSA4">
+    <formula type="math" name="BSA4" status="complete">
         <annotation>Haycock formula</annotation>
         <expression description="(m^2)" type="expression" operation="multiplication" name="BSA4">
             <term value="0.024265" type="constant" name="factor"/>
@@ -60,7 +60,7 @@
             </term>
         </expression>
     </formula>
-    <formula type="math" name="BSA5">
+     <formula type="math" name="BSA5" status="complete">
         <annotation>Gehan and George formula</annotation>
         <expression description="(m^2)" type="expression" operation="multiplication" name="BSA5">
             <term value="0.0235" type="constant" name="factor"/>
@@ -76,7 +76,7 @@
             </term>
         </expression>
     </formula>
-    <formula type="math" name="BSA6">
+    <formula type="math" name="BSA6" status="complete">
         <annotation>Boyd formula</annotation>
         <expression description="(m^2)" type="expression" operation="multiplication" name="BSA6">
             <term value="0.0003207" type="constant" name="factor"/>
@@ -101,7 +101,7 @@
             </term>
         </expression>
     </formula>
-    <formula type="math" name="BSA7">
+    <formula type="math" name="BSA7" status="complete">
         <annotation>Fujimoto formula</annotation>
         <expression description="(m^2)" type="expression" operation="multiplication" name="BSA7">
             <term value="0.008883" type="constant" name="factor"/>
@@ -117,7 +117,7 @@
             </term>
         </expression>
     </formula>
-    <formula type="math" name="BSA8">
+    <formula type="math" name="BSA8" status="complete">
         <annotation>Takahira Formula </annotation>
         <expression description="(m^2)" type="expression" operation="multiplication" name="BSA8">
             <term value="0.007241" type="constant" name="factor"/>
