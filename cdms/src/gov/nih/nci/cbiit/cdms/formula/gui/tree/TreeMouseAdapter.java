@@ -2,6 +2,8 @@ package gov.nih.nci.cbiit.cdms.formula.gui.tree;
 
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStatus;
+import gov.nih.nci.cbiit.cdms.formula.gui.action.DeleteFormulaAction;
+import gov.nih.nci.cbiit.cdms.formula.gui.action.EditFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.ExecuteFormulaAction;
 
 import java.awt.Container;
@@ -42,8 +44,8 @@ public class TreeMouseAdapter extends MouseAdapter {
 				JMenuItem excItem=new JMenuItem(new ExecuteFormulaAction("Execute Formula"));
 				popupMenu.add(excItem);
 				
-				JMenuItem editItem=new JMenuItem ("Edit Formula");
-				JMenuItem deleteItem=new JMenuItem ("Delete Formula");
+				JMenuItem deleteItem =new JMenuItem (new DeleteFormulaAction("Delete Formula", treeNode));
+				JMenuItem editItem=new JMenuItem (new EditFormulaAction("Edit Formula", treeNode));
 				FormulaMeta formula=(FormulaMeta)treeNode.getUserObject();
 				if (formula.getStatus()==FormulaStatus.FINAL)
 				{

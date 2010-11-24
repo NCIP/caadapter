@@ -19,7 +19,12 @@ public class NewFormulaWizard extends JDialog implements ActionListener
     private NewFormulaFrontPage frontPage;
 
 
-    public NewFormulaWizard(Frame owner, String title, boolean modal) throws HeadlessException
+    public NewFormulaFrontPage getFrontPage() {
+		return frontPage;
+	}
+
+
+	public NewFormulaWizard(Frame owner, String title, boolean modal) throws HeadlessException
     {
         super(owner, title, modal);
         initialize();

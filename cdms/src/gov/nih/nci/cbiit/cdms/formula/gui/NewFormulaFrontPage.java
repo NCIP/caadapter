@@ -34,6 +34,7 @@ public class NewFormulaFrontPage extends JPanel
     private JComboBox expressionTypeList;
     private JComboBox formulaStatusList;
     private JTextField annotationField;
+    private FormulaMeta formula;
 
     /**
      * Creates a new <code>JPanel</code> with a double buffer
@@ -110,7 +111,13 @@ public class NewFormulaFrontPage extends JPanel
         this.add(centerPanel, BorderLayout.CENTER);
     }
 
-
+	public void eidtFormula(FormulaMeta meta)
+	{
+		formula=meta;
+		formulaNameField.setText(formula.getName());
+		formulaStatusList.setSelectedItem(formula.getStatus());
+		expressionTypeList.setSelectedItem(formula.getExpression());
+	}
 
     public String validateInputFields()
     {
@@ -128,7 +135,19 @@ public class NewFormulaFrontPage extends JPanel
 
     public void createNewFormula()
     {
-        FormulaStore fs=FormulaFactory.getLocalStore();
+    	if (formula!=null)
+    	{
+    		formula.setName(formulaNameField.getText());
+    		formula.setAnnotation(annotationField.getText());
+    		formula.setStatus((FormulaStatus)formulaStatusList.getSelectedItem());
+    		if (formula.getExpression().getOperation()!=(OperationType)expressionTypeList.getSelectedItem())
+    		{
+    			TermMeta newFormulaExpression=FormulaFactory.createTemplateTerm((OperationType)expressionTypeList.getSelectedItem());
+    			formula.setExpression(newFormulaExpression);
+    		}
+    		return;
+    	}
+    	FormulaStore fs=FormulaFactory.getLocalStore();
         if (fs==null)
         {	
         	fs=new FormulaStore();
@@ -137,20 +156,20 @@ public class NewFormulaFrontPage extends JPanel
         	fs.setFormula(fsFormulas);
         }
         OperationType type=(OperationType)expressionTypeList.getSelectedItem();
-		FormulaMeta formula=new FormulaMeta();
-		formula.setName(formulaNameField.getText());
-		formula.setType(FormulaType.MATH);
-		formula.setAnnotation(annotationField.getText());
-		formula.setStatus((FormulaStatus)formulaStatusList.getSelectedItem());
+		FormulaMeta newFormula=new FormulaMeta();
+		newFormula.setName(formulaNameField.getText());
+		newFormula.setType(FormulaType.MATH);
+		newFormula.setAnnotation(annotationField.getText());
+		newFormula.setStatus((FormulaStatus)formulaStatusList.getSelectedItem());
 		//the following create formula expression
 		TermMeta formulaExpression=FormulaFactory.createTemplateTerm(type);
 		formulaExpression.setName(formulaNameField.getText());
-		formula.setExpression(formulaExpression);
-		fs.getFormula().add(formula);
+		newFormula.setExpression(formulaExpression);
+		fs.getFormula().add(newFormula);
 		FormulaFactory.updateLocalStore(fs);
 
 		PanelMainFrame mainPanel= FrameMain.getSingletonInstance().getMainPanel();
-  	   	mainPanel.localFormulaStoreUpdated(fs, formula);
+  	   	mainPanel.localFormulaStoreUpdated(fs, newFormula);
      }
 
 }
