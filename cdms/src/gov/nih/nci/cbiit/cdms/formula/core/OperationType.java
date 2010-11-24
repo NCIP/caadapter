@@ -90,7 +90,7 @@ public enum OperationType {
         else if (value().equals(MULTIPLICATION.value))
             return "\u00D7";
         else if (value().equals(DIVISION.value()))
-            return " / ";
+        	 return "\u00F7";
         else if (value().equals(POWER.value))
             return "^";
         return value();

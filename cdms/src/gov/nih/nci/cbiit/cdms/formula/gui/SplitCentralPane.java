@@ -53,7 +53,6 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 		// TODO Auto-generated method stub
 
 		JTree slctTree=(JTree)arg0.getSource();
-		slctTree.getLastSelectedPathComponent();
 		DefaultMutableTreeNode slectTreeNode=(DefaultMutableTreeNode)slctTree.getLastSelectedPathComponent();
 		if (slectTreeNode==null)
 			return;

@@ -39,6 +39,15 @@ public class PanelMainFrame extends JPanel {
 		return centralSplit;
 	}
 
+    public void selectedTermUpdated()
+    {
+    	int[] localTreeIndx=localTree.getSelectionRows();
+    	//at select the root node
+    	localTree.setSelectionRow(0);
+    	//then select the pre-selected Formula to
+    	//trigger GUI updating
+    	localTree.setSelectionRow(localTreeIndx[0]);
+    }
     /**
 	 * Save local formula store into a local file
 	 * @param sameStore If save the local store to its original file
