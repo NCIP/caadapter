@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 
 import javax.swing.*;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.*;
@@ -37,7 +38,7 @@ public class EditTermWizard extends JDialog implements ActionListener
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
-        frontPage = new EditTermFrontPage(this, type);
+        frontPage = new EditTermFrontPage(metaView);
         contentPane.add(frontPage, BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel(new BorderLayout());
@@ -63,45 +64,19 @@ public class EditTermWizard extends JDialog implements ActionListener
         String command = e.getActionCommand();
         if (CREATE_TERM_COMMAND.equals(command))
         {
-            if(!frontPage.validateInputFields())
+        	String errMsg=frontPage.validateInputFields();
+            if(errMsg.equals(""))
             {
-                JOptionPane.showMessageDialog(this, "Term is null or blank", "Null Term values", JOptionPane.ERROR_MESSAGE);
- 
-                return;
+            	frontPage.updateTerm();
+            	FrameMain mainFrame=FrameMain.getSingletonInstance();
+            	mainFrame.getMainPanel().selectedTermUpdated();
             }
             else
             {
-                String type = frontPage.getTermType();
-                if (type.equals(NodeContentElement.TYPES[4]))
-                {
-                    String val = frontPage.getTermValue();
-                    if (val == null) val = "";
-                    else val = val.trim();
-                    if (val.equals(""))
-                    {
-                        JOptionPane.showMessageDialog(this, "Null or Empty Number value", "Null Number value", JOptionPane.ERROR_MESSAGE);
- 
-                        return;
-                    }
-                    try
-                    {
-                        Double.parseDouble(val);
-                    }
-                    catch(NumberFormatException ne)
-                    {
-                        JOptionPane.showMessageDialog(this, "This is Not a Number : " + val, "NumberFormatException", JOptionPane.ERROR_MESSAGE);
- 
-                        return;
-                    }
-                }
- 
+                JOptionPane.showMessageDialog(this, errMsg, "Invalid Inputs", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         }
-//        else if (CANCEL_COMMAND.equals(command))
-//        {
-// 
-//        }
-
         setVisible(false);
         dispose();
     }
