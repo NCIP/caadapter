@@ -47,7 +47,7 @@
 			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
 		</war>	
 		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">	
-			<property name="ws.module.name" value="caadapterWS-cmts" />
+			<property name="ws.module.name" value="caadapterWS-cdms" />
 			<property name="project.dist.dir" value="${dist.dir}" />
 		</ant>
 		
@@ -58,7 +58,7 @@
 		<echo message="build:webstart --copy resource"/>
 		<copy todir="${dist.dir}/webstart" failonerror="false">
 			<fileset dir="${lib.dir}">
-				<include name="caAdapter.jar"/>
+				<!--<include name="caAdapter.jar"/>
 				<include name="commons-beanutils.jar"/>
 				<include name="commons-logging-1.0.4.jar"/>
 				<include name="dom4j-1.4.jar"/>
@@ -72,13 +72,13 @@
 				<include name="log4j-1.2.8.jar"/>
 				<include name="saxon9.jar"/>
 				<include name="saxon9-xqj.jar"/>
-				<include name="xbean.jar"/>
-				<include name="xercesImpl.jar"/>
+				<include name="xbean.jar"/> 
+				<include name="xercesImpl.jar"/> -->
 			</fileset>
 			<fileset dir="${dist.dir}/../caadapter-api">
-				<include name="cmts.jar"/>
-				<include name="cmtsUI.jar"/>
-				<include name="cmts-resources.jar"/>
+				<include name="cdms.jar"/>
+				<include name="cdmsUI.jar"/>
+				<include name="cdms-resources.jar"/>
 			</fileset>
 		</copy>
 	</target>
@@ -105,16 +105,16 @@
     
     		
 	<target name="dist_bin" depends="jar" description="create the binary distribution">
-		<zip destfile="${dist.dir}/cmts_${release.version}_Bin_${DATE}.zip">
+		<zip destfile="${dist.dir}/cdms_${release.version}_Bin_${DATE}.zip">
 			<zipfileset dir="${lib.dir}" prefix="lib">
 				<exclude name="rt.jar"/>
 			</zipfileset>
 			<zipfileset dir="${dist.dir}" prefix="lib">
-				<include name="cmts.jar" />
-				<include name="cmts-resources.jar" />
+				<include name="cdms.jar" />
+				<include name="cdms-resources.jar" />
 			</zipfileset>
 			<zipfileset dir="${dist.dir}">
-				<include name="cmtsUI.jar" />
+				<include name="cdmsUI.jar" />
 			</zipfileset>
 			<zipfileset dir="${basedir}">
 				<include name="workingspace/**" />
@@ -125,7 +125,7 @@
 	</target>
 
 	<target name="dist_src" depends="clean, init" description="create the source distribution">
-		<zip destfile="${dist.dir}/cmts_${release.version}_Src_${DATE}.zip" basedir="${basedir}">
+		<zip destfile="${dist.dir}/cdms_${release.version}_Src_${DATE}.zip" basedir="${basedir}">
 			<exclude name="bin/**" />
 			<exclude name="build/**" />
 			<exclude name="dist/**" />
@@ -140,23 +140,27 @@
 				<exclude name="**/CVS/**" />
 			</fileset>
 		</copy -->
-		<jar destfile="${dist.dir}/cmts.jar">
+		<jar destfile="${dist.dir}/lib/cdms.jar">
 			<fileset dir="${build.dir}" excludes="**/Test.class **/ui/**" />
 			<!-- fileset dir="${basedir}" includes="config/*.*" /-->
 			<!-- fileset dir="${etc.dir}" excludes="**/ucum-expression.xml" /-->
 			<!-- fileset dir="${src.dir}" excludes="**/*.java" /-->
 		</jar>
-		<jar destfile="${dist.dir}/cmts-resources.jar">
+		<!--<jar destfile="${dist.dir}/cdms-resources.jar">
 			<fileset dir="${resources.dir}" excludes="**/CVS/**" />
-		</jar>
-		<jar destfile="${dist.dir}/cmtsUI.jar">
+		</jar> -->
+		<jar destfile="${dist.dir}/lib/cdmsUI.jar">
 			<fileset dir="${build.dir}" includes="**/ui/**" />
 			<manifest>
-				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cmts.ui.main.MainFrame" />
-				<attribute name="Class-Path" value=". lib/cmts.jar lib/cmts-resources.jar ${distribution.manifest.class.property}" />
+				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cdms.formula.gui.FrameMain" />
+				<!-- <attribute name="Class-Path" value=". lib/cdms.jar lib/cdms-resources.jar ${distribution.manifest.class.property}" /> -->
+				<attribute name="Class-Path" value="cdms.jar cdms-resources.jar ${distribution.manifest.class.property}" />
 			</manifest>
 		</jar>
 		<delete dir="${build.dir}" failonerror="false"/>
+		<zip destfile="${basedir}/dist.zip">
+            <fileset dir="${dist.dir}" includes="**"/>		
+		</zip>
 	</target>
 	
 	<target name="clean">
@@ -170,6 +174,14 @@
 	<target name="init" depends="clean">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${dist.dir}/lib" />
+		<mkdir dir="${dist.dir}/datastore" />
+		<copy todir="${dist.dir}/datastore">
+			<fileset dir="${datastore.dir}" includes="**"/>
+		</copy>
+		<copy todir="${dist.dir}">
+			<fileset dir="${basedir}" includes="run.bat"/>
+		</copy>
 		<echo message="java.class.path:${java.class.path}"/>
 		<tstamp>
 			<format property="DATE" pattern="MM-dd-yy" locale="en_us" />
@@ -210,7 +222,7 @@
 
 			<formatter type="plain" />
 
-			<!-- test name="gov.nih.nci.cbiit.cmts.test.MappingTest" haltonfailure="no" outfile="result">
+			<!-- test name="gov.nih.nci.cbiit.cdms.test.MappingTest" haltonfailure="no" outfile="result">
 				<formatter type="xml" />
 			</test -->
 
@@ -223,17 +235,64 @@
 			</batchtest>
 		</junit>
 	</target>
+	
+	
+	
+    <target name="setup" depends="compile-test">
+        <echo message="-------- Setup dist module  --------"/>
+        <copy todir="${dist.dir}">
+            <fileset dir="${datastore.dir}"/>
+            <fileset dir="${basedir}">
+                <include name="*run.bat"/>
+            </fileset>
+            <!--<fileset dir="${mms.module.home}/build"/>
+            <fileset dir="${dataview.module.home}/build"/>
+            <fileset dir="${sdtm.module.home}/build"/>
+            <fileset dir="${ui.module.home}/build"/> -->
+            <!-- fileset dir="${lib.dir}"/ -->
+        </copy>
+        
+        <!--
+        <copy todir="${build.dir}">
+            <fileset dir="${ui.module.home}/resources">
+                <exclude name="images/help_images/**"/>
+            </fileset>
+            <fileset dir="${basedir}/etc">
+            	<include name="*Notes.txt"/>
+            	<include name="warning/**"/>
+            	<include name="license/**"/>
+            	<include name="map/functions/**"/>
+            </fileset>
+            <fileset dir="${basedir}/docs/4.3">
+            	<include name="*Notes.txt"/>
+            </fileset>
+        </copy>
+        
+        <delete includeemptydirs="true">
+            <fileset dir="${dist.dir}" includes="**/*"/>
+        </delete>
 
+        <jar destfile="${project.ref.lib.dir}/${project.jar.name}">
+            <fileset dir="${build.dir}"/>
+            <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
+        </jar>
+        -->
+    	
+    	<!-- antcall target="add-license"/ -->
+		<!-- <antcall target="dist.prepare" /> -->
+    </target>
+    
+    
 	<target name="doc" description="Generate JavaDoc">
 		<mkdir dir="${javadoc.dir}" />
-		<javadoc destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="CMPS">
+		<javadoc destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="CDMS">
 
 			<packageset dir="${src.dir}" defaultexcludes="yes">
-				<include name="gov/nih/nci/cbiit/cmts/**" />
+				<include name="gov/nih/nci/cbiit/cdms/**" />
 			</packageset>
 
 			<doctitle>
-				CMTS
+				cdms
 			</doctitle>
 			<bottom>
 
