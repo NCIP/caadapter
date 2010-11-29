@@ -1,4 +1,4 @@
-<project name="Common Mapping and Transformation Service" default="jar" basedir=".">
+<project name="Clinical Data Transformation Service" default="jar" basedir=".">
 	<!-- Tell ant to use my environment variables -->
 	<property environment="env" />
 	<property file="./build.properties" />
@@ -111,15 +111,12 @@
 			</zipfileset>
 			<zipfileset dir="${dist.dir}" prefix="lib">
 				<include name="cdms.jar" />
-				<include name="cdms-resources.jar" />
-			</zipfileset>
-			<zipfileset dir="${dist.dir}">
-				<include name="cdmsUI.jar" />
 			</zipfileset>
 			<zipfileset dir="${basedir}">
-				<include name="workingspace/**" />
+				<include name="workingspace/**.*" />
 				<include name="*.bat" />
-				<include name="etc/**" />
+				<include name="etc/**/*" />
+				<include name="datastore/**/*"/>
 			</zipfileset>
 		</zip>
 	</target>
@@ -129,70 +126,33 @@
 			<exclude name="bin/**" />
 			<exclude name="build/**" />
 			<exclude name="dist/**" />
-			<exclude name="**/CVS/**" />
 		</zip>
 	</target>
 	
 	<target name="jar" depends="compile" description="create the distribution jars">
 		<echo> ${distribution.manifest.class.property} </echo>
-		<!-- copy todir="${build.dir}">
-			<fileset dir="resources">
-				<exclude name="**/CVS/**" />
-			</fileset>
-		</copy -->
-		<jar destfile="${dist.dir}/lib/cdms.jar">
+		<jar destfile="${dist.dir}/cdms.jar">
 			<fileset dir="${build.dir}" excludes="**/Test.class **/ui/**" />
-			<!-- fileset dir="${basedir}" includes="config/*.*" /-->
-			<!-- fileset dir="${etc.dir}" excludes="**/ucum-expression.xml" /-->
-			<!-- fileset dir="${src.dir}" excludes="**/*.java" /-->
-		</jar>
-		<!--<jar destfile="${dist.dir}/cdms-resources.jar">
-			<fileset dir="${resources.dir}" excludes="**/CVS/**" />
-		</jar> -->
-		<jar destfile="${dist.dir}/lib/cdmsUI.jar">
-			<fileset dir="${build.dir}" includes="**/ui/**" />
 			<manifest>
 				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cdms.formula.gui.FrameMain" />
-				<!-- <attribute name="Class-Path" value=". lib/cdms.jar lib/cdms-resources.jar ${distribution.manifest.class.property}" /> -->
 				<attribute name="Class-Path" value="cdms.jar cdms-resources.jar ${distribution.manifest.class.property}" />
 			</manifest>
 		</jar>
 		<delete dir="${build.dir}" failonerror="false"/>
-		<zip destfile="${basedir}/dist.zip">
-            <fileset dir="${dist.dir}" includes="**"/>		
-		</zip>
 	</target>
 	
 	<target name="clean">
 		<delete dir="${build.dir}" includeEmptyDirs="true" />
 		<delete dir="${dist.dir}" includeEmptyDirs="true" />
-		<delete>
-			<fileset dir="." includes="*.zip" />
-		</delete>
 	</target>
 
 	<target name="init" depends="clean">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist.dir}" />
-		<mkdir dir="${dist.dir}/lib" />
-		<mkdir dir="${dist.dir}/datastore" />
-		<copy todir="${dist.dir}/datastore">
-			<fileset dir="${datastore.dir}" includes="**"/>
-		</copy>
-		<copy todir="${dist.dir}">
-			<fileset dir="${basedir}" includes="run.bat"/>
-		</copy>
 		<echo message="java.class.path:${java.class.path}"/>
 		<tstamp>
 			<format property="DATE" pattern="MM-dd-yy" locale="en_us" />
 		</tstamp>
-		<echo message="env:${env}"/>
-		<echo message="java.endorsed.dirs:${java.endorsed.dirs}"/>
-		<echo message="java.specification.version:${java.specification.version}"/>
-		<echo message="java.vm.name:${java.vm.name}"/>
-		<echo message="java.vm.specification.version:${java.vm.specification.version}"/>
-		<echo message="java.vm.version:${java.vm.version}"/>
-		<echo message="java.ext.dirs:${java.ext.dirs}"/>
 	</target>
 	<target name="compile" depends="init">
 		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="off">
