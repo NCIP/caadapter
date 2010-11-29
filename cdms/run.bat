@@ -1,1 +1,1 @@
-java -Xmx521m -jar ./lib/cdmsUI.jar
+java -Xmx521m -jar ./lib/cdms.jar
