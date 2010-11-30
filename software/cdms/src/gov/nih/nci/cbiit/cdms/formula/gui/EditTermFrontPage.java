@@ -25,6 +25,7 @@ public class EditTermFrontPage extends JPanel implements ActionListener
     private JComboBox operationComboBox;
     private JTextField descriptionField;
     private JTextField valueField;
+    private JTextField unitField;
     private JLabel valueLabel;
 
     private TermMeta metaView;
@@ -76,10 +77,17 @@ public class EditTermFrontPage extends JPanel implements ActionListener
         centerPanel.add(valueField, new GridBagConstraints(1, 3, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
       
-        centerPanel.add(new JLabel("Description"), new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+        centerPanel.add(new JLabel("Unit"), new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
+        unitField =new JTextField(metaView.getUnit());
+        centerPanel.add(unitField, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
+      
+        
+        centerPanel.add(new JLabel("Description"), new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
         descriptionField =new JTextField(metaView.getDescription());
-        centerPanel.add(descriptionField, new GridBagConstraints(1, 4, 2, 1, 1, 0.0,
+        centerPanel.add(descriptionField, new GridBagConstraints(1, 5, 2, 1, 1, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
         this.add(centerPanel, BorderLayout.CENTER);
 
@@ -106,7 +114,7 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 	      	   if (valueField.getText()==null||valueField.getText().trim().equals("")) 
 	     		   rtnB.append("Set value for "+val.toString() +" !!");
 	      	   try {
-	      		   Integer.valueOf(valueField.getText());
+	      		   Double.valueOf(valueField.getText());
 	      	   }
 	      	   catch (NumberFormatException e)
 	      	   {
@@ -132,11 +140,13 @@ public class EditTermFrontPage extends JPanel implements ActionListener
     	TermType val = (TermType)typeComboBox.getSelectedItem();
 		metaView.setType(val);
 		metaView.setDescription(descriptionField.getText());
+		metaView.setUnit(unitField.getText());
     	switch (val) 
     	{
 	    	case UNKNOWN:
 	    		metaView.setOperation(null);
 	    		metaView.setValue(null);
+	    		metaView.setUnit(null);
 	    		break;
 	    	case EXPRESSION:
 	    		metaView.setOperation((OperationType)operationComboBox.getSelectedItem());

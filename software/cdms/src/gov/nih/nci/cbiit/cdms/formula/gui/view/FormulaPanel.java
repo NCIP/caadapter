@@ -65,8 +65,8 @@ public class FormulaPanel extends JPanel{
 		String lbText="No formula is selected";
 		if (f!=null)
 			lbText=f.getName();
-		if (f.getExpression().getDescription()!=null)
-			lbText=lbText+f.getExpression().getDescription();
+		if (f.getExpression().getUnit()!=null)
+			lbText=lbText+"("+f.getExpression().getUnit()+")";
 		
 		lbText=lbText+" = ";
 		nameLabel=new JLabel(lbText);

@@ -1,7 +1,5 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.properties;
 
-import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
-
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 
@@ -166,9 +164,6 @@ import javax.swing.table.AbstractTableModel;
 						break;
 					}//end of case 1:
 			}
-			if (result instanceof TermMeta)
-				result =((TermMeta)result).getDescription();
-				
 			return result;
 		}
 

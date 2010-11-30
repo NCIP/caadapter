@@ -2,12 +2,12 @@
 <formulaStore name="Common Formula">
 	<formula type="math" name="PI Monthly" status="final">
 		<annotation>Principal and Interest Monthly Payment</annotation>
-		<expression type="expression" name="PI Monthly" description="($)" operation="multiplication">
+		<expression type="expression" name="PI Monthly" unit="$" description="($)" operation="multiplication">
 			<term type="expression" name="factor" operation="multiplication">
 				<term type="constant" name="factor" value="1200" />
 				<term type="expression" name="factor" operation="division">
-					<term type="variable" name="dividend" value="principal" description="($)" />
-					<term type="variable" name="divisor" value="annulaRate" description="(%)"/>
+					<term type="variable" name="dividend" value="principal" unit="$" description="total principal amount" />
+					<term type="variable" name="divisor" value="annulaRate" unit="%" description="annual interest rate in percentage"/>
 				</term>
 			</term>
 			<term type="expression" name="factor" operation="subtraction" >
@@ -15,7 +15,7 @@
 					<term type="expression" name="base" operation="addition">
 						<term type="constant" name="addend" value="1"/> 
 						<term type="expression" name="addend" operation="division">
-							<term type="variable" name="dividend" value="annulaRate" description="(%)"/>
+							<term type="variable" name="dividend" value="annulaRate" unit="%" description="annual interest rate in percentage"/>
 							<term type="constant" name="divisor" value="1200"/>
 						</term>
 					</term> 
@@ -27,10 +27,10 @@
 	</formula>
 	<formula type="math" name="FahrenheitToCelsius" status="final">
 		<annotation>Convert Fahrenheit Degree to Celsius Degree</annotation>
-		<expression type="expression" name="FahrenheitToCelsius" description="(C)" operation="division">
+		<expression type="expression" name="FahrenheitToCelsius" unit="C" description="celsius degree" operation="division">
 			<term type="expression" name="dividend" operation="multiplication">
 				<term type="expression" name="factor" operation="subtraction">
-					<term type="variable" name="minuend" description="(degree_F)" value="F"/> 
+					<term type="variable" name="minuend" unit="F" description="Fahrenteit degree" value="F"/> 
 					<term type="constant" name="subtrahend" value="32"/>
 				</term>
 				<term type="constant" name="factor" value="5"/>

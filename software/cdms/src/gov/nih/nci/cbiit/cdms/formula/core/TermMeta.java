@@ -18,69 +18,42 @@ import javax.xml.bind.annotation.XmlType;
 })
 
 public class TermMeta extends BaseMeta{
-	private List<TermMeta> term;
+	@XmlAttribute
+	private String description;
     @XmlAttribute
 	private OperationType operation;
+    private List<TermMeta> term;
     @XmlAttribute
 	private TermType type;
     @XmlAttribute
-	private String value;
+	private String unit;
     @XmlAttribute
-	private String description;
+	private String value;
     
     
-	public List<TermMeta> getTerm() {
-		return term;
-	}
-	public void setTerm(List<TermMeta> term) {
-		this.term = term;
-	}
-	public OperationType getOperation() {
-		return operation;
-	}
-	public void setOperation(OperationType operation) {
-		this.operation = operation;
-	}
-	public TermType getType() {
-		return type;
-	}
-	public void setType(TermType type) {
-		this.type = type;
-	}
-	
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-
-	public List<String> listParameters()
+	@Override
+	public Object clone()
 	{
-		ArrayList<String> rtnList=new ArrayList<String>();
-		if (this.getType().equals(TermType.VARIABLE))
-			rtnList.add(getValue());
+		try {
+			TermMeta clonnedObj=(TermMeta)super.clone();
+			//deep cloning
+			clonnedObj.setTerm(new ArrayList<TermMeta>());
 			
-		if (getTerm()==null)
-			return rtnList;
-		for (TermMeta childTerm:getTerm())
-		{
-			List<String> childP=childTerm.listParameters();
-			for (String p:childP)
-				if (!rtnList.contains(p))
-					rtnList.add(p);
+			if (this.getTerm()!=null)
+			{
+				for (TermMeta childTerm:this.getTerm())
+				{
+					TermMeta clonnedChild=(TermMeta)childTerm.clone();
+					clonnedObj.getTerm().add(clonnedChild);
+				}
+			}
+
+			return clonnedObj;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
-			
- 
-		return rtnList;
-			
+		return null;
 	}
 	public String excute(HashMap param)
 	{
@@ -178,32 +151,94 @@ public class TermMeta extends BaseMeta{
 		}
 		return rtnBf.toString();
 	}
-	
+	public String getDescription() {
+		return description;
+	}
+	public OperationType getOperation() {
+		return operation;
+	}
 	@Override
-	public Object clone()
-	{
-		try {
-			TermMeta clonnedObj=(TermMeta)super.clone();
-			//deep cloning
-			clonnedObj.setTerm(new ArrayList<TermMeta>());
-			
-			if (this.getTerm()!=null)
-			{
-				for (TermMeta childTerm:this.getTerm())
-				{
-					TermMeta clonnedChild=(TermMeta)childTerm.clone();
-					clonnedObj.getTerm().add(clonnedChild);
-				}
-			}
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class<?> beanClass = this.getClass();
 
-			return clonnedObj;
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+        //propList.add( new PropertyDescriptor("Name", beanClass, "getName", null));
+        propList.add( new PropertyDescriptor("Type", beanClass, "getType", null));
+        if (getType().equals(TermType.EXPRESSION)) propList.add( new PropertyDescriptor("Operator", beanClass, "getOperation", null));
+        propList.add( new PropertyDescriptor("Value", beanClass, "getValue", null));
+        propList.add( new PropertyDescriptor("Unit", beanClass, "getUnit", null));
+        propList.add( new PropertyDescriptor("Description", beanClass, "getDescription", null));
+		PropertiesResult result =super.getPropertyDescriptors();
+
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+	public List<TermMeta> getTerm() {
+		return term;
+	}
+	@Override
+public String getTitle() {
+	// TODO Auto-generated method stub
+
+	    if (getType().equals(TermType.EXPRESSION)) return "Operator Properties";
+	    if (getType().equals(TermType.CONSTANT)) return "Constant Properties";
+	    if (getType().equals(TermType.VARIABLE)) return "Variable Properties";
+	return "Term Properties";
+}
+	
+	public TermType getType() {
+		return type;
+	}
+	public String getUnit() {
+		return unit;
+	}
+	public String getValue() {
+		return value;
+	}
+	public List<String> listParameters()
+	{
+		ArrayList<String> rtnList=new ArrayList<String>();
+		if (this.getType().equals(TermType.VARIABLE))
+			rtnList.add(getValue());
+			
+		if (getTerm()==null)
+			return rtnList;
+		for (TermMeta childTerm:getTerm())
+		{
+			List<String> childP=childTerm.listParameters();
+			for (String p:childP)
+				if (!rtnList.contains(p))
+					rtnList.add(p);
 		}
-		return null;
+			
+ 
+		return rtnList;
+			
 	}
 	
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public void setOperation(OperationType operation) {
+		this.operation = operation;
+	}
+	public void setTerm(List<TermMeta> term) {
+		this.term = term;
+	}
+	
+	public void setType(TermType type) {
+		this.type = type;
+	}
+	
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+    	public void setValue(String value) {
+			this.value = value;
+		}
+
 	public String toString()
 	{
 		StringBuffer rtnBf=new StringBuffer();
@@ -223,35 +258,5 @@ public class TermMeta extends BaseMeta{
 			 rtnBf.append(getDescription());
 		
 		return rtnBf.toString();
-	}
-
-    	@Override
-	public String getTitle() {
-		// TODO Auto-generated method stub
-
-            if (getType().equals(TermType.EXPRESSION)) return "Operator Properties";
-            if (getType().equals(TermType.CONSTANT)) return "Constant Properties";
-            if (getType().equals(TermType.VARIABLE)) return "Variable Properties";
-        return "Term Properties";
-	}
-
-	@Override
-	public PropertiesResult getPropertyDescriptors() throws Exception {
-		Class<?> beanClass = this.getClass();
-
-		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-        //propList.add( new PropertyDescriptor("Name", beanClass, "getName", null));
-        propList.add( new PropertyDescriptor("Type", beanClass, "getType", null));
-        if (getType().equals(TermType.EXPRESSION)) propList.add( new PropertyDescriptor("Operator", beanClass, "getOperation", null));
-        propList.add( new PropertyDescriptor("Value", beanClass, "getValue", null));
-		//retrieve the expression term for "description"
-        String descType = "Description";
-        //if (getType().equals(TermType.CONSTANT)) descType = "Unit";
-        if (getType().equals(TermType.VARIABLE)) descType = "Unit";
-        propList.add( new PropertyDescriptor(descType, beanClass, "getDescription", null));
-		PropertiesResult result =super.getPropertyDescriptors();
-
-		result.addPropertyDescriptors(this, propList);
-		return result;
 	}
 }
