@@ -14,7 +14,7 @@ import java.awt.*;
  */
 public class NewFormulaWizard extends JDialog implements ActionListener
 {
-    private static final String CREATE_TERM_COMMAND = "Create Formula";
+    private static final String CREATE_TERM_COMMAND = "Submit";
     private static final String CANCEL_COMMAND = "Cancel";
     private NewFormulaFrontPage frontPage;
 

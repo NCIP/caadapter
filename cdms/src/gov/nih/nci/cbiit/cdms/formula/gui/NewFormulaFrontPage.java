@@ -29,7 +29,7 @@ import javax.swing.JTextField;
 public class NewFormulaFrontPage extends JPanel
 {
     private JTextField fStoreNameField;
-    
+    private JTextField formulaUnitField;
     private JTextField formulaNameField;
     private JComboBox expressionTypeList;
     private JComboBox formulaStatusList;
@@ -74,38 +74,46 @@ public class NewFormulaFrontPage extends JPanel
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
         
-        JLabel dataFileLabel = new JLabel("Formula Name");
-        centerPanel.add(dataFileLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
+        JLabel fNameLabel = new JLabel("Formula Name");
+        centerPanel.add(fNameLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
         formulaNameField = new JTextField();
         centerPanel.add(formulaNameField, new GridBagConstraints(1, 3, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
+        JLabel fUnitLabel = new JLabel("Result Uint");
+        centerPanel.add(fUnitLabel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
+        formulaUnitField = new JTextField();
+        centerPanel.add(formulaUnitField, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
+
+        
         JLabel expressionTypeLabel = new JLabel("Expression Type",JLabel.RIGHT);
-        centerPanel.add(expressionTypeLabel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+        centerPanel.add(expressionTypeLabel, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
         expressionTypeList = new JComboBox();
         for (OperationType type:OperationType.values())
         	expressionTypeList.addItem(type);
         
-        centerPanel.add(expressionTypeList, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
+        centerPanel.add(expressionTypeList, new GridBagConstraints(1, 5, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
         JLabel formulaStatusLabel = new JLabel("Formula Status");
-        centerPanel.add(formulaStatusLabel, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
+        centerPanel.add(formulaStatusLabel, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
         formulaStatusList = new JComboBox();
         	for(FormulaStatus status:FormulaStatus.values())
         		formulaStatusList.addItem(status);
         formulaStatusList.setEditable(false);
-        centerPanel.add(formulaStatusList, new GridBagConstraints(1, 5, 2, 1, 1.0, 0.0,
+        centerPanel.add(formulaStatusList, new GridBagConstraints(1, 6, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
         JLabel variablesLabel = new JLabel("Annotation");
-        centerPanel.add(variablesLabel, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0,
+        centerPanel.add(variablesLabel, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLabel, 0, 0));
         annotationField = new JTextField();
-        centerPanel.add(annotationField, new GridBagConstraints(1, 6, 2, 1, 1.0, 0.0,
+        centerPanel.add(annotationField, new GridBagConstraints(1, 7, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsField, 0, 0));
 
         this.add(centerPanel, BorderLayout.CENTER);
@@ -115,6 +123,7 @@ public class NewFormulaFrontPage extends JPanel
 	{
 		formula=meta;
 		formulaNameField.setText(formula.getName());
+		formulaUnitField.setText(formula.getExpression().getUnit());
 		formulaStatusList.setSelectedItem(formula.getStatus());
 		expressionTypeList.setSelectedItem(formula.getExpression());
 	}
@@ -164,6 +173,7 @@ public class NewFormulaFrontPage extends JPanel
 		//the following create formula expression
 		TermMeta formulaExpression=FormulaFactory.createTemplateTerm(type);
 		formulaExpression.setName(formulaNameField.getText());
+		formulaExpression.setUnit(formulaUnitField.getText());
 		newFormula.setExpression(formulaExpression);
 		fs.getFormula().add(newFormula);
 		FormulaFactory.updateLocalStore(fs);

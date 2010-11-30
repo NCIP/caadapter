@@ -85,12 +85,21 @@ public class FormulaMeta extends BaseMeta {
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 		propList.add( new PropertyDescriptor("Group", beanClass, "getType", null));
 		propList.add( new PropertyDescriptor("Status", beanClass, "getStatus", null));
+		propList.add( new PropertyDescriptor("Unit", beanClass, "findExpressionUnit", null));
+		propList.add( new PropertyDescriptor("Description", beanClass, "findExpressionDescription", null));
 		propList.add( new PropertyDescriptor("Annotation", beanClass, "getAnnotation", null));
-		//retrieve the expression term for "description"
-		propList.add( new PropertyDescriptor("Description", beanClass, "getExpression", null));
 		PropertiesResult result =super.getPropertyDescriptors();
 
 		result.addPropertyDescriptors(this, propList);
 		return result;
+	}
+	
+	public String findExpressionUnit()
+	{
+		return getExpression().getUnit();
+	}
+	public String findExpressionDescription()
+	{
+		return getExpression().getDescription();
 	}
 }

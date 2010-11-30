@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<formulaStore name="gugk" xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core" xmlns:ns3="http://cdms.cbiit.nci.nih.gov/core">
-    <formula type="math" name="jkh">
+<formulaStore name="afaf" xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core" xmlns:ns3="http://cdms.cbiit.nci.nih.gov/core">
+    <formula status="draft" type="math" name="fa">
         <annotation></annotation>
-        <expression description="()" type="expression" operation="addition" name="jkh">
+        <expression unit="f" type="expression" operation="addition" description="()" name="fa">
             <term type="unknown" name="addend"/>
-            <term description="hh" type="expression" operation="subtraction" name="addend">
-                <term description="" value="yu" type="variable" name="minuend"/>
-                <term type="unknown" name="subtrahend"/>
-            </term>
+            <term value="lengh" unit="cm" type="variable" description="" name="addend"/>
         </expression>
     </formula>
 </formulaStore>

@@ -104,8 +104,11 @@ public class TermView {
 		else if (meta.getType().value().equals(TermType.CONSTANT.value())
 				||(meta.getType().value().equals(TermType.VARIABLE.value())))
 		{
+			String labelText=meta.getValue();
+			if (meta.getUnit()!=null)
+				labelText=labelText+"("+meta.getUnit()+")";
 			
-			termUiComponent=new TermUiComponent(meta.getValue(), term);
+			termUiComponent=new TermUiComponent(labelText, term);
 			width=meta.getValue().length()*5+VIEW_COMPONENT_PADDING;
 			System.out.println("TermView.processTermMeta()...width:"+width);
 			height= VIEW_COMPONENT_HEIGHT;
