@@ -1,6 +1,7 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 
 import javax.swing.JButton;
@@ -21,14 +22,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class ExecuteFormulaDialog extends JDialog implements ActionListener {
-//	private FrameMain mainFrame;
 	private FormulaMeta formula;
 	private JTextField resultField;
 	private HashMap <String, JTextField> paramFieldHash;
 	public ExecuteFormulaDialog(JFrame owner, String title, boolean modal)
 	{
 		super(owner, title,modal);
-//		mainFrame=(FrameMain)owner;
 		initUI();
 		setLocation(owner.getX()+owner.getWidth()/4,
 				owner.getY()+owner.getHeight()/4);
@@ -89,11 +88,11 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
         centerPanel.add(inputLabel, new GridBagConstraints(1, i, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
         i++;
-  		for (String  pName:formula.getExpression().listParameters())
+  		for (DataElement  pName:formula.getParameter())
 		{
-			JLabel pLabel=new JLabel(pName +":");
+			JLabel pLabel=new JLabel(pName.toString() +":");
 			JTextField pField=new JTextField("");
-			paramFieldHash.put(pName, pField);
+			paramFieldHash.put(pName.getName(), pField);
 
             centerPanel.add(pLabel, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,
                     GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -102,7 +101,7 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
             i++;
 		}
 
-		JLabel pLabel=new JLabel(formula.getName()+formula.getExpression().getDescription() +":");
+		JLabel pLabel=new JLabel(formula.getName()+"("+formula.getExpression().getUnit() +"):");
 		resultField=new JTextField("      " );
 		resultField.setEditable(false);
         centerPanel.add(pLabel, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,

@@ -93,13 +93,6 @@ public class FormulaFactory {
 		writer.close();
 	}
 	
-	public static FormulaMeta loadFormula(File f) throws JAXBException
-	{
-		JAXBContext jc=getJAXBContext();
-		Unmarshaller u=jc.createUnmarshaller();
-		JAXBElement<FormulaMeta> jaxbFormula=u.unmarshal(new StreamSource(f), FormulaMeta.class);
-		return jaxbFormula.getValue();
-	}
     public static FormulaMeta loadFormula(String str) throws JAXBException
 	{
 		JAXBContext jc=getJAXBContext();

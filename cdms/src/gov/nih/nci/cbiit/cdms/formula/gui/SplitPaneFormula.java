@@ -1,6 +1,7 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.gui.properties.PanelDefaultProperties;
 
@@ -61,7 +62,7 @@ public class SplitPaneFormula extends JSplitPane implements TreeSelectionListene
 			FormulaMeta formula=(FormulaMeta)controllMeta;
 			topPanel.add(new JLabel("Name:  " +formula.getName()));
 			topPanel.add(new JLabel("Annotation: "+formula.getAnnotation()));
-			for (String p:formula.getExpression().listParameters())
+			for (DataElement p:formula.getParameter()) 
 			{
 				String lbTxt="Parameter:  "+p;
 				topPanel.add(new JLabel(lbTxt));

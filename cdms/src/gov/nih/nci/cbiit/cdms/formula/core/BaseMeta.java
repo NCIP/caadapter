@@ -24,6 +24,9 @@ public abstract class BaseMeta implements PropertiesProvider, Serializable, Clon
     @XmlAttribute
 	private String name;
 
+    @XmlAttribute
+	private String id;
+
 	public String getName() {
 		return name;
 	}
@@ -32,6 +35,14 @@ public abstract class BaseMeta implements PropertiesProvider, Serializable, Clon
 		this.name = name;
 	}
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public abstract String formatJavaStatement();
 	
 	@Override
