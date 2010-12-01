@@ -1,5 +1,7 @@
 package gov.nih.nci.cbiit.cdms.formula.test;
 
+import java.util.Date;
+
 import javax.xml.bind.JAXBException;
 
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
@@ -37,6 +39,7 @@ public class FormulaTemplateTest {
 		TermMeta formulaExpression=FormulaFactory.createTemplateTerm(OperationType.ADDITION);
 		formulaExpression.setName("testExpression");
 		formula.setExpression(formulaExpression);
+		formula.setDateModified(new Date());
 		
 		
 		//the following add terms to formula expression

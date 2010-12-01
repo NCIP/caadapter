@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.test;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.xml.bind.JAXBException;
@@ -46,28 +47,15 @@ public class FormulaFactoryTest {
 	{
 		HashMap<String, String> paramHash=new HashMap<String, String>();
 		String testFile="workingspace/BSA8.xml";
-		FormulaMeta myFormula=FormulaFactory.loadFormula(new File(testFile));
-		System.out.println("FormulaFactoryTest.testExcute()...paramter:"+myFormula.getExpression().listParameters());
-		paramHash.put("weight", "5");
-		paramHash.put("height", "3");		
+		FormulaStore myStore=FormulaFactory.getCommonStore();
+		FormulaMeta formula=myStore.getFormula().get(0);
+		System.out.println("FormulaFactoryTest.testExcute()...paramter:"+formula.getParameter());
+		paramHash.put("annualRate", "6");
+		paramHash.put("principal", "100000");
+		paramHash.put("NoOfMonths", "360");
 		
-		System.out.println("FormulaFactoryTest.testExcute()...result:"+myFormula.getExpression().excute(paramHash));	
+		System.out.println("FormulaFactoryTest.testExcute()...result:"+formula.getExpression().excute(paramHash));	
 
-	}
-	
-
-	/**
-	 * test XSD parsing and marshaling of the generated Model Object
-	 * @throws JAXBException 
-	 */
-	@Test
-	public void testLoading() throws JAXBException
-	{
-		String testFile="workingspace/BSA7.xml";
-		FormulaMeta myFormula=FormulaFactory.loadFormula(new File(testFile));
-		System.out.println("FormulaFactoryTest.testLoading()..:\n"+myFormula.toString());
-		System.out.println("FormulaFactoryTest.testLoading().. java Statement:\n"+myFormula.formatJavaStatement());
-		System.out.println("FormulaFactoryTest.testLoading().. XML:\n"+FormulaFactory.convertFormulaToXml(myFormula));
 	}
 	
 	/**
@@ -103,7 +91,7 @@ public class FormulaFactoryTest {
 		formulaExpression.setOperation(OperationType.ADDITION);
 		formulaExpression.setTerm(new ArrayList<TermMeta>());
 		formula.setExpression(formulaExpression);
-		
+		formula.setDateModified(new Date());
 		
 		//the following add terms to formula expression
 		TermMeta addend1=new TermMeta();
