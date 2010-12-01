@@ -44,6 +44,14 @@ public class TreeMouseAdapter extends MouseAdapter {
 				JMenuItem excItem=new JMenuItem(new ExecuteFormulaAction("Execute Formula"));
 				popupMenu.add(excItem);
 				
+				JMenuItem paramAddItem=new JMenuItem("Add Parameter");
+				paramAddItem.setEnabled(false);
+				popupMenu.add(paramAddItem);
+				
+				JMenuItem paramItem=new JMenuItem("Delete Parameter");
+				paramItem.setEnabled(false);
+				popupMenu.add(paramItem);
+				
 				JMenuItem deleteItem =new JMenuItem (new DeleteFormulaAction("Delete Formula", treeNode));
 				JMenuItem editItem=new JMenuItem (new EditFormulaAction("Edit Formula", treeNode));
 				FormulaMeta formula=(FormulaMeta)treeNode.getUserObject();

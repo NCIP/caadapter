@@ -1,5 +1,11 @@
 package gov.nih.nci.cbiit.cdms.formula.core;
 
+import gov.nih.nci.cbiit.cdms.formula.gui.properties.PropertiesResult;
+
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
 
 public class DataElement extends BaseMeta {
@@ -71,6 +77,30 @@ public class DataElement extends BaseMeta {
 		this.usage = usage;
 	}
 
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "Parameter Properties";
+	}
+
+	@Override
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class<?> beanClass = this.getClass();
+
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add( new PropertyDescriptor("Description", beanClass, "getDescription", null));
+		propList.add( new PropertyDescriptor("Data Type", beanClass, "getDataType", null));
+		propList.add( new PropertyDescriptor("Unit", beanClass, "getUnit", null));
+		propList.add( new PropertyDescriptor("Usage", beanClass, "getUsage", null));	
+		propList.add( new PropertyDescriptor("CDE Public ID", beanClass, "getCdeId", null));
+		propList.add( new PropertyDescriptor("CDE URI", beanClass, "getCdeReference", null));
+		PropertiesResult result =super.getPropertyDescriptors();
+
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+	
+	@Override
 	public String toString()
 	{
 		if (getUnit()==null)
