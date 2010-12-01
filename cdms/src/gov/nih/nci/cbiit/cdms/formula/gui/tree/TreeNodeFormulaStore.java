@@ -1,5 +1,6 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.tree;
 
+import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,7 +22,18 @@ public class TreeNodeFormulaStore  extends DefaultMutableTreeNode {
 		if (store.getFormula()!=null)
 		{
 			for (FormulaMeta formula:store.getFormula())
-				this.add(new DefaultMutableTreeNode(formula));
+				addFormulaNode(formula);
 		}
+	}
+	
+	private void addFormulaNode(FormulaMeta formula)
+	{
+		DefaultMutableTreeNode formulaNode=new DefaultMutableTreeNode(formula);
+		for (DataElement parameter:formula.getParameter())
+		{
+			formulaNode.add(new DefaultMutableTreeNode(parameter));
+		}
+		
+		add(formulaNode);
 	}
 }
