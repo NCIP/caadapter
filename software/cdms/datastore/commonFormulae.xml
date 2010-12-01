@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <formulaStore name="Common Formula">
-	<formula type="math" name="PI Monthly" status="final">
+	<formula type="math" name="PI Monthly" status="final" dateModified="2010-12-01T10:14:33.609-05:00">
 		<annotation>Principal and Interest Monthly Payment</annotation>
-		<expression type="expression" name="PI Monthly" unit="$" description="($)" operation="multiplication">
-			<term type="expression" name="factor" operation="multiplication">
-				<term type="constant" name="factor" value="1200" />
-				<term type="expression" name="factor" operation="division">
-					<term type="variable" name="dividend" value="principal" unit="$" description="total principal amount" />
-					<term type="variable" name="divisor" value="annulaRate" unit="%" description="annual interest rate in percentage"/>
+		<expression type="expression" name="PI Monthly" unit="$" description="($)" operation="division">
+			<term type="expression" name="dividend"  operation="division">
+				<term type="expression" name="dividend" operation="multiplication">
+					<term type="variable" name="factor" value="principal" unit="$" description="total principal amount" />
+					<term type="variable" name="factor" value="annualRate" unit="%" description="annual interest rate in percentage"/>
 				</term>
+				<term type="constant" name="divisor" value="1200" />
 			</term>
-			<term type="expression" name="factor" operation="subtraction" >
-				<term type="expression" name="minuend" operation="power">											
-					<term type="expression" name="base" operation="addition">
-						<term type="constant" name="addend" value="1"/> 
-						<term type="expression" name="addend" operation="division">
-							<term type="variable" name="dividend" value="annulaRate" unit="%" description="annual interest rate in percentage"/>
-							<term type="constant" name="divisor" value="1200"/>
-						</term>
-					</term> 
-					<term type="variable" name="index" value="NoOfMonths"/>
+			<term type="expression" name="divisor" operation="subtraction" >
+				<term type="constant" name="minuend" value="1" /> 
+				<term type="expression" name="subtrahend"  operation="division">
+					<term type="constant" name="dividend" value="1" />
+					<term type="expression" name="divisor" operation="power">
+						<term type="expression" name="base" operation="addition">
+							<term type="constant" name="addend" value="1"/> 
+							<term type="expression" name="addend" operation="division">
+								<term type="variable" name="dividend" value="annualRate" unit="%" description="annual interest rate in percentage"/>
+								<term type="constant" name="divisor" value="1200"/>
+							</term>
+						</term> 
+						<term type="variable" name="index" value="NoOfMonths"/>
+					</term>
 				</term>	
-				<term type="constant" name="subtrahend" value="1" /> 
+
 			</term>
 		</expression>
+		<parameter name="annualRate" unit="%" dataType="number" usage="parameter" description="annual interest rate in percentage"/>
+		<parameter name="principal" unit="$" dataType="number" usage="parameter"  description="total principal amount" />
+		<parameter name="NoOfMonths" dataType="number" usage="parameter"  description="number of months to payback" />
 	</formula>
-	<formula type="math" name="FahrenheitToCelsius" status="final">
+	<formula type="math" name="FahrenheitToCelsius" status="final" dateModified="2010-12-01T10:14:33.609-05:00">
 		<annotation>Convert Fahrenheit Degree to Celsius Degree</annotation>
 		<expression type="expression" name="FahrenheitToCelsius" unit="C" description="celsius degree" operation="division">
 			<term type="expression" name="dividend" operation="multiplication">
 				<term type="expression" name="factor" operation="subtraction">
-					<term type="variable" name="minuend" unit="F" description="Fahrenteit degree" value="F"/> 
+					<term type="variable" name="minuend" unit="F" description="Fahrenheit degree" value="Fahrenheit"/> 
 					<term type="constant" name="subtrahend" value="32"/>
 				</term>
 				<term type="constant" name="factor" value="5"/>
 			</term>
 			<term type="constant" name="divisor" value="9"/>
-
 		</expression>
+	<parameter name="Fahrenheit"  unit="F" description="Fahrenheit degree" />
 	</formula>
 </formulaStore>

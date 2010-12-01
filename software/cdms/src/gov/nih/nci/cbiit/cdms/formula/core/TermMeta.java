@@ -4,7 +4,6 @@ import gov.nih.nci.cbiit.cdms.formula.gui.properties.PropertiesResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.beans.PropertyDescriptor;
 
@@ -58,11 +57,16 @@ public class TermMeta extends BaseMeta{
 	public String excute(HashMap param)
 	{
 		if (getType()==null||
-				getType().value().equals(TermType.CONSTANT.value()))
+				getType().equals(TermType.CONSTANT))
 			return getValue();
-		else if (getType().value().equals(TermType.VARIABLE.value()))
+		else if (getType().equals(TermType.VARIABLE))
+		{
+			System.out.println("TermMeta.excute()..parameter:"+param);
+			System.out.println("TermMeta.excute()...:"+getValue() +"..."+ param.get(getValue()));
 			return (String) param.get(getValue());
-		else if (getType().value().equals(TermType.EXPRESSION.value()))
+		
+		}
+		else if (getType().equals(TermType.EXPRESSION))
 		{
 			Double resultSt;
 			String termOne=getTerm().get(0).excute(param);
@@ -162,7 +166,6 @@ public class TermMeta extends BaseMeta{
 		Class<?> beanClass = this.getClass();
 
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-        //propList.add( new PropertyDescriptor("Name", beanClass, "getName", null));
         propList.add( new PropertyDescriptor("Type", beanClass, "getType", null));
         if (getType().equals(TermType.EXPRESSION)) propList.add( new PropertyDescriptor("Operator", beanClass, "getOperation", null));
         propList.add( new PropertyDescriptor("Value", beanClass, "getValue", null));
@@ -173,13 +176,13 @@ public class TermMeta extends BaseMeta{
 		result.addPropertyDescriptors(this, propList);
 		return result;
 	}
+	
 	public List<TermMeta> getTerm() {
 		return term;
 	}
+	
 	@Override
-public String getTitle() {
-	// TODO Auto-generated method stub
-
+	public String getTitle() {
 	    if (getType().equals(TermType.EXPRESSION)) return "Operator Properties";
 	    if (getType().equals(TermType.CONSTANT)) return "Constant Properties";
 	    if (getType().equals(TermType.VARIABLE)) return "Variable Properties";
@@ -195,27 +198,7 @@ public String getTitle() {
 	public String getValue() {
 		return value;
 	}
-	public List<String> listParameters()
-	{
-		ArrayList<String> rtnList=new ArrayList<String>();
-		if (this.getType().equals(TermType.VARIABLE))
-			rtnList.add(getValue());
-			
-		if (getTerm()==null)
-			return rtnList;
-		for (TermMeta childTerm:getTerm())
-		{
-			List<String> childP=childTerm.listParameters();
-			for (String p:childP)
-				if (!rtnList.contains(p))
-					rtnList.add(p);
-		}
-			
- 
-		return rtnList;
-			
-	}
-	
+
 
 	public void setDescription(String description) {
 		this.description = description;

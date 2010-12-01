@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.core;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import gov.nih.nci.cbiit.cdms.formula.gui.properties.PropertiesResult;
@@ -15,16 +16,36 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "formula", propOrder = {
 	"annotation",
-	"expression"
+	"expression",
+	"parameter"
 })
 public class FormulaMeta extends BaseMeta {
 	private TermMeta expression;
 	private String annotation;
+	private List<DataElement> parameter;
     @XmlAttribute
 	private FormulaType type;
     @XmlAttribute
 	private FormulaStatus status;
- 
+    @XmlAttribute
+    private Date dateModified;
+    
+	public List<DataElement> getParameter() {
+		return parameter;
+	}
+
+	public void setParameter(List<DataElement> parameter) {
+		this.parameter = parameter;
+	}
+
+	public Date getDateModified() {
+		return dateModified;
+	}
+
+	public void setDateModified(Date dateModified) {
+		this.dateModified = dateModified;
+	}
+
 	public TermMeta getExpression() {
 		return expression;
 	}
@@ -88,6 +109,7 @@ public class FormulaMeta extends BaseMeta {
 		propList.add( new PropertyDescriptor("Unit", beanClass, "findExpressionUnit", null));
 		propList.add( new PropertyDescriptor("Description", beanClass, "findExpressionDescription", null));
 		propList.add( new PropertyDescriptor("Annotation", beanClass, "getAnnotation", null));
+		propList.add( new PropertyDescriptor("Last Modified", beanClass, "getDateModified", null));
 		PropertiesResult result =super.getPropertyDescriptors();
 
 		result.addPropertyDescriptors(this, propList);
