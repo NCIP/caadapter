@@ -1,5 +1,4 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.view;
-
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -20,7 +19,6 @@ public class FormulaPanel extends JPanel{
 	public FormulaPanel(BaseMeta formula)
 	{
 		super();
-		this.setSize(350,250);
 		controlMeta=formula;
 		if (controlMeta==null)
 			return;
@@ -30,14 +28,14 @@ public class FormulaPanel extends JPanel{
 		{	
 			nameLabel=new JLabel("Formula Store:"+controlMeta.getName());
 			nameLabel.setLocation(this.getX()+this.getWidth()/2,
-					this.getY()+this.getHeight()/2-25);
+					this.getY()+this.getHeight()/2);
 			this.add(nameLabel);
 		}
 	}
 	
 	private void drawDivider(TermView view, int x0, int y0, Graphics g)
 	{
-		g.drawLine(x0, y0, x0+view.getWidth(), y0);
+		g.drawLine(x0,y0, x0+view.getWidth(), y0);
 	}
 
 	private void drawSquareRoot(TermView view, int x0, int y0, Graphics g)
@@ -69,9 +67,9 @@ public class FormulaPanel extends JPanel{
 			lbText=lbText+"("+f.getExpression().getUnit()+")";
 		
 		lbText=lbText+" = ";
-		nameLabel=new JLabel(lbText);
+		nameLabel=new TermUiComponent(lbText);
 		add(nameLabel);
-		termView=new TermView(f.getExpression(), 50, -5);
+		termView=new TermView(f.getExpression(), 0, 0);
 		ViewMouseAdapter mouseListener=new ViewMouseAdapter();
 		processViewComponents(termView, mouseListener);
 	}
@@ -80,18 +78,39 @@ public class FormulaPanel extends JPanel{
 	protected void paintComponent(Graphics arg0) {
 		// TODO Auto-generated method stub
 		super.paintComponent(arg0);	
-		//this.location(x,y)=(0,0)
 		if (nameLabel==null)
 			return;
-		nameLabel.setLocation(50, getHeight()/2-25);
+ 
+		nameLabel.setLocation(TermView.VIEW_COMPONENT_PADDING*4, getHeight()/2);
 		if (termView==null)
 			return;
 		
-		int x0=50+nameLabel.getWidth();
-		int y0=this.getHeight()/2-termView.getHeight()/2-TermView.VIEW_COMPONENT_HEIGHT/2;
-		positionTermUiComponent(termView, x0, y0, arg0);
+		int x0=TermView.VIEW_COMPONENT_PADDING*2
+			+ nameLabel.getX()+(int)nameLabel.getBounds().getWidth();//.getWidth();
+		//y0 is the middle of the left label
+		int y0=this.getHeight()/2+TermView.VIEW_COMPONENT_HEIGHT/2; 
+
+		positionTermUiComponent(termView, x0, calculateViewY(termView,y0), arg0);
 	}
 	
+	private int calculateViewY(TermView view, int yStart)
+	{
+		int y=yStart;
+		switch(view.getTerm().getOperation())
+		{
+		case DIVISION://make the divider line at bottom of the dividend
+			y=yStart-view.getFirtTermView().getHeight();
+			break;
+		case SQUAREROOT: //make the centers of square root and left label  at the same level 
+			y=yStart-view.getHeight()/2;
+			break;
+		default	: //make the view start is the bottom of left label
+			y=yStart-TermView.VIEW_COMPONENT_HEIGHT/2;
+			break;
+		}
+//		System.out.println("FormulaPanel.calculateViewY() ...(y0, y)=("+yStart+","+y+")");
+		return y;
+	}
 	private void positionTermUiComponent(TermView view, int x0, int y0, Graphics g)
 	{
 		if (view==null)
@@ -104,16 +123,27 @@ public class FormulaPanel extends JPanel{
 		positionTermUiComponent(view.getFirtTermView(), x0, y0, g);
 		if (view.getTermOperatioinComponent()!=null)
 		{
-			view.getTermOperatioinComponent().setLocation(x0+view.getX()+view.getFirtTermView().getWidth(), 
+			if(view.getTerm().getOperation().equals(OperationType.LOGARITHM))
+				view.getTermOperatioinComponent().setLocation(x0+view.getX()+view.getFirtTermView().getWidth(), 
+						y0+view.getSecondTermView().getY());
+			else
+				view.getTermOperatioinComponent().setLocation(x0+view.getX()+view.getFirtTermView().getWidth(), 
 						y0+view.getFirtTermView().getY());
 		}
 		
 		if (view.getTerm().getOperation()==OperationType.DIVISION)
-			drawDivider(view,x0, y0+TermView.VIEW_COMPONENT_HEIGHT, g);
+			drawDivider(view,x0, y0+view.getFirtTermView().getHeight(), g);
 		else if (view.getTerm().getOperation()==OperationType.SQUAREROOT)
 			drawSquareRoot(view, x0, y0, g);
-		
-		positionTermUiComponent(view.getSecondTermView(), x0, y0, g);
+		int x2=x0;
+		int y2=y0;
+		if (view.getTerm()!=null&&view.getTerm().getOperation()!=null&&view.getTerm().getOperation().equals(OperationType.DIVISION))
+		{
+			x2=x0+Math.max(view.getFirtTermView().getWidth(),view.getSecondTermView().getWidth())/2
+			-view.getSecondTermView().getWidth()/2;
+			y2=y0+TermView.VIEW_COMPONENT_HEIGHT/2;
+		}
+		positionTermUiComponent(view.getSecondTermView(), x2, y2, g);
 	}
 	
 	/**
@@ -125,7 +155,6 @@ public class FormulaPanel extends JPanel{
 	{
 		if (view==null)
 			return;
-		System.out.println("FormulaPanel.processViewComponents()...:"+view);
 		if (view.getTermUiComponent()!=null)
 		{
 			add(view.getTermUiComponent());

@@ -99,7 +99,7 @@
                             <term value="0.0188" type="constant" name="factor"/>
                             <term type="expression" operation="logarithm" name="factor">
                                 <term value="10" type="constant" name="base"/>
-                                <term unit= "g" description="BDY_WT_KG in gram" value="BDY_WT_KG" type="variable" name="index"/>
+                                <term unit= "g" description="Person Weight Value" value="PRSN_WT_VAL" type="variable" name="index"/>
                             </term>
                         </term>
                     </term>
@@ -110,7 +110,7 @@
                 </term>
             </term>
         </expression>
-        <parameter name="BDY_WT_KG" unit="kg" dataType="number" usage="parameter" description="Body Weight in Kilograms" cdeId="2003303" cdeReference="https://cdebrowser.nci.nih.gov/CDEBrowser/"/>
+        <parameter name="PRSN_WT_VAL" unit="kg" dataType="number" usage="parameter" description="Person Weight Value" cdeId="2179689" cdeReference="https://cdebrowser.nci.nih.gov/CDEBrowser/"/>
 		<parameter name="PERS_HT_CM" unit="cm" dataType="number" usage="parameter" description="Person Height Measurement" cdeId="2003304" cdeReference="https://cdebrowser.nci.nih.gov/CDEBrowser/"/>
     </formula>
     <formula type="math" name="BSA7" status="complete">

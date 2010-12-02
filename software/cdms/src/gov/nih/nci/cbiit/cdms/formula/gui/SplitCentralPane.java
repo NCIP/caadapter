@@ -31,8 +31,8 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 		super(JSplitPane.VERTICAL_SPLIT);
 		FormulaPanel topPanel=new FormulaPanel(null);
 		topPanel.setBorder(BorderFactory.createTitledBorder(""));
-		topPanel.setPreferredSize(new Dimension(450, 350));
 		topScroll=new JScrollPane(topPanel);
+		topScroll.setPreferredSize(new Dimension(350, 350));
 		add(topScroll);
 		JPanel lowPanel=new JPanel();
 		lowPanel.setLayout(new BorderLayout());
@@ -44,7 +44,6 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 		xmlScroll.setViewportView(formulaXml);
 		lowPanel.add(xmlScroll, BorderLayout.CENTER);
 		add(lowPanel);
-		this.setMinimumSize(new Dimension(450, 150));
 	}
 	
 	
@@ -71,20 +70,20 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 
 	private void updataDisplayPane()
 	{
+		formulaLabel.setText(controllMeta.formatJavaStatement());
+		formulaXml.setText("");
 		if (controllMeta instanceof FormulaMeta)
 		{
 			FormulaMeta formula=(FormulaMeta)controllMeta;
 			FormulaPanel newFormulaPanel=new FormulaPanel(formula);
 			topScroll.getViewport().setView(newFormulaPanel);
-			topScroll.validate();
-			formulaLabel.setText(formula.formatJavaStatement());
-			formulaXml.setText(FormulaFactory.convertFormulaToXml(formula));
+			formulaXml.setText(FormulaFactory.convertFormulaToXml(formula));						
 		}
 		else
 		{
-			formulaLabel.setText(controllMeta.formatJavaStatement());
-			formulaXml.setText("");
-		}
-		this.updateUI();
+ 			FormulaPanel newFormulaPanel=new FormulaPanel(null);
+			topScroll.getViewport().setView(newFormulaPanel);
+		}	
+		topScroll.validate();
 	}
 }
