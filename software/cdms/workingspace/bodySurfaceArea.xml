@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <formulaStore name="Body Surface Area" xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core" xmlns:ns3="http://cdms.cbiit.nci.nih.gov/core">
     <formula type="math" name="BSA1" status="complete">
-        <annotation>Dubois  Dubois formula</annotation>
+        <annotation>Dubois  Dubois formula : http://en.wikipedia.org/wiki/Body_surface_area#Calculation</annotation>
         <expression unit= "m^2" description="(m^2)" type="expression" operation="multiplication" name="BSA1">
             <term value="0.00718" type="constant" name="factor"/>
             <term type="expression" operation="multiplication" name="factor">
@@ -92,7 +92,7 @@
             <term value="0.0003207" type="constant" name="factor"/>
             <term type="expression" operation="multiplication" name="factor">
                 <term type="expression" operation="power" name="factor">
-                    <term unit= "g" description="(kg)" value="BDY_WT_KG" type="variable" name="base"/>
+                    <term unit= "g" description="(kg)" value="PRSN_WT_VAL" type="variable" name="base"/>
                     <term type="expression" operation="subtraction" name="index">
                         <term value="0.7285" type="constant" name="minuend"/>
                         <term type="expression" operation="multiplication" name="subtrahend">
@@ -110,7 +110,7 @@
                 </term>
             </term>
         </expression>
-        <parameter name="PRSN_WT_VAL" unit="kg" dataType="number" usage="parameter" description="Person Weight Value" cdeId="2179689" cdeReference="https://cdebrowser.nci.nih.gov/CDEBrowser/"/>
+        <parameter name="PRSN_WT_VAL" unit="g" dataType="number" usage="parameter" description="Person Weight Value" cdeId="2179689" cdeReference="https://cdebrowser.nci.nih.gov/CDEBrowser/"/>
 		<parameter name="PERS_HT_CM" unit="cm" dataType="number" usage="parameter" description="Person Height Measurement" cdeId="2003304" cdeReference="https://cdebrowser.nci.nih.gov/CDEBrowser/"/>
     </formula>
     <formula type="math" name="BSA7" status="complete">
