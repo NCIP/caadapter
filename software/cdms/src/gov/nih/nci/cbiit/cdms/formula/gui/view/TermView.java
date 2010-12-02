@@ -9,8 +9,8 @@ import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 
 public class TermView {
 	public static final int VIEW_COMPONENT_HEIGHT=25;
-	public static final int VIEW_CHARACTER_WEIDTH=8;
-	public static int VIEW_COMPONENT_PADDING=6;
+	public static final int VIEW_CHARACTER_WEIDTH=7;
+	public static int VIEW_COMPONENT_PADDING=2;
 	
 	private TermView firtTermView;
 	private TermView secondTermView;

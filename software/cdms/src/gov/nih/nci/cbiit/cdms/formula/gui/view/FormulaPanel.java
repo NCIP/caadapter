@@ -80,16 +80,15 @@ public class FormulaPanel extends JPanel{
 		super.paintComponent(arg0);	
 		if (nameLabel==null)
 			return;
- 
+  
 		nameLabel.setLocation(TermView.VIEW_COMPONENT_PADDING*4, getHeight()/2);
 		if (termView==null)
 			return;
 		
 		int x0=TermView.VIEW_COMPONENT_PADDING*2
-			+ nameLabel.getX()+(int)nameLabel.getBounds().getWidth();//.getWidth();
+			+ nameLabel.getX()+(int)nameLabel.getBounds().getWidth();
 		//y0 is the middle of the left label
 		int y0=this.getHeight()/2+TermView.VIEW_COMPONENT_HEIGHT/2; 
-
 		positionTermUiComponent(termView, x0, calculateViewY(termView,y0), arg0);
 	}
 	
@@ -108,7 +107,6 @@ public class FormulaPanel extends JPanel{
 			y=yStart-TermView.VIEW_COMPONENT_HEIGHT/2;
 			break;
 		}
-//		System.out.println("FormulaPanel.calculateViewY() ...(y0, y)=("+yStart+","+y+")");
 		return y;
 	}
 	private void positionTermUiComponent(TermView view, int x0, int y0, Graphics g)
@@ -124,7 +122,7 @@ public class FormulaPanel extends JPanel{
 		if (view.getTermOperatioinComponent()!=null)
 		{
 			if(view.getTerm().getOperation().equals(OperationType.LOGARITHM))
-				view.getTermOperatioinComponent().setLocation(x0+view.getX()+view.getFirtTermView().getWidth(), 
+				view.getTermOperatioinComponent().setLocation(x0+view.getX(),
 						y0+view.getSecondTermView().getY());
 			else
 				view.getTermOperatioinComponent().setLocation(x0+view.getX()+view.getFirtTermView().getWidth(), 

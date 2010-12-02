@@ -1020,7 +1020,7 @@ public class FormulaButtonPane extends JPanel implements ActionListener
     {
         NodeContentElement element = getNodeContentElement();
 
-        OperationType oType = OperationType.getOperationTypeWithSymbol(element.getOperator());
+        OperationType oType = null;//OperationType.getOperationTypeWithSymbol(element.getOperator());
         if (oType == null) return null;
         TermMeta tMeta = FormulaFactory.createTemplateTerm(oType);
         java.util.List<TermMeta> metas = tMeta.getTerm();
