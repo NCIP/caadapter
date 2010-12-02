@@ -254,7 +254,7 @@ public class NodeContentElement
             term = new TermMeta();
             term.setType(TermType.EXPRESSION);
             term.setName(this.getNodeName());
-            term.setOperation(OperationType.getOperationTypeWithSymbol(this.getOperator()));
+//            term.setOperation(OperationType.getOperationTypeWithSymbol(this.getOperator()));
             term.setDescription(this.getNodeDescription());
         }
         else if (nodeType.equals(TYPES[3]))  //Variable
@@ -290,7 +290,7 @@ public class NodeContentElement
         NodeContentElement ele = null;
         if (term.getType().equals(TermType.EXPRESSION))
         {
-            ele = new NodeContentElement(TYPES[2], term.getName(), term.getOperation().operatorSymbol());
+            ele = new NodeContentElement(TYPES[2], term.getName(), term.getOperation().toString());
             ele.setNodeDescription(term.getDescription());
         }
         else if (term.getType().equals(TermType.VARIABLE))    //Variable

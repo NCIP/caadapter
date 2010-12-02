@@ -32,7 +32,7 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 		FormulaPanel topPanel=new FormulaPanel(null);
 		topPanel.setBorder(BorderFactory.createTitledBorder(""));
 		topScroll=new JScrollPane(topPanel);
-		topScroll.setPreferredSize(new Dimension(350, 350));
+		topScroll.setPreferredSize(new Dimension(460, 350));
 		add(topScroll);
 		JPanel lowPanel=new JPanel();
 		lowPanel.setLayout(new BorderLayout());

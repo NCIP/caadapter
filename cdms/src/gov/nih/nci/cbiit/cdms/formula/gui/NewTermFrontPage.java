@@ -297,7 +297,7 @@ public class NewTermFrontPage extends JPanel
             term = new TermMeta();
             term.setType(TermType.EXPRESSION);
             term.setName(nameField.getText());
-            term.setOperation(OperationType.getOperationTypeWithSymbol((String)operationComboBox.getSelectedItem()));
+//            term.setOperation(OperationType.getOperationTypeWithSymbol((String)operationComboBox.getSelectedItem()));
         }
         else if (currentType.equals(TYPES[2]))  //Variable
         {
