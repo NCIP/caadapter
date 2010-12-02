@@ -1,7 +1,6 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.view;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
@@ -25,6 +24,25 @@ public class TermView {
 		x=locationX;
 		y=locationY;
 		processTermMeta(term);
+ 	}
+	
+	private   JComponent findMostLeftParenthesis(TermView view)
+	{
+		if (view.getTermUiComponent()!=null)
+			return view.getTermUiComponent();
+			
+		return findMostLeftParenthesis(view.getFirtTermView());
+	}
+	
+	
+	private  JComponent findMostRightParenthesis(TermView view)
+	{
+		if (view.getTermUiComponent()!=null)
+			return view.getTermUiComponent();
+		if (view.getSecondTermView()!=null)
+			return findMostRightParenthesis(view.getSecondTermView());
+		
+		return findMostRightParenthesis(view.getFirtTermView());
 	}
 	
 	private void buildOperationComponent()
@@ -157,6 +175,18 @@ public class TermView {
 			}
 			if (termOperatioinComponent!=null)
 				width=width+termOperatioinComponent.getWidth();
+			
+			//add parenthesis
+			if (meta.getOperation().equals(OperationType.ADDITION)
+					||meta.getOperation().equals(OperationType.SUBTRACTION))
+			{
+				System.out.println("TermView.associateParenthesis()..:"+meta);
+				TermUiComponent mostLeft=(TermUiComponent)findMostLeftParenthesis(getFirtTermView());
+				mostLeft.setText("("+mostLeft.getText());
+				
+				TermUiComponent rightLeft=(TermUiComponent)findMostRightParenthesis(getSecondTermView());
+				rightLeft.setText(rightLeft.getText()+")");
+			}
 		}
 	}
 	
