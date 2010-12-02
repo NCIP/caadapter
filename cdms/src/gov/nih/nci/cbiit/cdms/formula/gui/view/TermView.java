@@ -1,8 +1,5 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.view;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
@@ -11,8 +8,9 @@ import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 
 public class TermView {
-	public static int VIEW_COMPONENT_HEIGHT=15;
-	public static int VIEW_COMPONENT_PADDING=5;
+	public static final int VIEW_COMPONENT_HEIGHT=25;
+	public static final int VIEW_CHARACTER_WEIDTH=8;
+	public static int VIEW_COMPONENT_PADDING=6;
 	
 	private TermView firtTermView;
 	private TermView secondTermView;
@@ -35,24 +33,28 @@ public class TermView {
 		{
 			case  ADDITION:
 				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString(), JLabel.CENTER, term );
+						 term.getOperation().toString());
 				break;
 			case  SUBTRACTION:
 				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString(), JLabel.CENTER, term  );
+						 term.getOperation().toString());
 				break;
 			case  MULTIPLICATION:
 				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString(), JLabel.CENTER, term);
+						 term.getOperation().toString());
 				break;
 			case  EXPONENTIAL:
 				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString(), JLabel.CENTER, term);
+						 term.getOperation().toString());
+				break;
+			case  LOGARITHM:
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString());
 				break;
 			default: break;
 		}
 		if (termOperatioinComponent!=null)
-			termOperatioinComponent.setBounds(new Rectangle(new Dimension(25,25)));
+			((TermUiComponent)termOperatioinComponent).setViewMeta(term);
 	}
 
 	public TermView getFirtTermView() {
@@ -95,59 +97,66 @@ public class TermView {
 	{
 		if (meta==null)
 			return;
-		if (meta.getType().value().equals(TermType.UNKNOWN.value()))
-		{	
-			termUiComponent=new TermUiComponent(meta.getName(), term);
-			width=meta.getName().length()*5+VIEW_COMPONENT_PADDING;
-			height= VIEW_COMPONENT_HEIGHT;
-		}
-		else if (meta.getType().value().equals(TermType.CONSTANT.value())
+		if (meta.getType().value().equals(TermType.UNKNOWN.value())
+				||meta.getType().value().equals(TermType.CONSTANT.value())
 				||(meta.getType().value().equals(TermType.VARIABLE.value())))
-		{
-			String labelText=meta.getValue();
-			if (meta.getUnit()!=null)
-				labelText=labelText+"("+meta.getUnit()+")";
-			
-			termUiComponent=new TermUiComponent(labelText, term);
-			width=meta.getValue().length()*5+VIEW_COMPONENT_PADDING;
-			System.out.println("TermView.processTermMeta()...width:"+width);
+		{	
+			termUiComponent=new TermUiComponent(term);
+			width=(int)termUiComponent.getBounds().getWidth();
 			height= VIEW_COMPONENT_HEIGHT;
 		}
 		else 
 		{
+			buildOperationComponent();
 			//build the view of the first term
-			firtTermView=new TermView(meta.getTerm().get(0),x,y);
-			int xTerm2=x+firtTermView.getWidth()+VIEW_COMPONENT_PADDING;
-			int yTerm2=y;
+			int x1=x, y1=y, x2=x, y2=y;
 			if (meta.getOperation().equals(OperationType.DIVISION))
 			{
-				yTerm2=y+VIEW_COMPONENT_HEIGHT*2;
-				xTerm2=x+(firtTermView.getWidth()+VIEW_COMPONENT_PADDING)/2;
+				y1=y;
+				y2=y+VIEW_COMPONENT_HEIGHT;
 			}
 			else if (meta.getOperation().equals(OperationType.POWER))
-				yTerm2=yTerm2-VIEW_COMPONENT_HEIGHT;
-			buildOperationComponent();
+			{	
+				y2=y-VIEW_COMPONENT_HEIGHT/2;
+			}
+			else if (meta.getOperation().equals(OperationType.LOGARITHM))
+			{	
+				y1=y+VIEW_COMPONENT_HEIGHT/3;
+				x1=x+(int)termOperatioinComponent.getBounds().getWidth();
+			}
+			firtTermView=new TermView(meta.getTerm().get(0),x1,y1);
+			
+			x2=x1+firtTermView.getWidth();
 			if (termOperatioinComponent!=null)
-				xTerm2=xTerm2+(int)termOperatioinComponent.getWidth()+VIEW_COMPONENT_PADDING;
+				x2=x2+(int)termOperatioinComponent.getWidth()+VIEW_COMPONENT_PADDING;
+
+			if (meta.getOperation().equals(OperationType.DIVISION))
+			{
+				x2=x1;
+			}
+			else if (meta.getOperation().equals(OperationType.LOGARITHM))
+			{
+				x2=x1+20;
+			}
+			
 			secondTermView=null;
 			if (meta.getTerm().size()>1)
 			{
-				secondTermView=new TermView(meta.getTerm().get(1), xTerm2, yTerm2);
+				secondTermView=new TermView(meta.getTerm().get(1), x2, y2);
 			
 				//set the size of the current view
-				width=firtTermView.getWidth()+VIEW_COMPONENT_PADDING
-					+secondTermView.getWidth()+VIEW_COMPONENT_PADDING;
+				width=firtTermView.getWidth()+secondTermView.getWidth();
 				height=Math.max(firtTermView.getY()+firtTermView.getHeight(),
 						secondTermView.getY()+secondTermView.getHeight())
 							-Math.min(firtTermView.getY(), secondTermView.getY());
 			}
 			else
 			{
-				width=firtTermView.getWidth()+VIEW_COMPONENT_PADDING;
+				width=firtTermView.getWidth();
 				height=firtTermView.getHeight();
 			}
 			if (termOperatioinComponent!=null)
-				width=width+termOperatioinComponent.getWidth()+VIEW_COMPONENT_PADDING;
+				width=width+termOperatioinComponent.getWidth();
 		}
 	}
 	

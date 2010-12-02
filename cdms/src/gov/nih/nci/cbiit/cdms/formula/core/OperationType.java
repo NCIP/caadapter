@@ -53,7 +53,7 @@ public enum OperationType {
         else if (value().equals(EXPONENTIAL.value))
             return "exp";
         else if (value().equals(LOGARITHM.value))
-            return "logarithm";
+            return "log";
         return value;
     }
     public static OperationType getOperationTypeWithSymbol(String str)
@@ -81,6 +81,7 @@ public enum OperationType {
         return null;
     }
 
+	@Override
     public String toString()
     {
         if (value().equals(ADDITION.value))
@@ -88,11 +89,13 @@ public enum OperationType {
         else if (value().equals(SUBTRACTION.value))
             return " - ";
         else if (value().equals(MULTIPLICATION.value))
-            return "\u00D7";
+            return " \u00D7 ";
         else if (value().equals(DIVISION.value()))
-        	 return "\u00F7";
+        	 return " \u00F7 ";
         else if (value().equals(POWER.value))
             return "^";
+        else if (value().equals(LOGARITHM))
+        	return "log";
         return value();
     }
 }
