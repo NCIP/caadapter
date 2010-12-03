@@ -29,11 +29,13 @@ public class TreeNodeFormulaStore  extends DefaultMutableTreeNode {
 	private void addFormulaNode(FormulaMeta formula)
 	{
 		DefaultMutableTreeNode formulaNode=new DefaultMutableTreeNode(formula);
-		for (DataElement parameter:formula.getParameter())
-		{
-			formulaNode.add(new DefaultMutableTreeNode(parameter));
-		}
-		
+        if (formula.getParameter()!=null)
+        {
+            for (DataElement parameter:formula.getParameter())
+            {
+                formulaNode.add(new DefaultMutableTreeNode(parameter));
+            }
+        }
 		add(formulaNode);
 	}
 }

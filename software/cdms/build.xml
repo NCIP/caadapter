@@ -14,7 +14,8 @@
 		<echo message="build:caadapter-api is called :dist.dir =${dist.dir}"/>
 		<antcall target="dist_src"/>
 		<antcall target="dist_bin"/>
-   	</target>
+
+       </target>
    	
 	<pathconvert pathsep=" " targetos="unix" property="distribution.manifest.class.property" refid="project.class.path">
 		<!-- make paths relative-->
@@ -23,34 +24,52 @@
 	</pathconvert>
 
 	
-	<target name="build:caadapter-wars" depends="webstart:copy_resources" >	
-		<antcall target="webstart:sign_resources">
+	<target name="build:caadapter-wars" depends="webstart:copy_resources" >
+
+        <antcall target="webstart:sign_resources">
 			<param name="RESOURCE_HOME" value="${dist.dir}/webstart"/>
 		</antcall>
 
 		<echo message=""/>
-		<echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
-		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="${web.src.dir}/web.xml">
+		<echo message="-------- creating ${webstart.warfile.cdms.name} file (copied to deploy/webstart) --------"/>
+		<war destfile="${dist.dir}/${webstart.warfile.cdms.name}" webxml="${web.src.dir}/web.xml">
 			<fileset dir="${dist.dir}/webstart">
-				<exclude name="myKeyStore"/>
+				<exclude name="${jar-signing.keystore.abs-location}"/>
 			</fileset>
 			<fileset dir="${web.src.dir}">
 					<include name="**/*.html"/>
-					<include name="**/*.jnlp"/>
+                    <include name="**/*.jsp"/>
+                    <include name="**/*.jnlp"/>
 			</fileset>
-			<!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
+            <!--
+            <fileset dir="${dist.dir}/webstart">
+                <include name="cdms.jar"/>
+			</fileset>
+			-->
+            <fileset dir="${web.src.dir}/jsp">
+				<include name="jnlpInvoker.jsp"/>
+			</fileset>
+            <!--
+            <fileset dir="${datastore.dir}">
+				<include name="commonFormulae.xml"/>
+				<include name="expressionTemplate.xml"/>
+			</fileset>
+			-->
+            <!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
 			<lib dir="${web.src.dir}/WEB-INF/lib">
 				<include name="jardiff.jar"/>
 				<include name="jnlp.jar"/>
 				<include name="jnlp-servlet.jar"/>
 			</lib>
-			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
-		</war>	
-		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">	
+
+            <!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
+		</war>
+        <!--
+        <ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">
 			<property name="ws.module.name" value="caadapterWS-cdms" />
 			<property name="project.dist.dir" value="${dist.dir}" />
 		</ant>
-		
+		-->
 		<delete dir="${dist.dir}/webstart" failonerror="false"/>
 	</target>
    	
@@ -75,13 +94,19 @@
 				<include name="xbean.jar"/> 
 				<include name="xercesImpl.jar"/> -->
 			</fileset>
-			<fileset dir="${dist.dir}/../caadapter-api">
+			<fileset dir="${dist.dir}">
 				<include name="cdms.jar"/>
-				<include name="cdmsUI.jar"/>
-				<include name="cdms-resources.jar"/>
+				<!--<include name="cdmsUI.jar"/>
+				<include name="cdms-resources.jar"/> -->
 			</fileset>
 		</copy>
-	</target>
+        <zip destfile="${dist.dir}/webstart/xml_resources.zip">
+			<zipfileset dir="${datastore.dir}" prefix="datastore">
+				<include name="*.xml"/>
+			</zipfileset>
+
+		</zip>
+    </target>
 	
 	<target name="webstart:sign_resources">
     	<available file="${jar-signing.keystore.abs-location}" property="digital-keys.exist"/>

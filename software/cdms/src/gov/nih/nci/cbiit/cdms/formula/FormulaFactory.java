@@ -4,9 +4,12 @@ import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.common.util.FileUtil;
+import gov.nih.nci.cbiit.cdms.formula.common.util.DefaultSettings;
 
 import java.io.*;
 import java.util.HashMap;
+import java.net.URL;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -28,8 +31,18 @@ public class FormulaFactory {
 				expressionTemplate.isEmpty())
 		{
 			try {
-				FormulaStore templateStore=loadFormulaStore(new File("dataStore/expressionTemplate.xml"));
-				expressionTemplate=new HashMap<String, TermMeta>();
+
+                File f = new File("dataStore/expressionTemplate.xml");
+                if ((!f.exists())||(!f.isFile()))
+                {
+                    String fn = FileUtil.searchFile("expressionTemplate.xml");
+                    if (fn != null) f = new File(fn);
+                }
+                FormulaStore templateStore = null;
+                if ((f.exists())&&(f.isFile())) templateStore=loadFormulaStore(f);
+                else templateStore=loadFormulaStore(getResourceFromZip("expressionTemplate.xml"));
+
+                expressionTemplate=new HashMap<String, TermMeta>();
 				for (FormulaMeta formula:templateStore.getFormula())
 				{
 					String expressionKey=formula.getExpression().getOperation().value();
@@ -59,7 +72,15 @@ public class FormulaFactory {
 	{
 		if (commonStore==null)
 			try {
-				commonStore=loadFormulaStore(new File("dataStore/commonFormulae.xml"));
+
+                File f = new File("dataStore/commonFormulae.xml");
+                if ((!f.exists())||(!f.isFile()))
+                {
+                    String fn = FileUtil.searchFile("commonFormulae.xml");
+                    if (fn != null) f = new File(fn);
+                }
+                if ((f.exists())&&(f.isFile())) commonStore=loadFormulaStore(f);
+                else commonStore=loadFormulaStore(getResourceFromZip("commonFormulae.xml"));
 			} catch (JAXBException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -67,16 +88,57 @@ public class FormulaFactory {
 
 			return commonStore;
 	}
-
-	public static FormulaStore loadFormulaStore(File f) throws JAXBException
+    private static InputStream getResourceFromZip(String rcsName)
+    {
+        File f = new File("xml_resources.zip");
+        if ((!f.exists())||(!f.isFile())) return null;
+        URL url = FileUtil.retrieveResourceURL(f.getAbsolutePath(), "", rcsName);
+        if (url == null) return null;
+        InputStream is = null;
+        try
+        {
+            is = url.openStream();
+        }
+        catch(IOException ie)
+        {
+            return null;
+        }
+        return is;
+    }
+    public static FormulaStore loadFormulaStore(File f) throws JAXBException
+	{
+        try
+        {
+            return loadFormulaStore(new FileInputStream(f));
+        }
+        catch(FileNotFoundException fe)
+        {
+            throw new JAXBException(fe);
+        }
+    }
+    public static FormulaStore loadFormulaStore(InputStream is) throws JAXBException
 	{
 		JAXBContext jc=getJAXBContext();
 		Unmarshaller u=jc.createUnmarshaller();
-		JAXBElement<FormulaStore> jaxbFormula=u.unmarshal(new StreamSource(f), FormulaStore.class);
+		JAXBElement<FormulaStore> jaxbFormula=u.unmarshal(new StreamSource(is), FormulaStore.class);
+		return jaxbFormula.getValue();
+	}
+    public static FormulaMeta loadFormula(String str) throws JAXBException
+	{
+		JAXBContext jc=getJAXBContext();
+		Unmarshaller u=jc.createUnmarshaller();
+		JAXBElement<FormulaMeta> jaxbFormula=u.unmarshal(new StreamSource(new CharArrayReader(str.toCharArray())), FormulaMeta.class);
+		return jaxbFormula.getValue();
+	}
+    public static FormulaMeta loadFormula(InputStream is) throws JAXBException
+	{
+		JAXBContext jc=getJAXBContext();
+		Unmarshaller u=jc.createUnmarshaller();
+		JAXBElement<FormulaMeta> jaxbFormula=u.unmarshal(new StreamSource(is), FormulaMeta.class);
 		return jaxbFormula.getValue();
 	}
 
-	/**
+    /**
 	 * Save a local formula store into a file
 	 * @param store local formula store 
 	 * @param targetFile target XML file to save
@@ -93,13 +155,7 @@ public class FormulaFactory {
 		writer.close();
 	}
 	
-    public static FormulaMeta loadFormula(String str) throws JAXBException
-	{
-		JAXBContext jc=getJAXBContext();
-		Unmarshaller u=jc.createUnmarshaller();
-		JAXBElement<FormulaMeta> jaxbFormula=u.unmarshal(new StreamSource(new CharArrayReader(str.toCharArray())), FormulaMeta.class);
-		return jaxbFormula.getValue();
-	}
+
 
     public static String convertFormulaToXml(FormulaMeta formula)
 	{

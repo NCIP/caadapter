@@ -376,6 +376,7 @@ public class FileUtil
     }
     private static String searchFile(File startDir, File dir, String fileName, java.util.List<String> searchedDirList, boolean isFile)
     {
+
         boolean isStart = false;
         if (searchedDirList == null)
         {
@@ -421,6 +422,7 @@ public class FileUtil
                 startDir = dir;
             }
         }
+        //System.out.println("CCC searchFile("+fileName+") : dir=" + dir.getAbsoluteFile());
 
         if ((!dir.exists())||(!dir.isDirectory())||(dir.isHidden())) return null;
 
@@ -1334,6 +1336,10 @@ public class FileUtil
     }
     public static URL retrieveResourceURL(String rscName, String middle, String fileName)
     {
+        return retrieveResourceURL_Exe(rscName, middle, fileName, true);
+    }
+    private static URL retrieveResourceURL_Exe(String rscName, String middle, String fileName, boolean isFirst)
+    {
         if (rscName == null) rscName = "";
         else rscName = rscName.trim();
 
@@ -1347,7 +1353,7 @@ public class FileUtil
         String tt = fileName;
         if (!middle.equals("")) tt = middle + "/" + fileName;
 
-        System.out.println("## Searching Resource ("+tt+") to file : " + rscName);
+        //System.out.println("## Searching Resource ("+tt+") to file : " + rscName);
         if ((fileName.equals(""))&&(middle.equals(""))) return retrieveResourceURL(rscName);
         if ((rscName.equals(""))&&(middle.equals(""))) return retrieveResourceURL(fileName);
         URL url = null;
@@ -1360,7 +1366,9 @@ public class FileUtil
 
             if (ff.isDirectory())
             {
-                if (ff.getName().equals("CVS")) return null;
+                if (ff.isHidden()) return null;
+                if (ff.getName().equalsIgnoreCase("CVS")) return null;
+                if (ff.getName().equalsIgnoreCase("svn")) return null;
                 File[] list = ff.listFiles();
                 for (File f:list)
                 {
@@ -1398,7 +1406,7 @@ public class FileUtil
                         }
                         if ((fN.toLowerCase().endsWith(".zip"))||(fN.toLowerCase().endsWith(".jar")))
                         {
-                            URL res = retrieveResourceURL(fN, middle, fileName);
+                            URL res = retrieveResourceURL_Exe(fN, middle, fileName, false);
                             if (res != null)
                             {
                                 url = res;
@@ -1408,7 +1416,7 @@ public class FileUtil
                     }
                     else if (f.isDirectory())
                     {
-                        URL res = retrieveResourceURL(fN, middle, fileName);
+                        URL res = retrieveResourceURL_Exe(fN, middle, fileName, false);
                         if (res != null)
                         {
                             url = res;
@@ -1480,9 +1488,11 @@ public class FileUtil
             }
             break;
         }
-
-        if (url == null) url = retrieveResourceURL(rscName + "/" + tt);
-        if (url != null) System.out.println("## Find this resource file : " + url.toString());
+        if (isFirst)
+        {
+            if (url == null) url = retrieveResourceURL(rscName + "/" + tt);
+            if (url != null) System.out.println("## Find this resource file : " + url.toString());
+        }
         return url;
     }
     public static void tidyWorkingDir()
