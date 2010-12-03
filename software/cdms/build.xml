@@ -106,7 +106,7 @@
 			<zipfileset dir="${basedir}">
 				<include name="workingspace/**.*" />
 				<include name="*.bat" />
-				<include name="etc/**/*" />
+				<!-- include name="etc/**/*" / -->
 				<include name="datastore/**/*"/>
 			</zipfileset>
 		</zip>
@@ -124,6 +124,7 @@
 		<echo> ${distribution.manifest.class.property} </echo>
 		<jar destfile="${dist.dir}/cdms.jar">
 			<fileset dir="${build.dir}" excludes="**/Test.class **/ui/**" />
+			<fileset dir="${basedir}" includes="datastore/**/*" />
 			<manifest>
 				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cdms.formula.gui.FrameMain" />
 				<attribute name="Class-Path" value="cdms.jar cdms-resources.jar ${distribution.manifest.class.property}" />

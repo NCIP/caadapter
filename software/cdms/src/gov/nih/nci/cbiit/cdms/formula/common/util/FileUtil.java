@@ -1286,31 +1286,30 @@ public class FileUtil
      */
     public static URL retrieveResourceURL(String rscName)
     {
-        if (rscName == null) return null;
+        if (rscName == null) 
+        	return null;
         rscName = rscName.trim();
-        if (rscName.equals("")) return null;
+        if (rscName.equals("")) 
+        	return null;
 
         URL rtnURL=null;
-    	//System.out.println("FileUtil.retrieveResourceURL().1.resourceName:"+rscName);
+    	
     	rtnURL=Thread.currentThread().getClass().getResource("/"+rscName);
-		//System.out.println("FileUtil.retrieveResourceURL().2.Thread.currentThread().getClass().getResource..standalone URL:/"+rscName+"="+rtnURL);
+		
 		if (rtnURL==null)
-		{
 			rtnURL=Thread.currentThread().getClass().getResource(rscName);
-			//System.out.println("FileUtil.retrieveResourceURL().3.Thread.currentThread().getClass().getResource..standalone URL:"+rscName+"="+rtnURL);
-		}
+		
+		
 		//load resource for webstart deployment
 		if (rtnURL==null)
 		{
 			rtnURL=FileUtil.class.getClassLoader().getResource(rscName);
-			//System.out.println("FileUtil.retrieveResourceURL().4.FileUtil.class.getClassLoader().getResource..webstart URL:"+rscName+"="+rtnURL);
 			if (rtnURL==null)
-			{
 				rtnURL=FileUtil.class.getClassLoader().getResource("/"+rscName);
-				//System.out.println("FileUtil.retrieveResourceURL().5.FileUtil.class.getClassLoader().getResource..webstart URL:/"+rscName+"="+rtnURL);
-			}
 		}
-        if (rtnURL != null) return rtnURL;
+		
+        if (rtnURL != null) 
+        	return rtnURL;
 
         String path = FileUtil.searchFile(rscName);
         if (path != null)
@@ -1328,10 +1327,11 @@ public class FileUtil
                     System.out.println("FileUtil.retrieveResourceURL().6. MalformedURLException : " + me.getMessage());
                 }
             }
-            //else System.out.println("FileUtil.retrieveResourceURL().7.");
+            
         }
-        //else System.out.println("FileUtil.retrieveResourceURL().8.");
-        if (rtnURL == null) System.out.println("This resource file cannot be found : " + rtnURL);
+
+        if (rtnURL == null) 
+        	System.out.println("This resource file cannot be found : " + rscName);
         return rtnURL;
     }
     public static URL retrieveResourceURL(String rscName, String middle, String fileName)

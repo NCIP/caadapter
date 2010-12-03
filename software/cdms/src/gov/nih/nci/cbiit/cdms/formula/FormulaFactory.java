@@ -1,11 +1,13 @@
 package gov.nih.nci.cbiit.cdms.formula;
 
+import gov.nih.nci.cbiit.cdms.formula.common.util.FileUtil;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 
 import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
@@ -55,12 +57,15 @@ public class FormulaFactory {
 		return localStore;
 	}
 
-	public static FormulaStore  getCommonStore()
+	public static FormulaStore  getCommonStore() 
 	{
 		if (commonStore==null)
 			try {
-				commonStore=loadFormulaStore(new File("dataStore/commonFormulae.xml"));
+				commonStore=loadFormulaStore("datastore/commonFormulae.xml");
 			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -68,14 +73,26 @@ public class FormulaFactory {
 			return commonStore;
 	}
 
-	public static FormulaStore loadFormulaStore(File f) throws JAXBException
+	public static FormulaStore loadFormulaStore(String uri) throws IOException, JAXBException
+	{
+		URL fileUrl=FileUtil.retrieveResourceURL(uri);
+		System.out.println("FormulaFactory.loadFormulaStore()...formula:\n"+fileUrl);
+		StreamSource in=new StreamSource(fileUrl.openStream());
+		return loadFormulaStoreStream(in);
+	}
+	
+	private static FormulaStore loadFormulaStoreStream(StreamSource stream) throws JAXBException
 	{
 		JAXBContext jc=getJAXBContext();
 		Unmarshaller u=jc.createUnmarshaller();
-		JAXBElement<FormulaStore> jaxbFormula=u.unmarshal(new StreamSource(f), FormulaStore.class);
+		JAXBElement<FormulaStore> jaxbFormula=u.unmarshal(stream, FormulaStore.class);
 		return jaxbFormula.getValue();
 	}
 
+	public static FormulaStore loadFormulaStore(File f) throws JAXBException
+	{
+		return loadFormulaStoreStream(new StreamSource(f));
+	}
 	/**
 	 * Save a local formula store into a file
 	 * @param store local formula store 
