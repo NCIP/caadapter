@@ -130,7 +130,7 @@ public class FormulaPanel extends JPanel{
 		}
 		
 		if (view.getTerm().getOperation()==OperationType.DIVISION)
-			drawDivider(view,x0+view.getX(), y0+view.getFirtTermView().getHeight(), g);
+			drawDivider(view,x0+view.getX(), y0+view.getY()+view.getFirtTermView().getHeight(), g);
 		else if (view.getTerm().getOperation()==OperationType.SQUAREROOT)
 			drawSquareRoot(view, x0, y0, g);
 		int x2=x0;

@@ -89,7 +89,7 @@ public class TreeMouseAdapter extends MouseAdapter {
 				
 				DefaultMutableTreeNode parentTreeNode=(DefaultMutableTreeNode)treeNode.getParent();
 				FormulaMeta parentFormula=(FormulaMeta)parentTreeNode.getUserObject();
-				if (parentFormula.getStatus().equals(FormulaStatus.DRAFT))
+				if (parentFormula.getStatus()==FormulaStatus.DRAFT)
 				{
 					paramDeleteItem.setEnabled(true);
 					paramEditItem.setEnabled(true);
