@@ -24,7 +24,7 @@
 	</pathconvert>
 
 	
-	<target name="build:caadapter-wars" depends="webstart:copy_resources" >
+	<target name="build:caadapter-wars" depends="jar, webstart:copy_resources" >
 
         <antcall target="webstart:sign_resources">
 			<param name="RESOURCE_HOME" value="${dist.dir}/webstart"/>
@@ -41,20 +41,6 @@
                     <include name="**/*.jsp"/>
                     <include name="**/*.jnlp"/>
 			</fileset>
-            <!--
-            <fileset dir="${dist.dir}/webstart">
-                <include name="cdms.jar"/>
-			</fileset>
-			-->
-            <fileset dir="${web.src.dir}/jsp">
-				<include name="jnlpInvoker.jsp"/>
-			</fileset>
-            <!--
-            <fileset dir="${datastore.dir}">
-				<include name="commonFormulae.xml"/>
-				<include name="expressionTemplate.xml"/>
-			</fileset>
-			-->
             <!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
 			<lib dir="${web.src.dir}/WEB-INF/lib">
 				<include name="jardiff.jar"/>
@@ -76,35 +62,15 @@
 	<target name="webstart:copy_resources" description="Perpare web start resources...">  
 		<echo message="build:webstart --copy resource"/>
 		<copy todir="${dist.dir}/webstart" failonerror="false">
-			<fileset dir="${lib.dir}">
-				<!--<include name="caAdapter.jar"/>
-				<include name="commons-beanutils.jar"/>
-				<include name="commons-logging-1.0.4.jar"/>
-				<include name="dom4j-1.4.jar"/>
-				<include name="encoderframework.jar"/>
-				<include name="encoderfrmwk-xsdextension.jar"/>
-				<include name="hl7.jar"/>
-				<include name="hl7encoder-xsdextension.jar"/>
-				<include name="jaxen-jdom.jar"/>
-				<include name="jdom.jar"/>
-				<include name="jgraph.jar"/>	
-				<include name="log4j-1.2.8.jar"/>
-				<include name="saxon9.jar"/>
-				<include name="saxon9-xqj.jar"/>
-				<include name="xbean.jar"/> 
-				<include name="xercesImpl.jar"/> -->
-			</fileset>
+			<fileset dir="${lib.dir}"/>
 			<fileset dir="${dist.dir}">
 				<include name="cdms.jar"/>
-				<!--<include name="cdmsUI.jar"/>
-				<include name="cdms-resources.jar"/> -->
 			</fileset>
 		</copy>
         <zip destfile="${dist.dir}/webstart/xml_resources.zip">
 			<zipfileset dir="${datastore.dir}" prefix="datastore">
 				<include name="*.xml"/>
 			</zipfileset>
-
 		</zip>
     </target>
 	

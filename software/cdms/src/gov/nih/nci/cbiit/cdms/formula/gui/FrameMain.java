@@ -17,7 +17,7 @@ public class FrameMain extends JFrame {
 	private FrameMain()
 	{
 		super();
-		this.setTitle("caAdapter Data Derivation Service");
+		this.setTitle("caAdapter Data Transformation Service");
 		setSize(800, 640);
 	    addWindowListener(new WindowAdapterMain());
 		//centralize the window
