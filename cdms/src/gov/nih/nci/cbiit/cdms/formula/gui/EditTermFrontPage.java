@@ -19,7 +19,6 @@ import java.awt.event.ActionListener;
  */
 public class EditTermFrontPage extends JPanel implements ActionListener 
 {
-    public static final String[] TYPES = new String[] {NodeContentElement.TYPES[0], NodeContentElement.TYPES[2], NodeContentElement.TYPES[3], NodeContentElement.TYPES[4], "Vriable Definition"};
     
     private JComboBox typeComboBox;
     private JComboBox operationComboBox;
