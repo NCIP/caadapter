@@ -55,7 +55,7 @@ public class MenuBarMain extends JMenuBar implements ActionListener {
 	{
 		JMenu rtnMenu=new JMenu ("Run");
 		
-		JMenuItem excItem=new JMenuItem(new ExecuteFormulaAction("Execute Formula"));
+		JMenuItem excItem=new JMenuItem(new ExecuteFormulaAction("Execute Formula", ExecuteFormulaAction.FORMULA_ACTION_EXECUTION));
 		rtnMenu.add(excItem);
 		return rtnMenu;
 		
