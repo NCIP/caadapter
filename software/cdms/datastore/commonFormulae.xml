@@ -3,17 +3,14 @@
 	<formula type="math" name="PI Monthly" status="final" dateModified="2010-12-01T10:14:33.609-05:00">
 		<annotation>Principal and Interest Monthly Payment</annotation>
 		<expression type="expression" name="PI Monthly" unit="$" description="($)" operation="division">
-			<term type="expression" name="dividend"  operation="division">
-				<term type="expression" name="dividend" operation="multiplication">
-					<term type="variable" name="factor" value="principal" unit="$" description="total principal amount" />
-					<term type="variable" name="factor" value="annualRate" unit="%" description="annual interest rate in percentage"/>
-				</term>
-				<term type="constant" name="divisor" value="1200" />
+			<term type="expression" name="dividend" operation="multiplication">
+				<term type="variable" name="factor" value="principal" unit="$" description="total principal amount" />
+				<term type="variable" name="factor" value="annualRate" unit="%" description="annual interest rate in percentage"/>
 			</term>
 			<term type="expression" name="divisor" operation="subtraction" >
-				<term type="constant" name="minuend" value="1" /> 
+				<term type="constant" name="minuend" value="1200" /> 
 				<term type="expression" name="subtrahend"  operation="division">
-					<term type="constant" name="dividend" value="1" />
+					<term type="constant" name="dividend" value="1200" />
 					<term type="expression" name="divisor" operation="power">
 						<term type="expression" name="base" operation="addition">
 							<term type="constant" name="addend" value="1"/> 
