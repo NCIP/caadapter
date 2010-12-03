@@ -1,5 +1,6 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.tree;
 
+import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStatus;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.DeleteFormulaAction;
@@ -31,43 +32,63 @@ public class TreeMouseAdapter extends MouseAdapter {
 			TreePath slctedPath=slctTree.getSelectionPath();
 			if (slctedPath==null)
 				return;
+
+			Container parentC = e.getComponent().getParent();
+			while ( !(parentC instanceof JScrollPane))
+			{
+				parentC=parentC.getParent();
+			}
+			// Create PopupMenu for the Cell
+			JPopupMenu popupMenu =new JPopupMenu();
+			JMenuItem excItem=new JMenuItem(new ExecuteFormulaAction("Execute Formula", ExecuteFormulaAction.FORMULA_ACTION_EXECUTION));
+			popupMenu.add(excItem);
+			
+			JMenuItem paramAddItem=new JMenuItem(new ExecuteFormulaAction("Add Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER));
+			popupMenu.add(paramAddItem);
+			
+			JMenuItem paramEditItem=new JMenuItem(new ExecuteFormulaAction("Edit Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER));
+			paramEditItem.setEnabled(false);
+			popupMenu.add(paramEditItem);
+			
+			JMenuItem paramDeleteItem=new JMenuItem(new ExecuteFormulaAction("Delete Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER));
+			paramDeleteItem.setEnabled(false);
+			popupMenu.add(paramDeleteItem);
+			
+			JMenuItem deleteItem =new JMenuItem (new DeleteFormulaAction("Delete Formula", null));
+			JMenuItem editItem=new JMenuItem (new EditFormulaAction("Edit Formula", null));
+
+			popupMenu.addSeparator();
+			popupMenu.add(editItem);
+			popupMenu.add(deleteItem);
+				
+			popupMenu.show(e.getComponent(), e.getX(), e.getY());
+			
+			//enable action items
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) slctedPath.getLastPathComponent();
 			if (treeNode.getUserObject() instanceof FormulaMeta)
 			{
-				Container parentC = e.getComponent().getParent();
-				while ( !(parentC instanceof JScrollPane))
-				{
-					parentC=parentC.getParent();
-				}
-				// Create PopupMenu for the Cell
-				JPopupMenu popupMenu =new JPopupMenu();
-				JMenuItem excItem=new JMenuItem(new ExecuteFormulaAction("Execute Formula"));
-				popupMenu.add(excItem);
-				
-				JMenuItem paramAddItem=new JMenuItem("Add Parameter");
-				paramAddItem.setEnabled(false);
-				popupMenu.add(paramAddItem);
-				
-				JMenuItem paramItem=new JMenuItem("Delete Parameter");
-				paramItem.setEnabled(false);
-				popupMenu.add(paramItem);
-				
-				JMenuItem deleteItem =new JMenuItem (new DeleteFormulaAction("Delete Formula", treeNode));
-				JMenuItem editItem=new JMenuItem (new EditFormulaAction("Edit Formula", treeNode));
 				FormulaMeta formula=(FormulaMeta)treeNode.getUserObject();
 				if (formula.getStatus()==FormulaStatus.FINAL)
 				{
 					editItem.setEnabled(false);
 					deleteItem.setEnabled(false);
+					paramAddItem.setEnabled(false);
 				}
-				
+				deleteItem =new JMenuItem (new DeleteFormulaAction("Delete Formula", treeNode));
+				editItem=new JMenuItem (new EditFormulaAction("Edit Formula", treeNode));
+
 				if (formula.getStatus()==FormulaStatus.DRAFT)
 					excItem.setEnabled(false);
-				popupMenu.addSeparator();
-				popupMenu.add(editItem);
-				popupMenu.add(deleteItem);
-				
-				popupMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+			else if (treeNode.getUserObject() instanceof DataElement)
+			{
+				DefaultMutableTreeNode parentTreeNode=(DefaultMutableTreeNode)treeNode.getParent();
+				FormulaMeta parentFormula=(FormulaMeta)parentTreeNode.getUserObject();
+				if (parentFormula.getStatus().equals(FormulaStatus.DRAFT))
+				{
+					paramDeleteItem.setEnabled(true);
+					paramEditItem.setEnabled(true);
+				}
 			}
 		}
 	}
