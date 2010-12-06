@@ -30,7 +30,7 @@ public class FormulaFactory {
 				expressionTemplate.isEmpty())
 		{
 			try {
-				FormulaStore templateStore=loadFormulaStore(new File("dataStore/expressionTemplate.xml"));
+				FormulaStore templateStore=loadFormulaStore(new File("datastore/expressionTemplate.xml"));
 				expressionTemplate=new HashMap<String, TermMeta>();
 				for (FormulaMeta formula:templateStore.getFormula())
 				{
