@@ -33,8 +33,6 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 				owner.getY()+owner.getHeight()/4);
 		setSize((int)owner.getSize().getWidth()/2,
 				(int)owner.getSize().getHeight()/2);
-
-
 	}
 
 	private void initUI()

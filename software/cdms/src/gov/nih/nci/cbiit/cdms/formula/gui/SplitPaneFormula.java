@@ -56,18 +56,19 @@ public class SplitPaneFormula extends JSplitPane implements TreeSelectionListene
 	private void updataDisplayPane()
 	{
 		topPanel.removeAll();
-		topPanel.setLayout(new GridLayout( 5,2));
+		topPanel.setLayout(new GridLayout( 8,1));
 		if (controllMeta instanceof FormulaMeta)
 		{
 			FormulaMeta formula=(FormulaMeta)controllMeta;
 			topPanel.add(new JLabel("Name:  " +formula.getName()));
 			topPanel.add(new JLabel("Annotation: "+formula.getAnnotation()));
-			String lbTxt="Parameter:  ";
+			
 			if (formula.getParameter()!=null)
 				for (DataElement p:formula.getParameter()) 
-					lbTxt=lbTxt+p;
-
-			topPanel.add(new JLabel(lbTxt));
+				{
+					String lbTxt="Parameter:  "+p.getName();
+					topPanel.add(new JLabel(lbTxt));
+				}
 		}
 		else
 			topPanel.add(new JLabel ("Name:  " +controllMeta.getName()));

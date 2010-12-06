@@ -32,5 +32,4 @@ public class DeleteFormulaAction extends AbstractAction {
 		treeModel.reload(parentNode);
 		FrameMain.getSingletonInstance().getMainPanel().getLocalTree().setSelectionRow(0);
 	}
-
 }
