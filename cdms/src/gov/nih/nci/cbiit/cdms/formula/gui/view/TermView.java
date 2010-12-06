@@ -26,55 +26,6 @@ public class TermView {
 		processTermMeta(term);
  	}
 	
-	private   JComponent findMostLeftParenthesis(TermView view)
-	{
-		if (view.getTermUiComponent()!=null)
-			return view.getTermUiComponent();
-			
-		return findMostLeftParenthesis(view.getFirtTermView());
-	}
-	
-	
-	private  JComponent findMostRightParenthesis(TermView view)
-	{
-		if (view.getTermUiComponent()!=null)
-			return view.getTermUiComponent();
-		if (view.getSecondTermView()!=null)
-			return findMostRightParenthesis(view.getSecondTermView());
-		
-		return findMostRightParenthesis(view.getFirtTermView());
-	}
-	
-	private void buildOperationComponent()
-	{
-		switch(term.getOperation())
-		{
-			case  ADDITION:
-				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString());
-				break;
-			case  SUBTRACTION:
-				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString());
-				break;
-			case  MULTIPLICATION:
-				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString());
-				break;
-			case  EXPONENTIAL:
-				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString());
-				break;
-			case  LOGARITHM:
-				termOperatioinComponent=new TermUiComponent(
-						 term.getOperation().toString());
-				break;
-			default: break;
-		}
-		if (termOperatioinComponent!=null)
-			((TermUiComponent)termOperatioinComponent).setViewMeta(term);
-	}
-
 	public TermView getFirtTermView() {
 		return firtTermView;
 	}
@@ -107,8 +58,23 @@ public class TermView {
 		return x;
 	}
 
+	public void setX(int x) {
+		this.x = x;	
+		if (getFirtTermView()!=null)
+			getFirtTermView().setX(getFirtTermView().getX()+x);
+		if (getSecondTermView()!=null)
+			getSecondTermView().setX(getSecondTermView().getX()+x);
+	
+	}
+
 	public int getY() {
 		return y;
+	}
+
+	
+	public void setY(int y) {
+		this.y = y;
+
 	}
 
 	private void processTermMeta(TermMeta meta)
@@ -122,74 +88,163 @@ public class TermView {
 			termUiComponent=new TermUiComponent(term);
 			width=(int)termUiComponent.getBounds().getWidth();
 			height= VIEW_COMPONENT_HEIGHT;
+			return;
 		}
-		else 
+ 
+		buildOperationComponent();
+		//build the view of the first term
+		int x1=x, y1=y, x2=x, y2=y;
+		if (meta.getOperation().equals(OperationType.DIVISION))
 		{
-			buildOperationComponent();
-			//build the view of the first term
-			int x1=x, y1=y, x2=x, y2=y;
-			if (meta.getOperation().equals(OperationType.DIVISION))
-			{
-				y1=y;
-				y2=y+VIEW_COMPONENT_HEIGHT;
-			}
-			else if (meta.getOperation().equals(OperationType.POWER))
-			{	
-				y2=y-VIEW_COMPONENT_HEIGHT/2;
-			}
-			else if (meta.getOperation().equals(OperationType.LOGARITHM))
-			{	
-				y1=y+VIEW_COMPONENT_HEIGHT/3;
-				x1=x+(int)termOperatioinComponent.getBounds().getWidth();
-			}
-			firtTermView=new TermView(meta.getTerm().get(0),x1,y1);
-			
-			x2=x1+firtTermView.getWidth();
-			if (termOperatioinComponent!=null)
-				x2=x2+(int)termOperatioinComponent.getWidth()+VIEW_COMPONENT_PADDING;
-
-			if (meta.getOperation().equals(OperationType.DIVISION))
-			{
-				x2=x1;
-			}
-			else if (meta.getOperation().equals(OperationType.LOGARITHM))
-			{
-				x2=x1+20;
-			}
-			
-			secondTermView=null;
-			if (meta.getTerm().size()>1)
-			{
-				secondTermView=new TermView(meta.getTerm().get(1), x2, y2);
-			
-				//set the size of the current view
-				width=firtTermView.getWidth()+secondTermView.getWidth();
-				height=Math.max(firtTermView.getY()+firtTermView.getHeight(),
-						secondTermView.getY()+secondTermView.getHeight())
-							-Math.min(firtTermView.getY(), secondTermView.getY());
-			}
-			else
-			{
-				width=firtTermView.getWidth();
-				height=firtTermView.getHeight();
-			}
-			if (termOperatioinComponent!=null)
-				width=width+termOperatioinComponent.getWidth();
-			
-			//add parenthesis
-			if (meta.getOperation().equals(OperationType.ADDITION)
-					||meta.getOperation().equals(OperationType.SUBTRACTION))
-			{
-				System.out.println("TermView.associateParenthesis()..:"+meta);
-				TermUiComponent mostLeft=(TermUiComponent)findMostLeftParenthesis(getFirtTermView());
-				mostLeft.setText("("+mostLeft.getText());
-				
-				TermUiComponent rightLeft=(TermUiComponent)findMostRightParenthesis(getSecondTermView());
-				rightLeft.setText(rightLeft.getText()+")");
-			}
+			y1=y;
+			y2=y+VIEW_COMPONENT_HEIGHT;
 		}
+		else if (meta.getOperation().equals(OperationType.POWER))
+		{	
+			y2=y-VIEW_COMPONENT_HEIGHT/2;
+		}
+		else if (meta.getOperation().equals(OperationType.LOGARITHM))
+		{	
+			y1=y+VIEW_COMPONENT_HEIGHT/3;
+			x1=x+(int)termOperatioinComponent.getBounds().getWidth();
+		}
+		firtTermView=new TermView(meta.getTerm().get(0),x1,y1);
+		
+		x2=x1+firtTermView.getWidth();
+		if (termOperatioinComponent!=null)
+			x2=x2+(int)termOperatioinComponent.getWidth()+VIEW_COMPONENT_PADDING;
+
+		if (meta.getOperation().equals(OperationType.DIVISION))
+		{
+			x2=x1;
+		}
+		else if (meta.getOperation().equals(OperationType.LOGARITHM))
+		{
+			x2=x1+20;
+		}
+		
+		secondTermView=null;
+		if (meta.getTerm().size()>1)
+		{
+			secondTermView=new TermView(meta.getTerm().get(1), x2, y2);
+		
+			//set the size of the current view
+			width=firtTermView.getWidth()+secondTermView.getWidth();
+			height=Math.max(firtTermView.getY()+firtTermView.getHeight(),
+					secondTermView.getY()+secondTermView.getHeight())
+						-Math.min(firtTermView.getY(), secondTermView.getY());
+		}
+		else
+		{
+			width=firtTermView.getWidth();
+			height=firtTermView.getHeight();
+		}
+		if (termOperatioinComponent!=null)
+			width=width+termOperatioinComponent.getWidth();
+		
+		//add parenthesis
+		if (meta.getOperation().equals(OperationType.ADDITION)
+				||meta.getOperation().equals(OperationType.SUBTRACTION))
+		{
+			TermUiComponent mostLeft=(TermUiComponent)findMostLeftParenthesis(getFirtTermView());
+			mostLeft.setText("("+mostLeft.getText());
+			
+			TermUiComponent rightLeft=(TermUiComponent)findMostRightParenthesis(getSecondTermView());
+			rightLeft.setText(rightLeft.getText()+")");
+		}
+
+		if (meta.getOperation().equals(OperationType.ADDITION)||
+			meta.getOperation().equals(OperationType.SUBTRACTION)||
+			meta.getOperation().equals(OperationType.MULTIPLICATION))	
+			adjustVerticalPosition();
+		else if (meta.getOperation().equals(OperationType.DIVISION))
+			adjustHorizontalPosition();
 	}
 	
+	/**
+	 * Make sure the middle vertical line of the two terms vertical line
+	 */
+	private void adjustHorizontalPosition()
+	{
+		int widthDif=Math.abs(getFirtTermView().getWidth()-getSecondTermView().getWidth());
+		if (getFirtTermView().getWidth()<this.getSecondTermView().getWidth())
+			getFirtTermView().setX(getFirtTermView().getX()+widthDif/2);
+		else
+			getSecondTermView().setX(getSecondTermView().getX()+widthDif/2);
+	}
+	/**
+	 * Make sure the middle horizontal line of the two terms and the operation symbol is on the
+	 * same level
+	 */
+	private void adjustVerticalPosition()
+	{
+		if (getFirtTermView().getHeight()==getSecondTermView().getHeight())
+			return;
+		
+		int absDif=Math.abs(getFirtTermView().getHeight()-getSecondTermView().getHeight());
+		//do not adjust if the diffence of the heights of the two views 
+		//is less than the the height of one label
+		if (absDif<VIEW_COMPONENT_HEIGHT)
+			return;
+
+		if (getFirtTermView().getHeight()<getSecondTermView().getHeight())
+			getFirtTermView().setY(getFirtTermView().getY()+absDif/2);
+		else
+			getSecondTermView().setY(getSecondTermView().getY()+absDif/2);
+	}
+
+	private void buildOperationComponent()
+	{
+		switch(term.getOperation())
+		{
+			case  ADDITION:
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString());
+				break;
+			case  SUBTRACTION:
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString());
+				break;
+			case  MULTIPLICATION:
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString());
+				break;
+			case  EXPONENTIAL:
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString());
+				break;
+			case  LOGARITHM:
+				termOperatioinComponent=new TermUiComponent(
+						 term.getOperation().toString());
+				break;
+			default: break;
+		}
+		if (termOperatioinComponent!=null)
+			((TermUiComponent)termOperatioinComponent).setViewMeta(term);
+	}
+
+	private  JComponent findMostRightParenthesis(TermView view)
+	{
+		if (view.getTermUiComponent()!=null)
+			return view.getTermUiComponent();
+		if (view.getSecondTermView()!=null)
+		{
+			if (view.getTerm().getOperation().equals(OperationType.POWER)
+					||view.getTerm().getOperation().equals(OperationType.LOGARITHM))
+				return findMostRightParenthesis(view.getFirtTermView());
+		
+			return findMostRightParenthesis(view.getSecondTermView());
+		}
+		return findMostRightParenthesis(view.getFirtTermView());
+	}
+
+	private   JComponent findMostLeftParenthesis(TermView view)
+	{
+		if (view.getTermUiComponent()!=null)
+			return view.getTermUiComponent();
+		return findMostLeftParenthesis(view.getFirtTermView());
+	}
+
 	public String toString()
 	{
 		StringBuffer rtnB=new StringBuffer();
