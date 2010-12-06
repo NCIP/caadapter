@@ -24,6 +24,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class EditFormulaParameterDialog extends JDialog implements ActionListener {
@@ -203,7 +204,8 @@ public class EditFormulaParameterDialog extends JDialog implements ActionListene
     				formulaNode.add(newParameterNode);
     				DefaultTreeModel  treeModel=(DefaultTreeModel)FrameMain.getSingletonInstance().getMainPanel().getLocalTree().getModel();
     				treeModel.reload(formulaNode);
-            	}				
+            	}	
+    			formula.setDateModified(new Date());
             	FrameMain mainFrame=FrameMain.getSingletonInstance();
             	mainFrame.getMainPanel().selectedTermUpdated();
             	this.setVisible(false);
