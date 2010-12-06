@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -154,6 +155,7 @@ public class NewFormulaFrontPage extends JPanel
     			TermMeta newFormulaExpression=FormulaFactory.createTemplateTerm((OperationType)expressionTypeList.getSelectedItem());
     			formula.setExpression(newFormulaExpression);
     		}
+    		formula.setDateModified(new Date());
     		return;
     	}
     	FormulaStore fs=FormulaFactory.getLocalStore();
@@ -170,6 +172,7 @@ public class NewFormulaFrontPage extends JPanel
 		newFormula.setType(FormulaType.MATH);
 		newFormula.setAnnotation(annotationField.getText());
 		newFormula.setStatus((FormulaStatus)formulaStatusList.getSelectedItem());
+		newFormula.setDateModified(new Date());
 		//the following create formula expression
 		TermMeta formulaExpression=FormulaFactory.createTemplateTerm(type);
 		formulaExpression.setName(formulaNameField.getText());

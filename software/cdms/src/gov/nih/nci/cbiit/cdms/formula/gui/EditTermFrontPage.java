@@ -1,6 +1,9 @@
 package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
+import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
@@ -9,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,9 +28,11 @@ public class EditTermFrontPage extends JPanel implements ActionListener
     private JComboBox operationComboBox;
     private JTextField descriptionField;
     private JTextField valueField;
+    private JComboBox variableField;
     private JTextField unitField;
     private JLabel valueLabel;
-
+    private JLabel variableLabel;
+    
     private TermMeta metaView;
 
     public EditTermFrontPage(TermMeta meta)
@@ -42,22 +48,22 @@ public class EditTermFrontPage extends JPanel implements ActionListener
         JPanel centerPanel = new JPanel(new GridBagLayout());
         Insets insetsLeft = new Insets(5, 5, 5, 5);
         Insets insetsRight = new Insets(5, 5, 5, 25);
-
-        centerPanel.add(new JLabel("Term Name"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+        int idx=0;
+        centerPanel.add(new JLabel("Term Name"), new GridBagConstraints(0, idx, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
-        centerPanel.add(new JLabel(metaView.getName()), new GridBagConstraints(1, 0, 2, 1, 0.0, 0.0,
+        centerPanel.add(new JLabel(metaView.getName()), new GridBagConstraints(1, idx, 2, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
-        
-        centerPanel.add(new JLabel("Term Type"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+        idx++;
+        centerPanel.add(new JLabel("Term Type"), new GridBagConstraints(0, idx, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
         typeComboBox =new JComboBox();
         for (TermType type:TermType.values())
         	typeComboBox.addItem(type);
         
-        centerPanel.add(typeComboBox, new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0,
+        centerPanel.add(typeComboBox, new GridBagConstraints(1, idx, 2, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
-      
-        centerPanel.add(new JLabel("Operation Type"), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+        idx++;
+        centerPanel.add(new JLabel("Operation Type"), new GridBagConstraints(0, idx, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
         operationComboBox =new JComboBox();
         for (OperationType type:OperationType.values())
@@ -66,27 +72,45 @@ public class EditTermFrontPage extends JPanel implements ActionListener
         	operationComboBox.setSelectedItem(metaView.getOperation());
         else
         	operationComboBox.setSelectedItem(null);
-        centerPanel.add(operationComboBox, new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0,
+        centerPanel.add(operationComboBox, new GridBagConstraints(1, idx, 2, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
       
+        idx++;
+ 
         valueLabel=new JLabel("Value");
-        centerPanel.add(valueLabel, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0,
+        centerPanel.add(valueLabel, new GridBagConstraints(0, idx, 2, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
         valueField =new JTextField(metaView.getValue());
-        centerPanel.add(valueField, new GridBagConstraints(1, 3, 2, 1, 1.0, 0.0,
+        centerPanel.add(valueField, new GridBagConstraints(1, idx, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
       
-        centerPanel.add(new JLabel("Unit"), new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0,
+        idx++;
+        variableLabel=new JLabel("Variable");
+        centerPanel.add(variableLabel, new GridBagConstraints(0, idx, 2, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
+        variableField=new JComboBox();
+		BaseMeta baseMeta=FrameMain.getSingletonInstance().getMainPanel().getCentralSplit().getControllMeta();
+		if (!(baseMeta instanceof FormulaMeta))
+			return;
+
+		FormulaMeta formula=(FormulaMeta)baseMeta;
+		for (Object parameter:formula.getParameter())
+			variableField.addItem(parameter);
+        centerPanel.add(variableField, new GridBagConstraints(1, idx, 2, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
+      
+        idx++;
+        centerPanel.add(new JLabel("Unit"), new GridBagConstraints(0, idx, 2, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
         unitField =new JTextField(metaView.getUnit());
-        centerPanel.add(unitField, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
+        centerPanel.add(unitField, new GridBagConstraints(1, idx, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
       
-        
-        centerPanel.add(new JLabel("Description"), new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
+        idx++;
+        centerPanel.add(new JLabel("Description"), new GridBagConstraints(0, idx, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
         descriptionField =new JTextField(metaView.getDescription());
-        centerPanel.add(descriptionField, new GridBagConstraints(1, 5, 2, 1, 1, 0.0,
+        centerPanel.add(descriptionField, new GridBagConstraints(1, idx, 2, 1, 1, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
         this.add(centerPanel, BorderLayout.CENTER);
 
@@ -113,7 +137,7 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 	      	   if (valueField.getText()==null||valueField.getText().trim().equals("")) 
 	     		   rtnB.append("Set value for "+val.toString() +" !!");
 	      	   try {
-	      		   Double.valueOf(valueField.getText());
+	      		   Double.valueOf(((JTextField)valueField).getText());
 	      	   }
 	      	   catch (NumberFormatException e)
 	      	   {
@@ -121,10 +145,10 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 	      	   }
 	      	   break;
 	        case VARIABLE:
-	      	   if (valueField.getText()==null||valueField.getText().trim().equals("")) 
+	      	   if (variableField.getSelectedItem()==null) 
 	     		   rtnB.append("Set value for "+val.toString() +" !!");
-	      	   if (valueField.getText().matches("[0-9][a-zA-Z_0-]*"))
-	      		 rtnB.append( valueField.getText() + " is an invalid variable name for " +val.toString() + " !!");
+//	      	   if (valueField.getText().matches("[0-9][a-zA-Z_0-]*"))
+//	      		 rtnB.append( valueField.getText() + " is an invalid variable name for " +val.toString() + " !!");
 
 	      	   break;
 	        default:
@@ -139,7 +163,6 @@ public class EditTermFrontPage extends JPanel implements ActionListener
     	TermType val = (TermType)typeComboBox.getSelectedItem();
 		metaView.setType(val);
 		metaView.setDescription(descriptionField.getText());
-		metaView.setUnit(unitField.getText());
     	switch (val) 
     	{
 	    	case UNKNOWN:
@@ -151,12 +174,20 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 	    		metaView.setOperation((OperationType)operationComboBox.getSelectedItem());
 	    		metaView.setValue(null);
 	    		TermMeta term=FormulaFactory.createTemplateTerm(metaView.getOperation());
+	    		if (metaView.getTerm()==null)
+	    			metaView.setTerm(new ArrayList<TermMeta>());
 	    		for (TermMeta childTerm:term.getTerm())
 	    			metaView.getTerm().add(childTerm);
+	    		break;
+	    	case VARIABLE:
+	    		metaView.setOperation(null);
+	    		metaView.setUnit(unitField.getText());
+	    		metaView.setValue(((DataElement)variableField.getSelectedItem()).getName());
 	    		break;
 	    	default:
 	    		metaView.setOperation(null);
 	    		metaView.setValue(valueField.getText());
+	    		metaView.setUnit(unitField.getText());
 	    		break;
     	}
     	
@@ -168,25 +199,57 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 		JComboBox cb = (JComboBox)e.getSource();
 
         TermType val = (TermType)cb.getSelectedItem();
-  	   	operationComboBox.setVisible(false);
         if (val.equals(TermType.EXPRESSION))
         {
-     	   valueField.setEditable(false);
+     	       	   
      	   operationComboBox.setVisible(true);
+     	   operationComboBox.setEnabled(true);
+     	   descriptionField.setEditable(true);
+
+     	   valueField.setEnabled(false);
+    	   variableField.setVisible(false);
+    	   unitField.setEnabled(false);
         }
         else if (val.equals(TermType.UNKNOWN))
         {
-     	   valueField.setEditable(false);
+      	   valueField.setEnabled(false);
+     	   variableField.setVisible(false);
+     	   operationComboBox.setEnabled(false);
+     	   unitField.setEnabled(false);
+     	   descriptionField.setEditable(false);
         }
-        else
+        else if (val.equals(TermType.CONSTANT))
         {
-     	   valueField.setEditable(true);
+
+      	   	valueLabel.setVisible(true);
+     	   	valueField.setEnabled(true);
+     	   	valueField.setVisible(true);
+     	    variableLabel.setVisible(false);
+     	    variableField.setEnabled(false);
+     	    variableField.setVisible(false);
+     	    
+        	unitField.setEditable(true);
+     	    unitField.setEnabled(true);
+        	descriptionField.setEditable(true);
+        	
+     	    operationComboBox.setEnabled(false);
+     	        	    
         }
-        
-        if (val.equals(TermType.VARIABLE))
-        	valueLabel.setText("Variable Name");
-        else
-        	valueLabel.setText("Value");
+        else 
+        {
+      	   	valueLabel.setVisible(false);
+     	   	valueField.setEnabled(false);
+     	   	valueField.setVisible(false);
+     	    variableLabel.setVisible(true);
+     	    variableField.setEnabled(true);
+     	    variableField.setVisible(true);
+     	    
+      	   	operationComboBox.setEnabled(false);
+        	unitField.setEditable(false);
+        	unitField.setText(((DataElement)variableField.getSelectedItem()).getUnit());
+        	descriptionField.setEditable(false);
+        	descriptionField.setText(((DataElement)variableField.getSelectedItem()).getDescription());
+        }
 	}
 }
 
