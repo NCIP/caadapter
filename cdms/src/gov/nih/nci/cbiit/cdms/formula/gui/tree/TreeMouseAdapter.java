@@ -40,17 +40,21 @@ public class TreeMouseAdapter extends MouseAdapter {
 			}
 			// Create PopupMenu for the Cell
 			JPopupMenu popupMenu =new JPopupMenu();
-			JMenuItem excItem=new JMenuItem(new ExecuteFormulaAction("Execute Formula", ExecuteFormulaAction.FORMULA_ACTION_EXECUTION));
+			ExecuteFormulaAction excAction=new ExecuteFormulaAction("Execute Formula", ExecuteFormulaAction.FORMULA_ACTION_EXECUTION);
+			JMenuItem excItem=new JMenuItem(excAction);
 			popupMenu.add(excItem);
 			
-			JMenuItem paramAddItem=new JMenuItem(new ExecuteFormulaAction("Add Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER));
+			ExecuteFormulaAction paramAddAction=new ExecuteFormulaAction("Add Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER);
+			JMenuItem paramAddItem=new JMenuItem(paramAddAction);
 			popupMenu.add(paramAddItem);
 			
-			JMenuItem paramEditItem=new JMenuItem(new ExecuteFormulaAction("Edit Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER));
+			ExecuteFormulaAction paramEditAction=new ExecuteFormulaAction("Edit Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_EDIT_PARAMETER);
+			JMenuItem paramEditItem=new JMenuItem(paramEditAction); 
 			paramEditItem.setEnabled(false);
 			popupMenu.add(paramEditItem);
 			
-			JMenuItem paramDeleteItem=new JMenuItem(new ExecuteFormulaAction("Delete Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER));
+			ExecuteFormulaAction paramDeleteAction=new ExecuteFormulaAction("Delete Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_DELTE_PARAMETER);
+			JMenuItem paramDeleteItem=new JMenuItem(paramDeleteAction);
 			paramDeleteItem.setEnabled(false);
 			popupMenu.add(paramDeleteItem);
 			
@@ -68,6 +72,8 @@ public class TreeMouseAdapter extends MouseAdapter {
 			if (treeNode.getUserObject() instanceof FormulaMeta)
 			{
 				FormulaMeta formula=(FormulaMeta)treeNode.getUserObject();
+				excAction.setFormulaNode(treeNode);
+				paramAddAction.setFormulaNode(treeNode);
 				if (formula.getStatus()==FormulaStatus.FINAL)
 				{
 					editItem.setEnabled(false);
@@ -92,7 +98,12 @@ public class TreeMouseAdapter extends MouseAdapter {
 				if (parentFormula.getStatus()==FormulaStatus.DRAFT)
 				{
 					paramDeleteItem.setEnabled(true);
+					paramDeleteAction.setParameter((DataElement)treeNode.getUserObject());
+					paramDeleteAction.setFormulaNode(parentTreeNode);
+					
 					paramEditItem.setEnabled(true);
+					paramEditAction.setParameter((DataElement)treeNode.getUserObject());
+					paramEditAction.setFormulaNode(parentTreeNode);
 				}
 			}
 		}
