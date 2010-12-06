@@ -9,6 +9,8 @@ import gov.nih.nci.cbiit.cdms.formula.gui.FrameMain;
 import gov.nih.nci.cbiit.cdms.formula.gui.tree.TreeNodeFormulaStore;
 
 import java.awt.event.ActionEvent;
+import java.util.Date;
+
 import javax.swing.AbstractAction;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -72,6 +74,7 @@ public class ExecuteFormulaAction extends AbstractAction {
 				if (param.equals(parameter))
 					formulaNode.remove(childNode);
 			}
+			formula.setDateModified(new Date());
 			DefaultTreeModel  treeModel=(DefaultTreeModel)FrameMain.getSingletonInstance().getMainPanel().getLocalTree().getModel();
 			treeModel.reload(formulaNode);
 		}
