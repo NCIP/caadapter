@@ -33,7 +33,7 @@ public class TermUiComponent extends JLabel {
 				text=meta.getName();
 			else
 				text=meta.getValue();
-			if (meta.getUnit()!=null)
+			if (meta.getUnit()!=null&&meta.getUnit().trim().length()>0)
 				text=text+"("+meta.getUnit()+")";
 			this.setText(text);
 		}

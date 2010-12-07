@@ -237,7 +237,7 @@ public class TermMeta extends BaseMeta{
 				rtnBf.append(getTerm().get(1).toString());
 			rtnBf.append(")");
 		}
-		if (getDescription()!=null)
+		if (getDescription()!=null&&getDescription().trim().length()>0)
 			 rtnBf.append(getDescription());
 		
 		return rtnBf.toString();
