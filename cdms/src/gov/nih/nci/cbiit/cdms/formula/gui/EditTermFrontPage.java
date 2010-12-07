@@ -94,6 +94,8 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 			return;
 
 		FormulaMeta formula=(FormulaMeta)baseMeta;
+		if (formula.getParameter()==null)
+			formula.setParameter(new ArrayList<DataElement>());
 		for (Object parameter:formula.getParameter())
 			variableField.addItem(parameter);
         centerPanel.add(variableField, new GridBagConstraints(1, idx, 2, 1, 1.0, 0.0,
