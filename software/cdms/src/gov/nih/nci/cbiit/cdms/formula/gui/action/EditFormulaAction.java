@@ -11,12 +11,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class EditFormulaAction extends AbstractAction {
 
 	DefaultMutableTreeNode formulaNode;
-	public EditFormulaAction (String name, DefaultMutableTreeNode treeNode)
+	public EditFormulaAction (String name)
 	{
 		super(name);
-		formulaNode=treeNode;
 	}
 	
+	public void setFormulaNode(DefaultMutableTreeNode formulaNode) {
+		this.formulaNode = formulaNode;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
