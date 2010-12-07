@@ -165,12 +165,15 @@ public class EditTermFrontPage extends JPanel implements ActionListener
     	TermType val = (TermType)typeComboBox.getSelectedItem();
 		metaView.setType(val);
 		metaView.setDescription(descriptionField.getText());
+		if (metaView.getTerm()!=null)
+			metaView.getTerm().clear();
     	switch (val) 
     	{
 	    	case UNKNOWN:
 	    		metaView.setOperation(null);
 	    		metaView.setValue(null);
 	    		metaView.setUnit(null);
+
 	    		break;
 	    	case EXPRESSION:
 	    		metaView.setOperation((OperationType)operationComboBox.getSelectedItem());
@@ -178,6 +181,7 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 	    		TermMeta term=FormulaFactory.createTemplateTerm(metaView.getOperation());
 	    		if (metaView.getTerm()==null)
 	    			metaView.setTerm(new ArrayList<TermMeta>());
+ 	    		
 	    		for (TermMeta childTerm:term.getTerm())
 	    			metaView.getTerm().add(childTerm);
 	    		break;
@@ -248,9 +252,14 @@ public class EditTermFrontPage extends JPanel implements ActionListener
      	    
       	   	operationComboBox.setEnabled(false);
         	unitField.setEditable(false);
-        	unitField.setText(((DataElement)variableField.getSelectedItem()).getUnit());
         	descriptionField.setEditable(false);
-        	descriptionField.setText(((DataElement)variableField.getSelectedItem()).getDescription());
+        	if (variableField.getSelectedItem()!=null)
+        	{
+        		unitField.setText(((DataElement)variableField.getSelectedItem()).getUnit());
+            	descriptionField.setText(((DataElement)variableField.getSelectedItem()).getDescription());
+        	}
+
+
         }
 	}
 }

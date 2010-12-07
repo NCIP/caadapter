@@ -22,13 +22,11 @@ public class EditTermWizard extends JDialog implements ActionListener
     private static final String CANCEL_COMMAND = "Cancel";
     private EditTermFrontPage frontPage;
     private TermMeta metaView;
-    String type = null;
 
-    public EditTermWizard(Frame frame, TermMeta meta, String type, boolean modal)
+    public EditTermWizard(Frame frame, TermMeta meta, boolean modal)
             throws HeadlessException
     {
         super(frame, TITLE, modal);
-        this.type = type;
         metaView=meta;
         initialize();
     }
