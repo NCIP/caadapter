@@ -5,6 +5,7 @@ import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStatus;
 import gov.nih.nci.cbiit.cdms.formula.gui.EditTermWizard;
 import gov.nih.nci.cbiit.cdms.formula.gui.FrameMain;
+import gov.nih.nci.cbiit.cdms.formula.gui.action.EditTermAction;
 
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
@@ -26,14 +27,14 @@ public class ViewMouseAdapter extends MouseAdapter {
 			return;
 
 		FormulaMeta formula=(FormulaMeta)baseMeta;
+		if (formula.getStatus()!=FormulaStatus.DRAFT)
+			return;
 		if (e.getClickCount()==2)
 		{
-			if (formula.getStatus()!=FormulaStatus.DRAFT)
-				return;
 			TermUiComponent metaUi=(TermUiComponent)e.getSource();
 			System.out.println("ViewMouseAdapter.mouseClicked()..double click:"+metaUi.getViewMeta());
 			FrameMain mainFrame=FrameMain.getSingletonInstance();
-			EditTermWizard wizard = new EditTermWizard(mainFrame, metaUi.getViewMeta(), "givenType", true);
+			EditTermWizard wizard = new EditTermWizard(mainFrame, metaUi.getViewMeta(),true);
 		    wizard.setLocation(mainFrame.getX()+mainFrame.getWidth()/4,
 		    		   mainFrame.getY()+mainFrame.getHeight()/4);
 		       wizard.setSize((int)mainFrame.getSize().getWidth()/2,
@@ -49,17 +50,15 @@ public class ViewMouseAdapter extends MouseAdapter {
 			}
 			// Create PopupMenu for the Cell
 			JPopupMenu popupMenu =new JPopupMenu();
-			JMenuItem editItem=new JMenuItem("Edit Term");
-			editItem.setEnabled(false);
+			EditTermAction editAction=new EditTermAction("Edit Term");
+			JMenuItem editItem=new JMenuItem(editAction);
+//			editItem.setEnabled(false);
 			popupMenu.add(editItem); 
-			JMenuItem deleteItem=new JMenuItem("Delete Term");
-			deleteItem.setEnabled(false);
 			
-//			if (formula.getStatus()==FormulaStatus.DRAFT)
-//			{
-//					editItem.setEnabled(true);
-//					deleteItem.setEnabled(true);
-//			}
+			EditTermAction deleteAction=new EditTermAction("Delete Term");
+			JMenuItem deleteItem=new JMenuItem(deleteAction);
+//			deleteItem.setEnabled(false);
+			
 			popupMenu.add(deleteItem);
 			popupMenu.show(e.getComponent(), e.getX(), e.getY());
 		

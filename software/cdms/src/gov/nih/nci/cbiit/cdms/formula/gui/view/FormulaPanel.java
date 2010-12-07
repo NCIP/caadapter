@@ -63,7 +63,8 @@ public class FormulaPanel extends JPanel{
 		String lbText="No formula is selected";
 		if (f!=null)
 			lbText=f.getName();
-		if (f.getExpression().getUnit()!=null)
+		if (f.getExpression().getUnit()!=null
+				&&f.getExpression().getUnit().trim().length()>0)
 			lbText=lbText+"("+f.getExpression().getUnit()+")";
 		
 		lbText=lbText+" = ";
@@ -95,6 +96,10 @@ public class FormulaPanel extends JPanel{
 	private int calculateViewY(TermView view, int yStart)
 	{
 		int y=yStart;
+		if (view.getTerm()==null)
+			return y;
+		if (view.getTerm().getOperation()==null)
+			return y;
 		switch(view.getTerm().getOperation())
 		{
 		case DIVISION://make the divider line at bottom of the dividend
