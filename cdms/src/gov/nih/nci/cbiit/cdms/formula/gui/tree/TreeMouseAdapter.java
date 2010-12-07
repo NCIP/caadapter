@@ -58,8 +58,10 @@ public class TreeMouseAdapter extends MouseAdapter {
 			paramDeleteItem.setEnabled(false);
 			popupMenu.add(paramDeleteItem);
 			
-			JMenuItem deleteItem =new JMenuItem (new DeleteFormulaAction("Delete Formula", null));
-			JMenuItem editItem=new JMenuItem (new EditFormulaAction("Edit Formula", null));
+			DeleteFormulaAction deleteFormulaAction=new DeleteFormulaAction("Delete Formula");
+			EditFormulaAction editFormulaAction=new EditFormulaAction("Edit Formula");
+			JMenuItem deleteItem =new JMenuItem (deleteFormulaAction);
+			JMenuItem editItem=new JMenuItem (editFormulaAction);
 
 			popupMenu.addSeparator();
 			popupMenu.add(editItem);
@@ -80,8 +82,9 @@ public class TreeMouseAdapter extends MouseAdapter {
 					deleteItem.setEnabled(false);
 					paramAddItem.setEnabled(false);
 				}
-				deleteItem =new JMenuItem (new DeleteFormulaAction("Delete Formula", treeNode));
-				editItem=new JMenuItem (new EditFormulaAction("Edit Formula", treeNode));
+				editFormulaAction.setFormulaNode(treeNode);
+				deleteFormulaAction.setFormulaNode(treeNode);
+				
 
 				if (formula.getStatus()==FormulaStatus.DRAFT)
 					excItem.setEnabled(false);

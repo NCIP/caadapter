@@ -12,12 +12,16 @@ import javax.swing.tree.DefaultTreeModel;
 public class DeleteFormulaAction extends AbstractAction {
 
 	DefaultMutableTreeNode formulaNode;
-	public DeleteFormulaAction (String name, DefaultMutableTreeNode treeNode)
+	public DeleteFormulaAction (String name)
 	{
 		super(name);
-		formulaNode=treeNode;
 	}
 	
+	
+	public void setFormulaNode(DefaultMutableTreeNode formulaNode) {
+		this.formulaNode = formulaNode;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
