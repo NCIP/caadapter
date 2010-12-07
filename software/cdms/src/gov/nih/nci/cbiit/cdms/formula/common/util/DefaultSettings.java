@@ -507,4 +507,41 @@ public class DefaultSettings
 			return null;
 		}
 	}
+
+    public static String changeCharacter(String str)
+    {
+        if (str == null) return null;
+        String formula2 = "";
+        for(int i=0;i<str.length();i++)
+        {
+            String achar = str.substring(i, i+1);
+
+            if (achar.equals("\"")) formula2 = formula2 + "%22";
+            else if (achar.equals("\n")) formula2 = formula2 + "";
+            else if (achar.equals("\r")) formula2 = formula2 + "";
+            else if (achar.equals("\t")) formula2 = formula2 + "";
+            else if (achar.equals(" ")) formula2 = formula2 + "%20";
+            else if (achar.equals("<")) formula2 = formula2 + "%3C";
+            else if (achar.equals("=")) formula2 = formula2 + "%3D";
+            else if (achar.equals(">")) formula2 = formula2 + "%3E";
+            else if (achar.equals("/")) formula2 = formula2 + "%2F";
+            else if (achar.equals("^")) formula2 = formula2 + "%52";
+            else if (achar.equals(";")) formula2 = formula2 + "%3B";
+            else if (achar.equals(":")) formula2 = formula2 + "%3A";
+            else if (achar.equals(".")) formula2 = formula2 + "%2E";
+            else if (achar.equals("+")) formula2 = formula2 + "%2B";
+            else if (achar.equals("%")) formula2 = formula2 + "%25";
+            else if (achar.equals("&")) formula2 = formula2 + "%26";
+            else if (achar.equals("@")) formula2 = formula2 + "%40";
+            else if (achar.equals("?")) formula2 = formula2 + "%3F";
+            else if (achar.equals("!")) formula2 = formula2 + "%21";
+            else if (achar.equals("#")) formula2 = formula2 + "%23";
+            else if (achar.equals("*")) formula2 = formula2 + "%2A";
+            else if (achar.equals("-")) formula2 = formula2 + "%2D";
+            else if (achar.equals("$")) formula2 = formula2 + "%24";
+            else if (achar.equals(",")) formula2 = formula2 + "%2C";
+            else formula2 = formula2 + achar;
+        }
+        return formula2;
+    }
 }
