@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import gov.nih.nci.cbiit.cdms.formula.common.util.WebstartUtil;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.WindowAdapterMain;
 
 import javax.swing.JFrame;
@@ -42,7 +43,14 @@ public class FrameMain extends JFrame {
 	}
     public static void main(String[] args)
     {
+    	System.out.println("FrameMain.main()...args:"+args);
     	try {
+    		if (args!=null && args.length>0 && args[0].startsWith("http:")) {
+    			System.out.println("FrameMain.main()...webstart codebase:"+args[0]);
+    			WebstartUtil.downloadFile("workingspace/bodySurfaceArea.xml","samples/bodySurfaceArea.xml");
+    		}
+
+    		System.out.println("FrameMain.main()..args length:"+args.length);
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
