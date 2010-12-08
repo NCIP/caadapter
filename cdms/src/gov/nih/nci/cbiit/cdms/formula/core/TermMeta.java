@@ -226,7 +226,12 @@ public class TermMeta extends BaseMeta{
 	{
 		StringBuffer rtnBf=new StringBuffer();
 		if (getTerm()==null||getTerm().isEmpty())
-			rtnBf.append(getValue());
+		{
+			if (getValue()==null||getValue().isEmpty())
+				rtnBf.append(getName());
+			else
+				rtnBf.append(getValue());
+		}
 		else
 		{
 			rtnBf.append("(");

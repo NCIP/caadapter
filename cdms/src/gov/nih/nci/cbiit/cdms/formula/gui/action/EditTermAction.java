@@ -1,39 +1,75 @@
 package gov.nih.nci.cbiit.cdms.formula.gui.action;
 
-import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
+ 
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.core.TermType;
+import gov.nih.nci.cbiit.cdms.formula.gui.EditTermWizard;
 import gov.nih.nci.cbiit.cdms.formula.gui.FrameMain;
-import gov.nih.nci.cbiit.cdms.formula.gui.NewFormulaWizard;
+ 
+import gov.nih.nci.cbiit.cdms.formula.gui.view.TermView;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JOptionPane;
+ 
 
 public class EditTermAction extends AbstractAction {
 
-	TermMeta termMeta;
-	public EditTermAction (String name)
+	TermView viewMeta;
+	private int actionType;
+	public static final int TYPE_EDIT=0;
+	public static final int TYPE_DELETE=1;
+	public EditTermAction (String name, int type)
 	{
 		super(name);
+		actionType=type;
 	}
 	
-	public void setTermMeta(TermMeta meta) {
-			termMeta = meta;
+	public void setTermView(TermView view) {
+		viewMeta = view;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		System.out.println("EditTermAction.actionPerformed()..:"+arg0.getSource());
-	       FrameMain mainFrame=FrameMain.getSingletonInstance();
-	       NewFormulaWizard wizard = new NewFormulaWizard(mainFrame, "Edit Formula", true);
-	       wizard.setLocation(mainFrame.getX()+mainFrame.getWidth()/4,
-	    		   mainFrame.getY()+mainFrame.getHeight()/4);
-	       wizard.setSize((int)mainFrame.getSize().getWidth()/2,
-					(int)mainFrame.getSize().getHeight()/2);
-//	       FormulaMeta f=(FormulaMeta)formulaNode.getUserObject();
-//	       wizard.getFrontPage().eidtFormula(f);
-	       wizard.setVisible(true);
+		FrameMain mainFrame=FrameMain.getSingletonInstance();
+		TermView parentView=viewMeta.getParentView();
+		switch (actionType)
+		{
+			case TYPE_EDIT:
+				EditTermWizard wizard = new EditTermWizard(mainFrame, parentView.getTerm(),true);
+			    wizard.setLocation(mainFrame.getX()+mainFrame.getWidth()/4,
+			    		   mainFrame.getY()+mainFrame.getHeight()/4);
+			    wizard.setSize((int)mainFrame.getSize().getWidth()/2,
+						(int)mainFrame.getSize().getHeight()/2);
+			    wizard.setVisible(true);
+			    break;
+			case TYPE_DELETE:
+				if (parentView.getParentView()==null)
+				{
+					String msg="You can not delete the root expression !!\n"+parentView.toString() ;
+		            JOptionPane.showMessageDialog(mainFrame, msg, "Warning", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				String errMsg="Are you sure to delete ?\n"+parentView.toString() ;
+	            int v=JOptionPane.showConfirmDialog(mainFrame, errMsg, "Confirm Deleting", JOptionPane.YES_NO_OPTION);
+
+	            if (v==JOptionPane.YES_OPTION)
+	            {
+	            	TermMeta term=parentView.getTerm();
+	            	term.setTerm(null);
+	            	term.setUnit(null);
+	            	term.setOperation(null);
+	            	term.setDescription(null);
+	            	term.setType(TermType.UNKNOWN);
+	            }
+	            mainFrame.getMainPanel().selectedTermUpdated();
+				break;
+				
+			default:
+				break;
+		}
 	}
 
 }
