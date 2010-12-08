@@ -64,6 +64,7 @@ public class SplitPaneFormula extends JSplitPane implements TreeSelectionListene
 			topPanel.add(new JLabel("Annotation: "+formula.getAnnotation()));
 			
 			if (formula.getParameter()!=null)
+			{
 				for (DataElement p:formula.getParameter()) 
 				{
 					if (p.getUsage().equals(DataElementUsageType.TRANSFORMATION))
@@ -80,6 +81,7 @@ public class SplitPaneFormula extends JSplitPane implements TreeSelectionListene
 					String lbTxt="Parameter:  "+p.getName();
 					topPanel.add(new JLabel(lbTxt));
 				}
+			}
 		}
 		else
 		{

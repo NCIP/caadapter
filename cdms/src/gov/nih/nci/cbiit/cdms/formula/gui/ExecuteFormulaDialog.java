@@ -87,20 +87,21 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
         centerPanel.add(inputLabel, new GridBagConstraints(1, i, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
         i++;
-  		for (DataElement  pName:formula.getParameter())
-		{
-  			if (pName.getUsage().equals(DataElementUsageType.TRANSFORMATION))
-  				continue;
-			JLabel pLabel=new JLabel(pName.toString() +":");
-			JTextField pField=new JTextField("");
-			paramFieldHash.put(pName.getName(), pField);
-
-            centerPanel.add(pLabel, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-            centerPanel.add(pField, new GridBagConstraints(1, i, 2, 1, 1.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-            i++;
-		}
+        if (formula.getParameter()!=null)
+	  		for (DataElement  pName:formula.getParameter())
+			{
+	  			if (pName.getUsage().equals(DataElementUsageType.TRANSFORMATION))
+	  				continue;
+				JLabel pLabel=new JLabel(pName.toString() +":");
+				JTextField pField=new JTextField("");
+				paramFieldHash.put(pName.getName(), pField);
+	
+	            centerPanel.add(pLabel, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,
+	                    GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+	            centerPanel.add(pField, new GridBagConstraints(1, i, 2, 1, 1.0, 0.0,
+	                    GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+	            i++;
+			}
 
 		JLabel pLabel=new JLabel(formula.getName()+"("+formula.getExpression().getUnit() +"):");
 		resultField=new JTextField("      " );
