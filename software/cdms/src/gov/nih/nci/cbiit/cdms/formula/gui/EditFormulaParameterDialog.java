@@ -2,6 +2,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
+import gov.nih.nci.cbiit.cdms.formula.core.DataElementUsageType;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.ExecuteFormulaAction;
 
@@ -41,7 +42,6 @@ public class EditFormulaParameterDialog extends JDialog implements ActionListene
 	private JTextField cdeCodeField;
 	private JTextField cdeUrlField;
 	
-	private HashMap <String, JTextField> paramFieldHash;
 	public EditFormulaParameterDialog(JFrame owner, String title, boolean modal)
 	{
 		super(owner, title,modal);
@@ -118,9 +118,7 @@ public class EditFormulaParameterDialog extends JDialog implements ActionListene
 
 	private void initParameterPanel(JPanel centerPanel)
 	{
-        paramFieldHash=new HashMap<String, JTextField>();
-
-        centerPanel.setLayout(new GridBagLayout());
+         centerPanel.setLayout(new GridBagLayout());
         Insets insets = new Insets(5, 20, 5, 50);
         int i=0;
 
@@ -154,9 +152,9 @@ public class EditFormulaParameterDialog extends JDialog implements ActionListene
         centerPanel.add(new JLabel("Usage:"), new GridBagConstraints(0, i, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
         usageField=new JComboBox();
-        usageField.addItem("parameter");
-        usageField.addItem("transformation");
-        
+        for (DataElementUsageType usageType:DataElementUsageType.values())
+        	usageField.addItem(usageType);
+                
         centerPanel.add(usageField, new GridBagConstraints(1, i, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
         i++;
@@ -192,7 +190,7 @@ public class EditFormulaParameterDialog extends JDialog implements ActionListene
             	parameter.setDataType((String)dataTypeField.getSelectedItem());
             	parameter.setDescription(descField.getText());
             	parameter.setUnit(unitField.getText());
-            	parameter.setUsage((String)usageField.getSelectedItem());
+            	parameter.setUsage((DataElementUsageType)usageField.getSelectedItem());
             	parameter.setCdeId(cdeCodeField.getText());
             	parameter.setCdeReference(cdeUrlField.getText());
             	if (formula.getParameter()==null)

@@ -37,10 +37,6 @@ public class ExecuteFormulaAction extends AbstractAction {
 		formulaNode=node;
 	}
 
-	public DataElement getParameter() {
-		return parameter;
-	}
-
 	public void setParameter(DataElement parameter) {
 		this.parameter = parameter;
 	}
@@ -56,7 +52,7 @@ public class ExecuteFormulaAction extends AbstractAction {
 		else if (type==FORMULA_ACTION_ADD_PARAMETER
 				||type==FORMULA_ACTION_EDIT_PARAMETER)
 		{
-			EditFormulaParameterDialog wizard = new EditFormulaParameterDialog(FrameMain.getSingletonInstance(), "Edit Formula Parameter", true);
+			EditFormulaParameterDialog wizard = new EditFormulaParameterDialog(FrameMain.getSingletonInstance(), "Edit Data Element", true);
 			wizard.setFormulaNode(formulaNode);
  
 			wizard.setParameter(parameter);

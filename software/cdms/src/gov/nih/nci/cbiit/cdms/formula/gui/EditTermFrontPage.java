@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
+import gov.nih.nci.cbiit.cdms.formula.core.DataElementUsageType;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
@@ -96,8 +97,10 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 		FormulaMeta formula=(FormulaMeta)baseMeta;
 		if (formula.getParameter()==null)
 			formula.setParameter(new ArrayList<DataElement>());
-		for (Object parameter:formula.getParameter())
-			variableField.addItem(parameter);
+		for (DataElement parameter:formula.getParameter())
+			if (parameter.getUsage().equals(DataElementUsageType.PARAMETER))
+				variableField.addItem(parameter);
+		
         centerPanel.add(variableField, new GridBagConstraints(1, idx, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
       

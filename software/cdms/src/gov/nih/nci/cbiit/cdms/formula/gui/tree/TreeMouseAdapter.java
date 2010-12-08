@@ -44,16 +44,16 @@ public class TreeMouseAdapter extends MouseAdapter {
 			JMenuItem excItem=new JMenuItem(excAction);
 			popupMenu.add(excItem);
 			
-			ExecuteFormulaAction paramAddAction=new ExecuteFormulaAction("Add Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER);
+			ExecuteFormulaAction paramAddAction=new ExecuteFormulaAction("Add Data Element", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER);
 			JMenuItem paramAddItem=new JMenuItem(paramAddAction);
 			popupMenu.add(paramAddItem);
 			
-			ExecuteFormulaAction paramEditAction=new ExecuteFormulaAction("Edit Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_EDIT_PARAMETER);
+			ExecuteFormulaAction paramEditAction=new ExecuteFormulaAction("Edit Data Element", ExecuteFormulaAction.FORMULA_ACTION_EDIT_PARAMETER);
 			JMenuItem paramEditItem=new JMenuItem(paramEditAction); 
 			paramEditItem.setEnabled(false);
 			popupMenu.add(paramEditItem);
 			
-			ExecuteFormulaAction paramDeleteAction=new ExecuteFormulaAction("Delete Formula Parameter", ExecuteFormulaAction.FORMULA_ACTION_DELTE_PARAMETER);
+			ExecuteFormulaAction paramDeleteAction=new ExecuteFormulaAction("Delete Data Element", ExecuteFormulaAction.FORMULA_ACTION_DELTE_PARAMETER);
 			JMenuItem paramDeleteItem=new JMenuItem(paramDeleteAction);
 			paramDeleteItem.setEnabled(false);
 			popupMenu.add(paramDeleteItem);
