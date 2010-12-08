@@ -2,6 +2,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
+import gov.nih.nci.cbiit.cdms.formula.core.DataElementUsageType;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 
 import javax.swing.JButton;
@@ -88,6 +89,8 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
         i++;
   		for (DataElement  pName:formula.getParameter())
 		{
+  			if (pName.getUsage().equals(DataElementUsageType.TRANSFORMATION))
+  				continue;
 			JLabel pLabel=new JLabel(pName.toString() +":");
 			JTextField pField=new JTextField("");
 			paramFieldHash.put(pName.getName(), pField);

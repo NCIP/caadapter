@@ -21,7 +21,7 @@ public class DataElement extends BaseMeta {
     @XmlAttribute
     private String unit;
     @XmlAttribute
-    private String usage;
+    private DataElementUsageType usage;
 	
 	@Override
 	public String formatJavaStatement() {
@@ -49,7 +49,7 @@ public class DataElement extends BaseMeta {
 		return unit;
 	}
 
-	public String getUsage() {
+	public DataElementUsageType getUsage() {
 		return usage;
 	}
 
@@ -73,14 +73,14 @@ public class DataElement extends BaseMeta {
 		this.unit = unit;
 	}
 
-	public void setUsage(String usage) {
+	public void setUsage(DataElementUsageType usage) {
 		this.usage = usage;
 	}
 
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
-		return "Parameter Properties";
+		return "Data Element Properties";
 	}
 
 	@Override
@@ -103,8 +103,9 @@ public class DataElement extends BaseMeta {
 	@Override
 	public String toString()
 	{
-		if (getUnit()==null)
+ 		if (getUnit()==null||getUnit().isEmpty())
 			return getName();
+		
 		return getName()+"("+getUnit()+")";
 	}
 	

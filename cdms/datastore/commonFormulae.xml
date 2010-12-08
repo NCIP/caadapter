@@ -41,6 +41,6 @@
 			</term>
 			<term type="constant" name="divisor" value="9"/>
 		</expression>
-	<parameter name="Fahrenheit"  unit="F" description="Fahrenheit degree" />
+	<parameter name="Fahrenheit"  unit="F" dataType="number" usage="parameter"  description="Fahrenheit degree" />
 	</formula>
 </formulaStore>

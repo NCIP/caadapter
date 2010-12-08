@@ -2,12 +2,12 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
+import gov.nih.nci.cbiit.cdms.formula.core.DataElementUsageType;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.gui.properties.PanelDefaultProperties;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -29,7 +29,7 @@ public class SplitPaneFormula extends JSplitPane implements TreeSelectionListene
 	{
 		super(JSplitPane.VERTICAL_SPLIT);
 		topPanel=new JPanel();
-		topPanel.setBorder(BorderFactory.createTitledBorder("Parameters"));
+		topPanel.setBorder(BorderFactory.createTitledBorder("Data Elements"));
 		topPanel.setPreferredSize(new Dimension(120, 150));
 		add(topPanel);
 		lowPanel=new PanelDefaultProperties(null);
@@ -66,12 +66,30 @@ public class SplitPaneFormula extends JSplitPane implements TreeSelectionListene
 			if (formula.getParameter()!=null)
 				for (DataElement p:formula.getParameter()) 
 				{
+					if (p.getUsage().equals(DataElementUsageType.TRANSFORMATION))
+					{
+						String lbTxt="Transformation:  "+p.getName();
+						topPanel.add(new JLabel(lbTxt));
+					}
+				}
+			
+				for (DataElement p:formula.getParameter()) 
+				{
+					if (p.getUsage().equals(DataElementUsageType.TRANSFORMATION))
+		  				continue;
 					String lbTxt="Parameter:  "+p.getName();
 					topPanel.add(new JLabel(lbTxt));
 				}
 		}
 		else
+		{
 			topPanel.add(new JLabel ("Name:  " +controllMeta.getName()));
+			if (controllMeta instanceof DataElement)
+			{
+				topPanel.add(new JLabel ("Usage:  " +((DataElement)controllMeta).getUsage().value()));
+			}
+				
+		}
 		lowPanel.updateProptiesDisplay(controllMeta);
 		this.updateUI();
 	}
