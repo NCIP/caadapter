@@ -10,42 +10,42 @@ import javax.swing.JLabel;
 
 
 public class TermUiComponent extends JLabel {
-	private TermMeta viewMeta;
+	private TermView viewMeta;
 
 	public TermUiComponent (String text)
 	{
 		super(text);
 		inintUI(null);
 	}
-	public TermUiComponent (TermMeta meta)
+	public TermUiComponent (TermView meta)
 	{
 		super();
 		inintUI(meta);
 	}
 	
-	private void inintUI ( TermMeta meta)
+	private void inintUI ( TermView views)
 	{
 		String text="";
-		viewMeta=meta;
-		if (meta!=null)
+		viewMeta=views;
+		if (views!=null)
 		{
-			if (meta.getType().equals(TermType.UNKNOWN))
-				text=meta.getName();
+			if (views.getTerm().getType().equals(TermType.UNKNOWN))
+				text=views.getTerm().getName();
 			else
-				text=meta.getValue();
-			if (meta.getUnit()!=null&&meta.getUnit().trim().length()>0)
-				text=text+"("+meta.getUnit()+")";
+				text=views.getTerm().getValue();
+			if (views.getTerm().getUnit()!=null&&views.getTerm().getUnit().trim().length()>0)
+				text=text+"("+views.getTerm().getUnit()+")";
 			this.setText(text);
 		}
 		setHorizontalAlignment(JLabel.CENTER);
 		setBounds(new Rectangle(this.getText().length()*TermView.VIEW_CHARACTER_WEIDTH+TermView.VIEW_COMPONENT_PADDING, TermView.VIEW_COMPONENT_HEIGHT));
 	}
 
-	public TermMeta getViewMeta() {
+	public TermView getViewMeta() {
 		return viewMeta;
 	}
 	
-	public void setViewMeta(TermMeta viewMeta) {
-		this.viewMeta = viewMeta;
+	public void setViewMeta(TermView view) {
+			viewMeta = view;
 	}
 }

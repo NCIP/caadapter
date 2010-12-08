@@ -11,6 +11,7 @@ public class TermView {
 	public static final int VIEW_CHARACTER_WEIDTH=7;
 	public static int VIEW_COMPONENT_PADDING=2;
 	
+	private TermView parentView;
 	private TermView firtTermView;
 	private TermView secondTermView;
  	private TermMeta term;
@@ -26,6 +27,14 @@ public class TermView {
 		processTermMeta(term);
  	}
 	
+	public TermView getParentView() {
+		return parentView;
+	}
+
+	public void setParentView(TermView parentView) {
+		this.parentView = parentView;
+	}
+
 	public TermView getFirtTermView() {
 		return firtTermView;
 	}
@@ -85,7 +94,7 @@ public class TermView {
 				||meta.getType().value().equals(TermType.CONSTANT.value())
 				||(meta.getType().value().equals(TermType.VARIABLE.value())))
 		{	
-			termUiComponent=new TermUiComponent(term);
+			termUiComponent=new TermUiComponent(this);
 			width=(int)termUiComponent.getBounds().getWidth();
 			height= VIEW_COMPONENT_HEIGHT;
 			return;
@@ -109,7 +118,7 @@ public class TermView {
 			x1=x+(int)termOperatioinComponent.getBounds().getWidth();
 		}
 		firtTermView=new TermView(meta.getTerm().get(0),x1,y1);
-		
+		firtTermView.setParentView(this);
 		x2=x1+firtTermView.getWidth();
 		if (termOperatioinComponent!=null)
 			x2=x2+(int)termOperatioinComponent.getWidth()+VIEW_COMPONENT_PADDING;
@@ -127,7 +136,7 @@ public class TermView {
 		if (meta.getTerm().size()>1)
 		{
 			secondTermView=new TermView(meta.getTerm().get(1), x2, y2);
-		
+			secondTermView.setParentView(this);
 			//set the size of the current view
 			width=firtTermView.getWidth()+secondTermView.getWidth();
 			height=Math.max(firtTermView.getY()+firtTermView.getHeight(),
@@ -220,7 +229,7 @@ public class TermView {
 			default: break;
 		}
 		if (termOperatioinComponent!=null)
-			((TermUiComponent)termOperatioinComponent).setViewMeta(term);
+			((TermUiComponent)termOperatioinComponent).setViewMeta(this);
 	}
 
 	private  JComponent findMostRightParenthesis(TermView view)

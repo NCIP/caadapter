@@ -49,12 +49,12 @@ public class EditTermFrontPage extends JPanel implements ActionListener
         Insets insetsLeft = new Insets(5, 5, 5, 5);
         Insets insetsRight = new Insets(5, 5, 5, 25);
         int idx=0;
-        centerPanel.add(new JLabel("Term Name"), new GridBagConstraints(0, idx, 1, 1, 0.0, 0.0,
+        centerPanel.add(new JLabel("Name"), new GridBagConstraints(0, idx, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
         centerPanel.add(new JLabel(metaView.getName()), new GridBagConstraints(1, idx, 2, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
         idx++;
-        centerPanel.add(new JLabel("Term Type"), new GridBagConstraints(0, idx, 1, 1, 0.0, 0.0,
+        centerPanel.add(new JLabel("Type"), new GridBagConstraints(0, idx, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
         typeComboBox =new JComboBox();
         for (TermType type:TermType.values())
