@@ -38,7 +38,12 @@ public class EditTermAction extends AbstractAction {
 		switch (actionType)
 		{
 			case TYPE_EDIT:
-				EditTermWizard wizard = new EditTermWizard(mainFrame, parentView.getTerm(),true);
+
+				EditTermWizard wizard ;
+				if (parentView==null)
+					wizard= new EditTermWizard(mainFrame, viewMeta.getTerm(),true);
+				else
+					wizard= new EditTermWizard(mainFrame, parentView.getTerm(),true);
 			    wizard.setLocation(mainFrame.getX()+mainFrame.getWidth()/4,
 			    		   mainFrame.getY()+mainFrame.getHeight()/4);
 			    wizard.setSize((int)mainFrame.getSize().getWidth()/2,
