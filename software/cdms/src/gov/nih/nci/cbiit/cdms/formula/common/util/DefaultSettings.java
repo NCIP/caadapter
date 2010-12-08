@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -31,12 +32,7 @@ public class DefaultSettings
 	private static final String PROPERTY_FONT = "Font";
 	public static final Font DEFAULT_FONT;
 
-	private static final Object[] uiDefaults = {PROPERTY_FONT, new Font("Sans Serif", Font.PLAIN, 12),
-			//		PROPERTY_FONT, new Font("Serif", Font.PLAIN, 14),
-			//		"Red", Color.red,
-			//		"Yellow", Color.yellow,
-			//		"Blue", Color.blue
-	};
+	private static final Object[] uiDefaults = {PROPERTY_FONT, new Font("Sans Serif", Font.PLAIN, 12)};
 
 	private static final UIDefaults newDefaults = new UIDefaults(uiDefaults);
 	private static JFileChooser defaultFileChooser;
@@ -46,8 +42,6 @@ public class DefaultSettings
 	{
 		DEFAULT_FONT = (Font) newDefaults.get(PROPERTY_FONT);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		//Config.FRAME_DEFAULT_HEIGHT = (int) screenSize.getHeight() - 60;//considering the existence of underneath task bar.
-		//Config.FRAME_DEFAULT_WIDTH = (int) screenSize.getWidth() - 20;
 		installLookAndFeel();
 		installFonts();
 	}
@@ -410,34 +404,6 @@ public class DefaultSettings
 		return result;
 	}
 
-	/**
-	 * Return true if one is equal to another.
-	 * @param one
-	 * @param another
-	 * @param treatNullAndBlankStringEquals if true will treat null and blank string the same; otherwise, it will not.
-	 * @return true if one is equal to another.
-	 */
-	public static final boolean areEqual(Object one, Object another, boolean treatNullAndBlankStringEquals)
-	{
-		boolean result = (one==null? another==null : one.equals(another));
-		if(!result && treatNullAndBlankStringEquals)
-		{
-			String oneStr = one==null? "" : one.toString();
-			String anotherStr = another==null? "" : another.toString();
-			result = isBlank(oneStr) && isBlank(anotherStr);
-		}
-		return result;
-	}
-    /**
-     * Null string or blank string is considered as blank
-     * @param s
-     * @return true if blank
-     */
-    public static final boolean isBlank(String s)
-    {
-        return  (s == null) || (s.trim().length()==0);
-    }
-
 
 	/**
 	 * @param imageFileName the name of the file, does not need path information
@@ -447,14 +413,11 @@ public class DefaultSettings
 	{
 		String imgFilePath="images/";
 		imgFilePath = imgFilePath + imageFileName;
-		//Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
-
-//		URL imgUrl=Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
-//		return Toolkit.getDefaultToolkit().createImage(imgUrl);
+		URL imgUrl =FileUtil.retrieveResourceURL(imgFilePath);
 		Image rtnImg=null;
-		//URL imgUrl=ClassLoader.getSystemResource(imgFilePath);
+
 		try {
-			InputStream imgStream=DefaultSettings.class.getClassLoader().getResource(imgFilePath).openStream();
+			InputStream imgStream=imgUrl.openStream();
 			BufferedImage bfImage= ImageIO.read(imgStream);
 			rtnImg=(Image)bfImage;
 
