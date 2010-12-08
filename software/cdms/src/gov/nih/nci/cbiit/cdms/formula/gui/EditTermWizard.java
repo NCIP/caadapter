@@ -17,7 +17,7 @@ import java.awt.*;
  */
 public class EditTermWizard extends JDialog implements ActionListener
 {
-    private static final String TITLE = "Edit Term";
+    private static final String TITLE = "Edit ";
     private static final String CREATE_TERM_COMMAND = "Submit";
     private static final String CANCEL_COMMAND = "Cancel";
     private EditTermFrontPage frontPage;
@@ -28,6 +28,8 @@ public class EditTermWizard extends JDialog implements ActionListener
     {
         super(frame, TITLE, modal);
         metaView=meta;
+        if (meta!=null)
+        	this.setTitle(this.getTitle()+meta.toString());
         initialize();
     }
 
