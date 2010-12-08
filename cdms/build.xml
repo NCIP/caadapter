@@ -126,6 +126,7 @@
 			<fileset dir="${build.dir}" excludes="**/Test.class **/ui/**" />
 			<fileset dir="${basedir}" includes="datastore/**/*" />
 			<fileset dir="${basedir}" includes="workingspace/**/*.xml" />
+			<fileset dir="${src.dir}" includes="images/**/*" />
 			<manifest>
 				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cdms.formula.gui.FrameMain" />
 				<attribute name="Class-Path" value="cdms.jar cdms-resources.jar ${distribution.manifest.class.property}" />
