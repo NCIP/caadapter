@@ -4,7 +4,7 @@
 
 		  String filePath=""; 
           String fileNameNew = (String) request.getQueryString();
-		  System.out.println(getServletContext().getRealPath("/"));
+		 // System.out.println(getServletContext().getRealPath("/"));
 		  
 //        filePath= "/cabigprotocolfiles/" + fileNameNew;
 		//  filePath= "/local/content/cabigprotocols/files/" + fileNameNew;
