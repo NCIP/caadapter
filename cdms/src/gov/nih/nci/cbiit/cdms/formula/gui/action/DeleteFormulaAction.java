@@ -25,7 +25,6 @@ public class DeleteFormulaAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("DeleteFormulaAction.actionPerformed()..:"+arg0.getSource());
 		DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)formulaNode.getParent();
 		parentNode.remove(formulaNode);
 		FormulaStore fs=(FormulaStore)parentNode.getUserObject();

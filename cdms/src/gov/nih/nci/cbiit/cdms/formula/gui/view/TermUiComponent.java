@@ -38,7 +38,10 @@ public class TermUiComponent extends JLabel {
 			this.setText(text);
 		}
 		setHorizontalAlignment(JLabel.CENTER);
-		setBounds(new Rectangle(this.getText().length()*TermView.VIEW_CHARACTER_WEIDTH+TermView.VIEW_COMPONENT_PADDING, TermView.VIEW_COMPONENT_HEIGHT));
+		int txtLength=0;
+		if (this.getText()!=null)
+			txtLength=this.getText().length();
+		setBounds(new Rectangle(txtLength*TermView.VIEW_CHARACTER_WEIDTH+TermView.VIEW_COMPONENT_PADDING, TermView.VIEW_COMPONENT_HEIGHT));
 	}
 
 	public TermView getViewMeta() {

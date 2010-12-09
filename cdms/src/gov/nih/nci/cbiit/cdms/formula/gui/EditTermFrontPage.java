@@ -29,7 +29,7 @@ public class EditTermFrontPage extends JPanel implements ActionListener
     private JComboBox operationComboBox;
     private JTextField descriptionField;
     private JTextField valueField;
-    private JComboBox variableField;
+    private JComboBox variableComboBox;
     private JTextField unitField;
     private JLabel valueLabel;
     private JLabel variableLabel;
@@ -89,7 +89,7 @@ public class EditTermFrontPage extends JPanel implements ActionListener
         variableLabel=new JLabel("Variable");
         centerPanel.add(variableLabel, new GridBagConstraints(0, idx, 2, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insetsLeft, 0, 0));
-        variableField=new JComboBox();
+        variableComboBox=new JComboBox();
 		BaseMeta baseMeta=FrameMain.getSingletonInstance().getMainPanel().getCentralSplit().getControllMeta();
 		if (!(baseMeta instanceof FormulaMeta))
 			return;
@@ -99,9 +99,9 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 			formula.setParameter(new ArrayList<DataElement>());
 		for (DataElement parameter:formula.getParameter())
 			if (parameter.getUsage().equals(DataElementUsageType.PARAMETER))
-				variableField.addItem(parameter);
+				variableComboBox.addItem(parameter);
 		
-        centerPanel.add(variableField, new GridBagConstraints(1, idx, 2, 1, 1.0, 0.0,
+        centerPanel.add(variableComboBox, new GridBagConstraints(1, idx, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insetsRight, 0, 0));
       
         idx++;
@@ -121,11 +121,27 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 
         typeComboBox.addActionListener(this);
 
+        variableComboBox.addActionListener(this);
+        operationComboBox.setSelectedItem(metaView.getOperation());
+        
         //set select item to trigger "selection event"
-        if (metaView.getType()!=null)
-        	typeComboBox.setSelectedItem(metaView.getType());
-        else
-        	typeComboBox.setSelectedItem(null);
+        typeComboBox.setSelectedItem(metaView.getType());
+        unitField.setText(metaView.getUnit());
+        descriptionField.setText(metaView.getDescription());
+        if (metaView.getType().equals(TermType.CONSTANT))
+        	valueField.setText(metaView.getValue());
+        else if (metaView.getType().equals(TermType.VARIABLE))
+        {
+        	for (int i=0;i<variableComboBox.getItemCount();i++)
+        	{
+        		DataElement var=(DataElement)variableComboBox.getItemAt(i);
+        		if (var.getName().equals(metaView.getValue()))
+        		{
+        			variableComboBox.setSelectedIndex(i);
+        			break;
+        		}
+        	}
+        }
     }
 
     public String validateInputFields()
@@ -150,7 +166,7 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 	      	   }
 	      	   break;
 	        case VARIABLE:
-	      	   if (variableField.getSelectedItem()==null) 
+	      	   if (variableComboBox.getSelectedItem()==null) 
 	     		   rtnB.append("Set value for "+val.toString() +" !!");
 //	      	   if (valueField.getText().matches("[0-9][a-zA-Z_0-]*"))
 //	      		 rtnB.append( valueField.getText() + " is an invalid variable name for " +val.toString() + " !!");
@@ -168,35 +184,66 @@ public class EditTermFrontPage extends JPanel implements ActionListener
     	TermType val = (TermType)typeComboBox.getSelectedItem();
 		metaView.setType(val);
 		metaView.setDescription(descriptionField.getText());
-		if (metaView.getTerm()!=null)
-			metaView.getTerm().clear();
+
     	switch (val) 
     	{
 	    	case UNKNOWN:
 	    		metaView.setOperation(null);
 	    		metaView.setValue(null);
 	    		metaView.setUnit(null);
-
+	    		if (metaView.getTerm()!=null)
+	    			metaView.getTerm().clear();
 	    		break;
 	    	case EXPRESSION:
-	    		metaView.setOperation((OperationType)operationComboBox.getSelectedItem());
+	    		OperationType slctOperation=(OperationType)operationComboBox.getSelectedItem();
+	    		if (!slctOperation.equals(metaView.getOperation()))
+	    		{
+	    			metaView.setOperation(slctOperation);
+		    		TermMeta newTerm=FormulaFactory.createTemplateTerm(slctOperation);
+		    		//reset the term name if it is the top expression of a formula
+		    		if (metaView.getName().endsWith("Template"))
+		    			metaView.setName(newTerm.getName());
+		    		if (metaView.getTerm()==null
+		    				||newTerm.getTerm()==null)
+		    			metaView.setTerm(newTerm.getTerm());
+		    		else if (metaView.getTerm().size()==newTerm.getTerm().size())
+		    		{
+		    			for (int i=0;i<metaView.getTerm().size();i++)
+		    				metaView.getTerm().get(i).setName(newTerm.getTerm().get(i).getName());
+    				}
+		    		else
+		    		{
+		    			//either the original term or new term has two child terms
+		    			metaView.getTerm().get(0).setName(newTerm.getTerm().get(0).getName());
+		    			if (metaView.getTerm().size()==1)
+		    				metaView.getTerm().add(newTerm.getTerm().get(1));
+		    			else
+		    				metaView.getTerm().remove(1);
+		    		}
+	    		}
 	    		metaView.setValue(null);
-	    		TermMeta term=FormulaFactory.createTemplateTerm(metaView.getOperation());
-	    		if (metaView.getTerm()==null)
-	    			metaView.setTerm(new ArrayList<TermMeta>());
- 	    		
-	    		for (TermMeta childTerm:term.getTerm())
-	    			metaView.getTerm().add(childTerm);
+	    		metaView.setUnit(null);
 	    		break;
 	    	case VARIABLE:
 	    		metaView.setOperation(null);
 	    		metaView.setUnit(unitField.getText());
-	    		metaView.setValue(((DataElement)variableField.getSelectedItem()).getName());
+	    		metaView.setValue(((DataElement)variableComboBox.getSelectedItem()).getName());
+	    		if (metaView.getTerm()!=null)
+	    			metaView.getTerm().clear();
+	    		break;
+	    	case CONSTANT:
+	    		metaView.setOperation(null);
+	    		metaView.setUnit(unitField.getText());
+	    		metaView.setValue(valueField.getText());
+	    		if (metaView.getTerm()!=null)
+	    			metaView.getTerm().clear();
 	    		break;
 	    	default:
-	    		metaView.setOperation(null);
-	    		metaView.setValue(valueField.getText());
-	    		metaView.setUnit(unitField.getText());
+//	    		metaView.setOperation(null);
+//	    		metaView.setValue(valueField.getText());
+//	    		metaView.setUnit(unitField.getText());
+//	    		if (metaView.getTerm()!=null)
+//	    			metaView.getTerm().clear();
 	    		break;
     	}
     	
@@ -206,64 +253,72 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		JComboBox cb = (JComboBox)e.getSource();
-
-        TermType val = (TermType)cb.getSelectedItem();
-        if (val.equals(TermType.EXPRESSION))
-        {
-     	       	   
-     	   operationComboBox.setVisible(true);
-     	   operationComboBox.setEnabled(true);
-     	   descriptionField.setEditable(true);
-
-     	   valueField.setEnabled(false);
-    	   variableField.setVisible(false);
-    	   unitField.setEnabled(false);
-        }
-        else if (val.equals(TermType.UNKNOWN))
-        {
-      	   valueField.setEnabled(false);
-     	   variableField.setVisible(false);
-     	   operationComboBox.setEnabled(false);
-     	   unitField.setEnabled(false);
-     	   descriptionField.setEditable(false);
-        }
-        else if (val.equals(TermType.CONSTANT))
-        {
-
-      	   	valueLabel.setVisible(true);
-     	   	valueField.setEnabled(true);
-     	   	valueField.setVisible(true);
-     	    variableLabel.setVisible(false);
-     	    variableField.setEnabled(false);
-     	    variableField.setVisible(false);
-     	    
-        	unitField.setEditable(true);
-     	    unitField.setEnabled(true);
-        	descriptionField.setEditable(true);
-        	
-     	    operationComboBox.setEnabled(false);
-     	        	    
-        }
-        else 
-        {
-      	   	valueLabel.setVisible(false);
-     	   	valueField.setEnabled(false);
-     	   	valueField.setVisible(false);
-     	    variableLabel.setVisible(true);
-     	    variableField.setEnabled(true);
-     	    variableField.setVisible(true);
-     	    
-      	   	operationComboBox.setEnabled(false);
-        	unitField.setEditable(false);
-        	descriptionField.setEditable(false);
-        	if (variableField.getSelectedItem()!=null)
-        	{
-        		unitField.setText(((DataElement)variableField.getSelectedItem()).getUnit());
-            	descriptionField.setText(((DataElement)variableField.getSelectedItem()).getDescription());
-        	}
-
-
-        }
+		Object slctObj=cb.getSelectedItem();
+		if (slctObj==null)
+			return;
+		if (slctObj instanceof TermType)
+		{
+			unitField.setText("");
+			descriptionField.setText("");
+			valueField.setText("");
+	        TermType val = (TermType)slctObj;
+	        if (val.equals(TermType.EXPRESSION))
+	        {
+	     	       	   
+	     	   operationComboBox.setVisible(true);
+	     	   operationComboBox.setEnabled(true);
+	     	   descriptionField.setEditable(true);
+	
+	     	   valueField.setEnabled(false);
+	    	   variableComboBox.setVisible(false);
+	    	   unitField.setEnabled(false);
+	        }
+	        else if (val.equals(TermType.UNKNOWN))
+	        {
+	      	   valueField.setEnabled(false);
+	     	   variableComboBox.setVisible(false);
+	     	   operationComboBox.setEnabled(false);
+	     	   unitField.setEnabled(false);
+	     	   descriptionField.setEditable(false);
+	        }
+	        else if (val.equals(TermType.CONSTANT))
+	        {
+	
+	      	   	valueLabel.setVisible(true);
+	     	   	valueField.setEnabled(true);
+	     	   	valueField.setVisible(true);
+	     	    variableLabel.setVisible(false);
+	     	    variableComboBox.setEnabled(false);
+	     	    variableComboBox.setVisible(false);
+	     	    
+	        	unitField.setEditable(true);
+	     	    unitField.setEnabled(true);
+	        	descriptionField.setEditable(true);
+	        	
+	     	    operationComboBox.setEnabled(false);   	        	    
+	        }
+	        else 
+	        {
+	      	   	valueLabel.setVisible(false);
+	     	   	valueField.setEnabled(false);
+	     	   	valueField.setVisible(false);
+	     	    variableLabel.setVisible(true);
+	     	    variableComboBox.setEnabled(true);
+	     	    variableComboBox.setVisible(true);
+	     	    variableComboBox.setSelectedItem(null);
+	     	   
+	      	   	operationComboBox.setEnabled(false);
+	        	unitField.setEditable(false);
+	        	descriptionField.setEditable(false);
+	        	
+	        }
+		}
+		else if (slctObj instanceof DataElement)
+		{
+			DataElement slctVar=(DataElement)slctObj;
+			unitField.setText(slctVar.getUnit());
+			descriptionField.setText(slctVar.getDescription());		
+		}
 	}
 }
 
