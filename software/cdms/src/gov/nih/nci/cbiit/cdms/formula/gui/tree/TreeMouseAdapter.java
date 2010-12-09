@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cdms.formula.gui.tree;
 import gov.nih.nci.cbiit.cdms.formula.core.DataElement;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaStatus;
+import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.DeleteFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.EditFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.ExecuteFormulaAction;
@@ -71,7 +72,14 @@ public class TreeMouseAdapter extends MouseAdapter {
 			
 			//enable action items
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) slctedPath.getLastPathComponent();
-			if (treeNode.getUserObject() instanceof FormulaMeta)
+			if (treeNode.getUserObject() instanceof FormulaStore)
+			{
+				excItem.setEnabled(false);
+				editItem.setEnabled(false);
+				deleteItem.setEnabled(false);
+				paramAddItem.setEnabled(false);
+			}
+			else if (treeNode.getUserObject() instanceof FormulaMeta)
 			{
 				FormulaMeta formula=(FormulaMeta)treeNode.getUserObject();
 				excAction.setFormulaNode(treeNode);

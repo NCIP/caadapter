@@ -66,6 +66,8 @@ public class NewFormulaWizard extends JDialog implements ActionListener
             if(errMsg.equals(""))
             {
             	frontPage.createNewFormula();
+               	FrameMain mainFrame=FrameMain.getSingletonInstance();
+            	mainFrame.getMainPanel().selectedTermUpdated();
             }
             else
             {

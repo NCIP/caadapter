@@ -123,6 +123,7 @@ public class NewFormulaFrontPage extends JPanel
 	public void eidtFormula(FormulaMeta meta)
 	{
 		formula=meta;
+		annotationField.setText(formula.getAnnotation());
 		formulaNameField.setText(formula.getName());
 		formulaUnitField.setText(formula.getExpression().getUnit());
 		formulaStatusList.setSelectedItem(formula.getStatus());
@@ -155,6 +156,7 @@ public class NewFormulaFrontPage extends JPanel
     			TermMeta newFormulaExpression=FormulaFactory.createTemplateTerm((OperationType)expressionTypeList.getSelectedItem());
     			formula.setExpression(newFormulaExpression);
     		}
+    		formula.getExpression().setUnit(formulaUnitField.getText());
     		formula.setDateModified(new Date());
     		return;
     	}
@@ -178,6 +180,7 @@ public class NewFormulaFrontPage extends JPanel
 		formulaExpression.setName(formulaNameField.getText());
 		formulaExpression.setUnit(formulaUnitField.getText());
 		newFormula.setExpression(formulaExpression);
+		
 		fs.getFormula().add(newFormula);
 		FormulaFactory.updateLocalStore(fs);
 
