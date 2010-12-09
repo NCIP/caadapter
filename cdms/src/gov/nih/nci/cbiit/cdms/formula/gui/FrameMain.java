@@ -43,10 +43,11 @@ public class FrameMain extends JFrame {
 	}
     public static void main(String[] args)
     {
-    	System.out.println("FrameMain.main()...args:"+args);
     	try {
     		if (args!=null && args.length>0 && args[0].startsWith("http:")) {
     			System.out.println("FrameMain.main()...webstart codebase:"+args[0]);
+    			for (String arg:args)
+    				System.out.println("FrameMain.main()..arg:"+arg);
     			WebstartUtil.downloadFile("workingspace/bodySurfaceArea.xml","samples/bodySurfaceArea.xml");
     		}
 
