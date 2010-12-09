@@ -3,7 +3,7 @@
     <formula type="math" name="BSA1" status="complete">
         <annotation>Dubois  Dubois formula : http://en.wikipedia.org/wiki/Body_surface_area#Calculation</annotation>
         <expression unit= "m^2" description="(m^2)" type="expression" operation="multiplication" name="BSA1">
-            <term value="0.00718" type="constant" name="factor"/>
+            <term value="0.007184" type="constant" name="factor"/>
             <term type="expression" operation="multiplication" name="factor">
                 <term type="expression" operation="power" name="factor">
                     <term unit= "kg" description="(kg)" value="BDY_WT_KG" type="variable" name="base"/>
