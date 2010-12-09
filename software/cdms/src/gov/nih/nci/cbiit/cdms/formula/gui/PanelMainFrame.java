@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -66,6 +67,11 @@ public class PanelMainFrame extends JPanel {
 	        {
 	        	localStoreFile=file;
 	        }
+		}
+		if (localStoreFile==null)
+		{
+			JOptionPane.showMessageDialog(this, "Unable to save your formula, no file is selected", "Warning ..unable to save", JOptionPane.WARNING_MESSAGE);
+			return;
 		}
     	TreeNodeFormulaStore localTreeNode=(TreeNodeFormulaStore)localTree.getModel().getRoot();
     	FormulaStore localStore=(FormulaStore)localTreeNode.getUserObject();
