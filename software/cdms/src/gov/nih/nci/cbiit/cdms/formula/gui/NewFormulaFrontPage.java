@@ -127,7 +127,7 @@ public class NewFormulaFrontPage extends JPanel
 		formulaNameField.setText(formula.getName());
 		formulaUnitField.setText(formula.getExpression().getUnit());
 		formulaStatusList.setSelectedItem(formula.getStatus());
-		expressionTypeList.setSelectedItem(formula.getExpression());
+		expressionTypeList.setSelectedItem(formula.getExpression().getOperation());
 	}
 
     public String validateInputFields()
