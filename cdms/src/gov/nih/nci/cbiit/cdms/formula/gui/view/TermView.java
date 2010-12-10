@@ -264,6 +264,11 @@ public class TermView {
 	{
 		if (term.getOperation()==null)
 			return;
+
+		if (term.getName().equals("divisor")
+				||term.getName().equals("dividend"))
+			return;
+
 		if (term.getOperation().equals(OperationType.ADDITION)
 				||term.getOperation().equals(OperationType.SUBTRACTION))
 		{
