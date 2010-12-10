@@ -7,7 +7,7 @@ import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 
 public class TermView {
-	public static final int VIEW_COMPONENT_HEIGHT=25;
+	public static final int VIEW_COMPONENT_HEIGHT=20;
 	public static final int VIEW_CHARACTER_WEIDTH=7;
 	public static int VIEW_COMPONENT_PADDING=2;
 	public static int VIEW_SQUARE_ROOT_LEADING=15;
@@ -17,6 +17,8 @@ public class TermView {
  	private TermMeta term;
 	private JComponent termOperatioinComponent;
 	private JComponent termUiComponent;
+	private JComponent startComponent;
+	private JComponent endComponent;
 	private int x, y, width, height;
 	
 	public TermView(TermMeta meta, int locationX, int locationY)
@@ -24,11 +26,11 @@ public class TermView {
 		term=meta;	
 		x=locationX;
 		y=locationY;
-		//shift the term 15 pixel right for the squareRoot symbol
-		if (meta.getOperation()!=null
-				&&meta.getOperation().equals(OperationType.SQUAREROOT))
-			x=x+VIEW_SQUARE_ROOT_LEADING;
+		buildOperationComponent();
+
 		processTermMeta(term);
+		buildEndComponents();
+
  	}
 	
 	public TermView getParentView() {
@@ -67,6 +69,10 @@ public class TermView {
 		return width;
 	}
 
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
 	public int getX() {
 		return x;
 	}
@@ -88,9 +94,23 @@ public class TermView {
 	}
 
 	
-	public void setY(int y) {
-		this.y = y;
+	public void setY(int yNew) {
+		int yDif=yNew-y;
+		y=yNew;
+		//shift child term to new position
+		if (getFirtTermView()!=null)
+			getFirtTermView().setY(getFirtTermView().getY()+yDif);
+		
+		if (getSecondTermView()!=null)
+			getSecondTermView().setY(getSecondTermView().getY()+yDif);	
+	}
 
+	public JComponent getStartComponent() {
+		return startComponent;
+	}
+
+	public JComponent getEndComponent() {
+		return endComponent;
 	}
 
 	private void processTermMeta(TermMeta meta)
@@ -107,7 +127,6 @@ public class TermView {
 			return;
 		}
  
-		buildOperationComponent();
 		//build the view of the first term
 		int x1=x, y1=y, x2=x, y2=y;
 		switch (meta.getOperation())
@@ -122,6 +141,11 @@ public class TermView {
 				break;
 			case POWER:
 				y2=y-VIEW_COMPONENT_HEIGHT/2;
+				break;
+			case SQUAREROOT:
+				//shift the term 15 pixel right for the squareRoot symbol
+				x=x+VIEW_SQUARE_ROOT_LEADING;
+				x1=x;
 				break;
 			default:		
 				break;
@@ -159,19 +183,10 @@ public class TermView {
 			height=firtTermView.getHeight();
 		}
 		if (termOperatioinComponent!=null)
-			width=width+termOperatioinComponent.getWidth();
-		
-		//add parenthesis
-		if (meta.getOperation().equals(OperationType.ADDITION)
-				||meta.getOperation().equals(OperationType.SUBTRACTION))
 		{
-			TermUiComponent mostLeft=(TermUiComponent)findMostLeftParenthesis(getFirtTermView());
-			mostLeft.setText("("+mostLeft.getText());
-			
-			TermUiComponent rightLeft=(TermUiComponent)findMostRightParenthesis(getSecondTermView());
-			rightLeft.setText(rightLeft.getText()+")");
+			width=width+termOperatioinComponent.getWidth();
 		}
-
+		
 		if (meta.getOperation().equals(OperationType.ADDITION)||
 			meta.getOperation().equals(OperationType.SUBTRACTION)||
 			meta.getOperation().equals(OperationType.MULTIPLICATION))	
@@ -214,6 +229,8 @@ public class TermView {
 
 	private void buildOperationComponent()
 	{
+		if (term.getOperation()==null)
+			return;
 		switch(term.getOperation())
 		{
 			case  ADDITION:
@@ -236,32 +253,30 @@ public class TermView {
 				termOperatioinComponent=new TermUiComponent(
 						 term.getOperation().toString());
 				break;
-			default: break;
+			default: 
+				break;
 		}
 		if (termOperatioinComponent!=null)
 			((TermUiComponent)termOperatioinComponent).setViewMeta(this);
 	}
 
-	private  JComponent findMostRightParenthesis(TermView view)
+	private void buildEndComponents()
 	{
-		if (view.getTermUiComponent()!=null)
-			return view.getTermUiComponent();
-		if (view.getSecondTermView()!=null)
+		if (term.getOperation()==null)
+			return;
+		if (term.getOperation().equals(OperationType.ADDITION)
+				||term.getOperation().equals(OperationType.SUBTRACTION))
 		{
-			if (view.getTerm().getOperation().equals(OperationType.POWER)
-					||view.getTerm().getOperation().equals(OperationType.LOGARITHM))
-				return findMostRightParenthesis(view.getFirtTermView());
-		
-			return findMostRightParenthesis(view.getSecondTermView());
+			startComponent=new TermUiComponent("(");
+ 			endComponent=new TermUiComponent(")");
 		}
-		return findMostRightParenthesis(view.getFirtTermView());
-	}
-
-	private   JComponent findMostLeftParenthesis(TermView view)
-	{
-		if (view.getTermUiComponent()!=null)
-			return view.getTermUiComponent();
-		return findMostLeftParenthesis(view.getFirtTermView());
+		if (startComponent!=null)
+		{
+			width=width+startComponent.getWidth();
+		}
+		
+		if (endComponent!=null)
+			width=width+endComponent.getWidth();
 	}
 
 	public String toString()
