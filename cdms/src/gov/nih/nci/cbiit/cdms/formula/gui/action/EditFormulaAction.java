@@ -23,7 +23,7 @@ public class EditFormulaAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("DeleteFormulaAction.actionPerformed()..:"+arg0.getSource());
+		System.out.println("EditFormulaAction.actionPerformed()..:"+arg0.getSource());
 	       FrameMain mainFrame=FrameMain.getSingletonInstance();
 	       NewFormulaWizard wizard = new NewFormulaWizard(mainFrame, "Edit Formula", true);
 	       wizard.setLocation(mainFrame.getX()+mainFrame.getWidth()/4,

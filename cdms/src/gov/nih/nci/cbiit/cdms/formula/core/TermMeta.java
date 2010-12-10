@@ -122,18 +122,19 @@ public class TermMeta extends BaseMeta{
 			switch ( getOperation())
 			{
 			case SQUAREROOT:
-				javaMathSt="Math.sqrt("+getValue()+")";
+				javaMathSt="Math.sqrt("+getTerm().get(0).formatJavaStatement()+")";
 				break;
 				
 			case EXPONENTIAL:
-				javaMathSt="Math.exp("+getValue()+")";
+				javaMathSt="Math.exp("+getTerm().get(0).formatJavaStatement()+")";
 				break;
 			case POWER:
 				javaMathSt="Math.pow("+getTerm().get(0).formatJavaStatement()
 					+","+ getTerm().get(1).formatJavaStatement()+")";
 				break;
 			case LOGARITHM:
-				javaMathSt="Math.log("+getValue()+")";
+				javaMathSt="Math.log("+getTerm().get(1).formatJavaStatement()+")/Math.log("+getTerm().get(0).formatJavaStatement()+")";
+				break;
 			default:
 				javaMathSt=getTerm().get(0).formatJavaStatement()
 				+ getOperation().toString()
