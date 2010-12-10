@@ -137,13 +137,11 @@ public class FormulaPanel extends JPanel{
 		if (view.getTerm().getOperation()==OperationType.DIVISION)
 			drawDivider(view,x0+view.getX(), y0+view.getY()+view.getFirtTermView().getHeight(), g);
 		else if (view.getTerm().getOperation()==OperationType.SQUAREROOT)
-			drawSquareRoot(view, x0, y0, g);
+			drawSquareRoot(view, x0+view.getX(), y0+view.getY(), g);
 		int x2=x0;
 		int y2=y0;
 		if (view.getTerm()!=null&&view.getTerm().getOperation()!=null&&view.getTerm().getOperation().equals(OperationType.DIVISION))
 		{
-			x2=x0+Math.max(view.getFirtTermView().getWidth(),view.getSecondTermView().getWidth())/2
-			-view.getSecondTermView().getWidth()/2;
 			y2=y0+TermView.VIEW_COMPONENT_HEIGHT/2;
 		}
 		positionTermUiComponent(view.getSecondTermView(), x2, y2, g);
