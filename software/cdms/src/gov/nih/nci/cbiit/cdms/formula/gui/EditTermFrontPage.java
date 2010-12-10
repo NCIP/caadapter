@@ -204,6 +204,7 @@ public class EditTermFrontPage extends JPanel implements ActionListener
 		    		if (metaView.getName().endsWith("Template"))
 		    			metaView.setName(newTerm.getName());
 		    		if (metaView.getTerm()==null
+		    				||metaView.getTerm().size()==0
 		    				||newTerm.getTerm()==null)
 		    			metaView.setTerm(newTerm.getTerm());
 		    		else if (metaView.getTerm().size()==newTerm.getTerm().size())
