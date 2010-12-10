@@ -10,7 +10,7 @@ public class TermView {
 	public static final int VIEW_COMPONENT_HEIGHT=25;
 	public static final int VIEW_CHARACTER_WEIDTH=7;
 	public static int VIEW_COMPONENT_PADDING=2;
-	
+	public static int VIEW_SQUARE_ROOT_LEADING=15;
 	private TermView parentView;
 	private TermView firtTermView;
 	private TermView secondTermView;
@@ -24,6 +24,10 @@ public class TermView {
 		term=meta;	
 		x=locationX;
 		y=locationY;
+		//shift the term 15 pixel right for the squareRoot symbol
+		if (meta.getOperation()!=null
+				&&meta.getOperation().equals(OperationType.SQUAREROOT))
+			x=x+VIEW_SQUARE_ROOT_LEADING;
 		processTermMeta(term);
  	}
 	
@@ -67,13 +71,16 @@ public class TermView {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;	
-		if (getFirtTermView()!=null)
-			getFirtTermView().setX(getFirtTermView().getX()+x);
-		if (getSecondTermView()!=null)
-			getSecondTermView().setX(getSecondTermView().getX()+x);
+	public void setX(int xNew) {
 	
+		int xDif=xNew-x;
+		x=xNew;
+		//shift child term to new position
+		if (getFirtTermView()!=null)
+			getFirtTermView().setX(getFirtTermView().getX()+xDif);
+		
+		if (getSecondTermView()!=null)
+			getSecondTermView().setX(getSecondTermView().getX()+xDif);	
 	}
 
 	public int getY() {
@@ -103,20 +110,23 @@ public class TermView {
 		buildOperationComponent();
 		//build the view of the first term
 		int x1=x, y1=y, x2=x, y2=y;
-		if (meta.getOperation().equals(OperationType.DIVISION))
+		switch (meta.getOperation())
 		{
-			y1=y;
-			y2=y+VIEW_COMPONENT_HEIGHT;
+			case	DIVISION:
+				y1=y;
+				y2=y+VIEW_COMPONENT_HEIGHT;
+				break;
+			case LOGARITHM:
+				y1=y+VIEW_COMPONENT_HEIGHT/3;
+				x1=x+(int)termOperatioinComponent.getBounds().getWidth();
+				break;
+			case POWER:
+				y2=y-VIEW_COMPONENT_HEIGHT/2;
+				break;
+			default:		
+				break;
 		}
-		else if (meta.getOperation().equals(OperationType.POWER))
-		{	
-			y2=y-VIEW_COMPONENT_HEIGHT/2;
-		}
-		else if (meta.getOperation().equals(OperationType.LOGARITHM))
-		{	
-			y1=y+VIEW_COMPONENT_HEIGHT/3;
-			x1=x+(int)termOperatioinComponent.getBounds().getWidth();
-		}
+
 		firtTermView=new TermView(meta.getTerm().get(0),x1,y1);
 		firtTermView.setParentView(this);
 		x2=x1+firtTermView.getWidth();
