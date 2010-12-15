@@ -140,7 +140,8 @@ public class FormulaPanel extends JPanel{
 						y0+view.getSecondTermView().getY());
 			else
 				view.getTermOperatioinComponent().setLocation(x0+view.getX()+view.getFirtTermView().getWidth(), 
-						y0+view.getFirtTermView().getY());
+						y0+view.getFirtTermView().getY()
+						+(view.getFirtTermView().getHeight()-TermView.VIEW_COMPONENT_HEIGHT)/2);
 		}
 		
 		if (view.getTerm().getOperation()==OperationType.DIVISION)
