@@ -26,10 +26,7 @@ public class ViewMouseAdapter extends MouseAdapter {
 		BaseMeta baseMeta=FrameMain.getSingletonInstance().getMainPanel().getCentralSplit().getControllMeta();
 		if (!(baseMeta instanceof FormulaMeta))
 			return;
-
-		FormulaMeta formula=(FormulaMeta)baseMeta;
-		if (formula.getStatus()!=FormulaStatus.DRAFT)
-			return;
+		
 		TermUiComponent metaUi=(TermUiComponent)e.getSource();
 		if (e.getClickCount()==2)
 		{
@@ -65,7 +62,12 @@ public class ViewMouseAdapter extends MouseAdapter {
 			JMenuItem deleteItem=new JMenuItem(deleteAction);
 			popupMenu.add(deleteItem);
 			popupMenu.show(e.getComponent(), e.getX(), e.getY());
-		
+			FormulaMeta formula=(FormulaMeta)baseMeta;
+			if (formula.getStatus()!=FormulaStatus.DRAFT)
+			{
+				editAction.setEnabled(false);
+				deleteAction.setEnabled(false);
+			}
 		}
 	}
 }

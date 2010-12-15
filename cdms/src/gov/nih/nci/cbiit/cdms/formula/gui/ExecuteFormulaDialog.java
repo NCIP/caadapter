@@ -128,7 +128,6 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 				JTextField pField= (JTextField)paramFieldHash.get(pName);
 				paramHash.put(pName, pField.getText());
 			}
-			System.out.println("ExecuteFormulaDialog.actionPerformed()..parameter:"+paramHash);
 			resultField.setText(formula.getExpression().excute(paramHash)+"");
 		}
 		
