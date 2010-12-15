@@ -41,11 +41,26 @@ public class TreeMouseAdapter extends MouseAdapter {
 			}
 			// Create PopupMenu for the Cell
 			JPopupMenu popupMenu =new JPopupMenu();
-			ExecuteFormulaAction excAction=new ExecuteFormulaAction("Execute Formula", ExecuteFormulaAction.FORMULA_ACTION_EXECUTION);
-			JMenuItem excItem=new JMenuItem(excAction);
-			popupMenu.add(excItem);
+			ExecuteFormulaAction excFormulaAction=new ExecuteFormulaAction("Execute Formula", ExecuteFormulaAction.FORMULA_ACTION_EXECUTION);
+			excFormulaAction.setEnabled(false);
+			JMenuItem excformulaItem=new JMenuItem(excFormulaAction);
+			popupMenu.add(excformulaItem);		
 			
+			
+			EditFormulaAction editFormulaAction=new EditFormulaAction("Edit Formula");
+			editFormulaAction.setEnabled(false);
+			JMenuItem editFormulaItem=new JMenuItem (editFormulaAction);
+			popupMenu.add(editFormulaItem);
+			
+			DeleteFormulaAction deleteFormulaAction=new DeleteFormulaAction("Delete Formula");
+			deleteFormulaAction.setEnabled(false);
+			JMenuItem deleteFormulaItem =new JMenuItem (deleteFormulaAction);
+			popupMenu.add(deleteFormulaItem);
+			
+			popupMenu.addSeparator();
+			//menu item for data element
 			ExecuteFormulaAction paramAddAction=new ExecuteFormulaAction("Add Data Element", ExecuteFormulaAction.FORMULA_ACTION_ADD_PARAMETER);
+			paramAddAction.setEnabled(false);
 			JMenuItem paramAddItem=new JMenuItem(paramAddAction);
 			popupMenu.add(paramAddItem);
 			
@@ -58,52 +73,36 @@ public class TreeMouseAdapter extends MouseAdapter {
 			JMenuItem paramDeleteItem=new JMenuItem(paramDeleteAction);
 			paramDeleteItem.setEnabled(false);
 			popupMenu.add(paramDeleteItem);
-			
-			DeleteFormulaAction deleteFormulaAction=new DeleteFormulaAction("Delete Formula");
-			EditFormulaAction editFormulaAction=new EditFormulaAction("Edit Formula");
-			JMenuItem deleteItem =new JMenuItem (deleteFormulaAction);
-			JMenuItem editItem=new JMenuItem (editFormulaAction);
-
-			popupMenu.addSeparator();
-			popupMenu.add(editItem);
-			popupMenu.add(deleteItem);
-				
+						
 			popupMenu.show(e.getComponent(), e.getX(), e.getY());
 			
 			//enable action items
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) slctedPath.getLastPathComponent();
-			if (treeNode.getUserObject() instanceof FormulaStore)
-			{
-				excItem.setEnabled(false);
-				editItem.setEnabled(false);
-				deleteItem.setEnabled(false);
-				paramAddItem.setEnabled(false);
-			}
-			else if (treeNode.getUserObject() instanceof FormulaMeta)
+			if (treeNode.getUserObject() instanceof FormulaMeta)
 			{
 				FormulaMeta formula=(FormulaMeta)treeNode.getUserObject();
-				excAction.setFormulaNode(treeNode);
+				excFormulaAction.setFormulaNode(treeNode);
 				paramAddAction.setFormulaNode(treeNode);
-				if (formula.getStatus()==FormulaStatus.FINAL)
+				if (formula.getStatus()==FormulaStatus.COMPLETE)
 				{
-					editItem.setEnabled(false);
-					deleteItem.setEnabled(false);
-					paramAddItem.setEnabled(false);
+					editFormulaItem.setEnabled(true);
+					excFormulaAction.setEnabled(true);
+					paramAddItem.setEnabled(true);
 				}
+				else if (formula.getStatus()==FormulaStatus.DRAFT)
+				{
+					paramAddItem.setEnabled(true);
+					editFormulaItem.setEnabled(true);
+					deleteFormulaItem.setEnabled(true);
+				}
+				else if (formula.getStatus()==FormulaStatus.FINAL)
+					excFormulaAction.setEnabled(true);		
+				
 				editFormulaAction.setFormulaNode(treeNode);
 				deleteFormulaAction.setFormulaNode(treeNode);
-				
-
-				if (formula.getStatus()==FormulaStatus.DRAFT)
-					excItem.setEnabled(false);
 			}
 			else if (treeNode.getUserObject() instanceof DataElement)
-			{
-				editItem.setEnabled(false);
-				deleteItem.setEnabled(false);
-				excItem.setEnabled(false);
-				paramAddItem.setEnabled(false);
-				
+			{			
 				DefaultMutableTreeNode parentTreeNode=(DefaultMutableTreeNode)treeNode.getParent();
 				FormulaMeta parentFormula=(FormulaMeta)parentTreeNode.getUserObject();
 				if (parentFormula.getStatus()==FormulaStatus.DRAFT)
