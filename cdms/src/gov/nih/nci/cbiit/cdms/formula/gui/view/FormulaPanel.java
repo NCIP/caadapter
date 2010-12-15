@@ -120,9 +120,12 @@ public class FormulaPanel extends JPanel{
 		}
 		if (view.getStartComponent()!=null)
 		{
-			view.getStartComponent().setLocation(x0+view.getX(), y0+view.getFirtTermView().getY());
-			int endY=y0+view.getSecondTermView().getY();
-			endY=endY+(view.getSecondTermView().getHeight()-TermView.VIEW_COMPONENT_HEIGHT)/2;
+			//set vertical position of the starting and ending parenthesis at middle of term
+			view.getStartComponent().setLocation(x0+view.getX(), 
+					y0+view.getFirtTermView().getY()
+					+(view.getFirtTermView().getHeight()-TermView.VIEW_COMPONENT_HEIGHT)/2);
+			int endY=y0+view.getSecondTermView().getY()
+				+(view.getSecondTermView().getHeight()-TermView.VIEW_COMPONENT_HEIGHT)/2;
 			
 			view.getEndComponent().setLocation(x0 + view.getX()+view.getWidth()
 					-view.getEndComponent().getWidth(),endY);
@@ -141,7 +144,10 @@ public class FormulaPanel extends JPanel{
 		}
 		
 		if (view.getTerm().getOperation()==OperationType.DIVISION)
-			g.drawLine(x0+view.getX(),y0+view.getY()+view.getFirtTermView().getHeight(), x0+view.getX()+view.getWidth(), y0+view.getY()+view.getFirtTermView().getHeight());
+		{
+			int yDivider=y0+view.getY()+view.getFirtTermView().getHeight();
+			g.drawLine(x0+view.getX(),yDivider, x0+view.getX()+view.getWidth(), yDivider);
+		}
 		else if (view.getTerm().getOperation()==OperationType.SQUAREROOT)
 			drawSquareRoot(view, x0+view.getX(), y0+view.getY(), g);
 		int x2=x0;
