@@ -20,6 +20,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import javax.xml.bind.JAXBException;
 
 
@@ -122,7 +123,8 @@ public class PanelMainFrame extends JPanel {
 				DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)rootNode.getChildAt(i);
 				if (childNode.getUserObject().equals(selectedFormula))
 				{
-					localTree.setSelectionRow(i);
+					TreePath slctPath=new TreePath(childNode.getPath());
+					localTree.setSelectionPath(slctPath);//.setSelectionRow(i);
 					break;
 				}
 			}
