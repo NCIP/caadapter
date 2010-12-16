@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 public class FormulaPanel extends JPanel{
 
 	private BaseMeta controlMeta;
-	private JLabel nameLabel;
+	private JComponent nameLabel;
 	private TermView termView;
 	
 	public FormulaPanel(BaseMeta formula)
@@ -29,7 +29,7 @@ public class FormulaPanel extends JPanel{
 			nameLabel=new JLabel("Formula Store:"+controlMeta.getName());
 			nameLabel.setLocation(this.getX()+this.getWidth()/2,
 					this.getY()+this.getHeight()/2);
-			this.add(nameLabel);
+			add(nameLabel);
 		}
 	}
 
