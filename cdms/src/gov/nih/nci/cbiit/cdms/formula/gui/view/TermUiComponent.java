@@ -2,7 +2,6 @@ package gov.nih.nci.cbiit.cdms.formula.gui.view;
 
 import java.awt.Rectangle;
 
-import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.TermType;
 
 import javax.swing.JLabel;
