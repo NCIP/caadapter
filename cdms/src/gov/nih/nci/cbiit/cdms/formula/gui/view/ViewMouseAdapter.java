@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -26,7 +27,7 @@ public class ViewMouseAdapter extends MouseAdapter {
 		BaseMeta baseMeta=FrameMain.getSingletonInstance().getMainPanel().getCentralSplit().getControllMeta();
 		if (!(baseMeta instanceof FormulaMeta))
 			return;
-		
+		FormulaMeta formula=(FormulaMeta)baseMeta;
 		TermUiComponent metaUi=(TermUiComponent)e.getSource();
 		if (e.getClickCount()==2)
 		{
@@ -34,7 +35,17 @@ public class ViewMouseAdapter extends MouseAdapter {
 			//do not allow user to edit an expression with double-click
 			if(metaUi.getViewMeta().getTerm().getType().equals(TermType.EXPRESSION))
 				return;
-			
+			if (!formula.getStatus().equals(FormulaStatus.DRAFT))
+			{
+				Container parentC = e.getComponent().getParent();
+				while ( !(parentC instanceof JScrollPane))
+				{
+					parentC=parentC.getParent();
+				}
+				String errMsg="Edition is not allowed:"+formula.getName() +"... status:"+formula.getStatus().value();
+				JOptionPane.showMessageDialog(parentC, errMsg, "Editing not allowed", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			FrameMain mainFrame=FrameMain.getSingletonInstance();
 			EditTermWizard wizard = new EditTermWizard(mainFrame, metaUi.getViewMeta().getTerm(),true);
 		    wizard.setLocation(mainFrame.getX()+mainFrame.getWidth()/4,
@@ -62,7 +73,6 @@ public class ViewMouseAdapter extends MouseAdapter {
 			JMenuItem deleteItem=new JMenuItem(deleteAction);
 			popupMenu.add(deleteItem);
 			popupMenu.show(e.getComponent(), e.getX(), e.getY());
-			FormulaMeta formula=(FormulaMeta)baseMeta;
 			if (formula.getStatus()!=FormulaStatus.DRAFT)
 			{
 				editAction.setEnabled(false);

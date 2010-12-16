@@ -7,6 +7,7 @@ import gov.nih.nci.cbiit.cdms.formula.core.FormulaStore;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaType;
 import gov.nih.nci.cbiit.cdms.formula.core.OperationType;
 import gov.nih.nci.cbiit.cdms.formula.core.TermMeta;
+import gov.nih.nci.cbiit.cdms.formula.validation.FormulaValidator;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -14,6 +15,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -140,7 +142,14 @@ public class NewFormulaFrontPage extends JPanel
         String name = formulaNameField.getText();
         if (name == null||name.trim().equals("")) 
         	rtnB.append("Set name for the new formula !!\n");
-  
+        FormulaStatus newStatus=(FormulaStatus)formulaStatusList.getSelectedItem();
+        if (newStatus.equals(FormulaStatus.COMPLETE)
+        		||newStatus.equals(FormulaStatus.FINAL))
+        {
+        	List<String> formulaValidation=FormulaValidator.validateFormula(formula);
+        	for (String msg: formulaValidation)
+        		rtnB.append(msg+"\n");
+        }
         return rtnB.toString();
     }
 
