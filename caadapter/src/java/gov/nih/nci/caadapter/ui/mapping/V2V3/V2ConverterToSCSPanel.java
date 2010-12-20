@@ -11,7 +11,7 @@ package gov.nih.nci.caadapter.ui.mapping.V2V3;
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
-import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
+import edu.knu.medinfo.hl7.v2tree.meta_old.MetaDataLoader;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -188,6 +188,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
         if (jcHL7Version.getItemCount() > 0) jcHL7Version.setEnabled(true);
         else jcHL7Version.setEnabled(false);
+
 
         jtDataDirectory.setEditable(false);
         jtInputFile.setEditable(false);
@@ -451,31 +452,53 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     }
     private String setV2DataPath(Object v2DataPath)
     {
-        HL7V2MessageTree mt = null;
-        boolean cTag = false;
-        String msg = null;
-        try
+        if ((v2MetaDataPath != null)&&(v2DataPath != null))
         {
             if (v2DataPath instanceof String)
             {
                 String c = (String)v2DataPath;
+                String tt = v2MetaDataPath.getSourceXSDAddress();
+                if ((tt == null)||(tt.trim().equals(""))) v2MetaDataPath.getSourceTextAddress();
+                if ((tt == null)||(tt.trim().equals(""))) v2MetaDataPath.getTextMetaPath();
+                if (c.equals(tt)) return "OK";
+            }
+            else if (v2DataPath instanceof MetaDataLoader)
+            {
+                MetaDataLoader l = (MetaDataLoader) v2DataPath;
+                if (v2MetaDataPath == l) return "OK";
+            }
+        }
+
+        HL7V2MessageTree mt = null;
+        //boolean cTag = false;
+        String msg = null;
+        try
+        {
+            if ((v2DataPath != null)&&(v2DataPath instanceof String))
+            {
+                String c = (String)v2DataPath;
                 if (c.trim().equals("")) v2DataPath = null;
+                if (c.trim().equalsIgnoreCase("null")) v2DataPath = null;
                 //System.out.println("CCCC OK 1 : " + c);
             }
 
-            if (v2DataPath == null)
+            if ((v2DataPath == null)||(v2DataPath instanceof String))
             {
-                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader((String)v2DataPath);
                 if (loader == null) throw new HL7MessageTreeException("V2 Meta Data Loader creation failure");
-                else mt = new HL7V2MessageTree(loader);
+                //else mt = new HL7V2MessageTree(loader);
+                v2MetaDataPath = loader;
+                return "OK";
                 //System.out.println("CCCC OK 2 : ");// + loader.getPath());
-                cTag = true;
+                //cTag = true;
             }
             else
             {
                 mt = new HL7V2MessageTree(v2DataPath);
+                v2MetaDataPath = mt.getMetaDataLoader();
+                return "OK";
                 //System.out.println("CCCC OK 3 : ");
-                cTag = true;
+                //cTag = true;
             }
 
 //            if (v2DataPath instanceof String)
@@ -510,12 +533,12 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         {
             msg = ee.getMessage();
         }
-        if (cTag)
-        {
-            v2MetaDataPath = mt.getMetaDataLoader();//v2DataPath;
-            //System.out.println("CCCC OK : " + v2MetaDataPath.getPath());
-            return "OK";
-        }
+//        if (cTag)
+//        {
+//            v2MetaDataPath = mt.getMetaDataLoader();//v2DataPath;
+//            //System.out.println("CCCC OK : " + v2MetaDataPath.getPath());
+//            return "OK";
+//        }
         //System.out.println("CCCC err : " + msg);
         return msg;
     }
@@ -561,6 +584,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             if (v2DataPathObject == null)
             {
                 v2MetaDataPath = null;
+                System.out.println("KKKKK : null loader");
                 //MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
 
                 //if (loader == null) throw new IOException("V2 Meta Data Loader creation failure");
@@ -581,7 +605,11 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         }
         else
         {
-            jtDataDirectory.setText(v2MetaDataPath.getPath());
+            String tt = v2MetaDataPath.getSourceXSDAddress();
+            if ((tt == null)||(tt.trim().equals(""))) v2MetaDataPath.getSourceTextAddress();
+            if ((tt == null)||(tt.trim().equals(""))) v2MetaDataPath.getTextMetaPath();
+            System.out.println("KKKKK loader Path : " + tt);
+            jtDataDirectory.setText(tt);
             setHL7VersionComboBox(v2MetaDataPath);
         }
         setupMainPanel();
@@ -733,7 +761,13 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         jbDataDirectoryBrowse = (JButton) out1[3];
 
         if (v2MetaDataPath == null) jtDataDirectory.setText("");
-        else jtDataDirectory.setText(v2MetaDataPath.getPath());
+        else
+        {
+            String tt = v2MetaDataPath.getSourceXSDAddress();
+            if ((tt == null)||(tt.trim().equals(""))) v2MetaDataPath.getSourceTextAddress();
+            if ((tt == null)||(tt.trim().equals(""))) v2MetaDataPath.getTextMetaPath();
+            jtDataDirectory.setText(tt);
+        }
         JPanel cPanel = new JPanel(new BorderLayout());
         cPanel.add(bPanel, BorderLayout.CENTER);
 
@@ -1178,6 +1212,11 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         
         String dataDir = jtDataDirectory.getText();
         if ((dataDir == null)||(dataDir.trim().equals(""))) dataDir = "";
+        File ff = new File(dataDir);
+        if ((ff.exists())&&(ff.isFile()))
+        {
+            dataDir = ff.getParentFile().getAbsolutePath();
+        }
         File fileD = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
 					dataDir, "*", "Finding v2 Meta Data Directory", false, false);//Config.OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE.replace("3", "2"), false, false);
         if (fileD == null) return;
@@ -1200,7 +1239,10 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         if (setHL7VersionComboBox(loader))
         {
             //System.out.println("CCCC OK 7 : " + v2MetaDataPath.getPath() + ", " + dataDir);
-            jtDataDirectory.setText(v2MetaDataPath.getPath());
+            //String tt = v2MetaDataPath.getSourceXSDAddress();
+            //if ((tt == null)||(tt.trim().equals(""))) v2MetaDataPath.getSourceTextAddress();
+            //if ((tt == null)||(tt.trim().equals(""))) v2MetaDataPath.getTextMetaPath();
+            jtDataDirectory.setText(fileD.getAbsolutePath());
             setRadioButtonState();
         }
     }

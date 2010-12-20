@@ -10,7 +10,8 @@ package gov.nih.nci.caadapter.ui.mapping.V2V3;
 
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
-import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
+import edu.knu.medinfo.hl7.v2tree.util.GeneralUtil;
+import edu.knu.medinfo.hl7.v2tree.meta_old.MetaDataLoader;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
@@ -67,42 +68,132 @@ public class ConvertFromV2ToCSV
     {
         convertToCSVFile(null, v2File, mType, versionS, fileCSV, fileSCSValidate, strict);
     }
+    public ConvertFromV2ToCSV(String v2File, String mType, String fileCSV, String fileSCSValidate, boolean strict)
+    {
+        convertToCSVFile(null, v2File, mType, null, fileCSV, fileSCSValidate, strict);
+    }
     private void convertToCSVFile(Object v2MetaPathObject, String v2File, String mType, String versionS, String fileCSV, String fileSCSValidate, boolean strict)
     {
 
         V2ConverterToSCSPanel panel = new V2ConverterToSCSPanel();
-        HL7V2MessageTree aTree = null;
-        try
+        HL7V2MessageTree aTreeP = null;
+
+        while ((v2MetaPathObject != null)&&(v2MetaPathObject instanceof String))
         {
-            if (((v2MetaPathObject != null))&&(v2MetaPathObject instanceof String))
+            String c = (String) v2MetaPathObject;
+            if (c.trim().equals(""))
             {
-                String v2MetaPath = (String)v2MetaPathObject;
-                if (v2MetaPath.trim().equals("")) v2MetaPathObject = null;
+                v2MetaPathObject = null;
+                break;
             }
-            if (v2MetaPathObject == null)
+            File f = new File(c);
+            if (!f.exists())
             {
-                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
-                if (loader == null)
+                v2MetaPathObject = null;
+                break;
+            }
+
+            break;
+        }
+
+        if (v2File == null) v2File = "";
+        else v2File = v2File.trim();
+        if (mType == null) mType = "";
+        else mType = mType.trim();
+
+        if (v2File.equals(""))
+        {
+            String vers = GeneralUtil.getSimpleVersion(versionS);
+            if (vers == null)
+            {
+                if (mType.equals(""))
                 {
                     errorLevel = JOptionPane.ERROR_MESSAGE;
-                    message = "V2 Meta Data Loader creation failure";
-                    messageTitle = "HL7MessageTreeException";
+                    message = "There is Nothing information about v2 message.";
+                    messageTitle = "No V2 Message Info";
                     return;
                 }
-                else aTree = new HL7V2MessageTree(loader);
+                versionS = null;
             }
-            else aTree = new HL7V2MessageTree(v2MetaPathObject);
-
-            aTree.setVersion(versionS);
-            if (!((mType == null)||(mType.trim().equals("")))) aTree.parse(mType);
+            else
+            {
+                if ((mType.equals(""))||(mType.length() != 7))
+                {
+                    errorLevel = JOptionPane.ERROR_MESSAGE;
+                    message = "No or Invalid message type";
+                    messageTitle = "Invalid V2 Message type";
+                    return;
+                }
+                try
+                {
+                    if (v2MetaPathObject == null ) aTreeP = new HL7V2MessageTree();
+                    else aTreeP = new HL7V2MessageTree(v2MetaPathObject);
+                    v2MetaPathObject = aTreeP.getMetaDataLoader();
+                    aTreeP.setVersion(vers);
+                    aTreeP.setFlagDataValidation(strict);
+                    aTreeP.parse(mType);
+                }
+                catch(HL7MessageTreeException he)
+                {
+                    aTreeP = null;
+                }
+            }
         }
-        catch(HL7MessageTreeException he)
+        else
         {
-            errorLevel = JOptionPane.ERROR_MESSAGE;
-            message = he.getMessage();
-            messageTitle = "HL7MessageTreeException";
-            return;
+            File vF = new File(v2File);
+            if ((vF.exists())&&(vF.isFile()))
+            {
+                try
+                {
+                    if (v2MetaPathObject == null ) aTreeP = new HL7V2MessageTree();
+                    else aTreeP = new HL7V2MessageTree(v2MetaPathObject);
+                    v2MetaPathObject = aTreeP.getMetaDataLoader();
+                    aTreeP.setFlagDataValidation(strict);
+                    aTreeP.parse(vF.getAbsolutePath());
+                }
+                catch(HL7MessageTreeException he)
+                {
+                    aTreeP = null;
+                }
+            }
         }
+        HL7V2MessageTree aTree = null;
+        if (aTreeP == null)
+        {
+            try
+            {
+                if (((v2MetaPathObject != null))&&(v2MetaPathObject instanceof String))
+                {
+                    String v2MetaPath = (String)v2MetaPathObject;
+                    if (v2MetaPath.trim().equals("")) v2MetaPathObject = null;
+                }
+                if (v2MetaPathObject == null)
+                {
+                    MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+                    if (loader == null)
+                    {
+                        errorLevel = JOptionPane.ERROR_MESSAGE;
+                        message = "V2 Meta Data Loader creation failure";
+                        messageTitle = "HL7MessageTreeException";
+                        return;
+                    }
+                    else aTree = new HL7V2MessageTree(loader);
+                }
+                else aTree = new HL7V2MessageTree(v2MetaPathObject);
+
+                if (!((versionS == null)||(versionS.trim().equals("")))) aTree.setVersion(versionS);
+                if (!((mType == null)||(mType.trim().equals("")))) aTree.parse(mType);
+            }
+            catch(HL7MessageTreeException he)
+            {
+                errorLevel = JOptionPane.ERROR_MESSAGE;
+                message = he.getMessage();
+                messageTitle = "HL7MessageTreeException";
+                return;
+            }
+        }
+        else aTree = aTreeP;
 
         if ((fileSCSValidate == null)||(fileSCSValidate.trim().equals("")))
         {
@@ -145,8 +236,11 @@ public class ConvertFromV2ToCSV
 
             try
             {
-                fr = new FileReader(v2File);
-                br = new BufferedReader(fr);
+                if (aTreeP == null)
+                {
+                    fr = new FileReader(v2File);
+                    br = new BufferedReader(fr);
+                }
                 fw = new FileWriter(fileCSV);
                 fwLog = new FileWriter(logFileName);
 
@@ -157,7 +251,9 @@ public class ConvertFromV2ToCSV
 
                 while(true)
                 {
-                    String line = br.readLine();
+                    String line = null;
+                    if (aTreeP == null) line = br.readLine();
+                    else isStarted = true;
                     if (line == null)
                     {
                         line = "The End.";
@@ -169,6 +265,7 @@ public class ConvertFromV2ToCSV
                     if (isFileEnded) line = "";
                     if ((isFileEnded)||(line.startsWith("MSH")))
                     {
+
                         msgF = msg;
                         msg = line + "\r";
                         if (!isStarted)
@@ -179,8 +276,11 @@ public class ConvertFromV2ToCSV
                         }
                         else
                         {
+                            String msgTagStr = numberTag + ":Single ";
+                            if (aTreeP == null)
+                            {
                             n++;
-                            String msgTagStr = numberTag + n + " ";
+                            msgTagStr = numberTag + n + " ";
                             System.out.println("  Converting Processing " + msgTagStr);
                             //boolean strict = jrStrictValidationYes.isSelected();
                             //String mType = jtInputMessageType.getText();
@@ -245,6 +345,7 @@ public class ConvertFromV2ToCSV
                                 ee.printStackTrace();
                                 if (isFileEnded) break;
                                 continue;
+                            }
                             }
                             if (aTree.getErrorMessageList().size() > 0)
                             {
