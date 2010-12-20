@@ -8,10 +8,10 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.mapping.V2V3;
 
-import edu.knu.medinfo.hl7.v2tree.images.source.mapping.CompareInstance;
-import edu.knu.medinfo.hl7.v2tree.images.source.mapping.CheckVersionAndItem;
-import edu.knu.medinfo.hl7.v2tree.images.source.mapping.GroupingMetaInstance;
-import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
+//import edu.knu.medinfo.hl7.v2tree.images.source.mapping.CompareInstance;
+//import edu.knu.medinfo.hl7.v2tree.images.source.mapping.CheckVersionAndItem;
+//import edu.knu.medinfo.hl7.v2tree.images.source.mapping.GroupingMetaInstance;
+//import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 
 import javax.swing.*;
 

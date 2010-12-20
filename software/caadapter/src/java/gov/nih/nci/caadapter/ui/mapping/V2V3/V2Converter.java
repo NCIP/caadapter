@@ -11,7 +11,8 @@ package gov.nih.nci.caadapter.ui.mapping.V2V3;
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
-import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
+//import edu.knu.medinfo.hl7.v2tree.util.Config;
+import edu.knu.medinfo.hl7.v2tree.meta_old.MetaDataLoader;
 import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
@@ -813,9 +814,11 @@ public class V2Converter
     private String transformValue(String src)
     {
         String source = src;
-        if (src.startsWith(messageTreeEmpty.getFileHead()))
+        //if (src.startsWith(messageTreeEmpty.getFileHead()))
+        String fileHead = edu.knu.medinfo.hl7.v2tree.util.Config.FILE_HEAD;
+        if (src.startsWith(fileHead))
         {
-            String fileName = src.substring(messageTreeEmpty.getFileHead().length());
+            String fileName = src.substring(fileHead.length());
             source = FileUtil.readFileIntoString(fileName);
             (new File(fileName)).delete();
         }
