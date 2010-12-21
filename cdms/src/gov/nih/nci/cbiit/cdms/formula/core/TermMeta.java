@@ -61,8 +61,6 @@ public class TermMeta extends BaseMeta{
 			return getValue();
 		else if (getType().equals(TermType.VARIABLE))
 		{
-//			System.out.println("TermMeta.excute()..parameter:"+param);
-//			System.out.println("TermMeta.excute()...:"+getValue() +"..."+ param.get(getValue()));
 			return (String) param.get(getValue());
 		
 		}

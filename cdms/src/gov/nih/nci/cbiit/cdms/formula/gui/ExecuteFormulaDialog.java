@@ -19,6 +19,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -128,7 +130,16 @@ public class ExecuteFormulaDialog extends JDialog implements ActionListener {
 				JTextField pField= (JTextField)paramFieldHash.get(pName);
 				paramHash.put(pName, pField.getText());
 			}
-			resultField.setText(formula.getExpression().excute(paramHash)+"");
+			NumberFormat form = NumberFormat.getInstance();
+			form.setMaximumFractionDigits(4);
+			Number formatedSt;
+			try {
+				formatedSt = form.parse(formula.getExpression().excute(paramHash)+"");
+				resultField.setText(form.format(formatedSt));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
