@@ -26,8 +26,7 @@ public class FormulaFactory {
 	public static TermMeta createTemplateTerm(OperationType type)
 	{
 		if (expressionTemplate==null
-				||
-				expressionTemplate.isEmpty())
+				||expressionTemplate.isEmpty())
 		{
 			try {
 				FormulaStore templateStore=loadFormulaStore("datastore/expressionTemplate.xml");
@@ -147,10 +146,6 @@ public class FormulaFactory {
 		FileWriter writer =new FileWriter(f);
 		writerFormula(formula, writer);
 		writer.close();
-//		JAXBContext jc=getJAXBContext();
-//		Marshaller m = jc.createMarshaller();
-//		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-//		m.marshal(new JAXBElement<FormulaMeta>(new QName("formula"),FormulaMeta.class, formula), f);
 	}
 	
 	private static JAXBContext getJAXBContext() throws JAXBException
