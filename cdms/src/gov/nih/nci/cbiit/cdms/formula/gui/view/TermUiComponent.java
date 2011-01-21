@@ -8,7 +8,8 @@ import javax.swing.JLabel;
 
 
 
-public class TermUiComponent extends JLabel {
+public class TermUiComponent extends JLabel
+{
 	private TermView viewMeta;
 
 	public TermUiComponent (String text)
