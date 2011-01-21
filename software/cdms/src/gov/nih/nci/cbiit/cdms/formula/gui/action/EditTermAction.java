@@ -38,8 +38,11 @@ public class EditTermAction extends AbstractAction {
 		switch (actionType)
 		{
 			case TYPE_EDIT:
+                TermMeta t2Meta = viewMeta.getTerm();
+                if (t2Meta.getType() == TermType.EXPRESSION) parentView = viewMeta;
+                else parentView = viewMeta.getParentView();
 
-				EditTermWizard wizard ;
+                EditTermWizard wizard ;
 				if (parentView==null)
 					wizard= new EditTermWizard(mainFrame, viewMeta.getTerm(),true);
 				else
@@ -51,7 +54,11 @@ public class EditTermAction extends AbstractAction {
 			    wizard.setVisible(true);
 			    break;
 			case TYPE_DELETE:
-				if (parentView.getParentView()==null)
+                TermMeta tMeta = viewMeta.getTerm();
+                if (tMeta.getType() == TermType.EXPRESSION) parentView = viewMeta;
+                else parentView = viewMeta.getParentView();
+
+                if (parentView.getParentView()==null)
 				{
 					String msg="You can not delete the root expression !!\n"+parentView.toString() ;
 		            JOptionPane.showMessageDialog(mainFrame, msg, "Warning", JOptionPane.ERROR_MESSAGE);

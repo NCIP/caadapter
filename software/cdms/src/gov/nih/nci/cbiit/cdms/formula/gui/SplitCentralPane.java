@@ -4,6 +4,7 @@ import gov.nih.nci.cbiit.cdms.formula.FormulaFactory;
 import gov.nih.nci.cbiit.cdms.formula.core.BaseMeta;
 import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.gui.view.FormulaPanel;
+import gov.nih.nci.cbiit.cdms.formula.gui.view.FormulaPanelWithJGraph;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,8 +30,9 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 	public SplitCentralPane()
 	{
 		super(JSplitPane.VERTICAL_SPLIT);
-		FormulaPanel topPanel=new FormulaPanel(null);
-		topPanel.setBorder(BorderFactory.createTitledBorder(""));
+		//FormulaPanel topPanel=new FormulaPanel(null);
+        FormulaPanelWithJGraph topPanel=new FormulaPanelWithJGraph(null);
+        topPanel.setBorder(BorderFactory.createTitledBorder(""));
 		topScroll=new JScrollPane(topPanel);
 		topScroll.setPreferredSize(new Dimension(460, 350));
 		add(topScroll);
@@ -75,14 +77,16 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 		if (controllMeta instanceof FormulaMeta)
 		{
 			FormulaMeta formula=(FormulaMeta)controllMeta;
-			FormulaPanel newFormulaPanel=new FormulaPanel(formula);
-			topScroll.getViewport().setView(newFormulaPanel);
+			//FormulaPanel newFormulaPanel=new FormulaPanel(formula);
+            FormulaPanelWithJGraph newFormulaPanel=new FormulaPanelWithJGraph(formula);
+            topScroll.getViewport().setView(newFormulaPanel);
 			formulaXml.setText(FormulaFactory.convertFormulaToXml(formula));						
 		}
 		else
 		{
- 			FormulaPanel newFormulaPanel=new FormulaPanel(null);
-			topScroll.getViewport().setView(newFormulaPanel);
+ 			//FormulaPanel newFormulaPanel=new FormulaPanel(null);
+            FormulaPanelWithJGraph newFormulaPanel=new FormulaPanelWithJGraph(null);
+            topScroll.getViewport().setView(newFormulaPanel);
 		}	
 		topScroll.validate();
 	}
