@@ -2,6 +2,8 @@ package gov.nih.nci.cbiit.cdms.formula.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import gov.nih.nci.cbiit.cdms.formula.common.util.WebstartUtil;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.WindowAdapterMain;
@@ -28,8 +30,11 @@ public class FrameMain extends JFrame {
 		//set menu
 		this.setJMenuBar(new MenuBarMain(this));
 		mainPanel=new PanelMainFrame();//this);
-		this.getContentPane().add(mainPanel);
-	}
+
+        this.getContentPane().add(mainPanel);
+
+        addWindowListener(new WinCloseExit(this));
+    }
 
 	public PanelMainFrame getMainPanel() {
 		return mainPanel;
@@ -41,6 +46,22 @@ public class FrameMain extends JFrame {
 			singletonFrameMain=new FrameMain();
 		return singletonFrameMain;
 	}
+
+    class WinCloseExit extends WindowAdapter
+	{
+		FrameMain tt;
+
+
+        WinCloseExit(FrameMain st)
+  	    {
+		    tt = st;
+		}
+		public void windowClosing(WindowEvent e)
+	    {
+            tt.dispose();
+        }
+    }
+
     public static void main(String[] args)
     {
     	try {

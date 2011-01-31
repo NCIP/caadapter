@@ -6,8 +6,7 @@ import gov.nih.nci.cbiit.cdms.formula.core.FormulaMeta;
 import gov.nih.nci.cbiit.cdms.formula.gui.view.FormulaPanel;
 import gov.nih.nci.cbiit.cdms.formula.gui.view.FormulaPanelWithJGraph;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -26,17 +25,23 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 	private JLabel formulaLabel;
 	private JTextArea formulaXml;
 	private BaseMeta controllMeta;
-	
-	public SplitCentralPane()
+
+    Dimension preferredDim = new Dimension(460, 350);
+
+    public SplitCentralPane()
 	{
 		super(JSplitPane.VERTICAL_SPLIT);
 		//FormulaPanel topPanel=new FormulaPanel(null);
-        FormulaPanelWithJGraph topPanel=new FormulaPanelWithJGraph(null);
+
+        FormulaPanelWithJGraph topPanel=new FormulaPanelWithJGraph(null, this, preferredDim);
+
         topPanel.setBorder(BorderFactory.createTitledBorder(""));
 		topScroll=new JScrollPane(topPanel);
-		topScroll.setPreferredSize(new Dimension(460, 350));
-		add(topScroll);
-		JPanel lowPanel=new JPanel();
+		topScroll.setPreferredSize(preferredDim);
+
+        add(topScroll);
+
+        JPanel lowPanel=new JPanel();
 		lowPanel.setLayout(new BorderLayout());
 		lowPanel.setBorder(BorderFactory.createEtchedBorder());
 		formulaLabel=new JLabel("");
@@ -68,26 +73,38 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 	public BaseMeta getControllMeta() {
 		return controllMeta;
 	}
+    public JScrollPane getScrollPane() {
+		return topScroll;
+	}
 
 
-	private void updataDisplayPane()
+    private void updataDisplayPane()
 	{
 		formulaLabel.setText(controllMeta.formatJavaStatement());
 		formulaXml.setText("");
-		if (controllMeta instanceof FormulaMeta)
+
+        Dimension dim = preferredDim;
+        Component comp = topScroll.getViewport().getView();
+        if ((comp != null)&&(comp instanceof FormulaPanelWithJGraph)) dim = ((FormulaPanelWithJGraph) comp).getDimension();
+        else System.out.println("DDDD 90990 topScroll.getViewport().getView() is null");
+        if (controllMeta instanceof FormulaMeta)
 		{
 			FormulaMeta formula=(FormulaMeta)controllMeta;
 			//FormulaPanel newFormulaPanel=new FormulaPanel(formula);
-            FormulaPanelWithJGraph newFormulaPanel=new FormulaPanelWithJGraph(formula);
+            this.validate();
+            FormulaPanelWithJGraph newFormulaPanel=new FormulaPanelWithJGraph(formula, this, dim);
+            System.out.println("DDDD 80 (JSplitPane)  getX=" + this.getX()+ ", getWidh="+this.getWidth()/2 + ", getY=" + this.getY() + ", getHeight=" +this.getHeight()/2);
             topScroll.getViewport().setView(newFormulaPanel);
 			formulaXml.setText(FormulaFactory.convertFormulaToXml(formula));						
 		}
 		else
 		{
  			//FormulaPanel newFormulaPanel=new FormulaPanel(null);
-            FormulaPanelWithJGraph newFormulaPanel=new FormulaPanelWithJGraph(null);
+            FormulaPanelWithJGraph newFormulaPanel=new FormulaPanelWithJGraph(null, this, dim);
             topScroll.getViewport().setView(newFormulaPanel);
-		}	
+
+        }
 		topScroll.validate();
-	}
+        //this.addPropertyChangeListener();
+    }
 }
