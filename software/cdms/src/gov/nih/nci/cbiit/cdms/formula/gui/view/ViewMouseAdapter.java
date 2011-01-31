@@ -20,10 +20,12 @@ import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.Edge;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.JGraph;
 
 public class ViewMouseAdapter extends MouseAdapter
 {
     FormulaPanelWithJGraph panelJGraph = null;
+    boolean isMouseEntered = false;
 
     public ViewMouseAdapter()
     {
@@ -34,27 +36,51 @@ public class ViewMouseAdapter extends MouseAdapter
         panelJGraph = panel;
     }
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent e)
+    {
         // TODO Auto-generated method stub
         super.mouseClicked(e);
         BaseMeta baseMeta=FrameMain.getSingletonInstance().getMainPanel().getCentralSplit().getControllMeta();
         if (!(baseMeta instanceof FormulaMeta))
             return;
         FormulaMeta formula=(FormulaMeta)baseMeta;
+
         TermView termView = null;
+        DefaultGraphCell selectedGraphCell = null;
+
         if (panelJGraph == null)
         {
             TermUiComponent metaUi=(TermUiComponent)e.getSource();
             termView = metaUi.getViewMeta();
         }
-        else termView = panelJGraph.getSelectedTermView();
+        else
+        {
+            termView = panelJGraph.getSelectedTermView();
+            Object ob = panelJGraph.getJGraph().getSelectionCell();
+            if ((ob != null)||(ob instanceof DefaultGraphCell)) selectedGraphCell = (DefaultGraphCell) ob;
+        }
 
         if (termView == null) return;
-        if (e.getClickCount()==1)
+
+        if ((e.getClickCount()==1)&&(SwingUtilities.isLeftMouseButton(e)))
         {
-            System.out.println("ViewMouseAdapter.mouseClicked()..Single click:"+termView);
+            if (panelJGraph != null)
+            {
+                JGraph graph = panelJGraph.getJGraph();
+                Object ob = graph.getSelectionCellAt(e.getPoint());
+                if (ob == null)
+                {
+                    FrameMain frame=FrameMain.getSingletonInstance();
+                    frame.getMainPanel().getRightSplitPanel().getPropertiePanel().updateProptiesDisplay(panelJGraph.getControlMeta());
+                    System.out.println("ViewMouseAdapter.mouseClicked()....Single click: Not selected");
+                }
+                else
+                {
+                    System.out.println("ViewMouseAdapter.mouseClicked()..Single click:"+termView);
+                }
+            }
         }
-        if (e.getClickCount()==2)
+        else if ((e.getClickCount()==2)&&(SwingUtilities.isLeftMouseButton(e)))
         {
             System.out.println("ViewMouseAdapter.mouseClicked()..double click:"+termView);
             //if (panelJGraph != null) panelJGraph.setNullToSelectedTermView();
@@ -81,7 +107,7 @@ public class ViewMouseAdapter extends MouseAdapter
                         (int)mainFrame.getSize().getHeight()/2);
                wizard.setVisible(true);
         }
-        else if (SwingUtilities.isRightMouseButton(e))
+        else if ((e.getClickCount()==1)&&(SwingUtilities.isRightMouseButton(e)))
         {
             System.out.println("Mouse clicked: RightMouseButton");
             Container parentC = e.getComponent().getParent();
@@ -89,8 +115,7 @@ public class ViewMouseAdapter extends MouseAdapter
             {
                 parentC=parentC.getParent();
             }
-            //if (panelJGraph != null) panelJGraph.setNullToSelectedTermView();
-            // Create PopupMenu for the Cell
+
             JPopupMenu popupMenu = new JPopupMenu();
             EditTermAction editAction=new EditTermAction("Edit Term", EditTermAction.TYPE_EDIT);
             editAction.setTermView(termView);
@@ -108,27 +133,50 @@ public class ViewMouseAdapter extends MouseAdapter
                 deleteAction.setEnabled(false);
             }
         }
-        refreshJGraphPanel(termView);
-
+        refreshJGraphPanel(termView, selectedGraphCell);
     }
 
-    private boolean refreshJGraphPanel(TermView tView)
+    private boolean refreshJGraphPanel(TermView tView, DefaultGraphCell selectedGraphCell)
     {
-        if (panelJGraph == null) return false;
-        if (tView == null) return false;
+        if ((panelJGraph == null)||(tView == null)) return false;
+
         DefaultGraphCell graphCell = tView.getGraphCell();
         if ((graphCell == null)||(!(graphCell instanceof Edge))) return false;
 
         Edge edge = (Edge) graphCell;
 
-        java.util.List<Point> points = tView.getPoints();
-        if ((points == null)||(points.size() == 0)) return false;
+        int cTag = isSameEdgePoints(tView.getPoints(), GraphConstants.getPoints(edge.getAttributes()));
+        if (cTag < 0) return false;
 
-        AttributeMap map = edge.getAttributes();
-        java.util.List mapPoints = GraphConstants.getPoints(map);
-        if ((mapPoints == null)||(mapPoints.size() == 0)) return false;
+        if (cTag == 0)
+        {
+            java.util.List<DefaultGraphCell> list = panelJGraph.getGraphCellList();
+            int seq = -1;
+            for(int i=0;i<list.size();i++)
+            {
+                DefaultGraphCell cell = list.get(i);
+                if (cell == selectedGraphCell) seq = i;
+            }
+            panelJGraph.refresh();
+            panelJGraph.setNullToSelectedTermView();
 
-        boolean cTag = true;
+            Object ob = panelJGraph.getJGraph().getSelectionCell();
+            if ((ob == null)&&(selectedGraphCell != null)&&(seq >= 0))
+            {
+                panelJGraph.getJGraph().setSelectionCell(panelJGraph.getGraphCellList().get(seq));
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    private int isSameEdgePoints(java.util.List<Point> points, java.util.List<Point> mapPoints)
+    {
+        if ((points == null)||(points.size() == 0)) return -1;
+        if ((mapPoints == null)||(mapPoints.size() == 0)) return -1;
+        //System.out.println("DDDDD ***");
+        int cTag = 1;
         for (int i=0;i<Math.max(mapPoints.size(), points.size());i++)
         {
             double mX = -99.99;
@@ -137,29 +185,22 @@ public class ViewMouseAdapter extends MouseAdapter
             double bY = -99.99;
             if (i < points.size())
             {
-                Point p = points.get(i);
+                Point2D p = points.get(i);
                 bX =  p.getX();
                 bY =  p.getY();
             }
             if (i < mapPoints.size())
             {
-                Point2D p = (Point2D) mapPoints.get(i);
+                Point2D p = mapPoints.get(i);
                 mX =  p.getX();
                 mY =  p.getY();
             }
 
-            if (mX != bX) cTag = false;
-            if (mY != bY) cTag = false;
-            //System.out.println("  DDD Compare points("+i+")"+cTag+" map=" + mX+ ":" + mY + ", View=" + bX + ":" + bY);
+            if (mX != bX) cTag = 0;
+            if (mY != bY) cTag = 0;
+            //System.out.println("  DDD Compare points("+i+")"+cTag+" X=" + mX+ ":" + bX + ", Y=" + mY + ":" + bY);
         }
-
-        if (((points.size() != mapPoints.size()))||(!cTag))
-        {
-            panelJGraph.refresh();
-            panelJGraph.setNullToSelectedTermView();
-            return true;
-        }
-        return false;
+        return cTag;
     }
 
     public void mouseReleased(MouseEvent e)
@@ -171,15 +212,30 @@ public class ViewMouseAdapter extends MouseAdapter
             System.out.println("DDD9 : mouseReleased(L), e.getClickCount()" + e.getClickCount());
         mouseClicked(e);
     }
-//    public void mouseReleased(MouseEvent e)
-//    //public void mouseDragged(MouseEvent e)
-//    {
-        //refreshJGraphPanel(panelJGraph.getSelectedTermView());
-//        if (panelJGraph != null)
-//        {
-//            System.out.println("DDD9 : mouseReleased, e.getClickCount()=" + e.getClickCount());
-//            panelJGraph.refresh();
-//
-//        }
-//    }
+
+    public void mouseExited(MouseEvent e)
+    {
+        System.out.println("DDD77 : mouseExited :: " + isMouseEntered);
+        isMouseEntered = false;
+
+        if (panelJGraph == null) return;
+        BaseMeta bMeta = panelJGraph.getControlMeta();
+        if (bMeta == null) return;
+        FrameMain frame=FrameMain.getSingletonInstance();
+        frame.getMainPanel().getRightSplitPanel().getPropertiePanel().updateProptiesDisplay(bMeta);
+        //System.out.println("DDD77 : mouseExited");
+    }
+    public void mouseEntered(MouseEvent e)
+    {
+        System.out.println("DDD55 : mouseEntered :: " + isMouseEntered);
+        if (isMouseEntered) return;
+
+        isMouseEntered = true;
+        if (panelJGraph == null) return;
+        BaseMeta bMeta = panelJGraph.getControlMeta();
+        if (bMeta == null) return;
+        panelJGraph.refresh();
+
+        //System.out.println("DDD55 : mouseEntered");
+    }
 }
