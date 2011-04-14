@@ -41,6 +41,9 @@
                     <include name="**/*.jsp"/>
                     <include name="**/*.jnlp"/>
 			</fileset>
+			<zipfileset dir="${flex.home.dir}/fontswf" prefix="fontswf"/>
+			<fileset dir="${flex.home.dir}/bin-release"/>
+
             <!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
 			<lib dir="${web.src.dir}/WEB-INF/lib">
 				<include name="jardiff.jar"/>
