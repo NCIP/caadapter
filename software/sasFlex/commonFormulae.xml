@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.1" encoding="UTF-8"?>
+<!DOCTYPE formulaStore [<!ENTITY times "&#215;">]> 
 <formulaStore name="Common Formula">
 	<math title="Fahrenheit to Celsius">
 		<mrow>
@@ -11,7 +12,7 @@
 										<mo mathcolor="red" selected="true">-</mo>
 										<mtext>32</mtext>
 								</mfenced>
-								<mo>+</mo>
+								<mo>&times;</mo>
 								<mtext>5</mtext>
 						</mfenced>
 						<mtext>9</mtext>
@@ -25,7 +26,7 @@
 					<mfrac mathcolor="#FF0000">
 							<mrow>
 									<mtext>principle</mtext>
-									<mo>+</mo>
+									<mo>&times;</mo>
 									<mtext>annualRate</mtext>
 							</mrow>
 							<mrow>
