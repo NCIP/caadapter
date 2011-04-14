@@ -25,6 +25,7 @@
 	<resources>
 		<j2se version="1.6+" initial-heap-size="512m" max-heap-size="512m"/>
 		<jar href="cdms.jar"/>  
+		<jar href="jgraph.jar"/>  
 	</resources>
 	<application-desc main-class="gov.nih.nci.cbiit.cdms.formula.gui.FrameMain">
 		<argument>$$codebase</argument> 
