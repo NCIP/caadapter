@@ -2,7 +2,7 @@
 <mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   xmlns:fmath="http://www.fmath.info" 
+			   xmlns:fmath="http://www.fmath.info"   
 			   applicationComplete="init(), customizedLoading()" 
 			   layout="horizontal" 
 			   width="100%" height="100%" minWidth="955" minHeight="600">
@@ -25,11 +25,14 @@
 	</fx:Declarations>
 	<fx:Script >
 		<![CDATA[
-		import mx.collections.ICollectionView;
-		import mx.controls.Alert;
-		import mx.controls.Menu;
-		import mx.events.ListEvent;
-		import mx.collections.XMLListCollection;
+			import learnmath.mathml.formula.MathML;
+			import learnmath.windows.apps.EditorApp;
+			
+			import mx.collections.ICollectionView;
+			import mx.collections.XMLListCollection;
+			import mx.controls.Alert;
+			import mx.controls.Menu;
+			import mx.events.ListEvent;
 		//Display tree node
 		private function treeMathLabel(item:Object):String {
 			var node:XML = XML(item);
@@ -71,11 +74,15 @@
 
 		protected function customizedLoading():void
 		{
-			editorId.mainPannel.name= "<a href=\'http://ncicb.nci.nih.gov/\'>NCI Center for Biomedical Informatics & Information Technology - Scientific Algorithm Service</a>";
-			editorId.mainPannel.draw();
+			var mainPanel:EditorApp=editorId.mainPannel;
+			mainPanel.name= "<a href=\'http://ncicb.nci.nih.gov/\'>NCI Center for Biomedical Informatics & Information Technology - Scientific Algorithm Service</a>";
+			//set default value for formula window
+			var p1:XML =new XML("<math>" +"<mrow><mtext>default</mtext><mo selected='true'>+</mo><mtext>12345</mtext></mrow>" + "</math>")
+			mainPanel.setMathML(p1.toXMLString());
+			mainPanel.draw();
 			commonFormulae.expandItem(commonFormulaTreeDP.getItemAt(0), true);
 			localFormulae.expandItem(localFormulaTreeDP.getItemAt(0), true);
-//			Alert.show(localStoreXML.name(), "testingMesag");
+//			Alert.show(mainPanel.getMathML()+"", "testingMesag");
 		}
 		protected function getMathML(event:MouseEvent):void
 		{
@@ -144,9 +151,7 @@
 						 borderStyle="solid" paddingTop="0" paddingBottom="10" paddingLeft="10" paddingRight="10"/>
 			</mx:VBox>
 			<mx:VBox  horizontalAlign="left" backgroundColor="#eeeeee" borderColor="#000000" borderStyle="solid" paddingTop="10" paddingBottom="5" paddingLeft="10" paddingRight="5" id="formulaBox">	
-				<fmath:MathMLEditor id="editorId" editorWidth="800" editorHeight="500"  initialize="initEditor()">
-					<fmath:mathML><![CDATA[<mrow><mtext>abc</mtext></mrow>]]></fmath:mathML>	
-				</fmath:MathMLEditor>				
+				<fmath:MathMLEditor id="editorId" editorWidth="800" editorHeight="500"  initialize="initEditor()"/>				
 				<mx:VBox>
 					<mx:HBox horizontalAlign="center">
 						<mx:Button click="getMathML(event)" label="get MathML from component"/>
