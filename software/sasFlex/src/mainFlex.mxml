@@ -3,17 +3,16 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:fmath="http://www.fmath.info"   
+			   xmlns:casas="gov.nih.nci.cbiit.casas.components.*"
 			   applicationComplete="init(), customizedLoading()" 
 			   layout="horizontal" 
 			   width="100%" height="100%" minWidth="955" minHeight="600">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
-		<mx:XMLListCollection id="localFormulaTreeDP" source="{localStoreXML.elements('math')}"/>
- 
-		<mx:XMLListCollection id="commonFormulaTreeDP" source="{commonStoreXML.elements('math')}" />
-		<!-- fx:XML id="myXML" source="http://flepstudio.org/FlashBuilder/tut_8/XML/test.xml" / -->
-		<fx:XML id ="localStoreXML" source="../bsaFormulae.xml"/>
-		<fx:XML id ="commonStoreXML" source="../commonFormulae.xml"/>
+		<mx:XMLListCollection id="localFormulaTreeDP" source="{localStoreXML.children()}"/> 
+		<mx:XMLListCollection id="commonFormulaTreeDP" source="{commonStoreXML.children()}"/>
+		<fx:XML id ="localStoreXML" source="bsaFormulae.xml"/>
+		<fx:XML id ="commonStoreXML" source="commonFormulae.xml"/>
 		
 		<mx:XMLListCollection id="menuData">
 			<fx:XMLList>
@@ -23,76 +22,21 @@
 			</fx:XMLList>
 		</mx:XMLListCollection>
 	</fx:Declarations>
-	<fx:Script >
+	<fx:Script  source="gov/nih/nci/cbiit/casas/ui/scripts/MainFrameUtil.as"/>
+	<fx:Script>
 		<![CDATA[
-			import learnmath.mathml.formula.MathML;
-			import learnmath.windows.apps.EditorApp;
-			
-			import mx.collections.ICollectionView;
-			import mx.collections.XMLListCollection;
-			import mx.controls.Alert;
-			import mx.controls.Menu;
-			import mx.events.ListEvent;
-		//Display tree node
-		private function treeMathLabel(item:Object):String {
-			var node:XML = XML(item);
-			if( node.localName() == "math" )
-			{
-				if (node.attribute('title').length()>0)
-					return	node.@title;
-			}
-			else if (node.attribute('name').length()>0)
-				return node.@name;
-			
-			return node.name();
-			
-		}
-
-		// handle tree selection event		 
-		private function tree_itemClick(tree:Tree, evt:ListEvent):void {
-			var item:Object = Tree(evt.currentTarget).selectedItem;
-			editorId.mainPannel.setMathML(item+"");
-			textareaId.text = editorId.mathML;
-			if (tree.dataDescriptor.isBranch(item)) {
-				tree.expandItem(item, !tree.isItemOpen(item), true);
-			}
-		}
-			
-		// Show popup menu TO-BE-DONE
-		private function createAndShow():void
-		{
-			var myMenu:Menu = new Menu();
-			myMenu.dataProvider = menuData;
-			myMenu.labelField = "@label";
-			myMenu.showRoot = false;
-			// calling display() here has no result, because the data provider
-			// has been set but the underlying NativeMenu hasn't been created yet.
-//			myMenu.show(this.stage, 10, 10);
-			Alert.show(commonStoreXML, "menitem");
-			
-		}
-
-		protected function customizedLoading():void
+			import learnmath.windows.ConfigManager;
+		private function customizedLoading():void
 		{
 			var mainPanel:EditorApp=editorId.mainPannel;
 			mainPanel.name= "<a href=\'http://ncicb.nci.nih.gov/\'>NCI Center for Biomedical Informatics & Information Technology - Scientific Algorithm Service</a>";
 			//set default value for formula window
-			var p1:XML =new XML("<math>" +"<mrow><mtext>default</mtext><mo selected='true'>+</mo><mtext>12345</mtext></mrow>" + "</math>")
-			mainPanel.setMathML(p1.toXMLString());
 			mainPanel.draw();
 			commonFormulae.expandItem(commonFormulaTreeDP.getItemAt(0), true);
 			localFormulae.expandItem(localFormulaTreeDP.getItemAt(0), true);
-//			Alert.show(mainPanel.getMathML()+"", "testingMesag");
+//			Alert.show(mainPanel.toolbarsManager +"", "testingMesag");
 		}
-		protected function getMathML(event:MouseEvent):void
-		{
-			textareaId.text = editorId.mathML
-		}
-		protected function setMathML(event:MouseEvent):void
-		{
-			editorId.mathML = textareaId.text;
-		}
-		protected function initEditor():void
+		private function initEditor():void
 		{
 			editorId.setConfiguration("fontList", "Arial,fraktur");
 			//editorId.setConfiguration("defaultFont", "fraktur");
@@ -100,22 +44,32 @@
 			editorId.setConfiguration("defaultBold", "true");
 			editorId.setConfiguration("defaultItalic", "true");
 			editorId.setConfiguration("defaultForegroundColor", "red");
-			//				editorId.setConfiguration("enableClose", "true");
-			//				editorId.setConfiguration("disableSave", "false");
-			//				editorId.setConfiguration("enableOpen", "false");
-		}
-		
-		protected function saveImageToServer(event:MouseEvent):void{
-			editorId.saveImageOnServer("JPG", 100, callbackName);
-		}
-		
-		protected function callbackName(name:String):void{
-			textareaId.text = "Image url: " + name;
-		}
-		protected function viewImageInBrowser(event:MouseEvent):void{
-			editorId.viewImageInBrowser("JPG", 100);
-		}
-		
+
+//			editorId.setConfiguration("enableClose", "true");
+			
+			//enable open 
+			//EditorApp line 120 _loc_13.addElement(new OpenIcon(19, 19), "menu_file_open", !ConfigManager.disableOpen);
+			//EditorApp line 543 openAction()
+			ConfigManager.disableOpen=new Boolean(false);
+			//save menuIcon is always disabled
+			//EditorApp line 121-- _loc_13.addElement(new SaveIcon(18, 19), "menu_file_save", false);
+//			ConfigManager.disableSave=new Boolean(false);
+			Alert.show("disableSave", ConfigManager.disableSave+"");
+			
+			var parent:Sprite  ;
+			var width:int = 1000;
+			var height:int = 250;
+			var returnFocus:Function = null;
+			var maxX:int = 1600;
+			var maxY:int = 1600;
+			var _loc_6:* = new MovieClip();
+			parent.addChild(_loc_6);
+			var newMainPanel=new EditorApp(_loc_6, (maxX - width) / 2, (maxY - height) / 2, width, height, returnFocus);
+			editorId.mainPannel= newMainPanel;
+			
+			var p1:XML =new XML("<math><mrow><mtext>default</mtext><mo selected='true'>&times;</mo><mtext>123456789</mtext></mrow>" + "</math>")
+			editorId.mathML=p1;
+		}		
 		]]>
 	</fx:Script>
 
@@ -151,7 +105,8 @@
 						 borderStyle="solid" paddingTop="0" paddingBottom="10" paddingLeft="10" paddingRight="10"/>
 			</mx:VBox>
 			<mx:VBox  horizontalAlign="left" backgroundColor="#eeeeee" borderColor="#000000" borderStyle="solid" paddingTop="10" paddingBottom="5" paddingLeft="10" paddingRight="5" id="formulaBox">	
-				<fmath:MathMLEditor id="editorId" editorWidth="800" editorHeight="500"  initialize="initEditor()"/>				
+				<!-- fmath:MathMLEditor id="editorId" editorWidth="800" editorHeight="500"  initialize="initEditor()"/ -->				
+				<casas:FormulaEditor id="editorId" editorWidth="800" editorHeight="500" initialize="initEditor()"/>
 				<mx:VBox>
 					<mx:HBox horizontalAlign="center">
 						<mx:Button click="getMathML(event)" label="get MathML from component"/>
