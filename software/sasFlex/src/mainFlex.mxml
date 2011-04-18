@@ -48,7 +48,7 @@
 		<mx:Label id="welcomeLB"
 				  textAlign="center"
 					fontSize="16" width="100%"
-					text="NCI Center for Biomedical Informatics and Information Technology"/>		
+					text="NCI Center for Biomedical Informatics &amp; Information Technology"/>		
 		<mx:Label id="welcomeName"
 				  textAlign="center"
 				  fontSize="28" width="100%"
