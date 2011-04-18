@@ -25,16 +25,17 @@
 	<fx:Script  source="gov/nih/nci/cbiit/casas/ui/scripts/MainFrameUtil.as"/>
 	<fx:Script>
 		<![CDATA[
-			import learnmath.windows.ConfigManager;
 		private function customizedLoading():void
 		{
 			var mainPanel:EditorApp=editorId.mainPannel;
 			mainPanel.name= "<a href=\'http://ncicb.nci.nih.gov/\'>NCI Center for Biomedical Informatics & Information Technology - Scientific Algorithm Service</a>";
-			//set default value for formula window
-			mainPanel.draw();
+			//set default value for formula window	
+			var p1:XML =new XML("<math><mrow><mtext>default</mtext><mo selected='true'>&times;</mo><mtext>123456789</mtext></mrow>" + "</math>")
+			editorId.mathML=p1;
+			editorId.mainPannel.draw();
 			commonFormulae.expandItem(commonFormulaTreeDP.getItemAt(0), true);
 			localFormulae.expandItem(localFormulaTreeDP.getItemAt(0), true);
-//			Alert.show(mainPanel.toolbarsManager +"", "testingMesag");
+			trace("testingMesag"+editorId.mainPannel.toolbarsManager); 
 		}
 		private function initEditor():void
 		{
@@ -45,30 +46,23 @@
 			editorId.setConfiguration("defaultItalic", "true");
 			editorId.setConfiguration("defaultForegroundColor", "red");
 
-//			editorId.setConfiguration("enableClose", "true");
-			
 			//enable open 
 			//EditorApp line 120 _loc_13.addElement(new OpenIcon(19, 19), "menu_file_open", !ConfigManager.disableOpen);
 			//EditorApp line 543 openAction()
-			ConfigManager.disableOpen=new Boolean(false);
+
 			//save menuIcon is always disabled
 			//EditorApp line 121-- _loc_13.addElement(new SaveIcon(18, 19), "menu_file_save", false);
-//			ConfigManager.disableSave=new Boolean(false);
-			Alert.show("disableSave", ConfigManager.disableSave+"");
 			
-			var parent:Sprite  ;
-			var width:int = 1000;
-			var height:int = 250;
-			var returnFocus:Function = null;
-			var maxX:int = 1600;
-			var maxY:int = 1600;
-			var _loc_6:* = new MovieClip();
-			parent.addChild(_loc_6);
-			var newMainPanel=new EditorApp(_loc_6, (maxX - width) / 2, (maxY - height) / 2, width, height, returnFocus);
-			editorId.mainPannel= newMainPanel;
-			
-			var p1:XML =new XML("<math><mrow><mtext>default</mtext><mo selected='true'>&times;</mo><mtext>123456789</mtext></mrow>" + "</math>")
-			editorId.mathML=p1;
+//			var parent:Sprite  ;			
+//			var _loc_1:*=new MovieClip();
+//			var editorW:Number=800;
+//			var editorH:Number=500;
+//			var oldMainPanel:EditorApp=editorId.mainPannel;
+//			var myMainPanel:gov.nih.nci.cbiit.casas.components.FormulaPanel;
+//			
+//			myMainPanel = new gov.nih.nci.cbiit.casas.components.FormulaPanel(_loc_1, 0,0,editorW, editorH, editorId.returnFocus);
+//			myMainPanel.draw();
+//		
 		}		
 		]]>
 	</fx:Script>
@@ -105,7 +99,7 @@
 						 borderStyle="solid" paddingTop="0" paddingBottom="10" paddingLeft="10" paddingRight="10"/>
 			</mx:VBox>
 			<mx:VBox  horizontalAlign="left" backgroundColor="#eeeeee" borderColor="#000000" borderStyle="solid" paddingTop="10" paddingBottom="5" paddingLeft="10" paddingRight="5" id="formulaBox">	
-				<!-- fmath:MathMLEditor id="editorId" editorWidth="800" editorHeight="500"  initialize="initEditor()"/ -->				
+				<!-- dcfMath:MathMLEditor id="editorId" editorWidth="800" editorHeight="500" initialize="initEditor()"/ -->				
 				<casas:FormulaEditor id="editorId" editorWidth="800" editorHeight="500" initialize="initEditor()"/>
 				<mx:VBox>
 					<mx:HBox horizontalAlign="center">
