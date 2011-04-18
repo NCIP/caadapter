@@ -27,12 +27,6 @@
 		<![CDATA[
 		private function customizedLoading():void
 		{
-			var mainPanel:EditorApp=editorId.mainPannel;
-			mainPanel.name= "<a href=\'http://ncicb.nci.nih.gov/\'>NCI Center for Biomedical Informatics & Information Technology - Scientific Algorithm Service</a>";
-			//set default value for formula window	
-			var p1:XML =new XML("<math><mrow><mtext>default</mtext><mo selected='true'>&times;</mo><mtext>123456789</mtext></mrow>" + "</math>")
-			editorId.mathML=p1;
-			editorId.mainPannel.draw();
 			commonFormulae.expandItem(commonFormulaTreeDP.getItemAt(0), true);
 			localFormulae.expandItem(localFormulaTreeDP.getItemAt(0), true);
 			trace("testingMesag"+editorId.mainPannel.toolbarsManager); 
@@ -45,24 +39,6 @@
 			editorId.setConfiguration("defaultBold", "true");
 			editorId.setConfiguration("defaultItalic", "true");
 			editorId.setConfiguration("defaultForegroundColor", "red");
-
-			//enable open 
-			//EditorApp line 120 _loc_13.addElement(new OpenIcon(19, 19), "menu_file_open", !ConfigManager.disableOpen);
-			//EditorApp line 543 openAction()
-
-			//save menuIcon is always disabled
-			//EditorApp line 121-- _loc_13.addElement(new SaveIcon(18, 19), "menu_file_save", false);
-			
-//			var parent:Sprite  ;			
-//			var _loc_1:*=new MovieClip();
-//			var editorW:Number=800;
-//			var editorH:Number=500;
-//			var oldMainPanel:EditorApp=editorId.mainPannel;
-//			var myMainPanel:gov.nih.nci.cbiit.casas.components.FormulaPanel;
-//			
-//			myMainPanel = new gov.nih.nci.cbiit.casas.components.FormulaPanel(_loc_1, 0,0,editorW, editorH, editorId.returnFocus);
-//			myMainPanel.draw();
-//		
 		}		
 		]]>
 	</fx:Script>
