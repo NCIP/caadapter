@@ -226,9 +226,7 @@ public class FormulaPanelWithJGraph extends JPanel
             {
                 setJGraphCell(tView, baseCell, font, xPosition, yPosition-(rec.getHeight() / 2), rec.getWidth(), rec.getHeight(), Color.cyan);
                 hashTbl.put(baseCell, tView);
-                //nonExpressionHashTbl.put(baseCell, meta);
             }
-            //System.out.println("DDD Constant="+meta.getValue());
         }
         else if (termType == TermType.VARIABLE)
         {
@@ -239,9 +237,7 @@ public class FormulaPanelWithJGraph extends JPanel
             {
                 setJGraphCell(tView, baseCell, font, xPosition, yPosition-(rec.getHeight() / 2), rec.getWidth(), rec.getHeight(), Color.cyan);
                 hashTbl.put(baseCell, tView);
-                //nonExpressionHashTbl.put(baseCell, meta);
             }
-            //System.out.println("DDD variable="+meta.getValue());
         }
         else if (termType == TermType.UNKNOWN)
         {
@@ -252,14 +248,13 @@ public class FormulaPanelWithJGraph extends JPanel
             {
                 setJGraphCell(tView, baseCell, font, xPosition, yPosition-(rec.getHeight() / 2), rec.getWidth(), rec.getHeight(), Color.gray);
                 hashTbl.put(baseCell, tView);
-                //nonExpressionHashTbl.put(baseCell, meta);
             }
         }
-        //else return null;
+
 
         if (termType != TermType.EXPRESSION)
         {
-            return new double[] {rec.getWidth(), rec.getHeight(), 0.0};
+            return new double[] {rec.getWidth(), rec.getHeight(), rec.getHeight() / 2, 0.0};
         }
 
         OperationType operType = meta.getOperation();
@@ -278,7 +273,6 @@ public class FormulaPanelWithJGraph extends JPanel
             Font font = new Font(Font.DIALOG_INPUT, Font.BOLD, fontSize);
             rec = font.getStringBounds("(", new FontRenderContext(null, true, true));
             parenthesisPositionData = new double[] {xPosition, yPosition - (rec.getHeight() / 2), rec.getWidth(), rec.getHeight()};
-            //if (!isEstimate) setJGraphCell(baseCell, font, xPosition, yPosition - (rec.getHeight() / 2), rec.getWidth(), rec.getHeight(), Color.red);
             xPosition = xPosition + rec.getWidth();
             break;
         }
@@ -289,6 +283,7 @@ public class FormulaPanelWithJGraph extends JPanel
         double[] sizeLater = null;
         double xEndPosition = 0.0;
         double yEndPosition = 0.0;
+        double yCentralPosition = 0.0;
 
         if ((operType == OperationType.MULTIPLICATION)||
             (operType == OperationType.SUBTRACTION)||
@@ -297,7 +292,7 @@ public class FormulaPanelWithJGraph extends JPanel
             sizeFormer = estimateAllocSize(termList.get(0), fontSize, (termList.get(0).getType() == TermType.EXPRESSION));
             sizeLater = estimateAllocSize(termList.get(1), fontSize, (termList.get(1).getType() == TermType.EXPRESSION));
 
-            numberOfSubParenthesis = Math.max(sizeFormer[2], sizeLater[2]);
+            numberOfSubParenthesis = Math.max(sizeFormer[3], sizeLater[3]);
 
             DefaultGraphCell baseCell = new DefaultGraphCell(operType.toString().trim());
             Font font = new Font(Font.DIALOG_INPUT, Font.BOLD, fontSize);
@@ -338,11 +333,15 @@ public class FormulaPanelWithJGraph extends JPanel
                 hashTbl.put(edge, tView);
                 //expressionHashTbl.put(edge, meta);
 
-                drawTerm(termList.get(0), tView, xPosition + INSET + (width / 2) - (sizeFormer[0] / 2) , (yPosition - INSET - (sizeFormer[1] / 2)), fontSize, false, false);
-                drawTerm(termList.get(1), tView, xPosition + INSET + (width / 2) - (sizeLater[0] / 2) , yPosition + INSET + (sizeLater[1] / 2), fontSize, false, false);
+                double yPos1 = yPosition - INSET - (sizeFormer[1] - sizeFormer[2]);
+                double yPos2 = yPosition + INSET + sizeLater[2];
+
+                drawTerm(termList.get(0), tView, xPosition + INSET + (width / 2) - (sizeFormer[0] / 2) , yPos1, fontSize, false, false);
+                drawTerm(termList.get(1), tView, xPosition + INSET + (width / 2) - (sizeLater[0] / 2) , yPos2, fontSize, false, false);
             }
             xEndPosition = xPosition + width;
             yEndPosition = yPosition + height;
+            yCentralPosition = sizeFormer[1] + INSET;
         }
         if (operType == OperationType.POWER)
         {
@@ -363,10 +362,21 @@ public class FormulaPanelWithJGraph extends JPanel
                 //nonExpressionHashTbl.put(baseCell, meta);
                 //drawTerm(termList.get(0), xPosition, yPosition + (sizeLater[1] / 2), fontSize);
                 drawTerm(termList.get(0), tView, xPosition, yPosition, fontSize, (termList.get(0).getType() == TermType.EXPRESSION), false);
-                drawTerm(termList.get(1), tView, xPosition + rec.getWidth() + sizeFormer[0], yPosition - sizeFormer[1], (int) (fontSize * SHRINK_RATE), (termList.get(1).getType() == TermType.EXPRESSION), false);
+                drawTerm(termList.get(1), tView, xPosition + rec.getWidth() + sizeFormer[0], yPosition - sizeLater[1], (int) (fontSize * SHRINK_RATE), (termList.get(1).getType() == TermType.EXPRESSION), false);
             }
             xEndPosition = rec.getWidth() + xPosition + sizeFormer[0] + sizeLater[0];
             yEndPosition = yPosition + sizeFormer[1] + sizeLater[1];
+            if (sizeFormer[2] >= (sizeLater[1]*1.5))
+            {
+                yEndPosition = yPosition + sizeFormer[1];
+                yCentralPosition = sizeFormer[2];
+            }
+            else
+            {
+                yEndPosition = yPosition + (sizeLater[1]*1.5) + (sizeFormer[1] - sizeFormer[2]);
+                yCentralPosition = yPosition + (sizeLater[1]*1.5);
+            }
+
         }
         if (operType == OperationType.SQUAREROOT)
         {
@@ -374,7 +384,7 @@ public class FormulaPanelWithJGraph extends JPanel
 
             //numberOfSubParenthesis = sizeFormer[2];
 
-            double width = sizeFormer[0] + (INSET * 3);
+            double width = sizeFormer[0] + (INSET * 4);
             double height = sizeFormer[1] + INSET;
 
             DefaultEdge edge = new DefaultEdge();
@@ -383,18 +393,19 @@ public class FormulaPanelWithJGraph extends JPanel
             {
                 java.util.List<Point> points = new ArrayList<Point>();
                 points.add(new Point((int) xPosition, (int)(yPosition + (height / 2) - (INSET*2))));
-                points.add(new Point((int)(xPosition + INSET), (int)(yPosition + (height / 2))));
-                points.add(new Point((int) (xPosition + (INSET*3)), (int)(yPosition - (height / 2))));
+                points.add(new Point((int)(xPosition + INSET*2), (int)(yPosition + (height / 2))));
+                points.add(new Point((int) (xPosition + (INSET*4)), (int)(yPosition - (height / 2))));
                 points.add(new Point((int)(xPosition + width), (int)(yPosition - (height / 2))));
 
                 setJGraphEdge(tView, edge, points);
                 hashTbl.put(edge, tView);
                 //expressionHashTbl.put(edge, meta);
 
-                drawTerm(termList.get(0), tView, xPosition + (3*INSET) , yPosition + INSET, fontSize, false, false);
+                drawTerm(termList.get(0), tView, xPosition + (4*INSET) , yPosition + INSET, fontSize, false, false);
             }
             xEndPosition = xPosition + width;
             yEndPosition = yPosition + height;
+            yCentralPosition = (sizeFormer[1] / 2) + INSET;
         }
         if (operType == OperationType.LOGARITHM)
         {
@@ -421,6 +432,7 @@ public class FormulaPanelWithJGraph extends JPanel
             }
             xEndPosition = xPosition + rec.getWidth() + sizeFormer[0] + INSET + sizeLater[0];
             yEndPosition = yPosition + (sizeFormer[1] / 2) + sizeLater[1];
+            yCentralPosition = yPosition + (sizeLater[1] / 2);
         }
 
         if (withParenthesis)
@@ -455,7 +467,8 @@ public class FormulaPanelWithJGraph extends JPanel
             xEndPosition = xEndPosition + rec.getWidth();
             numberOfSubParenthesis++;
         }
-        return new double[] {xEndPosition, yEndPosition, numberOfSubParenthesis};
+        if (yCentralPosition == 0.0) yCentralPosition = yEndPosition / 2;
+        return new double[] {xEndPosition, yEndPosition, yCentralPosition, numberOfSubParenthesis};
     }
 
     private double[] estimateAllocSize(TermMeta meta, int fontSize, boolean withParenthesis)

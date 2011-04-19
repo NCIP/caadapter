@@ -8,13 +8,7 @@ import gov.nih.nci.cbiit.cdms.formula.gui.view.FormulaPanelWithJGraph;
 
 import java.awt.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -24,7 +18,9 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 	private JScrollPane topScroll;
 	private JLabel formulaLabel;
 	private JTextArea formulaXml;
-	private BaseMeta controllMeta;
+    private JTextArea formulaMathML;
+    private JTabbedPane tabbedPane;
+    private BaseMeta controllMeta;
 
     Dimension preferredDim = new Dimension(460, 350);
 
@@ -41,17 +37,34 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
 
         add(topScroll);
 
-        JPanel lowPanel=new JPanel();
-		lowPanel.setLayout(new BorderLayout());
-		lowPanel.setBorder(BorderFactory.createEtchedBorder());
+        tabbedPane = new JTabbedPane();
+
+        JPanel lowPanel1=new JPanel();
+		lowPanel1.setLayout(new BorderLayout());
+		lowPanel1.setBorder(BorderFactory.createEtchedBorder());
 		formulaLabel=new JLabel("");
-		lowPanel.add(formulaLabel,BorderLayout.NORTH);
-		JScrollPane xmlScroll=new JScrollPane();
+		lowPanel1.add(formulaLabel,BorderLayout.NORTH);
+		JScrollPane xmlScroll1=new JScrollPane();
 		formulaXml=new JTextArea();
-		xmlScroll.setViewportView(formulaXml);
-		lowPanel.add(xmlScroll, BorderLayout.CENTER);
-		add(lowPanel);
-	}
+		xmlScroll1.setViewportView(formulaXml);
+		lowPanel1.add(xmlScroll1, BorderLayout.CENTER);
+
+        tabbedPane.addTab("XML", null, lowPanel1);
+
+
+        JPanel lowPanel2=new JPanel();
+		lowPanel2.setLayout(new BorderLayout());
+		lowPanel2.setBorder(BorderFactory.createEtchedBorder());
+		//formulaLabel=new JLabel("");
+		lowPanel2.add(new JLabel(""),BorderLayout.NORTH);
+		JScrollPane xmlScroll2=new JScrollPane();
+		formulaMathML=new JTextArea();
+		xmlScroll2.setViewportView(formulaMathML);
+		lowPanel2.add(xmlScroll2, BorderLayout.CENTER);
+		tabbedPane.addTab("MathML", null, lowPanel2);
+
+        add(tabbedPane);
+    }
 	
 	
 	@Override
@@ -86,17 +99,18 @@ public class SplitCentralPane extends JSplitPane implements TreeSelectionListene
         Dimension dim = preferredDim;
         Component comp = topScroll.getViewport().getView();
         if ((comp != null)&&(comp instanceof FormulaPanelWithJGraph)) dim = ((FormulaPanelWithJGraph) comp).getDimension();
-        else System.out.println("DDDD 90990 topScroll.getViewport().getView() is null");
+        //else System.out.println("DDDD 90990 topScroll.getViewport().getView() is null");
         if (controllMeta instanceof FormulaMeta)
 		{
 			FormulaMeta formula=(FormulaMeta)controllMeta;
 			//FormulaPanel newFormulaPanel=new FormulaPanel(formula);
             this.validate();
             FormulaPanelWithJGraph newFormulaPanel=new FormulaPanelWithJGraph(formula, this, dim);
-            System.out.println("DDDD 80 (JSplitPane)  getX=" + this.getX()+ ", getWidh="+this.getWidth()/2 + ", getY=" + this.getY() + ", getHeight=" +this.getHeight()/2);
+            //System.out.println("DDDD 80 (JSplitPane)  getX=" + this.getX()+ ", getWidh="+this.getWidth()/2 + ", getY=" + this.getY() + ", getHeight=" +this.getHeight()/2);
             topScroll.getViewport().setView(newFormulaPanel);
-			formulaXml.setText(FormulaFactory.convertFormulaToXml(formula));						
-		}
+			formulaXml.setText(FormulaFactory.convertFormulaToXml(formula));
+            formulaMathML.setText(formula.getMathML());
+        }
 		else
 		{
  			//FormulaPanel newFormulaPanel=new FormulaPanel(null);

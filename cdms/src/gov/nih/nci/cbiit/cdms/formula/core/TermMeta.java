@@ -246,4 +246,88 @@ public class TermMeta extends BaseMeta{
 		
 		return rtnBf.toString();
 	}
+
+    public String getMathML(int level)
+    {
+        String indent = "";
+        for (int i=0;i<level;i++) indent = indent + "   ";
+        level++;
+        if (getType().value().equals(TermType.CONSTANT.value()))
+        {
+            String row = indent + "<mrow>\n"
+                       + indent + "  <mi>"+value+"</mi>\n"
+                       + indent + "</mrow>\n";
+            return row;
+        }
+        else if (getType().value().equals(TermType.VARIABLE.value()))
+        {
+            String row = indent + "<mrow>\n"
+                       + indent + "  <mi>"+value+"</mi>\n"
+                       + indent + "</mrow>\n";
+            return row;
+        }
+        else if (getType().value().equals(TermType.UNKNOWN.value()))
+        {
+            String row = indent + "<mrow>\n"
+                       + indent + "  <mi>UNKNOWN</mi>\n"
+                       + indent + "</mrow>\n";
+            return row;
+        }
+        else if (getType().value().equals(TermType.EXPRESSION.value()))
+        {
+            if (operation.value().equals(OperationType.ADDITION.value()))
+            {
+                String row = indent + "<mrow>\n" + term.get(0).getMathML(level)
+                           + indent + "   <mo>+</mo>\n" + term.get(1).getMathML(level)
+                           + indent + "</mrow>\n";
+                return row;
+            }
+            else if (operation.value().equals(OperationType.SUBTRACTION.value()))
+            {
+                String row = indent + "<mrow>\n" + term.get(0).getMathML(level)
+                           + indent + "   <mo>-</mo>\n" + term.get(1).getMathML(level)
+                           + indent + "</mrow>\n";
+                return row;
+            }
+            else if (operation.value().equals(OperationType.MULTIPLICATION.value()))
+            {
+                String row = indent + "<mrow>\n" + term.get(0).getMathML(level)
+                           + indent + "   <mo>&times;</mo>\n" + term.get(1).getMathML(level)
+                           + indent + "</mrow>\n";
+                return row;
+            }
+            else if (operation.value().equals(OperationType.DIVISION.value()))
+            {
+                String row = indent + "<mfrac>\n" + term.get(0).getMathML(level)
+                           + term.get(1).getMathML(level)
+                           + indent + "</mfrac>\n";
+                return row;
+            }
+            else if (operation.value().equals(OperationType.SQUAREROOT.value()))
+            {
+                String row = indent + "<msqrt>\n" + term.get(0).getMathML(level) + indent + "</msqrt>\n";
+                return row;
+            }
+            else if (operation.value().equals(OperationType.LOGARITHM.value()))
+            {
+                String row = indent + "<mrow>\n" +
+                        indent + "   <apply>\n" +
+                        indent + "      <log/>\n" +
+                        indent + "         <logbase>\n" + term.get(0).getMathML(level + 3) +
+                        indent + "         </logbase>\n" + term.get(1).getMathML(level + 2) +
+                        indent + "   </apply>\n" +
+                        indent + "</mrow>\n";
+                return row;
+            }
+            else if (operation.value().equals(OperationType.POWER.value()))
+            {
+                String row = indent + "<msup>\n" +
+                        term.get(0).getMathML(level) +
+                        term.get(1).getMathML(level) +
+                        indent + "</msup>\n";
+                return row;
+            }
+        }
+        return "";
+    }
 }

@@ -78,4 +78,6 @@ public abstract class BaseMeta implements PropertiesProvider, Serializable, Clon
 		// TODO Auto-generated method stub
 		return "Base Meta Properties";
 	}
+
+    
 }
