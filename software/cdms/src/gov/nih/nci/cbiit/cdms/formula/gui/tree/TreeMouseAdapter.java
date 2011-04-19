@@ -8,15 +8,11 @@ import gov.nih.nci.cbiit.cdms.formula.gui.action.DeleteFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.EditFormulaAction;
 import gov.nih.nci.cbiit.cdms.formula.gui.action.ExecuteFormulaAction;
 
-import java.awt.Container;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -74,10 +70,10 @@ public class TreeMouseAdapter extends MouseAdapter {
 			paramDeleteItem.setEnabled(false);
 			popupMenu.add(paramDeleteItem);
 						
-			popupMenu.show(e.getComponent(), e.getX(), e.getY());
+			//popupMenu.show(e.getComponent(), e.getX(), e.getY());
 			
 			//enable action items
-			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) slctedPath.getLastPathComponent();
+            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) slctedPath.getLastPathComponent();
 			if (treeNode.getUserObject() instanceof FormulaMeta)
 			{
 				FormulaMeta formula=(FormulaMeta)treeNode.getUserObject();
@@ -88,15 +84,18 @@ public class TreeMouseAdapter extends MouseAdapter {
 					editFormulaItem.setEnabled(true);
 					excFormulaAction.setEnabled(true);
 					paramAddItem.setEnabled(true);
-				}
+                }
 				else if (formula.getStatus()==FormulaStatus.DRAFT)
 				{
 					paramAddItem.setEnabled(true);
 					editFormulaItem.setEnabled(true);
 					deleteFormulaItem.setEnabled(true);
-				}
+                }
 				else if (formula.getStatus()==FormulaStatus.FINAL)
-					excFormulaAction.setEnabled(true);		
+                {
+                    excFormulaAction.setEnabled(true);
+                }
+
 				
 				editFormulaAction.setFormulaNode(treeNode);
 				deleteFormulaAction.setFormulaNode(treeNode);
@@ -114,8 +113,22 @@ public class TreeMouseAdapter extends MouseAdapter {
 					paramEditItem.setEnabled(true);
 					paramEditAction.setParameter((DataElement)treeNode.getUserObject());
 					paramEditAction.setFormulaNode(parentTreeNode);
-				}
+                }
 			}
-		}
+
+            boolean IsThereEnabledMenuItem = false;
+            for (MenuElement ele:popupMenu.getSubElements())
+            {
+                Component comp = ele.getComponent();
+                if (!(comp instanceof JMenuItem)) continue;
+                JMenuItem i = (JMenuItem) comp;
+                if (i.isEnabled())
+                {
+                    IsThereEnabledMenuItem = true;
+                    break;
+                }
+            }
+            if (IsThereEnabledMenuItem) popupMenu.show(e.getComponent(), e.getX(), e.getY());
+        }
 	}
 }

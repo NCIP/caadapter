@@ -124,4 +124,22 @@ public class FormulaMeta extends BaseMeta {
 	{
 		return getExpression().getDescription();
 	}
+
+    public String getMathML()
+    {
+        String lbText="";
+
+        lbText=this.getName();
+        if (this.getExpression().getUnit()!=null
+                &&this.getExpression().getUnit().trim().length()>0)
+            lbText=lbText+"("+this.getExpression().getUnit()+")";
+        String head = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+                "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">\n" +
+                "   <mstyle displaystyle=\"true\">\n" +
+                "      <mi>"+lbText+"</mi>\n" +
+                "      <mo>=</mo>\n";
+
+
+        return head + expression.getMathML(2) + "   </mstyle>\n</math>";
+    }
 }
