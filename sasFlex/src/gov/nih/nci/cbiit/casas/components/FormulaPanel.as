@@ -1,7 +1,8 @@
 package gov.nih.nci.cbiit.casas.components
 {
 	import flash.display.MovieClip;
-	
+	import flash.net.FileReference;
+
 	import learnmath.windows.apps.EditorApp;
 	
 	import mx.controls.Alert;
@@ -14,7 +15,7 @@ package gov.nih.nci.cbiit.casas.components
 			return;
 		}
 		
-		override public function openAction()
+		override  public function openAction():*
 		{
 //			var _loc_1:* = String(ExternalInterface.call("getMathMLFromJavascript"));
 //			if (_loc_1 != null)
@@ -29,12 +30,14 @@ package gov.nih.nci.cbiit.casas.components
 //			}
 //			this.editor.newFormula();
 //			this.editor.insert(_loc_1, this.lastStyle);
-			Alert.show("open is cliked...","Scientific Algorithm Service:openAction()");
+			
+			var myFileReference:FileReference = new FileReference();
+			myFileReference.browse();
 			super.openAction();
 			return;
 		}// end function
 		
-		override public function saveAction()
+		override public function saveAction():*
 		{
 //			var _loc_1:* = this.convToMathML(this.editor.getMathMLString());
 //			ExternalInterface.call("saveMathMLToJavascript", _loc_1);
