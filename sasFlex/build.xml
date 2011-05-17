@@ -7,8 +7,8 @@
    	<taskdef resource="flexTasks.tasks" classpath="${basedir}/libs/flexTasks.jar"/> 
 
 	<!-- Build and output the Main.swf-->
-	<target name="compile.flex" depends="init">
-	  <mxmlc file="${SRC_DIR}/mainFlex.mxml" 
+	<target name="compile.flex" depends="init, copy.formulae.files">
+		<mxmlc file="${SRC_DIR}/mainFlex.mxml" 
 			output="${BUILD_DIR}/mainFlex.swf">
 			<!-- Get default compiler options. -->
 			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />
@@ -26,9 +26,17 @@
 			<!-- Set size of output SWF file. -->
 			<default-size width="500" height="600" />
 			<compiler.debug>false</compiler.debug>             
-	  </mxmlc>
+		</mxmlc>
+	  	<echo message="remove the two formula files from source directory" />
+	  	<delete file="${SRC_DIR}/commonFormulae.xml"/>
+      	<delete file="${SRC_DIR}/bsaFormulae.xml"/>
 	</target>
    
+	<target name="copy.formulae.files" description="The formula files are required ...">
+		<copy file="${basedir}/commonFormulae.xml" todir="${SRC_DIR}"/>
+		<copy file="${basedir}/bsaFormulae.xml" todir="${SRC_DIR}"/>
+	</target>
+
    	<target name="build:war" depends="compile.flex" >
    		<echo message="-------- creating ${APPLICATION_NAME} file  --------"/>
    		<war destfile="${DIST_DIR}/${APPLICATION_NAME}" webxml="${WEB_SRC_DIR}/web.xml">
@@ -48,10 +56,10 @@
 	
 	<!-- delete and create the DEPLOY dir again -->
 	<target name="init">
-	  <delete dir="${BUILD_DIR}" />
-	  <mkdir dir="${BUILD_DIR}" />   
-	  <delete dir="${DIST_DIR}" />
-	  <mkdir dir="${DIST_DIR}" /> 
+		<delete dir="${BUILD_DIR}" />
+		<mkdir dir="${BUILD_DIR}" />   
+		<delete dir="${DIST_DIR}" />
+		<mkdir dir="${DIST_DIR}" /> 
 	</target>
 
  </project>
