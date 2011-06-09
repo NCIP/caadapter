@@ -15,7 +15,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
-import gov.nih.nci.cbiit.cmts.ui.main.MainApplet;
+import gov.nih.nci.cbiit.cmts.web.MainApplet;
 
 import javax.swing.*;
 
