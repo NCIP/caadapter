@@ -43,21 +43,26 @@ public class MainFrame extends JFrame
 
 	private Map<Class, JComponent> tabMap;
 
-	private static MainFrame instance = null;
+	//private static MainFrame instance = null;
+    private static MainFrameContainer instanceContainer = null;
 
-	private MainFrame(){
+    private MainFrame(){
 		super();
 	}
 
 	/**
 	 * @return the instance
 	 */
-	public static MainFrame getInstance() {
-		if(instance == null) instance = new MainFrame();
-		return instance;
+	//public static MainFrame getInstance() {
+	//	if(instance == null) instance = new MainFrame();
+	//	return instance;
+	//}
+    public static MainFrameContainer getInstanceContainer() {
+		if(instanceContainer == null) new MainFrameContainer(new MainFrame());
+		return instanceContainer;
 	}
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMainFrame#launch()
 	 */
 	private void launch()
@@ -67,10 +72,12 @@ public class MainFrame extends JFrame
 			tabMap = new HashMap<Class, JComponent>();
 			ContextManager contextManager = ContextManager.getContextManager();
 
-			MainMenuBar frameMenu=new MainMenuBar(this);
+            instanceContainer = new MainFrameContainer(this);
+
+            MainMenuBar frameMenu=new MainMenuBar(instanceContainer);
 			contextManager.setMenu(frameMenu);
 			contextManager.setToolBarHandler(new MainToolBarHandler());
-			contextManager.initContextManager(this);
+			contextManager.initContextManager(instanceContainer);
 			this.setTitle("caAdapter Common Mapping and Transformation Service (CMTS)");
 			Container contentPane = this.getContentPane();
 			contentPane.setLayout(new BorderLayout());
@@ -271,7 +278,8 @@ public class MainFrame extends JFrame
 	public static void main(String[] args)
 	{
 		//Preferences.loadDefaults();
-		try
+        
+        try
 		{
 			try
 			{
@@ -297,7 +305,7 @@ public class MainFrame extends JFrame
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			MainFrame.getInstance().launch();
+			MainFrame.getInstanceContainer().getMainFrame().launch();
 		}
 		catch (Throwable t)
 		{

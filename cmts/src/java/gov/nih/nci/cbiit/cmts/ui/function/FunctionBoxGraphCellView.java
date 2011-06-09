@@ -164,8 +164,9 @@ class FunctionBoxCellRenderer extends JPanel implements CellViewRenderer
 	private JComponent renderFunctionWithoutInputPort(FunctionBoxGraphCell function, JPanel mainPanel)
 	{
 		FunctionDef functionConstant = function.getFunctionDef();
-		JTextArea area = new JTextArea(functionConstant.getName().toString());
-		area.setLineWrap(true);
+		//JTextArea area = new JTextArea(functionConstant.getName().toString());
+        JTextArea area = new JTextArea(functionConstant.getData().get(0).getValue());
+        area.setLineWrap(true);
 		area.setWrapStyleWord(true);
 		area.setEditable(false);
 		area.setBackground(DefaultSettings.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
