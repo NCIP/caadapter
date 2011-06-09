@@ -11,6 +11,7 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 
 import javax.swing.*;
@@ -34,13 +35,13 @@ public class NewMapFileAction extends AbstractContextAction
 	private static final Character COMMAND_MNEMONIC = new Character('M');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.CTRL_MASK, false);
 
-	private MainFrame mainFrame;
+	private MainFrameContainer mainFrame;
 
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public NewMapFileAction(MainFrame mainFrame)
+	public NewMapFileAction(MainFrameContainer mainFrame)
 	{
 		this(COMMAND_NAME, mainFrame);
 		//mainContextManager = cm;
@@ -50,7 +51,7 @@ public class NewMapFileAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public NewMapFileAction(String name, MainFrame mainFrame)
+	public NewMapFileAction(String name, MainFrameContainer mainFrame)
 	{
 		this(name, null, mainFrame);
 	}
@@ -59,7 +60,7 @@ public class NewMapFileAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public NewMapFileAction(String name, Icon icon, MainFrame mainFrame)
+	public NewMapFileAction(String name, Icon icon, MainFrameContainer mainFrame)
 	{
 		super(name, icon);
 		this.mainFrame = mainFrame;
@@ -91,7 +92,7 @@ public class NewMapFileAction extends AbstractContextAction
 	 */
 	protected Component getAssociatedUIComponent()
 	{
-		return mainFrame;
+		return mainFrame.getAssociatedUIComponent();
 	}
 
 }

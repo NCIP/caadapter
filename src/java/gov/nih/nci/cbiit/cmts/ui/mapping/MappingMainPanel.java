@@ -32,29 +32,16 @@ import gov.nih.nci.cbiit.cmts.ui.tree.TreeMouseAdapter;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeSelectionHandler;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.applet.Applet;
 
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.DropMode;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -795,7 +782,18 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		for(int i=0; i<map[1].getLength(); i++)
 			choices[pos++] = new CellRenderXSObject(map[1].item(i));//.getNamespace() +":" +map[1].item(i).getName();
 
-		CellRenderXSObject chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
+        CellRenderXSObject chosenRoot = null;
+        Container con = this;
+        while(con != null)
+        {
+            if ((con instanceof Frame)||(con instanceof Applet))
+            {
+                chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(con, "choose root element", "Please choose root element", choices);
+                break;
+            }
+            con = con.getParent();
+        }
+        //CellRenderXSObject chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
 		return chosenRoot;
 	}
 

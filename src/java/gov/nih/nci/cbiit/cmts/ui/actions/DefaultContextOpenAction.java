@@ -14,6 +14,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -45,14 +46,14 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 	protected static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
 	protected static final String TOOL_TIP_DESCRIPTION = ActionConstants.OPEN;
 
-	protected transient MainFrame mainFrame;
+	protected transient MainFrameContainer mainFrame;
 	protected transient ActionEvent actionEvent;
 
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public DefaultContextOpenAction(MainFrame mainFrame)
+	public DefaultContextOpenAction(MainFrameContainer mainFrame)
 	{
 		this(COMMAND_NAME, mainFrame);
 	}
@@ -61,7 +62,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public DefaultContextOpenAction(String name, MainFrame mainFrame)
+	public DefaultContextOpenAction(String name, MainFrameContainer mainFrame)
 	{
 		this(name, IMAGE_ICON, mainFrame);
 	}
@@ -70,7 +71,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public DefaultContextOpenAction(String name, Icon icon, MainFrame mainFrame)
+	public DefaultContextOpenAction(String name, Icon icon, MainFrameContainer mainFrame)
 	{
 		super(name, icon);
 		this.mainFrame = mainFrame;
@@ -130,7 +131,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 		}
 		catch (Throwable t)
 		{
-			reportThrowableToUI(t, this.mainFrame);
+			reportThrowableToUI(t, this.mainFrame.getAssociatedUIComponent());
 			return false;
 		}
 	}
@@ -159,7 +160,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 		}
 		catch (Throwable t)
 		{
-			reportThrowableToUI(t, this.mainFrame);
+			reportThrowableToUI(t, this.mainFrame.getAssociatedUIComponent());
 			if (panel != null)
 			{//close panel if accidentally there.
 				panel.getDefaultCloseAction().actionPerformed(e);
@@ -193,7 +194,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 		}
 		catch (Exception e1)
 		{
-			reportThrowableToUI(e1, this.mainFrame);
+			reportThrowableToUI(e1, this.mainFrame.getAssociatedUIComponent());
 			setSuccessfullyPerformed(false);
 		}
 		return isSuccessfullyPerformed();
@@ -206,7 +207,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 	 */
 	protected Component getAssociatedUIComponent()
 	{
-		return this.mainFrame;
+		return this.mainFrame.getAssociatedUIComponent();
 	}
 }
 

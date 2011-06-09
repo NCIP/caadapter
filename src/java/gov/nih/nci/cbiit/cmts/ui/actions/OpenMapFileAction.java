@@ -13,6 +13,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
@@ -42,7 +43,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public OpenMapFileAction(MainFrame mainFrame)
+	public OpenMapFileAction(MainFrameContainer mainFrame)
 	{
 		this(COMMAND_NAME, mainFrame);
 	}
@@ -51,7 +52,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public OpenMapFileAction(String name, MainFrame mainFrame)
+	public OpenMapFileAction(String name, MainFrameContainer mainFrame)
 	{
 		this(name, IMAGE_ICON, mainFrame);
 	}
@@ -60,7 +61,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public OpenMapFileAction(String name, Icon icon, MainFrame mainFrame)
+	public OpenMapFileAction(String name, Icon icon, MainFrameContainer mainFrame)
 	{
 		super(name, icon, mainFrame);
 		this.mainFrame = mainFrame;
@@ -174,7 +175,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 			{
 				try
 				{
-					GeneralUtilities.setCursorWaiting(mainFrame);
+					GeneralUtilities.setCursorWaiting(mainFrame.getAssociatedUIContainer());
 					mainFrame.addNewTab(mappingPanel);
 					setSuccessfullyPerformed(true);
 				}
@@ -187,7 +188,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 				finally
 				{
 					//back to normal, in case exception occurred.
-					GeneralUtilities.setCursorDefault(mainFrame);
+					GeneralUtilities.setCursorDefault(mainFrame.getAssociatedUIContainer());
 					return null;
 				}
 			}
@@ -201,20 +202,20 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 				boolean everythingGood = true;
 				try
 				{
-					GeneralUtilities.setCursorWaiting(mainFrame);
+					GeneralUtilities.setCursorWaiting(mainFrame.getAssociatedUIContainer());
 					mappingPanel.processOpenMapFile(file);
 				}
 				catch (Throwable e1)
 				{
 					//log the exception, but not report
-					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame, false, true);
+					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame.getAssociatedUIComponent(), false, true);
 					//report the nice to have message
 					everythingGood = false;
 				}
 				finally
 				{
 					//back to normal.
-					GeneralUtilities.setCursorDefault(mainFrame);
+					GeneralUtilities.setCursorDefault(mainFrame.getAssociatedUIContainer());
 					setSuccessfullyPerformed(everythingGood);
 
 					if (!everythingGood)
@@ -239,7 +240,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
-		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
+		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame.getAssociatedUIComponent(), //getUIWorkingDirectoryPath(),
 				DefaultSettings.MAP_FILE_DEFAULT_EXTENTION, "Open Transformation Mapping", false, false);
 		if (file != null)
 		{
@@ -259,7 +260,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 
 	@Override
 	protected Component getAssociatedUIComponent() {
-		return mainFrame;
+		return mainFrame.getAssociatedUIComponent();
 	}
 
 }

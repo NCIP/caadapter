@@ -11,6 +11,7 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +44,7 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public DefaultSaveAction(MainFrame mainFrame)
+	public DefaultSaveAction(MainFrameContainer mainFrame)
 	{
 		this(COMMAND_NAME, mainFrame);
 	}
@@ -52,7 +53,7 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public DefaultSaveAction(String name, MainFrame mainFrame)
+	public DefaultSaveAction(String name, MainFrameContainer mainFrame)
 	{
 		this(name, IMAGE_ICON, mainFrame);
 	}
@@ -61,7 +62,7 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public DefaultSaveAction(String name, Icon icon, MainFrame mainFrame)
+	public DefaultSaveAction(String name, Icon icon, MainFrameContainer mainFrame)
 	{
 		super(name, icon, mainFrame);
 	}
