@@ -1,6 +1,7 @@
 package gov.nih.nci.cbiit.cmts.ui.main;
 
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
+import gov.nih.nci.cbiit.cmts.web.MainApplet;
 
 import javax.swing.*;
 import java.awt.*;

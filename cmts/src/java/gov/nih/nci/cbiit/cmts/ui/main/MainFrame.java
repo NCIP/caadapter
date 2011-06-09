@@ -58,7 +58,7 @@ public class MainFrame extends JFrame
 	//	return instance;
 	//}
     public static MainFrameContainer getInstanceContainer() {
-		if(instanceContainer == null) new MainFrameContainer(new MainFrame());
+		if(instanceContainer == null) instanceContainer = new MainFrameContainer(new MainFrame());
 		return instanceContainer;
 	}
 
@@ -91,7 +91,7 @@ public class MainFrame extends JFrame
 			this.setSize(DefaultSettings.FRAME_DEFAULT_WIDTH, DefaultSettings.FRAME_DEFAULT_HEIGHT);
 			contentPane.add(constructNorthPanel(), BorderLayout.NORTH);
 			centerPanel = (JPanel) constructCenterPanel();
-			contentPane.add(centerPanel, BorderLayout.CENTER); 
+			contentPane.add(centerPanel, BorderLayout.CENTER);
 			//--------------------------------------
 			JPanel statusBar = new JPanel();
 			contentPane.add(statusBar, BorderLayout.SOUTH);
@@ -278,7 +278,7 @@ public class MainFrame extends JFrame
 	public static void main(String[] args)
 	{
 		//Preferences.loadDefaults();
-        
+
         try
 		{
 			try
