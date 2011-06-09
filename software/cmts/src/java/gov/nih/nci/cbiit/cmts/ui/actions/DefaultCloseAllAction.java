@@ -14,6 +14,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 
 import javax.swing.*;
 
@@ -40,19 +41,19 @@ public class DefaultCloseAllAction extends AbstractContextAction
 	private static final String LOGID = "$RCSfile: CloseAllAction.java,v $";
 	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/actions/CloseAllAction.java,v 1.2 2009-11-23 18:32:47 wangeug Exp $";
 
-	protected MainFrame mainFrame = null;
+	protected MainFrameContainer mainFrame = null;
 
-	public DefaultCloseAllAction(MainFrame mainFrame)
+	public DefaultCloseAllAction(MainFrameContainer mainFrame)
 	{
 		this(COMMAND_NAME, mainFrame);
 	}
 
-	public DefaultCloseAllAction(String name, MainFrame mainFrame)
+	public DefaultCloseAllAction(String name, MainFrameContainer mainFrame)
 	{
 		this(name, IMAGE_ICON , mainFrame);
 	}
 
-	public DefaultCloseAllAction(String name, Icon icon, MainFrame mainFrame)
+	public DefaultCloseAllAction(String name, Icon icon, MainFrameContainer mainFrame)
 	{
 		super(name, icon);
 		this.mainFrame = mainFrame;
@@ -129,7 +130,7 @@ public class DefaultCloseAllAction extends AbstractContextAction
 	 */
 	protected Component getAssociatedUIComponent()
 	{
-		return mainFrame;
+		return mainFrame.getAssociatedUIComponent();
 	}
 }
 

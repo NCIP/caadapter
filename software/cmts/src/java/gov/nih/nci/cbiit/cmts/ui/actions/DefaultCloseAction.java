@@ -11,6 +11,8 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
+import gov.nih.nci.cbiit.cmts.ui.main.MainApplet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,19 +40,19 @@ public class DefaultCloseAction extends AbstractContextAction
 
 
 
-    protected MainFrame ownerFrame = null;
+    protected MainFrameContainer ownerFrame = null;
 
-	public DefaultCloseAction(MainFrame owner)
+	public DefaultCloseAction(MainFrameContainer owner)
 	{
 		this(COMMAND_NAME, owner);
 	}
 
-	public DefaultCloseAction(String name, MainFrame owner)
+	public DefaultCloseAction(String name, MainFrameContainer owner)
 	{
 		this(name, null, owner);
 	}
 
-	public DefaultCloseAction(String name, Icon icon, MainFrame owner)
+	public DefaultCloseAction(String name, Icon icon, MainFrameContainer owner)
 	{
 		super(name, icon);
 		ownerFrame = owner;
@@ -66,13 +68,17 @@ public class DefaultCloseAction extends AbstractContextAction
 		setShortDescription(TOOL_TIP_DESCRIPTION);
     }
 
-	protected void setFrame(JFrame newFrame)
+	protected void setFrame(Component newFrame)
 	{
 		if (newFrame instanceof MainFrame)
 		{
-			ownerFrame = (MainFrame) newFrame;
+			ownerFrame = new MainFrameContainer((MainFrame)newFrame);
 		}
-	}
+        if (newFrame instanceof MainApplet)
+		{
+			ownerFrame = new MainFrameContainer((MainApplet)newFrame);
+		}
+    }
 
 	/**
 	 * The abstract function that descendant classes must be overridden to provide customsized handling.
@@ -97,7 +103,7 @@ public class DefaultCloseAction extends AbstractContextAction
 		}
 		catch (Exception e1)
 		{
-			reportThrowableToUI(e1, ownerFrame);
+			reportThrowableToUI(e1, ownerFrame.getAssociatedUIComponent());
 			setSuccessfullyPerformed(false);
 		}
 		return isSuccessfullyPerformed();
@@ -110,7 +116,7 @@ public class DefaultCloseAction extends AbstractContextAction
 	 */
 	protected Component getAssociatedUIComponent()
 	{
-		return ownerFrame;
+		return ownerFrame.getAssociatedUIComponent();
 	}
 }
 

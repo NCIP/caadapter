@@ -1,5 +1,5 @@
 /**
- * The content of this file is subject to the caAdapter Software License (the "License").  
+ * The content of this file is subject to the caAdapter Software License (the "License").
  * A copy of the License is available at:
  * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
@@ -39,16 +39,16 @@ import java.util.Map;
  * @date       $Date: 2009-11-23 18:30:56 $
  */
 @SuppressWarnings("serial")
-public class MainMenuBar extends JMenuBar 
+public class MainMenuBar extends JMenuBar
 {
 
 	//ContextManager contextManager = null;
-	MainFrame mainFrame = null;
+	MainFrameContainer mainFrame = null;
 	private Map<String, AbstractContextAction> actionMap;
 	private Map<String, JMenuItem> menuItemMap;
 	private Map<String, JMenu> menuMap;
 
-	public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
+	public MainMenuBar(MainFrameContainer mf)//ContextManager contextManager) {
 	{//this.contextManager = contextManager;
 		this.mainFrame = mf;//contextManager.getMainFrame();
 		initialize();
@@ -121,11 +121,16 @@ public class MainMenuBar extends JMenuBar
 		JMenuItem closeAllMenuItem = new JMenuItem(closeAllAction);
 		actionMap.put(ActionConstants.CLOSE_ALL, closeAllAction);
 		menuItemMap.put(ActionConstants.CLOSE_ALL, closeAllMenuItem);
-		DefaultExitAction exitAction = new DefaultExitAction(mainFrame);
-		JMenuItem exitMenuItem = new JMenuItem(exitAction);
-		actionMap.put(ActionConstants.EXIT, exitAction);
-		menuItemMap.put(ActionConstants.EXIT, exitMenuItem);
-		// link them together
+
+        JMenuItem exitMenuItem = null;
+        if (mainFrame.getAssociatedUIComponent() instanceof MainFrame)
+        {
+            DefaultExitAction exitAction = new DefaultExitAction((MainFrame) mainFrame.getAssociatedUIComponent());
+		    exitMenuItem = new JMenuItem(exitAction);
+		    actionMap.put(ActionConstants.EXIT, exitAction);
+		    menuItemMap.put(ActionConstants.EXIT, exitMenuItem);
+        }
+        // link them together
 		JMenu fileMenu = new JMenu(MenuConstants.FILE_MENU_NAME);
 		fileMenu.setMnemonic('F');
 //		fileMenu.add(constructNewMenu());
@@ -138,9 +143,12 @@ public class MainMenuBar extends JMenuBar
 		fileMenu.addSeparator();
 		fileMenu.add(closeMenuItem);
 		fileMenu.add(closeAllMenuItem);
-		fileMenu.addSeparator();
-		fileMenu.add(exitMenuItem);
-		menuMap.put(MenuConstants.FILE_MENU_NAME, fileMenu);
+        if (exitMenuItem != null)
+        {
+            fileMenu.addSeparator();
+		    fileMenu.add(exitMenuItem);
+        }
+        menuMap.put(MenuConstants.FILE_MENU_NAME, fileMenu);
 		defaultSaveAction.setEnabled(false);
 		defaultSaveAsAction.setEnabled(false);
 		defaultCloseAction.setEnabled(false);
@@ -154,7 +162,7 @@ public class MainMenuBar extends JMenuBar
 		JMenu newGroup = new JMenu("" + MenuConstants.NEW_MENU_NAME);
 		//System.out.println("Activated components:\n" + CaadapterUtil.getAllActivatedComponents());
 		menuMap.put(MenuConstants.NEW_MENU_NAME, newGroup);
-		
+
         newGroup.add(constructNewCmtsMenu());
 
 		return newGroup;
@@ -176,7 +184,7 @@ public class MainMenuBar extends JMenuBar
 
 		return openMenu;
 	}
-		
+
     private JMenu constructNewCmtsMenu()
     {
     	//user should be authorized to use HL7 artifacts
@@ -188,47 +196,47 @@ public class MainMenuBar extends JMenuBar
         actionMap.put(ActionConstants.NEW_MAP_FILE, newMapAction);
         menuItemMap.put(ActionConstants.NEW_MAP_FILE, newCmpsMapItem);
         newGroup.add(newCmpsMapItem);
-        
+
         NewTransformationAction newXmlMessage = new NewTransformationAction(ActionConstants.NEW_XML_Transformation, mainFrame);
         JMenuItem newXmlTransformationItem = new JMenuItem(newXmlMessage);
         actionMap.put(ActionConstants.NEW_XML_Transformation, newXmlMessage);
         menuItemMap.put(ActionConstants.NEW_XML_Transformation, newXmlTransformationItem);
         newGroup.add(newXmlTransformationItem);
-        
+
         NewTransformationAction newCsvMessage = new NewTransformationAction(ActionConstants.NEW_CSV_Transformation, mainFrame);
         JMenuItem newCsvTransformationItem = new JMenuItem(newCsvMessage);
         actionMap.put(ActionConstants.NEW_CSV_Transformation, newCsvMessage);
-        menuItemMap.put(ActionConstants.NEW_CSV_Transformation, newCsvTransformationItem);  
+        menuItemMap.put(ActionConstants.NEW_CSV_Transformation, newCsvTransformationItem);
         newGroup.add(newCsvTransformationItem);
-        
+
         NewTransformationAction newHl7v2Message = new NewTransformationAction(ActionConstants.NEW_HL7_V2_Transformation, mainFrame);
         JMenuItem newHl7v2TransformationItem = new JMenuItem(newHl7v2Message);
         actionMap.put(ActionConstants.NEW_HL7_V2_Transformation, newHl7v2Message);
-        menuItemMap.put(ActionConstants.NEW_HL7_V2_Transformation, newHl7v2TransformationItem);  
+        menuItemMap.put(ActionConstants.NEW_HL7_V2_Transformation, newHl7v2TransformationItem);
         newGroup.add(newHl7v2TransformationItem);
- 
+
         newGroup.addSeparator();
         NewTransformationAction xmlToCdaMessage = new NewTransformationAction(ActionConstants.NEW_XML_CDA_Transformation, mainFrame);
         JMenuItem newXmlToCdaTransformationItem = new JMenuItem(xmlToCdaMessage);
         actionMap.put(ActionConstants.NEW_XML_CDA_Transformation, xmlToCdaMessage);
-        menuItemMap.put(ActionConstants.NEW_XML_CDA_Transformation, newXmlToCdaTransformationItem);  
+        menuItemMap.put(ActionConstants.NEW_XML_CDA_Transformation, newXmlToCdaTransformationItem);
         newGroup.add(newXmlToCdaTransformationItem);
 
         NewTransformationAction csvToCdaMessage = new NewTransformationAction(ActionConstants.NEW_CSV_CDA_Transformation , mainFrame);
         JMenuItem newCsvToCdaTransformationItem = new JMenuItem(csvToCdaMessage);
         actionMap.put(ActionConstants.NEW_CSV_CDA_Transformation, csvToCdaMessage);
-        menuItemMap.put(ActionConstants.NEW_CSV_CDA_Transformation, newXmlToCdaTransformationItem);  
+        menuItemMap.put(ActionConstants.NEW_CSV_CDA_Transformation, newXmlToCdaTransformationItem);
         newGroup.add(newCsvToCdaTransformationItem);
-        
+
         NewTransformationAction hl7v2ToCdaMessage = new NewTransformationAction(ActionConstants.NEW_HL7_V2_CDA_Transformation, mainFrame);
         JMenuItem newHl77v2ToCdaTransformationItem = new JMenuItem(hl7v2ToCdaMessage);
         actionMap.put(ActionConstants.NEW_HL7_V2_CDA_Transformation, hl7v2ToCdaMessage);
-        menuItemMap.put(ActionConstants.NEW_HL7_V2_CDA_Transformation, newXmlToCdaTransformationItem);  
+        menuItemMap.put(ActionConstants.NEW_HL7_V2_CDA_Transformation, newXmlToCdaTransformationItem);
         newGroup.add(newHl77v2ToCdaTransformationItem);
         return newGroup;
     }
 
-	
+
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#resetMenus(boolean)
 	 */

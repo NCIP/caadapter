@@ -14,6 +14,8 @@ import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
+import gov.nih.nci.cbiit.cmts.ui.main.MainApplet;
 
 import javax.swing.*;
 
@@ -38,7 +40,7 @@ public class DefaultSaveAsAction extends AbstractContextAction
 	public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("blank.gif"));
 
 
-	protected transient MainFrame mainFrame = null;
+	protected transient MainFrameContainer mainFrame = null;
 
 	protected transient File defaultFile = null;
 
@@ -46,7 +48,7 @@ public class DefaultSaveAsAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public DefaultSaveAsAction(MainFrame mainFrame)
+	public DefaultSaveAsAction(MainFrameContainer mainFrame)
 	{
 		this(COMMAND_NAME, mainFrame);
 	}
@@ -55,7 +57,7 @@ public class DefaultSaveAsAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public DefaultSaveAsAction(String name, MainFrame mainFrame)
+	public DefaultSaveAsAction(String name, MainFrameContainer mainFrame)
 	{
 		this(name, null, mainFrame);
 	}
@@ -64,7 +66,7 @@ public class DefaultSaveAsAction extends AbstractContextAction
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public DefaultSaveAsAction(String name, Icon icon, MainFrame mainFrame)
+	public DefaultSaveAsAction(String name, Icon icon, MainFrameContainer mainFrame)
 	{
 		super(name, icon);
 		this.mainFrame = mainFrame;
@@ -125,8 +127,10 @@ public class DefaultSaveAsAction extends AbstractContextAction
 			JRootPane rootPane = ((JComponent) contextClient).getRootPane();
 			if (rootPane != null)
 			{
-				this.mainFrame = (MainFrame) rootPane.getParent();
-			}
+				//this.mainFrame = (MainFrame) rootPane.getParent();
+                if (rootPane.getParent() instanceof MainFrame) this.mainFrame = new MainFrameContainer((MainFrame) rootPane.getParent());
+                if (rootPane.getParent() instanceof MainApplet) this.mainFrame = new MainFrameContainer((MainApplet) rootPane.getParent());
+            }
 		}
 	}
 
@@ -157,7 +161,7 @@ public class DefaultSaveAsAction extends AbstractContextAction
 	 */
 	protected Component getAssociatedUIComponent()
 	{
-		return mainFrame;
+		return mainFrame.getAssociatedUIComponent();
 	}
 
 }

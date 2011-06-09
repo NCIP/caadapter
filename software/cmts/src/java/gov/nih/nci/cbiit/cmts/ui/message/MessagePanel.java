@@ -19,6 +19,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -65,10 +66,13 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
     private JScrollPane scrollPane = null;
     private ValidationMessagePane validationMessagePane = null;
     private boolean dataChanged=false;
+    private MainFrameContainer mainFrame = null;
 
-    public MessagePanel()
+
+    public MessagePanel(MainFrameContainer mainFrame)
     {
-		initializeMessageList();
+        this.mainFrame = mainFrame;
+        initializeMessageList();
         setLayout(new BorderLayout());
         add(contructNorthPanel(), BorderLayout.NORTH);
 		add(contructCenterPanel(), BorderLayout.CENTER);
@@ -269,7 +273,7 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
 
 	public Action getDefaultCloseAction() {
 		// TODO Auto-generated method stub
-		Action closeAction	=new DefaultCloseAction(MainFrame.getInstance());
+		Action closeAction	=new DefaultCloseAction(mainFrame);
 		return closeAction;
 	}
 

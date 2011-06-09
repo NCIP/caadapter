@@ -10,6 +10,7 @@ package gov.nih.nci.cbiit.cmts.ui.common;
 
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.main.MainMenuBar;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.Action;
@@ -37,7 +38,7 @@ public class ContextManager implements ChangeListener
 
     private MainMenuBar menu = null;
     private ToolBarHandler toolBarHandler = null;
-    private MainFrame mainFrame = null;
+    private MainFrameContainer mainFrame = null;
     private JComponent currentPanel = null;
     private ContextFileManager contextFileManager = null;
 
@@ -62,7 +63,7 @@ public class ContextManager implements ChangeListener
      * initialize the ContextManager only once with mainFrame
      * @param owner
      */
-    public void initContextManager(MainFrame owner)
+    public void initContextManager(MainFrameContainer owner)
     {
     	mainFrame = owner;
     	contextFileManager = new ContextFileManager(mainFrame);
