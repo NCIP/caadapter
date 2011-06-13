@@ -65,8 +65,10 @@ public class FunctionManager
 	private FunctionManager()
 	{
 		try {
-			URL u = FileUtil.getResource(DefaultSettings.FUNCTION_DEFINITION_FILE_LOCATION);
-			InputStream in = null;
+            String funcLoc = DefaultSettings.FUNCTION_DEFINITION_FILE_LOCATION;
+            URL u = FileUtil.getResource(funcLoc);
+            //if ((u == null)&&(funcLoc.startsWith("etc/"))) u = FileUtil.getResource(funcLoc.substring(4));
+            InputStream in = null;
 			if(u!=null) in = u.openStream();
 			else in = new FileInputStream(new File(DefaultSettings.FUNCTION_DEFINITION_FILE_LOCATION));
 			FunctionMeta meta = parseFunctionMeta(in);

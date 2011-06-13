@@ -991,6 +991,7 @@ public class FileUtil
 		if(ret!=null) return ret;
 		ret = ClassLoader.getSystemResource("/"+name);
         if(ret!=null) return ret;
+        if((name.startsWith("etc/"))||(name.startsWith("etc\\"))) return getResource(name.substring(4));
         ret = findFile(name);
         return ret;
 	}
@@ -1053,7 +1054,7 @@ public class FileUtil
         name = name.trim();
         return findFileExe(name, new File(FileUtil.getWorkingDirPath()));
     }
-    private static URL findFileExe(String name, File dir)
+    public static URL findFileExe(String name, File dir)
     {
         String sp = File.separator;
         String nName = name;

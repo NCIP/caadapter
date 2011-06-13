@@ -10,13 +10,15 @@ package gov.nih.nci.cbiit.cmts.common;
 import java.io.File;
 import java.math.BigInteger;
 import java.util.*;
+import java.net.URL;
 
 import org.apache.xerces.xs.*;
 import org.w3c.dom.DOMError;
 import org.w3c.dom.DOMErrorHandler;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-import gov.nih.nci.cbiit.cmts.core.*; 
+import gov.nih.nci.cbiit.cmts.core.*;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 /**
  * This class parses XSD into CMTS Core Model object
@@ -29,37 +31,37 @@ import gov.nih.nci.cbiit.cmts.core.*;
  *
  */
 public class XSDParser implements DOMErrorHandler {
-	private XSLoader schemaLoader;
-	private XSModel model;
-	private String schemaURI;
-	private Stack<String> ctStack;
-	private Stack<String> elStack;
-	private String defaultNS = "";
-	private static boolean debug = false;
-	//private static final String[] prefix={">", "  =", "    -", "      *", "        %", "          $"};
+    private XSLoader schemaLoader;
+    private XSModel model;
+    private String schemaURI;
+    private Stack<String> ctStack;
+    private Stack<String> elStack;
+    private String defaultNS = "";
+    private static boolean debug = false;
+    //private static final String[] prefix={">", "  =", "    -", "      *", "        %", "          $"};
 
-	private static String getPrefix(int i){
-		//if(i<prefix.length) return prefix[i];
-		StringBuffer sb = new StringBuffer();
-		for(int j=0; j<i+1; j++) sb.append("  ");
-		sb.append("[").append(i<10?((char)('0'+i)):((char)('a'+i-10))).append("]-");
-		return sb.toString();
-	}
+    private static String getPrefix(int i){
+        //if(i<prefix.length) return prefix[i];
+        StringBuffer sb = new StringBuffer();
+        for(int j=0; j<i+1; j++) sb.append("  ");
+        sb.append("[").append(i<10?((char)('0'+i)):((char)('a'+i-10))).append("]-");
+        return sb.toString();
+    }
 
-	/**
-	 * constructor
-	 */
-	public XSDParser() {
-		try {
-			// get DOM Implementation using DOM Registry
-			System.setProperty(
-					DOMImplementationRegistry.PROPERTY,
-			"org.apache.xerces.dom.DOMXSImplementationSourceImpl");
-			DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
+    /**
+     * constructor
+     */
+    public XSDParser() {
+        try {
+            // get DOM Implementation using DOM Registry
+            System.setProperty(
+                    DOMImplementationRegistry.PROPERTY,
+            "org.apache.xerces.dom.DOMXSImplementationSourceImpl");
+            DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
 
-			XSImplementation impl = (XSImplementation) registry.getDOMImplementation("XS-Loader");
+            XSImplementation impl = (XSImplementation) registry.getDOMImplementation("XS-Loader");
 
-			schemaLoader = impl.createXSLoader(null);
+            schemaLoader = impl.createXSLoader(null);
 
 //			DOMConfiguration config = schemaLoader.getConfig();
 //
@@ -70,313 +72,337 @@ public class XSDParser implements DOMErrorHandler {
 //			// set validation feature
 //			config.setParameter("validate",Boolean.TRUE);
 System.out.println("XSDParser.XSDParser()...set vaidate");
-			ctStack = new Stack<String>();
-			elStack = new Stack<String>();
-		} catch (ClassCastException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+            ctStack = new Stack<String>();
+            elStack = new Stack<String>();
+        } catch (ClassCastException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (XSException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (DOMException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * load XSD schema
-	 * @param schemaURI - XSD URI
-	 */
-	public void loadSchema(String schemaURI) {
-		String userDirPath=System.getProperty("user.dir");
-		if(debug)
-		System.out.println("XSDParser.loadSchema()..user.dir:"+System.getProperty("user.dir"));
-		if (schemaURI.indexOf(userDirPath)>-1)
-			this.schemaURI=schemaURI.substring(userDirPath.length()+1);
-		else
-			this.schemaURI = schemaURI;
-		// parse document
-		if(debug) System.out.println("Parsing " + this.schemaURI + "...");
-		model = schemaLoader.loadURI(this.schemaURI);
+    /**
+     * load XSD schema
+     * @param schemaURI - XSD URI
+     */
+    public void loadSchema(String schemaURI)
+    {
+        loadSchema(schemaURI, null);
+    }
+    public void loadSchema(String schemaURI, String workDir)
+    {
+        String userDirPath=System.getProperty("user.dir");
+        if(debug)
+        System.out.println("XSDParser.loadSchema()..user.dir:"+System.getProperty("user.dir"));
 
-	}
+        File wDir = null;
+        if ((workDir != null)&&(!workDir.trim().equals("")))
+        {
+            wDir = new File(workDir.trim());
+            if (!wDir.exists()) wDir = null;
+            else if (wDir.isFile()) wDir = wDir.getParentFile();
+        }
 
-	/**
-	 * load XSD schema
-	 * @param schemaURI - XSD URI
-	 */
-	public void loadSchema(File schemaFile) {
+        if (schemaURI.indexOf(userDirPath)>-1)
+        {
+            this.schemaURI=schemaURI.substring(userDirPath.length()+1);
+        }
+        else if (wDir != null)
+        {
+            URL ur = FileUtil.findFileExe(schemaURI, wDir);
+            if (ur == null) this.schemaURI = schemaURI;
+            else this.schemaURI = ur.toString();
+        }
+        else
+        {
+            this.schemaURI = schemaURI;
+        }
+        // parse document
+        if(debug) System.out.println("Parsing " + this.schemaURI + "...");
+        model = schemaLoader.loadURI(this.schemaURI);
 
-		loadSchema(schemaFile.getPath());
-	}
+    }
 
-	/**
-	 * @return the schemaURI
-	 */
-	public String getSchemaURI() {
-		return schemaURI;
-	}
+    /**
+     * load XSD schema
+     * @param schemaURI - XSD URI
+     */
+    public void loadSchema(File schemaFile) {
 
-	public XSNamedMap[] getMappableNames(){
-		XSNamedMap[] map = new XSNamedMap[2];
-		map[0] = model.getComponents(XSConstants.ELEMENT_DECLARATION);
-		map[1] = model.getComponents(XSConstants.TYPE_DEFINITION);
-		
-		return map;
-	}
-	
-	/**
-	 * get CMTS Core Model Object corresponding to the specified root element
-	 * @param namespace - root element namespace
-	 * @param name - root element name
-	 * @return ElementMeta object
-	 */
-	public ElementMeta getElementMeta(String namespace, String name){
-		if (model != null) {
-			// element declarations
-			XSNamedMap map = model.getComponents(XSConstants.ELEMENT_DECLARATION);
-			//processMap(map, 0);
-			defaultNS = namespace;
-			ctStack.clear();
-			elStack.clear();
-			return processXSObject(map.itemByName(namespace, name), 0);
-		} else {
-			return null;
-		}
+        loadSchema(schemaFile.getPath());
+    }
 
-	}
+    /**
+     * @return the schemaURI
+     */
+    public String getSchemaURI() {
+        return schemaURI;
+    }
 
-	/**
-	 * get CMTS Core Model Object corresponding to the specified complex type
-	 * @param namespace - complex type namespace
-	 * @param name - complex type name
-	 * @return ElementMeta object
-	 */
-	public ElementMeta getElementMetaFromComplexType(String namespace, String name){
-		if (model != null) {
-			// element declarations
-			XSNamedMap map = model.getComponents(XSConstants.TYPE_DEFINITION);
-			//processMap(map, 0);
-			defaultNS = namespace;
-			ctStack.clear();
-			elStack.clear();
-			return processXSObject(map.itemByName(namespace, name), 0);
-		} else {
-			return null;
-		}
+    public XSNamedMap[] getMappableNames(){
+        XSNamedMap[] map = new XSNamedMap[2];
+        map[0] = model.getComponents(XSConstants.ELEMENT_DECLARATION);
+        map[1] = model.getComponents(XSConstants.TYPE_DEFINITION);
 
-	}
+        return map;
+    }
 
-	private ElementMeta processXSObject(XSObject item, int depth) {
-		if(item instanceof XSComplexTypeDefinition){
-			return processComplexType((XSComplexTypeDefinition)item, depth);
-		}else if(item instanceof XSSimpleTypeDefinition){
-			//processSimpleType((XSSimpleTypeDefinition)item);
-			return null;
-		}else if(item instanceof XSElementDeclaration){
-			return processElement((XSElementDeclaration)item, depth);
-		}
-		return null;
-	}
+    /**
+     * get CMTS Core Model Object corresponding to the specified root element
+     * @param namespace - root element namespace
+     * @param name - root element name
+     * @return ElementMeta object
+     */
+    public ElementMeta getElementMeta(String namespace, String name){
+        if (model != null) {
+            // element declarations
+            XSNamedMap map = model.getComponents(XSConstants.ELEMENT_DECLARATION);
+            //processMap(map, 0);
+            defaultNS = namespace;
+            ctStack.clear();
+            elStack.clear();
+            return processXSObject(map.itemByName(namespace, name), 0);
+        } else {
+            return null;
+        }
 
-	private List<BaseMeta> processList(XSObjectList map, int depth){
-		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
-		for (int i = 0; i < map.getLength(); i++) {
-			XSObject item = map.item(i);
-			if(item instanceof XSComplexTypeDefinition){
-				ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
-			}else if(item instanceof XSParticle){
-				ret.addAll(processParticle((XSParticle)item, depth));
-			}else if(item instanceof XSAttributeUse){
-				ret.add(processAttribute((XSAttributeUse)item, depth));
-			}
-		}
-		return ret;
-	}
+    }
 
-	private void processSimpleType(XSSimpleTypeDefinition item, int depth){
-		if(debug) System.out.println(getPrefix(depth+1)+"SimpleType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-		//processParticle(item.getParticle(), indent);
-	}
-	private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
-		if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-		ElementMeta ret;
-		String qname = "{" + item.getNamespace() + "}" + item.getName();
-		if(item.getName()==null)
-			qname = "{" + item.getNamespace() + "}" + elStack.peek();
-		boolean recursive = ctStack.contains(qname);
-		ctStack.push(qname);
-		try {
-			ret = new ElementMeta();
-			ret.setNameSpace(item.getNamespace());
-			ret.setName(item.getName());
-			ret.setIsSimple(false);
-			//if recursive use return here
-			if(recursive){
-				ret.setIsRecursive(true);
-				return ret;
-			}
-			List<ElementMeta> childs = ret.getChildElement();
-			List<AttributeMeta> attrs = ret.getAttrData(); 
-			List<BaseMeta> l = processList(item.getAttributeUses(), depth);
-			for (BaseMeta b:l) {
-				if (b instanceof AttributeMeta) {
-					attrs.add((AttributeMeta)b);
-				} else if (b instanceof ElementMeta) {
-					childs.add((ElementMeta)b);
-				}
-			}
+    /**
+     * get CMTS Core Model Object corresponding to the specified complex type
+     * @param namespace - complex type namespace
+     * @param name - complex type name
+     * @return ElementMeta object
+     */
+    public ElementMeta getElementMetaFromComplexType(String namespace, String name){
+        if (model != null) {
+            // element declarations
+            XSNamedMap map = model.getComponents(XSConstants.TYPE_DEFINITION);
+            //processMap(map, 0);
+            defaultNS = namespace;
+            ctStack.clear();
+            elStack.clear();
+            return processXSObject(map.itemByName(namespace, name), 0);
+        } else {
+            return null;
+        }
 
-			l = processParticle(item.getParticle(), depth);
-			if(l==null) return ret;
-			for (BaseMeta b:l) {
-				if (b instanceof AttributeMeta) {
-					attrs.add((AttributeMeta)b);
-				} else if (b instanceof ElementMeta) {
-					childs.add((ElementMeta)b);
-				}
-			}
-		} finally {
-			ctStack.pop();
-		}
+    }
 
-		return ret;
-	}
-	private List<BaseMeta> processParticle(XSParticle item, int depth){
-		if(item == null){
-			if(debug) System.out.println(getPrefix(depth+1)+"Particle{null}");
-			return null;
-		}
-		List<BaseMeta> l = processTerm(item.getTerm(), depth+1);
-		if (l==null||l.isEmpty())
-			return l;
-		ElementMeta e = (ElementMeta)l.get(0);
-		boolean setOccurs=false;
-		if (item.getTerm() instanceof XSModelGroup)
-		{
-			short comp = ((XSModelGroup)item.getTerm()).getCompositor();
-			if (comp==XSModelGroup.COMPOSITOR_CHOICE)
-				setOccurs=true;
-		}
-		if (item.getTerm()!=null&&item.getTerm().getName()!=null&&
-				item.getTerm().getName().equals(e.getName()))
-			setOccurs=true;
-		
-		if (setOccurs)
-		{
-			int maxOccur = item.getMaxOccurs();
-			int minOccur = item.getMinOccurs();
-			boolean unbound = item.getMaxOccursUnbounded();
-			e.setRequired(minOccur>0);
-			e.setMaxOccurs(BigInteger.valueOf(maxOccur));
-			e.setMinOccurs(BigInteger.valueOf(minOccur));
-			if(unbound) e.setMaxOccurs(BigInteger.valueOf(-1));
- 
-		}
-		return l;
-	}
-	private List<BaseMeta> processTerm(XSTerm item, int depth){
-		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
-		if(debug) System.out.print(getPrefix(depth)+"Term{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-		if(item instanceof XSModelGroup){
-			short comp = ((XSModelGroup)item).getCompositor();
-			if(debug) System.out.println(comp==XSModelGroup.COMPOSITOR_ALL?" *ALL* ":(comp==XSModelGroup.COMPOSITOR_CHOICE?" *CHOICE* ":" *SEQ* "));
-			ret.addAll(processList(((XSModelGroup)item).getParticles(), depth));
-			if(comp==XSModelGroup.COMPOSITOR_CHOICE) {
-				//create a choice element to hold 
-				//the content of choice
-				ElementMeta choiceMeta = new ElementMeta();
-				choiceMeta.setName("<choice>");
-				for(BaseMeta i:ret) {
-					((ElementMeta)i).setIsChoice(true);
-					choiceMeta.getChildElement().add((ElementMeta)i);
-				}
-				ret.clear();
-				ret.add(choiceMeta);
-			}
-		}else if(item instanceof XSElementDeclaration) {
-			if(debug) System.out.println(" *ELEMENT*");
-			ret.add(processElement((XSElementDeclaration)item, depth));
-		}
-		return ret;
-	}
-	private ElementMeta processElement(XSElementDeclaration item, int depth){
-		if(debug) System.out.println(getPrefix(depth)+"Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-		String qname = "{" + item.getNamespace() + "}" + item.getName();
-		elStack.push(qname);
-		ElementMeta ret = null;
-		try{
-			XSTypeDefinition type = item.getTypeDefinition();
-			if(type instanceof XSComplexTypeDefinition){
-				ret = processComplexType((XSComplexTypeDefinition)type, depth);
-			}else if(type instanceof XSSimpleTypeDefinition){
-				processSimpleType((XSSimpleTypeDefinition)type, depth);
-			}
+    private ElementMeta processXSObject(XSObject item, int depth) {
+        if(item instanceof XSComplexTypeDefinition){
+            return processComplexType((XSComplexTypeDefinition)item, depth);
+        }else if(item instanceof XSSimpleTypeDefinition){
+            //processSimpleType((XSSimpleTypeDefinition)item);
+            return null;
+        }else if(item instanceof XSElementDeclaration){
+            return processElement((XSElementDeclaration)item, depth);
+        }
+        return null;
+    }
 
-			if(ret == null) 
-				ret = new ElementMeta();
-			ret.setNameSpace(item.getNamespace());
-			ret.setName(item.getName());
-		}finally{
-			elStack.pop();
-		}
-		ret.setType((item.getTypeDefinition().getNamespace()==null||item.getTypeDefinition().getNamespace().equals(defaultNS))?
-					item.getTypeDefinition().getName()
-					:item.getTypeDefinition().getNamespace()+":"+item.getTypeDefinition().getName());
-		return ret;
-	}
-	private AttributeMeta processAttribute(XSAttributeUse item, int depth){
-		if(item == null){
-			if(debug) System.out.println(getPrefix(depth+1)+"Attribute {null}");
-			return null;
-		}
-		XSAttributeDeclaration 	attr = item.getAttrDeclaration();
-		AttributeMeta ret = new AttributeMeta();
-		ret.setNameSpace(attr.getNamespace());
-		ret.setName(attr.getName());
-		ret.setRequired(item.getRequired());
+    private List<BaseMeta> processList(XSObjectList map, int depth){
+        ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
+        for (int i = 0; i < map.getLength(); i++) {
+            XSObject item = map.item(i);
+            if(item instanceof XSComplexTypeDefinition){
+                ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
+            }else if(item instanceof XSParticle){
+                ret.addAll(processParticle((XSParticle)item, depth));
+            }else if(item instanceof XSAttributeUse){
+                ret.add(processAttribute((XSAttributeUse)item, depth));
+            }
+        }
+        return ret;
+    }
 
-		ret.setType((attr.getTypeDefinition().getNamespace()==null||attr.getTypeDefinition().getNamespace().equals(defaultNS))?
-				attr.getTypeDefinition().getName()
-				:attr.getTypeDefinition().getNamespace()+":"+attr.getTypeDefinition().getName());
-	
-		if (item.getConstraintType()==XSConstants.VC_DEFAULT) {
-			ret.setDefaultValue(item.getConstraintValue());
-		} else if (item.getConstraintType()==XSConstants.VC_FIXED) {
-			ret.setIsFixed(true);
-			ret.setFixedValue(item.getConstraintValue());
-		}
+    private void processSimpleType(XSSimpleTypeDefinition item, int depth){
+        if(debug) System.out.println(getPrefix(depth+1)+"SimpleType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+        //processParticle(item.getParticle(), indent);
+    }
+    private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
+        if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+        ElementMeta ret;
+        String qname = "{" + item.getNamespace() + "}" + item.getName();
+        if(item.getName()==null)
+            qname = "{" + item.getNamespace() + "}" + elStack.peek();
+        boolean recursive = ctStack.contains(qname);
+        ctStack.push(qname);
+        try {
+            ret = new ElementMeta();
+            ret.setNameSpace(item.getNamespace());
+            ret.setName(item.getName());
+            ret.setIsSimple(false);
+            //if recursive use return here
+            if(recursive){
+                ret.setIsRecursive(true);
+                return ret;
+            }
+            List<ElementMeta> childs = ret.getChildElement();
+            List<AttributeMeta> attrs = ret.getAttrData();
+            List<BaseMeta> l = processList(item.getAttributeUses(), depth);
+            for (BaseMeta b:l) {
+                if (b instanceof AttributeMeta) {
+                    attrs.add((AttributeMeta)b);
+                } else if (b instanceof ElementMeta) {
+                    childs.add((ElementMeta)b);
+                }
+            }
 
-		if(debug) System.out.print(getPrefix(depth+1)+"AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
-				+(item.getRequired()?",":"Required,")
-				+(item.getConstraintType()==XSConstants.VC_NONE?"":((item.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+item.getConstraintValue())));
-		if(debug) System.out.println(", Attribute{" + attr.getNamespace() + "}" + attr.getName()+"["+attr.getClass()+"]"
-				+("{"+attr.getTypeDefinition().getNamespace()+"}"+attr.getTypeDefinition().getName())
-				+(attr.getConstraintType()==XSConstants.VC_NONE?"":((attr.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+attr.getConstraintValue())));
-		return ret;
-	}
+            l = processParticle(item.getParticle(), depth);
+            if(l==null) return ret;
+            for (BaseMeta b:l) {
+                if (b instanceof AttributeMeta) {
+                    attrs.add((AttributeMeta)b);
+                } else if (b instanceof ElementMeta) {
+                    childs.add((ElementMeta)b);
+                }
+            }
+        } finally {
+            ctStack.pop();
+        }
 
-	public boolean handleError(DOMError error){
-		short severity = error.getSeverity();
-		if (severity == DOMError.SEVERITY_ERROR) {
-			System.out.println("[xs-error]: "+error.getMessage());
-		}
+        return ret;
+    }
+    private List<BaseMeta> processParticle(XSParticle item, int depth){
+        if(item == null){
+            if(debug) System.out.println(getPrefix(depth+1)+"Particle{null}");
+            return null;
+        }
+        List<BaseMeta> l = processTerm(item.getTerm(), depth+1);
+        if (l==null||l.isEmpty())
+            return l;
+        ElementMeta e = (ElementMeta)l.get(0);
+        boolean setOccurs=false;
+        if (item.getTerm() instanceof XSModelGroup)
+        {
+            short comp = ((XSModelGroup)item.getTerm()).getCompositor();
+            if (comp==XSModelGroup.COMPOSITOR_CHOICE)
+                setOccurs=true;
+        }
+        if (item.getTerm()!=null&&item.getTerm().getName()!=null&&
+                item.getTerm().getName().equals(e.getName()))
+            setOccurs=true;
 
-		if (severity == DOMError.SEVERITY_WARNING) {
-			System.out.println("[xs-warning]: "+error.getMessage());
-		}
-		return true;
-	}
+        if (setOccurs)
+        {
+            int maxOccur = item.getMaxOccurs();
+            int minOccur = item.getMinOccurs();
+            boolean unbound = item.getMaxOccursUnbounded();
+            e.setRequired(minOccur>0);
+            e.setMaxOccurs(BigInteger.valueOf(maxOccur));
+            e.setMinOccurs(BigInteger.valueOf(minOccur));
+            if(unbound) e.setMaxOccurs(BigInteger.valueOf(-1));
+
+        }
+        return l;
+    }
+    private List<BaseMeta> processTerm(XSTerm item, int depth){
+        ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
+        if(debug) System.out.print(getPrefix(depth)+"Term{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+        if(item instanceof XSModelGroup){
+            short comp = ((XSModelGroup)item).getCompositor();
+            if(debug) System.out.println(comp==XSModelGroup.COMPOSITOR_ALL?" *ALL* ":(comp==XSModelGroup.COMPOSITOR_CHOICE?" *CHOICE* ":" *SEQ* "));
+            ret.addAll(processList(((XSModelGroup)item).getParticles(), depth));
+            if(comp==XSModelGroup.COMPOSITOR_CHOICE) {
+                //create a choice element to hold
+                //the content of choice
+                ElementMeta choiceMeta = new ElementMeta();
+                choiceMeta.setName("<choice>");
+                for(BaseMeta i:ret) {
+                    ((ElementMeta)i).setIsChoice(true);
+                    choiceMeta.getChildElement().add((ElementMeta)i);
+                }
+                ret.clear();
+                ret.add(choiceMeta);
+            }
+        }else if(item instanceof XSElementDeclaration) {
+            if(debug) System.out.println(" *ELEMENT*");
+            ret.add(processElement((XSElementDeclaration)item, depth));
+        }
+        return ret;
+    }
+    private ElementMeta processElement(XSElementDeclaration item, int depth){
+        if(debug) System.out.println(getPrefix(depth)+"Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+        String qname = "{" + item.getNamespace() + "}" + item.getName();
+        elStack.push(qname);
+        ElementMeta ret = null;
+        try{
+            XSTypeDefinition type = item.getTypeDefinition();
+            if(type instanceof XSComplexTypeDefinition){
+                ret = processComplexType((XSComplexTypeDefinition)type, depth);
+            }else if(type instanceof XSSimpleTypeDefinition){
+                processSimpleType((XSSimpleTypeDefinition)type, depth);
+            }
+
+            if(ret == null)
+                ret = new ElementMeta();
+            ret.setNameSpace(item.getNamespace());
+            ret.setName(item.getName());
+        }finally{
+            elStack.pop();
+        }
+        ret.setType((item.getTypeDefinition().getNamespace()==null||item.getTypeDefinition().getNamespace().equals(defaultNS))?
+                    item.getTypeDefinition().getName()
+                    :item.getTypeDefinition().getNamespace()+":"+item.getTypeDefinition().getName());
+        return ret;
+    }
+    private AttributeMeta processAttribute(XSAttributeUse item, int depth){
+        if(item == null){
+            if(debug) System.out.println(getPrefix(depth+1)+"Attribute {null}");
+            return null;
+        }
+        XSAttributeDeclaration 	attr = item.getAttrDeclaration();
+        AttributeMeta ret = new AttributeMeta();
+        ret.setNameSpace(attr.getNamespace());
+        ret.setName(attr.getName());
+        ret.setRequired(item.getRequired());
+
+        ret.setType((attr.getTypeDefinition().getNamespace()==null||attr.getTypeDefinition().getNamespace().equals(defaultNS))?
+                attr.getTypeDefinition().getName()
+                :attr.getTypeDefinition().getNamespace()+":"+attr.getTypeDefinition().getName());
+
+        if (item.getConstraintType()==XSConstants.VC_DEFAULT) {
+            ret.setDefaultValue(item.getConstraintValue());
+        } else if (item.getConstraintType()==XSConstants.VC_FIXED) {
+            ret.setIsFixed(true);
+            ret.setFixedValue(item.getConstraintValue());
+        }
+
+        if(debug) System.out.print(getPrefix(depth+1)+"AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
+                +(item.getRequired()?",":"Required,")
+                +(item.getConstraintType()==XSConstants.VC_NONE?"":((item.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+item.getConstraintValue())));
+        if(debug) System.out.println(", Attribute{" + attr.getNamespace() + "}" + attr.getName()+"["+attr.getClass()+"]"
+                +("{"+attr.getTypeDefinition().getNamespace()+"}"+attr.getTypeDefinition().getName())
+                +(attr.getConstraintType()==XSConstants.VC_NONE?"":((attr.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+attr.getConstraintValue())));
+        return ret;
+    }
+
+    public boolean handleError(DOMError error){
+        short severity = error.getSeverity();
+        if (severity == DOMError.SEVERITY_ERROR) {
+            System.out.println("[xs-error]: "+error.getMessage());
+        }
+
+        if (severity == DOMError.SEVERITY_WARNING) {
+            System.out.println("[xs-warning]: "+error.getMessage());
+        }
+        return true;
+    }
 }
 
 /**
