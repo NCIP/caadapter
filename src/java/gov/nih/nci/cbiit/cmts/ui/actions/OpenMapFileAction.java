@@ -205,10 +205,11 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 					GeneralUtilities.setCursorWaiting(mainFrame.getAssociatedUIContainer());
 					mappingPanel.processOpenMapFile(file);
 				}
-				catch (Throwable e1)
+                catch (Throwable e1)
 				{
-					//log the exception, but not report
-					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame.getAssociatedUIComponent(), false, true);
+                    System.out.println("A2"+ e1.getMessage());
+                    //log the exception, but not report
+					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame.getAssociatedUIComponent(), false, false);
 					//report the nice to have message
 					everythingGood = false;
 				}

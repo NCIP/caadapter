@@ -114,7 +114,8 @@ public class MappingFactory {
 		m.getLinks().getLink().add(l);
 	}
 	
-	public static Mapping loadMapping(File f)throws JAXBException{
+	public static Mapping loadMapping(File f) throws JAXBException
+    {
 		System.out.println("MappingFactory.loadMapping()...mappingFile:"+f.getAbsolutePath());
 		JAXBContext jc=null;		
 //			jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
@@ -127,13 +128,22 @@ public class MappingFactory {
 		//re-connect the meta structure for source and target schemas
 		for (Component mapComp:mapLoaded.getComponents().getComponent())
 		{
-			if (mapComp.getRootElement()!=null)
-			{
-				XSDParser metaParser = new XSDParser();
-				metaParser.loadSchema(mapComp.getLocation());
-				MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
-			}
-		}
+            try
+            {
+                if (mapComp.getRootElement()!=null)
+                {
+                    XSDParser metaParser = new XSDParser();
+                    metaParser.loadSchema(mapComp.getLocation(), f.getAbsolutePath());
+                    MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
+                }
+            }
+            catch(Exception ee)
+            {
+                String msg = ee.getMessage();
+                if ((msg == null)||(msg.trim().equals(""))) msg = "Possibly Failed to read or parse schema document - " + mapComp.getLocation();
+                throw new JAXBException(ee.getClass().getCanonicalName()+":"+msg);
+            }
+        }
 		Hashtable <String, BaseMeta> srcMetaHash=new Hashtable <String, BaseMeta>();
 		Hashtable <String, BaseMeta> trgtMetaHash=new Hashtable <String, BaseMeta>();
 		//pre-process mapping for annotation 
