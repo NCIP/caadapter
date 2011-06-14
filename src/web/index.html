@@ -1,6 +1,47 @@
-<html>
+<!--<html>
 <head><title>Java Web Start Deployment:caAdapter-cmts</title></head>
 <body>
 	<center><a href="caadapter-cmts.jnlp">Click to Start caAdapter Common Mapping and Transformation Service !</a></center>
+</body>
+</html>-->
+
+<html>
+<head>
+<title>caAdapter CMTS Applet</title>
+</head>
+<body>
+
+<DIV align=left><FONT face=Arial color=#000080
+size=6><STRONG>caAdapter Common Message Transformation Service</STRONG></FONT></DIV>
+<br><br>
+
+<p>
+
+<!--
+<applet width="900" height="500" archive="./cmts.jar" code="gov.nih.nci.cbiit.cmts.web.MainApplet" codebase="." name="MainApplet">
+<param value="en" name="language" />
+-->
+<applet codebase="."
+archive="caAdapter.jar,cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,encoderframework.jar,encoderfrmwk-xsdextension.jar,hl7.jar,hl7encoder-xsdextension.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar"
+code="gov.nih.nci.cbiit.cmts.web.MainApplet.class"
+name="gov.nih.nci.cbiit.cmts.web.MainApplet"
+width="900"
+height="500"
+align=top>
+
+
+<param name= hideMenu value= "true" >
+To use this page you need a Java-enabled browser. Download the latest Java plug-in from <a href="http://www.java.com/">Java.com</a>
+</applet></p>
+<br>
+
+<hr />
+<center>
+<font size="3"; style="font-family: Arial;">
+<p>&copy; 2011 caBIG<sup>TM</sup> NCI/NIH
+</p>
+</font>
+</center>
+
 </body>
 </html>
