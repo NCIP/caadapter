@@ -23,6 +23,8 @@ import java.util.*;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
 import java.util.logging.FileHandler;
+import java.security.AccessControlException;
+import java.security.AllPermission;
 
 /**
  * File related utility class
@@ -38,10 +40,10 @@ import java.util.logging.FileHandler;
 public class FileUtil
 {
     private static final String OUTPUT_DIR_NAME = "out";
-	private static final String SCHEMA_LOCATION = null;
-	private static final String TEMPORARY_FILE_EXTENSION = null;
-	private static final String TEMPORARY_FILE_PREFIX = null;
-	private static final String CAADAPTER_HOME_DIR_TAG = null;
+    private static final String SCHEMA_LOCATION = null;
+    private static final String TEMPORARY_FILE_EXTENSION = null;
+    private static final String TEMPORARY_FILE_PREFIX = null;
+    private static final String CAADAPTER_HOME_DIR_TAG = null;
     private static File OUTPUT_DIR = null;
     private static File ODI_FILE = null;
 
@@ -58,23 +60,23 @@ public class FileUtil
             OUTPUT_DIR.mkdir();
         }
     }
-    
+
     public static String getAssociatedFileAbsolutePath(String holderFile, String associatedFile)
     {
-    	if(associatedFile.indexOf(File.separator)>-1)
-    		return associatedFile;
-    	File holder=new File(holderFile);
-    	File associted=new File(associatedFile);
-    	if (!holder.exists())
-    		return associatedFile;
-    	if (holder.isDirectory())
-    		return associatedFile;
+        if(associatedFile.indexOf(File.separator)>-1)
+            return associatedFile;
+        File holder=new File(holderFile);
+        File associted=new File(associatedFile);
+        if (!holder.exists())
+            return associatedFile;
+        if (holder.isDirectory())
+            return associatedFile;
 
-    	String holderParent=holder.getParent();
+        String holderParent=holder.getParent();
 
-    	String rntPath=holderParent+File.separator+associatedFile;
-    	
-    	return rntPath;
+        String rntPath=holderParent+File.separator+associatedFile;
+
+        return rntPath;
     }
 /**
  * Compare the name/absolute path of a holder file with its associated file
@@ -86,22 +88,22 @@ public class FileUtil
  */
     public static String getAssociatedFileRelativePath(String holderFile, String associatedFile)
     {
-    	File holder=new File(holderFile);
-    	File associted=new File(associatedFile);
-    	if (!holder.exists())
-    		return associatedFile;
-    	if (holder.isDirectory())
-    		return associatedFile;
-    	if (!associted.exists())
-    		return associatedFile;
-    	if (associted.isDirectory())
-    		return associatedFile;
-    	String holderParent=holder.getParent();
-    	String associateParent=associted.getParent();
-    	if (!holderParent.equals(associateParent))
-    		return associatedFile;
-    	
-    	return associted.getName();
+        File holder=new File(holderFile);
+        File associted=new File(associatedFile);
+        if (!holder.exists())
+            return associatedFile;
+        if (holder.isDirectory())
+            return associatedFile;
+        if (!associted.exists())
+            return associatedFile;
+        if (associted.isDirectory())
+            return associatedFile;
+        String holderParent=holder.getParent();
+        String associateParent=associted.getParent();
+        if (!holderParent.equals(associateParent))
+            return associatedFile;
+
+        return associted.getName();
     }
     /**
      * Create the output directory if necessary and return a reference to it.
@@ -117,7 +119,17 @@ public class FileUtil
     public static String getWorkingDirPath()
     {
         File f = new File("");
-        return f.getAbsolutePath();
+        String path = null;
+        //try
+        //{
+            path = f.getAbsolutePath();
+        //}
+        //catch(AccessControlException ae)
+        //{
+        //    path = "c:\\";
+        //}
+
+        return path;
     }
 
     public static String getComponentsDirPath()
@@ -127,7 +139,7 @@ public class FileUtil
 
     public static String getCommonDirPath()
     {
-        return getComponentsDirPath() + File.separator + "common"; 
+        return getComponentsDirPath() + File.separator + "common";
     }
 
     public static String getDataViewerDirPath()
@@ -193,10 +205,10 @@ public class FileUtil
      *
      * Since the ballot version is different, starting from 01 to unknown, this function find related file
      * by guessing the version number
-		 *
-		 * THIS METHOD IS NOT USED BY JAVASIG CODE ANY MORE. IF IT WERE, IT WOULD HAVE TO BE
-		 * CONVERTED TO NOT USER Files BUT Resources INSTEAD.
-		 * TestParseAndBuild uses it, but that's O.K. Just those tests will eventually fail.
+         *
+         * THIS METHOD IS NOT USED BY JAVASIG CODE ANY MORE. IF IT WERE, IT WOULD HAVE TO BE
+         * CONVERTED TO NOT USER Files BUT Resources INSTEAD.
+         * TestParseAndBuild uses it, but that's O.K. Just those tests will eventually fail.
      *
      *
      * @param messageType
@@ -216,14 +228,14 @@ public class FileUtil
           schemaFileNamePath=FileUtil.getWorkingDirPath() + File.separator + schemaFileName;
           File file = new File(schemaFileNamePath);
           if ((file.exists())&&(file.isFile()))
-        	  return schemaFileName;
+              return schemaFileName;
 //        	  return file.getAbsolutePath();
           URL fileURL= ClassLoader.getSystemResource(schemaFileName);
           if (fileURL!=null)
-        	  return schemaFileName;
+              return schemaFileName;
 //        	  return fileURL.getFile();
       }
-	  //Throw exception since file is not found....
+      //Throw exception since file is not found....
       throw new FileNotFoundException("File Directory:" + SCHEMA_LOCATION + " Message Type:" + messageType
                 + " File Extenstion:" + fileExtension +  ", "+schemaFileNamePath);
   }
@@ -267,7 +279,7 @@ public class FileUtil
         }
         catch(FunctionException fe)
         {
-        	fe.printStackTrace();
+            fe.printStackTrace();
             return getUIWorkingDirectoryPath() + File.separator + TEMPORARY_FILE_PREFIX + (new DateFunction()).getCurrentTime() + "_" + getRandomNumber(4) + extension;
         }
     }
@@ -417,7 +429,7 @@ public class FileUtil
         }
         return in1;
     }
-   
+
     /**
      * Delete a lck file from the output directory.  A lck file is a temporary file that is
      * created by the logger.
@@ -670,25 +682,25 @@ public class FileUtil
         if (rscName.equals("")) return null;
 
         URL rtnURL=null;
-    	//System.out.println("FileUtil.retrieveResourceURL().1.resourceName:"+rscName);
-    	rtnURL=Thread.currentThread().getClass().getResource("/"+rscName);
-		//System.out.println("FileUtil.retrieveResourceURL().2.Thread.currentThread().getClass().getResource..standalone URL:/"+rscName+"="+rtnURL);
-		if (rtnURL==null)
-		{
-			rtnURL=Thread.currentThread().getClass().getResource(rscName);
-			//System.out.println("FileUtil.retrieveResourceURL().3.Thread.currentThread().getClass().getResource..standalone URL:"+rscName+"="+rtnURL);
-		}
-		//load resource for webstart deployment
-		if (rtnURL==null)
-		{
-			rtnURL=FileUtil.class.getClassLoader().getResource(rscName);
-			//System.out.println("FileUtil.retrieveResourceURL().4.FileUtil.class.getClassLoader().getResource..webstart URL:"+rscName+"="+rtnURL);
-			if (rtnURL==null)
-			{
-				rtnURL=FileUtil.class.getClassLoader().getResource("/"+rscName);
-				//System.out.println("FileUtil.retrieveResourceURL().5.FileUtil.class.getClassLoader().getResource..webstart URL:/"+rscName+"="+rtnURL);
-			}
-		}
+        //System.out.println("FileUtil.retrieveResourceURL().1.resourceName:"+rscName);
+        rtnURL=Thread.currentThread().getClass().getResource("/"+rscName);
+        //System.out.println("FileUtil.retrieveResourceURL().2.Thread.currentThread().getClass().getResource..standalone URL:/"+rscName+"="+rtnURL);
+        if (rtnURL==null)
+        {
+            rtnURL=Thread.currentThread().getClass().getResource(rscName);
+            //System.out.println("FileUtil.retrieveResourceURL().3.Thread.currentThread().getClass().getResource..standalone URL:"+rscName+"="+rtnURL);
+        }
+        //load resource for webstart deployment
+        if (rtnURL==null)
+        {
+            rtnURL=FileUtil.class.getClassLoader().getResource(rscName);
+            //System.out.println("FileUtil.retrieveResourceURL().4.FileUtil.class.getClassLoader().getResource..webstart URL:"+rscName+"="+rtnURL);
+            if (rtnURL==null)
+            {
+                rtnURL=FileUtil.class.getClassLoader().getResource("/"+rscName);
+                //System.out.println("FileUtil.retrieveResourceURL().5.FileUtil.class.getClassLoader().getResource..webstart URL:/"+rscName+"="+rtnURL);
+            }
+        }
 
         String path = FileUtil.searchFile(rscName);
         if (path != null)
@@ -712,7 +724,7 @@ public class FileUtil
         if (rtnURL == null) System.out.println("This resource file cannot be found : " + rtnURL);
         return rtnURL;
     }
-    
+
     public static String searchFile(String fileName)
     {
         return searchFile(null, null, fileName, null, true);
@@ -847,7 +859,7 @@ public class FileUtil
         if ((addr == null)||(addr.trim().equals(""))) throw new IOException("Null address.");
         URL ur = null;
         InputStream is = null;
-		FileOutputStream fos = null;
+        FileOutputStream fos = null;
 
         addr = addr.trim();
         String tempFile = "";
@@ -907,7 +919,7 @@ public class FileUtil
         byte bt = 0;
 
         boolean started = false;
-        
+
 
         while(true)
         {
@@ -963,55 +975,61 @@ public class FileUtil
     }
 
     public static String getRelativePath(File f){
-    	String workDir = new File("").getAbsolutePath();
-    	String fPath = f.getAbsolutePath();
-    	String ret = null;
-    	if(fPath.startsWith(workDir)){
-    		ret = fPath.substring(workDir.length());
-    		ret = ret.replace('\\', '/');
-    		while(ret.startsWith("/")){
-    			ret = ret.substring(1);
-    		}
-    	}
-    	return ret;
+        String workDir = new File("").getAbsolutePath();
+        String fPath = f.getAbsolutePath();
+        String ret = null;
+        if(fPath.startsWith(workDir)){
+            ret = fPath.substring(workDir.length());
+            ret = ret.replace('\\', '/');
+            while(ret.startsWith("/")){
+                ret = ret.substring(1);
+            }
+        }
+        return ret;
     }
 
-	/**
-	 * Utility method to get resource
-	 * @param name - resource name
-	 * @return URL of resource
-	 */
-	public static URL getResource(String name){
-		URL ret = null;
-		ret = XSDParser.class.getClassLoader().getResource(name);
-		if(ret!=null) return ret;
-		ret = XSDParser.class.getClassLoader().getResource("/"+name);
-		if(ret!=null) return ret;
-		ret = ClassLoader.getSystemResource(name);
-		if(ret!=null) return ret;
-		ret = ClassLoader.getSystemResource("/"+name);
+    /**
+     * Utility method to get resource
+     * @param name - resource name
+     * @return URL of resource
+     */
+    public static URL getResource(String name){
+        URL ret = null;
+        ret = XSDParser.class.getClassLoader().getResource(name);
+        if(ret!=null) return ret;
+        ret = XSDParser.class.getClassLoader().getResource("/"+name);
+        if(ret!=null) return ret;
+        ret = ClassLoader.getSystemResource(name);
+        if(ret!=null) return ret;
+        ret = ClassLoader.getSystemResource("/"+name);
         if(ret!=null) return ret;
         if((name.startsWith("etc/"))||(name.startsWith("etc\\"))) return getResource(name.substring(4));
         ret = findFile(name);
         return ret;
-	}
-	
-	/**
-	 * Utility method to get resource
-	 * @param name
-	 * @return An enumeration of URL objects for the resource
-	 */
+    }
+
+    /**
+     * Utility method to get resource
+     * @param name
+     * @return An enumeration of URL objects for the resource
+     */
     public static Enumeration<URL> getResources(String name) {
         Enumeration<URL> ret = null;
+
         try {
             ret = FileUtil.class.getClassLoader().getResources(name);
+
             if(ret!=null&&ret.hasMoreElements()) return ret;
             ret = FileUtil.class.getClassLoader().getResources("/"+name);
+
             if(ret!=null&&ret.hasMoreElements()) return ret;
             ret = ClassLoader.getSystemResources(name);
+
             if(ret!=null&&ret.hasMoreElements()) return ret;
             ret = ClassLoader.getSystemResources("/"+name);
+
             if(ret!=null&&ret.hasMoreElements()) return ret;
+            
             final URL urlx = findFile(name);
             if (urlx != null)
             {
@@ -1050,6 +1068,7 @@ public class FileUtil
      */
     public static URL findFile(String name)
     {
+
         if ((name == null)||(name.trim().equals(""))) return null;
         name = name.trim();
         return findFileExe(name, new File(FileUtil.getWorkingDirPath()));
