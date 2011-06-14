@@ -23,7 +23,7 @@
 	</pathconvert>
 
 	
-	<target name="build:caadapter-wars" depends="webstart:copy_resources" >	
+	<target name="build:caadapter-wars" depends="jar, webstart:copy_resources" >	
 		<antcall target="webstart:sign_resources">
 			<param name="RESOURCE_HOME" value="${dist.dir}/webstart"/>
 		</antcall>
@@ -36,14 +36,14 @@
 			</fileset>
 			<fileset dir="${web.src.dir}">
 					<include name="**/*.html"/>
-					<include name="**/*.jnlp"/>
+					<!-- include name="**/*.jnlp"/ -->
 			</fileset>
 			<!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
-			<lib dir="${web.src.dir}/WEB-INF/lib">
+			<!-- lib dir="${web.src.dir}/WEB-INF/lib">
 				<include name="jardiff.jar"/>
 				<include name="jnlp.jar"/>
 				<include name="jnlp-servlet.jar"/>
-			</lib>
+			</lib-->
 			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
 		</war>
 		<!--	
@@ -187,7 +187,7 @@
 		<echo message="java.ext.dirs:${java.ext.dirs}"/>
 	</target>
 	<target name="compile" depends="init">
-		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="off">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.5" debug="on" deprecation="off">
 			<!-- fork="yes" executable="c:\java\jdk1.6.0_20\bin\javac" -->
 			<include name="**/*.java" />
 			<classpath>
