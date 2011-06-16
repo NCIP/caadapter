@@ -123,17 +123,16 @@ public class MainMenuBar extends JMenuBar
 		menuItemMap.put(ActionConstants.CLOSE_ALL, closeAllMenuItem);
 
         JMenuItem exitMenuItem = null;
-        if (mainFrame.getAssociatedUIComponent() instanceof MainFrame)
-        {
-            DefaultExitAction exitAction = new DefaultExitAction((MainFrame) mainFrame.getAssociatedUIComponent());
+//        if (mainFrame.getAssociatedUIComponent() instanceof MainFrame)
+//        {
+            DefaultExitAction exitAction = new DefaultExitAction(mainFrame.getMainFrame());//.getAssociatedUIComponent());
 		    exitMenuItem = new JMenuItem(exitAction);
 		    actionMap.put(ActionConstants.EXIT, exitAction);
 		    menuItemMap.put(ActionConstants.EXIT, exitMenuItem);
-        }
+//        }
         // link them together
 		JMenu fileMenu = new JMenu(MenuConstants.FILE_MENU_NAME);
 		fileMenu.setMnemonic('F');
-//		fileMenu.add(constructNewMenu());
 		fileMenu.add(constructNewCmtsMenu());
 		fileMenu.addSeparator();
 		fileMenu.add(constructOpenMenu());
@@ -157,16 +156,6 @@ public class MainMenuBar extends JMenuBar
 	}
 
 
-	private JMenu constructNewMenu()
-	{
-		JMenu newGroup = new JMenu("" + MenuConstants.NEW_MENU_NAME);
-		//System.out.println("Activated components:\n" + CaadapterUtil.getAllActivatedComponents());
-		menuMap.put(MenuConstants.NEW_MENU_NAME, newGroup);
-
-        newGroup.add(constructNewCmtsMenu());
-
-		return newGroup;
-	}
 
 	private JMenu constructOpenMenu()
 	{
@@ -202,7 +191,7 @@ public class MainMenuBar extends JMenuBar
         actionMap.put(ActionConstants.NEW_XML_Transformation, newXmlMessage);
         menuItemMap.put(ActionConstants.NEW_XML_Transformation, newXmlTransformationItem);
         newGroup.add(newXmlTransformationItem);
-
+/**
         NewTransformationAction newCsvMessage = new NewTransformationAction(ActionConstants.NEW_CSV_Transformation, mainFrame);
         JMenuItem newCsvTransformationItem = new JMenuItem(newCsvMessage);
         actionMap.put(ActionConstants.NEW_CSV_Transformation, newCsvMessage);
@@ -233,6 +222,7 @@ public class MainMenuBar extends JMenuBar
         actionMap.put(ActionConstants.NEW_HL7_V2_CDA_Transformation, hl7v2ToCdaMessage);
         menuItemMap.put(ActionConstants.NEW_HL7_V2_CDA_Transformation, newXmlToCdaTransformationItem);
         newGroup.add(newHl77v2ToCdaTransformationItem);
+   **/
         return newGroup;
     }
 
