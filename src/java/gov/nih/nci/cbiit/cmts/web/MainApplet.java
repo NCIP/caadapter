@@ -34,6 +34,41 @@ public class MainApplet extends JApplet {
 
 public MainApplet() throws HeadlessException
 {
+    try
+		{
+			try
+			{
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			}
+			catch (ClassNotFoundException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			catch (InstantiationException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			catch (IllegalAccessException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			catch (UnsupportedLookAndFeelException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+			//	        Log.logException(new Object(), t);
+		}
+
+
         tabMap = new HashMap<Class, JComponent>();
         ContextManager contextManager = ContextManager.getContextManager();
 
@@ -176,7 +211,17 @@ public MainApplet() throws HeadlessException
         return tabbedPane;
     }
 
-        public void updateToolBar(JToolBar newToolBar) {
+    public boolean setCurrentPanelTitle(String newTitle) {
+		int seleIndex = tabbedPane.getSelectedIndex();
+		if (seleIndex != -1) {
+			tabbedPane.setTitleAt(seleIndex, newTitle);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+    public void updateToolBar(JToolBar newToolBar) {
         updateToolBar(newToolBar, null);
     }
 

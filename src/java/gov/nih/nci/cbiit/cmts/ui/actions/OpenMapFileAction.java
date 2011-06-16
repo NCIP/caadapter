@@ -173,28 +173,38 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 		{
 			public Object doInBackground() throws Exception
 			{
-				try
+                //System.out.println("SwingWorker. doInBackground() : 1");
+                try
 				{
-					GeneralUtilities.setCursorWaiting(mainFrame.getAssociatedUIContainer());
+
+                    GeneralUtilities.setCursorWaiting(mainFrame.getAssociatedUIContainer());
 					mainFrame.addNewTab(mappingPanel);
-					setSuccessfullyPerformed(true);
+                    //System.out.println("SwingWorker. doInBackground() 2 : " + mainFrame.getTabbedPane().getTitleAt(mainFrame.getTabbedPane().getComponentCount()-1));
+                    setSuccessfullyPerformed(true);
 				}
 				catch(Throwable t)
 				{
-					t.printStackTrace();
+                    System.out.println("SwingWorker. doInBackground() : 3");
+                    t.printStackTrace();
 					//Log.logException(getClass(), "May ignore and proceed", t);
 					setSuccessfullyPerformed(false);
 				}
 				finally
 				{
-					//back to normal, in case exception occurred.
+
+                    //back to normal, in case exception occurred.
 					GeneralUtilities.setCursorDefault(mainFrame.getAssociatedUIContainer());
-					return null;
+                    //System.out.println("SwingWorker. doInBackground() 4 : " + mainFrame.getTabbedPane().getTitleAt(mainFrame.getTabbedPane().getComponentCount()-1));
+
+                    return null;
 				}
 			}
 
 			protected void done() {
-				if (!isSuccessfullyPerformed())
+
+                //System.out.println("SwingWorker.done() 1 : " + mainFrame.getTabbedPane().getTitleAt(mainFrame.getTabbedPane().getComponentCount()-1));
+
+                if (!isSuccessfullyPerformed())
 				{//no need to proceed further
 					return ;
 				}
@@ -202,12 +212,18 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 				boolean everythingGood = true;
 				try
 				{
-					GeneralUtilities.setCursorWaiting(mainFrame.getAssociatedUIContainer());
-					mappingPanel.processOpenMapFile(file);
-				}
+
+                    GeneralUtilities.setCursorWaiting(mainFrame.getAssociatedUIContainer());
+                    //System.out.println("SwingWorker.done() 2 : " + mainFrame.getTabbedPane().getTitleAt(mainFrame.getTabbedPane().getComponentCount()-1));
+
+                    mappingPanel.processOpenMapFile(file);
+                    //System.out.println("SwingWorker.done() 3 : " + mainFrame.getTabbedPane().getTitleAt(mainFrame.getTabbedPane().getComponentCount()-1));
+
+                }
                 catch (Throwable e1)
 				{
-                    System.out.println("A2"+ e1.getMessage());
+                    //System.out.println("SwingWorker.done() : 4");
+
                     //log the exception, but not report
 					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame.getAssociatedUIComponent(), false, false);
 					//report the nice to have message
@@ -215,9 +231,12 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 				}
 				finally
 				{
-					//back to normal.
+
+                    //back to normal.
 					GeneralUtilities.setCursorDefault(mainFrame.getAssociatedUIContainer());
-					setSuccessfullyPerformed(everythingGood);
+                    //System.out.println("SwingWorker.done() 5 : " + mainFrame.getTabbedPane().getTitleAt(mainFrame.getTabbedPane().getComponentCount()-1));
+
+                    setSuccessfullyPerformed(everythingGood);
 
 					if (!everythingGood)
 					{//do the clean up.
@@ -248,7 +267,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 			openFile = file;
 			MappingMainPanel panel;
 			try {
-				panel = new MappingMainPanel();
+				panel = new MappingMainPanel(mainFrame);
 			
 				launchPanel(panel, file);
 			} catch (Exception e1) {
