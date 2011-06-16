@@ -79,7 +79,7 @@ public class NewMapFileAction extends AbstractContextAction
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
 	
-		MappingMainPanel mp = new MappingMainPanel();
+		MappingMainPanel mp = new MappingMainPanel(mainFrame);
 		mainFrame.addNewTab(mp);
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();

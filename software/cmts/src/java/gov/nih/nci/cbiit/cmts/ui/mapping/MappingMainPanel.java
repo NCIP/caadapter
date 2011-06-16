@@ -25,12 +25,14 @@ import gov.nih.nci.cbiit.cmts.ui.function.FunctionLibraryPane;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelMarqueeHandler;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesPage;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeMouseAdapter;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeSelectionHandler;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.web.MainApplet;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -44,6 +46,7 @@ import java.applet.Applet;
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
+import javax.xml.bind.JAXBException;
 
 import org.apache.xerces.xs.XSNamedMap;
 
@@ -81,20 +84,22 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	private MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
 	private MappingTargetTree tTree = null;
 	private MiddlePanelJGraphController graphController =null;
-	public MappingMainPanel() throws Exception
+    private MainFrameContainer mainFrame = null;
+    public MappingMainPanel(MainFrameContainer mainFrame) throws Exception
 	{
-		this("","calledFromConstructor","");
+		this("","calledFromConstructor","", mainFrame);
 	}
 
-	public MappingMainPanel(String sourceFile, String _flag) throws Exception
+	public MappingMainPanel(String sourceFile, String _flag, MainFrameContainer mainFrame) throws Exception
 	{
-		this(sourceFile, "calledFromConstructor", _flag);
+		this(sourceFile, "calledFromConstructor", _flag, mainFrame);
 	}
-	public MappingMainPanel(String sourceFile, String targetFile, String _flag) throws Exception
+	public MappingMainPanel(String sourceFile, String targetFile, String _flag, MainFrameContainer mainFrame) throws Exception
 	{
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());
-		middlePanel = new MappingMiddlePanel(this);
+        this.mainFrame = mainFrame;
+        middlePanel = new MappingMiddlePanel(this);
 		graphController = new MiddlePanelJGraphController(this);
 //		middlePanel.setGraphController(graphController);
 		MiddlePanelMarqueeHandler marquee=(MiddlePanelMarqueeHandler)middlePanel.getGraph().getMarqueeHandler();
@@ -299,8 +304,10 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 
 		JSplitPane leftRightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		DefaultSettings.setDefaultFeatureForJSplitPane(leftRightSplitPane);
-		leftRightSplitPane.setDividerLocation(0.85);
-		leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
+        int locDiv = (int) (mainFrame.getAssociatedUIContainer().getWidth() * 0.85);
+        leftRightSplitPane.setDividerLocation(locDiv); //.setDividerLocation(0.85);
+        //System.out.println("First locDiv : " + locDiv);
+        leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
 
 		leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
 		return leftRightSplitPane;
@@ -457,7 +464,9 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		JSplitPane centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		DefaultSettings.setDefaultFeatureForJSplitPane(centerSplitPane);
 
-		//construct source panel
+        int frameWidth = mainFrame.getAssociatedUIContainer().getWidth();
+
+        //construct source panel
 		JPanel sourceButtonPanel = new JPanel(new BorderLayout());
 		sourceButtonPanel.setBorder(BorderFactory.createEmptyBorder());
 		JPanel sourceLocationPanel = new JPanel(new BorderLayout(2, 0));
@@ -472,8 +481,9 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		sourceLocationPanel.add(sourceTreeToolBar, BorderLayout.WEST);
 
 		sourceLocationArea.setEditable(false);
-		sourceLocationArea.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
-		sourceLocationPanel.add(sourceLocationArea, BorderLayout.CENTER);
+		//sourceLocationArea.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
+        sourceLocationArea.setPreferredSize(new Dimension((frameWidth / 10), 24));
+	    sourceLocationPanel.add(sourceLocationArea, BorderLayout.CENTER);
 		
 		JButton openSourceButton = new JButton(SELECT_SOURCE);
 		sourceLocationPanel.add(openSourceButton, BorderLayout.EAST);
@@ -481,7 +491,8 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		openSourceButton.setToolTipText(SELECT_CSV_TIP);
 		openSourceButton.addActionListener(this);
 		sourceButtonPanel.add(sourceLocationPanel, BorderLayout.NORTH);
-		sourceScrollPane.setSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 4), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+		//sourceScrollPane.setSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 4), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+        sourceScrollPane.setSize(new Dimension((int)((frameWidth*0.85) / 4), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
 		sourceButtonPanel.add(sourceScrollPane, BorderLayout.CENTER);
 
 		//construct target panel
@@ -497,7 +508,8 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		//		targetTreeToolBar.add(targetTreeCollapseAllAction);
 		targetLocationPanel.add(targetTreeToolBar, BorderLayout.WEST);
 		targetLocationArea.setEditable(false);
-		targetLocationArea.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
+		//targetLocationArea.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
+        targetLocationArea.setPreferredSize(new Dimension((frameWidth / 10), 24));
 		targetLocationPanel.add(targetLocationArea, BorderLayout.CENTER);
 
 		JButton openTargetButton = new JButton(SELECT_TARGET);
@@ -507,26 +519,33 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		openTargetButton.addActionListener(this);
 		targetButtonPanel.add(targetLocationPanel, BorderLayout.NORTH);
 		targetButtonPanel.add(targetScrollPane, BorderLayout.CENTER);
-		targetButtonPanel.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 5), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
-		
+		//targetButtonPanel.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 5), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+        targetButtonPanel.setPreferredSize(new Dimension((int)((frameWidth*0.85) / 5), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+
 		//construct middle panel
 		JPanel middleContainerPanel = new JPanel(new BorderLayout());
 		JLabel placeHolderLabel = new JLabel();
-		placeHolderLabel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 3.5), 24));
+		//placeHolderLabel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 3.5), 24));
+        placeHolderLabel.setPreferredSize(new Dimension((int)((frameWidth*0.85) / 3.5), 24));
 		middleContainerPanel.add(placeHolderLabel, BorderLayout.NORTH);
 		middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
 
 		JSplitPane rightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		DefaultSettings.setDefaultFeatureForJSplitPane(rightSplitPane);
-		rightSplitPane.setDividerLocation(0.5);
-		rightSplitPane.setLeftComponent(middleContainerPanel);
+		//rightSplitPane.setDividerLocation(0.5);
+        rightSplitPane.setDividerLocation(50);
+        rightSplitPane.setLeftComponent(middleContainerPanel);
 		rightSplitPane.setRightComponent(targetButtonPanel);
 
-		centerSplitPane.setLeftComponent(sourceButtonPanel);
-		centerSplitPane.setRightComponent(rightSplitPane);
+        rightSplitPane.setDividerLocation((int)((frameWidth*0.85)/3));
 
-		topCenterPanel.add(centerSplitPane, BorderLayout.CENTER);
-		topCenterPanel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH * 0.8), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+        centerSplitPane.setLeftComponent(sourceButtonPanel);
+		centerSplitPane.setRightComponent(rightSplitPane);
+        centerSplitPane.setDividerLocation(((int)((frameWidth*0.85)/3)) - (centerSplitPane.getDividerSize()*2));
+
+        topCenterPanel.add(centerSplitPane, BorderLayout.CENTER);
+		//topCenterPanel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH * 0.8), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+        topCenterPanel.setPreferredSize(new Dimension((int) (frameWidth * 0.85), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
 
 		return topCenterPanel;
 
@@ -540,31 +559,51 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	 */
 	private JComponent getTopLevelRightPanel(boolean functionPaneRequired)
 	{
-		JSplitPane topBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
-		//topBottomSplitPane.setBorder(BorderFactory.createEtchedBorder());
-		topBottomSplitPane.setDividerLocation(0.5);
 
-		FunctionLibraryPane functionPane = new FunctionLibraryPane(this);
+		//DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
+		//topBottomSplitPane.setBorder(BorderFactory.createEtchedBorder());
+		//topBottomSplitPane.setDividerLocation(0.5);
+        //topBottomSplitPane.setDividerLocation(30);
+
+
+        FunctionLibraryPane functionPane = new FunctionLibraryPane(this);
 		functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
-		if(functionPaneRequired)
-		{
-			topBottomSplitPane.setTopComponent(functionPane);
-		}
+//		if(functionPaneRequired)
+//		{
+//			topBottomSplitPane.setTopComponent(functionPane);
+//		}
 		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(getGraphController().getPropertiesSwitchController());
-		topBottomSplitPane.setBottomComponent(propertiesPane);
+		//topBottomSplitPane.setBottomComponent(propertiesPane);
 
 		double topCenterFactor = 0.3;
-		Dimension rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 11), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT * topCenterFactor));
-		propertiesPane.setPreferredSize(rightMostDim);
+		//Dimension rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 11), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT * topCenterFactor));
+        Dimension rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 11), 50);
+	    propertiesPane.setPreferredSize(rightMostDim);
 		functionPane.setPreferredSize(rightMostDim);
 		//functionPane.getFunctionTree().getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
 
 		topCenterFactor = 1.5;
-		rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / topCenterFactor));
-		topBottomSplitPane.setPreferredSize(rightMostDim);
+		//rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / topCenterFactor));
+		//topBottomSplitPane.setPreferredSize(rightMostDim);
 
-		return topBottomSplitPane;
+        JSplitPane topBottomSplitPane = null;
+        if(functionPaneRequired)
+		{
+            topBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, functionPane, propertiesPane);
+            DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
+            int locDiv = (int) (mainFrame.getAssociatedUIContainer().getHeight() * 0.2);
+            if (locDiv < 130) locDiv = 130;
+            topBottomSplitPane.setDividerLocation(locDiv);
+            //System.out.println("VVVV topBottomSplitPane.getDividerLocation():" + topBottomSplitPane.getDividerLocation());
+        }
+        else
+        {
+            topBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JPanel(), propertiesPane);
+            DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
+            topBottomSplitPane.setDividerLocation(10);
+        }
+
+        return topBottomSplitPane;
 	}
 
 	public boolean isChanged() {
@@ -626,7 +665,31 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		buildSourceTree(mapping, null, false);
 		//build target tree
 		buildTargetTree(mapping, null, false);
-		getGraphController().setMappingData(mapping);
+
+        for (Component mapComp:mapping.getComponents().getComponent())
+		{
+            if (mapComp.getRootElement()==null) continue;
+
+            JTextField tField = null;
+            if (mapComp.getType().value().equals(ComponentType.SOURCE.value())) tField = sourceLocationArea;
+            if (mapComp.getType().value().equals(ComponentType.TARGET.value())) tField = targetLocationArea;
+
+            if (tField != null)
+            {
+                String c = mapComp.getLocation();
+                if (c == null) c = "";
+                else c = c.trim();
+                if (!c.equals(""))
+                {
+                    tField.setText(mapComp.getLocation());
+                    //tField.setEditable(true);
+                    //tField.setFocusable(false);
+                }
+            }
+            if (mapComp.getType().value().equals(ComponentType.TARGET.value())) targetLocationArea.setText(mapComp.getLocation());
+        }
+
+        getGraphController().setMappingData(mapping);
 		setSaveFile(file);
 		getMiddlePanel().renderInJGraph();
 		System.out.println("CmtsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
@@ -764,7 +827,11 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 			{
 				((MainFrame)container).setCurrentPanelTitle(newTitle);
 			}
-		}
+            if (container instanceof MainApplet)
+			{
+				((MainApplet)container).setCurrentPanelTitle(newTitle);
+			}
+        }
 	}
 
 	/**
