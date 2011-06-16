@@ -46,9 +46,12 @@ import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
  * @date       $Date: 2009-10-15 18:36:23 $
  *
  */
-public class MappingFactory {
+public class MappingFactory
+{
+    //private static String sourceFileLocation = null;
+    //private static String targetFileLocation = null;
 
-	public static void loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
+    public static void loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
 		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
 		if(e==null) 
@@ -132,9 +135,15 @@ public class MappingFactory {
             {
                 if (mapComp.getRootElement()!=null)
                 {
+                    if ((mapComp.getType() != ComponentType.SOURCE)&&
+                        (mapComp.getType() != ComponentType.TARGET)) continue;
+
                     XSDParser metaParser = new XSDParser();
                     metaParser.loadSchema(mapComp.getLocation(), f.getAbsolutePath());
                     MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
+                    //System.out.println("VVV name=" + mapComp.getRootElement().getName() + ", type=" + mapComp.getType().value());
+                    //if (mapComp.getType().value().equals(ComponentType.SOURCE.value())) sourceFileLocation = mapComp.getLocation();
+                    //if (mapComp.getType().value().equals(ComponentType.TARGET.value())) targetFileLocation = mapComp.getLocation();
                 }
             }
             catch(Exception ee)
@@ -301,7 +310,17 @@ public class MappingFactory {
 				mapComp.getRootElement().getAttrData().addAll(rootAttrListHash.get(mapComp.getLocation()+mapComp.getId()));
 			}
 		}
-	}	
+	}
+
+//    public String getSourceFileLocation()
+//    {
+//        return sourceFileLocation;
+//    }
+//    public String getTargetFileLocation()
+//    {
+//        return targetFileLocation;
+//    }
+
 }
 
 /**

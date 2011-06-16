@@ -197,7 +197,7 @@ public class MainFrame extends JFrame
 		tabMap.put(panel.getClass(), panel);
 	}
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMainFrame#closeTab()
 	 */
 	public void closeTab() {
