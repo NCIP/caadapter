@@ -26,6 +26,12 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.*;
+
+import netscape.javascript.JSObject;
+import netscape.javascript.JSException;
 
 /**
  * This class manages the definitions and instantiations of menu items. It will
@@ -42,141 +48,141 @@ import java.util.Map;
 public class MainMenuBar extends JMenuBar
 {
 
-	//ContextManager contextManager = null;
-	MainFrameContainer mainFrame = null;
-	private Map<String, AbstractContextAction> actionMap;
-	private Map<String, JMenuItem> menuItemMap;
-	private Map<String, JMenu> menuMap;
+    //ContextManager contextManager = null;
+    MainFrameContainer mainFrame = null;
+    private Map<String, AbstractContextAction> actionMap;
+    private Map<String, JMenuItem> menuItemMap;
+    private Map<String, JMenu> menuMap;
 
-	public MainMenuBar(MainFrameContainer mf)//ContextManager contextManager) {
-	{//this.contextManager = contextManager;
-		this.mainFrame = mf;//contextManager.getMainFrame();
-		initialize();
-	}
+    public MainMenuBar(MainFrameContainer mf)//ContextManager contextManager) {
+    {//this.contextManager = contextManager;
+        this.mainFrame = mf;//contextManager.getMainFrame();
+        initialize();
+    }
 
-	private void initialize()
-	{
-		actionMap = Collections.synchronizedMap(new HashMap<String, AbstractContextAction>());
-		menuItemMap = Collections.synchronizedMap(new HashMap<String, JMenuItem>());
-		menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
+    private void initialize()
+    {
+        actionMap = Collections.synchronizedMap(new HashMap<String, AbstractContextAction>());
+        menuItemMap = Collections.synchronizedMap(new HashMap<String, JMenuItem>());
+        menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
 
-		add(constructFileMenu());
-		JMenu helpMenu=new JMenu("Help");
-		helpMenu.add(new JMenuItem("About caAdapter CMTS"));
-		helpMenu.add(new JMenuItem("Help - Content and Index"));
-		add(helpMenu);
-	}
+        add(constructFileMenu());
+        JMenu helpMenu=new JMenu("Help");
+        helpMenu.add(new JMenuItem("About caAdapter CMTS"));
+        helpMenu.add(new JMenuItem("Help - Content and Index"));
+        add(helpMenu);
+    }
 
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#enableAction(java.lang.String, boolean)
-	 */
-	public void enableAction(String actionConstant, boolean value)
-	{
-		Action action = getDefinedAction(actionConstant);// (Action)actionMap.get(actionConstant);
-		if (action != null)
-		{
-			action.setEnabled(value);
-		} else
-		{
-			String msg = "Action could not be found for '" + actionConstant + "'.";
-			System.err.println(msg);
-			//Log.logWarning(this.getClass(), msg);
-		}
-	}
+    /* (non-Javadoc)
+      * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#enableAction(java.lang.String, boolean)
+      */
+    public void enableAction(String actionConstant, boolean value)
+    {
+        Action action = getDefinedAction(actionConstant);// (Action)actionMap.get(actionConstant);
+        if (action != null)
+        {
+            action.setEnabled(value);
+        } else
+        {
+            String msg = "Action could not be found for '" + actionConstant + "'.";
+            System.err.println(msg);
+            //Log.logWarning(this.getClass(), msg);
+        }
+    }
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#getDefinedAction(java.lang.String)
-	 */
-	public Action getDefinedAction(String actionConstant)
-	{
-		return (Action) actionMap.get(actionConstant);
-	}
+    /* (non-Javadoc)
+      * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#getDefinedAction(java.lang.String)
+      */
+    public Action getDefinedAction(String actionConstant)
+    {
+        return (Action) actionMap.get(actionConstant);
+    }
 
-	public JMenuItem getDefinedMenuItem(String actionConstant)
-	{
-		return (JMenuItem) menuItemMap.get(actionConstant);
-	}
+    public JMenuItem getDefinedMenuItem(String actionConstant)
+    {
+        return (JMenuItem) menuItemMap.get(actionConstant);
+    }
 
-	public JMenu getDefinedMenu(String actionConstant)
-	{
-		return (JMenu) menuMap.get(actionConstant);
-	}
+    public JMenu getDefinedMenu(String actionConstant)
+    {
+        return (JMenu) menuMap.get(actionConstant);
+    }
 
-	private JMenu constructFileMenu()
-	{
-		DefaultSaveAction defaultSaveAction = new DefaultSaveAction(mainFrame);
-		JMenuItem saveMenuItem = new JMenuItem(defaultSaveAction);
-		actionMap.put(ActionConstants.SAVE, defaultSaveAction);
-		menuItemMap.put(ActionConstants.SAVE, saveMenuItem);
-		DefaultSaveAsAction defaultSaveAsAction = new DefaultSaveAsAction(mainFrame);
-		JMenuItem saveAsMenuItem = new JMenuItem(defaultSaveAsAction);
-		actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
-		menuItemMap.put(ActionConstants.SAVE_AS, saveAsMenuItem);
-		DefaultCloseAction defaultCloseAction = new DefaultCloseAction(mainFrame);
-		JMenuItem closeMenuItem = new JMenuItem(defaultCloseAction);
-		actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
-		menuItemMap.put(ActionConstants.CLOSE, closeMenuItem);
-		DefaultCloseAllAction closeAllAction = new DefaultCloseAllAction(mainFrame);
-		JMenuItem closeAllMenuItem = new JMenuItem(closeAllAction);
-		actionMap.put(ActionConstants.CLOSE_ALL, closeAllAction);
-		menuItemMap.put(ActionConstants.CLOSE_ALL, closeAllMenuItem);
+    private JMenu constructFileMenu()
+    {
+        DefaultSaveAction defaultSaveAction = new DefaultSaveAction(mainFrame);
+        JMenuItem saveMenuItem = new JMenuItem(defaultSaveAction);
+        actionMap.put(ActionConstants.SAVE, defaultSaveAction);
+        menuItemMap.put(ActionConstants.SAVE, saveMenuItem);
+        DefaultSaveAsAction defaultSaveAsAction = new DefaultSaveAsAction(mainFrame);
+        JMenuItem saveAsMenuItem = new JMenuItem(defaultSaveAsAction);
+        actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
+        menuItemMap.put(ActionConstants.SAVE_AS, saveAsMenuItem);
+        DefaultCloseAction defaultCloseAction = new DefaultCloseAction(mainFrame);
+        JMenuItem closeMenuItem = new JMenuItem(defaultCloseAction);
+        actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
+        menuItemMap.put(ActionConstants.CLOSE, closeMenuItem);
+        DefaultCloseAllAction closeAllAction = new DefaultCloseAllAction(mainFrame);
+        JMenuItem closeAllMenuItem = new JMenuItem(closeAllAction);
+        actionMap.put(ActionConstants.CLOSE_ALL, closeAllAction);
+        menuItemMap.put(ActionConstants.CLOSE_ALL, closeAllMenuItem);
 
         JMenuItem exitMenuItem = null;
-//        if (mainFrame.getAssociatedUIComponent() instanceof MainFrame)
-//        {
-            DefaultExitAction exitAction = new DefaultExitAction(mainFrame.getMainFrame());//.getAssociatedUIComponent());
-		    exitMenuItem = new JMenuItem(exitAction);
-		    actionMap.put(ActionConstants.EXIT, exitAction);
-		    menuItemMap.put(ActionConstants.EXIT, exitMenuItem);
-//        }
+        if (isEnableExitMenu())
+        {
+            DefaultExitAction exitAction = new DefaultExitAction(mainFrame);//.getAssociatedUIComponent());
+            exitMenuItem = new JMenuItem(exitAction);
+            actionMap.put(ActionConstants.EXIT, exitAction);
+            menuItemMap.put(ActionConstants.EXIT, exitMenuItem);
+        }
         // link them together
-		JMenu fileMenu = new JMenu(MenuConstants.FILE_MENU_NAME);
-		fileMenu.setMnemonic('F');
-		fileMenu.add(constructNewCmtsMenu());
-		fileMenu.addSeparator();
-		fileMenu.add(constructOpenMenu());
-		fileMenu.addSeparator();
-		fileMenu.add(saveMenuItem);
-		fileMenu.add(saveAsMenuItem);
-		fileMenu.addSeparator();
-		fileMenu.add(closeMenuItem);
-		fileMenu.add(closeAllMenuItem);
+        JMenu fileMenu = new JMenu(MenuConstants.FILE_MENU_NAME);
+        fileMenu.setMnemonic('F');
+        fileMenu.add(constructNewCmtsMenu());
+        fileMenu.addSeparator();
+        fileMenu.add(constructOpenMenu());
+        fileMenu.addSeparator();
+        fileMenu.add(saveMenuItem);
+        fileMenu.add(saveAsMenuItem);
+        fileMenu.addSeparator();
+        fileMenu.add(closeMenuItem);
+        fileMenu.add(closeAllMenuItem);
         if (exitMenuItem != null)
         {
             fileMenu.addSeparator();
-		    fileMenu.add(exitMenuItem);
+            fileMenu.add(exitMenuItem);
         }
         menuMap.put(MenuConstants.FILE_MENU_NAME, fileMenu);
-		defaultSaveAction.setEnabled(false);
-		defaultSaveAsAction.setEnabled(false);
-		defaultCloseAction.setEnabled(false);
-		closeAllAction.setEnabled(false);
-		return fileMenu;
-	}
+        defaultSaveAction.setEnabled(false);
+        defaultSaveAsAction.setEnabled(false);
+        defaultCloseAction.setEnabled(false);
+        closeAllAction.setEnabled(false);
+        return fileMenu;
+    }
 
 
 
-	private JMenu constructOpenMenu()
-	{
-		// construct actions and menu items.
-		OpenMapFileAction openMapAction = new OpenMapFileAction(mainFrame);
+    private JMenu constructOpenMenu()
+    {
+        // construct actions and menu items.
+        OpenMapFileAction openMapAction = new OpenMapFileAction(mainFrame);
 
-		JMenuItem openMapFileItem = new JMenuItem(openMapAction);
-		actionMap.put(ActionConstants.OPEN_MAP_FILE, openMapAction);
-		menuItemMap.put(ActionConstants.OPEN_MAP_FILE, openMapFileItem);
+        JMenuItem openMapFileItem = new JMenuItem(openMapAction);
+        actionMap.put(ActionConstants.OPEN_MAP_FILE, openMapAction);
+        menuItemMap.put(ActionConstants.OPEN_MAP_FILE, openMapFileItem);
 
-		// link them together
-		JMenu openMenu = new JMenu("      " + MenuConstants.OPEN_MENU_NAME);
-		openMenu.setMnemonic('O');
-		openMenu.add(openMapFileItem);
+        // link them together
+        JMenu openMenu = new JMenu("      " + MenuConstants.OPEN_MENU_NAME);
+        openMenu.setMnemonic('O');
+        openMenu.add(openMapFileItem);
 
-		return openMenu;
-	}
+        return openMenu;
+    }
 
     private JMenu constructNewCmtsMenu()
     {
-    	//user should be authorized to use HL7 artifacts
+        //user should be authorized to use HL7 artifacts
         JMenu newGroup = new JMenu("New");
         newGroup.setMnemonic('N');
 
@@ -227,80 +233,80 @@ public class MainMenuBar extends JMenuBar
     }
 
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#resetMenus(boolean)
-	 */
-	public void resetMenus(boolean hasActiveDocument)
-	{// provide structure for
-		// more menus to be
-		// reset
-		resetFileMenu(hasActiveDocument);
+    /* (non-Javadoc)
+      * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#resetMenus(boolean)
+      */
+    public void resetMenus(boolean hasActiveDocument)
+    {// provide structure for
+        // more menus to be
+        // reset
+        resetFileMenu(hasActiveDocument);
 //		resetReportMenu(hasActiveDocument);
-	}
+    }
 
-	private void resetFileMenu(boolean hasActiveDocument)
-	{
-		resetNewSubMenu(hasActiveDocument);
-		resetOpenSubMenu(hasActiveDocument);
-		JMenuItem saveMenuItem = menuItemMap.get(ActionConstants.SAVE);
-		JMenuItem saveAsMenuItem = menuItemMap.get(ActionConstants.SAVE_AS);
+    private void resetFileMenu(boolean hasActiveDocument)
+    {
+        resetNewSubMenu(hasActiveDocument);
+        resetOpenSubMenu(hasActiveDocument);
+        JMenuItem saveMenuItem = menuItemMap.get(ActionConstants.SAVE);
+        JMenuItem saveAsMenuItem = menuItemMap.get(ActionConstants.SAVE_AS);
 //		JMenuItem validateMenuItem = menuItemMap.get(ActionConstants.VALIDATE);
 //		JMenuItem closeMenuItem = menuItemMap.get(ActionConstants.CLOSE);
 //		JMenuItem closeAllMenuItem = menuItemMap.get(ActionConstants.CLOSE_ALL);
 //		JMenuItem anotateMenuItem = menuItemMap.get(ActionConstants.ANOTATE);
-		//		saveMenuItem.setAction(null);
-		//		saveMenuItem.setAction(defaultSaveAction);
-		//		actionMap.put(ActionConstants.SAVE, defaultSaveAction);
-		//		saveAsMenuItem.setAction(null);
-		//		saveAsMenuItem.setAction(defaultSaveAsAction);
-		//		actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
-		//		anotateMenuItem.setAction(null);
-		//		anotateMenuItem.setAction(defaultAnotateAction);
-		//		actionMap.put(ActionConstants.ANOTATE, defaultAnotateAction);
-		//		validateMenuItem.setAction(null);
-		//		validateMenuItem.setAction(defaultValidateAction);
-		//		actionMap.put(ActionConstants.VALIDATE, defaultValidateAction);
-		//		closeMenuItem.setAction(null);
-		//		closeMenuItem.setAction(defaultCloseAction);
-		//		actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
-		saveMenuItem.getAction().setEnabled(false);
-		saveAsMenuItem.getAction().setEnabled(false);
+        //		saveMenuItem.setAction(null);
+        //		saveMenuItem.setAction(defaultSaveAction);
+        //		actionMap.put(ActionConstants.SAVE, defaultSaveAction);
+        //		saveAsMenuItem.setAction(null);
+        //		saveAsMenuItem.setAction(defaultSaveAsAction);
+        //		actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
+        //		anotateMenuItem.setAction(null);
+        //		anotateMenuItem.setAction(defaultAnotateAction);
+        //		actionMap.put(ActionConstants.ANOTATE, defaultAnotateAction);
+        //		validateMenuItem.setAction(null);
+        //		validateMenuItem.setAction(defaultValidateAction);
+        //		actionMap.put(ActionConstants.VALIDATE, defaultValidateAction);
+        //		closeMenuItem.setAction(null);
+        //		closeMenuItem.setAction(defaultCloseAction);
+        //		actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
+        saveMenuItem.getAction().setEnabled(false);
+        saveAsMenuItem.getAction().setEnabled(false);
 //		anotateMenuItem.getAction().setEnabled(false);
 //		validateMenuItem.getAction().setEnabled(false);
 //		closeMenuItem.getAction().setEnabled(false);
 //		closeAllMenuItem.getAction().setEnabled(hasActiveDocument);
-	}
+    }
 
-	private void resetNewSubMenu(boolean hasActiveDocument)
-	{
-		if (!hasActiveDocument)
-		{
-			//			menuItemMap.get(ActionConstants.NEW_MAP_FILE).getAction().setEnabled(true);
-			resetMenuItem(ActionConstants.NEW_MAP_FILE, true);
-			//			newMapFileItem.getAction().setEnabled(true);
-			//			newCSVSpecificationItem.getAction().setEnabled(true);
-			//			menuItemMap.get(ActionConstants.NEW_CSV_SPEC).getAction().setEnabled(true);
-		}
-	}
+    private void resetNewSubMenu(boolean hasActiveDocument)
+    {
+        if (!hasActiveDocument)
+        {
+            //			menuItemMap.get(ActionConstants.NEW_MAP_FILE).getAction().setEnabled(true);
+            resetMenuItem(ActionConstants.NEW_MAP_FILE, true);
+            //			newMapFileItem.getAction().setEnabled(true);
+            //			newCSVSpecificationItem.getAction().setEnabled(true);
+            //			menuItemMap.get(ActionConstants.NEW_CSV_SPEC).getAction().setEnabled(true);
+        }
+    }
 
-	private void resetMenuItem(String itemName, boolean newValue)
-	{
-		JMenuItem menuItem = menuItemMap.get(itemName);
-		if (menuItem != null)
-		{
-			Action a = menuItem.getAction();
-			if (a != null)
-				a.setEnabled(newValue);
-		}
-	}
+    private void resetMenuItem(String itemName, boolean newValue)
+    {
+        JMenuItem menuItem = menuItemMap.get(itemName);
+        if (menuItem != null)
+        {
+            Action a = menuItem.getAction();
+            if (a != null)
+                a.setEnabled(newValue);
+        }
+    }
 
-	private void resetOpenSubMenu(boolean hasActiveDocument)
-	{
-		if (!hasActiveDocument)
-		{
-			resetMenuItem(ActionConstants.OPEN_MAP_FILE, true);
-		}
-	}
+    private void resetOpenSubMenu(boolean hasActiveDocument)
+    {
+        if (!hasActiveDocument)
+        {
+            resetMenuItem(ActionConstants.OPEN_MAP_FILE, true);
+        }
+    }
 
 //	private void resetReportMenu(boolean hasActiveDocument)
 //	{
@@ -310,18 +316,51 @@ public class MainMenuBar extends JMenuBar
 //		}
 //	}
 
-	public void enableCloseAllAction(boolean newValue)
-	{
-		Action closeAllAction = actionMap.get(ActionConstants.CLOSE_ALL);
-		if (closeAllAction != null)
-		{
-			closeAllAction.setEnabled(newValue);
-			JMenuItem closeAllMenuItem = menuItemMap.get(ActionConstants.CLOSE_ALL);
-			closeAllMenuItem.setAction(null);
-			closeAllMenuItem.setAction(closeAllAction);
-			// closeAllMenuItem.invalidate();
-		}
-	}
+    public void enableCloseAllAction(boolean newValue)
+    {
+        Action closeAllAction = actionMap.get(ActionConstants.CLOSE_ALL);
+        if (closeAllAction != null)
+        {
+            closeAllAction.setEnabled(newValue);
+            JMenuItem closeAllMenuItem = menuItemMap.get(ActionConstants.CLOSE_ALL);
+            closeAllMenuItem.setAction(null);
+            closeAllMenuItem.setAction(closeAllAction);
+            // closeAllMenuItem.invalidate();
+        }
+    }
+
+    private boolean isEnableExitMenu()
+    {
+        if (mainFrame.getMainFrame() != null)
+        {
+            //System.out.println("Run on the MainFrame");
+            return true;
+        }
+        if (mainFrame.getMainApplet() != null)
+        {
+            try
+            {
+                JSObject jsOb = (JSObject) JSObject.getWindow(mainFrame.getMainApplet());
+                //System.out.println("Run on a Web Browser : " + jsOb.getClass().getCanonicalName());
+                return true;
+            }
+            catch(JSException je)
+            {
+                Container com = mainFrame.getMainApplet();
+                while(com != null)
+                {
+                    //System.out.println("  This Container: " + com.getClass().getCanonicalName());
+                    if (com instanceof Window)
+                    {
+                        //System.out.println("Run on a AppletViewer or another Applet applecation: " + com.getClass().getCanonicalName());
+                        return true;
+                    }
+                    com = com.getParent();
+                }
+            }
+        }
+        return true;
+    }
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
