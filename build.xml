@@ -4,9 +4,13 @@
 	<property file="./build.properties" />
 	<property name="build.compiler" value="modern" />
 	<path id="project.class.path">
-		<fileset dir="./lib">
+		<fileset dir="${lib.dir}">
+		    
 			<include name="**/*.jar" />
+			
 			<include name="**/*.zip" />
+            
+            
 		</fileset>
 	</path>
 
@@ -76,6 +80,7 @@
 				<include name="saxon9-xqj.jar"/>
 				<include name="xbean.jar"/>
 				<include name="xercesImpl.jar"/>
+				<include name="plugin.jar"/>
 			</fileset>
 			<!-- <fileset dir="${dist.dir}/../caadapter-api"> -->
 			<fileset dir="${dist.dir}">
@@ -174,7 +179,9 @@
 	<target name="init" depends="clean">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist.dir}" />
-		<echo message="java.class.path:${java.class.path}"/>
+		<echo message="java.class.path:${java.class.path}"/> 
+		<echo message="project.class.path:${project.class.path}"/> 
+		<!--<echo message="java.class.path:${project.class.path}"/>-->
 		<tstamp>
 			<format property="DATE" pattern="MM-dd-yy" locale="en_us" />
 		</tstamp>
