@@ -9,14 +9,8 @@ import gov.nih.nci.cbiit.cmts.ui.mapping.MainToolBarHandler;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 
 
-import java.awt.AWTEvent;
-import java.awt.BorderLayout;
-
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.HeadlessException;
-import java.awt.Image;
+import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -241,4 +235,16 @@ public MainApplet() throws HeadlessException
         currentToolBarPanel.add(rightSidePanel, BorderLayout.EAST);
         toolBarPanel.add(currentToolBarPanel, BorderLayout.SOUTH);
     }
+
+    public void processWindowEvent(WindowEvent e, Window win) {
+		//		Log.logInfo(this, "processWindowEvent() invoked with '" + e + "'.");
+		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+			//his.getMenuBar();
+            if (win != null) win.dispose();
+            this.setVisible(false);
+		    this.stop();
+		//	Log.logInfo(this, "\r\n\r\nShutting down logging with exit code = " + errorLevel + "\r\n\r\n" + "===============================================================\r\n" + "===============================================================\r\n");
+		    System.exit(0);
+		}
+	}
 }

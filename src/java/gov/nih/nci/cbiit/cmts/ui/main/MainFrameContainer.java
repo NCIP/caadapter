@@ -30,6 +30,10 @@ public class MainFrameContainer
     {
         return mainFrame;
     }
+    public MainApplet getMainApplet()
+    {
+        return mainApplet;
+    }
 
     public void setFrameContainer(MainFrame mf)
     {
