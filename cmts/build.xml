@@ -40,14 +40,14 @@
 			</fileset>
 			<fileset dir="${web.src.dir}">
 					<include name="**/*.html"/>
-					<!-- include name="**/*.jnlp"/ -->
+					<exclude name="**/*webstart*"/>
 			</fileset>
 			<!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
 			<!-- lib dir="${web.src.dir}/WEB-INF/lib">
 				<include name="jardiff.jar"/>
 				<include name="jnlp.jar"/>
 				<include name="jnlp-servlet.jar"/>
-			</lib-->
+			</lib -->
 			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
 		</war>
 		<!--	
@@ -58,6 +58,7 @@
 		
 		<delete dir="${dist.dir}/webstart" failonerror="false"/>
         -->
+        <!-- copy file="${dist.dir}/${webstart.warfile.name}" tofile="C:\apps\caadapter-webapp\jboss-5.1.0.GA\server\default\deploy\caadapter-cmts.war" overwrite="true" / -->
 	</target>
    	
 	<target name="webstart:copy_resources" description="Perpare web start resources...">  
@@ -68,10 +69,10 @@
 				<include name="commons-beanutils.jar"/>
 				<include name="commons-logging-1.0.4.jar"/>
 				<include name="dom4j-1.4.jar"/>
-				<include name="encoderframework.jar"/>
+				<!-- include name="encoderframework.jar"/>
 				<include name="encoderfrmwk-xsdextension.jar"/>
 				<include name="hl7.jar"/>
-				<include name="hl7encoder-xsdextension.jar"/>
+				<include name="hl7encoder-xsdextension.jar"/ -->
 				<include name="jaxen-jdom.jar"/>
 				<include name="jdom.jar"/>
 				<include name="jgraph.jar"/>	
@@ -82,7 +83,6 @@
 				<include name="xercesImpl.jar"/>
 				<include name="plugin.jar"/>
 			</fileset>
-			<!-- <fileset dir="${dist.dir}/../caadapter-api"> -->
 			<fileset dir="${dist.dir}">
 				<include name="cmts.jar"/>
 				<include name="cmtsUI.jar"/>
