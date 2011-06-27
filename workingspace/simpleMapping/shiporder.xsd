@@ -19,10 +19,36 @@
  </xs:restriction>
 </xs:simpleType>
 
+<xs:complexType name="CDE_type" abstract="true">
+	<xs:simpleContent>
+      	<xs:extension base="stringtype">
+ 			<xs:attribute name="publicId" type="stringtype" use="optional"/>
+  			<xs:attribute name="version" type="stringtype" use="optional"/>
+  		</xs:extension>
+  	</xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="CDE_name" >
+	<xs:complexContent>
+		<xs:restriction base="CDE_type">
+			<xs:attribute name="publicId" fixed="2222323"/>
+	  		<xs:attribute name="version" fixed="1.0"/>
+		</xs:restriction>
+	</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CDE_address" >
+	<xs:complexContent>
+		<xs:restriction base="CDE_type">
+			<xs:attribute name="publicId" fixed="2199956"/>
+	  		<xs:attribute name="version" fixed="1.0"/>
+		</xs:restriction>
+	</xs:complexContent>
+</xs:complexType>
+
 <xs:complexType name="shiptotype">
  <xs:sequence>
-  <xs:element name="name" type="stringtype"/>
-  <xs:element name="address" type="stringtype"/>
+  <xs:element name="name" type="CDE_name"/>
+  <xs:element name="address" type="CDE_address"/>
   <xs:element name="city" type="stringtype"/>
   <xs:element name="country" type="stringtype"/>
  </xs:sequence>
