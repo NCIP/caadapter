@@ -22,8 +22,8 @@
 <xs:complexType name="CDE_type" abstract="true">
 	<xs:simpleContent>
       	<xs:extension base="stringtype">
- 			<xs:attribute name="publicId" type="stringtype" use="optional"/>
-  			<xs:attribute name="version" type="stringtype" use="optional"/>
+ 			<xs:attribute name="PUBLICID" type="stringtype" use="optional"/>
+  			<xs:attribute name="VERSION" type="stringtype" use="optional"/>
   		</xs:extension>
   	</xs:simpleContent>
 </xs:complexType>
@@ -31,16 +31,16 @@
 <xs:complexType name="CDE_name" >
 	<xs:complexContent>
 		<xs:restriction base="CDE_type">
-			<xs:attribute name="publicId" fixed="2222323"/>
-	  		<xs:attribute name="version" fixed="1.0"/>
+			<xs:attribute name="PUBLICID" fixed="2222323"/>
+	  		<xs:attribute name="VERSION" fixed="1.0"/>
 		</xs:restriction>
 	</xs:complexContent>
 </xs:complexType>
 <xs:complexType name="CDE_address" >
 	<xs:complexContent>
 		<xs:restriction base="CDE_type">
-			<xs:attribute name="publicId" fixed="2199956"/>
-	  		<xs:attribute name="version" fixed="1.0"/>
+			<xs:attribute name="PUBLICID" fixed="2199956"/>
+	  		<xs:attribute name="VERSION" fixed="1.0"/>
 		</xs:restriction>
 	</xs:complexContent>
 </xs:complexType>
