@@ -13,6 +13,24 @@
  <xs:restriction base="xs:decimal"/>
 </xs:simpleType>
 
+<xs:complexType name="CDE_type" abstract="true">
+	<xs:simpleContent>
+      	<xs:extension base="stringtype">
+ 			<xs:attribute name="PUBLICID" type="stringtype" use="optional"/>
+  			<xs:attribute name="VERSION" type="stringtype" use="optional"/>
+  		</xs:extension>
+  	</xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="CDE_name" >
+	<xs:complexContent>
+		<xs:restriction base="CDE_type">
+			<xs:attribute name="PUBLICID" fixed="2222323"/>
+	  		<xs:attribute name="VERSION" fixed="1.0"/>
+		</xs:restriction>
+	</xs:complexContent>
+</xs:complexType>
+
 <xs:simpleType name="orderidtype">
  <xs:restriction base="xs:string">
   <xs:pattern value="[0-9]{6}"/>
@@ -21,7 +39,7 @@
 
 <xs:complexType name="addresstype">
  <xs:sequence>
-  <xs:element name="name" type="stringtype"/>
+  <xs:element name="name" type="CDE_name"/>
   <xs:element name="street" type="stringtype"/>
   <xs:element name="city" type="stringtype"/>
   <xs:element name="country" type="stringtype"/>
