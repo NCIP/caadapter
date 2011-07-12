@@ -96,22 +96,22 @@ public MainApplet() throws HeadlessException
 
     private Component constructCenterPanel() {
         JPanel rtnPanel=new JPanel();
-        ImageIcon ii1 = new ImageIcon(DefaultSettings.getImage("default_scr.gif"));
-        JLabel baseScreenJLabel = new JLabel(ii1);
-        ii1.setImageObserver(baseScreenJLabel);
-        rtnPanel.add(baseScreenJLabel);
+//        ImageIcon ii1 = new ImageIcon(DefaultSettings.getImage("default_scr.gif"));
+//        JLabel baseScreenJLabel = new JLabel(ii1);
+//        ii1.setImageObserver(baseScreenJLabel);
+//        rtnPanel.add(baseScreenJLabel);
         rtnPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
         rtnPanel.setOpaque(false);
         return rtnPanel;
     }
 
     private JPanel constructNorthPanel() {
-        Image bannerImage = DefaultSettings.getImage("NCICBBanner.jpg");
-        ImageIcon imageIcon = new ImageIcon(bannerImage);
+//        Image bannerImage = DefaultSettings.getImage("NCICBBanner.jpg");
+//        ImageIcon imageIcon = new ImageIcon(bannerImage);
         toolBarPanel = new JPanel(new BorderLayout());
         JPanel northUpperPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        JLabel label = new JLabel(imageIcon);
-        northUpperPanel.add(label);
+//        JLabel label = new JLabel(imageIcon);
+//        northUpperPanel.add(label);
         toolBarPanel.add(northUpperPanel, BorderLayout.NORTH);
         currentToolBarPanel = constructToolbarPanel();
         toolBarPanel.add(currentToolBarPanel, BorderLayout.SOUTH);
