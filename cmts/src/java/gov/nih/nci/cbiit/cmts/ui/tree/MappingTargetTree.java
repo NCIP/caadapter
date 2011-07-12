@@ -7,9 +7,6 @@
  */
 package gov.nih.nci.cbiit.cmts.ui.tree;
 
-
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.JPanel;
 
@@ -29,102 +26,6 @@ public class MappingTargetTree extends MappingBaseTree
 	{
 		super(m, root);
 	}
-
-	protected void loadData()
-	{
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("SubstanceAdministrationEvent");
-		DefaultMutableTreeNode clone;
-		DefaultMutableTreeNode clone_child;
-		DefaultMutableTreeNode dt;
-		DefaultMutableTreeNode att;
-
-		// set the root.
-		DefaultTreeModel dtm = new DefaultTreeModel(root);
-		setModel(dtm);
-
-		// setup datatypes off root.
-		dt = new DefaultMutableTreeNode("code");
-		root.add(dt);
-		att = new DefaultMutableTreeNode("code");
-		dt.add(att);
-		att = new DefaultMutableTreeNode("codeSystemName");
-		dt.add(att);
-		att = new DefaultMutableTreeNode("displayName");
-		dt.add(att);
-		att = new DefaultMutableTreeNode("codeSystemVersion");
-		dt.add(att);
-
-		dt = new DefaultMutableTreeNode("classcode");
-		root.add(dt);
-		att = new DefaultMutableTreeNode("code");
-		dt.add(att);
-
-		dt = new DefaultMutableTreeNode("moodcode");
-		root.add(dt);
-		att = new DefaultMutableTreeNode("code");
-		dt.add(att);
-
-		dt = new DefaultMutableTreeNode("effectiveTime");
-		root.add(dt);
-		att = new DefaultMutableTreeNode("value");
-		dt.add(att);
-
-		dt = new DefaultMutableTreeNode("routeCode");
-		root.add(dt);
-		att = new DefaultMutableTreeNode("code");
-		dt.add(att);
-
-		dt = new DefaultMutableTreeNode("doseQuantity");
-		root.add(dt);
-		att = new DefaultMutableTreeNode("value");
-		dt.add(att);
-		att = new DefaultMutableTreeNode("unit");
-		dt.add(att);
-
-		// set up a clone off the root.
-		clone = new DefaultMutableTreeNode("directTarget");
-		root.add(clone);
-		dt = new DefaultMutableTreeNode("typeCode", false);
-		clone.add(dt);
-
-		dt = new DefaultMutableTreeNode("manufacturedProduct");
-		clone.add(dt);
-
-		clone = new DefaultMutableTreeNode("manufacturedDrugInstance");
-		dt.add(clone);
-
-		dt = new DefaultMutableTreeNode("name");
-		clone.add(dt);
-
-		att = new DefaultMutableTreeNode("inlineText");
-		dt.add(att);
-
-		dt = new DefaultMutableTreeNode("expirationTime");
-		clone.add(dt);
-
-		att = new DefaultMutableTreeNode("high");
-		dt.add(att);
-
-		// set up a clone off the root.
-		clone = new DefaultMutableTreeNode("pertinentInformation1");
-		root.add(clone);
-		dt = new DefaultMutableTreeNode("typeCode");
-		clone.add(dt);
-		att = new DefaultMutableTreeNode("code");
-		dt.add(att);
-
-		clone_child = new DefaultMutableTreeNode("pertinentObservationDx");
-		clone.add(clone_child);
-
-
-		clone = new DefaultMutableTreeNode("authorOrPerformer");
-		root.add(clone);
-		dt = new DefaultMutableTreeNode("or more clones", false);
-		clone.add(dt);
-
-	}
-
-
 }
 
 /**
