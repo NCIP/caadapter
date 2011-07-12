@@ -12,10 +12,14 @@ package gov.nih.nci.cbiit.cmts.ui.properties;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.mapping.CDEPropertyPanel;
+
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
@@ -30,11 +34,12 @@ import javax.swing.event.ChangeEvent;
  * @version    $Revision: 1.3 $
  * @date       $Date: 2009-10-28 15:01:45 $
  */
-public class DefaultPropertiesPage extends JPanel
+public class DefaultPropertiesPage extends JSplitPane
 {
 	private TitledBorder titledBorder = null;
 	private PropertiesSwitchController propertiesController;
 	private DefaultPropertiesTableModel tableModel;
+	private CDEPropertyPanel cdePane;
 
 	/**
 	 * Creates a new <code>JPanel</code> with a double buffer
@@ -42,6 +47,7 @@ public class DefaultPropertiesPage extends JPanel
 	 */
 	public DefaultPropertiesPage(PropertiesSwitchController propertiesController)
 	{
+		super(JSplitPane.VERTICAL_SPLIT);
 		this.propertiesController = propertiesController;
 		if(propertiesController!=null)
 			this.propertiesController.setPropertiesPage(this);
@@ -50,7 +56,6 @@ public class DefaultPropertiesPage extends JPanel
 
 	private void initialize()
 	{
-        setLayout(new BorderLayout());
         JScrollPane scrollPane = new JScrollPane();
 		tableModel = new DefaultPropertiesTableModel(propertiesController);
 		JTable propertiesTable = new JTable(tableModel);
@@ -59,15 +64,22 @@ public class DefaultPropertiesPage extends JPanel
 		tableListSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.getViewport().setView(propertiesTable);
 		titledBorder = BorderFactory.createTitledBorder(propertiesController!=null?propertiesController.getTitleOfPropertiesPage():"info");
-		scrollPane.setBorder(titledBorder);
-		this.add(scrollPane, BorderLayout.CENTER);
+		setBorder(titledBorder);
+
+		cdePane=new CDEPropertyPanel();
+		setTopComponent(cdePane);
+		setBottomComponent( scrollPane );
 		setPreferredSize(new Dimension(DefaultSettings.FRAME_DEFAULT_WIDTH /4, DefaultSettings.FRAME_DEFAULT_HEIGHT / 10));
+		setDividerLocation(0.8);
 	}
 
 	public void updateProptiesDisplay(ChangeEvent e)
 	{
 		titledBorder.setTitle(propertiesController.getTitleOfPropertiesPage());
 		tableModel.setPropertiesResult(propertiesController.getPropertyDescriptors());
+		cdePane.updateSelection(propertiesController.getSelectedItem());
+
+		
 		this.repaint();
 	}
 }
