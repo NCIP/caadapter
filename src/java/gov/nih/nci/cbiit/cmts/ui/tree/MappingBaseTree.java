@@ -42,15 +42,8 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 		this.setCellRenderer(new DefaultMappingTreeCellRender());
 		this.addTreeExpansionListener(this);
 		rootTreeNode=root;
-		if (root != null)
-		{
-			DefaultTreeModel dtm = new DefaultTreeModel(root);
-			setModel(dtm);
-		}
-		else
-		{//load in dummy data--implemented by sub-classes
-			loadData();
-		}
+		DefaultTreeModel dtm = new DefaultTreeModel(root);
+		setModel(dtm);
 	}
 
 	public void treeExpanded(TreeExpansionEvent event)
@@ -133,14 +126,6 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 	}
 
 
-//	protected void paintComponent(Graphics g)
-//	{
-//		//System.out.println("enter MappingBaseTree.paintComponent.");
-//		super.paintComponent(g);
-//		//System.out.println("leave MappingBaseTree.paintComponent.");
-//	}
-
-	protected abstract void loadData();
 
 	/**
 	 * If any of the ancestor nodes are collapsed,
