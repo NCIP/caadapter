@@ -99,6 +99,9 @@ public class ElementMetaLoader implements Serializable
 		for (int i = 0; i < fields.size(); i++)
 		{
 			AttributeMeta fieldMeta = fields.get(i);
+			if (fieldMeta.getName().equals("PUBLICID")
+					|| fieldMeta.getName().equals("VERSION"))
+				continue;
 			node.add(constructTreeNode(fieldMeta, false));
 		}
 	

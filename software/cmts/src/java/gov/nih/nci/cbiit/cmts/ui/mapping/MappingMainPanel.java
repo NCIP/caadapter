@@ -87,15 +87,6 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
     private MainFrameContainer mainFrame = null;
     public MappingMainPanel(MainFrameContainer mainFrame) throws Exception
 	{
-		this("","calledFromConstructor","", mainFrame);
-	}
-
-	public MappingMainPanel(String sourceFile, String _flag, MainFrameContainer mainFrame) throws Exception
-	{
-		this(sourceFile, "calledFromConstructor", _flag, mainFrame);
-	}
-	public MappingMainPanel(String sourceFile, String targetFile, String _flag, MainFrameContainer mainFrame) throws Exception
-	{
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());
         this.mainFrame = mainFrame;
@@ -105,18 +96,6 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		MiddlePanelMarqueeHandler marquee=(MiddlePanelMarqueeHandler)middlePanel.getGraph().getMarqueeHandler();
 		marquee.setController(graphController);
 		this.add(getCenterPanel(true), BorderLayout.CENTER);
-		if (!sourceFile.equals(""))
-			processOpenSourceTree(new File(sourceFile), false, false);
-
-		if ((targetFile == null)||(targetFile.equals(""))) throw new Exception("Empty Target File");
-		if (!targetFile.equals("calledFromConstructor"))
-		{
-			File file = new File(targetFile);
-			if (!file.exists()) throw new Exception("Target File is Not exist. : " + targetFile);
-			if (!file.isFile()) throw new Exception("Target File is Not a file. : " + targetFile);
-			boolean success = processOpenTargetTree(file, true, true);
-			if (!success) throw new Exception("GEN3");
-		}
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -560,31 +539,13 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	private JComponent getTopLevelRightPanel(boolean functionPaneRequired)
 	{
 
-		//DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
-		//topBottomSplitPane.setBorder(BorderFactory.createEtchedBorder());
-		//topBottomSplitPane.setDividerLocation(0.5);
-        //topBottomSplitPane.setDividerLocation(30);
-
-
         FunctionLibraryPane functionPane = new FunctionLibraryPane(this);
 		functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
-//		if(functionPaneRequired)
-//		{
-//			topBottomSplitPane.setTopComponent(functionPane);
-//		}
-		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(getGraphController().getPropertiesSwitchController());
-		//topBottomSplitPane.setBottomComponent(propertiesPane);
 
-		double topCenterFactor = 0.3;
-		//Dimension rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 11), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT * topCenterFactor));
+		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(getGraphController().getPropertiesSwitchController());
         Dimension rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 11), 50);
 	    propertiesPane.setPreferredSize(rightMostDim);
 		functionPane.setPreferredSize(rightMostDim);
-		//functionPane.getFunctionTree().getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
-
-		topCenterFactor = 1.5;
-		//rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / topCenterFactor));
-		//topBottomSplitPane.setPreferredSize(rightMostDim);
 
         JSplitPane topBottomSplitPane = null;
         if(functionPaneRequired)
