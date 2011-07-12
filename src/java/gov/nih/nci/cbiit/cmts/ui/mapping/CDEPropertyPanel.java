@@ -72,11 +72,14 @@ public class CDEPropertyPanel extends JPanel implements ActionListener {
 		cdeElementLink.setVisible(true);
 		label1.setVisible(true);
 		label2.setVisible(true);
-		cdeElementLink.setEnabled(true);
+
 		for (AttributeMeta attrMeta:meta.getAttrData())
 		{
 			if (attrMeta.getName().equals("PUBLICID"))
+			{
 				metaPublicId.setText(attrMeta.getFixedValue());
+				cdeElementLink.setEnabled(true);
+			}
 			else if (attrMeta.getName().equals("VERSION"))
 				metaVersion.setText(attrMeta.getFixedValue());
 			this.repaint();
