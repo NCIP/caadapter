@@ -1,14 +1,11 @@
 <security-config>
 	<upt-context-name>
 		<!-- Context Name for the UPT Application -->
-		<<upt_context_name>>
 	</upt-context-name>
 	<application-list>
 	<!-- For every application using the security api an entry should be made here -->
 		<application>
-			<context-name>
-				caadapter
-			</context-name>
+			<context-name>caadapter</context-name>
 			<authentication>
 				<authentication-provider-class>
 				<!-- Fully qualified class name-->
