@@ -114,7 +114,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="tagType">
 		<xsd:attribute name="componentType" type="cmts:componentType" />
-		<xsd:attribute name="kind" type="cmts:tagKind" />
+		<!--  xsd:attribute name="kind" type="cmts:tagKind" / -->
 		<xsd:attribute name="key" type="xsd:string" />
 		<xsd:attribute name="value" type="xsd:string" />
 	</xsd:complexType>
