@@ -48,8 +48,6 @@ import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
  */
 public class MappingFactory
 {
-    //private static String sourceFileLocation = null;
-    //private static String targetFileLocation = null;
 
     public static void loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
@@ -139,7 +137,7 @@ public class MappingFactory
                         (mapComp.getType() != ComponentType.TARGET)) continue;
 
                     XSDParser metaParser = new XSDParser();
-                    metaParser.loadSchema(mapComp.getLocation(), f.getAbsolutePath());
+                    metaParser.loadSchemaRelativeMappingFile(mapComp.getLocation(), f.getParent());//f.getAbsolutePath());
                     MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
                     //System.out.println("VVV name=" + mapComp.getRootElement().getName() + ", type=" + mapComp.getType().value());
                     //if (mapComp.getType().value().equals(ComponentType.SOURCE.value())) sourceFileLocation = mapComp.getLocation();
@@ -311,16 +309,6 @@ public class MappingFactory
 			}
 		}
 	}
-
-//    public String getSourceFileLocation()
-//    {
-//        return sourceFileLocation;
-//    }
-//    public String getTargetFileLocation()
-//    {
-//        return targetFileLocation;
-//    }
-
 }
 
 /**
