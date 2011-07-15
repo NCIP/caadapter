@@ -35,6 +35,7 @@ import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.core.TagType;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Components;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 /**
  * This class is used to generate CMTS Mapping
@@ -137,12 +138,11 @@ public class MappingFactory
                         (mapComp.getType() != ComponentType.TARGET)) continue;
 
                     XSDParser metaParser = new XSDParser();
-                    metaParser.loadSchemaRelativeMappingFile(mapComp.getLocation(), f.getParent());//f.getAbsolutePath());
+                    String xsdLocation=f.getParent()+File.separator+mapComp.getLocation();
+                    metaParser.loadSchema(new File(xsdLocation).getPath(),null);
+                    mapComp.setLocation(xsdLocation);
                     MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
-                    //System.out.println("VVV name=" + mapComp.getRootElement().getName() + ", type=" + mapComp.getType().value());
-                    //if (mapComp.getType().value().equals(ComponentType.SOURCE.value())) sourceFileLocation = mapComp.getLocation();
-                    //if (mapComp.getType().value().equals(ComponentType.TARGET.value())) targetFileLocation = mapComp.getLocation();
-                }
+                 }
             }
             catch(Exception ee)
             {
@@ -287,6 +287,9 @@ public class MappingFactory
 			{
 				List<ElementMeta> childList=new ArrayList<ElementMeta>();
 				childList.addAll(mapComp.getRootElement().getChildElement());
+				//set relative path of xsd file
+				String xsdRelPath=FileUtil.findRelativePath(f.getParentFile().getPath(),mapComp.getLocation());
+				mapComp.setLocation(xsdRelPath);
 				rootChildListHash.put(mapComp.getLocation()+mapComp.getId(), childList);
 				mapComp.getRootElement().getChildElement().clear();
 				
