@@ -993,7 +993,7 @@ public class FileUtil
         return ret;
     }
 
-    private static String findRelativePath(String refPath, String filePath)
+    public static String findRelativePath(String refPath, String filePath)
     {
     	String relPath;
     	if (filePath.startsWith(refPath))
