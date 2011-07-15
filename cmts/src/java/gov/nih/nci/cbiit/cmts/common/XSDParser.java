@@ -95,20 +95,6 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
         }
     }
 
-//    /**
-//     * load XSD schema
-//     * @param schemaURI - XSD URI
-//     */
-//    public void loadSchema(String schemaURI)
-//    {
-//        loadSchema(schemaURI, null);
-//    }
-    public void loadSchemaRelativeMappingFile(String schemaURI, String mappingParent)
-    {
-    	String xsdLocation=mappingParent+File.separator+schemaURI;
-    	System.out.println("xsd..:"+xsdLocation);
-        model=schemaLoader.loadURI(xsdLocation);
-    }
     public void loadSchema(String schemaURI, String workDir)
     {
         String userDirPath=System.getProperty("user.dir");
@@ -141,15 +127,6 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
         if(debug) System.out.println("Parsing " + this.schemaURI + "...");
         model = schemaLoader.loadURI(this.schemaURI);
 
-    }
-
-    /**
-     * load XSD schema
-     * @param schemaURI - XSD URI
-     */
-    public void loadSchema(File schemaFile) {
-
-        loadSchema(schemaFile.getPath(), null);
     }
 
     /**
