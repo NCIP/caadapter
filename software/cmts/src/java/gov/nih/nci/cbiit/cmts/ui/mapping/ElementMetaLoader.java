@@ -1,5 +1,5 @@
 /**
- * The content of this file is subject to the caAdapter Software License (the "License").  
+ * The content of this file is subject to the caAdapter Software License (the "License").
  * A copy of the License is available at:
  * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
  * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * This class defines a basic node loader implementation focusing on how to traverse 
+ * This class defines a basic node loader implementation focusing on how to traverse
  * meta data tree to convert them to a Java UI tree structure, whose nodes are either
  * DefaultMutableTreeNode or its various descendants that may individual requirement.
  *
@@ -82,7 +82,7 @@ public class ElementMetaLoader implements Serializable
 	private DefaultMutableTreeNode processElement(ElementMeta s)
 	{
 		DefaultMutableTreeNode node = constructTreeNode(s, true);
-	
+
 		List<ElementMeta> childs = s.getChildElement();
 		List<AttributeMeta> fields = s.getAttrData();
 		//ignore attributes and child elements for not chosen choice element
@@ -90,21 +90,35 @@ public class ElementMetaLoader implements Serializable
 			if (s.isIsChoice()&!s.isIsChosen())
 				return node;
 		} catch ( NullPointerException np) {
-			
+
 			System.out.println("ElementMetaLoader.processElement()..:meta:"+s);
 			np.printStackTrace();
 			// TODO: handle exception
 		}
 
-		for (int i = 0; i < fields.size(); i++)
+        /// inserted by umkis for determining if CDE attributes
+        boolean publicidExist = false;
+        boolean versionExist = false;
+        for (int i = 0; i < fields.size(); i++)
 		{
 			AttributeMeta fieldMeta = fields.get(i);
-			if (fieldMeta.getName().equals("PUBLICID")
-					|| fieldMeta.getName().equals("VERSION"))
-				continue;
-			node.add(constructTreeNode(fieldMeta, false));
+			if (fieldMeta.getName().equals("PUBLICID")) publicidExist = true;
+			if (fieldMeta.getName().equals("VERSION")) versionExist = true;
+        }
+        ///
+
+        for (int i = 0; i < fields.size(); i++)
+		{
+			AttributeMeta fieldMeta = fields.get(i);
+            if (publicidExist && versionExist)
+            {
+                if (fieldMeta.getName().equals("PUBLICID")
+                        || fieldMeta.getName().equals("VERSION"))
+                    continue;
+            }
+            node.add(constructTreeNode(fieldMeta, false));
 		}
-	
+
 		for (int i = 0; i < childs.size(); i++)
 		{
 			ElementMeta childMeta = childs.get(i);
@@ -141,7 +155,7 @@ public class ElementMetaLoader implements Serializable
 		private String name;
 		private Object userObject;
 		private Object rootObject;
-		
+
 		public MyTreeObject(String name, Object obj) {
 			this.rootObject = ElementMetaLoader.this.nodeRoot;
 			this.name = name;
@@ -166,7 +180,7 @@ public class ElementMetaLoader implements Serializable
 		public Object getRootObject() {
 			return rootObject;
 		}
-		
+
 		public String toString(){
 			return name;
 		}
