@@ -98,7 +98,7 @@ public class CsvTest {
 	private CSVMeta loadCsvMetaFromXSD(String xsdFile, String rootName)
 	{
 		XSDParser p = new XSDParser();
-		p.loadSchema(xsdFile);
+		p.loadSchema(xsdFile, null);
 		ElementMeta e = p.getElementMeta(null, rootName);
 		CsvXsd2MetadataConverter converter=new CsvXsd2MetadataConverter(e);
 		return converter.getCSVMeta();	
