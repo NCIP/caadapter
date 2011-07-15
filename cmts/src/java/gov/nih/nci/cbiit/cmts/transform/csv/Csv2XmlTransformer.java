@@ -41,7 +41,7 @@ public class Csv2XmlTransformer extends XQueryTransformer {
 		}
     	
 		XSDParser p = new XSDParser();
-		p.loadSchema(xsdFile);
+		p.loadSchema(xsdFile, null);
 		ElementMeta element = p.getElementMeta(null, xsdRoot);
 		CsvXsd2MetadataConverter converter=new CsvXsd2MetadataConverter(element);
 		CSVMeta csvMeta= converter.getCSVMeta();

@@ -64,7 +64,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/simpleMapping/shiporder.xsd");
+		p.loadSchema("workingspace/simpleMapping/shiporder.xsd", null);
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
@@ -79,7 +79,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD1() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/shiporder1.xsd");
+		p.loadSchema("workingspace/shiporder1.xsd", null);
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
@@ -93,7 +93,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD2() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/shiporder2.xsd");
+		p.loadSchema("workingspace/shiporder2.xsd", null);
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
@@ -107,7 +107,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD3() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/shiporder3.xsd");
+		p.loadSchema("workingspace/shiporder3.xsd", null);
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
@@ -121,7 +121,7 @@ public class MappingTest {
 	@Ignore
 	public void testParseHL7v2XSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema(FileUtil.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString());
+		p.loadSchema(FileUtil.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString(), null);
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", "ADT_A01");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
@@ -135,7 +135,7 @@ public class MappingTest {
 	@Ignore
 	public void testParseHL7v3XSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/hl7v3/HL7v3Schema/COCT_MT010000UV01.xsd");
+		p.loadSchema("workingspace/hl7v3/HL7v3Schema/COCT_MT010000UV01.xsd", null);
 		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "COCT_MT010000UV01.Encounter");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
@@ -154,11 +154,11 @@ public class MappingTest {
 		m.setComponents(new Mapping.Components());
 		m.setLinks(new Mapping.Links());
 		XSDParser srcP = new XSDParser();
-		srcP.loadSchema(srcComponentId);
+		srcP.loadSchema(srcComponentId, null);
 		MappingFactory.loadMetaXSD(m, srcP, null,"shiporder", ComponentType.SOURCE);
 		
 		XSDParser trgtP = new XSDParser();
-		trgtP.loadSchema(tgtComponentId);
+		trgtP.loadSchema(tgtComponentId, null);
 		MappingFactory.loadMetaXSD(m, trgtP,null, "printorder",  ComponentType.TARGET);
 		
 		//add links;
