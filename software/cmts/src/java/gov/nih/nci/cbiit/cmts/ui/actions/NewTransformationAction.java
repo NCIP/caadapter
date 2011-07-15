@@ -132,8 +132,8 @@ public class NewTransformationAction extends AbstractContextAction
 				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);
 
 			String sourceFile = FileUtil.getRelativePath(w.getDataFile());
-			String mappingFile=FileUtil.getRelativePath(w.getMapFile());
-			String xmlResult=transformer.Transfer(sourceFile, mappingFile);
+			String mappingFile=w.getMapFile().getPath();//FileUtil.getRelativePath(w.getMapFile());
+			String xmlResult=transformer.Transfer(sourceFile,mappingFile);
 			newMsgPane.setMessageText(xmlResult);
 			newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);
