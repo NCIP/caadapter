@@ -667,7 +667,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	{
 //		String fileExtension = FileUtil.getFileExtension(file, true);
 		XSDParser p = new XSDParser();
-		p.loadSchema(file);
+		p.loadSchema(file.getPath(), null);//(file);
 		CellRenderXSObject srcRoot = userSelectRoot(p);
 		if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
@@ -689,7 +689,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	{
 //		String fileExtension = FileUtil.getFileExtension(file, true);
 		XSDParser p = new XSDParser();
-		p.loadSchema(file);
+		p.loadSchema(file.getPath(), null);
 		CellRenderXSObject trgtRoot = userSelectRoot(p);
 		if(trgtRoot == null || trgtRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
