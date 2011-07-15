@@ -977,6 +977,8 @@ public class FileUtil
     public static String getRelativePath(File f){
         String workDir = new File("").getAbsolutePath();
         String fPath = f.getAbsolutePath();
+        System.out.println("FileUtil.getRelativePath()..filePath:"+fPath);
+        System.out.println("FileUtil.getRelativePath()..workingDir:"+workDir);
         String ret = null;
         if(fPath.startsWith(workDir)){
             ret = fPath.substring(workDir.length());
@@ -985,9 +987,24 @@ public class FileUtil
                 ret = ret.substring(1);
             }
         }
+        else
+        	ret=findRelativePath(workDir, fPath);
+        System.out.println("FileUtil.getRelativePath()..relativePath:"+ret);
         return ret;
     }
 
+    private static String findRelativePath(String refPath, String filePath)
+    {
+    	String relPath;
+    	if (filePath.startsWith(refPath))
+    		relPath= filePath.substring(refPath.length()+1);
+    	else
+    	{
+    		String parentRelative=findRelativePath((new File(refPath)).getParent(), filePath);
+    		relPath= "..\\"+parentRelative;
+    	}
+		return relPath;
+    }
     /**
      * Utility method to get resource
      * @param name - resource name
