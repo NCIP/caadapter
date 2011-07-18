@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="workingspace\parentChildInverted\delivery.xsd" kind="xml" type="target" id="0">
+        <component location="delivery.xsd" kind="xml" type="target" id="0">
             <rootElement isChosen="false" isChoice="false" name="deliveries"/>
         </component>
-        <component location="workingspace\parentChildInverted\groupOrder.xsd" kind="xml" type="source" id="1">
+        <component location="groupOrder.xsd" kind="xml" type="source" id="1">
             <rootElement isChosen="false" isChoice="false" type="shipordertype" name="grouporder"/>
         </component>
     </components>
