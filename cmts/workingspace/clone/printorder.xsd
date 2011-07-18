@@ -44,7 +44,7 @@
   <xs:element name="item" maxOccurs="unbounded" type="itemtype"/>
  </xs:sequence>
  <xs:attribute name="orderid" type="orderidtype" use="required"/>
- <xs:attribute name="printType" type="orderidtype" fixed="text/html"  use="required"/>
+ <xs:attribute name="printType" type="stringtype" fixed="text/html"  use="required"/>
 </xs:complexType>
 
 <xs:element name="printorder" type="printordertype"/>
