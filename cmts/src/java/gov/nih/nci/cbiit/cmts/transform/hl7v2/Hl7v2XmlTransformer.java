@@ -18,7 +18,6 @@ import javax.xml.xquery.XQException;
 import com.sun.encoder.Encoder;
 import com.sun.encoder.EncoderException;
 
-import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
@@ -33,7 +32,7 @@ public class Hl7v2XmlTransformer extends XQueryTransformer {
 	}
 	
 	@Override
-	protected String parseRawData(String sourceRawDataFile, Mapping map) throws JAXBException, IOException, ApplicationException
+	protected String parseRawData(String sourceRawDataFile, Mapping map) throws JAXBException, IOException
 	{
 		String fileName="xmlFile"+Calendar.getInstance().getTimeInMillis();
 		String schemaUri="";
