@@ -159,7 +159,7 @@
  <xs:attribute name="ethnicGroupCode00_codeSystemName" type="xs:string" use="required"/>
  <xs:attribute name="ethnicGroupCode00_displayName" type="xs:string" use="required"/>
  <xs:attribute name="ethnicGroupCode00_code" type="xs:string" use="required"/>
- <xs:attribute name="name01_inlineText" datatype="String" xmlPath="ENCOUNTER_HEAD.SUBJECT_1.PATIENT_11.PATIENTPERSON_111.name01_inlineText"/>
+ <xs:attribute name="name01_inlineText" type="xs:string" />
  <xs:attribute name="name01_use" type="xs:string" use="required"/>
 </xs:complexType>
 </xs:schema>
