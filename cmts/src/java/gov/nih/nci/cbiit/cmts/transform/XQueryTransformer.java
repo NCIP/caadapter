@@ -7,6 +7,7 @@
  */
 package gov.nih.nci.cbiit.cmts.transform;
 
+import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.cbiit.cmts.common.ApplicationMessage;
 import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
@@ -125,6 +126,9 @@ public class XQueryTransformer implements TransformationService {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ApplicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -139,10 +143,11 @@ public class XQueryTransformer implements TransformationService {
 	 * @return URI of pre-processed source data, it may be a temporary file
 	 * @throws JAXBException
 	 * @throws IOException
+	 * @throws ApplicationException 
 	 * @throws ApplicationException
 	 */
 	protected String parseRawData(String sourceRawDataFile, Mapping map)
-			throws JAXBException, IOException {
+			throws JAXBException, IOException, ApplicationException {
 		// do nothing
 		return sourceRawDataFile;
 	}
