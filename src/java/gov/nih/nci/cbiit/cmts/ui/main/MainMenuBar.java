@@ -15,6 +15,7 @@ import gov.nih.nci.cbiit.cmts.ui.actions.DefaultCloseAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAsAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultExitAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.NewArtifactAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewTransformationAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
@@ -197,6 +198,19 @@ public class MainMenuBar extends JMenuBar
         actionMap.put(ActionConstants.NEW_XML_Transformation, newXmlMessage);
         menuItemMap.put(ActionConstants.NEW_XML_Transformation, newXmlTransformationItem);
         newGroup.add(newXmlTransformationItem);
+        newGroup.addSeparator();
+        NewArtifactAction newQueryAction = new NewArtifactAction(ActionConstants.NEW_XQUERY_STATEMENT, mainFrame);
+        JMenuItem newXQeuryItem = new JMenuItem(newQueryAction);
+        actionMap.put(ActionConstants.NEW_XQUERY_STATEMENT, newQueryAction);
+        menuItemMap.put(ActionConstants.NEW_XQUERY_STATEMENT, newXQeuryItem);
+        newGroup.add(newXQeuryItem);
+        
+        NewArtifactAction newXSLTAction = new NewArtifactAction(ActionConstants.NEW_XSLT_STYLESHEET, mainFrame);
+        JMenuItem newXSLTItem = new JMenuItem(newXSLTAction);
+        actionMap.put(ActionConstants.NEW_XSLT_STYLESHEET, newXSLTAction);
+        menuItemMap.put(ActionConstants.NEW_XSLT_STYLESHEET, newXSLTItem);
+        newGroup.add(newXSLTItem);
+        
 /**
         NewTransformationAction newCsvMessage = new NewTransformationAction(ActionConstants.NEW_CSV_Transformation, mainFrame);
         JMenuItem newCsvTransformationItem = new JMenuItem(newCsvMessage);
