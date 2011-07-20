@@ -35,14 +35,14 @@ import java.util.Stack;
  *
  */
 public class XQueryBuilder {
-	private Mapping mapping;
-	private StringBuffer sbQuery;
-	private Map<String, LinkType> links;
-	private Map<String, LinkType> metaToFunctionLinks;
-	private Map<String, Map<String, LinkType>> allToFunctionLinks;
+	protected Mapping mapping;
+	protected StringBuffer sbQuery;
+	protected Map<String, LinkType> links;
+	protected Map<String, LinkType> metaToFunctionLinks;
+	protected Map<String, Map<String, LinkType>> allToFunctionLinks;
 	
-	private Map<String, FunctionType>functions;
-	private Stack<String> xpathStack;
+	protected Map<String, FunctionType>functions;
+	protected Stack<String> xpathStack;
 	private Stack<String> varStack;
 
 	final static String sep = System.getProperty("line.separator");
@@ -410,7 +410,7 @@ public class XQueryBuilder {
 	 * @param tgtElement
 	 * @return
 	 */
-		private boolean hasMappedDescenant(ElementMeta tgtElement){
+		protected boolean hasMappedDescenant(ElementMeta tgtElement){
 			boolean rtnValue=false;
 			for (ElementMeta childMeta:tgtElement.getChildElement())
 			{
@@ -436,7 +436,7 @@ public class XQueryBuilder {
 		 * @param tgtElement
 		 * @return
 		 */
-		private String hasAnyMappedAttribute(ElementMeta tgtElement)
+		protected String hasAnyMappedAttribute(ElementMeta tgtElement)
 		{
 			String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 			String rtnValue=null;
