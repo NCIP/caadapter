@@ -57,7 +57,7 @@ import java.util.Map;
  */
 public class MessagePanel extends JPanel implements ActionListener, ContextManagerClient
 {
-    
+	private boolean SOURCE_DATA_REQUIRED=true;
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
     private String transformationType;
@@ -68,10 +68,15 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
     private boolean dataChanged=false;
     private MainFrameContainer mainFrame = null;
 
-
     public MessagePanel(MainFrameContainer mainFrame)
     {
+    	this (mainFrame, true);
+    }
+
+    public MessagePanel(MainFrameContainer mainFrame, boolean sourceDataRequired)
+    {
         this.mainFrame = mainFrame;
+        SOURCE_DATA_REQUIRED=sourceDataRequired;
         initializeMessageList();
         setLayout(new BorderLayout());
         add(contructNorthPanel(), BorderLayout.NORTH);
@@ -109,12 +114,14 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
 		Insets insets = new Insets(5, 5, 5, 5);
 		int posY = 0;
 		JLabel dataFileNameLabel = new JLabel("Source Data:");
-		fieldsPanel.add(dataFileNameLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+		if (SOURCE_DATA_REQUIRED)
+			fieldsPanel.add(dataFileNameLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
 		dataFileNameField = new JTextField();
 		Dimension fieldDimension = new Dimension(dataFileNameLabel.getPreferredSize().width, dataFileNameField.getPreferredSize().height);
 		dataFileNameField.setEditable(false);
 		dataFileNameField.setPreferredSize(fieldDimension);
-		fieldsPanel.add(dataFileNameField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+		if (SOURCE_DATA_REQUIRED)
+			fieldsPanel.add(dataFileNameField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
 		posY++;
 		JLabel mapFileNameLabel = new JLabel("Transformation Mapping:");
