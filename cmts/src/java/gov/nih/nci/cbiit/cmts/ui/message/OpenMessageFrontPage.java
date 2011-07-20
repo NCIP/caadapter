@@ -41,6 +41,7 @@ public class OpenMessageFrontPage extends JPanel
 	private File dataFile;
 	private File destFile;
 	private String openWizardTitle;
+	private boolean ONLY_MAPPING_REQUIRED=false;
 	/**
 	 * Creates a new <code>JPanel</code> with a double buffer
 	 * and a flow layout.
@@ -48,6 +49,9 @@ public class OpenMessageFrontPage extends JPanel
 	public OpenMessageFrontPage(OpenMessageWizard wizard)
 	{
 		openWizardTitle=wizard.getTitle();
+		if (openWizardTitle.equals(ActionConstants.NEW_XQUERY_STATEMENT)
+				||openWizardTitle.equals(ActionConstants.NEW_XSLT_STYLESHEET))
+			ONLY_MAPPING_REQUIRED=true;
 		initialize();
 	}
 
@@ -57,13 +61,16 @@ public class OpenMessageFrontPage extends JPanel
 		JPanel centerPanel = new JPanel(new GridBagLayout());
 		Insets insets = new Insets(5, 5, 5, 5);
 		JLabel dataFileLabel = new JLabel(DATA_FILE_BROWSE_MODE);
+		if (!ONLY_MAPPING_REQUIRED)
 		centerPanel.add(dataFileLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
 		dataFileInputField = new JTextField();
 		dataFileInputField.setPreferredSize(new Dimension(350, 25));
+		if (!ONLY_MAPPING_REQUIRED)
 		centerPanel.add(dataFileInputField, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		JButton dataFileBrowseButton = new JButton(new BrowseMessageAction(this, DATA_FILE_BROWSE_MODE));
+		if (!ONLY_MAPPING_REQUIRED)
 		centerPanel.add(dataFileBrowseButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 
@@ -79,13 +86,16 @@ public class OpenMessageFrontPage extends JPanel
 				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 
 		JLabel destFileLabel = new JLabel(DEST_FILE_BROWSE_MODE);
+		if (!ONLY_MAPPING_REQUIRED)
 		centerPanel.add(destFileLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
 		destFileInputField = new JTextField();
 		destFileInputField.setPreferredSize(new Dimension(350, 25));
+		if (!ONLY_MAPPING_REQUIRED)
 		centerPanel.add(destFileInputField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		JButton destFileBrowseButton = new JButton(new BrowseMessageAction(this, DEST_FILE_BROWSE_MODE));
+		if (!ONLY_MAPPING_REQUIRED)
 		centerPanel.add(destFileBrowseButton, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 		this.add(centerPanel, BorderLayout.CENTER);
@@ -153,6 +163,10 @@ public class OpenMessageFrontPage extends JPanel
 	 */
 	public boolean validateInputFields()
 	{
+		if (openWizardTitle.equals(ActionConstants.NEW_XSLT_STYLESHEET)
+				||openWizardTitle.equals(ActionConstants.NEW_XQUERY_STATEMENT))
+			return validateInputByMode(MAP_FILE_BROWSE_MODE);
+		
 		boolean result = validateInputByMode(DATA_FILE_BROWSE_MODE) && validateInputByMode(MAP_FILE_BROWSE_MODE) && validateInputByMode(DEST_FILE_BROWSE_MODE);
 		return result;
 	}
