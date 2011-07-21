@@ -1,32 +1,84 @@
 package gov.nih.nci.cbiit.cmts.test;
 
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.io.OutputStreamWriter;
+import java.io.BufferedWriter;
+
+import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.transform.XsltTransformer;
+import gov.nih.nci.cbiit.cmts.transform.artifact.StylesheetBuilder;
+import gov.nih.nci.cbiit.cmts.transform.artifact.XSLTCallTemplate;
+import gov.nih.nci.cbiit.cmts.transform.artifact.XSLTStylesheet;
+import gov.nih.nci.cbiit.cmts.transform.artifact.XSLTTemplate;
 
 import org.junit.Test;
 
 public class XSLTTransformerTest {
 
 	@Test
+	public void testStlesheetBuilder() throws JAXBException, IOException
+	{
+		String mappingFile="workingspace/simplemapping/nfmapping.map";
+		Mapping map=MappingFactory.loadMapping(new File(mappingFile));
+		StylesheetBuilder xsltBuilder = new StylesheetBuilder(map);
+		XSLTStylesheet xsltSheet = xsltBuilder.buildStyleSheet();
+		Writer out = new BufferedWriter(new OutputStreamWriter(System.out));	 
+		xsltSheet.writeOut(out);
+		out.close();
+		Writer fileOut=new FileWriter(new File("workingspace/simplemapping/test_g.xsl"));
+		xsltSheet.writeOut(fileOut);
+		fileOut.close();
+	}
+
+	@Test
 	public void testXsltTransformation() 
 	{
-		 String inXML ="workingspace/XSLT/famousePerson.xml";// arg[0];
-		  String inXSL ="workingspace/XSLT/person.xsl"; //arg[1];
-		  String outTXT ="xsltOut.html";// arg[2];
+		 String inXML ="workingspace/simpleMapping/shiporder.xml";// arg[0];
+		  String inXSL ="workingspace/simpleMapping/test_g.xsl"; //arg[1];
+		  String outTXT ="workingspace/simpleMapping/xsltOut.xml";// arg[2];
 
 		  XsltTransformer st = new XsltTransformer();
 		  try {
-		  st.transform(inXML,inXSL,outTXT);
+			  st.transform(inXML,inXSL,outTXT);
 		  } catch(TransformerConfigurationException e) {
-		  System.err.println("Invalid factory configuration");
-		  System.err.println(e);
+			  System.err.println("Invalid factory configuration");
+			  System.err.println(e);
 		  } catch(TransformerException e) {
-		  System.err.println("Error during transformation");
-		  System.err.println(e);
+			  System.err.println("Error during transformation");
+			  System.err.println(e);
 		  }
 
+	}
+	@Test
+	public void testXsltTempate()
+	{
+		XSLTStylesheet stylesheet=new XSLTStylesheet();
+		XSLTTemplate xlstTemplate=new XSLTTemplate();
+		xlstTemplate.setMatch("/");
+		stylesheet.addTempate(xlstTemplate);
+		XSLTTemplate calledTemp=new XSLTTemplate();
+		stylesheet.addTempate(calledTemp);
+		calledTemp.setTemplatename("toBecalled");
+		XSLTCallTemplate callTemp=new XSLTCallTemplate();
+		callTemp.setCalledTemplate(calledTemp.getTemplatename());
+		xlstTemplate.addContent(callTemp);
+		
+		File outFile = new File("testOut"); 
+		try {
+			FileWriter out = new FileWriter(outFile);
+			stylesheet.writeOut(out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
