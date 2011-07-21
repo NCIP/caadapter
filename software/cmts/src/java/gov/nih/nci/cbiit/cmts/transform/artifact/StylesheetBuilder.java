@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import org.jdom.Element;
 
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
@@ -43,7 +44,7 @@ public class StylesheetBuilder extends XQueryBuilder {
 
 		stylesheet.addTempate(rootTemplate);
 		xpathStack = new Stack<String>();
-		processTargetElement(tgt.getRootElement(), null, rootTemplate);
+		processTargetElement(tgt.getRootElement(), "", rootTemplate);
 		return stylesheet;
 	}
 	
@@ -51,12 +52,11 @@ public class StylesheetBuilder extends XQueryBuilder {
 			XSLTTemplate parentTemplate)
 	{
 		xpathStack.push(elementMeta.getName());
-		boolean elementCreated=false;
-		String inlineText="\"\"";
-		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
-		LinkType link = links.get(elementXpath);
-		
+		String targetElementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+		LinkType link = links.get(targetElementXpath);
+		String childElementRef=parentMappedXPath;
 		Element tgtDataElement= new Element(elementMeta.getName());
+		encodeAttribute(tgtDataElement,elementMeta, targetElementXpath);
         if(link==null)
         {
     		parentTemplate.addContent(tgtDataElement);
@@ -74,23 +74,32 @@ public class StylesheetBuilder extends XQueryBuilder {
 				//case I
 				XSLTApplyTemplates attrApply=new XSLTApplyTemplates();
 				//remove the first "/"
-				attrApply.setSelect(tgtMappingSrc.substring(1));	
+				attrApply.setSelect(tgtMappingSrc.substring(parentMappedXPath.length()+1));	
 				tgtDataElement.addContent(attrApply);
 				parentTemplate.addContent(tgtDataElement);
 			}
 			else
 			{
-				LinkType fLink = metaToFunctionLinks.get(elementXpath);
+				childElementRef=tgtMappingSrc;
+				LinkType fLink = metaToFunctionLinks.get(targetElementXpath);
 				if (fLink==null)
 				{
 					//case II
 					XSLTElement forEach=new XSLTElement("for-each");
-					forEach.setAttribute("select",tgtMappingSrc);
-					XSLTApplyTemplates elementApply=new XSLTApplyTemplates();
-					//remove the first "/"
-					elementApply.setSelect(".");	
-					tgtDataElement.addContent(elementApply);
+					forEach.setAttribute("select",tgtMappingSrc.substring(parentMappedXPath.length()+1));
+					if (!hasMappedDescenant(elementMeta))
+					{
+						//apply content if this target element is leaf
+						XSLTApplyTemplates elementApply=new XSLTApplyTemplates();
+						elementApply.setSelect(".");	
+						tgtDataElement.addContent(elementApply);
+					}
 					forEach.addContent(tgtDataElement);
+					parentTemplate.addContent(forEach);
+				}
+				else
+				{
+					//case III
 				}
 			}
         }
@@ -106,9 +115,70 @@ public class StylesheetBuilder extends XQueryBuilder {
 				XSLTTemplate calledTemplate =new XSLTTemplate();
 				calledTemplate.setAttribute("name", tmpName);
 				stylesheet.addTempate(calledTemplate);
-				processTargetElement(e,null, calledTemplate);
+				processTargetElement(e,childElementRef, calledTemplate);
 			}
 		}
 		xpathStack.pop();
+	}
+	
+	private void encodeAttribute(Element targetData, ElementMeta targetMeta,
+			String targetElementMetaXpath)
+	{
+		for (AttributeMeta attrMeta:targetMeta.getAttrData())
+		{
+			String targetAttributePath=targetElementMetaXpath+"/@"+attrMeta.getName();
+			LinkType link = links.get(targetAttributePath);
+			XSLTElement xsltAttr=new XSLTElement("attribute");
+			xsltAttr.setAttribute("name", attrMeta.getName());
+			if (link==null)
+			{
+				String targetAttrValue="";
+				if (attrMeta.getFixedValue()!=null)
+					targetAttrValue=attrMeta.getFixedValue();
+				else if (attrMeta.getDefaultValue()!=null)
+					targetAttrValue=attrMeta.getDefaultValue();
+				if (!targetAttrValue.equals(""))
+				{
+					XSLTElement xlstText=new XSLTElement("text");
+					xlstText.setText(targetAttrValue);
+					xsltAttr.addContent(xlstText);
+					targetData.addContent(xsltAttr);
+				}					
+			}
+			else
+			{
+	        	/**
+	        	 * Case I: link source is an attribute 
+	        	 * case II: link source is an element
+	        	 * case III: link source is the output of a data processing function
+	        	 */
+				String tgtMappingSrc=link.getSource().getId();
+				if (tgtMappingSrc.indexOf("@")>-1)
+				{
+					//case I
+					XSLTApplyTemplates attrApply=new XSLTApplyTemplates();
+					attrApply.setSelect(tgtMappingSrc.substring(tgtMappingSrc.indexOf("@")));
+					xsltAttr.addContent(attrApply);
+					targetData.addContent(xsltAttr);
+				}
+				else
+				{
+					LinkType fLink = metaToFunctionLinks.get(targetAttributePath);
+					if (fLink==null)
+					{
+						//case II
+						XSLTApplyTemplates attrApply=new XSLTApplyTemplates();
+						//remove the first "/"
+						attrApply.setSelect(".");
+						xsltAttr.addContent(attrApply);
+						targetData.addContent(xsltAttr);
+					}
+					else
+					{
+						//case III
+					}
+				}
+			}
+		}
 	}
 }
