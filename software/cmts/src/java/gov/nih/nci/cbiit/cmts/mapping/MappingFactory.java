@@ -309,6 +309,8 @@ public class MappingFactory
 			{
 				mapComp.getRootElement().getChildElement().addAll(rootChildListHash.get(mapComp.getLocation()+mapComp.getId()));
 				mapComp.getRootElement().getAttrData().addAll(rootAttrListHash.get(mapComp.getLocation()+mapComp.getId()));
+				String xsdLocation=f.getParent()+File.separator+mapComp.getLocation();
+				mapComp.setLocation(xsdLocation); 
 			}
 		}
 	}

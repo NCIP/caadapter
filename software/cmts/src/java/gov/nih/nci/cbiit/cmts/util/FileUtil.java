@@ -996,6 +996,9 @@ public class FileUtil
     public static String findRelativePath(String refPath, String filePath)
     {
     	String relPath;
+    	if (refPath==null)
+    		return filePath;
+    	
     	if (filePath.startsWith(refPath))
     		relPath= filePath.substring(refPath.length()+1);
     	else
