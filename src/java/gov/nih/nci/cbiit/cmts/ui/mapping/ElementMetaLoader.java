@@ -81,11 +81,12 @@ public class ElementMetaLoader implements Serializable
 	 */
 	private DefaultMutableTreeNode processElement(ElementMeta s)
 	{
-		DefaultMutableTreeNode node = constructTreeNode(s, true);
+        DefaultMutableTreeNode node = constructTreeNode(s, true);
 
 		List<ElementMeta> childs = s.getChildElement();
 		List<AttributeMeta> fields = s.getAttrData();
-		//ignore attributes and child elements for not chosen choice element
+
+        //ignore attributes and child elements for not chosen choice element
 		try {
 			if (s.isIsChoice()&!s.isIsChosen())
 				return node;
@@ -96,21 +97,10 @@ public class ElementMetaLoader implements Serializable
 			// TODO: handle exception
 		}
 
-        /// inserted by umkis for determining if CDE attributes
-        boolean publicidExist = false;
-        boolean versionExist = false;
         for (int i = 0; i < fields.size(); i++)
 		{
 			AttributeMeta fieldMeta = fields.get(i);
-			if (fieldMeta.getName().equals("PUBLICID")) publicidExist = true;
-			if (fieldMeta.getName().equals("VERSION")) versionExist = true;
-        }
-        ///
-
-        for (int i = 0; i < fields.size(); i++)
-		{
-			AttributeMeta fieldMeta = fields.get(i);
-            if (publicidExist && versionExist)
+            if (s.isCDE_Element())
             {
                 if (fieldMeta.getName().equals("PUBLICID")
                         || fieldMeta.getName().equals("VERSION"))
@@ -135,9 +125,10 @@ public class ElementMetaLoader implements Serializable
 	 * @param allowsChildren
 	 * @return a tree node that wraps the user object.
 	 */
-	private DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
+
+    private DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
 	{
-		DefaultMutableTreeNode node = null;
+        DefaultMutableTreeNode node = null;
 		switch(nodeMode){
 		case SOURCE_MODE:
 			node = new DefaultSourceTreeNode(new MyTreeObject(((BaseMeta)userObject).getName(),userObject), allowsChildren);

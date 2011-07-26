@@ -21,6 +21,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.List;
 
 /**
  * The class defines the default tree cell renderer for mapping panel.
@@ -34,89 +35,93 @@ import java.awt.Component;
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
-	private static final Color NONDRAG_COLOR = new Color(140, 140, 175);
-	private static final Color MANYTOONE_COLOR = Color.pink;
-	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
-	private static ImageIcon elementNodeIcon = new ImageIcon(DefaultSettings.getImage("elementNode.gif"));
-	private static ImageIcon attributeNodeIcon = new ImageIcon(DefaultSettings.getImage("attributeNode.gif"));
-	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
-	{
-		Component returnValue = null;
-		try {
-			if (!selected)
-				setBackgroundNonSelectionColor(UIManager.getColor("Tree.textBackground"));
-			returnValue = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-			
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-			Object userObj = node.getUserObject();
-			if(userObj instanceof ElementMetaLoader.MyTreeObject)
-				userObj = ((ElementMetaLoader.MyTreeObject)userObj).getUserObject();
-			BaseMeta baseMeta=(BaseMeta)userObj;
-			if (baseMeta.getNameSpace()!=null &&!baseMeta.getNameSpace().equals(""))
-				setText(cardinalityView(baseMeta) +" ("+baseMeta.getNameSpace() +")");
-			else
-				setText(cardinalityView(baseMeta));
-			
-			if (baseMeta instanceof ElementMeta)
-			{
-				if (node.isLeaf())
-					setIcon(elementNodeIcon);
-				
-				if (((ElementMeta)baseMeta).isIsChosen())
-				{
-					String lbText="<html><font color=red><b>"+getText()+"</b></font></html>";
-					setText(lbText);
-				}
-				if (baseMeta.getName().startsWith("<choice>")) 
-				{	 
-					String lbText=getText();
-					String htmlText="<html><font color=blue><I>"+lbText.replace("<choice>", "&lt;choice&gt;")+"</I></font></html>";
-					setText(htmlText);
-				}
-			}
-			else if (baseMeta instanceof AttributeMeta)
-			{
-				setIcon(attributeNodeIcon);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return returnValue;
-	}
-	
-	private String cardinalityView( BaseMeta baseMeta )
-	{
-		StringBuffer rtBuffer=new StringBuffer(baseMeta.getName());
-		if (baseMeta instanceof ElementMeta )
-		{
-			ElementMeta elMeta=(ElementMeta)baseMeta;
-			if (elMeta.getMaxOccurs()==null|elMeta.getMinOccurs()==null)
-				return rtBuffer.toString();
-				
-			rtBuffer.append("["+elMeta.getMinOccurs()+"...");
-	    	if (elMeta.getMaxOccurs()!=null&&elMeta.getMaxOccurs().intValue()==-1)
-	    		rtBuffer.append("*]");
-	    	else
-	    		rtBuffer.append(elMeta.getMaxOccurs()+"]");
-		}
-		else if (baseMeta instanceof AttributeMeta )
-		{
-			AttributeMeta attMeta=(AttributeMeta)baseMeta;
-			if (attMeta.isRequired())
-	    		rtBuffer.append(" [Required");
-	    	else
-	    		rtBuffer.append(" [Optional");
-	    	
-	    	if (attMeta.getFixedValue()!=null)
-	    		rtBuffer.append(":fixed/"+attMeta.getFixedValue());
-	    	else if (attMeta.getDefaultValue()!=null)
-	    		rtBuffer.append(":default/"+attMeta.getDefaultValue());
-	    	
-	    	rtBuffer.append("]");
-		}
-		return rtBuffer.toString();
-	}
+    private static final Color NONDRAG_COLOR = new Color(140, 140, 175);
+    private static final Color MANYTOONE_COLOR = Color.pink;
+    private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
+    private static ImageIcon elementNodeIcon = new ImageIcon(DefaultSettings.getImage("elementNode.gif"));
+    private static ImageIcon attributeNodeIcon = new ImageIcon(DefaultSettings.getImage("attributeNode.gif"));
+    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
+    {
+        Component returnValue = null;
+        try {
+            if (!selected)
+                setBackgroundNonSelectionColor(UIManager.getColor("Tree.textBackground"));
+            returnValue = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+            Object userObj = node.getUserObject();
+            if(userObj instanceof ElementMetaLoader.MyTreeObject)
+                userObj = ((ElementMetaLoader.MyTreeObject)userObj).getUserObject();
+            BaseMeta baseMeta=(BaseMeta)userObj;
+            if (baseMeta.getNameSpace()!=null &&!baseMeta.getNameSpace().equals(""))
+                setText(cardinalityView(baseMeta) +" ("+baseMeta.getNameSpace() +")");
+            else
+                setText(cardinalityView(baseMeta));
+
+            if (baseMeta instanceof ElementMeta)
+            {
+                if (node.isLeaf())
+                    setIcon(elementNodeIcon);
+
+                if (((ElementMeta)baseMeta).isIsChosen())
+                {
+                    String lbText="<html><font color=red><b>"+getText()+"</b></font></html>";
+                    setText(lbText);
+                }
+                if (baseMeta.getName().startsWith("<choice>"))
+                {
+                    String lbText=getText();
+                    String htmlText="<html><font color=blue><I>"+lbText.replace("<choice>", "&lt;choice&gt;")+"</I></font></html>";
+                    setText(htmlText);
+                }
+            }
+            else if (baseMeta instanceof AttributeMeta)
+            {
+                setIcon(attributeNodeIcon);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return returnValue;
+    }
+
+    private String cardinalityView( BaseMeta baseMeta )
+    {
+        StringBuffer rtBuffer=new StringBuffer(baseMeta.getName());
+        if (baseMeta instanceof ElementMeta )
+        {
+            ElementMeta elMeta=(ElementMeta)baseMeta;
+
+            String cdeTag = "";
+            if (elMeta.isCDE_Element()) cdeTag = "[CDE]";
+
+            if (elMeta.getMaxOccurs()==null|elMeta.getMinOccurs()==null)
+                return rtBuffer.toString();
+
+            rtBuffer.append(cdeTag+"["+elMeta.getMinOccurs()+"...");
+            if (elMeta.getMaxOccurs()!=null&&elMeta.getMaxOccurs().intValue()==-1)
+                rtBuffer.append("*]");
+            else
+                rtBuffer.append(elMeta.getMaxOccurs()+"]");
+        }
+        else if (baseMeta instanceof AttributeMeta )
+        {
+            AttributeMeta attMeta=(AttributeMeta)baseMeta;
+            if (attMeta.isRequired())
+                rtBuffer.append(" [Required");
+            else
+                rtBuffer.append(" [Optional");
+
+            if (attMeta.getFixedValue()!=null)
+                rtBuffer.append(":fixed/"+attMeta.getFixedValue());
+            else if (attMeta.getDefaultValue()!=null)
+                rtBuffer.append(":default/"+attMeta.getDefaultValue());
+
+            rtBuffer.append("]");
+        }
+        return rtBuffer.toString();
+    }
 }
 
 

@@ -367,7 +367,26 @@ public class ElementMeta
         this.multiplicityIndex = value;
     }
 
-	@Override
+    /// inserted by umkis for determining if CDE attributes
+    public boolean isCDE_Element()
+    {
+        List<AttributeMeta> fields = this.getAttrData();
+
+
+        boolean publicidExist = false;
+        boolean versionExist = false;
+        for (int i = 0; i < fields.size(); i++)
+        {
+            AttributeMeta fieldMeta = fields.get(i);
+            if (fieldMeta.getName().equals("PUBLICID")) publicidExist = true;
+            if (fieldMeta.getName().equals("VERSION")) versionExist = true;
+        }
+
+        if (publicidExist && versionExist) return true;
+        return false;
+    }
+
+    @Override
 	public String toString()
     {
     	StringBuffer rtBuffer=new StringBuffer();
