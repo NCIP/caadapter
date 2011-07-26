@@ -70,7 +70,7 @@ public class DefaultPropertiesPage extends JSplitPane
 		setTopComponent(cdePane);
 		setBottomComponent( scrollPane );
 		setPreferredSize(new Dimension(DefaultSettings.FRAME_DEFAULT_WIDTH /4, DefaultSettings.FRAME_DEFAULT_HEIGHT / 10));
-		setDividerLocation(0.8);
+		setDividerLocation(0);
 	}
 
 	public void updateProptiesDisplay(ChangeEvent e)
@@ -78,8 +78,12 @@ public class DefaultPropertiesPage extends JSplitPane
 		titledBorder.setTitle(propertiesController.getTitleOfPropertiesPage());
 		tableModel.setPropertiesResult(propertiesController.getPropertyDescriptors());
 		cdePane.updateSelection(propertiesController.getSelectedItem());
-
-		
+        if (!cdePane.doesHaveOwnData())
+        {
+            setDividerLocation(0);
+            //this.setOneTouchExpandable(false);
+        }
+        else setDividerLocation(120);
 		this.repaint();
 	}
 }

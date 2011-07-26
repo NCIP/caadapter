@@ -121,10 +121,113 @@ public class XQueryBuilder {
 		System.out.println("XQueryBuilder.getXQuery()...:"+tgt.getRootElement().getNameSpace());
 		processTargetElement(tgt.getRootElement(),null);
 		sbQuery.append("}");
-		return sbQuery.toString();
+
+        String xqry = sbQuery.toString();
+        //System.out.println("XQueryBuilder.getXQuery(). A XQuery..:"+xqry);
+        String xqry2 = setupXQueryStructuredIndenation(xqry);
+        //System.out.println("XQueryBuilder.getXQuery(). B XQuery..:"+xqry2);
+        return xqry2;
 	}
-	
-	/**
+    private String setupXQueryStructuredIndenation(String text)
+        {
+            if (text == null) return "";
+            String tx = text.trim();
+            if (!tx.toLowerCase().startsWith("declare ")) return text;
+
+            try
+            {
+                int idx1 = tx.toLowerCase().indexOf("document");
+                String buf = tx.substring(0, idx1).trim() + "\r\n";
+                tx = tx.substring(idx1).trim();
+                String cx = setupXQueryStructuredIndenation(tx, 0);
+                return buf + cx;
+            }
+            catch(Exception ee)
+            {
+                System.out.println("Error:" + ee.getMessage());
+                return text;
+            }
+        }
+        private String setupXQueryStructuredIndenation(String text, int level)
+        {
+            String space = "";
+            for (int i=0;i<level;i++) space = space + "   ";
+            level++;
+
+            String buf = "";
+
+            while(true)
+            {
+                text = text.trim();
+                //System.out.println("Level("+level+"): " + text);
+
+                if ((text.toLowerCase().startsWith("document")) ||
+                    (text.toLowerCase().startsWith("element ")))
+                {
+                    int idx = text.indexOf("{");
+                    buf = buf + space + text.substring(0, idx).trim() + "\r\n" + space + "{" + "\r\n";
+                    text = text.substring(idx).trim();
+                    idx = getBlockIndex(text);
+                    String sub = setupXQueryStructuredIndenation(text.substring(1, idx), level);
+                    text = text.substring(idx + 1).trim();
+                    String tail = "}";
+                    if (text.startsWith(","))
+                    {
+                        text = text.substring(1).trim();
+                        tail = tail + ",";
+                    }
+                    buf = buf + sub + space + tail + "\r\n";
+                }
+                else if (text.toLowerCase().startsWith("attribute "))
+                {
+                    int idx = text.indexOf("{");
+                    buf = buf + space + text.substring(0, idx).trim();
+                    text = text.substring(idx).trim();
+                    idx = getBlockIndex(text);
+                    String sub = text.substring(0, idx+1);
+                    text = text.substring(idx + 1).trim();
+                    String tail = "";
+                    if (text.startsWith(","))
+                    {
+                        text = text.substring(1).trim();
+                        tail = ",";
+                    }
+                    buf = buf + sub + tail + "\r\n";
+                }
+                else if (text.toLowerCase().startsWith("for "))
+                {
+                    int idx = text.toLowerCase().indexOf("return");
+                    buf = buf + space + text.substring(0, idx + 6) + "\r\n";
+                    text = text.substring(idx + 6).trim();
+                }
+                else if (text.indexOf("{") < 0)
+                {
+                    buf = buf + space + text + "\r\n";
+                    break;
+                }
+            }
+            return buf;
+        }
+
+        private int getBlockIndex(String text)
+        {
+            int open = 0;
+
+            for(int i=0;i<text.length();i++)
+            {
+                String achar = text.substring(i, i + 1);
+                if (achar.equals("{")) open++;
+                if (achar.equals("}"))
+                {
+                    open--;
+                    if (open == 0) return i;
+                }
+            }
+            return -1;
+        }
+
+
+    /**
 	 * Process a target element:
 	 * Case I: The element is mapped to a source node
 	 * Case II: The element is mapped to function output port
