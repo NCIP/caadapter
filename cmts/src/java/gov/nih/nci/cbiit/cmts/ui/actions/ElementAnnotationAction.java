@@ -31,8 +31,11 @@ public class ElementAnnotationAction extends AbstractContextAction {
 	public final static int CHOICE_DESELECT_ACTION=3;
 	public final static int RECURSION_ENABLE_ACTION=4;
 	public final static int RECURSION_DISABLE_ACTION=5;
-	
-	private static final long serialVersionUID = -8974807457591325892L;
+
+    public final static int ACTIVATE_ACTION=6;
+	public final static int DEACTIVATE_ACTION=7;
+
+    private static final long serialVersionUID = -8974807457591325892L;
 	private int annotationType;
 	private Mapping mappingData;
 	private JTree treeAnnotate;
@@ -177,11 +180,22 @@ public class ElementAnnotationAction extends AbstractContextAction {
 			break;
 		case RECURSION_ENABLE_ACTION:
 			DefaultMutableTreeNode recursiveNode=parentNode;
-			ElementMeta recursiveMeta=parentElement;
-			while (!recursiveMeta.getType().equals(annotateElement.getType()))
+
+            ElementMeta recursiveMeta=parentElement;
+            System.out.println("$$$$0" + recursiveNode.toString());
+            while (!recursiveMeta.getType().equals(annotateElement.getType()))
 			{
-				recursiveNode=(DefaultMutableTreeNode)recursiveNode.getParent();
-				ElementMetaLoader.MyTreeObject rpNodeObj=(ElementMetaLoader.MyTreeObject)recursiveNode.getUserObject();
+
+                recursiveNode=(DefaultMutableTreeNode)recursiveNode.getParent();
+
+                if (recursiveNode == null)
+                {
+                    //recursiveNode=parentNode;
+                    System.out.println("$$$$9" + parentNode.toString());
+                    break;
+                }
+                else System.out.println("$$$$1" + recursiveNode.toString());
+                ElementMetaLoader.MyTreeObject rpNodeObj=(ElementMetaLoader.MyTreeObject)recursiveNode.getUserObject();
 				recursiveMeta=(ElementMeta)rpNodeObj.getUserObject();
 			}
 			String oldElementId=annotateElement.getId();

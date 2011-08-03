@@ -13,6 +13,7 @@ import gov.nih.nci.cbiit.cmts.core.BaseMeta;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.ui.function.FunctionTypeNodeLoader;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -62,6 +63,17 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
             {
                 if (node.isLeaf())
                     setIcon(elementNodeIcon);
+
+//                ElementMetaLoader.MyTreeObject ob = (ElementMetaLoader.MyTreeObject) node.getUserObject();
+//                ElementMeta meta = (ElementMeta)ob.getUserObject();
+//                if (meta.isIsEnabled()) setIcon(elementNodeIcon);
+                ElementMeta meta = (ElementMeta)baseMeta;
+                if ((meta.isIsRecursive())&&(!meta.isAtivated())&&(meta.getChildElement().size() > 0))
+                {
+                    setIcon(elementNodeIcon);
+                    String lbText="<html><font color='gray'>"+getText()+"</font></html>";
+                    setText(lbText);
+                }
 
                 if (((ElementMeta)baseMeta).isIsChosen())
                 {

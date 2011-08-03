@@ -45,8 +45,10 @@ public class MappingAnnotationUtil {
 		tag.setKind(kind);
 		tag.setKey(key);
 		tag.setValue(value);
-		
-		mapping.getTags().getTag().add(tag);
+
+        if (mapping.getTags() == null) mapping.setTags(new Mapping.Tags());
+
+        mapping.getTags().getTag().add(tag);
 		
 	}
 	

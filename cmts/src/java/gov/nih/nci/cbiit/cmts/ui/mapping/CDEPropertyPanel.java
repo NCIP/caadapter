@@ -89,8 +89,6 @@ public class CDEPropertyPanel extends JPanel implements ActionListener {
             if (attrMeta.getName().equals("PUBLICID")) pID = attrMeta.getFixedValue();
             else if (attrMeta.getName().equals("VERSION")) ver = attrMeta.getFixedValue();
         }
-        if (pID == null) pID = "";
-        if (ver == null) ver = "";
 
         hasOwnData = true;
         cdeElementLink.setVisible(true);
