@@ -89,10 +89,14 @@ public class ElementMetaLoader implements Serializable
         //ignore attributes and child elements for not chosen choice element
 		try {
 			if (s.isIsChoice()&!s.isIsChosen())
-				return node;
-		} catch ( NullPointerException np) {
+            {
+                //System.out.println("This is not Chosen : " + s.getId() + " : " + s.getName());
+                return node;
+            }
+            if ((s.isIsRecursive())&&(!s.isAtivated())&&(s.getChildElement().size() > 0)) return node;
+        } catch ( NullPointerException np) {
 
-			System.out.println("ElementMetaLoader.processElement()..:meta:"+s);
+			System.out.println("ElementMetaLoader.processElement()..NullPointerException.:meta:"+s);
 			np.printStackTrace();
 			// TODO: handle exception
 		}
