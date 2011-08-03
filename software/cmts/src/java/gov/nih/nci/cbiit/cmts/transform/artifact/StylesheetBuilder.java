@@ -72,10 +72,10 @@ public class StylesheetBuilder extends XQueryBuilder {
 			if (tgtMappingSrc.indexOf("@")>-1)
 			{
 				//case I
-				XSLTApplyTemplates attrApply=new XSLTApplyTemplates();
-				//remove the first "/"
-				attrApply.setSelect(tgtMappingSrc.substring(parentMappedXPath.length()+1));	
-				tgtDataElement.addContent(attrApply);
+				XSLTElement valueElment=new XSLTElement("value-of");
+				String selectExp=tgtMappingSrc.substring(parentMappedXPath.length()+1);
+				valueElment.setAttribute("select", selectExp);
+				tgtDataElement.addContent(valueElment);
 				parentTemplate.addContent(tgtDataElement);
 			}
 			else
@@ -156,9 +156,10 @@ public class StylesheetBuilder extends XQueryBuilder {
 				if (tgtMappingSrc.indexOf("@")>-1)
 				{
 					//case I
-					XSLTApplyTemplates attrApply=new XSLTApplyTemplates();
-					attrApply.setSelect(tgtMappingSrc.substring(tgtMappingSrc.indexOf("@")));
-					xsltAttr.addContent(attrApply);
+					XSLTElement valueElment=new XSLTElement("value-of");
+					String selectExp=tgtMappingSrc.substring(tgtMappingSrc.indexOf("@"));
+					valueElment.setAttribute("select", selectExp);
+					xsltAttr.addContent(valueElment);
 					targetData.addContent(xsltAttr);
 				}
 				else
@@ -167,10 +168,9 @@ public class StylesheetBuilder extends XQueryBuilder {
 					if (fLink==null)
 					{
 						//case II
-						XSLTApplyTemplates attrApply=new XSLTApplyTemplates();
-						//remove the first "/"
-						attrApply.setSelect(".");
-						xsltAttr.addContent(attrApply);
+						XSLTElement valueElment=new XSLTElement("value-of");
+						valueElment.setAttribute("select", ".");
+						xsltAttr.addContent(valueElment);
 						targetData.addContent(xsltAttr);
 					}
 					else
