@@ -225,6 +225,17 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
             qname = "{" + item.getNamespace() + "}" + elStack.peek();
         boolean recursive = ctStack.contains(qname);
         ctStack.push(qname);
+//        if ((item.getNamespace().toLowerCase().endsWith("hl7-org:v3"))&&
+//            (ctStack.contains("{urn:hl7-org:v3}CE")))
+//        {
+//            for(int i=0;i<ctStack.size();i++)
+//            {
+//                String c = ctStack.get(i);
+//                System.out.println("-+-" +qname+":ctStack-("+i+"/"+ctStack.size()+") :" + c + ", :elStack-("+i+"/"+elStack.size()+") :" + elStack.get(i));
+//            }
+//
+//        }
+
         try {
             ret = new ElementMeta();
             ret.setNameSpace(item.getNamespace());
@@ -235,6 +246,8 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
                 ret.setIsRecursive(true);
                 return ret;
             }
+
+
             List<ElementMeta> childs = ret.getChildElement();
             List<AttributeMeta> attrs = ret.getAttrData();
             List<BaseMeta> l = processList(item.getAttributeUses(), depth);
@@ -255,6 +268,36 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
                     childs.add((ElementMeta)b);
                 }
             }
+            try
+            {
+                if (item.getNamespace().toLowerCase().endsWith("hl7-org:v3"))
+                {
+                    boolean enable = true;
+
+                    if (ctStack.size() >= 3)
+                    {
+                        String c = ctStack.get(ctStack.size()-2);
+                        if (c.endsWith("}CE"))
+                        {
+                            String el = elStack.peek();
+                            if ((qname.endsWith("}CD"))&&(el.endsWith("}translation"))) enable = false;
+                            if ((qname.endsWith("}ED"))&&(el.endsWith("}originalText"))) enable = false;
+                        }
+                    }
+                    if (!enable)
+                    {
+                        ret.setAtivated(false);
+                        ret.setIsRecursive(true);
+                        //ret.setIsEnabled(enable);
+                        return ret;
+                    }
+                }
+            }
+            catch(Exception ee)
+            {
+                
+            }
+
         } finally {
             ctStack.pop();
         }

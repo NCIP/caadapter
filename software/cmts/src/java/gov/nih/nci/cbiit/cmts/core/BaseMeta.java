@@ -65,14 +65,22 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
     private Boolean required;
 	@XmlAttribute
     private String type;
-	
+
+    private boolean ativated = true;
+
     public Boolean isRequired() {
 		return required;
 	}
 	public void setRequired(Boolean isRequired) {
 		this.required = isRequired;
 	}
-	public String getDefaultValue() {
+    public Boolean isAtivated() {
+		return ativated;
+	}
+	public void setAtivated(Boolean isAtivated) {
+		this.ativated = isAtivated;
+	}
+    public String getDefaultValue() {
 		return defaultValue;
 	}
 	public void setDefaultValue(String defaultValue) {
