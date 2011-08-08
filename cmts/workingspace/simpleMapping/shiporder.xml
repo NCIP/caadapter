@@ -18,11 +18,13 @@ xsi:noNamespaceSchemaLocation="shiporder.xsd">
  </item>
  <item>
   <title>Hide your heart</title>
+  <note>current Edition</note>
   <quantity>1</quantity>
   <price>9.90</price>
  </item>
  <item>
   <title>Java Exercise</title>
+  <note>later Edition</note>
   <quantity>2</quantity>
   <price>30.00</price>
  </item>
