@@ -1,8 +1,6 @@
 package gov.nih.nci.cbiit.cmts.transform.artifact;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 import org.jdom.Element;
@@ -14,8 +12,6 @@ import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.core.FunctionType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
-import gov.nih.nci.cbiit.cmts.function.FunctionException;
-import gov.nih.nci.cbiit.cmts.function.FunctionInvoker;
 import gov.nih.nci.cbiit.cmts.transform.QueryBuilderUtil;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
 
@@ -46,7 +42,6 @@ public class StylesheetBuilder extends XQueryBuilder {
 				src=c;
 			
 		}
-
 		stylesheet.addTempate(rootTemplate);
 		xpathStack = new Stack<String>();
 		processTargetElement(tgt.getRootElement(), "", rootTemplate);
@@ -119,7 +114,7 @@ public class StylesheetBuilder extends XQueryBuilder {
 				if (inputFunction.getData().size()==1)
 				{
 					//Case II.1: The function does not have input port
-					XSLTElement outElement=createXsltForFunctionNonInput(inputFunction);
+					XSLTElement outElement=createXsltForFunctionWithoutInput(inputFunction);
 					tgtDataElement.addContent(outElement);
 				}
 				else
@@ -200,7 +195,7 @@ public class StylesheetBuilder extends XQueryBuilder {
 				{
 					//Case II.1: The linked function dose not have input port
 					FunctionType functionType=functions.get(fLink.getTarget().getComponentid());
-					XSLTElement xsltAttrValue=createXsltForFunctionNonInput(functionType);
+					XSLTElement xsltAttrValue=createXsltForFunctionWithoutInput(functionType);
 					xsltAttr.addContent(xsltAttrValue);
 				}
 				else
@@ -231,25 +226,17 @@ public class StylesheetBuilder extends XQueryBuilder {
 					targetData.addContent(xsltAttr);
 				}					
 			}
-
 		}
 	}
 	
-	private XSLTElement createXsltForFunctionNonInput(FunctionType functionType)
+	private XSLTElement createXsltForFunctionWithoutInput(FunctionType functionType)
 	{
 		if (functionType.getData().size()!=1)
 			return null;// "invalid function:"+functionType.getGroup()+":"+functionType.getName()+":"+functionType.getMethod();
-		Map<String,String> parameterMap=new HashMap<String,String>();
-		Object argList[]=new Object[]{functionType, parameterMap};		
-		try {
-			XSLTElement rtnElement=new XSLTElement("value-of");
-			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
-			rtnElement.setAttribute("select", xqueryString);
-			return rtnElement ;
-		} catch (FunctionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		XSLTElement rtnElement=new XSLTElement("value-of");
+		String xqueryString=(String)QueryBuilderUtil.generateXpathExpressionForFunctionWithoutInput(functionType);
+		rtnElement.setAttribute("select", xqueryString);
+		return rtnElement ;
+ 
 	}
 }
