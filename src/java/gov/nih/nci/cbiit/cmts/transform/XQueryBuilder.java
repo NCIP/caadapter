@@ -476,7 +476,7 @@ public class XQueryBuilder {
 				{ 
 					//a function is mapped to this input port, 
 					FunctionType inputFunction=functions.get(inputLink.getSource().getComponentid());
-					String inputSrcValue=QueryBuilderUtil.generateXpathExpressionForFunctionWithoutInput(functionType);//createQueryForFunctionNonInput(functionType);
+					String inputSrcValue=QueryBuilderUtil.generateXpathExpressionForFunctionWithoutInput(inputFunction);//createQueryForFunctionNonInput(functionType);
 					parameterMap.put(fData.getName(), inputSrcValue);
 				}
 			}
