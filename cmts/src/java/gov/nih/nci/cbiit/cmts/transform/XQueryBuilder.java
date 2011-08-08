@@ -295,7 +295,7 @@ public class XQueryBuilder {
 				{
 					//Case II.1
 					//set online text
-					inlineText=createQueryForFunctionNonInput(inputFunction);
+					inlineText=QueryBuilderUtil.generateXpathExpressionForFunctionWithoutInput(inputFunction);//createQueryForFunctionNonInput(functionType);
 					encodeElement(tgt, parentMappedXPath,inlineText,true);
 					elementCreated=true;
 				}
@@ -420,7 +420,7 @@ public class XQueryBuilder {
 				{
 					//Case II.1: The linked function dose not have input port
 					FunctionType functionType=functions.get(fLink.getTarget().getComponentid());
-					attrValue=attrValue+createQueryForFunctionNonInput(functionType);
+					attrValue=attrValue+QueryBuilderUtil.generateXpathExpressionForFunctionWithoutInput(functionType);//createQueryForFunctionNonInput(functionType);
 				}
 				else
 				{
@@ -438,22 +438,6 @@ public class XQueryBuilder {
 				continue;
 			sbQuery.append("attribute "+a.getName() +"{"+attrValue+"},");
 		}
-	}
-	private String createQueryForFunctionNonInput(FunctionType functionType)
-	{
-		if (functionType.getData().size()!=1)
-			return "invalid function:"+functionType.getGroup()+":"+functionType.getName()+":"+functionType.getMethod();
-		Map<String,String> parameterMap=new HashMap<String,String>();
-		Object argList[]=new Object[]{functionType, parameterMap};
-		
-		try {
-			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
-			return xqueryString ;
-		} catch (FunctionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "";
 	}
 	
 	private String createQueryForFunctionWithInput(LinkType link, String elementMapingSourceId)
@@ -492,7 +476,7 @@ public class XQueryBuilder {
 				{ 
 					//a function is mapped to this input port, 
 					FunctionType inputFunction=functions.get(inputLink.getSource().getComponentid());
-					String inputSrcValue=createQueryForFunctionNonInput(inputFunction);
+					String inputSrcValue=QueryBuilderUtil.generateXpathExpressionForFunctionWithoutInput(functionType);//createQueryForFunctionNonInput(functionType);
 					parameterMap.put(fData.getName(), inputSrcValue);
 				}
 			}

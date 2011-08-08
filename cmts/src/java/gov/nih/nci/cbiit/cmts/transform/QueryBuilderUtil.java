@@ -1,5 +1,11 @@
 package gov.nih.nci.cbiit.cmts.transform;
 
+import gov.nih.nci.cbiit.cmts.core.FunctionType;
+import gov.nih.nci.cbiit.cmts.function.FunctionException;
+import gov.nih.nci.cbiit.cmts.function.FunctionInvoker;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -58,5 +64,27 @@ public class QueryBuilderUtil {
 			sb.append("/").append(s);
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * Generate XPath expression for a data manipulation function without input port
+	 * @param functionType
+	 * @return
+	 */
+	public static String generateXpathExpressionForFunctionWithoutInput(FunctionType functionType)
+	{
+		if (functionType.getData().size()!=1)
+			return "invalid function:"+functionType.getGroup()+":"+functionType.getName()+":"+functionType.getMethod();
+		Map<String,String> parameterMap=new HashMap<String,String>();
+		Object argList[]=new Object[]{functionType, parameterMap};
+		
+		try {
+			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
+			return xqueryString ;
+		} catch (FunctionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 }
