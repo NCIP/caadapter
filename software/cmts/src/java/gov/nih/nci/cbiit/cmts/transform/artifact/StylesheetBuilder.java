@@ -151,7 +151,17 @@ public class StylesheetBuilder extends XQueryBuilder {
 		}
 		xpathStack.pop();
 	}
-	
+	/**
+	 * Set values for the attributes of an element
+	 * Case I: The attribute is mapped from a source item
+	 * Case II.1: The attribute is mapped to the out put port of a function without input port
+	 * Case II.2: The attribute is mapped to the out put port of a function with one or more input ports
+	 * Case III :use fixed value first
+	 * Case IV : use default value
+	 * Case V: Ignore this attribute
+	 * @param elementMeta - Target Element meta
+	 * @param mappedSourceNodeId - The previously mapped source node path, which is associated with the variable on varStack
+	 */
 	private void encodeAttribute(Element targetData, ElementMeta targetMeta,
 			String targetElementMetaXpath)
 	{
@@ -161,13 +171,58 @@ public class StylesheetBuilder extends XQueryBuilder {
 			LinkType link = links.get(targetAttributePath);
 			XSLTElement xsltAttr=new XSLTElement("attribute");
 			xsltAttr.setAttribute("name", attrMeta.getName());
-			if (link==null)
+			if (link!=null)
+			{
+	        	/**
+	        	 * Case I: The attribute is mapped from a source item
+	        	 * Case I.1: link source is an element  
+	        	 * case I.2: link source is an attribute
+	        	 */
+				String tgtMappingSrc=link.getSource().getId();
+				//I.1 is default
+				String selectExp=".";
+				if (tgtMappingSrc.indexOf("@")>-1)
+					//case I.1
+					selectExp=tgtMappingSrc.substring(tgtMappingSrc.indexOf("@"));
+				
+				XSLTElement valueElment=new XSLTElement("value-of");
+				valueElment.setAttribute("select", selectExp);
+				xsltAttr.addContent(valueElment);
+				targetData.addContent(xsltAttr);
+			}
+			else if(metaToFunctionLinks.get(targetAttributePath)!=null) 
+			{
+				//case II
+				LinkType fLink = metaToFunctionLinks.get(targetAttributePath);
+				String functionId=fLink.getTarget().getComponentid();
+				FunctionType inputFunction=functions.get(functionId);
+				if (inputFunction.getData().size()==1)
+				{
+					//Case II.1: The linked function dose not have input port
+					FunctionType functionType=functions.get(fLink.getTarget().getComponentid());
+					XSLTElement xsltAttrValue=createXsltForFunctionNonInput(functionType);
+					xsltAttr.addContent(xsltAttrValue);
+				}
+				else
+				{
+					//Case II.2: The linked function has one or more input ports
+//					attrValue=createQueryForFunctionWithInput(fLink,  mappedSourceNodeId);
+				}
+				targetData.addContent(xsltAttr);
+			}
+			else
 			{
 				String targetAttrValue="";
 				if (attrMeta.getFixedValue()!=null)
+					//case III
 					targetAttrValue=attrMeta.getFixedValue();
 				else if (attrMeta.getDefaultValue()!=null)
+					//case IV
 					targetAttrValue=attrMeta.getDefaultValue();
+				else
+					//case V
+					continue;
+				
 				if (!targetAttrValue.equals(""))
 				{
 					XSLTElement xlstText=new XSLTElement("text");
@@ -176,40 +231,7 @@ public class StylesheetBuilder extends XQueryBuilder {
 					targetData.addContent(xsltAttr);
 				}					
 			}
-			else
-			{
-	        	/**
-	        	 * Case I: link source is an attribute 
-	        	 * case II: link source is an element
-	        	 * case III: link source is the output of a data processing function
-	        	 */
-				String tgtMappingSrc=link.getSource().getId();
-				if (tgtMappingSrc.indexOf("@")>-1)
-				{
-					//case I
-					XSLTElement valueElment=new XSLTElement("value-of");
-					String selectExp=tgtMappingSrc.substring(tgtMappingSrc.indexOf("@"));
-					valueElment.setAttribute("select", selectExp);
-					xsltAttr.addContent(valueElment);
-					targetData.addContent(xsltAttr);
-				}
-				else
-				{
-					LinkType fLink = metaToFunctionLinks.get(targetAttributePath);
-					if (fLink==null)
-					{
-						//case II
-						XSLTElement valueElment=new XSLTElement("value-of");
-						valueElment.setAttribute("select", ".");
-						xsltAttr.addContent(valueElment);
-						targetData.addContent(xsltAttr);
-					}
-					else
-					{
-						//case III
-					}
-				}
-			}
+
 		}
 	}
 	
@@ -218,8 +240,7 @@ public class StylesheetBuilder extends XQueryBuilder {
 		if (functionType.getData().size()!=1)
 			return null;// "invalid function:"+functionType.getGroup()+":"+functionType.getName()+":"+functionType.getMethod();
 		Map<String,String> parameterMap=new HashMap<String,String>();
-		Object argList[]=new Object[]{functionType, parameterMap};
-		
+		Object argList[]=new Object[]{functionType, parameterMap};		
 		try {
 			XSLTElement rtnElement=new XSLTElement("value-of");
 			String xqueryString=(String)FunctionInvoker.invokeFunctionMethod(functionType.getClazz(), functionType.getMethod(), argList);
