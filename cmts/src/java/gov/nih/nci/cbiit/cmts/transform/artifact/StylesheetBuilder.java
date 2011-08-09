@@ -159,7 +159,7 @@ public class StylesheetBuilder extends XQueryBuilder {
 	 * Case I: The attribute is mapped from a source item
 	 * Case II.1: The attribute is mapped to the out put port of a function without input port
 	 * Case II.2: The attribute is mapped to the out put port of a function with one or more input ports
-	 * Case III :use fixed value first
+	 * Case III :use fixed value first -- the highest precedence
 	 * Case IV : use default value
 	 * Case V: Ignore this attribute
 	 * @param elementMeta - Target Element meta
@@ -170,10 +170,16 @@ public class StylesheetBuilder extends XQueryBuilder {
 	{
 		for (AttributeMeta attrMeta:targetMeta.getAttrData())
 		{
+
+			if (attrMeta.getFixedValue()!=null)
+			{
+				//case III
+				addAttributeTemplate(targetData, attrMeta.getName(), attrMeta.getFixedValue(), null);
+				continue;
+			}
 			String targetAttributePath=targetElementMetaXpath+"/@"+attrMeta.getName();
 			LinkType link = links.get(targetAttributePath);
-			XSLTElement xsltAttr=new XSLTElement("attribute");
-			xsltAttr.setAttribute("name", attrMeta.getName());
+
 			if (link!=null)
 			{
 	        	/**
@@ -187,11 +193,7 @@ public class StylesheetBuilder extends XQueryBuilder {
 				if (tgtMappingSrc.indexOf("@")>-1)
 					//case I.1
 					selectExp=tgtMappingSrc.substring(tgtMappingSrc.indexOf("@"));
-				
-				XSLTElement valueElment=new XSLTElement("value-of");
-				valueElment.setAttribute("select", selectExp);
-				xsltAttr.addContent(valueElment);
-				targetData.addContent(xsltAttr);
+				addAttributeTemplate(targetData,  attrMeta.getName(), null, selectExp);
 			}
 			else if(metaToFunctionLinks.get(targetAttributePath)!=null) 
 			{
@@ -199,7 +201,6 @@ public class StylesheetBuilder extends XQueryBuilder {
 				LinkType fLink = metaToFunctionLinks.get(targetAttributePath);
 				String functionId=fLink.getTarget().getComponentid();
 				FunctionType inputFunction=functions.get(functionId);
-				XSLTElement attrValueElement=new XSLTElement("value-of");
 				String attrValueExpression=".";
 				if (inputFunction.getData().size()==1)
 				{
@@ -212,34 +213,51 @@ public class StylesheetBuilder extends XQueryBuilder {
 					//Case II.2: The linked function has one or more input ports
 					attrValueExpression=createXpathExpressionForFunctionWithInput(fLink,  "");
 				}				
-				attrValueElement.setAttribute("select", attrValueExpression);
-				xsltAttr.addContent(attrValueElement);
-				targetData.addContent(xsltAttr);
+				addAttributeTemplate(targetData, attrMeta.getName(), null, attrValueExpression);
 			}
+			else if (attrMeta.getDefaultValue()!=null)
+				//case IV
+				addAttributeTemplate(targetData, attrMeta.getName(), attrMeta.getFixedValue(), null);
 			else
-			{
-				String targetAttrValue="";
-				if (attrMeta.getFixedValue()!=null)
-					//case III
-					targetAttrValue=attrMeta.getFixedValue();
-				else if (attrMeta.getDefaultValue()!=null)
-					//case IV
-					targetAttrValue=attrMeta.getDefaultValue();
-				else
-					//case V
-					continue;
-				
-				if (!targetAttrValue.equals(""))
-				{
-					XSLTElement xlstText=new XSLTElement("text");
-					xlstText.setText(targetAttrValue);
-					xsltAttr.addContent(xlstText);
-					targetData.addContent(xsltAttr);
-				}					
-			}
+				//case V
+				continue;				
+			
 		}
 	}
 		
+	/**
+	 * Set content of an attribute template
+	 * Case I: set literal data as inline text
+	 * Case II: Set xpath expression for runtime data
+	 * @param element
+	 * @param attributeTemplate
+	 * @param inlineText
+	 * @param selectExpression
+	 */
+	private void addAttributeTemplate(Element element, String attributeName,
+			String inlineText, String selectExpression)
+	{ 
+		if (inlineText!=null)
+		{
+			XSLTElement attributeTemplate=new XSLTElement("attribute");
+			attributeTemplate.setAttribute("name", attributeName);
+			XSLTElement xlstStatement=new XSLTElement("text");
+			xlstStatement.setText(inlineText);
+			attributeTemplate.addContent(xlstStatement);
+			element.addContent(attributeTemplate);
+		}
+		else if (selectExpression!=null)
+		{
+			XSLTElement attributeTemplate=new XSLTElement("attribute");
+			attributeTemplate.setAttribute("name", attributeName);
+			XSLTElement xlstStatement=new XSLTElement("value-of");
+			xlstStatement.setAttribute("select", selectExpression);
+			attributeTemplate.addContent(xlstStatement);
+			element.addContent(attributeTemplate);
+		}
+		else
+			return;
+	}
 	private String createXpathExpressionForFunctionWithInput(LinkType link, String elementMapingSourceId)
 	{
 		FunctionType functionType=functions.get(link.getTarget().getComponentid());
