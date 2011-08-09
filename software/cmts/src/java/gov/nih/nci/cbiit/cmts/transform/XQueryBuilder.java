@@ -387,7 +387,7 @@ public class XQueryBuilder {
 	 * Case I: The attribute is mapped from a source item
 	 * Case II.1: The attribute is mapped to the out put port of a function without input port
 	 * Case II.2: The attribute is mapped to the out put port of a function with one or more input ports
-	 * Case III :use fixed value first
+	 * Case III :use fixed value -- first precedent value
 	 * Case IV : use default value
 	 * Case V: Ignore this attribute
 	 * @param elementMeta - Target Element meta
@@ -399,6 +399,13 @@ public class XQueryBuilder {
 		{
 			String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 			String attrValue="";
+			if(a.getFixedValue()!=null) 
+			{ 
+				//Case III -- the first priority
+				attrValue="\""+a.getFixedValue()+"\"";
+				sbQuery.append("attribute "+a.getName() +"{"+attrValue+"},");
+				continue;
+			}
 			if(links.get(elementXpath+"/@"+a.getName())!=null) 
 			{
 				//Case I
@@ -428,9 +435,7 @@ public class XQueryBuilder {
 					attrValue=createQueryForFunctionWithInput(fLink,  mappedSourceNodeId);
 				}
 			}
-			else if(a.getFixedValue()!=null) { //Case III
-				attrValue="\""+a.getFixedValue()+"\"";
-			} 
+
 			else if(a.getDefaultValue()!=null) {//Case IV
 				attrValue="\""+a.getDefaultValue()+"\"";
 			}
