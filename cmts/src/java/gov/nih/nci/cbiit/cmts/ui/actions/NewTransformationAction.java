@@ -133,7 +133,7 @@ public class NewTransformationAction extends AbstractContextAction
 
 			String sourceFile =w.getDataFile().getPath();//FileUtil.getRelativePath(w.getDataFile());
 			String mappingFile=w.getMapFile().getPath();//FileUtil.getRelativePath(w.getMapFile());
-			String xmlResult=transformer.Transfer(sourceFile.replace("\\", "/"),mappingFile);
+			String xmlResult=transformer.Transfer(sourceFile, mappingFile);
 			newMsgPane.setMessageText(xmlResult);
 			newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);
