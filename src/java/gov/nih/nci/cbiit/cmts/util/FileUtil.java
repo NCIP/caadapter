@@ -974,25 +974,6 @@ public class FileUtil
         return true;
     }
 
-    public static String getRelativePath(File f){
-        String workDir = new File("").getAbsolutePath();
-        String fPath = f.getAbsolutePath();
-        System.out.println("FileUtil.getRelativePath()..filePath:"+fPath);
-        System.out.println("FileUtil.getRelativePath()..workingDir:"+workDir);
-        String ret = null;
-        if(fPath.startsWith(workDir)){
-            ret = fPath.substring(workDir.length());
-            ret = ret.replace('\\', '/');
-            while(ret.startsWith("/")){
-                ret = ret.substring(1);
-            }
-        }
-        else
-        	ret=findRelativePath(workDir, fPath);
-        System.out.println("FileUtil.getRelativePath()..relativePath:"+ret);
-        return ret;
-    }
-
     public static String findRelativePath(String refPath, String filePath)
     {
     	String relPath;
