@@ -18,6 +18,7 @@ import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -94,7 +95,8 @@ public class XQueryTransformer implements TransformationService {
 	public String executeQuery(String query, String sourceFile)
 			throws XQException {
 		XQPreparedExpression exp = getConn().prepareExpression(query);
-		exp.bindString(new QName("docName"), sourceFile, conn
+		URI sourcUri=new File(sourceFile).toURI();
+		exp.bindString(new QName("docName"), sourcUri.getPath(), conn
 				.createAtomicType(XQItemType.XQBASETYPE_STRING));
 		XQResultSequence result = exp.executeQuery();
 		String rawResult = result.getSequenceAsString(new Properties());
