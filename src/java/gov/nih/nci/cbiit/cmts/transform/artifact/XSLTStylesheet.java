@@ -12,13 +12,13 @@ import org.jdom.output.XMLOutputter;
 
 
 public class XSLTStylesheet extends Document  {
-	private String xsltPrefix="xsl";
-	private String xsltUri="http://www.w3.org/1999/XSL/Transform";
 	protected static Namespace xsltNamespace=Namespace.getNamespace("xsl","http://www.w3.org/1999/XSL/Transform");
+	private static Namespace xsNamespace=Namespace.getNamespace("xs","http://www.w3.org/2001/XMLSchema");
 	public XSLTStylesheet()
 	{
 		super();
 		XSLTElement xlstRoot = new XSLTElement("transform");
+		xlstRoot.addNamespaceDeclaration(xsNamespace);
 		xlstRoot.setAttribute("version", "1.0");
 		setRootElement(xlstRoot);
 		XSLTElement outputElement=new XSLTElement("output");
