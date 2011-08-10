@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="workingspace\clone\shiporder.xsd" kind="xml" type="source" id="0">
+        <component location="shiporder.xsd" kind="xml" type="source" id="0">
             <rootElement isChosen="false" isChoice="false" type="shipordertype" name="shiporder"/>
         </component>
-        <component location="workingspace\clone\printorder.xsd" kind="xml" type="target" id="1">
+        <component location="printorder.xsd" kind="xml" type="target" id="1">
             <rootElement isChosen="false" isChoice="false" type="printordertype" name="printorder"/>
         </component>
         <component type="function" id="1279639980015">

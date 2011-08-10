@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="workingspace\ISO_21090\example\shipping.xsd" kind="xml" type="target" id="0">
+        <component location="shipping.xsd" kind="xml" type="target" id="0">
             <rootElement isChosen="false" isChoice="false" type="shippingtype" nameSpace="uri:cmps.caadapter.cbiit.nci.nih.gov:shipping.xsd" name="shipping"/>
         </component>
-        <component location="workingspace\ISO_21090\example\purchase.xsd" kind="xml" type="source" id="1">
+        <component location="purchase.xsd" kind="xml" type="source" id="1">
             <rootElement isChosen="false" isChoice="false" type="PurchaseOrderType" nameSpace="http://cbiit.nci.nih.gov/po.xsd" name="purchaseOrder"/>
         </component>
     </components>
