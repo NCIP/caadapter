@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core">
     <components>
-        <component location="workingspace\Csv2Xml\COCT_MT010000_Simple.xsd" kind="xml" type="source" id="0">
+        <component location="COCT_MT010000_Simple.xsd" kind="xml" type="source" id="0">
             <rootElement isChosen="false" isChoice="false" type="ENCOUNTER_HEAD_TYPE" name="ENCOUNTER_HEAD"/>
         </component>
-        <component location="workingspace\Csv2Xml\printorder.xsd" kind="xml" type="target" id="1">
+        <component location="printorder.xsd" kind="xml" type="target" id="1">
             <rootElement isChosen="false" isChoice="false" type="printordertype" name="printorder"/>
         </component>
     </components>
