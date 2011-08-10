@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core">
     <components>
-        <component location="workingspace\cda\CDA.xsd" kind="xml" type="target" id="0">
+        <component location="CDA.xsd" kind="xml" type="target" id="0">
             <rootElement isSimple="true" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" type="POCD_MT000040.ClinicalDocument" nameSpace="urn:hl7-org:v3" name="ClinicalDocument" idSpec="X-path" id="/ClinicalDocument"/>
         </component>
-        <component location="workingspace\cda\shiporder.xsd" kind="xml" type="source" id="1">
+        <component location="shiporder.xsd" kind="xml" type="source" id="1">
             <rootElement isSimple="true" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" type="shipordertype" name="shiporder" idSpec="X-path" id="/shiporder"/>
         </component>
         <component type="function" id="1287427528877">
