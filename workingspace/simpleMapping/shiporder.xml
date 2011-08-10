@@ -3,7 +3,7 @@
 <shiporder orderid="889923"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:noNamespaceSchemaLocation="shiporder.xsd">
- <orderperson>John Smith</orderperson>
+ <orderperson>JohnSmith</orderperson>
  <shipto>
   <name>Ola Nordmann</name>
   <address>Langgt 23</address>
