@@ -181,20 +181,16 @@ public MainApplet() throws HeadlessException
         }
     }
 
-    public void addNewTab(JPanel panel)
+    public void addNewTab(JPanel panel, String tabKind)
     {
         if (tabbedPane.getTabCount() == 0) {
             centerPanel.removeAll();
             centerPanel.setLayout(new BorderLayout());
             centerPanel.add(tabbedPane, BorderLayout.CENTER);
         }
-        String title = null;
-
-        if (panel instanceof MappingMainPanel) {
-            title = "Untitled_" + (tabbedPane.getTabCount()+1) + ".map";
-        }
-        else
-            title = "Untitled_" + (tabbedPane.getTabCount()+1) + ".dat";
+        String title ="Untitled_" + (tabbedPane.getTabCount()+1);
+        if (tabKind!=null)
+        title =title + tabKind;
         tabbedPane.addTab(title, panel);
         tabbedPane.setSelectedComponent(panel);
         System.out.println("Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
