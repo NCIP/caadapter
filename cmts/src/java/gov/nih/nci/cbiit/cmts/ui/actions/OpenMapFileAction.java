@@ -178,7 +178,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 				{
 
                     GeneralUtilities.setCursorWaiting(mainFrame.getAssociatedUIContainer());
-					mainFrame.addNewTab(mappingPanel);
+					mainFrame.addNewTab(mappingPanel, ".map");
                     //System.out.println("SwingWorker. doInBackground() 2 : " + mainFrame.getTabbedPane().getTitleAt(mainFrame.getTabbedPane().getComponentCount()-1));
                     setSuccessfullyPerformed(true);
 				}
