@@ -113,8 +113,9 @@ public class NewArtifactAction extends AbstractContextAction
 			//MessagePanel newMsgPane=new MessagePanel();
             MessagePanel newMsgPane=new MessagePanel(mainFrame, false);
             newMsgPane.setTransformationType(transformationType);
-			mainFrame.addNewTab(newMsgPane);
+
 			String xmlResult="";
+			String artType=".xsl";
 			String mappingFile=w.getMapFile().getPath();
 			Mapping map=MappingFactory.loadMapping(new File(mappingFile));
 			if (transformationType.equals(ActionConstants.NEW_XSLT_STYLESHEET))
@@ -130,7 +131,9 @@ public class NewArtifactAction extends AbstractContextAction
 			{
 				XQueryBuilder xqueryBuilder=new XQueryBuilder(map);
 				xmlResult=xqueryBuilder.getXQuery();
+				artType=".xq";
 			}
+			mainFrame.addNewTab(newMsgPane,artType);
 			newMsgPane.setMessageText(xmlResult);
 //			newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);
