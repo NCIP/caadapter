@@ -81,10 +81,10 @@ public class MainFrameContainer
         if (mainApplet != null) return mainApplet.hasComponentOfGivenClass(classValue, bringToFront);
         return null;
     }
-    public void addNewTab(JPanel mappingPanel)
+    public void addNewTab(JPanel mappingPanel, String tabKind)
     {
         if (mainFrame != null) mainFrame.addNewTab(mappingPanel);
-        if (mainApplet != null) mainApplet.addNewTab(mappingPanel);
+        if (mainApplet != null) mainApplet.addNewTab(mappingPanel, tabKind);
     }
 
     public Frame getOwnerFrame()
