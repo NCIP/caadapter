@@ -80,7 +80,7 @@ public class NewMapFileAction extends AbstractContextAction
 	{
 	
 		MappingMainPanel mp = new MappingMainPanel(mainFrame);
-		mainFrame.addNewTab(mp);
+		mainFrame.addNewTab(mp, ".map");
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
 	}

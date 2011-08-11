@@ -116,7 +116,7 @@ public class NewTransformationAction extends AbstractContextAction
             MessagePanel newMsgPane=new MessagePanel(mainFrame);
             newMsgPane.setTransformationType(transformationType);
 
-			mainFrame.addNewTab(newMsgPane);
+			mainFrame.addNewTab(newMsgPane, ".xml");
 			TransformationService transformer;
 			if (transformationType.equals(ActionConstants.NEW_CSV_Transformation))
 				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_CSV_TO_XML);
