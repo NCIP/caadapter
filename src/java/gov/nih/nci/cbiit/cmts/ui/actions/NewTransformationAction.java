@@ -137,11 +137,6 @@ public class NewTransformationAction extends AbstractContextAction
 			newMsgPane.setMessageText(xmlResult);
 			newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);
-			newMsgPane.setTargetDataFile(w.getDestFile());
-			FileWriter writer = new FileWriter(w.getDestFile());
-			writer.write(xmlResult);
-			writer.close();
-
 			newMsgPane.setValidationMessage( transformer.validateXmlData(transformer.getTransformationMapping(),xmlResult));
 			JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
 		}

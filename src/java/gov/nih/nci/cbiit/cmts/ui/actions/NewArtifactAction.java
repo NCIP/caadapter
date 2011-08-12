@@ -133,6 +133,7 @@ public class NewArtifactAction extends AbstractContextAction
 				xmlResult=xqueryBuilder.getXQuery();
 				artType=".xq";
 			}
+			newMsgPane.setViewFileExtension(artType);
 			mainFrame.addNewTab(newMsgPane,artType);
 			newMsgPane.setMessageText(xmlResult);
 //			newMsgPane.setSourceDataURI(sourceFile);
