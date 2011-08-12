@@ -93,9 +93,12 @@ public class StylesheetBuilder extends XQueryBuilder {
 			else
 			{
 				childElementRef=tgtMappingSrc;
- 				//case I.2: link source is an element
+				String localpath =QueryBuilderUtil.retrieveRelativePath(parentMappedXPath, tgtMappingSrc);
+				//case I.2: link source is an element
 				XSLTElement forEach=new XSLTElement("for-each");
-				forEach.setAttribute("select",tgtMappingSrc.substring(parentMappedXPath.length()+1));
+//				forEach.setAttribute("select",tgtMappingSrc.substring(parentMappedXPath.length()+1));
+				//remove the leading "/" -- .substring(1)
+				forEach.setAttribute("select",localpath.substring(1));
 				if (!hasMappedDescenant(elementMeta))
 				{
 					//apply content if this target element is leaf
