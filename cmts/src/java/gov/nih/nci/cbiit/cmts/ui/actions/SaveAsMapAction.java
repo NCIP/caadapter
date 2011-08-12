@@ -8,18 +8,14 @@
 
 package gov.nih.nci.cbiit.cmts.ui.actions;
 
-
-import gov.nih.nci.cbiit.cmts.core.Mapping;
-import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmts.ui.main.AbstractTabPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Collections;
 
 /**
  * This class defines a concrete "Save As" action.
@@ -33,35 +29,24 @@ import java.util.Collections;
 public class SaveAsMapAction extends DefaultSaveAsAction
 {
 
-	protected MappingMainPanel mappingPanel;
-
+	protected AbstractTabPanel viewerPanel;
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public SaveAsMapAction(MappingMainPanel mappingPanel)
+	public SaveAsMapAction(AbstractTabPanel mappingPanel)
 	{
-		this(COMMAND_NAME, mappingPanel);
-	}
-
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a default icon.
-	 */
-	public SaveAsMapAction(String name, MappingMainPanel mappingPanel)
-	{
-		this(name, null, mappingPanel);
+		this(COMMAND_NAME,null, mappingPanel);
 	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public SaveAsMapAction(String name, Icon icon, MappingMainPanel mappingPanel)
+	public SaveAsMapAction(String name, Icon icon, AbstractTabPanel tabPanel)
 	{
 		super(name, icon, null);
-		this.mappingPanel = mappingPanel;
-//		setAdditionalAttributes();
+		viewerPanel = tabPanel;
 	}
 
 	/**
@@ -69,17 +54,21 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
-		if(this.mappingPanel!=null)
+		if(viewerPanel!=null)
 		{
-			if(mappingPanel.getSourceTree()==null || mappingPanel.getTargetTree()==null)
+			if (viewerPanel instanceof MappingMainPanel)
 			{
-				String msg = "Enter both source and target information before saving the map specification.";
-				JOptionPane.showMessageDialog(mappingPanel, msg, "Error", JOptionPane.ERROR_MESSAGE);
-				setSuccessfullyPerformed(false);
-				return false;
+				MappingMainPanel mappingMain=(MappingMainPanel)viewerPanel;
+				if(mappingMain.getSourceTree()==null || mappingMain.getTargetTree()==null)
+				{
+					String msg = "Enter both source and target information before saving the map specification.";
+					JOptionPane.showMessageDialog(viewerPanel, msg, "Error", JOptionPane.ERROR_MESSAGE);
+					setSuccessfullyPerformed(false);
+					return false;
+				}
 			}
 		}
-		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, DefaultSettings.MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
+		File file = DefaultSettings.getUserInputOfFileFromGUI(viewerPanel, viewerPanel.getViewFileExtension(), "Save As...", true, true);
 		if (file != null)
 			setSuccessfullyPerformed(processSaveFile(file));
 		
@@ -89,38 +78,28 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	@SuppressWarnings("unchecked")
 	protected boolean processSaveFile(File file) throws Exception
 	{
-		preActionPerformed(mappingPanel);
-		MiddlePanelJGraphController mappingManager = mappingPanel.getGraphController();//.getMiddlePanel().getGraphController();
-		Mapping mappingData = mappingManager.retrieveMappingData(true);
-		Collections.sort(mappingData.getTags().getTag());
-		MappingFactory.saveMapping(file, mappingData);
-		boolean oldChangeValue = mappingPanel.isChanged();
+		boolean oldChangeValue = viewerPanel.isChanged();
+		preActionPerformed(viewerPanel);
+		viewerPanel.persistFile(file);
 		try
 		{
 			if (!GeneralUtilities.areEqual(defaultFile, file))
 			{//not equal, change it.
-				removeFileUsageListener(defaultFile, mappingPanel);
+				removeFileUsageListener(defaultFile, viewerPanel);
 				defaultFile = file;
 			}
-			//clear the change flag.
-			mappingPanel.setChanged(false);
-			//try to notify affected panels
-			postActionPerformed(mappingPanel);
-
-			JOptionPane.showMessageDialog(mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
-
-			mappingPanel.setSaveFile(file);
+			postActionPerformed(viewerPanel);
+//			JOptionPane.showMessageDialog(viewerPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+			viewerPanel.setSaveFile(file);
 			return true;
 		}
 		catch(Throwable e)
 		{
 			//restore the change value since something occurred and believe the save process is aborted.
-			mappingPanel.setChanged(oldChangeValue);
+			viewerPanel.setChanged(oldChangeValue);
 			//rethrow the exeception
 			e.printStackTrace();
 			throw new Exception(e);
-
-//			return false;
 		}
 	}
 }

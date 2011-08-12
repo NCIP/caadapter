@@ -85,19 +85,19 @@ public class OpenMessageFrontPage extends JPanel
 		centerPanel.add(mapFileBrowseButton, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 
-		JLabel destFileLabel = new JLabel(DEST_FILE_BROWSE_MODE);
-		if (!ONLY_MAPPING_REQUIRED)
-		centerPanel.add(destFileLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		destFileInputField = new JTextField();
-		destFileInputField.setPreferredSize(new Dimension(350, 25));
-		if (!ONLY_MAPPING_REQUIRED)
-		centerPanel.add(destFileInputField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-		JButton destFileBrowseButton = new JButton(new BrowseMessageAction(this, DEST_FILE_BROWSE_MODE));
-		if (!ONLY_MAPPING_REQUIRED)
-		centerPanel.add(destFileBrowseButton, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
-				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+//		JLabel destFileLabel = new JLabel(DEST_FILE_BROWSE_MODE);
+//		if (!ONLY_MAPPING_REQUIRED)
+//		centerPanel.add(destFileLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+//				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+//		destFileInputField = new JTextField();
+//		destFileInputField.setPreferredSize(new Dimension(350, 25));
+//		if (!ONLY_MAPPING_REQUIRED)
+//		centerPanel.add(destFileInputField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
+//				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+//		JButton destFileBrowseButton = new JButton(new BrowseMessageAction(this, DEST_FILE_BROWSE_MODE));
+//		if (!ONLY_MAPPING_REQUIRED)
+//		centerPanel.add(destFileBrowseButton, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
+//				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 		this.add(centerPanel, BorderLayout.CENTER);
 	}
 
@@ -167,7 +167,7 @@ public class OpenMessageFrontPage extends JPanel
 				||openWizardTitle.equals(ActionConstants.NEW_XQUERY_STATEMENT))
 			return validateInputByMode(MAP_FILE_BROWSE_MODE);
 		
-		boolean result = validateInputByMode(DATA_FILE_BROWSE_MODE) && validateInputByMode(MAP_FILE_BROWSE_MODE) && validateInputByMode(DEST_FILE_BROWSE_MODE);
+		boolean result = validateInputByMode(DATA_FILE_BROWSE_MODE) && validateInputByMode(MAP_FILE_BROWSE_MODE);// && validateInputByMode(DEST_FILE_BROWSE_MODE);
 		return result;
 	}
 

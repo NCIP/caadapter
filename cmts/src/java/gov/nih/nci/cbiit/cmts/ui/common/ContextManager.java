@@ -176,15 +176,6 @@ public class ContextManager implements ChangeListener
             currentPanel = nowPanel;
             updateMenu();
         }
-
-		/**
-		 * Temporary solution
-		 */
-//		if(nowPanel instanceof DefaultContextManagerClientPanel)
-//		{
-//			((DefaultContextManagerClientPanel)nowPanel).synchronizeRegisteredFile(true);
-//			
-//		}
 	}
 
     public void notifySaveActionPerformedOnContextClient(ContextManagerClient client)
@@ -200,6 +191,7 @@ public class ContextManager implements ChangeListener
     {
         try
         {
+        	System.out.println("ContextManager.updateMenu()..current Panel:"+currentPanel);
             if(currentPanel instanceof ContextManagerClient)
             {
                 ContextManagerClient contextClient = (ContextManagerClient) currentPanel;
