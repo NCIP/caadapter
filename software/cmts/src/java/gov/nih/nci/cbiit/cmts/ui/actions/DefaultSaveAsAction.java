@@ -39,9 +39,7 @@ public class DefaultSaveAsAction extends AbstractContextAction
 	protected static final Character COMMAND_MNEMONIC = new Character('a');
 	public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("blank.gif"));
 
-
 	protected transient MainFrameContainer mainFrame = null;
-
 	protected transient File defaultFile = null;
 
 	/**
@@ -50,17 +48,10 @@ public class DefaultSaveAsAction extends AbstractContextAction
 	 */
 	public DefaultSaveAsAction(MainFrameContainer mainFrame)
 	{
-		this(COMMAND_NAME, mainFrame);
+		this(COMMAND_NAME,null, mainFrame);
 	}
 
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a default icon.
-	 */
-	public DefaultSaveAsAction(String name, MainFrameContainer mainFrame)
-	{
-		this(name, null, mainFrame);
-	}
+
 
 	/**
 	 * Defines an <code>Action</code> object with the specified

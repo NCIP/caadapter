@@ -9,18 +9,18 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.cbiit.cmts.ui.message;
 
-
 import gov.nih.nci.cbiit.cmts.transform.TransformationService;
 import gov.nih.nci.cbiit.cmts.transform.TransformerFactory;
-import gov.nih.nci.cbiit.cmts.ui.actions.DefaultCloseAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.SaveAsMapAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.SaveMapAction;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
-import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
-import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.AbstractTabPanel;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -55,7 +55,7 @@ import java.util.Map;
  *          revision    $Revision: 1.2 $
  *          date        $Date: 2009-11-24 18:31:25 $
  */
-public class MessagePanel extends JPanel implements ActionListener, ContextManagerClient
+public class MessagePanel extends AbstractTabPanel implements ActionListener
 {
 	private boolean SOURCE_DATA_REQUIRED=true;
     private JTextField mapFileNameField;
@@ -65,8 +65,6 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
     private java.util.List <Object> messageList;
     private JScrollPane scrollPane = null;
     private ValidationMessagePane validationMessagePane = null;
-    private boolean dataChanged=false;
-    private MainFrameContainer mainFrame = null;
 
     public MessagePanel(MainFrameContainer mainFrame)
     {
@@ -236,106 +234,6 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
         scrollPane.getViewport().setView(outputMessageArea);
     }
 
-    /*
-    private String setupXQueryStructuredIndenation(String text)
-    {
-        if (text == null) return "";
-        String tx = text.trim();
-        if (!tx.toLowerCase().startsWith("declare ")) return text;
-
-        try
-        {
-            int idx1 = tx.toLowerCase().indexOf("document");
-            String buf = tx.substring(0, idx1).trim() + "\r\n";
-            tx = tx.substring(idx1).trim();
-            String cx = setupXQueryStructuredIndenation(tx, 0);
-            return buf + cx;
-        }
-        catch(Exception ee)
-        {
-            System.out.println("Error:" + ee.getMessage());
-            return text;
-        }
-    }
-    private String setupXQueryStructuredIndenation(String text, int level)
-    {
-        String space = "";
-        for (int i=0;i<level;i++) space = space + "   ";
-        level++;
-
-        String buf = "";
-
-        while(true)
-        {
-            text = text.trim();
-            System.out.println("Level("+level+"): " + text);
-
-            if ((text.toLowerCase().startsWith("document")) ||
-                (text.toLowerCase().startsWith("element ")))
-            {
-                int idx = text.indexOf("{");
-                buf = buf + space + text.substring(0, idx).trim() + "\r\n" + space + "{" + "\r\n";
-                text = text.substring(idx).trim();
-                idx = getBlockIndex(text);
-                String sub = setupXQueryStructuredIndenation(text.substring(1, idx), level);
-                text = text.substring(idx + 1).trim();
-                String tail = "}";
-                if (text.startsWith(","))
-                {
-                    text = text.substring(1).trim();
-                    tail = tail + ",";
-                }
-                buf = buf + sub + space + tail + "\r\n";
-            }
-            else if (text.toLowerCase().startsWith("attribute "))
-            {
-                int idx = text.indexOf("{");
-                buf = buf + space + text.substring(0, idx).trim();
-                text = text.substring(idx).trim();
-                idx = getBlockIndex(text);
-                String sub = text.substring(0, idx+1);
-                text = text.substring(idx + 1).trim();
-                String tail = "";
-                if (text.startsWith(","))
-                {
-                    text = text.substring(1).trim();
-                    tail = ",";
-                }
-                buf = buf + sub + tail + "\r\n";
-            }
-            else if (text.toLowerCase().startsWith("for "))
-            {
-                int idx = text.toLowerCase().indexOf("return");
-                buf = buf + space + text.substring(0, idx + 6) + "\r\n";
-                text = text.substring(idx + 6).trim();
-            }
-            else if (text.indexOf("{") < 0)
-            {
-                buf = buf + space + text + "\r\n";
-                break;
-            }
-        }
-        return buf;
-    }
-
-    private int getBlockIndex(String text)
-    {
-        int open = 0;
-
-        for(int i=0;i<text.length();i++)
-        {
-            String achar = text.substring(i, i + 1);
-            if (achar.equals("{")) open++;
-            if (achar.equals("}"))
-            {
-                open--;
-                if (open == 0) return i;
-            }
-        }
-        return -1;
-    }
-    */
-
     public void setValidationMessage(List validationMessage)
     {
     	validationMessagePane.setMessageList(validationMessage);	
@@ -346,63 +244,38 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
 		Map <String, Action>actionMap = null;
 		ContextManager contextManager = ContextManager.getContextManager();
 		actionMap = contextManager.getClientMenuActions("MESSAGE", menu_name);
+		contextManager.enableAction(ActionConstants.CLOSE, true);
+		contextManager.enableAction(ActionConstants.SAVE, true);
+		contextManager.enableAction(ActionConstants.SAVE_AS, true);
+
 		if (actionMap!=null)
 			contextManager.removeClientMenuAction("MESSAGE", menu_name, "");
-		
-		action = getDefaultCloseAction();
-		contextManager.addClientMenuAction("MESSAGE", MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
+
+		action = new SaveMapAction(this);
+		contextManager.addClientMenuAction("MESSAGE", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
 		action.setEnabled(true);
-		
+		action = new SaveAsMapAction(this);
+		contextManager.addClientMenuAction("MESSAGE", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE_AS, action);
+		action.setEnabled(true);
 		return contextManager.getClientMenuActions("MESSAGE", menu_name);
 	}
 
-    /**
-     * Indicate whether or not it is changed.
-     */
-    public boolean isChanged()
-    {//ignore, since the content in this panel is read-only.
-        return dataChanged;
-    }
-
-    /**
-     * Explicitly set the value.
-     *
-     * @param newValue
-     */
-    public void setChanged(boolean newValue)
-    {//ignore, since the content in this panel is read-only
-    	dataChanged=newValue;
-    }
-
-	public List<File> getAssociatedFileList() {
+	@Override
+	public void persistFile(File dataFile) {
 		// TODO Auto-generated method stub
-		return null;
+		FileWriter writer;
+		try {
+			writer = new FileWriter(dataFile);
+			JTextArea msgPane=(JTextArea)scrollPane.getViewport().getView();
+			
+			writer.write(msgPane.getText());
+			writer.close();
+			JOptionPane.showMessageDialog(getParent(), "Data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
-	public Action getDefaultCloseAction() {
-		// TODO Auto-generated method stub
-		Action closeAction	=new DefaultCloseAction(mainFrame);
-		return closeAction;
-	}
-
-	public Action getDefaultOpenAction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Action getDefaultSaveAction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Action> getToolbarActionList() {
-		// TODO Auto-generated method stub
-		java.util.List<Action> actions = new ArrayList<Action>();
-		actions.add(this.getDefaultCloseAction());
-		return actions;
-	}
-
-
 }
 
 /**

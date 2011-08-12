@@ -16,7 +16,6 @@ import gov.nih.nci.cbiit.cmts.ui.actions.SaveAsMapAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.SaveMapAction;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
-import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
 import gov.nih.nci.cbiit.cmts.ui.dnd.TreeDragTransferHandler;
@@ -24,21 +23,19 @@ import gov.nih.nci.cbiit.cmts.ui.dnd.TreeTransferHandler;
 import gov.nih.nci.cbiit.cmts.ui.function.FunctionLibraryPane;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmts.ui.jgraph.MiddlePanelMarqueeHandler;
-import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
+import gov.nih.nci.cbiit.cmts.ui.main.AbstractTabPanel;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.properties.DefaultPropertiesPage;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeMouseAdapter;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeSelectionHandler;
-import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
-import gov.nih.nci.cbiit.cmts.web.MainApplet;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.applet.Applet;
@@ -60,7 +57,7 @@ import org.apache.xerces.xs.XSNamedMap;
  * @date       $Date: 2009-12-02 18:53:16 $
  *
  */
-public class MappingMainPanel extends JPanel implements ActionListener, ContextManagerClient{
+public class MappingMainPanel extends AbstractTabPanel implements ActionListener{
 
 	private static final String Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION = ".map";
 	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE = "Open source data schema";
@@ -76,7 +73,6 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	private File mappingSourceFile = null;
 	private File mappingTargetFile = null;
 	private MappingMiddlePanel middlePanel = null;
-	private File saveFile = null;
 	private JTextField sourceLocationArea = new JTextField();
 	private MappingTreeScrollPane sourceScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT);
 	private MappingSourceTree sTree = null;
@@ -84,7 +80,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	private MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
 	private MappingTargetTree tTree = null;
 	private MiddlePanelJGraphController graphController =null;
-    private MainFrameContainer mainFrame = null;
+    
     public MappingMainPanel(MainFrameContainer mainFrame) throws Exception
 	{
 		this.setBorder(BorderFactory.createEmptyBorder());
@@ -92,10 +88,10 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
         this.mainFrame = mainFrame;
         middlePanel = new MappingMiddlePanel(this);
 		graphController = new MiddlePanelJGraphController(this);
-//		middlePanel.setGraphController(graphController);
 		MiddlePanelMarqueeHandler marquee=(MiddlePanelMarqueeHandler)middlePanel.getGraph().getMarqueeHandler();
 		marquee.setController(graphController);
 		this.add(getCenterPanel(true), BorderLayout.CENTER);
+		this.setViewFileExtension(".map");
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -167,7 +163,8 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 
 		if (tTree != null && isToResetGraph)
 		{
-			resetMiddlePanel();
+			if (middlePanel != null)
+				middlePanel.repaint();
 		}
 		if (absoluteFile != null)
 		{
@@ -213,7 +210,8 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 
 		if (sTree != null && isToResetGraph)
 		{
-			resetMiddlePanel();
+			if (middlePanel != null)
+				middlePanel.repaint();
 		}
 		if (absoluteFile != null)
 		{
@@ -236,17 +234,14 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	}
 
 	/**
-	 * Provide the extended implementation of this method by adding additional files of source and target;
+	 * Override the extended implementation of this method by adding additional files of source and target;
 	 *
 	 * @return a list of file objects that this context is associated with.
 	 */
 	public java.util.List<File> getAssociatedFileList()
 	{
-		List<File> resultList = new ArrayList<java.io.File>();
-		if(saveFile!=null)
-		{
-			resultList.add(saveFile);
-		}
+		List<File> resultList = super.getAssociatedFileList();
+
 		if (mappingSourceFile != null)
 		{
 			resultList.add(mappingSourceFile);
@@ -266,7 +261,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		return graphController;
 	}
 
-	protected JComponent getCenterPanel(boolean functionPaneRequired)
+	private JComponent getCenterPanel(boolean functionPaneRequired)
 	{//construct the top level layout of mapping panel
 		/**
 		 * GUI Layout:
@@ -292,16 +287,16 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		return leftRightSplitPane;
 	}
 
-	/**
-	 * return the close action inherited with this client.
-	 * @return the close action inherited with this client.
-	 */
-	public Action getDefaultCloseAction()
-	{//by doing this way, the menu and the panel will use the same close action.
-		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
-		Action closeAction = (Action) actionMap.get(ActionConstants.CLOSE);
-		return closeAction;
-	}
+//	/**
+//	 * return the close action inherited with this client.
+//	 * @return the close action inherited with this client.
+//	 */
+//	public Action getDefaultCloseAction()
+//	{//by doing this way, the menu and the panel will use the same close action.
+//		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
+//		Action closeAction = (Action) actionMap.get(ActionConstants.CLOSE);
+//		return closeAction;
+//	}
 
 	/**
 	 * return the open action inherited with this client.
@@ -314,22 +309,12 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	}
 	
 
-	/**
-	 * return the save action inherited with this client.
-	 * @return the save action inherited with this client.
-	 */
-	public Action getDefaultSaveAction()
-	{
-		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
-		Action saveAction = (Action) actionMap.get(ActionConstants.SAVE);
-		return saveAction;
-	}
 
 
 	/**
 	 * @return the mapping
 	 */
-	public Mapping getMapping() {
+	private Mapping getMapping() {
 		if(this.mapping == null){
 			this.mapping = new Mapping();
 			getGraphController().setMappingData(mapping);
@@ -389,14 +374,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		return DefaultSettings.findRootContainer(this);
 	}
 
-	/**
-	 * Return the save file.
-	 * @return the save file.
-	 */
-	public File getSaveFile()
-	{
-		return saveFile;
-	}
+
 
 	public JScrollPane getSourceScrollPane() {
 		return sourceScrollPane;
@@ -423,7 +401,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 	 */
 	public java.util.List<Action> getToolbarActionList()
 	{
-		java.util.List<Action> actions = new ArrayList<Action>();
+		java.util.List<Action> actions =super.getToolbarActionList();
 		actions.add(getDefaultOpenAction());
 		//the menu bar display its buttons inorder
 		Map <String, Action>actionMap = getMenuItems(MenuConstants.TOOLBAR_MENU_NAME);
@@ -567,12 +545,6 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
         return topBottomSplitPane;
 	}
 
-	public boolean isChanged() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
 	protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile)throws Exception
 	{
 		TreeNode node = null;
@@ -700,58 +672,6 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 		return true;
 	}
 
-	
-	private void resetMiddlePanel()
-	{
-		if (middlePanel != null)
-		{
-	//			middlePanel.resetGraph();
-			middlePanel.repaint();
-		}
-	}
-	/**
-	 * Explicitly set the value.
-	 *
-	 * @param newValue
-	 */
-	public void setChanged(boolean newValue)
-	{
-		getGraphController().setGraphChanged(newValue);
-	}
-
-	/**
-	 * @param mapping the mapping to set
-	 */
-	public void setMapping(Mapping mapping) {
-		this.mapping = mapping;
-	}
-
-	/**
-	 * Set a new save file.
-	 *
-	 * @param saveFile
-	 * @return true if the value is changed, false otherwise.
-	 */
-	public boolean setSaveFile(File saveFile)
-	{
-		//removed the equal check so as to support explicit refresh or reload call.
-		//		ContextManager contextManager = ContextManager.getContextManager();
-		boolean sameFile = GeneralUtilities.areEqual(this.saveFile, saveFile);
-		if(!sameFile)
-		{//remove interest in the context file manager, first for old file
-
-			//				contextManager.getContextFileManager().removeFileUsageListener(this);
-		}
-		this.saveFile = saveFile;
-		//		if(!sameFile)
-		//		{//register interest in the context file manager for new file
-		//				contextManager.getContextFileManager().registerFileUsageListener(this);
-		//		}
-		updateTitle(this.saveFile.getName());
-		//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Mapping_File, saveFile);
-		return true;
-	}
-
 	@Override
 	public void setSize(int width, int height)
 	{
@@ -764,37 +684,7 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
 
 		topCenterFactor = 0.5;
 		Dimension rightMostDim = new Dimension((width / 5), (int) (height * topCenterFactor));
-		//		propertiesPane.setSize(rightMostDim);
-		//		functionPane.setSize(rightMostDim);
 	}
-
-
-	public void synchronizeRegisteredFile(boolean notigyOberver)
-	{
-		//do nothing, only the "MappingFilePanel" will implement it
-	}
-
-	/**
-	 * Overridable function to update Title in the tabbed pane.
-	 * @param newTitle
-	 */
-	private void updateTitle(String newTitle)
-	{
-		JRootPane rootPane = getRootPane();
-		if (rootPane != null)
-		{
-			Container container = rootPane.getParent();
-			if (container instanceof MainFrame)
-			{
-				((MainFrame)container).setCurrentPanelTitle(newTitle);
-			}
-            if (container instanceof MainApplet)
-			{
-				((MainApplet)container).setCurrentPanelTitle(newTitle);
-			}
-        }
-	}
-
 	/**
 	 * Promote user to select a root node:Element or Complex type
 	 * @param xsdParser
@@ -824,9 +714,23 @@ public class MappingMainPanel extends JPanel implements ActionListener, ContextM
         //CellRenderXSObject chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
 		return chosenRoot;
 	}
+	
+	public void persistFile(File dataFile)
+	{
 
-
-
+		MiddlePanelJGraphController mappingManager = getGraphController();//.getMiddlePanel().getGraphController();
+		Mapping mappingData = mappingManager.retrieveMappingData(true);
+		Collections.sort(mappingData.getTags().getTag());
+		try {
+			MappingFactory.saveMapping(dataFile, mappingData);
+			JOptionPane.showMessageDialog(getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//clear the change flag.
+		getGraphController().setGraphChanged(false);
+	}
 }
 
 /**

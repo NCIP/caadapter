@@ -8,10 +8,8 @@
 
 package gov.nih.nci.cbiit.cmts.ui.actions;
 
-import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
+import gov.nih.nci.cbiit.cmts.ui.main.AbstractTabPanel;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
-
-import javax.swing.Icon;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -34,28 +32,9 @@ public class SaveMapAction extends SaveAsMapAction
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public SaveMapAction(MappingMainPanel mappingPanel)
+	public SaveMapAction(AbstractTabPanel mappingPanel)
 	{
-		this(DefaultSaveAction.COMMAND_NAME, mappingPanel);
-	}
-
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a default icon.
-	 */
-	public SaveMapAction(String name, MappingMainPanel mappingPanel)
-	{
-		this(name, DefaultSaveAction.IMAGE_ICON, mappingPanel);
-	}
-
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a the specified icon.
-	 */
-	public SaveMapAction(String name, Icon icon, MappingMainPanel mappingPanel)
-	{
-		super(name, icon, mappingPanel);
-//		setAdditionalAttributes();
+		super(DefaultSaveAction.COMMAND_NAME, DefaultSaveAction.IMAGE_ICON, mappingPanel);
 	}
 
 	/**
@@ -82,7 +61,7 @@ public class SaveMapAction extends SaveAsMapAction
 		 * 3) if the latest value is null, trigger SaveAs function, i.e., ask for user input;
 		 * 4) if not, proceed the saving;
 		 */
-		File fileFromPanel = mappingPanel.getSaveFile();
+		File fileFromPanel = viewerPanel.getSaveFile();
 		if (!GeneralUtilities.areEqual(defaultFile, fileFromPanel))
 		{
 			defaultFile = fileFromPanel;
