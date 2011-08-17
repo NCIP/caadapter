@@ -532,7 +532,7 @@ public class DefaultSettings
         dlg.getContentPane().add(c,BorderLayout.NORTH);
         dlg.pack();
         dlg.setVisible(true);
-        if(p.getValue().equals(Integer.valueOf(JOptionPane.OK_OPTION))) {
+        if((p.getValue() != null)&&(p.getValue().equals(Integer.valueOf(JOptionPane.OK_OPTION)))) {
             return c.getSelectedItem();
         }
         return null;
