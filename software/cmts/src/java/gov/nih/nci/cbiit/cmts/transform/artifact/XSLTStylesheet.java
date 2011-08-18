@@ -19,10 +19,11 @@ public class XSLTStylesheet extends Document  {
 		super();
 		XSLTElement xlstRoot = new XSLTElement("transform");
 		xlstRoot.addNamespaceDeclaration(xsNamespace);
-		xlstRoot.setAttribute("version", "1.0");
+		xlstRoot.setAttribute("version", "2.0");
 		setRootElement(xlstRoot);
 		XSLTElement outputElement=new XSLTElement("output");
 		outputElement.setAttribute("method","xml");
+		outputElement.setAttribute("indent","yes");
 		xlstRoot.addContent(outputElement);
 	}
 

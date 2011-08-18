@@ -183,7 +183,7 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
     		setMessageText("");
     		validationMessagePane.setMessageList(null);
 			TransformationService transformer=TransformerFactory.getTransformer(transformationType);
-			String xmlResult=transformer.Transfer(dataFileNameField.getText(), mapFileNameField.getText());
+			String xmlResult=transformer.transfer(dataFileNameField.getText(), mapFileNameField.getText());
 			setMessageText(xmlResult);
 			FileWriter writer = new FileWriter(this.targetDataFile);
 			writer.write(xmlResult);

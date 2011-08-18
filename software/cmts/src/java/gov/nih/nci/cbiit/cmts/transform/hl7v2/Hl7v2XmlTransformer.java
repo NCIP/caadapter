@@ -21,9 +21,9 @@ import com.sun.encoder.EncoderException;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
-import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 
-public class Hl7v2XmlTransformer extends XQueryTransformer {
+public class Hl7v2XmlTransformer extends MappingTransformer {
 
 	public Hl7v2XmlTransformer() throws XQException {
 		super();

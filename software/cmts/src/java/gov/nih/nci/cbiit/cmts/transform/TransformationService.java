@@ -19,10 +19,10 @@ public interface TransformationService {
 	/**
 	 * Transfer source data into target data using mapping file
 	 * @param sourceFile URI of source data file
-	 * @param mappingFile URI of mapping data file
+	 * @param processInstruction URI of transformation file
 	 * @return
 	 */
-	public String Transfer(String sourceFile, String mappingFile);
+	public String transfer(String sourceFile, String processInstruction);
 	
 	public boolean isPresentable();
 }
