@@ -100,7 +100,7 @@ public class TransformationWebService {
 		ArrayList<String> result = new ArrayList<String>();
 		TransformationService transformer =TransformerFactory.getTransformer(sourceDataType) ;
 		System.out.println("TransformationWebService.transferData()...sourceFile:"+sourceDataFile);
-		String xmlResult=transformer.Transfer(sourceDataFile, mappingFile);
+		String xmlResult=transformer.transfer(sourceDataFile, mappingFile);
 		System.out.println("TransformationWebService.transferData()...resultData:"+xmlResult);
 
 		result.add(xmlResult);
