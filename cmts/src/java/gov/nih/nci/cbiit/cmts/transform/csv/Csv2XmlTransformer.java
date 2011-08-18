@@ -15,10 +15,10 @@ import gov.nih.nci.cbiit.cmts.common.XSDParser;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
-import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 
 
-public class Csv2XmlTransformer extends XQueryTransformer {
+public class Csv2XmlTransformer extends MappingTransformer {
 
 	public Csv2XmlTransformer() throws XQException {
 		super();
