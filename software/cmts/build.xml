@@ -2,16 +2,14 @@
 	<!-- Tell ant to use my environment variables -->
 	<property environment="env" />
 	<property file="./build.properties" />
+	<property file="./execution.properties" />
 	<property name="build.compiler" value="modern" />
 	<path id="project.class.path">
-		<fileset dir="${lib.dir}">
-		    
+		<fileset dir="${lib.dir}">    
 			<include name="**/*.jar" />
-			
-			<include name="**/*.zip" />
-            
-            
+			<include name="**/*.zip" />            
 		</fileset>
+		<pathelement location="${java.home}\lib\rt.jar"/>
 	</path>
 
 	<target name="build:caadapter-api" depends="init">
@@ -25,8 +23,53 @@
 		<map from="${basedir}/lib" to="./lib" />
 		<map from="${basedir}" to="." />
 	</pathconvert>
-
-	
+	<target name="run:xslt">
+		<echo message="${ant.java.version}"/>
+		<java classname="net.sf.saxon.Transform">
+			 <arg value="-s:${source.data}"/>
+			 <arg value="-xsl:${xslt.template}"/>
+			 <arg value="-o:${result.data}"/>
+			 <classpath>
+			 	<pathelement location="${lib.dir}/saxon9.jar"/>
+			 </classpath>
+		</java>
+	</target>
+	<target name="run:mapping">
+		<echo message="${ant.java.version}"/>
+		<echo message="${ant.library.dir}"/>
+		<echo message="${java.runtime.name}"/>
+		<echo message="${java.library.path}"/>
+		<java classname="gov.nih.nci.cbiit.cmts.transform.MappingTransformer">
+			 <arg value="${source.data}"/>
+			 <arg value="${mapping.data}"/>
+			 <arg value="${result.data}"/>
+			 <classpath>
+			 	<pathelement location="${lib.dir}/saxon9.jar"/>	 
+			 	<pathelement location="${lib.dir}/saxon9-xqj.jar"/>
+			 	<pathelement location="${lib.dir}/jdom.jar"/>
+			 	<pathelement location="${lib.dir}/xercesImpl.jar"/>
+				<pathelement location="${lib.dir}/rt.jar"/>
+			 	<pathelement location="${lib.dir}/caAdapter.jar"/>
+			 	<pathelement location="${dist.dir}/cmts.jar"/>
+			 	<pathelement location="${dist.dir}/cmtsUI.jar"/>
+			 </classpath>
+		</java>
+	</target>
+	<target name="run:xquery">
+		<java classname="gov.nih.nci.cbiit.cmts.transform.XQueryTransformer">
+			 <arg value="${source.data}"/>
+			 <arg value="${xquery.expression}"/>
+			 <arg value="${result.data}"/>
+			 <classpath>
+			 	<pathelement location="${lib.dir}/saxon9.jar"/>
+			 	<pathelement location="${lib.dir}/saxon9-xqj.jar"/>
+			 	<pathelement location="${lib.dir}/jdom.jar"/>
+			 	<pathelement location="${lib.dir}/caAdapter.jar"/>
+			 	<pathelement location="${dist.dir}/cmts.jar"/>
+			 	<pathelement location="${dist.dir}/cmtsUI.jar"/>
+			 </classpath>
+		</java>
+	</target>
 	<target name="build:caadapter-wars" depends="jar, webstart:copy_resources" >	
 		<antcall target="webstart:sign_resources">
 			<param name="RESOURCE_HOME" value="${dist.dir}/webstart"/>
@@ -180,13 +223,12 @@
 	<target name="init" depends="clean">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist.dir}" />
-		<echo message="java.class.path:${java.class.path}"/> 
-		<echo message="project.class.path:${project.class.path}"/> 
-		<!--<echo message="java.class.path:${project.class.path}"/>-->
+		<echo message="java.class.path:${java.class.path}"/>  
+		<echo message="java.home:${java.home}"/>
 		<tstamp>
 			<format property="DATE" pattern="MM-dd-yy" locale="en_us" />
 		</tstamp>
-		<echo message="env:${env}"/>
+		<echo message="env:${environment}"/>
 		<echo message="java.endorsed.dirs:${java.endorsed.dirs}"/>
 		<echo message="java.specification.version:${java.specification.version}"/>
 		<echo message="java.vm.name:${java.vm.name}"/>
@@ -195,12 +237,12 @@
 		<echo message="java.ext.dirs:${java.ext.dirs}"/>
 	</target>
 	<target name="compile" depends="init">
-		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.5" debug="on" deprecation="off">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.6" debug="on" deprecation="off">
 			<!-- fork="yes" executable="c:\java\jdk1.6.0_20\bin\javac" -->
 			<include name="**/*.java" />
 			<classpath>
 				<path refid="project.class.path" />
-			</classpath>
+			</classpath>		
 		</javac>
 	</target>
 
