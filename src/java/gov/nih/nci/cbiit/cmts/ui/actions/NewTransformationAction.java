@@ -9,15 +9,14 @@
 package gov.nih.nci.cbiit.cmts.ui.actions;
 
 
+import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 import gov.nih.nci.cbiit.cmts.transform.TransformationService;
 import gov.nih.nci.cbiit.cmts.transform.TransformerFactory;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.message.MessagePanel;
 import gov.nih.nci.cbiit.cmts.ui.message.OpenMessageWizard;
-import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import javax.swing.*;
 
@@ -25,7 +24,6 @@ import java.awt.Component;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.FileWriter;
 
 /**
  * This class defines the new message transformation action.
@@ -137,7 +135,7 @@ public class NewTransformationAction extends AbstractContextAction
 			newMsgPane.setMessageText(xmlResult);
 			newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);
-			newMsgPane.setValidationMessage( transformer.validateXmlData(transformer.getTransformationMapping(),xmlResult));
+			newMsgPane.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
 			JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
