@@ -11,9 +11,14 @@ package gov.nih.nci.cbiit.cmts.transform;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xquery.XQException;
 import javax.xml.xquery.XQPreparedExpression;
 import javax.xml.bind.JAXBException;
@@ -29,14 +34,22 @@ public class XQueryTransformer extends MappingTransformer {
 			System.exit(0);
 		} else if (args.length<3)
 		{
-			args[3]="result_out.xml";
+			args[2]="result_out.xml";
 		}
 		System.out.println("XQueryTransformer.main()...Source Data:"+args[0]);
 		System.out.println("XQueryTransformer.main()...Mapping Data:"+args[1]);
 		System.out.println("XQueryTransformer.main()...Result Data:"+args[2]);
 		try {
 			XQueryTransformer transformer = new XQueryTransformer();
-			transformer.transfer(args[0],args[1]);
+			try {
+				FileWriter sWriter = new FileWriter(new File(args[2]));
+				sWriter.write(transformer.transfer(args[0],args[1]));
+				sWriter.flush();
+				sWriter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (XQException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
