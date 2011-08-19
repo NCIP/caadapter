@@ -1,6 +1,5 @@
 package gov.nih.nci.cbiit.cmts.common;
 
-import gov.nih.nci.caadapter.common.Log;
  
 public class ApplicationResult {
 
@@ -22,16 +21,16 @@ public class ApplicationResult {
         this.level = level;
         this.message = message;
 
-        //TODO: Need to re-design: Consolidate the ApplicationException Level with ValidatorResult Level
-        //Only log Fetal, Error and WARNING level now
-        if(toLogMessage && (Level.FATAL == level || Level.ERROR == level))
-        {
-            Log.logError(this, message);
-        }
-        else if (toLogMessage && Level.WARNING == level)
-        {
-            Log.logWarning(this, message);
-        }
+//        //TODO: Need to re-design: Consolidate the ApplicationException Level with ValidatorResult Level
+//        //Only log Fetal, Error and WARNING level now
+//        if(toLogMessage && (Level.FATAL == level || Level.ERROR == level))
+//        {
+//            Log.logError(this, message);
+//        }
+//        else if (toLogMessage && Level.WARNING == level)
+//        {
+//            Log.logWarning(this, message);
+//        }
     }
 
     public static enum Level

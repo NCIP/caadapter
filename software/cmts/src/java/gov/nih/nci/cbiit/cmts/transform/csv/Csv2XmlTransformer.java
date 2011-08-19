@@ -26,8 +26,7 @@ public class Csv2XmlTransformer extends MappingTransformer {
 	}
 
 	@Override
-	protected String parseRawData(String sourceRawDataFile, Mapping map) throws JAXBException, IOException, ApplicationException
-	{
+	protected String parseRawData(String sourceRawDataFile, Mapping map) throws JAXBException, IOException{
 		//parse csv data 
 		String xsdFile="";
     	String xsdRoot="";
@@ -52,9 +51,15 @@ public class Csv2XmlTransformer extends MappingTransformer {
 		
 		while(reader.hasMoreRecord())
 		{
-			CSVDataResult nextResult=reader.getNextRecord();
-			CsvData2XmlConverter xmlConverter=new CsvData2XmlConverter(nextResult);
-			tempXmlSrc=xmlConverter.writeXml2File(null);
+			CSVDataResult nextResult;
+			try {
+				nextResult = reader.getNextRecord();
+				CsvData2XmlConverter xmlConverter=new CsvData2XmlConverter(nextResult);
+				tempXmlSrc=xmlConverter.writeXml2File(null);
+			} catch (ApplicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return tempXmlSrc;
 	}
