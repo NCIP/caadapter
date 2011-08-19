@@ -14,7 +14,7 @@ import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.transform.TransformationUtil;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
-import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 import gov.nih.nci.cbiit.cmts.transform.csv.CsvData2XmlConverter;
 import gov.nih.nci.cbiit.cmts.transform.csv.CsvXsd2MetadataConverter;
 
@@ -77,9 +77,9 @@ public class CsvTest {
 			tempXmlSrc=xmlConverter.writeXml2File(null);
 			Assert.assertNotNull(nextResult);
 		}
-		XQueryTransformer tester= new XQueryTransformer();
-		String xmlResult=tester.executeQuery(queryString, tempXmlSrc);
-		System.out.println("TransformTest.testMappingAndTransformation()\n"+TransformationUtil.formatXqueryResult(xmlResult, false));
+		MappingTransformer tester= new MappingTransformer();
+//		String xmlResult=tester.executeQuery(queryString, tempXmlSrc);
+//		System.out.println("TransformTest.testMappingAndTransformation()\n"+TransformationUtil.formatXqueryResult(xmlResult, false));
 		File tmpFile=new File(tempXmlSrc);
 		tmpFile.delete();
 	}

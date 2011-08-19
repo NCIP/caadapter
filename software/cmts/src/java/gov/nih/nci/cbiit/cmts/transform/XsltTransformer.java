@@ -1,26 +1,29 @@
 package gov.nih.nci.cbiit.cmts.transform;
 
-import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
-import gov.nih.nci.cbiit.cmts.core.Mapping;
+ 
 import java.io.StringWriter;
-import java.util.List;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.xquery.XQException;
 
-public class XsltTransformer implements TransformationService {
-/**
- * Perform XSLT transformation with given XSLT template and source data file.
- * @param inXML
- * @param inXSL
- * @param outTXT
- * @throws TransformerConfigurationException
- * @throws TransformerException
- */
+public class XsltTransformer extends DefaultTransformer {
+public XsltTransformer() throws XQException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * Perform XSLT transformation with given XSLT template and source data file.
+	 * @param inXML
+	 * @param inXSL
+	 * @param outTXT
+	 * @throws TransformerConfigurationException
+	 * @throws TransformerException
+	 */
 
 	public void transform(String inXML,String inXSL,String outTXT)
 	  throws TransformerConfigurationException, TransformerException 
@@ -28,6 +31,20 @@ public class XsltTransformer implements TransformationService {
 		 StreamResult out = new StreamResult(outTXT);
 		 xsltTransfer(inXML, inXSL, out);
 	  }
+	@Override
+	public String transfer(String sourceFile, String instructionFile) {
+		// TODO Auto-generated method stub
+		StringWriter sWriter=new StringWriter();
+		StreamResult out = new StreamResult(sWriter);
+		try {
+			xsltTransfer(sourceFile, instructionFile, out);
+			
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return sWriter.getBuffer().toString();
+	}
 	
 	private void xsltTransfer(String sourceFile, String xsltFile, StreamResult resultStream) throws TransformerException
 	{	
@@ -49,10 +66,10 @@ public class XsltTransformer implements TransformationService {
 		} else if (args.length<3)
 		{
 			args[3]="result_out.xml";
-		}
-		
-		XsltTransformer st = new XsltTransformer();
+		}	
+
 		try {
+			XsltTransformer st = new XsltTransformer();
 			System.out.println("XsltTransformer.main()...Source Data:"+args[0]);
 			System.out.println("XsltTransformer.main()...XSLT Templage:"+args[1]);
 			System.out.println("XsltTransformer.main()...Result Data:"+args[2]);
@@ -64,36 +81,9 @@ public class XsltTransformer implements TransformationService {
 		} catch(TransformerException e) {
 			  System.err.println("Error during transformation");
 			  System.err.println(e);
-		  }
-	}
-	@Override
-	public Mapping getTransformationMapping() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public boolean isPresentable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public String transfer(String sourceFile, String mappingFile) {
-		// TODO Auto-generated method stub
-		StringWriter sWriter=new StringWriter();
-		StreamResult out = new StreamResult(sWriter);
-		try {
-			xsltTransfer(sourceFile, mappingFile, out);
-			
-		} catch (TransformerException e) {
+		  } catch (XQException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
-		return sWriter.getBuffer().toString();
-	}
-	@Override
-	public List<ApplicationResult> validateXmlData(Mapping mapping,
-			String xmlData) {
-		// TODO Auto-generated method stub
-		return null;
+		}
 	}
 }

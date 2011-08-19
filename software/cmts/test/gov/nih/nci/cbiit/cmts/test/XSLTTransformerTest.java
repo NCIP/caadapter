@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.xquery.XQException;
 
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
@@ -46,16 +47,21 @@ public class XSLTTransformerTest {
 		  String inXSL ="workingspace/simpleMapping/test_g.xsl"; //arg[1];
 		  String outTXT ="workingspace/simpleMapping/xsltOut.xml";// arg[2];
 
-		  XsltTransformer st = new XsltTransformer();
+
 		  try {
+			  XsltTransformer st = new XsltTransformer();
 			  st.transform(inXML,inXSL,outTXT);
+			  System.out.println("XSLTTransformerTest.testXsltTransformation()..:\n"+st.transfer(inXML, inXSL));
 		  } catch(TransformerConfigurationException e) {
 			  System.err.println("Invalid factory configuration");
 			  System.err.println(e);
 		  } catch(TransformerException e) {
 			  System.err.println("Error during transformation");
 			  System.err.println(e);
-		  }
+		  } catch (XQException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 	@Test
