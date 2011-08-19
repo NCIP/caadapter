@@ -7,7 +7,6 @@
  */
 package gov.nih.nci.cbiit.cmts.transform;
 
-import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.cbiit.cmts.common.ApplicationMessage;
 import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
@@ -138,10 +137,7 @@ public class MappingTransformer extends DefaultTransformer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ApplicationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 	/**
@@ -158,7 +154,7 @@ public class MappingTransformer extends DefaultTransformer {
 	 * @throws ApplicationException
 	 */
 	protected String parseRawData(String sourceRawDataFile, Mapping map)
-			throws JAXBException, IOException, ApplicationException {
+			throws JAXBException, IOException {
 		// do nothing
 		return sourceRawDataFile;
 	}
