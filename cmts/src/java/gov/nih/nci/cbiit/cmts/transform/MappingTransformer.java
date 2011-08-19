@@ -16,6 +16,7 @@ import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -70,15 +71,21 @@ public class MappingTransformer extends DefaultTransformer {
 			System.exit(0);
 		} else if (args.length<3)
 		{
-			args[3]="result_out.xml";
+			args[2]="result_out.xml";
 		}
 		System.out.println("MappingTransformer.main()...Source Data:"+args[0]);
 		System.out.println("MappingTransformer.main()...Mapping Data:"+args[1]);
 		System.out.println("MappingTransformer.main()...Result Data:"+args[2]);
 		try {
 			MappingTransformer transformer = new MappingTransformer();
-			transformer.transfer(args[0],args[1]);
+			FileWriter sWriter = new FileWriter(new File(args[2]));
+			sWriter.write(transformer.transfer(args[0],args[1]));
+			sWriter.flush();
+			sWriter.close();
 		} catch (XQException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	 
@@ -121,8 +128,7 @@ public class MappingTransformer extends DefaultTransformer {
 					.createAtomicType(XQItemType.XQBASETYPE_STRING));
 			XQResultSequence result = exp.executeQuery();
 			String rawResult = result.getSequenceAsString(new Properties());
-			String xmlResult = TransformationUtil.formatXqueryResult(rawResult, isPresentable());
-			
+			String xmlResult =TransformationUtil.formatXqueryResult(rawResult, isPresentable());	
 			if (isTemporaryFileCreated()) {
 				File tmpFile = new File(tempXmlSrc);
 				tmpFile.delete();

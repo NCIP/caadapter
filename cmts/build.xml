@@ -23,7 +23,7 @@
 		<map from="${basedir}/lib" to="./lib" />
 		<map from="${basedir}" to="." />
 	</pathconvert>
-	<target name="run:xslt">
+	<target name="transform:xslt">
 		<echo message="${ant.java.version}"/>
 		<java classname="net.sf.saxon.Transform">
 			 <arg value="-s:${source.data}"/>
@@ -34,7 +34,7 @@
 			 </classpath>
 		</java>
 	</target>
-	<target name="run:mapping">
+	<target name="transform:mapping">
 		<echo message="${ant.java.version}"/>
 		<echo message="${ant.library.dir}"/>
 		<echo message="${java.runtime.name}"/>
@@ -44,18 +44,13 @@
 			 <arg value="${mapping.data}"/>
 			 <arg value="${result.data}"/>
 			 <classpath>
-			 	<pathelement location="${lib.dir}/saxon9.jar"/>	 
-			 	<pathelement location="${lib.dir}/saxon9-xqj.jar"/>
-			 	<pathelement location="${lib.dir}/jdom.jar"/>
-			 	<pathelement location="${lib.dir}/xercesImpl.jar"/>
-				<pathelement location="${lib.dir}/rt.jar"/>
-			 	<pathelement location="${lib.dir}/caAdapter.jar"/>
+			 	<path refid="project.class.path" />
 			 	<pathelement location="${dist.dir}/cmts.jar"/>
 			 	<pathelement location="${dist.dir}/cmtsUI.jar"/>
 			 </classpath>
 		</java>
 	</target>
-	<target name="run:xquery">
+	<target name="transform:xquery">
 		<java classname="gov.nih.nci.cbiit.cmts.transform.XQueryTransformer">
 			 <arg value="${source.data}"/>
 			 <arg value="${xquery.expression}"/>
@@ -64,9 +59,7 @@
 			 	<pathelement location="${lib.dir}/saxon9.jar"/>
 			 	<pathelement location="${lib.dir}/saxon9-xqj.jar"/>
 			 	<pathelement location="${lib.dir}/jdom.jar"/>
-			 	<pathelement location="${lib.dir}/caAdapter.jar"/>
 			 	<pathelement location="${dist.dir}/cmts.jar"/>
-			 	<pathelement location="${dist.dir}/cmtsUI.jar"/>
 			 </classpath>
 		</java>
 	</target>
@@ -193,7 +186,7 @@
 			</fileset>
 		</copy -->
 		<jar destfile="${dist.dir}/cmts.jar">
-			<fileset dir="${build.dir}" excludes="**/Test.class **/ui/**" />
+			<fileset dir="${build.dir}" excludes="**/Test.class"/><!--**/ui/**" / -->
 			<!-- fileset dir="${basedir}" includes="config/*.*" /-->
 			<!-- fileset dir="${etc.dir}" excludes="**/ucum-expression.xml" /-->
 			<!-- fileset dir="${src.dir}" excludes="**/*.java" /-->
@@ -235,6 +228,7 @@
 		<echo message="java.vm.specification.version:${java.vm.specification.version}"/>
 		<echo message="java.vm.version:${java.vm.version}"/>
 		<echo message="java.ext.dirs:${java.ext.dirs}"/>
+		<echo message="java.library.path:${java.library.path}"/>
 	</target>
 	<target name="compile" depends="init">
 		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.6" debug="on" deprecation="off">

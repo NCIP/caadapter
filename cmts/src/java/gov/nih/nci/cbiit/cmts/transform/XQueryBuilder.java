@@ -470,8 +470,6 @@ public class XQueryBuilder {
 				if (inputLink.getSource().getComponentid().length()==1)
 				{
 					String linkSrId=inputLink.getSource().getId();
-					System.out
-							.println("XQueryBuilder.createQueryForFunctionWithInput()..function input link: port:"+fData.getName()+"="+linkSrId);
 					String parameterPath=var;
 					String localpath =QueryBuilderUtil.retrieveRelativePath(elementMapingSourceId, linkSrId);
 					parameterPath=parameterPath+localpath;
