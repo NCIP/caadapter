@@ -15,7 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xquery.XQException;
 
 import junit.framework.Assert;
-import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 import gov.nih.nci.cbiit.cmts.transform.hl7v2.Hl7V2MessageEncoderFactory;
 import gov.nih.nci.cbiit.cmts.transform.hl7v2.Hl7v2XmlTransformer;
 import gov.nih.nci.cbiit.cmts.transform.hl7v2.V2MessageLinefeedEncoder;
@@ -34,7 +34,7 @@ public class Hl7V2Test {
 		String mapping="workingspace/Hl7v2ToXml/mapping.xml";
 		String srcV2Msg="workingspace/Hl7v2ToXml/ADT_A03.hl7";
 		Hl7v2XmlTransformer transformer= new Hl7v2XmlTransformer();
-		String result=transformer.Transfer(srcV2Msg, mapping);
+		String result=transformer.transfer(srcV2Msg, mapping);
 		System.out.println("Hl7V2Test.testMapAndTransformation()..\n"+result);
 		
 	}
@@ -70,10 +70,10 @@ public class Hl7V2Test {
 		out.close();
 		
 		String mapFile="workingspace/Hl7v2ToXml/mapping.xml";
-		XQueryTransformer tester= new XQueryTransformer();
+		MappingTransformer tester= new MappingTransformer();
  
 		FileWriter w = new FileWriter("tranform.out.xml");
-		w.write(tester.Transfer("outv2.xml", mapFile));
+		w.write(tester.transfer("outv2.xml", mapFile));
 		w.close();
 		Assert.assertNotNull(v2Encoder);
 	}

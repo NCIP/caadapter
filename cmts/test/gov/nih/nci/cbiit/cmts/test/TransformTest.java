@@ -13,6 +13,7 @@ import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.transform.TransformationUtil;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
+import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
@@ -84,15 +85,13 @@ public class TransformTest {
 	{
 		String mappingFile="workingspace/cda/mapping.map";
 		String srcFile = "workingspace/cda/shiporder.xml";
-//		String mappingFile="workingspace/ISO_21090/example/mapping.xml";
-//		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
 		Mapping map = MappingFactory.loadMapping(new File(mappingFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
 		System.out.println("$$$$$$ query: \n"+queryString);
-		XQueryTransformer tester= new XQueryTransformer();
+		MappingTransformer tester= new MappingTransformer();
 
-		String xmlResult=tester.executeQuery(queryString, srcFile);
+		String xmlResult=tester.transfer(srcFile, mappingFile);
 		System.out.println("TransformTest.testMappingAndTransformation()\n"+xmlResult);
 	}
 	/**
@@ -101,20 +100,10 @@ public class TransformTest {
 	 */
 	@Test
 	public void testXQueryTransform() throws XQException {
-		String queryString ="declare default element namespace \"http://cbiit.nci.nih.gov/po.xsd\";"+		
-			"declare namespace xsi= \"http://www.w3.org/2001/XMLSchema-instance\";"+
-			"declare variable $docName as xs:string external;" +
-			" document{ " +
-			"for $item_temp1 in doc($docName)/purchaseOrder return  element shipping{ element orderperson{\"testPerson\"},for $item_temp2 in $item_temp1/shipTo/zip return  element orderpersonid{$item_temp2/text()},for $item_temp2 in $item_temp1/shipTo return  element shipto{for $item_temp3 in $item_temp2/../@orderDate return  element shippingDate{$item_temp3/text()},for $item_temp3 in $item_temp2/name return  element name{$item_temp3/text()},for $item_temp3 in $item_temp2/street return  element address{$item_temp3/text()},for $item_temp3 in $item_temp2/city return  element city{$item_temp3/text()},for $item_temp3 in $item_temp2/@country return  element country{$item_temp3/text()},$item_temp2/text()},for $item_temp2 in $item_temp1/items/item return  element item{for $item_temp3 in $item_temp2/productName return  element title{$item_temp3/text()},for $item_temp3 in $item_temp2/comment return  element note{$item_temp3/text()},for $item_temp3 in $item_temp2/quantity return  element quantity{$item_temp3/text()},for $item_temp3 in $item_temp2/USPrice return  element price{$item_temp3/text()},for $item_temp3 in $item_temp2/shipDate return  element madeTime{$item_temp3/text()},$item_temp2/text()},$item_temp1/text()}"+
-			"}";
-
-		String queryString1="declare default element namespace \"urn:hl7-org:v3\";" +
-				"declare variable $docName as xs:string external;"+
-			"document{  element testRoot{attribute att1 {\"valueOne\"}, current-dateTime()}}";
-		System.out.println("TransformTest.testXQueryTransform()\n"+queryString);
+		String sourceFile="workingspace/simpleMapping/shiporder.xml";
+		String xqFile="workingspace/simpleMapping/testXQ.xq";
 		XQueryTransformer tester= new XQueryTransformer();
-		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
-		System.out.println(tester.executeQuery(srcFile, queryString));
+		System.out.println(tester.transfer(sourceFile, xqFile));
 	}
 
 	@Test
@@ -128,12 +117,12 @@ public class TransformTest {
 		w.write(queryString);
 		w.close();
 		
-		XQueryTransformer tester= new XQueryTransformer();
+		MappingTransformer tester= new MappingTransformer();
 		String dataSource="workingspace/simpleMapping/shiporder.xml";
- 		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.Transfer(dataSource, mapFile), false));
+ 		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.transfer(dataSource, mapFile), false));
 		
 		w = new FileWriter("bin/tranform.out.xml");
-		String result=tester.Transfer(dataSource, mapFile);
+		String result=tester.transfer(dataSource, mapFile);
 		w.write(result);
 		w.close();
 		
@@ -156,9 +145,6 @@ public class TransformTest {
 
 	@Test
 	public void testXQueryBuilder() throws XQException, JAXBException, IOException {
-//		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-//		Unmarshaller u = jc.createUnmarshaller();
-//		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("workingspace/cda/mapping.map")), Mapping.class);
 		String mappingFile="workingspace/cda/mapping.map";
 		Mapping map=MappingFactory.loadMapping(new File(mappingFile));
 		XQueryBuilder builder = new XQueryBuilder(map);

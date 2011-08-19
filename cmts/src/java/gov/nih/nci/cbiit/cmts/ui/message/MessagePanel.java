@@ -9,6 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.cbiit.cmts.ui.message;
 
+import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 import gov.nih.nci.cbiit.cmts.transform.TransformationService;
 import gov.nih.nci.cbiit.cmts.transform.TransformerFactory;
 import gov.nih.nci.cbiit.cmts.ui.actions.SaveAsMapAction;
@@ -188,7 +189,7 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 			FileWriter writer = new FileWriter(this.targetDataFile);
 			writer.write(xmlResult);
 			writer.close();
-			setValidationMessage( transformer.validateXmlData(transformer.getTransformationMapping(),xmlResult));
+			setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
     	} catch (XQException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -199,8 +200,7 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
        	return;
 
     }
-
-
+    
 	public void setTargetDataFile(File targetDataFile) {
 		this.targetDataFile = targetDataFile;
 	}

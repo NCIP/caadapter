@@ -7,200 +7,57 @@
  */
 package gov.nih.nci.cbiit.cmts.transform;
 
-import gov.nih.nci.caadapter.common.ApplicationException;
-import gov.nih.nci.cbiit.cmts.common.ApplicationMessage;
-import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
-import gov.nih.nci.cbiit.cmts.core.ComponentType;
-import gov.nih.nci.cbiit.cmts.core.Mapping;
-import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
-import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
-import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-import javax.xml.validation.Schema;
-import javax.xml.xquery.XQConnection;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.xml.xquery.XQException;
-import javax.xml.xquery.XQItemType;
 import javax.xml.xquery.XQPreparedExpression;
-import javax.xml.xquery.XQResultSequence;
-
 import javax.xml.bind.JAXBException;
-import javax.xml.namespace.QName;
 
-import net.sf.saxon.Configuration;
-import net.sf.saxon.xqj.SaxonXQDataSource;
-
-/**
- * This class performs the transformation using XQuery
- * 
- * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
- * @since CMTS v1.0
- * @version $Revision: 1.3 $
- * @date $Date: 2008-10-22 19:01:17 $
- * 
- */
-public class XQueryTransformer implements TransformationService {
-
-	private Mapping mapping;
-	// Connection for querying
-	private XQConnection conn;
-	private boolean temporaryFileCreated = false;
-	
-	private boolean presentable=false;
-	
-	public boolean isTemporaryFileCreated() {
-		return temporaryFileCreated;
-	}
-
-	public void setTemporaryFileCreated(boolean temporaryFileCreated) {
-		this.temporaryFileCreated = temporaryFileCreated;
-	}
-
-	/**
-	 * constructor
-	 * 
-	 * @throws XQException
-	 */
+public class XQueryTransformer extends MappingTransformer {
 	public XQueryTransformer() throws XQException {
-		Configuration saxonConfig = new Configuration();
-		SaxonXQDataSource dataSource = new SaxonXQDataSource(saxonConfig);
-		conn = dataSource.getConnection();
+		super();
 	}
-
-	/**
-	 * @return the conn
-	 */
-	public final XQConnection getConn() {
-		return conn;
-	}
-
-
-	/**
-	 * execute XQuery
-	 * 
-	 * @param query
-	 *            query string to execute
-	 * @param sourceFile
-	 *            name of source file
-	 * @return
-	 * @throws XQException
-	 */
-	public String executeQuery(String query, String sourceFile)
-			throws XQException {
-		XQPreparedExpression exp = getConn().prepareExpression(query);
-		URI sourcUri=new File(sourceFile).toURI();
-		exp.bindString(new QName("docName"), sourcUri.getPath(), conn
-				.createAtomicType(XQItemType.XQBASETYPE_STRING));
-		XQResultSequence result = exp.executeQuery();
-		String rawResult = result.getSequenceAsString(new Properties());
-		return TransformationUtil.formatXqueryResult(rawResult, isPresentable());
-	}
-
-	@Override
-	public String Transfer(String sourceFile, String mappingFile) {
-		// TODO Auto-generated method stub
+	public static void main(String args[]){
+		if (args.length<2)
+		{
+			System.out.println("XQueryTransformer.main()...\nusage:sourcedata:stylesheet");
+			System.exit(0);
+		} else if (args.length<3)
+		{
+			args[3]="result_out.xml";
+		}
+		System.out.println("XQueryTransformer.main()...Source Data:"+args[0]);
+		System.out.println("XQueryTransformer.main()...Mapping Data:"+args[1]);
+		System.out.println("XQueryTransformer.main()...Result Data:"+args[2]);
 		try {
-			mapping = MappingFactory.loadMapping(new File(mappingFile));
-			// parse raw data to a temporary file
-			//if source is HL7 v2, the target namespace is set as null
-			String tempXmlSrc = parseRawData(sourceFile, mapping);
-			XQueryBuilder builder = new XQueryBuilder(mapping);
-			String queryString = builder.getXQuery();
-			String xmlResult = executeQuery(queryString, tempXmlSrc);
-			if (isTemporaryFileCreated()) {
-				File tmpFile = new File(tempXmlSrc);
-				tmpFile.delete();
-			}
-			return xmlResult;
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			XQueryTransformer transformer = new XQueryTransformer();
+			transformer.transfer(args[0],args[1]);
 		} catch (XQException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ApplicationException e) {
+		}	 
+	}
+	protected XQPreparedExpression prepareXQExpression(String instruction) throws XQException, JAXBException
+	{
+		InputStream in;
+		try {
+			in = new FileInputStream(new File(instruction));
+			InputStreamReader inputStream=new InputStreamReader(in);	
+			XQPreparedExpression exp = getConn().prepareExpression(inputStream);
+			return exp;
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
+	
 
-	/**
-	 * Pre-process raw source data for transformer
-	 * 
-	 * @param sourceRawDataFile
-	 *            URI of source raw data file
-	 * @param map
-	 *            Mapping object
-	 * @return URI of pre-processed source data, it may be a temporary file
-	 * @throws JAXBException
-	 * @throws IOException
-	 * @throws ApplicationException 
-	 * @throws ApplicationException
-	 */
-	protected String parseRawData(String sourceRawDataFile, Mapping map)
-			throws JAXBException, IOException, ApplicationException {
-		// do nothing
-		return sourceRawDataFile;
-	}
-
-	public List<ApplicationResult> validateXmlData(Mapping maping, String xmlData)
-	{
-		List<ApplicationResult> rtnList=new ArrayList<ApplicationResult>();
-		//using validator
-		String targetSchema=null;
-		for (gov.nih.nci.cbiit.cmts.core.Component mapComp:maping.getComponents().getComponent())
-		{
-			if (mapComp.getRootElement()!=null
-					&&mapComp.getType().equals(ComponentType.TARGET))
-			{
-				targetSchema=mapComp.getLocation();
-				continue;
-			}
-		}
-		XsdSchemaErrorHandler xsdErrorHandler=new XsdSchemaErrorHandler();
-		Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, xsdErrorHandler);
-		if (!xsdErrorHandler.getErrorMessage().isEmpty())
-		{
-			//add xsd schema validation message only if error occurs
-			ApplicationMessage xsdInfor=new ApplicationMessage("Target XSD Schema Validation");
-			rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xsdInfor));
-			rtnList.addAll(xsdErrorHandler.getErrorMessage());
-		}
-		XsdSchemaErrorHandler xmlErrorHandler=new XsdSchemaErrorHandler();
-		XsdSchemaSaxValidator.validateXmlData(schema, xmlData, xmlErrorHandler);
-		ApplicationMessage xmlInfor=new ApplicationMessage("Result XML Data Validation");
-		rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xmlInfor));
-
-		rtnList.addAll(xmlErrorHandler.getErrorMessage());
-		
-		return rtnList;
-	}
-	public void setPresentable(boolean presentable) {
-		this.presentable = presentable;
-	}
-
-	@Override
-	public Mapping getTransformationMapping() {
-		// TODO Auto-generated method stub
-		return mapping;
-	}
-
-	@Override
-	public boolean isPresentable() {
-		// TODO Auto-generated method stub
-		return presentable;
-	}
 }
 
 /**
