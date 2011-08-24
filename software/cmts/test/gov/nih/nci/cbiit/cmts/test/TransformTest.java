@@ -83,8 +83,8 @@ public class TransformTest {
 	@Test
 	public void testMappingAndTransformation() throws JAXBException, XQException
 	{
-		String mappingFile="workingspace/cda/mapping.map";
-		String srcFile = "workingspace/cda/shiporder.xml";
+		String mappingFile="workingspace/hl7v2/discharger.map";
+		String srcFile = "workingspace/hl7v2/ADT_03.xml";
 		Mapping map = MappingFactory.loadMapping(new File(mappingFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
@@ -108,7 +108,7 @@ public class TransformTest {
 
 	@Test
 	public void testTransformAndOutput() throws XQException, JAXBException, IOException {
-		String mapFile="workingspace/simpleMapping/mapping.map";
+		String mapFile="workingspace/hl7v2/dischargeMap.map";
 		Mapping map = MappingFactory.loadMapping(new File(mapFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
@@ -118,7 +118,7 @@ public class TransformTest {
 		w.close();
 		
 		MappingTransformer tester= new MappingTransformer();
-		String dataSource="workingspace/simpleMapping/shiporder.xml";
+		String dataSource="workingspace/hl7v2/ADT_03.xml";
  		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.transfer(dataSource, mapFile), false));
 		
 		w = new FileWriter("bin/tranform.out.xml");
