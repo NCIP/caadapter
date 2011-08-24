@@ -26,6 +26,8 @@ public class TransformationUtil {
 	
 	public static String formatXqueryResult(String sIn, boolean presentable)
 	{
+		if (sIn==null||sIn.length()==0)
+			return "Invalid data:"+sIn;
 		StringBuffer rtnSb=new StringBuffer();
 		StringReader sr=new StringReader(sIn);
 		LineNumberReader lR=new LineNumberReader(sr);

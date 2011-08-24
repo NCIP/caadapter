@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -82,7 +83,7 @@ public class Hl7V2Test {
 	public void testParseV2Message() throws TransformerFactoryConfigurationError, EncoderException, IOException, TransformerException
 	{
 		Encoder v2Encoder=Hl7V2MessageEncoderFactory.getV2MessageEncoder("2.4", "ADT_A03.xsd");
-		String v2MessageFile="workingspace/Hl7v2ToXml/ADT_A03.hl7";
+		String v2MessageFile="workingspace/Hl7v2/ADT_A03.hl7";
 		FileInputStream sourceDataStream = new FileInputStream(v2MessageFile);
 		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(sourceDataStream);
 		
@@ -96,11 +97,13 @@ public class Hl7V2Test {
 		{
 			Source transformerSource = v2Encoder.decodeFromBytes(v2MsgByte);
 			Transformer transformer =  TransformerFactory.newInstance().newTransformer();
+
+			transformer.setOutputProperty("indent","yes");
+			transformer.setOutputProperty("encoding", "UTF-16");
+
 			transformer.transform(transformerSource, streamResult);
 		}
-		streamResult.getOutputStream().close();
 		out.close();
-
 		Assert.assertNotNull(streamResult);
 	}
 }
