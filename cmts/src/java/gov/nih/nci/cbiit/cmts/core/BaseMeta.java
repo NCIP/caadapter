@@ -67,11 +67,12 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
     private String type;
 
     private boolean ativated = true;
-private static int metaCount=0;
-public BaseMeta()
-{
-	System.out.println("BaseMeta.BaseMeta()...:"+metaCount++);
-}
+	public static int metaCount=0;
+	public BaseMeta()
+	{
+		metaCount++;
+//		System.out.println("BaseMeta.BaseMeta()...:"+metaCount);
+	}
     public Boolean isRequired() {
 		return required;
 	}
