@@ -198,7 +198,8 @@
 		<jar destfile="${dist.dir}/cmtsUI.jar">
 			<fileset dir="${build.dir}" includes="**/ui/**" />
 			<manifest>
-				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cmts.ui.main.MainFrame" />
+				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cmts.util.HL7V3XSDCheck" />
+				<!-- attribute name="Main-Class" value="gov.nih.nci.cbiit.cmts.ui.main.MainFrame" / -->
 				<attribute name="Class-Path" value=". lib/cmts.jar lib/cmts-resources.jar ${distribution.manifest.class.property}" />
 			</manifest>
 		</jar>
