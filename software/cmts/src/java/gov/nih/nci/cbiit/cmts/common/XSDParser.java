@@ -13,8 +13,6 @@ import java.util.*;
 import java.net.URL;
 
 import org.apache.xerces.xs.*;
-import org.w3c.dom.DOMError;
-import org.w3c.dom.DOMErrorHandler;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import gov.nih.nci.cbiit.cmts.core.*;
@@ -30,7 +28,7 @@ import gov.nih.nci.cbiit.cmts.util.FileUtil;
  * @date       $Date: 2009-11-24 16:00:59 $
  *
  */
-public class XSDParser implements DOMErrorHandler {
+public class XSDParser  {
     private XSLoader schemaLoader;
     private XSModel model;
     private String schemaURI;
@@ -38,10 +36,8 @@ public class XSDParser implements DOMErrorHandler {
     private Stack<String> elStack;
     private String defaultNS = "";
     private static boolean debug = false;
-    //private static final String[] prefix={">", "  =", "    -", "      *", "        %", "          $"};
-
+    
     private static String getPrefix(int i){
-        //if(i<prefix.length) return prefix[i];
         StringBuffer sb = new StringBuffer();
         for(int j=0; j<i+1; j++) sb.append("  ");
         sb.append("[").append(i<10?((char)('0'+i)):((char)('a'+i-10))).append("]-");
@@ -62,16 +58,7 @@ public class XSDParser implements DOMErrorHandler {
             XSImplementation impl = (XSImplementation) registry.getDOMImplementation("XS-Loader");
 
             schemaLoader = impl.createXSLoader(null);
-
-//			DOMConfiguration config = schemaLoader.getConfig();
-//
-//			// create Error Handler
-//			DOMErrorHandler errorHandler = this;
-//			// set error handler
-//			config.setParameter("error-handler", errorHandler);
-//			// set validation feature
-//			config.setParameter("validate",Boolean.TRUE);
-System.out.println("XSDParser.XSDParser()...set vaidate");
+            System.out.println("XSDParser.XSDParser()...set vaidate");
             ctStack = new Stack<String>();
             elStack = new Stack<String>();
         } catch (ClassCastException e) {
@@ -162,7 +149,6 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
         } else {
             return null;
         }
-
     }
 
     /**
@@ -180,17 +166,14 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
             ctStack.clear();
             elStack.clear();
             return processXSObject(map.itemByName(namespace, name), 0);
-        } else {
-            return null;
-        }
-
+        } 
+        return null;
     }
 
     private ElementMeta processXSObject(XSObject item, int depth) {
         if(item instanceof XSComplexTypeDefinition){
             return processComplexType((XSComplexTypeDefinition)item, depth);
         }else if(item instanceof XSSimpleTypeDefinition){
-            //processSimpleType((XSSimpleTypeDefinition)item);
             return null;
         }else if(item instanceof XSElementDeclaration){
             return processElement((XSElementDeclaration)item, depth);
@@ -207,35 +190,20 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
             }else if(item instanceof XSParticle){
                 ret.addAll(processParticle((XSParticle)item, depth));
             }else if(item instanceof XSAttributeUse){
-                ret.add(processAttribute((XSAttributeUse)item, depth));
+                ret.add(processAttribute((XSAttributeUse)item));
             }
         }
         return ret;
     }
 
-    private void processSimpleType(XSSimpleTypeDefinition item, int depth){
-        if(debug) System.out.println(getPrefix(depth+1)+"SimpleType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-        //processParticle(item.getParticle(), indent);
-    }
     private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
         if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-        ElementMeta ret;
+        ElementMeta ret=null;
         String qname = "{" + item.getNamespace() + "}" + item.getName();
         if(item.getName()==null)
             qname = "{" + item.getNamespace() + "}" + elStack.peek();
         boolean recursive = ctStack.contains(qname);
         ctStack.push(qname);
-//        if ((item.getNamespace().toLowerCase().endsWith("hl7-org:v3"))&&
-//            (ctStack.contains("{urn:hl7-org:v3}CE")))
-//        {
-//            for(int i=0;i<ctStack.size();i++)
-//            {
-//                String c = ctStack.get(i);
-//                System.out.println("-+-" +qname+":ctStack-("+i+"/"+ctStack.size()+") :" + c + ", :elStack-("+i+"/"+elStack.size()+") :" + elStack.get(i));
-//            }
-//
-//        }
-
         try {
             ret = new ElementMeta();
             ret.setNameSpace(item.getNamespace());
@@ -246,7 +214,6 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
                 ret.setIsRecursive(true);
                 return ret;
             }
-
 
             List<ElementMeta> childs = ret.getChildElement();
             List<AttributeMeta> attrs = ret.getAttrData();
@@ -268,40 +235,38 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
                     childs.add((ElementMeta)b);
                 }
             }
-            try
-            {
-                if (item.getNamespace().toLowerCase().endsWith("hl7-org:v3"))
-                {
-                    boolean enable = true;
 
-                    if (ctStack.size() >= 3)
+            if (item.getNamespace()!=null&&
+            		item.getNamespace().toLowerCase().endsWith("hl7-org:v3"))
+            {
+                boolean enable = true;
+
+                if (ctStack.size() >= 3)
+                {
+                    String c = ctStack.get(ctStack.size()-2);
+                    if (c.endsWith("}CE"))
                     {
-                        String c = ctStack.get(ctStack.size()-2);
-                        if (c.endsWith("}CE"))
-                        {
-                            String el = elStack.peek();
-                            if ((qname.endsWith("}CD"))&&(el.endsWith("}translation"))) enable = false;
-                            if ((qname.endsWith("}ED"))&&(el.endsWith("}originalText"))) enable = false;
-                        }
-                    }
-                    if (!enable)
-                    {
-                        ret.setAtivated(false);
-                        ret.setIsRecursive(true);
-                        //ret.setIsEnabled(enable);
-                        return ret;
+                        String el = elStack.peek();
+                        if ((qname.endsWith("}CD"))&&(el.endsWith("}translation"))) enable = false;
+                        if ((qname.endsWith("}ED"))&&(el.endsWith("}originalText"))) enable = false;
                     }
                 }
+                if (!enable)
+                {
+                    ret.setAtivated(false);
+                    ret.setIsRecursive(true);
+                    //ret.setIsEnabled(enable);
+                    return ret;
+                }
             }
-            catch(Exception ee)
-            {
-                
-            }
-
-        } finally {
+        }
+        catch(Exception ee)
+        {
+        	ee.printStackTrace();
+        }
+        finally {
             ctStack.pop();
         }
-
         return ret;
     }
     private List<BaseMeta> processParticle(XSParticle item, int depth){
@@ -371,10 +336,7 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
             XSTypeDefinition type = item.getTypeDefinition();
             if(type instanceof XSComplexTypeDefinition){
                 ret = processComplexType((XSComplexTypeDefinition)type, depth);
-            }else if(type instanceof XSSimpleTypeDefinition){
-                processSimpleType((XSSimpleTypeDefinition)type, depth);
             }
-
             if(ret == null)
                 ret = new ElementMeta();
             ret.setNameSpace(item.getNamespace());
@@ -387,9 +349,9 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
                     :item.getTypeDefinition().getNamespace()+":"+item.getTypeDefinition().getName());
         return ret;
     }
-    private AttributeMeta processAttribute(XSAttributeUse item, int depth){
+    private AttributeMeta processAttribute(XSAttributeUse item){
         if(item == null){
-            if(debug) System.out.println(getPrefix(depth+1)+"Attribute {null}");
+            if(debug) System.out.println("Attribute {null}");
             return null;
         }
         XSAttributeDeclaration 	attr = item.getAttrDeclaration();
@@ -409,25 +371,13 @@ System.out.println("XSDParser.XSDParser()...set vaidate");
             ret.setFixedValue(item.getConstraintValue());
         }
 
-        if(debug) System.out.print(getPrefix(depth+1)+"AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
+        if(debug) System.out.print("AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
                 +(item.getRequired()?",":"Required,")
                 +(item.getConstraintType()==XSConstants.VC_NONE?"":((item.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+item.getConstraintValue())));
         if(debug) System.out.println(", Attribute{" + attr.getNamespace() + "}" + attr.getName()+"["+attr.getClass()+"]"
                 +("{"+attr.getTypeDefinition().getNamespace()+"}"+attr.getTypeDefinition().getName())
                 +(attr.getConstraintType()==XSConstants.VC_NONE?"":((attr.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+attr.getConstraintValue())));
         return ret;
-    }
-
-    public boolean handleError(DOMError error){
-        short severity = error.getSeverity();
-        if (severity == DOMError.SEVERITY_ERROR) {
-            System.out.println("[xs-error]: "+error.getMessage());
-        }
-
-        if (severity == DOMError.SEVERITY_WARNING) {
-            System.out.println("[xs-warning]: "+error.getMessage());
-        }
-        return true;
     }
 }
 
