@@ -35,6 +35,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,9 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import javax.xml.bind.JAXBException;
 
+import org.apache.xerces.impl.xs.XSComplexTypeDecl;
 import org.apache.xerces.xs.XSNamedMap;
+import org.apache.xerces.xs.XSObject;
 
 /**
  * This class 
@@ -693,20 +696,23 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 	private CellRenderXSObject userSelectRoot(XSDParser xsdParser)
 	{
 		XSNamedMap[] map = xsdParser.getMappableNames();
-		CellRenderXSObject[] choices = new CellRenderXSObject[map[0].getLength()+map[1].getLength()];
-		int pos = 0;
-		for(int i=0; i<map[0].getLength(); i++)
-			choices[pos++] =new CellRenderXSObject(map[0].item(i));//.getName();
-		for(int i=0; i<map[1].getLength(); i++)
-			choices[pos++] = new CellRenderXSObject(map[1].item(i));//.getNamespace() +":" +map[1].item(i).getName();
+		ArrayList<CellRenderXSObject> choices = new ArrayList<CellRenderXSObject>();
 
+		for(int i=0; i<map[0].getLength(); i++)
+			choices.add(new CellRenderXSObject(map[0].item(i)));//.getName();
+		for(int i=0; i<map[1].getLength(); i++)
+		{
+			XSObject xsItem=map[1].item(i);
+			if (xsItem instanceof XSComplexTypeDecl)
+				choices.add(new CellRenderXSObject(xsItem));
+		}
         CellRenderXSObject chosenRoot = null;
         Container con = this;
         while(con != null)
         {
             if ((con instanceof Frame)||(con instanceof Applet))
             {
-                chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(con, "choose root element", "Please choose root element", choices);
+                chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(con, "choose root element", "Please choose root element", choices.toArray());
                 break;
             }
             con = con.getParent();
