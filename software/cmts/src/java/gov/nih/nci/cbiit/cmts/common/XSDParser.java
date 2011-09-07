@@ -113,7 +113,6 @@ public class XSDParser  {
         // parse document
         if(debug) System.out.println("Parsing " + this.schemaURI + "...");
         model = schemaLoader.loadURI(this.schemaURI);
-
     }
 
     /**
@@ -123,11 +122,14 @@ public class XSDParser  {
         return schemaURI;
     }
 
+    /***
+     * Find mappable names:Elment, ComplexType
+     * @return
+     */
     public XSNamedMap[] getMappableNames(){
         XSNamedMap[] map = new XSNamedMap[2];
         map[0] = model.getComponents(XSConstants.ELEMENT_DECLARATION);
         map[1] = model.getComponents(XSConstants.TYPE_DEFINITION);
-
         return map;
     }
 
@@ -141,14 +143,14 @@ public class XSDParser  {
         if (model != null) {
             // element declarations
             XSNamedMap map = model.getComponents(XSConstants.ELEMENT_DECLARATION);
-            //processMap(map, 0);
             defaultNS = namespace;
             ctStack.clear();
             elStack.clear();
-            return processXSObject(map.itemByName(namespace, name), 0);
-        } else {
-            return null;
+            XSObject xsItem=map.itemByName(namespace, name);
+            if(xsItem instanceof XSElementDeclaration)
+                return processElement((XSElementDeclaration)xsItem, 0);
         }
+        return null;
     }
 
     /**
@@ -165,26 +167,27 @@ public class XSDParser  {
             defaultNS = namespace;
             ctStack.clear();
             elStack.clear();
-            return processXSObject(map.itemByName(namespace, name), 0);
+            XSObject xsItem=map.itemByName(namespace, name);
+        	if(xsItem instanceof XSComplexTypeDefinition){
+                return processComplexType((XSComplexTypeDefinition)xsItem, 0);
+            }else if(xsItem instanceof XSSimpleTypeDefinition){
+                return null;
+            }
         } 
         return null;
     }
 
-    private ElementMeta processXSObject(XSObject item, int depth) {
-        if(item instanceof XSComplexTypeDefinition){
-            return processComplexType((XSComplexTypeDefinition)item, depth);
-        }else if(item instanceof XSSimpleTypeDefinition){
-            return null;
-        }else if(item instanceof XSElementDeclaration){
-            return processElement((XSElementDeclaration)item, depth);
-        }
-        return null;
-    }
-
-    private List<BaseMeta> processList(XSObjectList map, int depth){
+    /**
+     * Process a list of XSObject
+     * @param itemList
+     * @param depth
+     * @return
+     */
+    private List<BaseMeta> processList(XSObjectList itemList, int depth){
+    	if(debug) System.out.println(getPrefix(depth)+"XSObjectList{" + itemList.getLength() + "}" + "["+itemList.getClass()+"]");
         ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
-        for (int i = 0; i < map.getLength(); i++) {
-            XSObject item = map.item(i);
+        for (int i = 0; i < itemList.getLength(); i++) {
+            XSObject item = itemList.item(i);
             if(item instanceof XSComplexTypeDefinition){
                 ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
             }else if(item instanceof XSParticle){
@@ -196,6 +199,14 @@ public class XSDParser  {
         return ret;
     }
 
+    /**
+     * Process XSComplexTypeDefiniton object
+     * This interface extends XSTypeDefinition which extends XSObject.
+     * It represents the Complex Type Definition schema component. 
+     * @param item
+     * @param depth
+     * @return
+     */
     private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
         if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
         ElementMeta ret=null;
@@ -219,21 +230,19 @@ public class XSDParser  {
             List<AttributeMeta> attrs = ret.getAttrData();
             List<BaseMeta> l = processList(item.getAttributeUses(), depth);
             for (BaseMeta b:l) {
-                if (b instanceof AttributeMeta) {
+                if (b instanceof AttributeMeta) 
                     attrs.add((AttributeMeta)b);
-                } else if (b instanceof ElementMeta) {
-                    childs.add((ElementMeta)b);
-                }
+                else
+                	throw new Exception ("Invalid attributue use:"+b.getName());
             }
 
             l = processParticle(item.getParticle(), depth);
             if(l==null) return ret;
             for (BaseMeta b:l) {
-                if (b instanceof AttributeMeta) {
-                    attrs.add((AttributeMeta)b);
-                } else if (b instanceof ElementMeta) {
+            	if (b instanceof ElementMeta) 
                     childs.add((ElementMeta)b);
-                }
+            	else
+            		throw new Exception ("Invalid particle term:"+b.getName());
             }
 
             if (item.getNamespace()!=null&&
@@ -255,7 +264,6 @@ public class XSDParser  {
                 {
                     ret.setAtivated(false);
                     ret.setIsRecursive(true);
-                    //ret.setIsEnabled(enable);
                     return ret;
                 }
             }
@@ -269,6 +277,14 @@ public class XSDParser  {
         }
         return ret;
     }
+    /**
+     * Process XSParticle object
+     * This interface extends XSObject and represents the Particle schema component
+     * It define the usase of its associated term such as, annotations, maxOccurs, maxOccursUnbound, minOccurs
+     * @param item
+     * @param depth
+     * @return
+     */
     private List<BaseMeta> processParticle(XSParticle item, int depth){
         if(item == null){
             if(debug) System.out.println(getPrefix(depth+1)+"Particle{null}");
@@ -302,6 +318,17 @@ public class XSDParser  {
         }
         return l;
     }
+    /**
+     * Process XSTerm object
+     * This interface extends XSObject. It describes a term that can be one of 
+     * a model group, 
+     * a wildcard, 
+     * or an element declaration. 
+     * Objects implementing XSElementDeclaration, XSModelGroup and XSWildcard interfaces also implement this interface.
+     * @param item
+     * @param depth
+     * @return
+     */
     private List<BaseMeta> processTerm(XSTerm item, int depth){
         ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
         if(debug) System.out.print(getPrefix(depth)+"Term{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
@@ -327,6 +354,13 @@ public class XSDParser  {
         }
         return ret;
     }
+    /**
+     * Process XSElementDeclaration
+     * This interface extends XSTerm and represents the Element Declaration schema component
+     * @param item
+     * @param depth
+     * @return
+     */
     private ElementMeta processElement(XSElementDeclaration item, int depth){
         if(debug) System.out.println(getPrefix(depth)+"Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
         String qname = "{" + item.getNamespace() + "}" + item.getName();
@@ -349,6 +383,12 @@ public class XSDParser  {
                     :item.getTypeDefinition().getNamespace()+":"+item.getTypeDefinition().getName());
         return ret;
     }
+    /**
+     * Process XSAttributeUse object
+     * The XSAttributeUse interface extends XSObject and represents the Attribute Use schema component. 
+     * @param item
+     * @return
+     */
     private AttributeMeta processAttribute(XSAttributeUse item){
         if(item == null){
             if(debug) System.out.println("Attribute {null}");
