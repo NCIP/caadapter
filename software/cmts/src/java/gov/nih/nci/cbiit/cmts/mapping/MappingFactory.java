@@ -32,6 +32,7 @@ import gov.nih.nci.cbiit.cmts.core.KindType;
 import gov.nih.nci.cbiit.cmts.core.LinkType;
 import gov.nih.nci.cbiit.cmts.core.LinkpointType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.core.MetaConstants;
 import gov.nih.nci.cbiit.cmts.core.TagType;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Components;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
@@ -54,7 +55,7 @@ public class MappingFactory
 
 		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
 		if(e==null) 
-			e = schemaParser.getElementMetaFromComplexType(rootNS, root);
+			e = schemaParser.getElementMetaFromComplexType(rootNS, root, MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL);
 
 		if (m.getComponents()!=null)
 			for (Component mapComp:m.getComponents().getComponent())
@@ -139,10 +140,11 @@ public class MappingFactory
 
                     XSDParser metaParser = new XSDParser();
                     String xsdLocation=f.getParent()+File.separator+mapComp.getLocation();
-                    metaParser.loadSchema(new File(xsdLocation).getPath(),null);
-                    mapComp.setLocation(xsdLocation);
+                    metaParser.loadSchema(new File(xsdLocation).toURI().toString(),null);
+//                    mapComp.setLocation(xsdLocation);
                     MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
-                 }
+                    mapComp.setLocation(metaParser.getSchemaURI());
+                }
             }
             catch(Exception ee)
             {
@@ -372,6 +374,9 @@ public class MappingFactory
     public static void saveMapping(File f, Mapping m) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
+		java.net.URI mappingURI=f.getParentFile().toURI();	
+		System.out.println("MappingFactory.saveMapping()..mappingFile URI:"+mappingURI);
+
 		//do not persistent the meta structure
 		Hashtable<String, List<ElementMeta>> rootChildListHash=new Hashtable<String, List<ElementMeta>>();
 		Hashtable<String, List<AttributeMeta>> rootAttrListHash=new Hashtable<String, List<AttributeMeta>>();
@@ -383,7 +388,10 @@ public class MappingFactory
 				childList.addAll(mapComp.getRootElement().getChildElement());
 				//set relative path of xsd file
 				String xsdRelPath=FileUtil.findRelativePath(f.getParentFile().getPath(),mapComp.getLocation());
-				mapComp.setLocation(xsdRelPath);
+				System.out.println("MappingFactory.saveMapping()..mapping location:"+mapComp.getLocation());
+				System.out.println("MappingFactory.saveMapping()..mapping relative location:"+mappingURI.relativize(java.net.URI.create(mapComp.getLocation())).getPath() );
+				String relativePath=mappingURI.relativize(java.net.URI.create(mapComp.getLocation())).getPath();
+				mapComp.setLocation(relativePath);
 				rootChildListHash.put(mapComp.getLocation()+mapComp.getId(), childList);
 				mapComp.getRootElement().getChildElement().clear();
 				
