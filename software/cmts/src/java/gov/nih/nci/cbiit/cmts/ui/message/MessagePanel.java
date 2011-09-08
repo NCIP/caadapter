@@ -12,6 +12,9 @@ package gov.nih.nci.cbiit.cmts.ui.message;
 import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 import gov.nih.nci.cbiit.cmts.transform.TransformationService;
 import gov.nih.nci.cbiit.cmts.transform.TransformerFactory;
+import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
+import gov.nih.nci.cbiit.cmts.transform.artifact.StylesheetBuilder;
+import gov.nih.nci.cbiit.cmts.transform.artifact.XSLTStylesheet;
 import gov.nih.nci.cbiit.cmts.ui.actions.SaveAsMapAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.SaveMapAction;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
@@ -20,6 +23,8 @@ import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
 import gov.nih.nci.cbiit.cmts.ui.main.AbstractTabPanel;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
+import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,6 +38,7 @@ import javax.swing.JComponent;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.xml.xquery.XQException;
+import javax.xml.bind.JAXBException;
 
 import java.awt.Dimension;
 import java.awt.BorderLayout;
@@ -181,21 +187,86 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
     	try {
-    		setMessageText("");
-    		validationMessagePane.setMessageList(null);
-			TransformationService transformer=TransformerFactory.getTransformer(transformationType);
-			String xmlResult=transformer.transfer(dataFileNameField.getText(), mapFileNameField.getText());
-			setMessageText(xmlResult);
-			FileWriter writer = new FileWriter(this.targetDataFile);
-			writer.write(xmlResult);
-			writer.close();
-			setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
+            if (transformationType==null
+				||transformationType==""
+					||transformationType==ActionConstants.NEW_XML_Transformation)
+            {
+                String mappingFile = mapFileNameField.getText();
+                if ((mappingFile == null)||(mappingFile.trim().equals("")))
+                {
+                    JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Map file name field is null.", "Null Map File", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String sourceFile = dataFileNameField.getText();
+                if ((sourceFile == null)||(sourceFile.trim().equals("")))
+                {
+                    JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Source data file name field is null.", "Null Data File", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+			    TransformationService transformer=TransformerFactory.getTransformer(transformationType);
+                String xmlResult=transformer.transfer(sourceFile, mappingFile);
+			    setMessageText(xmlResult);
+			    setSourceDataURI(sourceFile);
+			    setTransformationMappingURI(mappingFile);
+			    setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
+
+
+//                setMessageText("");
+//                validationMessagePane.setMessageList(null);
+//                TransformationService transformer=TransformerFactory.getTransformer(transformationType);
+//                String xmlResult=transformer.transfer(dataFileNameField.getText(), mapFileNameField.getText());
+//                setMessageText(xmlResult);
+//                FileWriter writer = new FileWriter(this.targetDataFile);
+//                writer.write(xmlResult);
+//                writer.close();
+//                setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
+            }
+            else
+            {
+                setMessageText("");
+                String xmlResult="";
+			    String artType=".xsl";
+                String mapFile = mapFileNameField.getText();
+                if ((mapFile == null)||(mapFile.trim().equals("")))
+                {
+                    JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Map file name field is null.", "Null Map File", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Mapping map= MappingFactory.loadMapping(new File(mapFileNameField.getText()));
+                if (transformationType.equals(ActionConstants.NEW_XSLT_STYLESHEET))
+                {
+                    StylesheetBuilder transformer = new StylesheetBuilder(map);
+
+                    StringWriter writer = new StringWriter();
+                    XSLTStylesheet xsltSheet=transformer.buildStyleSheet();
+                    xsltSheet.writeOut(writer);
+                    xmlResult=writer.toString();
+                }
+                else if (transformationType.equals(ActionConstants.NEW_XQUERY_STATEMENT))
+                {
+                    XQueryBuilder xqueryBuilder=new XQueryBuilder(map);
+                    xmlResult=xqueryBuilder.getXQuery();
+                    artType=".xq";
+                }
+			    setViewFileExtension(artType);
+
+			    setMessageText(xmlResult);
+			    //JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+            }
+
     	} catch (XQException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+            JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "XQException : " + e1.getMessage(), "XQException", JOptionPane.ERROR_MESSAGE);
+            e1.printStackTrace();
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
-			e2.printStackTrace();
+            JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "IOException : " + e2.getMessage(), "IOException", JOptionPane.ERROR_MESSAGE);
+            e2.printStackTrace();
+		} catch (JAXBException e3) {
+			// TODO Auto-generated catch block
+            JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "JAXBException : " + e3.getMessage(), "JAXBException", JOptionPane.ERROR_MESSAGE);
+            e3.printStackTrace();
 		}
        	return;
 
@@ -223,7 +294,8 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 	}
 
 	public void setTransformationType(String transformationType) {
-		this.transformationType = transformationType;
+
+        this.transformationType = transformationType;
 	}
 
 	public void setMessageText(String text)
