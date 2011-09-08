@@ -650,6 +650,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		MappingFactory.loadMetaXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName(), ComponentType.SOURCE);
 
 		buildSourceTree(getMapping(), file, isToResetGraph);
+		sTree.setSchemaParser(p);
 		return true;
 	}
 
@@ -671,7 +672,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		MappingFactory.loadMetaXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName(), ComponentType.TARGET);
 
 		buildTargetTree(getMapping(), file, isToResetGraph);
-		//		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
+		tTree.setSchemaParser(p);
 		return true;
 	}
 

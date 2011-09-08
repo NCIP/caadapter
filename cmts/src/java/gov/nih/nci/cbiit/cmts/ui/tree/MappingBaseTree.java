@@ -8,7 +8,12 @@
 package gov.nih.nci.cbiit.cmts.ui.tree;
 
 
+import gov.nih.nci.cbiit.cmts.common.XSDParser;
+import gov.nih.nci.cbiit.cmts.core.BaseMeta;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
+import gov.nih.nci.cbiit.cmts.core.MetaConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 
 import javax.swing.event.TreeExpansionEvent;
@@ -32,10 +37,15 @@ import java.util.List;
  * @date       $Date: 2008-12-04 21:34:20 $
  *
  */
+/**
+ * @author wangeug
+ *
+ */
 public abstract class MappingBaseTree extends AutoscrollableTree implements TreeExpansionListener
 {
 	private JPanel mappingMiddlePanel = null;
 	private TreeNode rootTreeNode;
+	private XSDParser schemaParser;
 	public MappingBaseTree(JPanel m, TreeNode root)
 	{
 		this.mappingMiddlePanel = m;
@@ -46,13 +56,61 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 		setModel(dtm);
 	}
 
-	public void treeExpanded(TreeExpansionEvent event)
-	{
-		((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();//.repaint();
+	public XSDParser getSchemaParser() {
+		return schemaParser;
 	}
 
+	public void setSchemaParser(XSDParser schemaParser) {
+		this.schemaParser = schemaParser;
+	}
+
+	public void treeExpanded(TreeExpansionEvent event)
+	{
+
+		TreePath slctPath=event.getPath();
+		DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) slctPath.getLastPathComponent();
+		for (int chldCnt=treeNode.getChildCount();chldCnt>0;chldCnt--)
+		{
+			DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)treeNode.getChildAt(chldCnt-1);
+			if (childNode.getChildCount()>0)
+				continue;
+			ElementMetaLoader.MyTreeObject chldSelection =(ElementMetaLoader.MyTreeObject)childNode.getUserObject();		
+			BaseMeta chldMeta=(BaseMeta)chldSelection.getUserObject();
+			if (chldMeta instanceof ElementMeta)
+			{
+				ElementMeta chldElmtMeta=(ElementMeta)chldMeta;
+				if (chldElmtMeta.isIsSimple()||chldElmtMeta.isIsRecursive())
+					continue;
+				DefaultMutableTreeNode newChildNode=deepLoadElementMeta(childNode, chldElmtMeta);
+				treeNode.remove(chldCnt-1);
+				treeNode.insert(newChildNode, chldCnt-1);
+			}
+		}
+		((DefaultTreeModel)getModel()).reload(treeNode);
+		((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();//.repaint();
+	}
+	/**
+	 * Reset the ElementMeta and create new treeNode
+	 * @param childNode
+	 * @param meta
+	 * @return
+	 */
+	private DefaultMutableTreeNode deepLoadElementMeta(DefaultMutableTreeNode childNode, ElementMeta meta)
+	{
+		System.out.println("MappingBaseTree.deepLoadElementMeta()...deep loading:"+meta);
+		int newNodeType=ElementMetaLoader.SOURCE_MODE;
+		if (this instanceof MappingTargetTree)
+			newNodeType=ElementMetaLoader.TARGET_MODE;
+		String metaName=meta.getName();	
+		meta=getSchemaParser().getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
+		//set the elementMeta with name of XML element rather its data type
+		meta.setName(metaName);
+		return (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(meta, null);		
+ 
+	}
 	public void treeCollapsed(TreeExpansionEvent event)
 	{
+		System.out.println("MappingBaseTree.treeCollapsed()..path:"+event.getPath());
 		((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();//.repaint();
 	}
 

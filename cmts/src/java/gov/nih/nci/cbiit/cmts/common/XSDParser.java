@@ -37,8 +37,11 @@ public class XSDParser  {
     private String defaultNS = "";
     private static boolean debug = false;
     
-    private static String getPrefix(int i){
+    private static String getPrefix(int iP){
         StringBuffer sb = new StringBuffer();
+        int i=iP-MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL;
+        if (i<0)
+        	i=i*(-1);
         for(int j=0; j<i+1; j++) sb.append("  ");
         sb.append("[").append(i<10?((char)('0'+i)):((char)('a'+i-10))).append("]-");
         return sb.toString();
@@ -147,8 +150,8 @@ public class XSDParser  {
             ctStack.clear();
             elStack.clear();
             XSObject xsItem=map.itemByName(namespace, name);
-            if(xsItem instanceof XSElementDeclaration)
-                return processElement((XSElementDeclaration)xsItem, 0);
+            if (xsItem!=null)
+            	return processElement((XSElementDeclaration)xsItem,MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL);
         }
         return null;
     }
@@ -159,7 +162,7 @@ public class XSDParser  {
      * @param name - complex type name
      * @return ElementMeta object
      */
-    public ElementMeta getElementMetaFromComplexType(String namespace, String name){
+    public ElementMeta getElementMetaFromComplexType(String namespace, String name,int depth){
         if (model != null) {
             // element declarations
             XSNamedMap map = model.getComponents(XSConstants.TYPE_DEFINITION);
@@ -169,7 +172,7 @@ public class XSDParser  {
             elStack.clear();
             XSObject xsItem=map.itemByName(namespace, name);
         	if(xsItem instanceof XSComplexTypeDefinition){
-                return processComplexType((XSComplexTypeDefinition)xsItem, 0);
+                return processComplexType((XSComplexTypeDefinition)xsItem, depth);
             }else if(xsItem instanceof XSSimpleTypeDefinition){
                 return null;
             }
@@ -179,7 +182,7 @@ public class XSDParser  {
 
     /**
      * Process a list of XSObject
-     * @param itemList
+     * @param itemList: XSParticle, XSAttributeUse
      * @param depth
      * @return
      */
@@ -188,9 +191,10 @@ public class XSDParser  {
         ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
         for (int i = 0; i < itemList.getLength(); i++) {
             XSObject item = itemList.item(i);
-            if(item instanceof XSComplexTypeDefinition){
-                ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
-            }else if(item instanceof XSParticle){
+//            if(item instanceof XSComplexTypeDefinition){
+//                ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
+//            }else 
+            if(item instanceof XSParticle){
                 ret.addAll(processParticle((XSParticle)item, depth));
             }else if(item instanceof XSAttributeUse){
                 ret.add(processAttribute((XSAttributeUse)item));
@@ -209,24 +213,27 @@ public class XSDParser  {
      */
     private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
         if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-        ElementMeta ret=null;
+
+        ElementMeta ret=new ElementMeta();
+        ret.setNameSpace(item.getNamespace());
+        ret.setName(item.getName());
+        ret.setIsSimple(false);
+
         String qname = "{" + item.getNamespace() + "}" + item.getName();
         if(item.getName()==null)
-            qname = "{" + item.getNamespace() + "}" + elStack.peek();
+            qname = "{" + item.getNamespace() + "}" + elStack.peek();        
         boolean recursive = ctStack.contains(qname);
         ctStack.push(qname);
+    
         try {
-            ret = new ElementMeta();
-            ret.setNameSpace(item.getNamespace());
-            ret.setName(item.getName());
-            ret.setIsSimple(false);
+            if (depth<0)
+            	return ret;
             //if recursive use return here
             if(recursive){
                 ret.setIsRecursive(true);
                 return ret;
-            }
-
-            List<ElementMeta> childs = ret.getChildElement();
+            } 
+        	List<ElementMeta> childs = ret.getChildElement();
             List<AttributeMeta> attrs = ret.getAttrData();
             List<BaseMeta> l = processList(item.getAttributeUses(), depth);
             for (BaseMeta b:l) {
@@ -236,8 +243,9 @@ public class XSDParser  {
                 	throw new Exception ("Invalid attributue use:"+b.getName());
             }
 
-            l = processParticle(item.getParticle(), depth);
-            if(l==null) return ret;
+            l = processParticle(item.getParticle(), depth-1);
+            if(l==null) return 
+            	ret;
             for (BaseMeta b:l) {
             	if (b instanceof ElementMeta) 
                     childs.add((ElementMeta)b);
@@ -280,7 +288,7 @@ public class XSDParser  {
     /**
      * Process XSParticle object
      * This interface extends XSObject and represents the Particle schema component
-     * It define the usase of its associated term such as, annotations, maxOccurs, maxOccursUnbound, minOccurs
+     * It define the usage of its associated term such as, annotations, maxOccurs, maxOccursUnbound, minOccurs
      * @param item
      * @param depth
      * @return
@@ -290,7 +298,9 @@ public class XSDParser  {
             if(debug) System.out.println(getPrefix(depth+1)+"Particle{null}");
             return null;
         }
-        List<BaseMeta> l = processTerm(item.getTerm(), depth+1);
+        if (item.getTerm()==null)
+        	System.out.println("XSDParser.processParticle()...null particle:"+item.getName());
+        List<BaseMeta> l = processTerm(item.getTerm(), depth);
         if (l==null||l.isEmpty())
             return l;
         ElementMeta e = (ElementMeta)l.get(0);
@@ -370,11 +380,15 @@ public class XSDParser  {
             XSTypeDefinition type = item.getTypeDefinition();
             if(type instanceof XSComplexTypeDefinition){
                 ret = processComplexType((XSComplexTypeDefinition)type, depth);
-            }
-            if(ret == null)
-                ret = new ElementMeta();
-            ret.setNameSpace(item.getNamespace());
-            ret.setName(item.getName());
+            } 
+            
+            if (ret==null)
+            	ret = new ElementMeta();
+            //if the ElementMeta being set "name and nameSpace" by its
+            //type definition, set it back
+           	ret.setNameSpace(item.getNamespace());
+           	ret.setName(item.getName());
+
         }finally{
             elStack.pop();
         }
