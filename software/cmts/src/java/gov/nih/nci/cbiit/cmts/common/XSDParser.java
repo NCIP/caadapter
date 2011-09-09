@@ -345,19 +345,21 @@ public class XSDParser  {
         if(item instanceof XSModelGroup){
             short comp = ((XSModelGroup)item).getCompositor();
             if(debug) System.out.println(comp==XSModelGroup.COMPOSITOR_ALL?" *ALL* ":(comp==XSModelGroup.COMPOSITOR_CHOICE?" *CHOICE* ":" *SEQ* "));
-            ret.addAll(processList(((XSModelGroup)item).getParticles(), depth));
+            List<BaseMeta> elmntList=processList(((XSModelGroup)item).getParticles(), depth);
             if(comp==XSModelGroup.COMPOSITOR_CHOICE) {
                 //create a choice element to hold
                 //the content of choice
                 ElementMeta choiceMeta = new ElementMeta();
                 choiceMeta.setName("<choice>");
-                for(BaseMeta i:ret) {
+                choiceMeta.setIsSimple(false);
+                for(BaseMeta i:elmntList) {
                     ((ElementMeta)i).setIsChoice(true);
                     choiceMeta.getChildElement().add((ElementMeta)i);
                 }
-                ret.clear();
                 ret.add(choiceMeta);
             }
+            else
+            	ret.addAll(elmntList);
         }else if(item instanceof XSElementDeclaration) {
             if(debug) System.out.println(" *ELEMENT*");
             ret.add(processElement((XSElementDeclaration)item, depth));
