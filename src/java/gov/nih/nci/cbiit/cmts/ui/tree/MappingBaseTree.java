@@ -101,12 +101,13 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 		int newNodeType=ElementMetaLoader.SOURCE_MODE;
 		if (this instanceof MappingTargetTree)
 			newNodeType=ElementMetaLoader.TARGET_MODE;
-		String metaName=meta.getName();	
-		meta=getSchemaParser().getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
+		ElementMeta newMeta=getSchemaParser().getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
 		//set the elementMeta with name of XML element rather its data type
-		meta.setName(metaName);
-		return (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(meta, null);		
- 
+		if (newMeta==null&&meta.getName().equals("<choice>"))
+			newMeta=meta;
+		newMeta.setName(meta.getName());
+		newMeta.setIsChoice(meta.isIsChoice());
+		return (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(newMeta, null);		
 	}
 	public void treeCollapsed(TreeExpansionEvent event)
 	{
