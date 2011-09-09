@@ -102,7 +102,6 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		String command = e.getActionCommand();
 		try
 		{
-			boolean everythingGood = true;
 			if (SELECT_SOURCE.equals(command))
 			{
 				//this.sourceButtonPanel.repaint();
@@ -110,7 +109,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 						SOURCE_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
 				if (file != null)
 				{
-					everythingGood = processOpenSourceTree(file, true, true);
+					processOpenSourceTree(file, true, true);
 				}
 			}
 			else if (SELECT_TARGET.equals(command))
@@ -124,13 +123,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 						Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION+";"+TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 				if (file != null)
 				{
-					everythingGood = processOpenTargetTree(file, true, true);
+					processOpenTargetTree(file, true, true);
 				}
-			}
-			if (!everythingGood)
-			{
-				//				Message msg = MessageResources.getMessage("GEN3", new Object[0]);
-				//				JOptionPane.showMessageDialog(this, msg.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		catch (Exception e1)
@@ -154,15 +148,6 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 //		sTree.setDropMode(DropMode.ON);
 		sTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		sourceScrollPane.setViewportView(sTree);
-		sTree.expandAll();
-
-		//register collapse all and expand all actions.
-		//		sourceTreeCollapseAllAction.setTree(sTree);
-		//		sourceTreeExpandAllAction.setTree(sTree);
-		//		sTree.getInputMap().put(sourceTreeCollapseAllAction.getAcceleratorKey(), sourceTreeCollapseAllAction.getName());
-		//		sTree.getActionMap().put(sourceTreeCollapseAllAction.getName(), sourceTreeCollapseAllAction);
-		//		sTree.getInputMap().put(sourceTreeExpandAllAction.getAcceleratorKey(), sourceTreeExpandAllAction.getName());
-		//		sTree.getActionMap().put(sourceTreeExpandAllAction.getName(), sourceTreeExpandAllAction);
 
 		if (tTree != null && isToResetGraph)
 		{
@@ -184,7 +169,6 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		{
 			this.getRootPane().repaint();
 		}
-		//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Source_File, absoluteFile);
 	}
 
 	protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
@@ -200,16 +184,6 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		tTree.setDropMode(DropMode.ON);
 		tTree.setDragEnabled(true);
 		targetScrollPane.setViewportView(tTree);
-		tTree.expandAll();
-		
-		
-		//		//register collapse all and expand all actions.
-		//		targetTreeCollapseAllAction.setTree(tTree);
-		//		targetTreeExpandAllAction.setTree(tTree);
-		//		tTree.getInputMap().put(targetTreeCollapseAllAction.getAcceleratorKey(), targetTreeCollapseAllAction.getName());
-		//		tTree.getActionMap().put(targetTreeCollapseAllAction.getName(), targetTreeCollapseAllAction);
-		//		tTree.getInputMap().put(targetTreeExpandAllAction.getAcceleratorKey(), targetTreeExpandAllAction.getName());
-		//		tTree.getActionMap().put(targetTreeExpandAllAction.getName(), targetTreeExpandAllAction);
 
 		if (sTree != null && isToResetGraph)
 		{
@@ -231,9 +205,6 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		{
 			this.getRootPane().repaint();
 		}
-		//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Target_File, absoluteFile);
-		////		drop target for DnD from source tree.
-		//		targetTreeDropTransferHandler = new TargetTreeDropTransferHandler(tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
 	}
 
 	/**
@@ -651,6 +622,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 
 		buildSourceTree(getMapping(), file, isToResetGraph);
 		sTree.setSchemaParser(p);
+		sTree.expandAll();
 		return true;
 	}
 
@@ -673,6 +645,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 
 		buildTargetTree(getMapping(), file, isToResetGraph);
 		tTree.setSchemaParser(p);
+		tTree.expandAll();
 		return true;
 	}
 
