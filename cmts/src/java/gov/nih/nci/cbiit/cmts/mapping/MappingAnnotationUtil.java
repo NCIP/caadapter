@@ -54,6 +54,8 @@ public class MappingAnnotationUtil {
 	
 	public static boolean removeTag(Mapping mapping, ComponentType componentType, KindType kind, String key, String value)
 	{
+		if (mapping.getTags()==null)
+			return false;
 		for (TagType tag:mapping.getTags().getTag())
 		{
 			if (tag.getComponentType().equals(componentType)

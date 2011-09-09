@@ -164,9 +164,9 @@ public class ElementAnnotationAction extends AbstractContextAction {
 			}
 			annotateElement.setIsChosen(true);
 			DefaultMutableTreeNode newChoiceNode = (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(annotateElement, rootComponent);
-			for (int childIndx=0;childIndx<newChoiceNode.getChildCount();childIndx++)
+			for (int childIndx=newChoiceNode.getChildCount();childIndx>0;childIndx--)
 			{
-				treeNode.add((DefaultMutableTreeNode)newChoiceNode.getChildAt(childIndx));
+				treeNode.insert((DefaultMutableTreeNode)newChoiceNode.getChildAt(childIndx-1),0);
 			}
 			treeModel.reload(treeNode);
 			MappingAnnotationUtil.addTag(mappingData, compType, KindType.CHOICE, nodePath, "true");
