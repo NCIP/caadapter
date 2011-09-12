@@ -36,7 +36,6 @@ import gov.nih.nci.cbiit.cmts.core.MetaConstants;
 import gov.nih.nci.cbiit.cmts.core.TagType;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Components;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
-import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 /**
  * This class is used to generate CMTS Mapping
@@ -50,7 +49,8 @@ import gov.nih.nci.cbiit.cmts.util.FileUtil;
  */
 public class MappingFactory
 {
-
+	public static XSDParser sourceParser;
+	public static XSDParser targetParser;
     public static void loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
 		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
@@ -120,6 +120,8 @@ public class MappingFactory
 	public static Mapping loadMapping(File f) throws JAXBException
     {
 		System.out.println("MappingFactory.loadMapping()...mappingFile:"+f.getAbsolutePath());
+		String mappingParentPath=f.getAbsoluteFile().getParentFile().getAbsolutePath();
+		System.out.println("MappingFactory.loadMapping()..mapping Parent:"+mappingParentPath);
 		JAXBContext jc=null;		
 //			jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		jc=com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.newInstance("gov.nih.nci.cbiit.cmts.core");
@@ -131,6 +133,9 @@ public class MappingFactory
 		//re-connect the meta structure for source and target schemas
 		for (Component mapComp:mapLoaded.getComponents().getComponent())
 		{
+			
+			String xsdLocation=mappingParentPath+File.separator+mapComp.getLocation();
+			System.out.println("MappingFactory.loadMapping()..schema:"+mapComp.getType()+"="+xsdLocation);
             try
             {
                 if (mapComp.getRootElement()!=null)
@@ -139,7 +144,10 @@ public class MappingFactory
                         (mapComp.getType() != ComponentType.TARGET)) continue;
 
                     XSDParser metaParser = new XSDParser();
-                    String xsdLocation=f.getParent()+File.separator+mapComp.getLocation();
+                    if (mapComp.getType()==ComponentType.SOURCE)
+                    	sourceParser=metaParser;
+                    else
+                    	targetParser=metaParser;
                     metaParser.loadSchema(new File(xsdLocation).toURI().toString(),null);
 //                    mapComp.setLocation(xsdLocation);
                     MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
@@ -149,7 +157,8 @@ public class MappingFactory
             catch(Exception ee)
             {
                 String msg = ee.getMessage();
-                if ((msg == null)||(msg.trim().equals(""))) msg = "Possibly Failed to read or parse schema document - " + mapComp.getLocation();
+                if ((msg == null)||(msg.trim().equals(""))) 
+                	msg = "Failed to read or parse schema document - " + xsdLocation;
                 ee.printStackTrace();
                 throw new JAXBException(ee.getClass().getCanonicalName()+":"+msg);
 
@@ -374,8 +383,6 @@ public class MappingFactory
     public static void saveMapping(File f, Mapping m) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		Marshaller u = jc.createMarshaller();
-		java.net.URI mappingURI=f.getParentFile().toURI();	
-		System.out.println("MappingFactory.saveMapping()..mappingFile URI:"+mappingURI);
 
 		//do not persistent the meta structure
 		Hashtable<String, List<ElementMeta>> rootChildListHash=new Hashtable<String, List<ElementMeta>>();
@@ -386,18 +393,12 @@ public class MappingFactory
 			{
 				List<ElementMeta> childList=new ArrayList<ElementMeta>();
 				childList.addAll(mapComp.getRootElement().getChildElement());
-				//set relative path of xsd file
-				String xsdRelPath=FileUtil.findRelativePath(f.getParentFile().getPath(),mapComp.getLocation());
-				System.out.println("MappingFactory.saveMapping()..mapping location:"+mapComp.getLocation());
-				System.out.println("MappingFactory.saveMapping()..mapping relative location:"+mappingURI.relativize(java.net.URI.create(mapComp.getLocation())).getPath() );
-				String relativePath=mappingURI.relativize(java.net.URI.create(mapComp.getLocation())).getPath();
-				mapComp.setLocation(relativePath);
 				rootChildListHash.put(mapComp.getLocation()+mapComp.getId(), childList);
 				mapComp.getRootElement().getChildElement().clear();
 				
-				List<AttributeMeta> AttrList=new ArrayList<AttributeMeta>();
-				AttrList.addAll(mapComp.getRootElement().getAttrData());
-				rootAttrListHash.put(mapComp.getLocation()+mapComp.getId(), AttrList);
+				List<AttributeMeta> attrList=new ArrayList<AttributeMeta>();
+				attrList.addAll(mapComp.getRootElement().getAttrData());
+				rootAttrListHash.put(mapComp.getLocation()+mapComp.getId(), attrList);
 				mapComp.getRootElement().getAttrData().clear();
 			}
 		}
