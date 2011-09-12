@@ -8,8 +8,10 @@
 package gov.nih.nci.cbiit.cmts.ui.mapping;
 
 import gov.nih.nci.cbiit.cmts.common.XSDParser;
+import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.ui.actions.SaveAsMapAction;
@@ -30,11 +32,15 @@ import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeMouseAdapter;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeSelectionHandler;
+import gov.nih.nci.cbiit.cmts.util.ResourceUtils;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -570,9 +576,13 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 
 		//build source tree
 		buildSourceTree(mapping, null, false);
+		sTree.setSchemaParser(MappingFactory.sourceParser);
+		sTree.expandAll();
+		
 		//build target tree
 		buildTargetTree(mapping, null, false);
-
+		tTree.setSchemaParser(MappingFactory.targetParser);
+		tTree.expandAll();
         for (Component mapComp:mapping.getComponents().getComponent())
 		{
             if (mapComp.getRootElement()==null) continue;
@@ -695,16 +705,39 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		return chosenRoot;
 	}
 	
-	public void persistFile(File dataFile)
+	public void persistFile(File persistentFile)
 	{
 
 		MiddlePanelJGraphController mappingManager = getGraphController();//.getMiddlePanel().getGraphController();
 		Mapping mappingData = mappingManager.retrieveMappingData(true);
 		Collections.sort(mappingData.getTags().getTag());
+
+
 		try {
-			MappingFactory.saveMapping(dataFile, mappingData);
+			//set relative path for source and target schema files.	
+			String sourceRelatve=ResourceUtils.getRelativePath(sTree.getSchemaParser().getSchemaURI(), 
+					persistentFile.getCanonicalFile().toURI().toString(), 
+					File.separator);
+			String targetRelatve=ResourceUtils.getRelativePath(tTree.getSchemaParser().getSchemaURI(), 
+					persistentFile.getCanonicalFile().toURI().toString(), 
+					File.separator);
+			for (Component mapComp:mappingData.getComponents().getComponent())
+			{
+				if (mapComp.getRootElement()!=null)
+				{
+	                if (mapComp.getType() == ComponentType.SOURCE)
+	                	mapComp.setLocation(sourceRelatve);
+	                else if ( mapComp.getType() == ComponentType.TARGET)
+	                	mapComp.setLocation(targetRelatve);
+				}
+			}
+
+			MappingFactory.saveMapping(persistentFile, mappingData);
 			JOptionPane.showMessageDialog(getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
 		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
