@@ -119,6 +119,7 @@
 				<include name="xbean.jar"/>
 				<include name="xercesImpl.jar"/>
 				<include name="plugin.jar"/>
+				<include name="commons-io-2.0.1.jar"/>
 			</fileset>
 			<fileset dir="${dist.dir}">
 				<include name="cmts.jar"/>
