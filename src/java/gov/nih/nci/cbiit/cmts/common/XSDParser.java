@@ -87,32 +87,7 @@ public class XSDParser  {
 
     public void loadSchema(String schemaURI, String workDir)
     {
-        String userDirPath=System.getProperty("user.dir");
-        if(debug)
-        System.out.println("XSDParser.loadSchema()..user.dir:"+System.getProperty("user.dir"));
-
-        File wDir = null;
-        if ((workDir != null)&&(!workDir.trim().equals("")))
-        {
-            wDir = new File(workDir.trim());
-            if (!wDir.exists()) wDir = null;
-            else if (wDir.isFile()) wDir = wDir.getParentFile();
-        }
-
-        if (schemaURI.indexOf(userDirPath)>-1)
-        {
-            this.schemaURI=schemaURI.substring(userDirPath.length()+1);
-        }
-        else if (wDir != null)
-        {
-            URL ur = FileUtil.findFileExe(schemaURI, wDir);
-            if (ur == null) this.schemaURI = schemaURI;
-            else this.schemaURI = ur.toString();
-        }
-        else
-        {
-            this.schemaURI = schemaURI;
-        }
+    	this.schemaURI = schemaURI;
         // parse document
         if(debug) System.out.println("Parsing " + this.schemaURI + "...");
         model = schemaLoader.loadURI(this.schemaURI);
