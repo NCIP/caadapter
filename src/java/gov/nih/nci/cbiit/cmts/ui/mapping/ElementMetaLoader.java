@@ -79,10 +79,21 @@ public class ElementMetaLoader implements Serializable
 	 * @param s
 	 * @return a tree node to wrap the given meta data and its sub-tree.
 	 */
-	private DefaultMutableTreeNode processElement(ElementMeta s)
+    private DefaultMutableTreeNode processElement(ElementMeta s)
+    {
+        return processElement(s, 0, null);
+    }
+    private DefaultMutableTreeNode processElement(ElementMeta s, int depth, ElementMeta parent)
 	{
         DefaultMutableTreeNode node = constructTreeNode(s, true);
 
+        String space = "";
+        for(int i=0;i<depth;i++) space = space + "   ";
+
+        //String choiced = "";
+        //if ((parent != null)&&(parent.getName().indexOf("<choice") >= 0)) choiced = " :"+s.isIsChosen()+":";
+
+        //System.out.println("CCCX V " + space + "("+depth+")" + s.getName() + choiced);
 		List<ElementMeta> childs = s.getChildElement();
 		List<AttributeMeta> fields = s.getAttrData();
 
@@ -93,7 +104,8 @@ public class ElementMetaLoader implements Serializable
                 //System.out.println("This is not Chosen : " + s.getId() + " : " + s.getName());
                 return node;
             }
-            if ((s.isIsRecursive())&&(!s.isAtivated())&&(s.getChildElement().size() > 0)) return node;
+            //if ((s.isIsRecursive())&&(!s.isAtivated())&&(s.getChildElement().size() == 0)) return node;
+            if ((s.isIsRecursive())&&(!s.isAtivated())) return node;
         } catch ( NullPointerException np) {
 
 			System.out.println("ElementMetaLoader.processElement()..NullPointerException.:meta:"+s);
@@ -112,11 +124,11 @@ public class ElementMetaLoader implements Serializable
             }
             node.add(constructTreeNode(fieldMeta, false));
 		}
-
+        depth++;
 		for (int i = 0; i < childs.size(); i++)
 		{
 			ElementMeta childMeta = childs.get(i);
-			DefaultMutableTreeNode subNode = processElement(childMeta);
+			DefaultMutableTreeNode subNode = processElement(childMeta, depth, s);
 			node.add(subNode);
 		}
 		return node;

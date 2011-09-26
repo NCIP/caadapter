@@ -17,6 +17,10 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import gov.nih.nci.cbiit.cmts.core.*;
 import gov.nih.nci.cbiit.cmts.util.FileUtil;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * This class parses XSD into CMTS Core Model object
@@ -36,16 +40,21 @@ public class XSDParser  {
     private Stack<String> elStack;
     private String defaultNS = "";
     private static boolean debug = false;
-    
-    private static String getPrefix(int iP){
+
+    private static String getPrefix(int iP)
+    {
+        return getPrefix(iP, true);
+    }
+    private static String getPrefix(int iP, boolean c){
         StringBuffer sb = new StringBuffer();
         int i=iP-MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL;
         if (i<0)
-        	i=i*(-1);
+            i=i*(-1);
         for(int j=0; j<i+1; j++) sb.append("  ");
-        sb.append("[").append(i<10?((char)('0'+i)):((char)('a'+i-10))).append("]-");
+        if (c) sb.append("[").append(i<10?((char)('0'+i)):((char)('a'+i-10))).append("]("+iP+")-");
         return sb.toString();
     }
+
 
     /**
      * constructor
@@ -87,7 +96,7 @@ public class XSDParser  {
 
     public void loadSchema(String schemaURI, String workDir)
     {
-    	this.schemaURI = schemaURI;
+        this.schemaURI = schemaURI;
         // parse document
         if(debug) System.out.println("Parsing " + this.schemaURI + "...");
         model = schemaLoader.loadURI(this.schemaURI);
@@ -126,7 +135,7 @@ public class XSDParser  {
             elStack.clear();
             XSObject xsItem=map.itemByName(namespace, name);
             if (xsItem!=null)
-            	return processElement((XSElementDeclaration)xsItem,MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL);
+                return processElement((XSElementDeclaration)xsItem,MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL);
         }
         return null;
     }
@@ -141,17 +150,18 @@ public class XSDParser  {
         if (model != null) {
             // element declarations
             XSNamedMap map = model.getComponents(XSConstants.TYPE_DEFINITION);
+            //System.out.println("CCCX null XS map : " + namespace + ":" + name);
             //processMap(map, 0);
             defaultNS = namespace;
             ctStack.clear();
             elStack.clear();
             XSObject xsItem=map.itemByName(namespace, name);
-        	if(xsItem instanceof XSComplexTypeDefinition){
+            if(xsItem instanceof XSComplexTypeDefinition){
                 return processComplexType((XSComplexTypeDefinition)xsItem, depth);
             }else if(xsItem instanceof XSSimpleTypeDefinition){
                 return null;
             }
-        } 
+        }
         return null;
     }
 
@@ -162,7 +172,7 @@ public class XSDParser  {
      * @return
      */
     private List<BaseMeta> processList(XSObjectList itemList, int depth){
-    	if(debug) System.out.println(getPrefix(depth)+"XSObjectList{" + itemList.getLength() + "}" + "["+itemList.getClass()+"]");
+        if(debug) System.out.println(getPrefix(depth)+"XSObjectList{" + itemList.getLength() + "}" + "["+itemList.getClass()+"]");
         ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
         for (int i = 0; i < itemList.getLength(); i++) {
             XSObject item = itemList.item(i);
@@ -172,7 +182,7 @@ public class XSDParser  {
             if(item instanceof XSParticle){
                 ret.addAll(processParticle((XSParticle)item, depth));
             }else if(item instanceof XSAttributeUse){
-                ret.add(processAttribute((XSAttributeUse)item));
+                ret.add(processAttribute((XSAttributeUse)item, depth));
             }
         }
         return ret;
@@ -196,38 +206,38 @@ public class XSDParser  {
 
         String qname = "{" + item.getNamespace() + "}" + item.getName();
         if(item.getName()==null)
-            qname = "{" + item.getNamespace() + "}" + elStack.peek();        
+            qname = "{" + item.getNamespace() + "}" + elStack.peek();
         boolean recursive = ctStack.contains(qname);
         ctStack.push(qname);
-    
+
         try {
             if (depth<0)
-            	return ret;
-            //if recursive use return here
-            if(recursive){
-                ret.setIsRecursive(true);
                 return ret;
-            } 
-        	List<ElementMeta> childs = ret.getChildElement();
+            //if recursive use return here
+            //if(recursive){
+            //    ret.setIsRecursive(true);
+            //    return ret;
+            //}
+            List<ElementMeta> childs = ret.getChildElement();
             List<AttributeMeta> attrs = ret.getAttrData();
             List<BaseMeta> l = processList(item.getAttributeUses(), depth);
             for (BaseMeta b:l) {
-                if (b instanceof AttributeMeta) 
+                if (b instanceof AttributeMeta)
                     attrs.add((AttributeMeta)b);
                 else
-                	throw new Exception ("Invalid attributue use:"+b.getName());
+                    throw new Exception ("Invalid attributue use:"+b.getName());
             }
 
             l = processParticle(item.getParticle(), depth-1);
-            if(l==null) return 
-            	ret;
+            if(l==null) return
+                ret;
             for (BaseMeta b:l) {
-            	if (b instanceof ElementMeta) 
+                if (b instanceof ElementMeta)
                     childs.add((ElementMeta)b);
-            	else
-            		throw new Exception ("Invalid particle term:"+b.getName());
+                else
+                    throw new Exception ("Invalid particle term:"+b.getName());
             }
-
+            /*
             if (item.getNamespace()!=null&&
             		item.getNamespace().toLowerCase().endsWith("hl7-org:v3"))
             {
@@ -250,10 +260,11 @@ public class XSDParser  {
                     return ret;
                 }
             }
+            */
         }
         catch(Exception ee)
         {
-        	ee.printStackTrace();
+            ee.printStackTrace();
         }
         finally {
             ctStack.pop();
@@ -274,7 +285,7 @@ public class XSDParser  {
             return null;
         }
         if (item.getTerm()==null)
-        	System.out.println("XSDParser.processParticle()...null particle:"+item.getName());
+            System.out.println("XSDParser.processParticle()...null particle:"+item.getName());
         List<BaseMeta> l = processTerm(item.getTerm(), depth);
         if (l==null||l.isEmpty())
             return l;
@@ -334,7 +345,7 @@ public class XSDParser  {
                 ret.add(choiceMeta);
             }
             else
-            	ret.addAll(elmntList);
+                ret.addAll(elmntList);
         }else if(item instanceof XSElementDeclaration) {
             if(debug) System.out.println(" *ELEMENT*");
             ret.add(processElement((XSElementDeclaration)item, depth));
@@ -356,15 +367,16 @@ public class XSDParser  {
         try{
             XSTypeDefinition type = item.getTypeDefinition();
             if(type instanceof XSComplexTypeDefinition){
+                //System.out.println("CCCX processElement() depth = " + depth);
                 ret = processComplexType((XSComplexTypeDefinition)type, depth);
-            } 
-            
+            }
+
             if (ret==null)
-            	ret = new ElementMeta();
+                ret = new ElementMeta();
             //if the ElementMeta being set "name and nameSpace" by its
             //type definition, set it back
-           	ret.setNameSpace(item.getNamespace());
-           	ret.setName(item.getName());
+               ret.setNameSpace(item.getNamespace());
+               ret.setName(item.getName());
 
         }finally{
             elStack.pop();
@@ -380,7 +392,7 @@ public class XSDParser  {
      * @param item
      * @return
      */
-    private AttributeMeta processAttribute(XSAttributeUse item){
+    private AttributeMeta processAttribute(XSAttributeUse item, int depth){
         if(item == null){
             if(debug) System.out.println("Attribute {null}");
             return null;
@@ -402,13 +414,39 @@ public class XSDParser  {
             ret.setFixedValue(item.getConstraintValue());
         }
 
-        if(debug) System.out.print("AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
+        if(debug) System.out.print(" " + getPrefix(depth, false) + "AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
                 +(item.getRequired()?",":"Required,")
                 +(item.getConstraintType()==XSConstants.VC_NONE?"":((item.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+item.getConstraintValue())));
         if(debug) System.out.println(", Attribute{" + attr.getNamespace() + "}" + attr.getName()+"["+attr.getClass()+"]"
                 +("{"+attr.getTypeDefinition().getNamespace()+"}"+attr.getTypeDefinition().getName())
                 +(attr.getConstraintType()==XSConstants.VC_NONE?"":((attr.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+attr.getConstraintValue())));
         return ret;
+    }
+
+
+    public DefaultMutableTreeNode expandNodeWithLazyLoad(ElementMeta meta, int newNodeType, Object rootObject)
+    {
+        expandElementMetaWithLazyLoad(meta);
+        return (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(meta, rootObject);
+    }
+
+    public void expandElementMetaWithLazyLoad(ElementMeta meta)
+    {
+
+        ElementMeta newMeta=this.getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
+
+        if (newMeta != null)
+        {
+            System.out.println("Deep Loading XSDParser.expandElementMetaWithLazyLoad()...extended node:"+meta);
+            while(meta.getAttrData().size() > 0) meta.getAttrData().remove(0);
+            meta.getAttrData().addAll(0, newMeta.getAttrData());
+
+            while(meta.getChildElement().size() > 0) meta.getChildElement().remove(0);
+            meta.getChildElement().addAll(0, newMeta.getChildElement());
+        }
+        else System.out.println("Result is null MappingBaseTree.deepLoadElementMeta()...deep loading:"+meta);
+
+
     }
 }
 
