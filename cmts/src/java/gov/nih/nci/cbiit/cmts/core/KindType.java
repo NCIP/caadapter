@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;enumeration value="abstract"/>
  *     &lt;enumeration value="clone"/>
  *     &lt;enumeration value="recursion"/>
+ *     &lt;enumeration value="concrete"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -52,7 +53,10 @@ public enum KindType {
     @XmlEnumValue("clone")
     CLONE("clone"),
     @XmlEnumValue("recursion")
-    RECURSION("recursion");
+    RECURSION("recursion"),
+    @XmlEnumValue("concrete")
+    CONCRETE("concrete");
+
     private final String value;
 
     KindType(String v) {

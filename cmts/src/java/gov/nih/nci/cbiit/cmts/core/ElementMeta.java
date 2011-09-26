@@ -44,6 +44,7 @@ import org.apache.commons.beanutils.BeanUtils;
  *       &lt;attribute name="isRecursive" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="isFixed" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="defaultValue" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="concreteDataType" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="minOccurs" type="{http://www.w3.org/2001/XMLSchema}integer" />
  *       &lt;attribute name="maxOccurs" type="{http://www.w3.org/2001/XMLSchema}integer" />
  *     &lt;/extension>
@@ -80,6 +81,10 @@ public class ElementMeta
     protected BigInteger minOccurs;
     @XmlAttribute
     protected BigInteger multiplicityIndex;
+    @XmlAttribute
+    protected String concreteDataType;
+    @XmlAttribute
+    protected String defaultValue;
 
     /**
      * Gets the value of the attrData property.
@@ -166,16 +171,28 @@ public class ElementMeta
 
     /**
      * Gets the value of the multiplicityIndex property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getMultiplicityIndex() {
         return multiplicityIndex;
     }
-    
+
+    /**
+     * Gets the value of the concrete data type property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getConcreteDataType() {
+        return concreteDataType;
+    }
+
     @Override
     public String getName()
     {
@@ -196,8 +213,10 @@ public class ElementMeta
 		propList.add(new PropertyDescriptor("Multiplicity Index", beanClass, "getMultiplicityIndex", null));
 		propList.add(new PropertyDescriptor("Recursive", beanClass, "isIsRecursive", null));
 		propList.add(new PropertyDescriptor("Simple Type", beanClass, "isIsSimple", null));
-			
-		PropertiesResult result = super.getPropertyDescriptors();
+
+        if (concreteDataType != null) propList.add(new PropertyDescriptor("Concrete Data Type", beanClass, "getConcreteDataType", null));
+
+        PropertiesResult result = super.getPropertyDescriptors();
 		result.addPropertyDescriptors(this, propList);
 		return result;
 	}
@@ -272,7 +291,7 @@ public class ElementMeta
     /**
      * Sets the value of the isChosen property.
      * 
-     * @param value
+     * @param chosen
      *     allowed object is
      *     {@link Boolean }
      *     
@@ -355,7 +374,19 @@ public class ElementMeta
         this.minOccurs = value;
     }
 
-	/**
+    /**
+     * Sets the value of the concrete data type for v3.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setConcreteDataType(String value) {
+        this.concreteDataType = value;
+    }
+
+    /**
      * Sets the value of the multiplicityIndex property.
      * 
      * @param value

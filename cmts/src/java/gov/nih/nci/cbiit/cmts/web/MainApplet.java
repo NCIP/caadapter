@@ -5,6 +5,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.main.MainMenuBar;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
+import gov.nih.nci.cbiit.cmts.ui.main.BannerMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MainToolBarHandler;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 
@@ -109,7 +110,8 @@ public MainApplet() throws HeadlessException
 //        Image bannerImage = DefaultSettings.getImage("NCICBBanner.jpg");
 //        ImageIcon imageIcon = new ImageIcon(bannerImage);
         toolBarPanel = new JPanel(new BorderLayout());
-        JPanel northUpperPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        //JPanel northUpperPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        JPanel northUpperPanel = new BannerMainPanel(this);
 //        JLabel label = new JLabel(imageIcon);
 //        northUpperPanel.add(label);
         toolBarPanel.add(northUpperPanel, BorderLayout.NORTH);

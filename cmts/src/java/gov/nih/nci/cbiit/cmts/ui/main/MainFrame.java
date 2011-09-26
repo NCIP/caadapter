@@ -138,12 +138,13 @@ public class MainFrame extends JFrame
 	}
 
 	private JPanel constructNorthPanel() {
-		Image bannerImage = DefaultSettings.getImage("NCICBBanner.jpg");
-		ImageIcon imageIcon = new ImageIcon(bannerImage);
+		//Image bannerImage = DefaultSettings.getImage("NCICBBanner.jpg");
+		//ImageIcon imageIcon = new ImageIcon(bannerImage);
 		toolBarPanel = new JPanel(new BorderLayout());
-		JPanel northUpperPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-		JLabel label = new JLabel(imageIcon);
-		northUpperPanel.add(label);
+		//JPanel northUpperPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        JPanel northUpperPanel = new BannerMainPanel(this);
+        //JLabel label = new JLabel(imageIcon);
+		//northUpperPanel.add(label);
 		toolBarPanel.add(northUpperPanel, BorderLayout.NORTH);
 		currentToolBarPanel = constructToolbarPanel();
 		toolBarPanel.add(currentToolBarPanel, BorderLayout.SOUTH);
@@ -281,7 +282,7 @@ public class MainFrame extends JFrame
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void mainb(String[] args) {
 		// TODO Auto-generated method stub
 		XSDParser p = new XSDParser();
 		String dirPath=args[0];
@@ -292,7 +293,7 @@ public class MainFrame extends JFrame
 		System.out.println("HL7V3XSDCheck.main()...metacount:"+BaseMeta.metaCount);
 	}
 	
-	public static void main1(String[] args)
+	public static void main(String[] args)
 	{
 		//Preferences.loadDefaults();
 

@@ -8,7 +8,9 @@ import gov.nih.nci.cbiit.cmts.core.TagType;
 import gov.nih.nci.cbiit.cmts.mapping.MappingAnnotationUtil;
 import gov.nih.nci.cbiit.cmts.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
+import gov.nih.nci.cbiit.cmts.ui.tree.MappingBaseTree;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -35,16 +37,19 @@ public class ElementAnnotationAction extends AbstractContextAction {
     public final static int ACTIVATE_ACTION=6;
 	public final static int DEACTIVATE_ACTION=7;
 
+    public final static int CONCRETE_ACTION=8;
+
     private static final long serialVersionUID = -8974807457591325892L;
 	private int annotationType;
 	private Mapping mappingData;
-	private JTree treeAnnotate;
+	private MappingBaseTree treeAnnotate;
+    private MappingMainPanel parentPanel;
 
-	public JTree getTreeAnnotate() {
+    public JTree getTreeAnnotate() {
 		return treeAnnotate;
 	}
 
-	public void setTreeAnnotate(JTree treeAnnotate) {
+	public void setTreeAnnotate(MappingBaseTree treeAnnotate) {
 		this.treeAnnotate = treeAnnotate;
 	}
 
@@ -163,12 +168,24 @@ public class ElementAnnotationAction extends AbstractContextAction {
 				}
 			}
 			annotateElement.setIsChosen(true);
-			DefaultMutableTreeNode newChoiceNode = (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(annotateElement, rootComponent);
-			for (int childIndx=newChoiceNode.getChildCount();childIndx>0;childIndx--)
-			{
-				treeNode.insert((DefaultMutableTreeNode)newChoiceNode.getChildAt(childIndx-1),0);
-			}
-			treeModel.reload(treeNode);
+
+            DefaultMutableTreeNode newChoiceNode = null;
+            if (annotateElement.getChildElement().size() > 0)
+            {
+                //System.out.println("CCCX CVCV annotateElement.getChildElement().size() > 0");
+                newChoiceNode = (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(annotateElement, rootComponent);
+            }
+            else
+            {
+                //System.out.println("CCCX CECE annotateElement.getChildElement().size() = 0");
+                newChoiceNode = treeAnnotate.getSchemaParser().expandNodeWithLazyLoad(annotateElement, newNodeType, rootComponent);
+            }
+            for (int childIndx=newChoiceNode.getChildCount();childIndx>0;childIndx--)
+            {
+                treeNode.insert((DefaultMutableTreeNode)newChoiceNode.getChildAt(childIndx-1),0);
+            }
+
+            treeModel.reload(treeNode);
 			MappingAnnotationUtil.addTag(mappingData, compType, KindType.CHOICE, nodePath, "true");
 			break;
 			
@@ -223,7 +240,10 @@ public class ElementAnnotationAction extends AbstractContextAction {
 			treeModel.reload(treeNode);
 			MappingAnnotationUtil.removeTag(mappingData, compType, KindType.RECURSION, nodePath, "true");
 			break;
-		}
+        case CONCRETE_ACTION:
+            //todo
+            break;
+        }
 		return true;
 	}
 
@@ -246,4 +266,8 @@ public class ElementAnnotationAction extends AbstractContextAction {
 	public void setMappingData(Mapping mappingData) {
 		this.mappingData = mappingData;
 	}
+    public void setParentPanel(MappingMainPanel panel)
+    {
+        this.parentPanel = panel;
+    }
 }

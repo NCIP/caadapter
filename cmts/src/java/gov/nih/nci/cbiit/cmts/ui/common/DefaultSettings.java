@@ -361,13 +361,29 @@ public class DefaultSettings
      */
     public static final Image getImage(String imageFileName)
     {
+        Image rtnImg=null;
+        try
+        {
+            File file = new File(imageFileName);
+            if ((file.exists())&&(file.isFile()))
+            {
+                BufferedImage bfImage=ImageIO.read(file);
+                rtnImg=(Image)bfImage;
+            }
+        }
+        catch(IOException ie)
+        {
+            rtnImg=null;
+        }
+        if (rtnImg != null) return rtnImg;
+
         String imgFilePath="images/";
         imgFilePath = imgFilePath + imageFileName;
         //Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
 
 //		URL imgUrl=Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
 //		return Toolkit.getDefaultToolkit().createImage(imgUrl);
-        Image rtnImg=null;
+
         //URL imgUrl=ClassLoader.getSystemResource(imgFilePath);
         try {
 //            URL url = DefaultSettings.class.getClassLoader().getResource(imgFilePath);

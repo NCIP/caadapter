@@ -66,48 +66,109 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 
 	public void treeExpanded(TreeExpansionEvent event)
 	{
-
-		TreePath slctPath=event.getPath();
+        TreePath slctPath=event.getPath();
 		DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) slctPath.getLastPathComponent();
-		for (int chldCnt=treeNode.getChildCount();chldCnt>0;chldCnt--)
+        ElementMetaLoader.MyTreeObject treeSelection =(ElementMetaLoader.MyTreeObject)treeNode.getUserObject();
+	    BaseMeta selectedBaseMeta=(BaseMeta)treeSelection.getUserObject();
+        ElementMeta selectedMeta = null;
+
+		gov.nih.nci.cbiit.cmts.core.Component rootComponent=(gov.nih.nci.cbiit.cmts.core.Component) treeSelection.getRootObject();
+
+        if (selectedBaseMeta instanceof ElementMeta) selectedMeta = (ElementMeta) selectedBaseMeta;
+        else
+        {
+            System.out.println("Error treeExpanded(TreeExpansionEvent event) : not element Meta");
+            return;
+        }
+
+        boolean isChanged = false;
+        for (int chldCnt=treeNode.getChildCount();chldCnt>0;chldCnt--)
 		{
 			DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)treeNode.getChildAt(chldCnt-1);
-			if (childNode.getChildCount()>0)
-				continue;
+			if (childNode.getChildCount() > 0) continue;
+
 			ElementMetaLoader.MyTreeObject chldSelection =(ElementMetaLoader.MyTreeObject)childNode.getUserObject();		
 			BaseMeta chldMeta=(BaseMeta)chldSelection.getUserObject();
-			if (chldMeta instanceof ElementMeta)
+
+            if (chldMeta instanceof ElementMeta)
 			{
-				ElementMeta chldElmtMeta=(ElementMeta)chldMeta;
-				if (chldElmtMeta.isIsSimple()||chldElmtMeta.isIsRecursive())
-					continue;
-				DefaultMutableTreeNode newChildNode=deepLoadElementMeta(childNode, chldElmtMeta);
-				treeNode.remove(chldCnt-1);
-				treeNode.insert(newChildNode, chldCnt-1);
-			}
+
+                ElementMeta chldElmtMeta=(ElementMeta)chldMeta;
+                if ((selectedMeta.getName().indexOf("<choice") >= 0)&&(!chldElmtMeta.isIsChosen())) continue;
+                DefaultMutableTreeNode newChildNode = null;
+                boolean cTag = false;
+                if ((chldElmtMeta.getChildElement() != null)&&(chldElmtMeta.getChildElement().size() > 0))
+                {
+                    cTag = true;
+                    //System.out.println("CCCX Child Already Exist("+selectedMeta.getName()+") : " + chldElmtMeta.getName());
+                    int newNodeType=ElementMetaLoader.SOURCE_MODE;
+                    if (this instanceof MappingTargetTree)
+                        newNodeType=ElementMetaLoader.TARGET_MODE;
+                    newChildNode = (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(chldElmtMeta, rootComponent);
+                }
+                else
+                {
+                    cTag = true;
+                    if (chldElmtMeta.isIsSimple()||chldElmtMeta.isIsRecursive())
+                            continue;
+                    //System.out.println("CCCX No Child("+selectedMeta.getName()+") : " + chldElmtMeta.getName() + ", num of children:" + childNode.getChildCount());
+                    newChildNode = deepLoadElementMeta(chldElmtMeta, rootComponent);
+                }
+
+                if (cTag)
+                {
+                    isChanged = true;
+                    treeNode.remove(chldCnt-1);
+                    treeNode.insert(newChildNode, chldCnt-1);
+                }
+            }
 		}
-		((DefaultTreeModel)getModel()).reload(treeNode);
-		((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();//.repaint();
-	}
+        if (isChanged)
+        {
+            ((DefaultTreeModel)getModel()).reload(treeNode);
+		    ((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();//.repaint();
+        }
+    }
 	/**
 	 * Reset the ElementMeta and create new treeNode
-	 * @param childNode
 	 * @param meta
-	 * @return
+	 * @return DefaultMutableTreeNode
 	 */
-	private DefaultMutableTreeNode deepLoadElementMeta(DefaultMutableTreeNode childNode, ElementMeta meta)
+	private DefaultMutableTreeNode deepLoadElementMeta(ElementMeta meta, Object rootComponent)
 	{
 		System.out.println("MappingBaseTree.deepLoadElementMeta()...deep loading:"+meta);
 		int newNodeType=ElementMetaLoader.SOURCE_MODE;
 		if (this instanceof MappingTargetTree)
 			newNodeType=ElementMetaLoader.TARGET_MODE;
-		ElementMeta newMeta=getSchemaParser().getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
+
+        return getSchemaParser().expandNodeWithLazyLoad(meta, newNodeType, rootComponent);
+        /*
+        ElementMeta newMeta=getSchemaParser().getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
 		//set the elementMeta with name of XML element rather its data type
 		if (newMeta==null&&meta.getName().equals("<choice>"))
 			newMeta=meta;
 		newMeta.setName(meta.getName());
 		newMeta.setIsChoice(meta.isIsChoice());
-		return (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(newMeta, null);		
+
+        int idx = -1;
+        for (int i=0;i<parentMeta.getChildElement().size();i++)
+        {
+            ElementMeta metaE = parentMeta.getChildElement().get(i);
+            if (metaE.getName().equals(newMeta.getName()))
+            {
+                idx = i;
+                break;
+            }
+        }
+        if (idx < 0) System.out.println("CCCX XX Not found this child : " + parentMeta.getName() + "=" + parentMeta.getChildElement().size() + ", inserted=" + newMeta.getName());
+        else
+        {
+            parentMeta.getChildElement().remove(idx);
+            parentMeta.getChildElement().add(idx, newMeta);
+            //System.out.println("CCCX YY Replaced this childern : " + parentMeta.getName() + "=" + parentMeta.getChildElement().get(idx) + ", inserted=" + newMeta.getName());
+        }
+        return (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(newMeta, null);
+        */
 	}
 	public void treeCollapsed(TreeExpansionEvent event)
 	{
