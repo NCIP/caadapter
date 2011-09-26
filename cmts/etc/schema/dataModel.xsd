@@ -36,7 +36,8 @@
 				<xsd:attribute name="isRecursive" type="xsd:boolean" />
 				<xsd:attribute name="isFixed" type="xsd:boolean" />
 				<xsd:attribute name="defaultValue" type="xsd:string" />
-				<xsd:attribute name="minOccurs" type="xsd:integer" />
+                <xsd:attribute name="concreteDataType" type="xsd:string" />
+                <xsd:attribute name="minOccurs" type="xsd:integer" />
 				<xsd:attribute name="maxOccurs" type="xsd:integer" />
 			</xsd:extension>
 		</xsd:complexContent>
@@ -56,7 +57,9 @@
 			<xsd:enumeration value="choice" />
 			<xsd:enumeration value="abstract" />
 			<xsd:enumeration value="clone" />
-		</xsd:restriction>
+            <xsd:enumeration value="recursion" />
+            <xsd:enumeration value="concrete" />
+        </xsd:restriction>
 	</xsd:simpleType>
 
 	<xsd:complexType name="functionData">
