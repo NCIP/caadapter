@@ -533,7 +533,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 			List<Component> l = components.getComponent();
 			for(Component c:l){
 				if(c.getType().equals(ComponentType.SOURCE))
-					node = new ElementMetaLoader(ElementMetaLoader.SOURCE_MODE).loadData(c);
+					node = (new ElementMetaLoader(ElementMetaLoader.SOURCE_MODE)).loadData(c);
 			}
 		}else{
 			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +

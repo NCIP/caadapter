@@ -19,7 +19,9 @@ public class ResourceUtils {
 
 	 public static String getRelativePath(String targetPath, String basePath, String pathSeparator) 
 	 {
-		 // Normalize the paths
+         if (targetPath.toLowerCase().startsWith("file:")) targetPath = targetPath.substring(6);
+         if (basePath.toLowerCase().startsWith("file:")) basePath = basePath.substring(6);
+         // Normalize the paths
 		 System.out.println("ResourceUtils.getRelativePath()..target:"+targetPath);
 		 System.out.println("ResourceUtils.getRelativePath()..base:"+basePath);
 		 String normalizedTargetPath = FilenameUtils.normalizeNoEndSeparator(targetPath);

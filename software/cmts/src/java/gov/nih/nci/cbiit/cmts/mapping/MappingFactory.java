@@ -9,10 +9,7 @@ package gov.nih.nci.cbiit.cmts.mapping;
 
 import java.io.File;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -51,13 +48,19 @@ public class MappingFactory
 {
 	public static XSDParser sourceParser;
 	public static XSDParser targetParser;
+    public static ElementMeta sourceHeadMeta;
+    public static ElementMeta targetHeadMeta;
+
     public static void loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
 		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
 		if(e==null) 
 			e = schemaParser.getElementMetaFromComplexType(rootNS, root, MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL);
 
-		if (m.getComponents()!=null)
+        //if (type==ComponentType.SOURCE) sourceHeadMeta = e;
+        //else targetHeadMeta = e;
+
+        if (m.getComponents()!=null)
 			for (Component mapComp:m.getComponents().getComponent())
 			{
 				if (mapComp.getRootElement()!=null
@@ -68,7 +71,9 @@ public class MappingFactory
 					mapComp.getRootElement().getChildElement().addAll(e.getChildElement());
 					mapComp.getRootElement().getAttrData().clear();
 					mapComp.getRootElement().getAttrData().addAll(e.getAttrData());
-					return;
+                    if (type==ComponentType.SOURCE) sourceHeadMeta = mapComp.getRootElement();
+                    else targetHeadMeta = mapComp.getRootElement();
+                    return;
 				}
 			}
 		Component endComp = new Component();
@@ -145,9 +150,15 @@ public class MappingFactory
 
                     XSDParser metaParser = new XSDParser();
                     if (mapComp.getType()==ComponentType.SOURCE)
-                    	sourceParser=metaParser;
+                    {
+                        //sourceHeadMeta = mapComp.getRootElement();
+                        sourceParser=metaParser;
+                    }
                     else
-                    	targetParser=metaParser;
+                    {
+                        //targetHeadMeta = mapComp.getRootElement();
+                        targetParser=metaParser;
+                    }
                     metaParser.loadSchema(new File(xsdLocation).toURI().toString(),null);
 //                    mapComp.setLocation(xsdLocation);
                     MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
@@ -204,17 +215,62 @@ public class MappingFactory
             }
         }
 
-		return  jaxbElmt.getValue();
+
+
+
+        if ((mapLoaded.getLinks().getLink() != null)&&(mapLoaded.getLinks().getLink().size() > 0))
+        {
+
+            for (LinkType link:mapLoaded.getLinks().getLink())
+            {
+                if ((link.getSource().getComponentid().equals("0"))||
+                    (link.getSource().getComponentid().equals("1")))
+                {
+                    String id = link.getSource().getId();
+                    //System.out.println("CCCX Source("+link.getSource().getComponentid()+") : id=" + id);
+                    BaseMeta meta = searchElementMeta(id);
+                    //if (meta == null) meta = searchElementMeta(id, ComponentType.TARGET);
+                }
+
+                if ((link.getTarget().getComponentid().equals("0"))||
+                    (link.getTarget().getComponentid().equals("1")))
+                {
+                    String id = link.getTarget().getId();
+                    //System.out.println("CCCX Target("+link.getTarget().getComponentid()+") : id=" + id);
+                    BaseMeta meta = searchElementMeta(id);
+                    //if (meta == null) meta = searchElementMeta(id, ComponentType.SOURCE);
+                }
+
+            }
+        }
+
+
+
+
+        return  jaxbElmt.getValue();
 	}
 
 	private static void processAnnotationTag(TagType tag, Hashtable <String, BaseMeta>  metaHash, List<TagType> tagList)
 	{
+        //v System.out.println("CCCX processAnnotationTag: " + tag.getKey());
         if ((metaHash == null)||(metaHash.size() ==0)) return;
         String parentKey=tag.getKey().substring(0, tag.getKey().lastIndexOf("/"));
 		ElementMeta elmntMeta=(ElementMeta)metaHash.get(tag.getKey());
-        if (elmntMeta == null) System.out.println("*UUU Not found element meta: " + tag.getKey());
+        if (elmntMeta == null)
+        {
+            BaseMeta meta = searchElementMeta(tag.getKey(), tag.getComponentType());
+            if (meta == null) System.out.println("*UUU1 Not found element meta: " + tag.getKey());
+            else if (!(meta instanceof ElementMeta)) System.out.println("*UUU1 This is Not an element meta: " + tag.getKey());
+            else elmntMeta = (ElementMeta)meta;
+        }
         ElementMeta parentMeta=(ElementMeta)metaHash.get(parentKey);
-        if (parentMeta == null) System.out.println("*UUU Not found parent meta: " + parentKey);
+        if (parentMeta == null)
+        {
+            BaseMeta meta = searchElementMeta(parentKey, tag.getComponentType());
+            if (meta == null) System.out.println("*UUU2 Not found parent meta: " + parentKey);
+            else if (!(meta instanceof ElementMeta)) System.out.println("*UUU2 This is Not an element meta: " + tag.getKey());
+            else parentMeta = (ElementMeta)meta;
+        }
         if (tag.getKind().value().equals(KindType.CLONE.value()))
 		{
 			ElementMeta cloneElement=(ElementMeta)elmntMeta.clone();
@@ -236,9 +292,14 @@ public class MappingFactory
 		}
 		else if (tag.getKind().value().equals(KindType.CHOICE.value()))
 		{
-//			System.out.println("MappingFactory.processAnnotationTag()..choosen element:"+tag.getKey());
+			System.out.println("MappingFactory.processAnnotationTag()..choosen element:"+tag.getKey());
 			elmntMeta.setIsChosen(true);
-		}
+            if (elmntMeta.getChildElement().size() == 0)
+            {
+                if (tag.getComponentType()==ComponentType.SOURCE) sourceParser.expandElementMetaWithLazyLoad(elmntMeta);
+                else targetParser.expandElementMetaWithLazyLoad(elmntMeta);
+            }
+        }
 		else if (tag.getKind().value().equals(KindType.RECURSION.value()))
 		{
 
@@ -416,7 +477,122 @@ public class MappingFactory
 				mapComp.setLocation(xsdLocation); 
 			}
 		}
-	}
+    }
+    private static BaseMeta searchElementMeta(String path)
+    {
+       return searchElementMeta(path, null);
+    }
+    private static BaseMeta searchElementMeta(String path, ComponentType type)
+    {
+        while(path.startsWith("/")) path = path.substring(1);
+        ElementMeta elem = null;
+        if (type == null)
+        {
+            if (path.startsWith(sourceHeadMeta.getName())) type = ComponentType.SOURCE;
+            else if (path.startsWith(targetHeadMeta.getName())) type = ComponentType.TARGET;
+            else
+            {
+                System.out.println("This id is not identified. => " + path);
+                return null;
+            }
+        }
+
+        if (type==ComponentType.SOURCE) elem = sourceHeadMeta;
+        else elem = targetHeadMeta;
+
+
+        StringTokenizer st = new StringTokenizer(path, "/");
+        int n = 0;
+        //ElementMeta parent = null;
+        String attrID = null;
+        BaseMeta ret = null;
+        while(st.hasMoreTokens())
+        {
+            String token = st.nextToken();
+            if (token == null) token = "";
+            else token = token.trim();
+            if (token.equals("")) continue;
+
+            if (attrID != null)
+            {
+                System.out.println("Invalid attribute item(" + type.value() + ") => " + attrID);
+                return null;
+            }
+            if (token.startsWith("@")) attrID = token;
+
+            if (n == 0)
+            {
+                if (token.equals(elem.getName()))
+                {
+                    n++;
+                    if ((elem.getChildElement() == null)||(elem.getChildElement().size() == 0))
+                    {
+                        System.out.println("Head Node doesn't have any child element(" + type.value() + ") => " + token);
+                        return null;
+                    }
+                    else continue;
+                }
+                else
+                {
+                    System.out.println("Head Node not found searchElementMeta(" + type.value() + ") => " + token + " <> " + elem.getName());
+                    return null;
+                }
+            }
+
+            if ((elem.getChildElement() == null)||(elem.getChildElement().size() == 0))
+            {
+                //XSDParser parser = null;
+                if (type==ComponentType.SOURCE) sourceParser.expandElementMetaWithLazyLoad(elem);
+                else targetParser.expandElementMetaWithLazyLoad(elem);
+
+                //parser.expandElementMetaWithLazyLoad(elem);
+                /*
+                ElementMeta eleT = parser.expandElementMetaWithLazyLoad(parent, elem);
+                if ((eleT == null)||(eleT.getChildElement() == null)||(eleT.getChildElement().size() == 0))
+                {
+                    System.out.println("Element expanding failure searchElementMeta(" + type.value() + ") => " + token + " at " + parent.getName());
+                    return null;
+                }
+                else elem = eleT;
+                */
+            }
+            BaseMeta tEle = null;
+            if (token.startsWith("@"))
+            {
+                for (int i=0;i<elem.getAttrData().size();i++)
+                {
+                    AttributeMeta meta = elem.getAttrData().get(i);
+                    if (meta.getName().equals(token.substring(1)))
+                    {
+                        tEle = meta;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i=0;i<elem.getChildElement().size();i++)
+                {
+                    ElementMeta meta = elem.getChildElement().get(i);
+                    if (meta.getName().equals(token))
+                    {
+                        tEle = meta;
+                        break;
+                    }
+                }
+            }
+            if (tEle == null)
+            {
+                System.out.println("Node not found node searchElementMeta(" + type.value() + ") => " + token + " at " + path);
+                return null;
+            }
+            //parent = elem;
+            if (tEle instanceof ElementMeta) elem = (ElementMeta)tEle;
+            ret = tEle;
+            n++;
+        }
+        return ret;
+    }
 }
 
 /**

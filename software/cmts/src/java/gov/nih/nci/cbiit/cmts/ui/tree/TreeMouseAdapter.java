@@ -20,16 +20,25 @@ import javax.swing.tree.TreePath;
 
 public class TreeMouseAdapter extends MouseAdapter {
 
-	
-	/**
+//    MappingMainPanel parentPanel;
+//    MappingBaseTree baseTree;
+//    public TreeMouseAdapter(MappingMainPanel panel, MappingBaseTree tree)
+//    {
+//        super();
+//        parentPanel = panel;
+//        baseTree = tree;
+//    }
+
+    /**
 	 * Invoked when the mouse has been clicked on a component.
 	 */
 	public void mousePressed(MouseEvent e)
 	{
 		if (SwingUtilities.isRightMouseButton(e))
 		{         	
-			JTree slctTree=(JTree)e.getSource();
-			TreePath slctedPath=slctTree.getSelectionPath();
+			//JTree slctTree=(JTree)e.getSource();
+            MappingBaseTree slctTree=(MappingBaseTree)e.getSource();
+            TreePath slctedPath=slctTree.getSelectionPath();
 			if (slctedPath==null)
 				return;
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) slctedPath.getLastPathComponent();
@@ -42,7 +51,7 @@ public class TreeMouseAdapter extends MouseAdapter {
 			}
 			
 			// Create PopupMenu for the Cell
-			JPopupMenu menu = createTreePopupMenu(treeNode.getUserObject(), slctTree, ((MappingMainPanel)parentC).getGraphController().retrieveMappingData(false));
+			JPopupMenu menu = createTreePopupMenu(treeNode, slctTree, (MappingMainPanel)parentC);
 						
 			menu.show(e.getComponent(), e.getX(), e.getY());
 		}
@@ -52,9 +61,11 @@ public class TreeMouseAdapter extends MouseAdapter {
 	 * Set popup menu for the nodes of source tree 
 	 * @return sourceNodePopup
 	 */
-	private JPopupMenu createTreePopupMenu(Object obj, JTree tree, Mapping mappingData)
+	private JPopupMenu createTreePopupMenu(DefaultMutableTreeNode treeNode, MappingBaseTree tree, MappingMainPanel parentPanel)
 	{
-		ElementMetaLoader.MyTreeObject treeNodeObj=(ElementMetaLoader.MyTreeObject)obj;
+        Mapping mappingData = parentPanel.getGraphController().retrieveMappingData(false);
+        Object obj = treeNode.getUserObject();
+        ElementMetaLoader.MyTreeObject treeNodeObj=(ElementMetaLoader.MyTreeObject)obj;
 		if (treeNodeObj.getUserObject() instanceof ElementMeta)
 		{
 			ElementMeta elementMeta=(ElementMeta)treeNodeObj.getUserObject();
@@ -64,8 +75,8 @@ public class TreeMouseAdapter extends MouseAdapter {
 			ElementAnnotationAction choiceSelectAction=new ElementAnnotationAction("Select Choice", ElementAnnotationAction.CHOICE_SELECT_ACTION);
 			ElementAnnotationAction choiceDeselectAction=new ElementAnnotationAction("De-select Choice", ElementAnnotationAction.CHOICE_DESELECT_ACTION);
 
-			ElementAnnotationAction recursionEnablAction=new ElementAnnotationAction("Enable Recursion", ElementAnnotationAction.RECURSION_ENABLE_ACTION);
-			ElementAnnotationAction recursionDisablAction=new ElementAnnotationAction("Disable Recursion", ElementAnnotationAction.RECURSION_DISABLE_ACTION);
+			//ElementAnnotationAction recursionEnablAction=new ElementAnnotationAction("Enable Recursion", ElementAnnotationAction.RECURSION_ENABLE_ACTION);
+			//ElementAnnotationAction recursionDisablAction=new ElementAnnotationAction("Disable Recursion", ElementAnnotationAction.RECURSION_DISABLE_ACTION);
 
 	        popupMenu.add(new JMenuItem(cloneAddAction));
 	        popupMenu.add(new JMenuItem(cloneRemoveAction));
@@ -75,27 +86,27 @@ public class TreeMouseAdapter extends MouseAdapter {
 	        popupMenu.add(new JMenuItem(choiceDeselectAction));
 	        
 	        popupMenu.addSeparator();
-	        popupMenu.add(new JMenuItem(recursionEnablAction));
-	        popupMenu.add(new JMenuItem(recursionDisablAction));
+	        //popupMenu.add(new JMenuItem(recursionEnablAction));
+	        //popupMenu.add(new JMenuItem(recursionDisablAction));
 	        
 	        if (elementMeta.getMultiplicityIndex()==null
 	        		||elementMeta.getMultiplicityIndex().intValue()==0)
 	        {
 		        if (elementMeta.getMaxOccurs()!=null
 		        		&&elementMeta.getMaxOccurs().intValue()==-1)
-		        	enableMenuAction(cloneAddAction, tree,mappingData);
+		        	enableMenuAction(cloneAddAction, tree,mappingData, parentPanel);
 	        }
 	        else
-	        	enableMenuAction(cloneRemoveAction, tree,mappingData);
+	        	enableMenuAction(cloneRemoveAction, tree,mappingData, parentPanel);
 	        
 	        if (elementMeta.isIsChoice())
 	        {
 		        if (elementMeta.isIsChosen())
-		        	enableMenuAction(choiceDeselectAction, tree,mappingData);
+		        	enableMenuAction(choiceDeselectAction, tree,mappingData, parentPanel);
 		        else
-		        	enableMenuAction(choiceSelectAction, tree,mappingData);
+		        	enableMenuAction(choiceSelectAction, tree,mappingData, parentPanel);
 	        }
-	        
+	        /*
 	        if (elementMeta.isIsRecursive())
 	        {
 		        if (elementMeta.isIsEnabled())
@@ -103,15 +114,16 @@ public class TreeMouseAdapter extends MouseAdapter {
 		        else
 		        	enableMenuAction(recursionEnablAction, tree,mappingData);
 	        }
-	        
+	        */
 	        return popupMenu;
 		}
 		return null;
 	}
-	private void enableMenuAction(ElementAnnotationAction action, JTree tree, Mapping mappingData )
+	private void enableMenuAction(ElementAnnotationAction action, MappingBaseTree tree, Mapping mappingData, MappingMainPanel parentPanel)
 	{
 		action.setEnabled(true);
 		action.setTreeAnnotate(tree);
 		action.setMappingData(mappingData);
-	}
+        action.setParentPanel(parentPanel);
+    }
 }
