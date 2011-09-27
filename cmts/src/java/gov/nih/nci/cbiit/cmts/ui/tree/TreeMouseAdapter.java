@@ -75,8 +75,8 @@ public class TreeMouseAdapter extends MouseAdapter {
 			ElementAnnotationAction choiceSelectAction=new ElementAnnotationAction("Select Choice", ElementAnnotationAction.CHOICE_SELECT_ACTION);
 			ElementAnnotationAction choiceDeselectAction=new ElementAnnotationAction("De-select Choice", ElementAnnotationAction.CHOICE_DESELECT_ACTION);
 
-			//ElementAnnotationAction recursionEnablAction=new ElementAnnotationAction("Enable Recursion", ElementAnnotationAction.RECURSION_ENABLE_ACTION);
-			//ElementAnnotationAction recursionDisablAction=new ElementAnnotationAction("Disable Recursion", ElementAnnotationAction.RECURSION_DISABLE_ACTION);
+			ElementAnnotationAction recursionEnablAction=new ElementAnnotationAction("Enable Recursion", ElementAnnotationAction.RECURSION_ENABLE_ACTION);
+			ElementAnnotationAction recursionDisablAction=new ElementAnnotationAction("Disable Recursion", ElementAnnotationAction.RECURSION_DISABLE_ACTION);
 
 	        popupMenu.add(new JMenuItem(cloneAddAction));
 	        popupMenu.add(new JMenuItem(cloneRemoveAction));
@@ -86,8 +86,8 @@ public class TreeMouseAdapter extends MouseAdapter {
 	        popupMenu.add(new JMenuItem(choiceDeselectAction));
 	        
 	        popupMenu.addSeparator();
-	        //popupMenu.add(new JMenuItem(recursionEnablAction));
-	        //popupMenu.add(new JMenuItem(recursionDisablAction));
+	        popupMenu.add(new JMenuItem(recursionEnablAction));
+	        popupMenu.add(new JMenuItem(recursionDisablAction));
 	        
 	        if (elementMeta.getMultiplicityIndex()==null
 	        		||elementMeta.getMultiplicityIndex().intValue()==0)
@@ -106,15 +106,15 @@ public class TreeMouseAdapter extends MouseAdapter {
 		        else
 		        	enableMenuAction(choiceSelectAction, tree,mappingData, parentPanel);
 	        }
-	        /*
+
 	        if (elementMeta.isIsRecursive())
 	        {
 		        if (elementMeta.isIsEnabled())
-		        	enableMenuAction(recursionDisablAction, tree,mappingData);
+		        	enableMenuAction(recursionDisablAction, tree,mappingData, parentPanel);
 		        else
-		        	enableMenuAction(recursionEnablAction, tree,mappingData);
+		        	enableMenuAction(recursionEnablAction, tree,mappingData, parentPanel);
 	        }
-	        */
+
 	        return popupMenu;
 		}
 		return null;

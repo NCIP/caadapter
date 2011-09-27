@@ -229,10 +229,10 @@ public class XSDParser  {
             if (depth<0)
                 return ret;
             //if recursive use return here
-            //if(recursive){
-            //    ret.setIsRecursive(true);
-            //    return ret;
-            //}
+            if(recursive){
+                ret.setIsRecursive(true);
+                return ret;
+            }
             List<ElementMeta> childs = ret.getChildElement();
             List<AttributeMeta> attrs = ret.getAttrData();
             List<BaseMeta> l = processList(item.getAttributeUses(), depth);
