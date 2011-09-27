@@ -54,7 +54,7 @@ public class MappingFactory
     public static void loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
 		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
-		if(e==null) 
+		if(e==null)
 			e = schemaParser.getElementMetaFromComplexType(rootNS, root, MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL);
 
         //if (type==ComponentType.SOURCE) sourceHeadMeta = e;
@@ -85,9 +85,9 @@ public class MappingFactory
 		endComp.setType(type);
 		m.getComponents().getComponent().add(endComp);
 	}
-	
+
 	private static String getNewComponentId(Mapping m){
-		if(m.getComponents() == null) 
+		if(m.getComponents() == null)
 			m.setComponents(new Components());
 		int num = 0;
 		for(Component c:m.getComponents().getComponent()){
@@ -95,7 +95,7 @@ public class MappingFactory
 			try{
 				tmp = Integer.parseInt(c.getId());
 			}catch(Exception ignored){}
-			if(tmp>=num) 
+			if(tmp>=num)
 				num = tmp+1;
 		}
 		return String.valueOf(num);
@@ -121,13 +121,13 @@ public class MappingFactory
 		if(m.getLinks() == null) m.setLinks(new Links());
 		m.getLinks().getLink().add(l);
 	}
-	
+
 	public static Mapping loadMapping(File f) throws JAXBException
     {
 		System.out.println("MappingFactory.loadMapping()...mappingFile:"+f.getAbsolutePath());
 		String mappingParentPath=f.getAbsoluteFile().getParentFile().getAbsolutePath();
 		System.out.println("MappingFactory.loadMapping()..mapping Parent:"+mappingParentPath);
-		JAXBContext jc=null;		
+		JAXBContext jc=null;
 //			jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 		jc=com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.newInstance("gov.nih.nci.cbiit.cmts.core");
 
@@ -138,7 +138,7 @@ public class MappingFactory
 		//re-connect the meta structure for source and target schemas
 		for (Component mapComp:mapLoaded.getComponents().getComponent())
 		{
-			
+
 			String xsdLocation=mappingParentPath+File.separator+mapComp.getLocation();
 			System.out.println("MappingFactory.loadMapping()..schema:"+mapComp.getType()+"="+xsdLocation);
             try
@@ -168,7 +168,7 @@ public class MappingFactory
             catch(Exception ee)
             {
                 String msg = ee.getMessage();
-                if ((msg == null)||(msg.trim().equals(""))) 
+                if ((msg == null)||(msg.trim().equals("")))
                 	msg = "Failed to read or parse schema document - " + xsdLocation;
                 ee.printStackTrace();
                 throw new JAXBException(ee.getClass().getCanonicalName()+":"+msg);
@@ -304,18 +304,22 @@ public class MappingFactory
 		{
 
 			ElementMeta recursiveMeta=searchRecursiveAncestor(metaHash, elmntMeta, elmntMeta.getType());
-			ElementMeta recursiveMetaClone=(ElementMeta)recursiveMeta.clone();
+            if (recursiveMeta != null)
+            {
+                ElementMeta recursiveMetaClone=(ElementMeta)recursiveMeta.clone();
 
-			//add the cloned Attributes and childElement to
-			//the recursive element, then it will be referred by parent elementMeta
-			elmntMeta.getAttrData().addAll(recursiveMetaClone.getAttrData());
-			elmntMeta.getChildElement().addAll(recursiveMetaClone.getChildElement());
+                //add the cloned Attributes and childElement to
+                //the recursive element, then it will be referred by parent elementMeta
+                elmntMeta.getAttrData().addAll(recursiveMetaClone.getAttrData());
+                elmntMeta.getChildElement().addAll(recursiveMetaClone.getChildElement());
 
-            List<ElementMeta> pList = new ArrayList<ElementMeta>();
-            pList.add(parentMeta);
-            processMeta(metaHash, elmntMeta, pList, tagList);
-			elmntMeta.setIsEnabled(true);
-		}
+                List<ElementMeta> pList = new ArrayList<ElementMeta>();
+                pList.add(parentMeta);
+                processMeta(metaHash, elmntMeta, pList, tagList);
+                elmntMeta.setIsEnabled(true);
+            }
+            else System.out.println("Cannot find the ancester of recursive node : name="+ elmntMeta.getName() + ", namespace=" + elmntMeta.getNameSpace() + ", type=" + elmntMeta);
+        }
 
 	}
 	/**
@@ -332,7 +336,9 @@ public class MappingFactory
 		parentMeta=(ElementMeta)metaHash.get(parentKey);
 		if (parentMeta==null)
 			return parentMeta;
-		else if (parentMeta.getType().equals(element.getType()))
+        else if (parentMeta.getType() == null) {}
+        else if (element.getType() == null) {}
+        else if (parentMeta.getType().equals(element.getType()))
 			return parentMeta;
 		return searchRecursiveAncestor(metaHash,  parentMeta, recursionType);
 	}
@@ -456,7 +462,7 @@ public class MappingFactory
 				childList.addAll(mapComp.getRootElement().getChildElement());
 				rootChildListHash.put(mapComp.getLocation()+mapComp.getId(), childList);
 				mapComp.getRootElement().getChildElement().clear();
-				
+
 				List<AttributeMeta> attrList=new ArrayList<AttributeMeta>();
 				attrList.addAll(mapComp.getRootElement().getAttrData());
 				rootAttrListHash.put(mapComp.getLocation()+mapComp.getId(), attrList);
@@ -465,7 +471,7 @@ public class MappingFactory
 		}
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement<Mapping>(new QName("mapping"),Mapping.class, m), f);
-		
+
 		//put the unmarshalled children back
 		for (Component mapComp:m.getComponents().getComponent())
 		{
@@ -474,7 +480,7 @@ public class MappingFactory
 				mapComp.getRootElement().getChildElement().addAll(rootChildListHash.get(mapComp.getLocation()+mapComp.getId()));
 				mapComp.getRootElement().getAttrData().addAll(rootAttrListHash.get(mapComp.getLocation()+mapComp.getId()));
 				String xsdLocation=f.getParent()+File.separator+mapComp.getLocation();
-				mapComp.setLocation(xsdLocation); 
+				mapComp.setLocation(xsdLocation);
 			}
 		}
     }
