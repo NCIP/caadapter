@@ -207,7 +207,8 @@ public class DefaultPropertiesTableModel extends AbstractTableModel
 					}
 					catch (Exception e)
 					{
-						e.printStackTrace();
+                        System.out.println("Exception DefaultPropertiesTableModel.getValueAt() : " + e.getMessage() + ", item=" + targetItem);
+                        e.printStackTrace();
 						//Log.logException(this, e);
 					}
 					if (result == null)
