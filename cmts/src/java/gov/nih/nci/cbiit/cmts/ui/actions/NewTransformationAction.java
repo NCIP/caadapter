@@ -115,6 +115,7 @@ public class NewTransformationAction extends AbstractContextAction
             newMsgPane.setTransformationType(transformationType);
 
 			mainFrame.addNewTab(newMsgPane, ".xml");
+			String mappingFile=w.getMapFile().getPath();
 			TransformationService transformer;
 			if (transformationType.equals(ActionConstants.NEW_CSV_Transformation))
 				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_CSV_TO_XML);
@@ -127,15 +128,22 @@ public class NewTransformationAction extends AbstractContextAction
 			else if (transformationType.equals(ActionConstants.NEW_HL7_V2_CDA_Transformation))
 				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_HL7_V2_TO_CDA);
 			else
-				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);
-
+			{
+				if (mappingFile.endsWith(".xsl"))
+					transformer=TransformerFactory.getTransformer(".xsl");
+				else if (mappingFile.endsWith(".xq"))
+					transformer=TransformerFactory.getTransformer(".xq");
+				else
+					transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);
+			}
 			String sourceFile =w.getDataFile().getPath();//FileUtil.getRelativePath(w.getDataFile());
-			String mappingFile=w.getMapFile().getPath();//FileUtil.getRelativePath(w.getMapFile());
+			
 			String xmlResult=transformer.transfer(sourceFile, mappingFile);
 			newMsgPane.setMessageText(xmlResult);
 			newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);
-			newMsgPane.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
+			if (transformer instanceof MappingTransformer)
+				newMsgPane.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
 			JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
 		}
 		else

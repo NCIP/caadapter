@@ -29,6 +29,10 @@ public class TransformerFactory {
  			rtnTransformer.setPresentable(true);
  			return rtnTransformer;
  		}
+ 		else if (transformerType.equals(".xsl"))
+ 			return new XsltTransformer();
+ 		else if (transformerType.equals(".xq"))
+ 			return new XQueryTransformer();
  		else if (transformerType.equalsIgnoreCase("XML"))
  			return new MappingTransformer();
 		else if (transformerType.equalsIgnoreCase("CSV"))
