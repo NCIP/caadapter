@@ -32,7 +32,7 @@ public class OpenMessageFrontPage extends JPanel
 {
 
 	private final String DATA_FILE_BROWSE_MODE = "Source Data File";
-	private final String MAP_FILE_BROWSE_MODE = "Transformation Mapping File";
+	private final String MAP_FILE_BROWSE_MODE = "Transformation Instruction";
 	public static final String DEST_FILE_BROWSE_MODE = "Target Data File";
 	private JTextField dataFileInputField;
 	private JTextField mapFileInputField;
@@ -120,7 +120,7 @@ public class OpenMessageFrontPage extends JPanel
 		}
 		else if(MAP_FILE_BROWSE_MODE.equals(browseMode))
 		{
-			result = DefaultSettings.MAP_FILE_DEFAULT_EXTENTION;
+			result = DefaultSettings.MAP_FILE_DEFAULT_EXTENTION+";.xsl;.xq";
 		}
 		else if(DEST_FILE_BROWSE_MODE.equals(browseMode))
 		{

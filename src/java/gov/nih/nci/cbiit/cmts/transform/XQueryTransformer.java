@@ -8,6 +8,8 @@
 package gov.nih.nci.cbiit.cmts.transform;
 
 
+import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,6 +19,7 @@ import java.io.StringWriter;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xquery.XQException;
@@ -71,6 +74,13 @@ public class XQueryTransformer extends MappingTransformer {
 	}
 	
 
+	@Override
+	public List<ApplicationResult> validateXmlData(Object validator,
+			String xmlData) {
+		// TODO Auto-generated method stub
+		System.out.println("XQueryTransformer.validateXmlData()");
+		return null;
+	}
 }
 
 /**
