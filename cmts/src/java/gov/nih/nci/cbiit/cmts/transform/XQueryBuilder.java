@@ -156,6 +156,7 @@ public class XQueryBuilder {
 
             String buf = "";
 
+            boolean blockSkip = false;
             while(true)
             {
                 text = text.trim();
@@ -165,7 +166,11 @@ public class XQueryBuilder {
                     (text.toLowerCase().startsWith("element ")))
                 {
                     int idx = text.indexOf("{");
-                    buf = buf + space + text.substring(0, idx).trim() + "\r\n" + space + "{" + "\r\n";
+                    if (text.toLowerCase().startsWith("element <choice>")) blockSkip = true;
+                    else
+                    {
+                        buf = buf + space + text.substring(0, idx).trim() + "\r\n" + space + "{" + "\r\n";
+                    }
                     text = text.substring(idx).trim();
                     idx = getBlockIndex(text);
                     String sub = setupXQueryStructuredIndenation(text.substring(1, idx), level);
@@ -175,6 +180,12 @@ public class XQueryBuilder {
                     {
                         text = text.substring(1).trim();
                         tail = tail + ",";
+                    }
+                    if (blockSkip)
+                    {
+                        blockSkip = false;
+                        tail = "";
+                        if (text.startsWith("\"\"")) text = text.substring(2).trim();
                     }
                     buf = buf + sub + space + tail + "\r\n";
                 }

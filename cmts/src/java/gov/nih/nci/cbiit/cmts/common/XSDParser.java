@@ -149,16 +149,31 @@ public class XSDParser  {
     public ElementMeta getElementMetaFromComplexType(String namespace, String name,int depth){
         if (model != null) {
             // element declarations
-            XSNamedMap map = model.getComponents(XSConstants.TYPE_DEFINITION);
-            //System.out.println("CCCX null XS map : " + namespace + ":" + name);
-            //processMap(map, 0);
-            defaultNS = namespace;
-            ctStack.clear();
-            elStack.clear();
-            XSObject xsItem=map.itemByName(namespace, name);
+            XSNamedMap map = null;
+            XSObject xsItem = null;
+            for(int i=0;i<2;i++)
+            {
+                short s = XSConstants.TYPE_DEFINITION;
+                if (i == 1 ) s = XSConstants.ELEMENT_DECLARATION;
+                map = model.getComponents(s);
+                //System.out.println("CCCX null XS map : " + namespace + ":" + name);
+                //processMap(map, 0);
+                defaultNS = namespace;
+                ctStack.clear();
+                elStack.clear();
+                xsItem=map.itemByName(namespace, name);
+                if (xsItem != null) break;
+            //if (xsItem == null) System.out.println("CCCX null element meta, namespace= " +  namespace + ", name=" + name + ", ObjType=" + xsItem);
+            }
+                if (xsItem == null) System.out.println("Null element meta from Map.itemByName, namespace= " +  namespace + ", name=" + name + ", ObjType=" + xsItem);
             if(xsItem instanceof XSComplexTypeDefinition){
-                return processComplexType((XSComplexTypeDefinition)xsItem, depth);
+
+                ElementMeta m = processComplexType((XSComplexTypeDefinition)xsItem, depth);
+                if (m == null)  System.out.println("CCCX null element meta, namespace= " +  namespace + ", name=" + name);
+                //else  System.out.println("CCCX Successfully create element meta("+m+"), namespace= " +  namespace + ", name=" + name);
+                return m;
             }else if(xsItem instanceof XSSimpleTypeDefinition){
+                //System.out.println("CCCX Simple type element meta, namespace= " +  namespace + ", name=" + name);
                 return null;
             }
         }
@@ -178,7 +193,7 @@ public class XSDParser  {
             XSObject item = itemList.item(i);
 //            if(item instanceof XSComplexTypeDefinition){
 //                ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
-//            }else 
+//            }else
             if(item instanceof XSParticle){
                 ret.addAll(processParticle((XSParticle)item, depth));
             }else if(item instanceof XSAttributeUse){
@@ -191,7 +206,7 @@ public class XSDParser  {
     /**
      * Process XSComplexTypeDefiniton object
      * This interface extends XSTypeDefinition which extends XSObject.
-     * It represents the Complex Type Definition schema component. 
+     * It represents the Complex Type Definition schema component.
      * @param item
      * @param depth
      * @return
@@ -316,10 +331,10 @@ public class XSDParser  {
     }
     /**
      * Process XSTerm object
-     * This interface extends XSObject. It describes a term that can be one of 
-     * a model group, 
-     * a wildcard, 
-     * or an element declaration. 
+     * This interface extends XSObject. It describes a term that can be one of
+     * a model group,
+     * a wildcard,
+     * or an element declaration.
      * Objects implementing XSElementDeclaration, XSModelGroup and XSWildcard interfaces also implement this interface.
      * @param item
      * @param depth
@@ -388,7 +403,7 @@ public class XSDParser  {
     }
     /**
      * Process XSAttributeUse object
-     * The XSAttributeUse interface extends XSObject and represents the Attribute Use schema component. 
+     * The XSAttributeUse interface extends XSObject and represents the Attribute Use schema component.
      * @param item
      * @return
      */
@@ -437,14 +452,14 @@ public class XSDParser  {
 
         if (newMeta != null)
         {
-            System.out.println("Deep Loading XSDParser.expandElementMetaWithLazyLoad()...extended node:"+meta);
+            System.out.println("Deep Loading XSDParser.expandElementMetaWithLazyLoad()...extended node:"+meta+ ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
             while(meta.getAttrData().size() > 0) meta.getAttrData().remove(0);
             meta.getAttrData().addAll(0, newMeta.getAttrData());
 
             while(meta.getChildElement().size() > 0) meta.getChildElement().remove(0);
             meta.getChildElement().addAll(0, newMeta.getChildElement());
         }
-        else System.out.println("Result is null MappingBaseTree.deepLoadElementMeta()...deep loading:"+meta);
+        else System.out.println("Result is null MappingBaseTree.deepLoadElementMeta()...deep loading:"+meta + ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
 
 
     }

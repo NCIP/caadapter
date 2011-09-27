@@ -109,8 +109,16 @@ public class MappingTransformer extends DefaultTransformer {
 	{
 		mapping = MappingFactory.loadMapping(new File(instruction));
 		XQueryBuilder builder = new XQueryBuilder(mapping);
-		String queryString = builder.getXQuery();		
-		XQPreparedExpression exp = getConn().prepareExpression(queryString);
+		String queryString = builder.getXQuery();
+        String mm = "";
+        for (int i=0;i<queryString.length();i++)
+        {
+            String achar = queryString.substring(i, i+1);
+            if (achar.equals("<")) mm = mm + "&lt;";
+            else if (achar.equals(">")) mm = mm + "&gt;";
+            else mm = mm + achar;
+        }
+        XQPreparedExpression exp = getConn().prepareExpression(mm);
 
 		return exp;
 	}
