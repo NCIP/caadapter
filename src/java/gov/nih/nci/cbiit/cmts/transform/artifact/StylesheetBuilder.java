@@ -75,7 +75,38 @@ public class StylesheetBuilder extends XQueryBuilder {
 		String targetElementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		LinkType link = links.get(targetElementXpath);
 		String childElementRef=parentMappedXPath;
-		Element tgtDataElement= new Element(elementMeta.getName());
+        String nameE = elementMeta.getName();
+        if (nameE.endsWith("]"))
+        {
+            int idx = nameE.indexOf("[");
+            if(idx < 0) nameE = nameE.substring(0, (nameE.length() - 1));
+            else nameE = nameE.substring(0, idx);
+        }
+        ElementMeta tempMeta = null;
+        
+        while (nameE.equals("<choice>"))
+        {
+            if (elementMeta.getChildElement().size() == 0) break;
+
+            for (ElementMeta cMeta:elementMeta.getChildElement())
+            {
+                System.out.println("   CCCX <choice> child meta name="  + cMeta.getName() + ", isIsChosen()=" + cMeta.isIsChosen());
+                if (cMeta.isIsChosen())
+                {
+                    tempMeta = cMeta;
+                    nameE = tempMeta.getName();
+                    //break;
+                }
+            }
+            if (tempMeta == null) break;
+        }
+        if (nameE.equals("<choice>"))
+        {
+            for(ElementMeta e:elementMeta.getChildElement()) processTargetElement(e,childElementRef, parentTemplate);
+            return;
+        }
+        if (tempMeta != null) elementMeta = tempMeta;
+        Element tgtDataElement= new Element(nameE);
 		//case III: The element is not mapped, but its attribute is mapped
 		encodeAttribute(tgtDataElement,elementMeta, targetElementXpath);
         if(link!=null)
