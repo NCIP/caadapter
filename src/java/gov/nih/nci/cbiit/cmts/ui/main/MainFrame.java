@@ -128,9 +128,9 @@ public class MainFrame extends JFrame
 
 	private Component constructCenterPanel() {
 		JPanel rtnPanel=new JPanel();
-		ImageIcon ii1 = new ImageIcon(DefaultSettings.getImage("default_scr.gif"));
-		JLabel baseScreenJLabel = new JLabel(ii1);
-		ii1.setImageObserver(baseScreenJLabel);
+		//ImageIcon ii1 = new ImageIcon(DefaultSettings.getImage("default_scr.gif"));
+		JLabel baseScreenJLabel = new JLabel("");
+		//ii1.setImageObserver(baseScreenJLabel);
 		rtnPanel.add(baseScreenJLabel);
 		rtnPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 		rtnPanel.setOpaque(false);
@@ -142,10 +142,10 @@ public class MainFrame extends JFrame
 		//ImageIcon imageIcon = new ImageIcon(bannerImage);
 		toolBarPanel = new JPanel(new BorderLayout());
 		//JPanel northUpperPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        JPanel northUpperPanel = new BannerMainPanel(this);
+        //JPanel northUpperPanel = new BannerMainPanel(this);
         //JLabel label = new JLabel(imageIcon);
 		//northUpperPanel.add(label);
-		toolBarPanel.add(northUpperPanel, BorderLayout.NORTH);
+		//toolBarPanel.add(northUpperPanel, BorderLayout.NORTH);
 		currentToolBarPanel = constructToolbarPanel();
 		toolBarPanel.add(currentToolBarPanel, BorderLayout.SOUTH);
 		return toolBarPanel;
@@ -209,9 +209,9 @@ public class MainFrame extends JFrame
 		tabbedPane.remove(comp);
 		if (tabbedPane.getTabCount() == 0) {//reset if not tab at all.
 			centerPanel.removeAll();
-			ImageIcon imgIcon = new ImageIcon(DefaultSettings.getImage("default_scr.gif"));
-			JLabel baseScreenJLabel = new JLabel(imgIcon);
-			imgIcon.setImageObserver(baseScreenJLabel);
+			//ImageIcon imgIcon = new ImageIcon(DefaultSettings.getImage("default_scr.gif"));
+			JLabel baseScreenJLabel = new JLabel("");
+			//imgIcon.setImageObserver(baseScreenJLabel);
 			centerPanel.add(baseScreenJLabel);
 			centerPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 		}
