@@ -42,7 +42,8 @@ public class OpenMessageFrontPage extends JPanel
 	private File destFile;
 	private String openWizardTitle;
 	private boolean ONLY_MAPPING_REQUIRED=false;
-	/**
+
+    /**
 	 * Creates a new <code>JPanel</code> with a double buffer
 	 * and a flow layout.
 	 */
@@ -52,7 +53,8 @@ public class OpenMessageFrontPage extends JPanel
 		if (openWizardTitle.equals(ActionConstants.NEW_XQUERY_STATEMENT)
 				||openWizardTitle.equals(ActionConstants.NEW_XSLT_STYLESHEET))
 			ONLY_MAPPING_REQUIRED=true;
-		initialize();
+
+        initialize();
 	}
 
 	private void initialize()
@@ -120,17 +122,20 @@ public class OpenMessageFrontPage extends JPanel
 		}
 		else if(MAP_FILE_BROWSE_MODE.equals(browseMode))
 		{
-			result = DefaultSettings.MAP_FILE_DEFAULT_EXTENTION+";.xsl;.xq";
+			result = ".xq*;.xsl*;" + DefaultSettings.MAP_FILE_DEFAULT_EXTENTION;
 		}
 		else if(DEST_FILE_BROWSE_MODE.equals(browseMode))
 		{
 			result = ".xml";
 		}
-		else
+
+        else
 		{
 			result = "";
 		}
-		return result;
+
+        if (ONLY_MAPPING_REQUIRED) result = DefaultSettings.MAP_FILE_DEFAULT_EXTENTION;
+        return result;
 	}
 
 	public void setUserSelectionFile(File file, String browseMode)

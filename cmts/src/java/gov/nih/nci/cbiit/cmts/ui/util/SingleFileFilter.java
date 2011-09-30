@@ -36,7 +36,20 @@ public class SingleFileFilter extends FileFilter
 		{
 			return true;
 		}
-		return f.getName().toLowerCase().endsWith(extension);
+
+        if (extension.endsWith("*"))
+        {
+            String ext = extension;
+            ext = ext.substring(0, ext.length()-1);
+            String name = f.getName().toLowerCase();
+            int idx = name.indexOf(ext);
+
+            if (idx <= 0) return false;
+            name = name.substring(idx + ext.length());
+            if (name.indexOf(".") >= 0) return false;
+            else return true;
+        }
+        else return f.getName().toLowerCase().endsWith(extension.toLowerCase());
 	}
 
 	public String getDescription()
