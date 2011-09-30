@@ -76,6 +76,7 @@
 			</fileset>
 			<fileset dir="${web.src.dir}">
 					<include name="**/*.html"/>
+					<include name="**/*.bmp"/>
 					<exclude name="**/*webstart*"/>
 			</fileset>
 			<!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
