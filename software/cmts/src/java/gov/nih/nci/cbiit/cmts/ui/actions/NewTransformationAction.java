@@ -131,9 +131,13 @@ public class NewTransformationAction extends AbstractContextAction
 			{
 				if (mappingFile.endsWith(".xsl"))
 					transformer=TransformerFactory.getTransformer(".xsl");
-				else if (mappingFile.endsWith(".xq"))
+                else if (mappingFile.endsWith(".xslt"))
+					transformer=TransformerFactory.getTransformer(".xsl");
+                else if (mappingFile.endsWith(".xq"))
 					transformer=TransformerFactory.getTransformer(".xq");
-				else
+                else if (mappingFile.endsWith(".xquery"))
+					transformer=TransformerFactory.getTransformer(".xq");
+                else
 					transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);
 			}
 			String sourceFile =w.getDataFile().getPath();//FileUtil.getRelativePath(w.getDataFile());

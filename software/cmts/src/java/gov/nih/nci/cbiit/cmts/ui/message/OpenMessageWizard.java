@@ -30,18 +30,35 @@ public class OpenMessageWizard extends JDialog implements ActionListener
 	private static final String CANCEL_COMMAND = "Cancel";
 	private boolean okButtonClicked = false;
 	private OpenMessageFrontPage frontPage;
+    private String transformationType;
 
-	public OpenMessageWizard(Frame owner, String title, boolean modal) throws HeadlessException
+//    public OpenMessageWizard(Frame owner, String title, boolean modal, String transformationType) throws HeadlessException
+//	{
+//		super(owner, title, modal);
+//        this.transformationType = transformationType;
+//        initialize();
+//	}
+//
+//	public OpenMessageWizard(Dialog owner, String title, boolean modal, String transformationType)
+//			throws HeadlessException
+//	{
+//		super(owner, title, modal);
+//        this.transformationType = transformationType;
+//        initialize();
+//	}
+    public OpenMessageWizard(Frame owner, String title, boolean modal) throws HeadlessException
 	{
 		super(owner, title, modal);
-		initialize();
+        //this.transformationType = transformationType;
+        initialize();
 	}
 
 	public OpenMessageWizard(Dialog owner, String title, boolean modal)
 			throws HeadlessException
 	{
 		super(owner, title, modal);
-		initialize();
+        //this.transformationType = transformationType;
+        initialize();
 	}
 
     private void initialize()
