@@ -151,28 +151,71 @@ public class XSDParser  {
             // element declarations
             XSNamedMap map = null;
             XSObject xsItem = null;
-            for(int i=0;i<2;i++)
+            for(int i=0;i<6;i++)
             {
-                short s = XSConstants.TYPE_DEFINITION;
-                if (i == 1 ) s = XSConstants.ELEMENT_DECLARATION;
+                short s = -1;
+                String name2 = name;
+                String namespace2 = namespace;
+                if (i == 0 ) s = XSConstants.TYPE_DEFINITION;
+                else if (i == 1 ) s = XSConstants.ELEMENT_DECLARATION;
+                else if (i == 2 )
+                {
+                    s = XSConstants.TYPE_DEFINITION;
+                    if (name.startsWith(namespace + ":")) name2 = name.substring(namespace.length()+1);
+                }
+                else if (i == 3 )
+                {
+                    s = XSConstants.ELEMENT_DECLARATION;
+                    if (name.startsWith(namespace + ":")) name2 = name.substring(namespace.length()+1);
+                }
+                else if (i == 4 )
+                {
+                    s = XSConstants.TYPE_DEFINITION;
+                    if ((namespace2 == null)&&(name2.indexOf(":") > 0))
+                    {
+                        namespace2 = name2.substring(0,name2.lastIndexOf(":"));
+                    }
+                    if (name2.startsWith(namespace2 + ":")) name2 = name2.substring(namespace2.length()+1);
+
+                }
+                else if (i == 5 )
+                {
+                    s = XSConstants.ELEMENT_DECLARATION;
+                    if ((namespace2 == null)&&(name2.indexOf(":") > 0))
+                    {
+                        namespace2 = name2.substring(0,name2.lastIndexOf(":"));
+                    }
+                    if (name2.startsWith(namespace2 + ":")) name2 = name2.substring(namespace2.length()+1);
+                }
                 map = model.getComponents(s);
-                //System.out.println("CCCX null XS map : " + namespace + ":" + name);
+
                 //processMap(map, 0);
                 defaultNS = namespace;
                 ctStack.clear();
                 elStack.clear();
-                xsItem=map.itemByName(namespace, name);
-                if (xsItem != null) break;
-            //if (xsItem == null) System.out.println("CCCX null element meta, namespace= " +  namespace + ", name=" + name + ", ObjType=" + xsItem);
+                xsItem=map.itemByName(namespace2, name2);
+
+                if (xsItem != null)
+                {
+                    //System.out.println("CCCX Find XS map("+i+") : ns=" + namespace2 + ", name=" + name2 + ", xsItem=" + xsItem);
+                    break;
+                }
+                //else System.out.println("CCCX null XS map("+i+") : ns=" + namespace2 + ", name=" + name2);
             }
-                if (xsItem == null) System.out.println("Null element meta from Map.itemByName, namespace= " +  namespace + ", name=" + name + ", ObjType=" + xsItem);
-            if(xsItem instanceof XSComplexTypeDefinition){
+            if (xsItem == null) System.out.println("Null element meta from Map.itemByName, namespace= " +  namespace + ", name=" + name + ", ObjType=" + xsItem);
+            else if(xsItem instanceof XSComplexTypeDefinition)
+            {
 
                 ElementMeta m = processComplexType((XSComplexTypeDefinition)xsItem, depth);
-                if (m == null)  System.out.println("CCCX null element meta, namespace= " +  namespace + ", name=" + name);
+                if (m == null)
+                {
+                    System.out.println("Null element meta, namespace= " +  namespace + ", name=" + name);
+                }
                 //else  System.out.println("CCCX Successfully create element meta("+m+"), namespace= " +  namespace + ", name=" + name);
                 return m;
-            }else if(xsItem instanceof XSSimpleTypeDefinition){
+            }
+            else if(xsItem instanceof XSSimpleTypeDefinition)
+            {
                 //System.out.println("CCCX Simple type element meta, namespace= " +  namespace + ", name=" + name);
                 return null;
             }
@@ -459,7 +502,7 @@ public class XSDParser  {
             while(meta.getChildElement().size() > 0) meta.getChildElement().remove(0);
             meta.getChildElement().addAll(0, newMeta.getChildElement());
         }
-        else System.out.println("Result is null MappingBaseTree.deepLoadElementMeta()...deep loading:"+meta + ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
+        //else System.out.println("Result is null Loading XSDParser.expandElementMetaWithLazyLoad()...deep loading:"+meta + ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
 
 
     }

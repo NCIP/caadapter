@@ -138,16 +138,14 @@ public class MappingFactory
 		//re-connect the meta structure for source and target schemas
 		for (Component mapComp:mapLoaded.getComponents().getComponent())
 		{
-
-			String xsdLocation=mappingParentPath+File.separator+mapComp.getLocation();
-			System.out.println("MappingFactory.loadMapping()..schema:"+mapComp.getType()+"="+xsdLocation);
+            String xsdLocation=mappingParentPath+File.separator+mapComp.getLocation();
             try
             {
                 if (mapComp.getRootElement()!=null)
                 {
                     if ((mapComp.getType() != ComponentType.SOURCE)&&
                         (mapComp.getType() != ComponentType.TARGET)) continue;
-
+                    System.out.println("MappingFactory.loadMapping()..schema:"+mapComp.getType()+"="+xsdLocation);
                     XSDParser metaParser = new XSDParser();
                     if (mapComp.getType()==ComponentType.SOURCE)
                     {
@@ -371,7 +369,7 @@ public class MappingFactory
             metaHash.put(element.getId(), element);
 
         }
-        if ((parents.size() > 500)||(find))
+        if ((parents.size() > 1000)||(find))
         {
             //int j = 0;
             for (int i=(parents.size()-1);i>=0;i--)
@@ -593,9 +591,22 @@ public class MappingFactory
                 return null;
             }
             //parent = elem;
-            if (tEle instanceof ElementMeta) elem = (ElementMeta)tEle;
+            if (tEle instanceof ElementMeta)
+            {
+                elem = (ElementMeta)tEle;
+            }
             ret = tEle;
             n++;
+        }
+        if (ret instanceof ElementMeta)
+        {
+            ElementMeta ele = (ElementMeta) ret;
+            if (ele.getChildElement().size() == 0)
+            {
+                if (type==ComponentType.SOURCE) sourceParser.expandElementMetaWithLazyLoad(ele);
+                else targetParser.expandElementMetaWithLazyLoad(ele);
+                return ele;
+            }
         }
         return ret;
     }
