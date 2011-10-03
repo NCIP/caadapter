@@ -81,7 +81,24 @@ public class ElementMetaLoader implements Serializable
 	 */
     private DefaultMutableTreeNode processElement(ElementMeta s)
     {
-        return processElement(s, 0, null);
+        DefaultMutableTreeNode node = processElement(s, 0, null);
+        //if (nodeMode == TARGET_MODE) displayNode(node, 0);
+        return node;
+    }
+    private void displayNode(DefaultMutableTreeNode node, int depth)
+    {
+        String space = "";
+        for(int i=0;i<depth;i++) space = space + "   ";
+
+        String seq ="";
+        if (node.getParent() != null) seq = "" + node.getParent().getIndex(node);
+
+        System.out.println("CCCX VV("+nodeMode+") " + space + "("+depth+")"+ seq + "--" + node.toString());
+        depth++;
+        for (int i=0;i<node.getChildCount();i++)
+        {
+            displayNode((DefaultMutableTreeNode)node.getChildAt(i), depth);
+        }
     }
     private DefaultMutableTreeNode processElement(ElementMeta s, int depth, ElementMeta parent)
 	{
@@ -93,7 +110,7 @@ public class ElementMetaLoader implements Serializable
         //String choiced = "";
         //if ((parent != null)&&(parent.getName().indexOf("<choice") >= 0)) choiced = " :"+s.isIsChosen()+":";
 
-        //System.out.println("CCCX V " + space + "("+depth+")" + s.getName() + choiced);
+        //System.out.println("CCCX VV("+nodeMode+") " + space + "("+depth+")" + s.getName() + choiced + ", this childCount=" + node.getChildCount() + ", parent childCount=" + node.getParent().getChildCount());
 		List<ElementMeta> childs = s.getChildElement();
 		List<AttributeMeta> fields = s.getAttrData();
 

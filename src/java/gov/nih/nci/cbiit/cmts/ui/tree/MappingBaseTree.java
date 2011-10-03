@@ -92,7 +92,7 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 
             if (chldMeta instanceof ElementMeta)
 			{
-
+                //System.out.println("CCCX CD Expanding branch("+ childNode.getChildCount() + ")," + childNode + ", " + chldMeta.getName());
                 ElementMeta chldElmtMeta=(ElementMeta)chldMeta;
                 if ((selectedMeta.getName().indexOf("<choice") >= 0)&&(!chldElmtMeta.isIsChosen())) continue;
                 DefaultMutableTreeNode newChildNode = null;
@@ -100,7 +100,7 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
                 if ((chldElmtMeta.getChildElement() != null)&&(chldElmtMeta.getChildElement().size() > 0))
                 {
                     cTag = true;
-                    //System.out.println("CCCX Child Already Exist("+selectedMeta.getName()+") : " + chldElmtMeta.getName());
+                    System.out.println("CCCX Child Already Exist("+selectedMeta.getName()+") : " + chldElmtMeta.getName());
                     int newNodeType=ElementMetaLoader.SOURCE_MODE;
                     if (this instanceof MappingTargetTree)
                         newNodeType=ElementMetaLoader.TARGET_MODE;
@@ -108,9 +108,11 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
                 }
                 else
                 {
-                    cTag = true;
-                    if (chldElmtMeta.isIsSimple()||chldElmtMeta.isIsRecursive())
+                    if (chldElmtMeta.isIsSimple())
                             continue;
+                    //if (chldElmtMeta.isIsRecursive())
+                    //        continue;
+                    cTag = true;
                     //System.out.println("CCCX No Child("+selectedMeta.getName()+") : " + chldElmtMeta.getName() + ", num of children:" + childNode.getChildCount());
                     newChildNode = deepLoadElementMeta(chldElmtMeta, rootComponent);
                 }
@@ -136,39 +138,13 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 	 */
 	private DefaultMutableTreeNode deepLoadElementMeta(ElementMeta meta, Object rootComponent)
 	{
-		System.out.println("MappingBaseTree.deepLoadElementMeta()...deep loading:"+meta);
+		//System.out.println("MappingBaseTree.deepLoadElementMeta()...deep loading:"+meta);
 		int newNodeType=ElementMetaLoader.SOURCE_MODE;
 		if (this instanceof MappingTargetTree)
 			newNodeType=ElementMetaLoader.TARGET_MODE;
 
         return getSchemaParser().expandNodeWithLazyLoad(meta, newNodeType, rootComponent);
-        /*
-        ElementMeta newMeta=getSchemaParser().getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
-		//set the elementMeta with name of XML element rather its data type
-		if (newMeta==null&&meta.getName().equals("<choice>"))
-			newMeta=meta;
-		newMeta.setName(meta.getName());
-		newMeta.setIsChoice(meta.isIsChoice());
 
-        int idx = -1;
-        for (int i=0;i<parentMeta.getChildElement().size();i++)
-        {
-            ElementMeta metaE = parentMeta.getChildElement().get(i);
-            if (metaE.getName().equals(newMeta.getName()))
-            {
-                idx = i;
-                break;
-            }
-        }
-        if (idx < 0) System.out.println("CCCX XX Not found this child : " + parentMeta.getName() + "=" + parentMeta.getChildElement().size() + ", inserted=" + newMeta.getName());
-        else
-        {
-            parentMeta.getChildElement().remove(idx);
-            parentMeta.getChildElement().add(idx, newMeta);
-            //System.out.println("CCCX YY Replaced this childern : " + parentMeta.getName() + "=" + parentMeta.getChildElement().get(idx) + ", inserted=" + newMeta.getName());
-        }
-        return (DefaultMutableTreeNode)new ElementMetaLoader(newNodeType).loadDataForRoot(newMeta, null);
-        */
 	}
 	public void treeCollapsed(TreeExpansionEvent event)
 	{
