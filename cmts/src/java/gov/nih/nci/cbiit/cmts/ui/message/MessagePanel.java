@@ -157,8 +157,9 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 		validationMessagePane.setDisplayPopupConfirmationMessage(false);
 		validationMessagePane.setValidatorResults(null);
 		splitPane.setBottomComponent(validationMessagePane);
-		splitPane.setDividerLocation(0.8);
-		return splitPane;
+		//splitPane.setDividerLocation(0.8);
+        splitPane.setDividerLocation(250);
+        return splitPane;
 	}
 
 	/**
