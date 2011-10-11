@@ -294,11 +294,16 @@ public class DefaultSettings
                 //since this point on, file will not be null.
                 for(FileFilter fileFilter:fileFilters)
                 {
-                if (GeneralUtilities.areEqual(fileFilter, fileChooser.getFileFilter()))
-                {//if and only if the currently used file filter in fileChooser is the same as the given fileFilter.
-                    file = FileUtil.appendFileNameWithGivenExtension(file, ((SingleFileFilter)fileFilter).getExtension(), true);
-                    break;
-                }
+                    if (GeneralUtilities.areEqual(fileFilter, fileChooser.getFileFilter()))
+                    {//if and only if the currently used file filter in fileChooser is the same as the given fileFilter.
+                        if (!fileFilter.accept(file))
+                        {
+                            String ext = ((SingleFileFilter)fileFilter).getExtension();
+                            if (ext.endsWith("*")) ext = ext.substring(0, ext.length()-1);
+                            file = FileUtil.appendFileNameWithGivenExtension(file, ext, true);
+                        }
+                        break;
+                    }
                 }
                 if (checkDuplicate)
                 {
