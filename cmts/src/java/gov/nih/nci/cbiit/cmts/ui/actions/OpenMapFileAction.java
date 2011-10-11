@@ -226,7 +226,8 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 
                     //log the exception, but not report
 					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame.getAssociatedUIComponent(), false, false);
-					//report the nice to have message
+					mainFrame.closeTab();
+                    //report the nice to have message
 					everythingGood = false;
 				}
 				finally
