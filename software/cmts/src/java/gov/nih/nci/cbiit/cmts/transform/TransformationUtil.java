@@ -11,6 +11,7 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.ProcessingInstruction;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.InputSource;
 
@@ -66,7 +67,7 @@ public class TransformationUtil {
 		    document.addContent(0,styleIns);
 		    resetNamespace(document.getRootElement(), Namespace.getNamespace(CDA_STYLE_NAMESPACE));
 	    }    
-	    XMLOutputter xmlOutputter = new XMLOutputter();
+	    XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
 	    StringWriter writer=new StringWriter();
 	    xmlOutputter.output(document,writer);
 	    writer.close();
