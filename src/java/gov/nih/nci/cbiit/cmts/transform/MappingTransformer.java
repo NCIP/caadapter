@@ -12,6 +12,7 @@ import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.transform.artifact.RDFEncoder;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 
@@ -136,7 +137,8 @@ public class MappingTransformer extends DefaultTransformer {
 					.createAtomicType(XQItemType.XQBASETYPE_STRING));
 			XQResultSequence result = exp.executeQuery();
 			String rawResult = result.getSequenceAsString(new Properties());
-			String xmlResult =TransformationUtil.formatXqueryResult(rawResult, isPresentable());	
+			RDFEncoder rdfEncoder=new RDFEncoder(rawResult);
+			String xmlResult=rdfEncoder.getFormatedRDF();
 			if (isTemporaryFileCreated()) {
 				File tmpFile = new File(tempXmlSrc);
 				tmpFile.delete();

@@ -1,6 +1,8 @@
 package gov.nih.nci.cbiit.cmts.transform;
 
  
+import gov.nih.nci.cbiit.cmts.transform.artifact.RDFEncoder;
+
 import java.io.StringWriter;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -43,7 +45,9 @@ public XsltTransformer() throws XQException {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-		return sWriter.getBuffer().toString();
+		RDFEncoder rdfEncoder=new RDFEncoder(sWriter.getBuffer().toString());
+		String xmlResult=rdfEncoder.getFormatedRDF();
+		return xmlResult;
 	}
 	
 	private void xsltTransfer(String sourceFile, String xsltFile, StreamResult resultStream) throws TransformerException
