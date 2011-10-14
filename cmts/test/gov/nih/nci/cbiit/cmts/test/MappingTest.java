@@ -16,8 +16,10 @@ import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.util.FileUtil;
+import gov.nih.nci.cbiit.cmts.util.ResourceUtils;
 
 import java.io.File;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -64,55 +66,28 @@ public class MappingTest {
 	@Test
 	public void testParseXSD() throws Exception {
 		XSDParser p = new XSDParser();
+		try {
+			
+
 		p.loadSchema("workingspace/simpleMapping/shiporder.xsd", null);
+//		p.loadSchema("workingspace/hl7v3/multicacheschemas/PORR_IN049006UV01.xsd", null);
+//		p.loadSchema("workingspace/hl7v3/multicacheschemas/COCT_MT530000UV.xsd", null);
 		ElementMeta e = p.getElementMeta(null, "shiporder");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		Marshaller u = jc.createMarshaller();
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder.meta.xml"));
-	}
+//		ElementMeta e = p.getElementMeta("urn:hl7-org:v3", "PORR_IN049006UV01");
+//		ElementMeta e = p.getElementMeta("urn:hl7-org:v3", "testELM");
+//		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "COCT_MT530000UV.Act");
+		
+		System.out.println("MappingTest.testParseXSD()...metacount:"+BaseMeta.metaCount);
+//		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+//		Marshaller u = jc.createMarshaller();
+//		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+//		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder.meta.xml"));
 	
-	/**
-	 * test XSD parsing and marshaling of the generated Model Object
-	 * @throws Exception
-	 */
-	@Test
-	public void testParseXSD1() throws Exception {
-		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/shiporder1.xsd", null);
-		ElementMeta e = p.getElementMeta(null, "shiporder");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		Marshaller u = jc.createMarshaller();
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder1.meta.xml"));
-	}
-	
-	/**
-	 * test XSD parsing and marshaling of the generated Model Object
-	 */
-	@Test
-	public void testParseXSD2() throws Exception {
-		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/shiporder2.xsd", null);
-		ElementMeta e = p.getElementMeta(null, "shiporder");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		Marshaller u = jc.createMarshaller();
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder2.meta.xml"));
-	}
-	
-	/**
-	 * test XSD parsing and marshaling of the generated Model Object
-	 */
-	@Test
-	public void testParseXSD3() throws Exception {
-		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/shiporder3.xsd", null);
-		ElementMeta e = p.getElementMeta(null, "shiporder");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		Marshaller u = jc.createMarshaller();
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder3.meta.xml"));
+		} catch (Exception e) {
+			System.out.println("MappingTest.testParseXSD()...metacount:"+BaseMeta.metaCount);
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -132,17 +107,35 @@ public class MappingTest {
 	/**
 	 * test HL7 v3 XSD parsing and marshaling of the generated Model Object
 	 */
-	@Ignore
+	@Test
 	public void testParseHL7v3XSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("workingspace/hl7v3/HL7v3Schema/COCT_MT010000UV01.xsd", null);
-		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "COCT_MT010000UV01.Encounter");
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		Marshaller u = jc.createMarshaller();
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/COCT_MT010000UV01.meta.xml"));
+		try {
+		p.loadSchema("workingspace/hl7v3/multicacheschemas/PORR_IN049006UV01.xsd", null);
+		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "triggerFor", 7);
+		System.out.println("MappingTest.testParseHL7v3XSD()...metacount:"+BaseMeta.metaCount);
+//		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+//		Marshaller u = jc.createMarshaller();
+//		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+//		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/COCT_MT010000UV01.meta.xml"));
+	
+		} catch (Exception e) {
+			System.out.println("MappingTest.testParseHL7v3XSD()...metacount:"+BaseMeta.metaCount);
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
+	/**
+	 * Test file relative path 
+	 */
+	@Test
+	public void testFilePathRelatize()
+	{
+		String mappingFile="C:/Documents and Settings/wangeug/Desktop/myTest.map";
+		String xsdFile="../../../projects/workspace/cmtsSvn/workingspace/siblingMapping/shiporder.xsd";
+		
+	}
 	/**
 	 * test create Mapping from a pair of XSD and marshaling the Mapping 
 	 */
@@ -179,8 +172,8 @@ public class MappingTest {
 	 */
 	@Test
 	public void testUnmarshalMapping() throws Exception {
-		Mapping m = MappingFactory.loadMapping(new File("workingspace/simpleMapping/mapping.xml"));
-		MappingFactory.saveMapping(new File("bin/mapping_roundtrip.out.xml"), m);
+		Mapping m = MappingFactory.loadMapping(new File("C:/Documents and Settings/wangeug/Desktop/svTest.map"));
+		MappingFactory.saveMapping(new File("mapping_roundtrip.out.xml"), m);
 	}
 	
 	/**

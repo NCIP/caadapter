@@ -15,20 +15,35 @@ import gov.nih.nci.cbiit.cmts.transform.TransformationUtil;
 import gov.nih.nci.cbiit.cmts.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmts.transform.MappingTransformer;
 import gov.nih.nci.cbiit.cmts.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmts.transform.artifact.RDFEncoder;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
+import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQException;
+import javax.xml.xquery.XQItemType;
+import javax.xml.xquery.XQPreparedExpression;
+import javax.xml.xquery.XQResultSequence;
+
+import net.sf.saxon.Configuration;
+import net.sf.saxon.xqj.SaxonXQDataSource;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -83,8 +98,8 @@ public class TransformTest {
 	@Test
 	public void testMappingAndTransformation() throws JAXBException, XQException
 	{
-		String mappingFile="workingspace/hl7v2/discharger.map";
-		String srcFile = "workingspace/hl7v2/ADT_03.xml";
+		String mappingFile="workingspace/RDF/mapping.map";
+		String srcFile = "workingspace/RDF/source.xml";
 		Mapping map = MappingFactory.loadMapping(new File(mappingFile));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
@@ -93,6 +108,7 @@ public class TransformTest {
 
 		String xmlResult=tester.transfer(srcFile, mappingFile);
 		System.out.println("TransformTest.testMappingAndTransformation()\n"+xmlResult);
+		
 	}
 	/**
 	 * Test method for {@link gov.nih.nci.cbiit.cmts.transform.XQueryBuilder#getXQuery()}.
@@ -100,12 +116,64 @@ public class TransformTest {
 	 */
 	@Test
 	public void testXQueryTransform() throws XQException {
-		String sourceFile="workingspace/simpleMapping/shiporder.xml";
-		String xqFile="workingspace/simpleMapping/testXQ.xq";
-		XQueryTransformer tester= new XQueryTransformer();
-		System.out.println(tester.transfer(sourceFile, xqFile));
+//		String sourceFile="workingspace/simpleMapping/shiporder.xml";
+//		String xqFile="workingspace/simpleMapping/testXQ1.xq";
+		
+		String sourceFile="synderTest.xml";
+		String xqFile="synderQuery.xq";
+		InputStream in;
+		try {
+			in = new FileInputStream(new File(xqFile));
+			InputStreamReader inputStream=new InputStreamReader(in);
+			Configuration saxonConfig = new Configuration();
+			SaxonXQDataSource dataSource = new SaxonXQDataSource(saxonConfig);
+			XQConnection conn = dataSource.getConnection();
+			XQPreparedExpression exp = conn.prepareExpression(inputStream);
+			URI sourcUri=new File(sourceFile).toURI();
+			exp.bindString(new QName("docName"), sourcUri.getPath(), conn
+					.createAtomicType(XQItemType.XQBASETYPE_STRING));
+			XQResultSequence result = exp.executeQuery();
+			String rawResult = result.getSequenceAsString(new Properties());
+			System.out.println("TransformTest.testXQueryExpression()..:\n"+rawResult);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		XQueryTransformer tester= new XQueryTransformer();
+//		System.out.println(tester.transfer(sourceFile, xqFile));
 	}
 
+	/**
+	 * 
+	 * @throws XQException 
+	 * @throws XQException
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	@Test
+	public void testXQueryExpression() throws XQException
+	{
+		String sourceFile="synderTest.xml";
+		String xqFile="synderQuery1.xq";
+		Configuration saxonConfig = new Configuration();
+		SaxonXQDataSource dataSource = new SaxonXQDataSource(saxonConfig);
+		XQConnection conn = dataSource.getConnection();
+		String xsString="for $Template in doc(\"synderTest.xml\")/TemplateContainer/Template/Tags "+
+			" return $Template" ;
+		
+
+		XQPreparedExpression exp = conn.prepareExpression(xsString);
+
+		URI sourcUri=new File(sourceFile).toURI();
+//		exp.bindString(new QName("docName"), sourcUri.getPath(), conn
+//				.createAtomicType(XQItemType.XQBASETYPE_STRING));
+		XQResultSequence result = exp.executeQuery();
+		String rawResult = result.getSequenceAsString(new Properties());
+
+		System.out.println("TransformTest.testXQueryExpression()..:"+rawResult);
+//		System.out.println(tester.transfer(sourceFile, xqFile));
+	}
+	
 	@Test
 	public void testTransformAndOutput() throws XQException, JAXBException, IOException {
 		String mapFile="workingspace/hl7v2/dischargeMap.map";
