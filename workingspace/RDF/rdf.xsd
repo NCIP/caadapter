@@ -1,4 +1,4 @@
-<schema xmlns="http://www.w3.org/1999/XMLSchema" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 
 	<annotation>
@@ -98,7 +98,7 @@
 		<attribute ref="rdf:ID" use='optional' />
 	</attributeGroup>
 
-	<attribute name="about" type="uriReference" />
+	<attribute name="about" type="uriReference"/>
 	<attributeGroup name="aboutAttrOpt">
 		<attribute name="about" use='optional' type="uriReference" />
 		<attribute ref="rdf:about" use='optional' />
@@ -194,6 +194,10 @@
 	<element name="Alt" type="rdf:members" />
 	<!-- @@restrict Alt to have at least one member -->
 
+	<simpleType name="uriReference">
+		<restriction base="string"/>
+	</simpleType>
+	
 	<complexType name="members" content="elementOnly">
 		<sequence maxOccurs="unbounded">
 			<element name="li" type="rdf:item" />
@@ -225,13 +229,13 @@
 
 	<attribute name="parseType" />
 	<attributeGroup name="parseLiteral">
-		<attribute name="parseType" use='fixed' value="Literal" />
-		<attribute ref="rdf:parseType" use='fixed' value="Literal" />
+		<attribute name="parseType" use='required' value="Literal" />
+		<attribute ref="rdf:parseType" use='required' value="Literal" />
 	</attributeGroup>
 
 	<attributeGroup name="parseResource">
-		<attribute name="parseType" use='fixed' value="Resource" />
-		<attribute ref="rdf:parseType" use='fixed' value="Resource" />
+		<attribute name="parseType" use='required' value="Resource" />
+		<attribute ref="rdf:parseType" use='required' value="Resource" />
 	</attributeGroup>
 
 	<!--
