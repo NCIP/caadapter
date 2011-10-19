@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
@@ -14,6 +15,7 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.InputSource;
 public class RDFEncoder   {
 	private Document xmlDoc;
+	private static Namespace rdfNS=Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	/**
 	 * Constructor with XML string
 	 * @param xmlSource String of source XML
@@ -47,7 +49,8 @@ public class RDFEncoder   {
 				if (!element.isRootElement()&&isRdfResource)
 				{	
 					element.removeContent(castChild);
-					element.setAttribute("resource", castChild.getAttributeValue("about"));
+					element.setAttribute("resource", castChild.getAttributeValue("about", rdfNS));
+					element.getAttribute("resource").setNamespace(rdfNS);
 					if (!duplicateResource(castChild))
 					xmlDoc.getRootElement().addContent(castChild);
 				}
@@ -62,6 +65,8 @@ public class RDFEncoder   {
 			return false;
 		String rdfAbout=element.getAttributeValue("about")+element.getName()+"&id="+element.getAttributeValue("id");
 		element.setAttribute("about", rdfAbout);
+		element.getAttribute("about").setNamespace(rdfNS);
+		xmlDoc.getRootElement().addNamespaceDeclaration(rdfNS);
 		return true;
 	}
 	
@@ -98,9 +103,9 @@ public class RDFEncoder   {
 		for(Object attrObj:element.getAttributes())
 		{
 			Attribute attr=(Attribute)attrObj;
-			if (toCompare.getAttributeValue(attr.getName())==null)
+			if (toCompare.getAttributeValue(attr.getName(), attr.getNamespace())==null)
 				return false;
-			else if (!toCompare.getAttributeValue(attr.getName()).equals(attr.getValue()))
+			else if (!toCompare.getAttributeValue(attr.getName(), attr.getNamespace()).equals(attr.getValue()))
 				return false;
 		}
 		return true;
