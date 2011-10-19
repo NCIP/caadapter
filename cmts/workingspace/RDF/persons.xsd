@@ -20,7 +20,7 @@
 
 	<!--Empty Content Type-->
 	<xs:complexType name="RDF_Base" abstract="true">
-		<xs:attribute ref="rdf:about"
+		<xs:attribute ref="rdf:about" form="qualified"
 			default="caCORE://caCORE/4.3/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional#" />
 	</xs:complexType>
 
@@ -35,6 +35,7 @@
 								<xs:element name="address" type="RDF_Address"
 									minOccurs="0" maxOccurs="1" />
 							</xs:sequence>
+							<xs:attribute ref="rdf:resource"/>	
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>
