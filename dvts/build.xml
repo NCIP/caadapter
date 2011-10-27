@@ -203,25 +203,31 @@
 		<delete includeemptydirs="true" failonerror="false">
 			<fileset dir="${dist.dir}" includes="**/*"/>
 		</delete>
-
-		<jar destfile="${dist.dir}/caAdapter-dvts.jar">
-		     <fileset dir="${build.dir}"/>
-		     <fileset dir="${caadapter.project.resources.dir}" includes="images/*"/> 
-		     <fileset dir="src/resources/etc">
-				<include name="*Notes.txt"/>
-				<include name="warning/**"/>
-				<include name="license/**"/>
-		     	<include name="map/**"/>
-			</fileset>
-			<fileset dir="${project.docs.home}" erroronmissingdir="false">
-				<include name="*Notes.txt"/>
-			</fileset>
-		     <!--<fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>-->
-        </jar>
-        <delete dir="${build.dir}" failonerror="false"/>
         
 	</target>
 	
+	<target name="jar" depends="compile" description="build  jar file">
+		<jar destfile="${dist.dir}/caAdapter-dvts.jar">
+			     <fileset dir="${build.dir}"/>
+			     <fileset dir="${caadapter.project.resources.dir}" includes="images/*"/> 
+			     <fileset dir="src/resources/etc">
+					<include name="*Notes.txt"/>
+					<include name="warning/**"/>
+					<include name="license/**"/>
+			     	<include name="map/**"/>
+				</fileset>
+				<fileset dir="${project.docs.home}" erroronmissingdir="false">
+					<include name="*Notes.txt"/>
+				</fileset>
+			     <!--<fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>-->
+	    </jar>
+        <delete dir="${build.dir}" failonerror="false"/>
+	</target>
+	
+	<target name="build:war" depends="jar" description="call webservice build file">
+		<copyfile src="${dist.dir}/caAdapter-dvts.jar" dest="webservice/lib/caAdapter-dvts.jar"/>
+		<ant antfile="webservice/build.xml" target="build:war" inheritall="false"/>
+	</target>
 	
 	<!-- Define genCode parameters !-->
 	<property name="caadapter.project.gencode.dir" value="gencode"/>
