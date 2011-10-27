@@ -4,10 +4,25 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-   <context-param>
+   
+   <!--<context-param>
       <param-name>gov.nih.nci.security.configFile</param-name>
         <param-value>/WEB-INF/conf/ApplicationSecurityConfig.xml</param-value>
-   </context-param>
+   </context-param> -->
+   
+   <display-name>gov.nih.nci.caadapter.dvts.ws.restful</display-name>
+   
+   <context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/rest-context.xml
+		</param-value>
+	</context-param>
+	
+	<!-- This listener will load other application context file in addition to springweb-servlet.xml -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
    <!-- HibernateUtil Transaction per Request Management -->
 <!--  
@@ -35,6 +50,13 @@
   	</filter-mapping>
  
  	<!-- Servlet: Struts Action -->
+ 	
+    <servlet>
+		<servlet-name>rest</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet> 	
+ 	
   	<servlet>
   		<servlet-name>action</servlet-name>
     	<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
@@ -62,23 +84,27 @@
   	</servlet>
 
 	<!-- Servlet: DeleteOutputFile -->
+	<!--
   	<servlet>
         <servlet-name>DeleteOutputFile</servlet-name>
         <servlet-class>gov.nih.nci.caadapter.dvts.ws.DeleteOutputFile</servlet-class>
         <load-on-startup>1</load-on-startup>
    	</servlet>
+    -->
 <!-- Servlet: DosFileHandler -->
+    <!--
   	<servlet>
         <servlet-name>DosFileHandler</servlet-name>
         <servlet-class>gov.nih.nci.caadapter.dvts.ws.DosFileHandler</servlet-class>
         <load-on-startup>1</load-on-startup>
    	</servlet>
+    -->
 <!-- Servlet: FileUploaderWS -->
-  	<servlet>
+  	<!--<servlet>
         <servlet-name>FileUploaderWS</servlet-name>
         <servlet-class>gov.nih.nci.caadapter.dvts.ws.FileUploaderWS</servlet-class>
         <load-on-startup>1</load-on-startup>
-   	</servlet>   	
+   	</servlet> -->   	
    	<!-- Servlet: ManageCaadapterWSUser -->
   	<servlet>
         <servlet-name>ManageCaadapterWSUser</servlet-name>
@@ -86,11 +112,11 @@
         <load-on-startup>1</load-on-startup>
    	</servlet>   
    	<!-- Servlet: ScenarioFileRegistration -->
-  	<servlet>
+  	<!--<servlet>
         <servlet-name>ScenarioFileRegistration</servlet-name>
         <servlet-class>gov.nih.nci.caadapter.dvts.ws.ScenarioFileRegistration</servlet-class>
         <load-on-startup>1</load-on-startup>
-   	</servlet>   
+   	</servlet> -->   
    	<!-- Servlet: TransformationServiceOnWeb -->
   	<!--<servlet>
         <servlet-name>TransformationServiceOnWeb</servlet-name>
@@ -120,12 +146,13 @@
         <load-on-startup>1</load-on-startup>
    	</servlet>   
    	
+   	<!--
    	<servlet>
         <servlet-name>VOMExecution</servlet-name>
         <servlet-class>gov.nih.nci.caadapter.dvts.ws.VOMExecution</servlet-class>
         <load-on-startup>1</load-on-startup>
    	</servlet>   
-   	
+   	-->
    	<servlet>
         <servlet-name>VOMFileRegistration</servlet-name>
         <servlet-class>gov.nih.nci.caadapter.dvts.ws.VOMFileRegistration</servlet-class>
@@ -136,11 +163,11 @@
         <servlet-class>gov.nih.nci.caadapter.dvts.ws.ContextVOMTranslation</servlet-class>
         <load-on-startup>1</load-on-startup>
    	</servlet>
-    <servlet>
+    <!--<servlet>
         <servlet-name>DomainListInContext</servlet-name>
         <servlet-class>gov.nih.nci.caadapter.dvts.ws.DomainListInContex</servlet-class>
         <load-on-startup>1</load-on-startup>
-   	</servlet>
+   	</servlet>-->
 
        <!-- Servlet: Add Scenario -->
   	<!--<servlet>
@@ -181,7 +208,7 @@
         <servlet-name>validateUser</servlet-name>
         <url-pattern>/validateUser</url-pattern>
     </servlet-mapping> -->
-
+    <!--
     <servlet-mapping>
         <servlet-name>DeleteOutputFile</servlet-name>
         <url-pattern>/DeleteOutputFile</url-pattern>
@@ -194,15 +221,17 @@
         <servlet-name>FileUploaderWS</servlet-name>
         <url-pattern>/FileUploaderWS</url-pattern>
     </servlet-mapping>
+   -->
     <servlet-mapping>
         <servlet-name>ManageCaadapterWSUser</servlet-name>
         <url-pattern>/ManageCaadapterWSUser</url-pattern>
     </servlet-mapping>
+    <!--    
     <servlet-mapping>
         <servlet-name>ScenarioFileRegistration</servlet-name>
         <url-pattern>/ScenarioFileRegistration</url-pattern>
     </servlet-mapping>
-    <!--<servlet-mapping>
+    <servlet-mapping>
         <servlet-name>TransformationServiceOnWeb</servlet-name>
         <url-pattern>/TransformationServiceOnWeb</url-pattern>
     </servlet-mapping>
@@ -223,12 +252,12 @@
         <servlet-name>FileDownloader</servlet-name>
         <url-pattern>/FileDownloader</url-pattern>
     </servlet-mapping>   
-    
+    <!--
     <servlet-mapping>
         <servlet-name>VOMExecution</servlet-name>
         <url-pattern>/VOMExecution</url-pattern>
     </servlet-mapping>   
-    
+    -->
     <servlet-mapping>
         <servlet-name>VOMFileRegistration</servlet-name>
         <url-pattern>/VOMFileRegistration</url-pattern>
@@ -239,15 +268,20 @@
         <url-pattern>/ContextVOMTranslation</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>DomainListInContext</servlet-name>
         <url-pattern>/DomainListInContext</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
     
       <servlet-mapping>
     	<servlet-name>action</servlet-name>
     	<url-pattern>*.do</url-pattern>
   	</servlet-mapping>
+  	
+  	<servlet-mapping>
+		<servlet-name>rest</servlet-name>
+		<url-pattern>/restful/*</url-pattern>
+	</servlet-mapping>
   
   	<welcome-file-list>
      	<welcome-file>index.jsp</welcome-file>
@@ -257,6 +291,12 @@
 
 	<!-- Struts Tag Library Descriptors -->
 	<jsp-config>
+
+    <taglib>
+			<taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+			<taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+		</taglib>	
+	
 	<taglib>
 		<taglib-uri>/tags/struts-bean</taglib-uri>
 		<taglib-location>/WEB-INF/tld/struts-bean.tld</taglib-location>

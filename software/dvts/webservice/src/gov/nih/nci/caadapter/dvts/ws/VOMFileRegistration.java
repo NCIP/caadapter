@@ -267,6 +267,17 @@ public class VOMFileRegistration extends HttpServlet
                     vFile.delete();
                     if ((vFileDesc.exists())&&(vFileDesc.isFile())) vFileDesc.delete();
                 }
+                else if (overwrite.equalsIgnoreCase("delete"))
+                {
+                    File vFileDesc = new File(vFile.getAbsolutePath() + ".desc");
+                    String fileN = vFile.getName();
+                    vFile.delete();
+                    if ((vFileDesc.exists())&&(vFileDesc.isFile())) vFileDesc.delete();
+                    gUtil.deleteFile(dir);
+                    util.returnMessageAndLogging(out, "Vom File Delete complete", util.codeINFO(), "This VOM fime has been deleted. : " + fileN, userPath, user, ipAddr, this);
+                    return;
+
+                }
                 else
                 {
                     gUtil.deleteFile(dir);
@@ -275,6 +286,13 @@ public class VOMFileRegistration extends HttpServlet
                 }
             }
             fileDataPath = sDirS;
+
+            if (overwrite.equalsIgnoreCase("delete"))
+            {
+                gUtil.deleteFile(dir);
+                util.returnMessageAndLogging(out, "Not found file for deleting", util.codeERROR(), "Not found this file for deleting : " + vomFile.getName(), userPath, user, ipAddr, this);
+                return;
+            }
 
             if (!vomFile.renameTo(new File(fileDataPath + vomFile.getName())))
             {
@@ -335,7 +353,7 @@ public class VOMFileRegistration extends HttpServlet
             "<font color='green'>\n" +
             "<center>\n" +
             "<h1>\n" +
-            "caAdapter DVM Web Service VOM File Registration\n" +
+            "caAdapter DVTS Web Service VOM File Registration\n" +
             "</h1>\n" +
             "\n" +
             "</font>\n" +
@@ -348,9 +366,9 @@ public class VOMFileRegistration extends HttpServlet
             "<table border=2 cellpading=10>\n";
         if (isInside) h = h +
             "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". User Identification</font><font color=red>*</font></h3>\n" +
+            "<h3><font color=blue>"+ (++seq) +". Context Identification</font><font color=red>*</font></h3>\n" +
             "\n" +
-            "  USER-ID :<input type=text name='user' value=''> &nbsp;&nbsp;&nbsp;<br>\n" +
+            "  Context Name :<input type=text name='user' value=''> &nbsp;&nbsp;&nbsp;<br>\n" +
             "  PASSWORD:<input type=password name='pass' value=''> &nbsp;&nbsp;&nbsp;\n" +
             "  \n" +
             "</td></tr>\n";
@@ -363,9 +381,10 @@ public class VOMFileRegistration extends HttpServlet
             "  \n" +
             "</td></tr>\n" +
             "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". Do You Want to Overwrite?</font>\n" +
-            "  <input type=radio name='overwrite' value='Yes'>Yes&nbsp;&nbsp;&nbsp;\n" +
-            "  <input type=radio name='overwrite' value='No' checked>No&nbsp;&nbsp;&nbsp;\n" +
+            "<h3><font color=blue>"+ (++seq) +". What do You Want for this file?</font>\n" +
+            "  <input type=radio name='overwrite' value='Yes'>Overwrite&nbsp;&nbsp;&nbsp;\n" +
+            "  <input type=radio name='overwrite' value='No' checked>New File Registratio&nbsp;&nbsp;&nbsp;\n" +
+            "  <input type=radio name='overwrite' value='Delete' checked>Delete&nbsp;&nbsp;&nbsp;\n" +
             //"  <input type=radio name='overwrite' value='Backup'>Backup&nbsp;&nbsp;&nbsp;</h3>\n" +
             "</td></tr>\n" +
 
