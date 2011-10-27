@@ -1,191 +1,122 @@
 package gov.nih.nci.caadapter.dvts.ws;
 
 import gov.nih.nci.caadapter.dvts.FunctionVocabularyMapping;
+import gov.nih.nci.caadapter.dvts.ContextVocabularyTranslation;
+import gov.nih.nci.caadapter.dvts.ws.util.TranslationResponseUtil;
 import gov.nih.nci.caadapter.dvts.common.util.Config;
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 /**
  * Created by IntelliJ IDEA.
  * User: umkis
  * Date: Oct 14, 2011
- * Time: 1:18:36 AM
+ * Time: 4:20:27 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ContextVOMTranslation
+public class ContextVOMTranslation extends HttpServlet
 {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
                 throws ServletException, IOException
     {
         CaadapterWSUtil util = new CaadapterWSUtil();
-        GeneralUtilitiesWS gUtil = new GeneralUtilitiesWS();
-
-        String fileDataPath = "";
 
         util.setBaseURLToPropertyfile(req);
         res.setContentType("text/html;charset=KSC5601");
         PrintWriter out = res.getWriter();
 
-
-        String ip = req.getRemoteAddr();
-        String domain = "";
-        String value = "";
-        String context = "";
-        //String vom = "";
         boolean inverse = false;
 
-        domain = req.getParameter("domain");
-        value = req.getParameter("value");
-        if ((value == null)||(value.trim().equals("")))
-        {
-            value = req.getParameter("source");
-            if ((value == null)||(value.trim().equals("")))
-            {
-                value = req.getParameter("sourceValue");
-                if ((value == null)||(value.trim().equals("")))
-                {
-                    value = req.getParameter("val");
-                }
-            }
-        }
-        context = req.getParameter("context");
-        if ((context == null)||(context.trim().equals("")))
-        {
-            context = req.getParameter("user");
-            if ((context == null)||(context.trim().equals("")))
-            {
-                context = req.getParameter("userid");
-            }
-        }
+        String ip = req.getRemoteAddr();
 
-        String inverseS = req.getParameter("inverse");
-
-        if ((context == null)||(context.trim().equals("")))
-        {
-            out.println(assemblResultMessage("Error", "No Context", "", ip, domain, value));
-            return;
-        }
-        context = context.trim();
-        fileDataPath = util.checkLoginID(context);
-        if (fileDataPath == null)
-        {
-            out.println(assemblResultMessage("Error", "Not Found Context : " + context, "", ip, domain, value));
-            return;
-        }
-        if (!fileDataPath.endsWith(File.separator)) fileDataPath = fileDataPath + File.separator;
-//        if ((vom == null)||(vom.trim().equals("")))
-//        {
-//            out.println(assemblResultMessage("Error", "No VOM file", "", ip, domain, value));
-//            return;
-//        }
-        String vomPath = fileDataPath + "vom";// + File.separator + vom;
-        File vomRepoDir =  new File(vomPath);
-        if ((!vomRepoDir.exists())||(!vomRepoDir.isDirectory()))
-        {
-            out.println(assemblResultMessage("Error", "Not found VOM Repositary : " + vomPath, "", ip, domain, value));
-            return;
-        }
-        if ((domain == null)||(domain.trim().equals("")))
-        {
-            out.println(assemblResultMessage("Error", "No domain name parameter", "", ip, domain, value));
-            return;
-        }
-        if ((value == null)||(value.trim().equals("")))
-        {
-            out.println(assemblResultMessage("Error", "No source value parameter", "", ip, domain, value));
-            return;
-        }
-
-        File vomFile = null;
-        FunctionVocabularyMapping fvm0 = new FunctionVocabularyMapping();
-        for(File f:vomRepoDir.listFiles())
-        {
-            if (!f.isFile()) continue;
-            String fileName = f.getName();
-            if (!fileName.toLowerCase().endsWith(".vom")) continue;
-
-            List<String> domainList = null;
-            try
-            {
-                domainList = fvm0.getDomains(f.getAbsolutePath());
-            }
-            catch(FunctionException fe)
-            {
-                continue;
-            }
-            if (domainList == null) continue;
-            for (String domain1:domainList)
-            {
-                if (domain1.trim().equals(domain))
-                {
-                    vomFile = f;
-                    break;
-                }
-            }
-            if (vomFile != null) break;
-        }
-
-        if ((inverseS != null)&&(!inverseS.trim().equals("")))
-        {
-            inverseS = inverseS.trim().toLowerCase();
-            if ((inverseS.equals("true"))||(inverseS.equals("yes"))) inverse = true;
-        }
-
-        System.out.println(gUtil.getNowDate() + ": TestFunctionVocabularyMappingService from " + ip + ", vom file="+vomPath+", domain=" + domain + ", value=" + value);
-
-
-
-        String result = "";
-        String level = "Information";
-        String message = "Successful searching";
+        String context = null;
+        String domain = null;
+        String searchDomain = null;
+        String value = null;
+        String inverseS = null;
+        String showFile = null;
+        String[] paramArray = new String[] {context, domain, searchDomain, value, inverseS, showFile};
 
         try
         {
-            FunctionVocabularyMapping fvm = new FunctionVocabularyMapping(
-                                   (new FunctionVocabularyMapping()).getTypeNamePossibleList()[0],
-                                   vomFile.getAbsolutePath(),
-                                   domain,
-                                   inverse);
-            if (inverse) result = fvm.translateInverseValue(value);
-            else result = fvm.translateValue(value);
+            Enumeration en = req.getParameterNames();
+
+            String paramName = "";
+            String param = "";
+            int idxP = 0;
+            while(en.hasMoreElements())
+            {
+                paramName = (String) en.nextElement();
+                if (paramName == null) continue;
+                paramName = paramName.trim();
+                if (paramName.equals("")) continue;
+                param = req.getParameter(paramName);
+                if ((param == null)||(param.trim().equals(""))) continue;
+
+                if (paramName.equalsIgnoreCase("context")) idxP = 0;
+                else if (paramName.equalsIgnoreCase("domain")) idxP = 1;
+                else if (paramName.equalsIgnoreCase("domainName")) idxP = 1;
+                else if (paramName.equalsIgnoreCase("searchDomain")) idxP = 2;
+                else if (paramName.equalsIgnoreCase("domainSearch")) idxP = 2;
+                else if (paramName.equalsIgnoreCase("value")) idxP = 3;
+                else if (paramName.equalsIgnoreCase("val")) idxP = 3;
+                else if (paramName.equalsIgnoreCase("input")) idxP = 3;
+                else if (paramName.equalsIgnoreCase("source")) idxP = 3;
+                else if (paramName.equalsIgnoreCase("inverse")) idxP = 4;
+                else if (paramName.equalsIgnoreCase("inv")) idxP = 4;
+                else if (paramName.equalsIgnoreCase("showfile")) idxP = 5;
+                else if (paramName.equalsIgnoreCase("downfile")) idxP = 5;
+                else
+                {
+                    System.out.println("Not assigned parameter = " + paramName + ", value=" + param);
+                    continue;
+                }
+
+                if (paramArray[idxP] != null)
+                {
+                    System.out.println("Duplicate parameter=" + paramName + ", ready value=" + paramArray[idxP] + ", duplacate value=" + param);
+                }
+                else paramArray[idxP] = param;
+            }
+
+            for (int i=0;i<paramArray.length;i++)
+            {
+                String item = paramArray[i];
+                if (item == null) item = "";
+                else item = item.trim();
+                if (i == 0) context = item;
+                else if (i == 1) domain = item;
+                else if (i == 2) searchDomain = item;
+                else if (i == 3) value = item;
+                else if (i == 4) inverseS = item;
+                else if (i == 5) showFile = item;
+            }
+
+            if ((inverseS != null)&&(!inverseS.trim().equals("")))
+            {
+                inverseS = inverseS.trim().toLowerCase();
+                if ((inverseS.equals("true"))||(inverseS.equals("yes"))) inverse = true;
+            }
+            
         }
-        catch(FunctionException fe)
-        {
-            out.println(assemblResultMessage("Error", "FunctionException("+fe.getErrorNumber()+") : " + fe.getMessage(), "", ip, domain, value));
-            System.out.println("FunctionException("+fe.getErrorNumber()+") : vom=" + vomFile.getAbsolutePath());
-            fe.printStackTrace();
+		catch(Exception ee)
+		{
+            out.println(TranslationResponseUtil.assemblResultMessage(context, inverse, "Error", "Parameter parsing error : " + ee.getMessage(), "", ip, domain, value, false));
             return;
-        }
+		}
 
-        out.println(assemblResultMessage(level, message, result, ip, domain, value));
+        TranslationResponseUtil.sendTranslationResult(out, ip, context, domain, searchDomain, value, inverse, showFile);
 
-
-    }
-
-    public void doPost(HttpServletRequest req, HttpServletResponse response)
-                throws ServletException, IOException
-    {
-        doGet(req, response);
-    }
-
-    private String assemblResultMessage(String level, String msg, String valueC, String ipS, String domainP, String sourceH)
-    {
-        String r = "<?xml version=\"1.0\" encoding=\"euc-kr\"?>\r\n" +
-                "<VocabularyMappingData>\r\n" +
-                "    <Message level=\""+ level + "\">\r\n" +
-                "      " + msg + "\r\n" +
-                "    </Message>\r\n" +
-                "    <MappingSource ip=\""+ipS+"\" domain=\"" + domainP + "\" value=\"" + sourceH + "\"/>\r\n";
-        if ((valueC != null)&&(!valueC.trim().equals(""))) r = r + "    <MappingResult value=\"" + valueC.trim() + "\"/>\r\n";
-        r = r + "</VocabularyMappingData>";
-        return r;
     }
 }
