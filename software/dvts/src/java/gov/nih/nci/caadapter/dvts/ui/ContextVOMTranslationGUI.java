@@ -12,8 +12,10 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.applet.Applet;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,7 +24,7 @@ import java.util.StringTokenizer;
  * Time: 3:14:08 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ContextVOMTranslationGUI extends JFrame implements ActionListener
+public class ContextVOMTranslationGUI extends JPanel implements ActionListener
 {
 
     /**
@@ -40,15 +42,12 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
     public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDemo.java,v 1.4 2008-11-21 16:18:38 wangeug Exp $";
 
 
-    private static final String TITLE = "Function Vocabulary Mapping Definition";
+    private static final String TITLE = "Context VOM TransLation Demo";
 
 
-    private FunctionVocabularyMapping functionVocabularyMapping = new FunctionVocabularyMapping();
+    //private FunctionVocabularyMapping functionVocabularyMapping = new FunctionVocabularyMapping();
 
 
-    //private JRadioButton fileLocal;
-    //private JRadioButton fileURL;
-    //private JRadioButton serviceURL;
     private JLabel contextLabel;
     private JComboBox contextCombo;
     private JLabel domainLabel;
@@ -64,7 +63,7 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
     private JButton okButton;
     //private JButton resetButton;
     private JButton cancelButton;
-    private JButton contextFileBrowseButton;
+    private JButton contextVOMBrowseButton;
     private JButton domainCollectButton;
 
     private JCheckBox inverse;
@@ -78,15 +77,66 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
     private String currentLink = null;
     private int currentItemIndex = 0;
 
-    private JFrame frame;
+    private Dimension dim = new Dimension(600, 250);
 
-    public ContextVOMTranslationGUI()//Frame owner, boolean inverse) throws HeadlessException
+    private Frame frame = null;
+    private Dialog dialog = null;
+
+    private String contextAddressPropertyFile = null;
+    //private Applet applet;
+
+    public ContextVOMTranslationGUI(Frame fr)
     {
-        //super(owner, TITLE, true);
-        super(TITLE);
-        //inverseTag = inverse;
+        frame = fr;
+        if (frame != null) frame.setTitle(TITLE);
         initialize();
     }
+    public ContextVOMTranslationGUI(Dialog di)
+    {
+        dialog = di;
+        if (dialog != null) dialog.setTitle(TITLE);
+        initialize();
+    }
+    public ContextVOMTranslationGUI()
+    {
+        initialize();
+    }
+
+    public ContextVOMTranslationGUI(Frame fr, String addrFile) throws Exception
+    {
+        frame = fr;
+        if (frame != null) frame.setTitle(TITLE);
+        checkAddrFile(addrFile);
+        initialize();
+    }
+    public ContextVOMTranslationGUI(Dialog di, String addrFile) throws Exception
+    {
+        dialog = di;
+        if (dialog != null) dialog.setTitle(TITLE);
+        checkAddrFile(addrFile);
+        initialize();
+    }
+    public ContextVOMTranslationGUI(String addrFile) throws Exception
+    {
+        checkAddrFile(addrFile);
+        initialize();
+    }
+
+    private void checkAddrFile(String addrFile) throws Exception
+    {
+        if ((addrFile == null)||(addrFile.trim().equals("")))
+            throw new Exception("Context AddressProperty File is null.");
+        File file = new File(addrFile);
+        if ((!file.exists())||(!file.isFile()))
+            throw new Exception("This Context Address Property File is not exist.");
+
+        contextAddressPropertyFile = addrFile;
+    }
+//    public ContextVOMTranslationGUI(Applet ap)
+//    {
+//        applet = ap;
+//        initialize();
+//    }
 
 
     private void initialize()
@@ -137,8 +187,8 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
         contextCombo.setPreferredSize(new Dimension(350, 25));
         centerPanel.add(contextCombo, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-        contextFileBrowseButton = new JButton("     Browse     ");
-        centerPanel.add(contextFileBrowseButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+        contextVOMBrowseButton = new JButton(" Context Browse  ");
+        centerPanel.add(contextVOMBrowseButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 
         domainLabel = new JLabel("   Domain   ");
@@ -181,17 +231,15 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
         outputField.setEditable(false);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        contextFileBrowseButton.addActionListener(this);
-        contextFileBrowseButton.setEnabled(false);
+        contextVOMBrowseButton.addActionListener(this);
+        contextVOMBrowseButton.setEnabled(true);
         domainCollectButton.addActionListener(this);
         domainCollectButton.setEnabled(false);
 
         domainCombo.addItem("");
         domainCombo.setEditable(true);
 
-
-
-        java.util.List<String> contextLine = FileUtil.getContextAddresses();
+        java.util.List<String> contextLine = FileUtil.getContextAddresses(contextAddressPropertyFile);
 
         if ((contextLine == null)||(contextLine.size() == 0))
         {
@@ -205,6 +253,9 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
             contextCombo.addItem("Select Context");
             for (String line:contextLine)
             {
+                if (line == null) continue;
+                line = line.trim();
+                if (line.startsWith("#")) continue;
                 int idx = line.indexOf("@");
                 if (idx < 0)
                 {
@@ -245,69 +296,79 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
         domainCombo.setEditable(false);
         contextCombo.setEditable(false);
 
-        //okButtonEnabled = false;
-
-        this.setSize(600, 250);
-
-
-        frame = this;
-        addWindowListener(new WindowAdapter()
+        contextCombo.addItemListener(
+            new ItemListener()
             {
-                public void windowClosing(WindowEvent e)
+                public void itemStateChanged(ItemEvent e)
                 {
-                    frame.dispose();
+                    if(contextCombo.getSelectedIndex() > 0)
+                    {
+                        String contextNameS = "";
+
+                        contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
+                        String link = contextNameS;
+//                        String link = "";
+//                        for (int i=0;i<contextName.size();i++)
+//                        {
+//                            String name = contextName.get(i);
+//                            if (name.equals(contextNameS))
+//                            {
+//                                link = contextLink.get(i);
+//                                break;
+//                            }
+//                        }
+                        if (setDomainListToCombo(link, false))
+                        {
+                            currentLink = link;
+                            currentItemIndex = contextCombo.getSelectedIndex();
+                        }
+                        else
+                        {
+                            contextCombo.setSelectedIndex(currentItemIndex);
+                        }
+                    }
+                    else
+                    {
+                        if (currentItemIndex != 0)
+                        {
+                            contextCombo.setSelectedIndex(currentItemIndex);
+                        }
+                    }
                 }
             }
         );
 
-        contextCombo.addItemListener(
-                new ItemListener()
+        if (frame != null)
+        {
+            frame.add(this);
+            frame.addWindowListener(new WindowAdapter()
                 {
-                    public void itemStateChanged(ItemEvent e)
+                    public void windowClosing(WindowEvent e)
                     {
-                        if(contextCombo.getSelectedIndex() > 0)
-                        {
-                            String contextNameS = "";
-
-                            contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
-                            String link = "";
-                            for (int i=0;i<contextName.size();i++)
-                            {
-                                String name = contextName.get(i);
-                                if (name.equals(contextNameS))
-                                {
-                                    link = contextLink.get(i);
-                                    break;
-                                }
-                            }
-                            if (setDomainListToCombo(link, false))
-                            {
-                                currentLink = link;
-                                currentItemIndex = contextCombo.getSelectedIndex();
-                            }
-                            else
-                            {
-                                contextCombo.setSelectedIndex(currentItemIndex);
-                            }
-                        }
-                        else
-                        {
-                            if (currentItemIndex != 0)
-                            {
-                                contextCombo.setSelectedIndex(currentItemIndex);
-                            }
-                        }
+                        frame.dispose();
                     }
                 }
-        );
+            );
+            frame.setSize(dim);
+            frame.setVisible(true);
+            DefaultSettings.centerWindow(frame);
+        }
 
-//        serviceURL.setVisible(false);
-//        serviceLabel.setVisible(false);
-//        checkServiceButton.setVisible(false);
-//        serviceField.setVisible(false);
-        this.setVisible(true);
-        //this.addWindowListener(new CaWindowClosingListener());
-        DefaultSettings.centerWindow(this);
+        if (dialog != null)
+        {
+            dialog.add(this);
+            dialog.addWindowListener(new WindowAdapter()
+                {
+                    public void windowClosing(WindowEvent e)
+                    {
+                        dialog.dispose();
+                    }
+                }
+            );
+            dialog.setSize(dim);
+            dialog.setVisible(true);
+            DefaultSettings.centerWindow(dialog);
+        }
 
         if (contextCombo.getItemCount() == 0)
         {
@@ -328,64 +389,34 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
 
         String command = e.getActionCommand();
 
-        if (e.getSource() == contextFileBrowseButton)
+        if (e.getSource() == contextVOMBrowseButton)
         {
-            String st = (String) contextCombo.getSelectedItem();
-
-            if (st.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) st = st.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
-            File file1 = null;
-            File file2 = new File(st);
-            if ((!st.trim().equals(""))&&(file2.exists())&&(file2.isFile()))
+            if ((contextCombo.getItemCount() == 0)||(contextCombo.getSelectedIndex() == 0))
             {
-                file1 = DefaultSettings.getUserInputOfFileFromGUI(this, file2.getParentFile().getAbsolutePath(),
-                         "*", "Select " + Config.VOCABULARY_MAPPING_FILE_EXTENSION + " File or Context Dir", false, false);
-                         //Config.VOCABULARY_MAPPING_FILE_EXTENSION, "Open " + Config.VOCABULARY_MAPPING_FILE_EXTENSION + " File..", false, false);
+                JOptionPane.showMessageDialog(this, "No Context is selected.", "No Context", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            else file1 = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-                         "*", "Select " + Config.VOCABULARY_MAPPING_FILE_EXTENSION + " File or Context Dir", false, false);
-                         //Config.VOCABULARY_MAPPING_FILE_EXTENSION, "Open " + Config.VOCABULARY_MAPPING_FILE_EXTENSION + " File..", false, false);
-            if (file1 == null) return;
-            String pathValue = file1.getAbsolutePath();
-
-            boolean ready = true;
-            if (file1.isFile())
-            {
-                if (!(file1.getName().toLowerCase().endsWith(Config.VOCABULARY_MAPPING_FILE_EXTENSION)))
-                {
-                    JOptionPane.showMessageDialog(this, "This is not a VOM File.", "Not a VOM File",JOptionPane.ERROR_MESSAGE);
-                    ready = false;
-                }
-            }
-            if (file1.isDirectory())
-            {
-                int cnt = 0;
-                for(File f:file1.listFiles())
-                {
-                    if (!f.isFile()) continue;
-                    if (f.getName().toLowerCase().endsWith(Config.VOCABULARY_MAPPING_FILE_EXTENSION)) cnt++;
-                }
-
-                if (cnt == 0)
-                {
-                    JOptionPane.showMessageDialog(this, "This Directory have no VOM File.", "Not a VOM Directory", JOptionPane.ERROR_MESSAGE);
-                    ready = false;
-                }
-            }
-
-            if (ready)
-            {
-                setDomainListToCombo(pathValue, false);
-
-                if (domainCombo.getItemCount() > 1)
-                {
-                    domainCollectButton.setEnabled(false);
-                    //contextField.setText(pathValue);
-                }
-                else JOptionPane.showMessageDialog(this, "This Context have no VOM domain.", "No VOM Domain", JOptionPane.ERROR_MESSAGE);
-
-            }
-            //contextField.setText(pathValue);
-
+            DomainInformationBrowser dib = null;
+            String contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
+            if (frame != null) dib = new DomainInformationBrowser(frame, contextNameS);
+            if (dialog != null) dib = new DomainInformationBrowser(dialog, contextNameS);
+            dib.setVisible(true);
+            DefaultSettings.centerWindow(dib);
+//            boolean ready= true;
+//            String context = null;
+//
+//            if ((contextCombo.getItemCount() == 0)||(contextCombo.getSelectedIndex() == 0))
+//            {
+//                JOptionPane.showMessageDialog(this, "Any Context is not selected.", "No Context", JOptionPane.ERROR_MESSAGE);
+//                ready = false;
+//            }
+//            else
+//            {
+//                String contextNameS = "";
+//
+//                contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
+//                context = getContextPysicalAddress(contextNameS);
+//            }
         }
         if (e.getSource() == domainCollectButton)
         {
@@ -430,19 +461,10 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
                 String contextNameS = "";
 
                 contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
-                String link = "";
-                for (int i=0;i<contextName.size();i++)
-                {
-                    String name = contextName.get(i);
-                    if (name.equals(contextNameS))
-                    {
-                        link = contextLink.get(i);
-                        break;
-                    }
-                }
-                context = link;
+                context = getContextPysicalAddress(contextNameS);
             }
 
+            if (!ready) return;
 
             String domain = (String) domainCombo.getSelectedItem();
             String input = inputField.getText();
@@ -474,12 +496,13 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
             {
                 try
                 {
-                    outputField.setText(ContextVocabularyTranslation.translate(context, domain, input, inverseTag));
+                    //String contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
+                    outputField.setText(ContextVocabularyTranslation.translate(null,context, domain, input, inverseTag));
                 }
                 catch(Exception ee)
                 {
-                    JOptionPane.showMessageDialog(this, ee.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    //ee.printStackTrace();
+                    JOptionPane.showMessageDialog(this, ".." +ee.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    ee.printStackTrace();
                 }
             }
         }
@@ -488,10 +511,26 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
         {
             //okButtonClicked = false;
             setVisible(false);
-            dispose();
+            if (frame != null) frame.dispose();
+            if (dialog != null) dialog.dispose();
         }
 
 
+    }
+
+    private String getContextPysicalAddress(String contextNameS)
+    {
+        String res = null;
+        for (int i=0;i<contextName.size();i++)
+        {
+            String name = contextName.get(i);
+            if (name.equals(contextNameS))
+            {
+                res = contextLink.get(i);
+                break;
+            }
+        }
+        return res;
     }
 
     private boolean setDomainListToCombo(boolean message)
@@ -500,35 +539,32 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
     }
     private boolean setDomainListToCombo(String path, boolean message)
     {
-        String params = "searchdomain=true";
-        if (path.indexOf("?") < 0)
-        {
-            path = path + "?" + params;
-        }
-        else
-        {
-            if (path.endsWith("&")) path = path + params;
-            else path = path + "&" + params;
-        }
-        String result = "";
+        java.util.List<String[]> result = null;
         try
         {
-            result = ContextVocabularyTranslation.translate(path, "any", "any");
+            //result = ContextVocabularyTranslation.translate(path, "any", "any");
+            result = ContextVocabularyTranslation.getDomainInformation(path, "");
         }
         catch(Exception ee)
         {
             if (message) JOptionPane.showMessageDialog(this, ee.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        if ((result == null)||(result.size() == 0))
+        {
+            JOptionPane.showMessageDialog(this, "No Result of Domain Searching", "No Domain result", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
 
         java.util.List<String> list = new ArrayList<String>();
 
-        StringTokenizer st = new StringTokenizer(result, ";");
-        while(st.hasMoreTokens())
+        for(String[] arr:result)
         {
-            String token = st.nextToken();
-            if (token.trim().equals("")) continue;
-            list.add(token.trim());
+            String str = arr[0];
+            int idx = str.indexOf("@");
+            if (idx > 0) list.add(str.substring(0, idx));
+            else list.add(str);
         }
 
         domainList = list;
@@ -551,7 +587,7 @@ public class ContextVOMTranslationGUI extends JFrame implements ActionListener
 
     public static void main(String arg[])
     {
-        new ContextVOMTranslationGUI();
+        new ContextVOMTranslationGUI(new Frame());
     }
 }
 
