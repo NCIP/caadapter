@@ -28,7 +28,7 @@
 		<xsd:attribute name="name" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 	<xsd:complexType name="ItemType">
-		<xsd:attribute name="value" type="xsd:string" use="required"/>
+		<xsd:attribute name="value" type="xsd:string" use="optional"/>
 		<xsd:attribute name="remark" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 	<xsd:complexType name="ElseCaseType">
@@ -42,14 +42,14 @@
 			<xsd:enumeration value="null"/>
 			<xsd:enumeration value="assignValue"/>
 			<xsd:enumeration value="makeAnError"/>
+			<xsd:enumeration value="errorMessage"/>
+			<xsd:enumeration value="taggingSuffix"/>
+			<xsd:enumeration value="taggingPrefix"/>
 			<!--<xsd:enumeration value="keepvalue"/> -->
 			<!--<xsd:enumeration value="valueassign"/> -->
 			<!--<xsd:enumeration value="makeanerror"/> -->
 			<!--<xsd:enumeration value="space"/> -->
-			<xsd:enumeration value="errorMessage"/>
 			<!--<xsd:enumeration value="errormessage"/>  -->
-			<xsd:enumeration value="taggingSuffix"/>
-			<xsd:enumeration value="taggingPrefix"/>
 			<!--<xsd:enumeration value="taggingsuffix"/> -->
 			<!--<xsd:enumeration value="taggingprefix"/> -->
 		</xsd:restriction>

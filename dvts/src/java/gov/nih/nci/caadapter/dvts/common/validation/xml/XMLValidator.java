@@ -23,6 +23,8 @@ import gov.nih.nci.caadapter.dvts.common.tools.XMLReorganizingTree;
 
 import java.io.File;
 
+import org.xml.sax.SAXParseException;
+
 /**
  * This class defines XML document validator 
  * 
@@ -111,12 +113,16 @@ public class XMLValidator extends Validator
                     result.addValidatorResult(one);
                 }
             }
+            catch (SAXParseException se)
+            {
+                System.out.println("CCCCC SAXParseException("+xmlFileName+") : " + se.getMessage());
+            }
             catch (Exception e)
             {
                 Message msg = MessageResources.getMessage("XML1", new Object[]{xmlFileName, e.getMessage()});
                 ValidatorResult one = new ValidatorResult(ValidatorResult.Level.FATAL, msg);
                 result.addValidatorResult(one);
-                Log.logException(this, e);
+                //Log.logException(this, e);
             }
 
             // If xml is not well formed, we will not proceed for the schema validation

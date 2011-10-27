@@ -356,12 +356,12 @@ public class ContextVOMTranslationDemo extends JFrame implements ActionListener
             {
                 try
                 {
-                    outputField.setText(ContextVocabularyTranslation.translate(context, domain, input, inverseTag));
+                    outputField.setText(ContextVocabularyTranslation.translate(null, context, domain, input, inverseTag));
                 }
                 catch(Exception ee)
                 {
-                    JOptionPane.showMessageDialog(this, ee.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    //ee.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "."+ee.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    ee.printStackTrace();
                 }
             }
         }

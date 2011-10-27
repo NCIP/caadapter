@@ -6,6 +6,7 @@ import gov.nih.nci.caadapter.dvts.common.function.FunctionVocabularyXMLMappingEv
 import gov.nih.nci.caadapter.dvts.common.function.FunctionVocabularyMappingEventHandler;
 import gov.nih.nci.caadapter.dvts.common.ApplicationException;
 import gov.nih.nci.caadapter.dvts.common.Message;
+import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
 import gov.nih.nci.caadapter.dvts.common.util.ClassLoaderUtil;
@@ -64,6 +65,10 @@ public class FunctionVocabularyMapping
     private File defaultWorkDirectory = null;
     private List<String[]> domainList = null;
 
+    private FunctionVocabularyXMLMappingEventHandler recentVOMHandler = null;
+    private String recentVOMFileName = null;
+    private FunctionVocabularyMappingEventHandler recentURL_VOMHandler = null;
+
     public FunctionVocabularyMapping()
     {
     }
@@ -105,7 +110,11 @@ public class FunctionVocabularyMapping
 
     public String translateValue(String input) throws FunctionException
     {
-        if (inverseTag) throw new FunctionException("Mis-assigning forward mapping : ", 724, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+        if (inverseTag)
+        {
+            throw new FunctionException("Mis-assigning forward mapping : ", 724, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            //return translateInverseValue(input);
+        }
 
         if (type.equals(typeNamePossibleList[0]))
         {
@@ -118,7 +127,7 @@ public class FunctionVocabularyMapping
         }
         else if (type.equals(typeNamePossibleList[1]))
         {
-            return searchMappingURL(input);
+            return searchMappingURL(input).get(0);
         }
         else if (type.equals(typeNamePossibleList[2]))
         {
@@ -129,7 +138,11 @@ public class FunctionVocabularyMapping
     }
     public String translateInverseValue(String input) throws FunctionException
     {
-        if (!inverseTag) throw new FunctionException("Mis-assigning inverse mapping : ", 722, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+        if (!inverseTag)
+        {
+            throw new FunctionException("Mis-assigning inverse mapping : ", 722, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+
+        }
 
         if (type.equals(typeNamePossibleList[0]))
         {
@@ -700,10 +713,10 @@ public class FunctionVocabularyMapping
 
         if (fe != null)
         {
-            String res = FileUtil.searchFile(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
+            String res = (new FileSearchUtil()).searchFile(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
             if (res == null)
             {
-                String res1 = FileUtil.searchFile("caAdapter.jar");
+                String res1 = (new FileSearchUtil()).searchFile("caAdapter.jar");
                 if (res1 == null) throw new FunctionException(fe);
                 fe = null;
                 try
@@ -811,45 +824,53 @@ public class FunctionVocabularyMapping
         }
 
         FunctionVocabularyXMLMappingEventHandler handler = null;
-        int n = 0;
-        try
+        if ((recentVOMFileName != null)&&(recentVOMFileName.equals(pathName)))
         {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser parser = factory.newSAXParser();
-
-            XMLReader producer = parser.getXMLReader();
-            //ContentHandler handler = new FunctionVocabularyMappingEventHandler();
-
-            handler = new FunctionVocabularyXMLMappingEventHandler();
-
-            producer.setContentHandler(handler);
-
-            producer.parse(new InputSource(pathName.trim()));
-
+            handler = recentVOMHandler;
         }
-        catch(SAXException e)
+        else
         {
-            throw new FunctionException("XMLMappingEventHandler SAXException (XML) : " + e.getMessage(), 715, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
-        }
-        catch(ConnectException e)
-        {
-            throw new FunctionException("XMLMappingEventHandler ConnectException (XML) : " + e.getMessage(), 715, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
-        }
-        catch(IOException e)
-        {
-            throw new FunctionException("XMLMappingEventHandler IOException (XML) : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
-        }
-        catch(ParserConfigurationException e)
-        {
-            throw new FunctionException("XMLMappingEventHandler ParserConfigurationException (XML) : " + e.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
-        }
-        catch(Exception e)
-        {
-            throw new FunctionException("XMLMappingEventHandler Unknown Exception (XML) : " + e.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
-        }
-        //System.out.println("DDDD : " + message + " : " +messageLevel + " : " + mappingValue + " : " + handler.getMappingDomain()+ " : " + handler.getMappingSource());
+            //recentVOMHandler = null;
+            //recentVOMFileName = null;
+            try
+            {
+                SAXParserFactory factory = SAXParserFactory.newInstance();
+                SAXParser parser = factory.newSAXParser();
 
+                XMLReader producer = parser.getXMLReader();
+                //ContentHandler handler = new FunctionVocabularyMappingEventHandler();
 
+                handler = new FunctionVocabularyXMLMappingEventHandler();
+
+                producer.setContentHandler(handler);
+
+                producer.parse(new InputSource(pathName.trim()));
+
+            }
+            catch(SAXException e)
+            {
+                throw new FunctionException("XMLMappingEventHandler SAXException (XML) : " + e.getMessage(), 715, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            }
+            catch(ConnectException e)
+            {
+                throw new FunctionException("XMLMappingEventHandler ConnectException (XML) : " + e.getMessage(), 715, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            }
+            catch(IOException e)
+            {
+                throw new FunctionException("XMLMappingEventHandler IOException (XML) : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            }
+            catch(ParserConfigurationException e)
+            {
+                throw new FunctionException("XMLMappingEventHandler ParserConfigurationException (XML) : " + e.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            }
+            catch(Exception e)
+            {
+                throw new FunctionException("XMLMappingEventHandler Unknown Exception (XML) : " + e.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            }
+            //System.out.println("DDDD : " + message + " : " +messageLevel + " : " + mappingValue + " : " + handler.getMappingDomain()+ " : " + handler.getMappingSource());
+            recentVOMHandler = handler;
+            recentVOMFileName = pathName;
+        }
         if (jobTag == 0)
         {
             // called by searchXMLMappingFile(String input, boolean inversTag, String path)
@@ -862,7 +883,12 @@ public class FunctionVocabularyMapping
             if (!existDomain) throw new FunctionException("This Domain is not exist : " + domain, 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
 
             String lines = handler.getLinesSearchValue(domain);
-            list.add(searchMappingFile(searchStr, inversTag, lines));
+            //System.out.println("CCCCC Lines=" + lines);
+            //System.out.println("CCCCC input=" + searchStr + ", inverse" + inversTag + ", domain=" +domain);
+            //System.out.println("CCCCC pathName=" + pathName);
+            String rr = searchMappingFile(searchStr, inversTag, lines);
+            //System.out.println("CCCCC result=" + rr);
+            list.add(rr);
         }
         else if (jobTag == 1)
         {
@@ -885,11 +911,11 @@ public class FunctionVocabularyMapping
     {
         return domainList;
     }
-    public String searchMappingURL(String searchStr) throws FunctionException
+    public List<String> searchMappingURL(String searchStr) throws FunctionException
     {
         String message = "";
         String messageLevel = "";
-        String mappingValue = "";
+        List<String> mappingValues = null;
 
         FunctionVocabularyMappingEventHandler handler = null;
         try
@@ -908,7 +934,7 @@ public class FunctionVocabularyMapping
             //System.out.println("E3");
             messageLevel = handler.getMessgeLevel();
             //System.out.println("E4");
-            mappingValue = handler.getMappingResult();
+            mappingValues = handler.getMappingResults();
             //System.out.println("EEEE : " + message + " : " +messageLevel + " : " + mappingValue);
 
         }
@@ -937,7 +963,13 @@ public class FunctionVocabularyMapping
         //System.out.println("DDDD : " + message + " : " +messageLevel + " : " + mappingValue + " : " + handler.getMappingDomain()+ " : " + handler.getMappingSource());
         if (messageLevel.equalsIgnoreCase("Error"))
             throw new FunctionException("MappingEventHandler (Invalid Data) : " + message, 718, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
-        else return mappingValue;
+
+        if ((mappingValues == null)||(mappingValues.size() == 0))
+            throw new FunctionException("MappingEventHandler (No output) : No output data returned", 799, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+
+        recentURL_VOMHandler = handler;
+
+        return mappingValues;
     }
 
     public void setType(String typ) throws FunctionException
@@ -993,6 +1025,15 @@ public class FunctionVocabularyMapping
     public String[] getMethodNamePossibleList()
     {
         return methodNamePossibleList;
+    }
+
+    public FunctionVocabularyXMLMappingEventHandler getRecentVOMHandler()
+    {
+        return recentVOMHandler;
+    }
+    public FunctionVocabularyMappingEventHandler getRecentUrlVomHandler()
+    {
+        return recentURL_VOMHandler;
     }
 
     private String verifyFileName(String fileName)
