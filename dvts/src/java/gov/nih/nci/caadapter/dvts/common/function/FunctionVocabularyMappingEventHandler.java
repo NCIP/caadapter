@@ -12,6 +12,9 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * This class defines ...
  *
@@ -40,11 +43,11 @@ public class FunctionVocabularyMappingEventHandler extends DefaultHandler
 
     private String message = "";
     private String messageLevel = null;
-    private String mappingResult = "";
+    private List<String> mappingResults = null;
     private String mappingSource = "";
     private String mappingDomain = "";
     private String ip = "";
-    private boolean accessTag = false;
+    //private boolean accessTag = false;
     private String currentPath = "";
     private int status = 0;
 
@@ -59,11 +62,15 @@ public class FunctionVocabularyMappingEventHandler extends DefaultHandler
         if (currentPath.startsWith(".")) currentPath = currentPath.substring(1);
         //System.out.println("startElement currentPath : " + currentPath);
         //currentElement = qName;
-        if (currentPath.equalsIgnoreCase("VocabularyMappingData.Message"))
+        if (currentPath.equalsIgnoreCase("VocabularyMappingData.ReturnMessage"))
         {
             for(int i=0;i<atts.getLength();i++)
             {
-                if (atts.getQName(i).equalsIgnoreCase("level")) messageLevel = atts.getValue(i);
+                if ((atts.getQName(i).equalsIgnoreCase("errorLevel"))||(atts.getQName(i).equalsIgnoreCase("level")))
+                {
+                     messageLevel = atts.getValue(i);
+                }
+
                 //System.out.println("   Attribute currentPath : " + currentPath + ", messageLevel : " + messageLevel);
 
             }
@@ -74,8 +81,33 @@ public class FunctionVocabularyMappingEventHandler extends DefaultHandler
             {
                 if (atts.getQName(i).equalsIgnoreCase("value"))
                 {
-                    mappingResult = atts.getValue(i);
-                    accessTag = true;
+                    String res = atts.getValue(i);
+                    if ((res != null)&&(!res.trim().equals("")))
+                    {
+                        if (mappingResults == null) mappingResults = new ArrayList<String>();
+                        mappingResults.add(atts.getValue(i));
+                        //accessTag = true;
+                    }
+                }
+                //System.out.println("   Attribute currentPath : " + currentPath + ", mappingResult : " + mappingResult);
+
+            }
+        }
+        if (currentPath.equalsIgnoreCase("VocabularyMappingData.MappingResults.Result"))
+        {
+            for(int i=0;i<atts.getLength();i++)
+            {
+                if (atts.getQName(i).equalsIgnoreCase("value"))
+                {
+                    String res = atts.getValue(i);
+
+                    if ((res != null)&&(!res.trim().equals("")))
+                    {
+                        if (mappingResults == null) mappingResults = new ArrayList<String>();
+                        mappingResults.add(atts.getValue(i));
+                        //accessTag = true;
+                    }
+
                 }
                 //System.out.println("   Attribute currentPath : " + currentPath + ", mappingResult : " + mappingResult);
 
@@ -85,12 +117,12 @@ public class FunctionVocabularyMappingEventHandler extends DefaultHandler
         {
             for(int i=0;i<atts.getLength();i++)
             {
-                if (atts.getQName(i).equalsIgnoreCase("value"))
+                if ((atts.getQName(i).equalsIgnoreCase("sourceValue"))||(atts.getQName(i).equalsIgnoreCase("value")))
                 {
                     mappingSource = atts.getValue(i);
                     //System.out.println("   Attribute currentPath : " + currentPath + ", mappingSource : " + mappingSource);
                 }
-                if (atts.getQName(i).equalsIgnoreCase("domain"))
+                if ((atts.getQName(i).equalsIgnoreCase("domainName"))||(atts.getQName(i).equalsIgnoreCase("domain")))
                 {
                     mappingDomain = atts.getValue(i);
                     //System.out.println("   Attribute currentPath : " + currentPath + ", mappingDomain : " + mappingDomain);
@@ -109,10 +141,19 @@ public class FunctionVocabularyMappingEventHandler extends DefaultHandler
         for(int i=start;i<(start+length);i++) st = st + cha[i];
         String trimed = st.trim();
         if (trimed.equals("")) return;
-        if (currentPath.equalsIgnoreCase("VocabularyMappingData.Message"))
+        if (currentPath.equalsIgnoreCase("VocabularyMappingData.ReturnMessage"))
         {
             message = trimed;
             //System.out.println("   innerElement currentPath : " + currentPath + ", value : " + message);
+        }
+
+        if (currentPath.equalsIgnoreCase("VocabularyMappingData.MappingResults.Result"))
+        {
+            if ((trimed != null)&&(!trimed.trim().equals("")))
+            {
+                if (mappingResults == null) mappingResults = new ArrayList<String>();
+                mappingResults.add(trimed);
+            }
         }
 
 
@@ -133,7 +174,12 @@ public class FunctionVocabularyMappingEventHandler extends DefaultHandler
 
     public String getMessge() { return message; }
     public String getMessgeLevel() { return messageLevel; }
-    public String getMappingResult() { return mappingResult; }
+//    public String getMappingResult()
+//    {
+//        if ((mappingResults == null)||(mappingResults.size() == 0)) return null;
+//        return mappingResults.get(0);
+//    }
+    public List<String> getMappingResults() { return mappingResults; }
     public String getMappingSource() { return mappingSource; }
     public String getMappingDomain() { return mappingDomain; }
     public String getSourceIP() { return ip; }

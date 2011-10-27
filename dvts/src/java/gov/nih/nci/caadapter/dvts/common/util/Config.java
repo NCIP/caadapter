@@ -130,6 +130,8 @@ public class Config {
     public static String V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME = "multicacheschemas";
     public static String V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME = "coreschemas";
 
+    public static String CONTEXT_LINK_ADDRESS_PROPERTY_FILE_NAME ="contextLinkAddress.properties";
+
 
 
     //public Config() { /* compiled code */ }

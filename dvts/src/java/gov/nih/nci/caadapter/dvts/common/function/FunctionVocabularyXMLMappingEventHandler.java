@@ -237,14 +237,52 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
                 String inverseAllowed = getAttributeValue(temp, "inverseAllowed");
                 if (inverseAllowed == null) inverseAllowed = "";
                 if (inverseAllowed.equalsIgnoreCase("false")) inverseAllowed = "false";
+                else if (inverseAllowed.equalsIgnoreCase("f")) inverseAllowed = "false";
+                else if (inverseAllowed.equalsIgnoreCase("no")) inverseAllowed = "false";
                 else inverseAllowed = "true";
-                list.add(new String[] {name, inverseAllowed});
+
+                FunctionVocabularyEventHandlerNode lower = temp.getLower();
+                String commentDomain = "";
+                String commentSource = "";
+                String commentTarget = "";
+                while(lower != null)
+                {
+                    if (!lower.isAttribute())
+                    {
+                        if ((lower.getName().equalsIgnoreCase("comment"))||
+                            (lower.getName().equalsIgnoreCase("annotation")))
+                        {
+                            commentDomain = lower.getValue();
+
+                            FunctionVocabularyEventHandlerNode lower2 = temp.getLower();
+                            while(lower2 != null)
+                            {
+                                if (!lower2.isAttribute())
+                                {
+                                    if (lower2.getName().equalsIgnoreCase("source"))
+                                    {
+                                        commentSource = lower2.getValue();
+                                    }
+                                    if (lower2.getName().equalsIgnoreCase("target"))
+                                    {
+                                        commentTarget = lower2.getValue();
+                                    }
+                                }
+                                lower2 = lower2.getRight();
+                            }
+                        }
+                    }
+                    lower = lower.getRight();
+                }
+                list.add(new String[] {name, inverseAllowed, commentDomain, commentSource, commentTarget});
             }
 
             temp = nextTraverse(temp);
         }
         return list;
     }
+
+
     public String getLinesSearchValue(String domain)
     {
         FunctionVocabularyEventHandlerNode temp = head;
@@ -252,6 +290,10 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
         boolean domainTag = false;
 
         String lines = "";
+
+        String sourceVal = "";
+        String targetVal = "";
+        boolean underTranslation = false;
         while(temp!=null)
         {
             if (temp.getName().equalsIgnoreCase("domain"))  
@@ -265,6 +307,8 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
             }
             if (domainTag)
             {
+                //System.out.println("CCCCC SS element name =" + temp.getName());
+                //System.out.println("CCCCC SS Line=" + lines);
                 if (temp.getName().equalsIgnoreCase("domain"))
                 {
                     if (!getAttributeValue(temp, "name").equalsIgnoreCase(domain))
@@ -273,16 +317,33 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
                         break;
                     }
                 }
+                if ((temp.getName().equalsIgnoreCase("translation"))||(!isUnderElement(temp, "translation")))
+                {
+                    if ((!sourceVal.equals(""))&&(!targetVal.equals("")))
+                    {
+                        lines = lines + sourceVal + " " + Config.VOCABULARY_MAP_FILE_VALUE_SEPARATOR + " ";
+                        lines = lines + targetVal + "\t";
+                    }
+                    sourceVal = "";
+                    targetVal = "";
+                }
+
+
                 if (isUnderElement(temp, "translation"))
                 {
                     if (temp.getName().equalsIgnoreCase("source"))
                     {
-                        lines = lines + getAttributeValue(temp, "value") + " " + Config.VOCABULARY_MAP_FILE_VALUE_SEPARATOR + " ";
+                        sourceVal = getAttributeValue(temp, "value");
+                        if (sourceVal == null) sourceVal = "";
+                        else sourceVal = sourceVal.trim();
                     }
                     if (temp.getName().equalsIgnoreCase("target"))
                     {
-                        lines = lines + getAttributeValue(temp, "value") + "\t";
+                        targetVal = getAttributeValue(temp, "value");
+                        if (targetVal == null) targetVal = "";
+                        else targetVal = targetVal.trim();
                     }
+
                 }
                 if ((temp.getName().equalsIgnoreCase("elseCase"))||(temp.getName().equalsIgnoreCase("inverseElseCase")))
                 {
