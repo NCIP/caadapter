@@ -9,6 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.dvts.common.util;
 
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
+import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
 
 import java.net.URL;
 import java.net.URI;
@@ -183,7 +184,7 @@ public class ClassLoaderUtil
 
         if ((count == 0)||(streams.size() == 0))
         {
-            String res1 = FileUtil.searchFile("caAdapter.jar");
+            String res1 = (new FileSearchUtil()).searchFile("caAdapter.jar");
             if (res1 == null) throw new IOException("Class loader search Result (2) : " + name + " : Not Found (caAdapter.jar)");
             //System.out.println("&&& 12-1  URL for ZIP: " + res1);
 
