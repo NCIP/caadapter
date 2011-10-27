@@ -9,6 +9,7 @@ import gov.nih.nci.caadapter.dvts.common.function.DateFunction;
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 import gov.nih.nci.caadapter.dvts.common.Message;
 import gov.nih.nci.caadapter.dvts.common.tools.ZipUtil;
+import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResults;
 //import gov.nih.nci.caadapter.dvts.hl7.transformation.TransformationServiceUtil;
@@ -31,10 +32,10 @@ public class CaadapterWSUtil
     private String[] PROPERTY_ITEMS = new String[] {"scs", "h3s", "map", "schema", "comment", "date", "schemaValidation"};
     private String PROPERTY_FILE_NAME = "properties.txt";
     private String PASSWORD_FILE_NAME = "password.txt";
-    private String SERVICE_NAME = "caAdapterWS";
+    private String SERVICE_NAME = "caadapter-dvts";
     private String ROOT_PATH = "C:\\"+SERVICE_NAME + File.separator;
     private String ROOT_WEB_DIR = "C:\\resin-2.0.0\\doc\\" + SERVICE_NAME + File.separator;
-    private String ENVIRONMENT_PROPERTY_FILE_NAME = "caAdapterWSEnvironment.properties";
+    private String ENVIRONMENT_PROPERTY_FILE_NAME = "caAdapterDVTS_WSEnvironment.properties";
     private String SCENARIO_DIR_NAME = "scenarios";
     private String ROOT_SCENARIO_PATH = ROOT_PATH + SCENARIO_DIR_NAME + File.separator;
     private String WORKING_DIR_NAME = "working";
@@ -224,7 +225,7 @@ public class CaadapterWSUtil
     }
     private List<String> generateEnvironmentPropertiesFile()
     {
-        String caAdapterWSDir = FileUtil.searchDir(getServiceName());
+        String caAdapterWSDir = (new FileSearchUtil()).searchDir(getServiceName());
         if ((caAdapterWSDir == null)||(caAdapterWSDir.trim().equals("")))
         {
             System.out.println("#### Not found caAdapteWS dir : ");

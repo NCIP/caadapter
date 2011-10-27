@@ -45,7 +45,7 @@ public class CaAdapterUserWorks  extends HttpServlet
 
 		String rep = "<tr><td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Command</td>"
                    + "<td width=\"70%\">"
-                   + "<input type=radio name='command' value='scenarioRegistration'>Scenario Registration&nbsp;&nbsp;&nbsp;<br>"
+                   //+ "<input type=radio name='command' value='scenarioRegistration'>Scenario Registration&nbsp;&nbsp;&nbsp;<br>"
                    + "<input type=radio name='command' value='vomRegistration'>VOM File Registration&nbsp;&nbsp;&nbsp;<br>"
                    + "<input type=radio name='command' value='checkPassword' checked>Test Password&nbsp;&nbsp;&nbsp;<br>"
                    + "<input type=radio name='command' value='changePassword'>Change Password&nbsp;&nbsp;&nbsp;<br>"
@@ -226,17 +226,17 @@ public class CaAdapterUserWorks  extends HttpServlet
             currentCommand = command;
             if (command.equalsIgnoreCase("scenarioRegistration"))
 			{
-				if (useSession)
-				{
-				    util.returnMessageAndLogging(out, "Invalid Session Usage", util.codeERROR(), "Invalid Session Usage for 'scenarioRegistration' Command" + userID, userPath, userID, ipAddr, this);
-					return;
-				}
-				else
-                {
-                    ScenarioFileRegistration sr = new ScenarioFileRegistration();
-                    out.println(sr.getInitialHTMLFromOutSide(req, currentUser));
-                    return;
-                }
+//				if (useSession)
+//				{
+//				    util.returnMessageAndLogging(out, "Invalid Session Usage", util.codeERROR(), "Invalid Session Usage for 'scenarioRegistration' Command" + userID, userPath, userID, ipAddr, this);
+//					return;
+//				}
+//				else
+//                {
+//                    ScenarioFileRegistration sr = new ScenarioFileRegistration();
+//                    out.println(sr.getInitialHTMLFromOutSide(req, currentUser));
+//                    return;
+//                }
             }
             else if (command.equalsIgnoreCase("vomRegistration"))
 			{
