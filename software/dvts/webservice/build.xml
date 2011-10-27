@@ -5,7 +5,7 @@
                      caAdapter WEBSERVICES module                          
 	************************************************************************** 
 -->
-<project name="caadapterWS" default="build" basedir=".">
+<project name="caadapterWS" default="build:war" basedir=".">
 	<description>
 		webservices
 	</description>	
@@ -123,59 +123,21 @@
 	<zipfileset dir="${root}/caadapter/src/resources/etc/map/functions" includes="core.fls" prefix="map/functions/" id="dist.root.function.file"/>
 	<zipfileset dir="${ws.module.home}/dist" includes="function.jar" prefix="WEB-INF/lib" id="dist.root.functions.lib"/>
 
-	<!-- **************************************** -->
-	<!-- END: Variables used for the distribution -->
-	<!-- **************************************** -->
 
-	<!-- initialize the distribution process.-->
-	<target name="dist_init" depends="clean,init,compile.source" description="Some setup stuff before building a distribution.">
-		<mkdir dir="${dist_ws_dir}"/>
-		<!-- Remove the previous distribution files, if exist -->
-		<echo message="remove old distribuation files"/>
-		<delete>
-			<fileset dir="${dist_ws_dir}" casesensitive="false">
-				<patternset includes="$*.war"/>
-			</fileset>
-		</delete>
-		<copy overwrite="true" file="${ws.module.home}/WebRoot/WEB-INF/server-config.wsdd.template" tofile="${ws.module.home}/WebRoot/WEB-INF/server-config.wsdd">
-			<filterset>
-				<filter token="DATA_DIR" value="${data_dir}"/>
-			</filterset>
-		</copy>
-	</target>
-
-
-	<!-- generate the binary distribution.-->
-	<target name="dist_bin"
-			description="Zipup the binary distribution (see 'dist_init', this is not called explicitly)."
-			>
-		<echo message="** Generating the Binary Distribution w/o MIFs."/>
-		<!--<zip destfile="${ws.module.home}/dist/function.jar">
-			<zipfileset refid="dist.root.function.file"/>
-		</zip>-->
-		
-		<zip destfile="${dist_ws_file_name}">
-			<!-- Common to both source and binary distribution. -->
-			<zipfileset refid="dist.ws.axis.libs"/>
+   	<target name="build:war" depends="clean,init,compile.source">
+   		<echo message="-------- creating ${APPLICATION_NAME} file  --------"/>	
+   		<war destfile="${dist_ws_file_name}" webxml="WebRoot/WEB-INF/web.xml">
+   			<zipfileset refid="dist.ws.axis.libs"/>
 			<zipfileset refid="dist.ws.web.root"/>
 			<zipfileset refid="dist.ws.web.classes"/>
 			<zipfileset refid="dist.ws.web.properties"/>
 			<zipfileset refid="dist.ws.module.libs"/>
-			<zipfileset refid="dist.root.libs"/>
+			<!-- zipfileset refid="dist.root.libs"/>
 			<zipfileset refid="dist.root.hl7.libs"/>
 			<zipfileset refid="dist.root.ref.libs"/>
-			<zipfileset refid="dist.root.functions.lib"/>
-		</zip>
-	</target>
-
-
-
-	<!-- Create the ${version_number_dot_format} distributions. -->
-	<target name="build" description="Create Web Service distributions.">
-		<!-- setup all the files.-->
-		<antcall target="dist_init"/>
-		<!-- zip up the binary distribution.-->
-		<antcall target="dist_bin"/>
+			<zipfileset refid="dist.root.functions.lib"/ -->
+   		</war>
+   		<delete dir="${module.build.dir}" failonerror="false"/>
 	</target>
 
 </project>
