@@ -33,10 +33,11 @@ public class MenuStart extends HttpServlet
 		String connectTime = gUtil.getNowDate();
 		String ipAddr = req.getRemoteAddr();
         String url = util.getBaseURLFromRequest(req);
-        
-        String check = req.getParameter("ck");
-        if (check == null) check = "";
-        else check = check.trim();
+
+        String check = "";
+//        check = req.getParameter("ck");
+//        if (check == null) check = "";
+//        else check = check.trim();
         
         String rl = "\r\n";
         String title = "caAdapter Web Service Work Menu";
