@@ -238,7 +238,8 @@ public class AddNewScenario extends HttpServlet {
 	    			if (cmpType!=null&&cmpType.equalsIgnoreCase("v2"))
 	    				continue;
 			    	String localName=extractOriginalFileName(locationAttr.getValue());
-			    	locationAttr.setValue(fileHome+File.separator+cmpType+File.separator+localName);
+//			    	locationAttr.setValue(fileHome+File.separator+cmpType+File.separator+localName);
+			    	locationAttr.setValue(cmpType+File.separator+localName);
 	    		}
 //	    		//update VOM reference
 //	    		Attr groupAttr = component.getAttributeNode("group");
