@@ -63,44 +63,37 @@
 			 </classpath>
 		</java>
 	</target>
-	<target name="build:caadapter-wars" depends="jar, webstart:copy_resources" >	
-		<antcall target="webstart:sign_resources">
-			<param name="RESOURCE_HOME" value="${dist.dir}/webstart"/>
+	<target name="build:caadapter-wars" depends="jar, webapp:copy_resources" >	
+		<antcall target="webapp:sign_resources">
+			<param name="RESOURCE_HOME" value="${dist.dir}/webapp"/>
 		</antcall>
 
 		<echo message=""/>
-		<echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
-		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="${web.src.dir}/web.xml">
-			<fileset dir="${dist.dir}/webstart">
+		<echo message="-------- creating ${webapp.warfile.name} file (copied to deploy/webapp) --------"/>
+		<war destfile="${dist.dir}/${webapp.warfile.name}" webxml="${web.src.dir}/web.xml">
+			<fileset dir="${dist.dir}/webapp">
 				<exclude name="${jar-signing.keystore.abs-location}"/>
 			</fileset>
 			<fileset dir="${web.src.dir}">
 					<include name="**/*.html"/>
 					<include name="**/*.bmp"/>
-					<exclude name="**/*webstart*"/>
+					<exclude name="**/*webapp*"/>
 			</fileset>
-			<!-- zipfileset dir="${web.src.dir}/jsp" prefix="jsp"/ -->
-			<!-- lib dir="${web.src.dir}/WEB-INF/lib">
-				<include name="jardiff.jar"/>
-				<include name="jnlp.jar"/>
-				<include name="jnlp-servlet.jar"/>
-			</lib -->
 			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
-		</war>
-		<!--	
+		</war>	
 		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">	
 			<property name="ws.module.name" value="caadapterWS-cmts" />
-			<property name="project.dist.dir" value="${dist.dir}" />
 		</ant>
+		<copy file="src/webservices/dist/caadapterWS-cmts.war" todir="${dist.dir}" overwrite="true" />
 		
-		<delete dir="${dist.dir}/webstart" failonerror="false"/>
-        -->
-        <!-- copy file="${dist.dir}/${webstart.warfile.name}" tofile="C:\apps\caadapter-webapp\jboss-5.1.0.GA\server\default\deploy\caadapter-cmts.war" overwrite="true" / -->
+		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="clean" dir="src/webservices"/>	
+		<delete dir="${dist.dir}/webapp" failonerror="false"/>
+        <!-- copy file="${dist.dir}/${webapp.warfile.name}" tofile="C:\apps\caadapter-webapp\jboss-5.1.0.GA\server\default\deploy\caadapter-cmts.war" overwrite="true" / -->
 	</target>
-   	
-	<target name="webstart:copy_resources" description="Perpare web start resources...">  
-		<echo message="build:webstart --copy resource"/>
-		<copy todir="${dist.dir}/webstart" failonerror="false">
+   	   	
+	<target name="webapp:copy_resources" description="Perpare web start resources...">  
+		<echo message="build:webapp --copy resource"/>
+		<copy todir="${dist.dir}/webapp" failonerror="false">
 			<fileset dir="${lib.dir}">
 				<include name="caAdapter.jar"/>
 				<include name="commons-beanutils.jar"/>
@@ -130,7 +123,7 @@
 		</copy>
 	</target>
 	
-	<target name="webstart:sign_resources">
+	<target name="webapp:sign_resources">
     	<available file="${jar-signing.keystore.abs-location}" property="digital-keys.exist"/>
 
 	    <antcall target="generate-keys"/>
@@ -241,38 +234,48 @@
 			</classpath>		
 		</javac>
 	</target>
-
-	<target name="compile-test" depends="compile">
-		<javac srcdir="${test.dir}" destdir="${build.dir}" debug="on" deprecation="on">
-			<include name="**/*.java" />
+	
+	<target name="local.deploy" depends="build:caadapter-wars">
+		<copy file="${dist.dir}/${webapp.warfile.name}" todir="C:\apps\caadapter-webapp\jboss-5.1.0.GA\server\default\deploy" overwrite="true"/>
+		<copy file="${dist.dir}/caadapterWS-cmts.war" todir="C:\apps\caadapter-webapp\jboss-5.1.0.GA\server\default\deploy" overwrite="true" />
+   	</target>
+    <property name="jboss.host" value="localhost" />
+    <property name="jboss.port" value="30210" />
+    <property name="jboss.home" value="C:\apps\caadapter-webapp\jboss-5.1.0.GA" />
+     <property name="deploy.configuration" value="${jboss.home}/server/default/conf" />
+    <target name="jboss.check.running">
+        <condition property="jboss_already_running" value="true">
+            <and>
+                <socket server="${jboss.host}" port="${jboss.port}"/>
+                <http url="http://${jboss.host}:${jboss.port}/jmx-console/index.jsp"/>
+            </and>
+        </condition>
+        <echo>JBoss is already running on ${jboss.host}:${jboss.port} - [${jboss_already_running}]</echo>
+    </target>
+    <target name="jboss.start" depends="local.deploy, jboss.shutdown" description="Start the JBoss server.">
+		<!-- java dir="${deploy.configuration}" 
+			classname="org.jboss.Main" fork="true" spawn="true">
+			<arg line="-c ${deploy.configuration}"/>
+			<jvmarg value="-Xms32m"/>
+			<jvmarg value="-Xmx200m"/>
 			<classpath>
-				<path refid="project.class.path" />
-				<pathelement location="${build.dir}" />
+				<pathelement path="${jboss.home}/bin/run.jar"/>
+				<pathelement path="${jdk.home}/lib/tools.jar"/>
 			</classpath>
-		</javac>
+		</java -->
+		<exec executable="${jboss.home}/bin/run.bat" dir="${jboss.home}/bin"/>   
 	</target>
-	<target name="test" depends="compile-test">
-		<junit>
+
+	<target name="jboss.shutdown">
+		<java dir="${deploy.configuration}" 
+			classname="org.jboss.Shutdown" fork="true">
+			<arg line="@{jboss.host} @{jboss.port}"/>
 			<classpath>
-				<path refid="project.class.path" />
-				<pathelement location="${build.dir}" />
+				<pathelement path="${jboss.home}/bin/shutdown.jar"/>
 			</classpath>
-
-			<formatter type="plain" />
-
-			<!-- test name="gov.nih.nci.cbiit.cmts.test.MappingTest" haltonfailure="no" outfile="result">
-				<formatter type="xml" />
-			</test -->
-
-			<batchtest fork="yes" todir="bin">
-				<formatter type="xml" />
-				<fileset dir="${test.dir}">
-					<include name="**/*Test*.java" />
-					<exclude name="**/AllTests.java" />
-				</fileset>
-			</batchtest>
-		</junit>
+		</java>
 	</target>
+
 
 	<target name="doc" description="Generate JavaDoc">
 		<mkdir dir="${javadoc.dir}" />
