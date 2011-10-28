@@ -2,7 +2,8 @@
 
 <!-- 
 	************************************************************************** 
-                     caAdapter WEBSERVICES module                          
+           	caAdapter Common Mapping & Transformation Service
+                     	WEBSERVICES module                          
 	************************************************************************** 
 -->
 <project name="caadapterWS-cmts" default="package.war" basedir=".">
@@ -64,17 +65,21 @@
 			<exclude name="xercesImpl.jar"/>
 			<exclude name="rt.jar"/>
 		</lib>
+		<lib dir="${ws.module.home}/../../dist" >
+			<include name="cmts.jar"/>
+		</lib>
 		<classes dir="${module.build.dir}" />
 
 		<classes dir="${module.src.dir}" >
 			<include name="**/*.properties"/>
 		</classes>
 	</war>
-	<copy overwrite="true" file="${module.dist.dir}/${ws.module.name}.war"
-		tofile="${project.dist.dir}/${ws.module.name}.war"/>
-	<antcall target="clean"/>
   </target>
 
+	<target name="local.deploy" depends="package.war">
+		<copy overwrite="true" file="${module.dist.dir}/${ws.module.name}.war"
+		tofile="${project.dist.dir}/${ws.module.name}.war"/>
+	</target>
   <target name="init">
       	<echo message="-------- initialize ${ws.module.name}  --------"/>
       	<mkdir dir="${module.build.dir}"/>
@@ -83,7 +88,7 @@
   
   <target name="clean">
   	<echo message="-------- clean ${ws.module.name}  --------"/>
-      	<delete dir="${module.build.dir}"/>
-      	<delete dir="${module.dist.dir}"/>
+      	<delete dir="${module.build.dir}" failonerror="false"/>
+      	<delete dir="${module.dist.dir}" failonerror="false"/>
   </target>
 </project>
