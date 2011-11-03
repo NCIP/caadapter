@@ -226,6 +226,7 @@
 	
 	<target name="build:war" depends="jar" description="call webservice build file">
 		<copyfile src="${dist.dir}/caAdapter-dvts.jar" dest="webservice/lib/caAdapter-dvts.jar"/>
+		<copyfile src="${dist.dir}/caAdapter-dvts.jar" dest="webservice/WebRoot/download/caAdapter-dvts.jar"/>
 		<ant antfile="webservice/build.xml" target="build:war" inheritall="false"/>
 	</target>
 	

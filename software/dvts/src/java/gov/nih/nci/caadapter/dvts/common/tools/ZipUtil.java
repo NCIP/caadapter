@@ -4,9 +4,7 @@ import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
 import gov.nih.nci.caadapter.dvts.common.util.Config;
 import gov.nih.nci.caadapter.dvts.common.function.DateFunction;
 
-import java.io.IOException;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import java.util.List;
@@ -157,6 +155,35 @@ public class ZipUtil
         if ((f.exists())&&(f.isFile())) return null;
         FileUtil.downloadFromInputStreamToFile(zipFile.getInputStream(entry), fileName, true);
         return fileName;
+    }
+    public String copyEntryToString(ZipEntry entry) throws IOException
+    {
+        //ZipEntry entry = zipFile.getEntry(entryName);
+        if (entry == null) throw new IOException("ZipEntry is null. ");
+        String entryName = entry.getName();
+
+        String content = "";
+
+        InputStream is = zipFile.getInputStream(entry);
+        DataInputStream dis = new DataInputStream(is);
+
+        byte bt = 0;
+
+        boolean started = false;
+
+        while(true)
+        {
+            try { bt = dis.readByte(); }
+            catch(IOException ie) { break; }
+            catch(NullPointerException ie) { break; }
+            char ch = (char) bt;
+            content = content + ch;
+        }
+
+        dis.close();
+        is.close();
+
+        return content;
     }
     public ZipFile getZipFile()
     {

@@ -46,7 +46,7 @@
   
   	<tr><td height="100%" valign="top">
       	<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
-        	<tr><td colspan="2" height="50"><tiles:insert attribute="applicationHeader"/></td></tr>
+        	<tr><td colspan="2" height="34"><tiles:insert attribute="applicationHeader"/></td></tr>
         	<tr>
             	<td width="190" valign="top" class="subMenu"><tiles:insert attribute="subMenu"/></td> 
             	<td valign="top" width="100%">

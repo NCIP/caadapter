@@ -11,7 +11,7 @@
 		</tr>
 		<tr>
 			<td valign="top">
-				<FORM ACTION="/caAdapterWS/AddNewScenario" ENCTYPE="multipart/form-data" METHOD=POST>
+				<FORM ACTION="/caadapter-dvts/AddNewScenario" ENCTYPE="multipart/form-data" METHOD=POST>
 					<table boarder=0>
 					<tr>
 					<td>Mapping Scenario Name:</td><td> <input type=text name="MSName"><br></td>

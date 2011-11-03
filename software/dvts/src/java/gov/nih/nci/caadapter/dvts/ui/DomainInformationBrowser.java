@@ -30,18 +30,22 @@ public class DomainInformationBrowser extends JDialog
     Dialog dialog = null;
     TableModel tableModel;
 
-    DomainInformationBrowser(Frame fr, String contextS)
+    private String contextAddressPropertyFile = null;
+
+    DomainInformationBrowser(Frame fr, String contextS, String propertyFile)
     {
         super(fr);
         setTitle(TITLE);
         context = contextS;
+        contextAddressPropertyFile = propertyFile;
         initialize();
     }
-    DomainInformationBrowser(Dialog di, String contextS)
+    DomainInformationBrowser(Dialog di, String contextS, String propertyFile)
     {
         super(di);
         setTitle(TITLE);
         context = contextS;
+        contextAddressPropertyFile = propertyFile;
         initialize();
     }
     private void initialize()
@@ -65,7 +69,7 @@ public class DomainInformationBrowser extends JDialog
         northPanel.add(contextAddress, new GridBagConstraints(1, 1, 3, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
-        String conAddr = ContextVocabularyTranslation.searchContextPhysicalAddress(context);
+        String conAddr = ContextVocabularyTranslation.searchContextPhysicalAddress(contextAddressPropertyFile, context);
 
         splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
@@ -79,7 +83,7 @@ public class DomainInformationBrowser extends JDialog
 
         try
         {
-            result = ContextVocabularyTranslation.getDomainInformation(context, "");
+            result = ContextVocabularyTranslation.getDomainInformation(contextAddressPropertyFile, context, "");
         }
         catch(Exception ee)
         {

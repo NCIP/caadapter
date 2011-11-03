@@ -116,6 +116,19 @@ public class ContextVOMTranslation extends HttpServlet
             return;
 		}
 
+//        if (context.startsWith("SampleContext"))
+//        {
+//
+//        }
+//        else if (domain.equals("*.*"))
+//        {
+//
+//        }
+//        else if(value.equals("*.*"))
+//        {
+//            ContextVocabularyTranslation.getDomainXMLPart(String contextAddrFileName, String contextSymbol, String domain) throws Exception
+//        }
+
         TranslationResponseUtil.sendTranslationResult(out, ip, context, domain, searchDomain, value, inverse, showFile);
 
     }

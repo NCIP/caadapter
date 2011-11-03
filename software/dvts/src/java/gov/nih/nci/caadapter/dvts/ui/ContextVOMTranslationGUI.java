@@ -3,6 +3,7 @@ package gov.nih.nci.caadapter.dvts.ui;
 import gov.nih.nci.caadapter.dvts.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.dvts.ContextVocabularyTranslation;
 import gov.nih.nci.caadapter.dvts.common.Log;
+import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 import gov.nih.nci.caadapter.dvts.common.util.DefaultSettings;
 import gov.nih.nci.caadapter.dvts.common.util.Config;
@@ -74,7 +75,7 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
 
     private java.util.List<String> contextName = new ArrayList<String>();
     private java.util.List<String> contextLink = new ArrayList<String>();
-    private String currentLink = null;
+    private String currentLink = "";
     private int currentItemIndex = 0;
 
     private Dimension dim = new Dimension(600, 250);
@@ -83,6 +84,7 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
     private Dialog dialog = null;
 
     private String contextAddressPropertyFile = null;
+    private java.util.List<String> contextAddressList = null;
     //private Applet applet;
 
     public ContextVOMTranslationGUI(Frame fr)
@@ -239,7 +241,27 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
         domainCombo.addItem("");
         domainCombo.setEditable(true);
 
-        java.util.List<String> contextLine = FileUtil.getContextAddresses(contextAddressPropertyFile);
+        String path = contextAddressPropertyFile;
+        if ((path == null)||(path.trim().equals(""))) path = (new FileSearchUtil()).searchFileLight(Config.CONTEXT_LINK_ADDRESS_PROPERTY_FILE_NAME);
+
+        java.util.List<String> contextLine = null;
+        try
+        {
+            if (path != null) contextLine = FileUtil.readFileIntoList(path);
+        }
+        catch(IOException ie)
+        {
+
+        }
+
+        if ((contextLine == null)||(contextLine.size() == 0))
+        {
+            contextLine = FileUtil.getContextAddresses(contextAddressPropertyFile);
+        }
+        else
+        {
+            if (contextAddressPropertyFile == null) contextAddressPropertyFile = path;
+        }
 
         if ((contextLine == null)||(contextLine.size() == 0))
         {
@@ -268,6 +290,7 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
                 contextCombo.addItem(name);
                 contextLink.add(addr);
             }
+            contextAddressList = contextLine;
         }
 
 
@@ -303,10 +326,10 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
                 {
                     if(contextCombo.getSelectedIndex() > 0)
                     {
-                        String contextNameS = "";
+                        String contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
 
-                        contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
-                        String link = contextNameS;
+                        //contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
+                        String link = contextNameS.trim();
 //                        String link = "";
 //                        for (int i=0;i<contextName.size();i++)
 //                        {
@@ -398,8 +421,8 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
             }
             DomainInformationBrowser dib = null;
             String contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
-            if (frame != null) dib = new DomainInformationBrowser(frame, contextNameS);
-            if (dialog != null) dib = new DomainInformationBrowser(dialog, contextNameS);
+            if (frame != null) dib = new DomainInformationBrowser(frame, contextNameS, contextAddressPropertyFile);
+            if (dialog != null) dib = new DomainInformationBrowser(dialog, contextNameS, contextAddressPropertyFile);
             dib.setVisible(true);
             DefaultSettings.centerWindow(dib);
 //            boolean ready= true;
@@ -443,6 +466,7 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
         if(OK_COMMAND.equals(command))
         {
             boolean ready= true;
+            boolean alreadyTrans= false;
             String context = null;
 
 
@@ -461,12 +485,41 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
                 String contextNameS = "";
 
                 contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
-                context = getContextPysicalAddress(contextNameS);
+
+                for (String line:contextAddressList)
+                {
+                    if (line == null) continue;
+                    line = line.trim();
+                    if (line.startsWith("#")) continue;
+                    int idx = line.indexOf("@");
+                    if (idx < 0)
+                    {
+                        idx = line.indexOf("=");
+                        if (idx < 0) continue;
+                    }
+                    String name = line.substring(0, idx);
+                    String addr = line.substring(idx+1);
+                    if (name.equals(contextNameS))
+                    {
+                        context = addr;
+                        alreadyTrans = true;
+                        break;
+                    }
+                    if ((name.endsWith("/EVS"))&&(contextNameS.equals("EVS")))
+                    {
+                        context = addr;
+                        alreadyTrans = true;
+                        break;
+                    }
+                }
+
+                if (context == null) context = getContextPysicalAddress(contextNameS);
             }
 
             if (!ready) return;
 
             String domain = (String) domainCombo.getSelectedItem();
+            if (domainCombo.getSelectedIndex() == 0) domain = "";
             String input = inputField.getText();
             if (context.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) context = context.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
 
@@ -497,7 +550,10 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
                 try
                 {
                     //String contextNameS = (String) contextCombo.getItemAt(contextCombo.getSelectedIndex());
-                    outputField.setText(ContextVocabularyTranslation.translate(null,context, domain, input, inverseTag));
+                    if (alreadyTrans)
+                        outputField.setText(ContextVocabularyTranslation.translate(contextAddressPropertyFile, context, domain, input, inverseTag, true));
+                    else
+                        outputField.setText(ContextVocabularyTranslation.translate(contextAddressPropertyFile, context, domain, input, inverseTag));
                 }
                 catch(Exception ee)
                 {
@@ -539,11 +595,12 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
     }
     private boolean setDomainListToCombo(String path, boolean message)
     {
+        if (path.equals(currentLink)) return true;
         java.util.List<String[]> result = null;
         try
         {
             //result = ContextVocabularyTranslation.translate(path, "any", "any");
-            result = ContextVocabularyTranslation.getDomainInformation(path, "");
+            result = ContextVocabularyTranslation.getDomainInformation(contextAddressPropertyFile, path, "");
         }
         catch(Exception ee)
         {
@@ -556,6 +613,7 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
             return false;
         }
 
+        currentLink = path;
 
         java.util.List<String> list = new ArrayList<String>();
 
@@ -587,7 +645,22 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
 
     public static void main(String arg[])
     {
-        new ContextVOMTranslationGUI(new Frame());
+        if ((arg == null)||(arg.length == 0))
+        {
+            new ContextVOMTranslationGUI(new Frame());
+            return;
+        }
+
+        try
+        {
+            if ((arg[0] == null)||(arg[0].trim().equals(""))) new ContextVOMTranslationGUI(new Frame());
+            else new ContextVOMTranslationGUI(new Frame(), arg[0]);
+        }
+        catch(Exception ee)
+        {
+            System.out.println();
+        }
+
     }
 }
 

@@ -2,6 +2,7 @@ package gov.nih.nci.caadapter.dvts.ws;
 
 import gov.nih.nci.caadapter.dvts.common.function.DateFunction;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
+import gov.nih.nci.caadapter.dvts.common.util.vom.ManageVOMFile;
 
 import java.io.*;
 import java.util.*;
@@ -44,13 +45,13 @@ public class ManageCaadapterWSUser extends HttpServlet
 
 		String rep = "<tr><td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Command</td>"
                    + "<td width=\"70%\">"
-                   + "<input type=radio name='command' value='createUser'>Create User&nbsp;&nbsp;&nbsp;<br>"
-                   + "<input type=radio name='command' value='removeUser'>Remove User&nbsp;&nbsp;&nbsp;<br>"
-                   + "<input type=radio name='command' value='checkPassword' checked>Test User Password&nbsp;&nbsp;&nbsp;<br>"
+                   + "<input type=radio name='command' value='createUser'>Create Context&nbsp;&nbsp;&nbsp;<br>"
+                   + "<input type=radio name='command' value='removeUser'>Remove Context&nbsp;&nbsp;&nbsp;<br>"
+                   + "<input type=radio name='command' value='checkPassword' checked>Test Context Password&nbsp;&nbsp;&nbsp;<br>"
                    + "<input type=radio name='command' value='changePassword'>Enforced Change Password&nbsp;&nbsp;&nbsp;<br>"
                    + "</td></tr>";
 
-		util.getUniversalLogin(out, this.getClass().getName(), "caAdapter Web Service User Management", "Administrator", "adminID", "adminPass", rep, req);
+		util.getUniversalLogin(out, this.getClass().getName(), "caAdapter DVTS Context Management", "Administrator", "adminID", "adminPass", rep, req);
 
 	}
 
@@ -213,7 +214,12 @@ public class ManageCaadapterWSUser extends HttpServlet
 			{
 				if (useSession)
 				{
-				    File dir = new File(userPath);
+                    if (userID.toLowerCase().startsWith(ManageVOMFile.SAMPLE_CONTEXT_TAG.toLowerCase()))
+                    {
+					    util.returnMessageAndLogging(out, "Invalid creating a sample context", util.codeERROR(), "User cannot create a sample context. : " + userID, userPath, userID, ipAddr, this);
+						return;
+					}
+                    File dir = new File(userPath);
 					if ((dir.exists())&&(dir.isDirectory()))
 					{
 					    util.returnMessageAndLogging(out, "Creating new User Failure", util.codeERROR(), "Already Exist User : " + userID, userPath, userID, ipAddr, this);
@@ -369,12 +375,12 @@ public class ManageCaadapterWSUser extends HttpServlet
                 "    <form method=\"Post\" action=\"" + url + "\">\n" +
                 "      <center>\n" +
                 "      <br><br><br>\n" +
-                "      <h1><font color='brown'>caAdapter Web Service Create User<br></font></h1>\n" +
+                "      <h1><font color='brown'>caAdapter DVTS Create Context<br></font></h1>\n" +
                 "      <h4><font color='brown'>Input New User ID and Password</font></h4>\n" +
                 "      <font color='green'><br><br><br>\n" +
                 "        <table border=1 bordercolor=\"blue\">\n" +
                 "          <tr>\n" +
-                "            <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">ID</td>\n" +
+                "            <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Context Name</td>\n" +
                 "            <td width=\"70%\"><input type=\"text\" name=\"userID\" size=20 onMouseOver=\"this.style.backgroundColor='yellow'\" onMouseOut=\"this.style.backgroundColor='white'\"></td>\n" +
                 "          </tr>\n" +
                 "          <tr>\n" +
@@ -403,18 +409,18 @@ public class ManageCaadapterWSUser extends HttpServlet
         {
             h = "<html>\t\n" +
                 "  <head>\t\t\n" +
-                "    <title>caAdapter Web Service User Management - Remove User</title>\t\n" +
+                "    <title>caAdapter DVTS Context Management - Remove Context</title>\t\n" +
                 "  </head>\n" +
                 "  <body>\t\n" +
                 "    <form method=\"Post\" action=\""+url+"\">\n" +
                 "      <center>\n" +
                 "      <br><br><br>\n" +
-                "      <h1><font color='brown'>caAdapter Web Service Remove User<br></font></h1>\n" +
-                "      <h4><font color='brown'>Input remove User ID and Password</font></h4>\n" +
-                "      <font color='green'><br><br>Please, be carefule for delete user...<br>\n" +
+                "      <h1><font color='brown'>caAdapter DVTS Remove Context<br></font></h1>\n" +
+                "      <h4><font color='brown'>Input Context Name and Password for removing</font></h4>\n" +
+                "      <font color='green'><br><br>Please, be carefule for delete Context...<br>\n" +
                 "        <table border=1 bordercolor=\"blue\">\n" +
                 "          <tr>\n" +
-                "            <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">ID</td>\n" +
+                "            <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Context Name</td>\n" +
                 "            <td width=\"70%\"><input type=\"text\" name=\"userID\" size=20 onMouseOver=\"this.style.backgroundColor='yellow'\" onMouseOut=\"this.style.backgroundColor='white'\"></td>\n" +
                 "          </tr>\n" +
                 "          <tr>\n" +
@@ -443,18 +449,18 @@ public class ManageCaadapterWSUser extends HttpServlet
         {
             h = "<html>\t\n" +
                 "  <head>\t\t\n" +
-                "    <title>caAdapter Web Service User Management - Check Password</title>\t\n" +
+                "    <title>caAdapter DVTS Context Management - Check Password</title>\t\n" +
                 "  </head>\n" +
                 "  <body>\t\n" +
                 "    <form method=\"Post\" action=\""+url+"\">\n" +
                 "      <center>\n" +
                 "      <br><br><br>\n" +
-                "      <h1><font color='brown'>caAdapter Web Service Check Password<br></font></h1>\n" +
-                "      <h4><font color='brown'>Input User ID and Password</font></h4>\n" +
+                "      <h1><font color='brown'>caAdapter DVTS Check Password<br></font></h1>\n" +
+                "      <h4><font color='brown'>Input Context Name and Password</font></h4>\n" +
                 "      <font color='green'><br><br><br>\n" +
                 "        <table border=1 bordercolor=\"blue\">\n" +
                 "          <tr>\n" +
-                "            <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">ID</td>\n" +
+                "            <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Context Name</td>\n" +
                 "            <td width=\"70%\"><input type=\"text\" name=\"userID\" size=20 onMouseOver=\"this.style.backgroundColor='yellow'\" onMouseOut=\"this.style.backgroundColor='white'\"></td>\n" +
                 "          </tr>\n" +
                 "          <tr>\n" +
@@ -480,18 +486,18 @@ public class ManageCaadapterWSUser extends HttpServlet
         {
             h = "<html>\t\n" +
                 "  <head>\t\t\n" +
-                "    <title>caAdapter Web Service User Management - Change Password</title>\t\n" +
+                "    <title>caAdapter DVTS Context Management - Change Password</title>\t\n" +
                 "  </head>\n" +
                 "  <body>\t\n" +
                 "    <form method=\"Post\" action=\""+url+"\">\n" +
                 "      <center>\n" +
                 "      <br><br><br>\n" +
-                "      <h1><font color='brown'>caAdapter Web Service Enforced Change Password<br></font></h1>\n" +
-                "      <h4><font color='brown'>Input User ID and Passwords</font></h4>\n" +
+                "      <h1><font color='brown'>caAdapter DVTS Enforced Change Password<br></font></h1>\n" +
+                "      <h4><font color='brown'>Input Context Name and Passwords</font></h4>\n" +
                 "      <font color='green'><br><br><br>\n" +
                 "        <table border=1 bordercolor=\"blue\">\n" +
                 "          <tr>\n" +
-                "            <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">ID</td>\n" +
+                "            <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Context Name</td>\n" +
                 "            <td width=\"70%\"><input type=\"text\" name=\"userID\" size=20 onMouseOver=\"this.style.backgroundColor='yellow'\" onMouseOut=\"this.style.backgroundColor='white'\"></td>\n" +
                 "          </tr>\n" +
 //                "          <tr>\n" +

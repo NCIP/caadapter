@@ -12,7 +12,7 @@
 	
 		<tr>
 			<td valign="top">
-				<FORM ACTION="/caAdapterWS/validateUser"  METHOD=POST>
+				<FORM ACTION="/caadapter-dvts/validateUser"  METHOD=POST>
 					<table boarder=0>
 					<tr>
 					<td>Enter UserId:</td><td> <input type=text name="userid"><br></td>

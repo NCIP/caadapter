@@ -222,7 +222,7 @@ public class FileSearchUtil
                 return res.toString();
             }
         }
-        if (isStart)
+        if ((isStart)&&(!light))
         {
             if (dir.getParentFile() == null) return null;
             String dName = startDir.getName();

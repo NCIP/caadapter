@@ -1,11 +1,11 @@
 package gov.nih.nci.caadapter.dvts.common.meta;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="Result" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
  *       &lt;/sequence>
+ *       &lt;attribute name="elsecaseApplied" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -37,6 +38,8 @@ public class MappingResults {
 
     @XmlElement(name = "Result", required = true)
     protected List<String> result;
+    @XmlAttribute(name = "elsecaseApplied")
+    protected Boolean elsecaseApplied;
 
     /**
      * Gets the value of the result property.
@@ -65,6 +68,30 @@ public class MappingResults {
             result = new ArrayList<String>();
         }
         return this.result;
+    }
+
+    /**
+     * Gets the value of the elsecaseApplied property.
+     *
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *
+     */
+    public Boolean isElsecaseApplied() {
+        return elsecaseApplied;
+    }
+
+    /**
+     * Sets the value of the elsecaseApplied property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *
+     */
+    public void setElsecaseApplied(Boolean value) {
+        this.elsecaseApplied = value;
     }
 
 }
