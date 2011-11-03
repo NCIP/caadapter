@@ -13,6 +13,7 @@ import gov.nih.nci.caadapter.dvts.ws.restful.bean.EntryPointList;
 import gov.nih.nci.caadapter.dvts.ws.restful.bean.EntryPointDS;
 import gov.nih.nci.caadapter.dvts.ws.util.TranslationResponseUtil;
 import gov.nih.nci.caadapter.dvts.common.meta.*;
+import gov.nih.nci.caadapter.dvts.common.util.Config;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -85,12 +86,19 @@ public class EntryPointController
     {
         boolean inverse = false;
         if ((inverseS != null)&&(!inverseS.trim().equals("")))
-            {
-                inverseS = inverseS.trim().toLowerCase();
-                if ((inverseS.equals("true"))||(inverseS.equals("yes"))) inverse = true;
-            }
+        {
+            inverseS = inverseS.trim().toLowerCase();
+            if ((inverseS.equals("true"))||(inverseS.equals("yes"))) inverse = true;
+        }
 
-        String result = TranslationResponseUtil.generateTranslationResult("unknown", context, domain, "false", value, inverse, "", false);
+        String result = "";
+        if ((context.trim().equals(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_WILD_CHARACTER))||
+            (domain.trim().equals(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_WILD_CHARACTER))||
+            (value.trim().equals(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_WILD_CHARACTER)))
+        {
+            result = TranslationResponseUtil.assemblResultMessage(context, inverse, "Error", "DVTS Restful service cannot use any wild character. Use web service", value, "unknown", domain, value, false);
+        }
+        else result = TranslationResponseUtil.generateTranslationResult("unknown", context, domain, "false", value, inverse, "", false);
 
         JAXBContext jc = null;
         VocabularyMappingData vmd = null;
@@ -105,27 +113,27 @@ public class EntryPointController
         catch(JAXBException je)
         {
             String msg = "JAXBException : " + je.getMessage();
-            System.out.println(msg);
+            System.out.println(msg );
             msge = new ReturnMessage();
-            msge.setErrorLevel(ErrorLevel.fromValue("Error"));
+            msge.setErrorLevel(ErrorLevel.ERROR);
             msge.setValue(msg);
 
             MappingSource src = new MappingSource();
-            src.setDomainName("Err");
+            src.setDomainName(domain);
             src.setIp("unknown");
-            src.setSourceValue("no data");
+            src.setSourceValue(value);
+            src.setContext(context);
+            src.setInverse(inverse);
 
-            vmd = new  VocabularyMappingData();
+            vmd = new VocabularyMappingData();
             vmd.setMappingResults(new MappingResults());
             vmd.setMappingSource(src);
             vmd.setReturnMessage(msge);
         }
 
-        ModelAndView model = new ModelAndView(XML_VIEW_NAME, "object", vmd);
-
-        return model;
+        return new ModelAndView(XML_VIEW_NAME, "object", vmd);
     }
-
+    /*
     private VocabularyMappingData createVocabularyMappingData(String context, String domain, String value, boolean inverse)
     {
 
@@ -196,7 +204,7 @@ public class EntryPointController
             return vmd;
 
     }
-
+    */
 
     @RequestMapping(method=RequestMethod.PUT, value="/entryPoint/{id}")
     public ModelAndView updateEntryPoint(@RequestBody String body) {

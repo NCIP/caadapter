@@ -6,6 +6,8 @@ import gov.nih.nci.caadapter.dvts.common.function.FunctionVocabularyXMLMappingEv
 import gov.nih.nci.caadapter.dvts.common.function.FunctionVocabularyMappingEventHandler;
 import gov.nih.nci.caadapter.dvts.common.ApplicationException;
 import gov.nih.nci.caadapter.dvts.common.Message;
+import gov.nih.nci.caadapter.dvts.common.meta.VocabularyMappingData;
+import gov.nih.nci.caadapter.dvts.common.meta.ReturnMessage;
 import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
@@ -17,12 +19,18 @@ import gov.nih.nci.caadapter.dvts.common.validation.xml.XMLValidator;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.stream.XMLStreamReader;
 import javax.swing.*;
 import java.io.*;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
-import java.net.ConnectException;
+import java.net.*;
 
 import org.xml.sax.XMLReader;
 import org.xml.sax.InputSource;
@@ -67,7 +75,10 @@ public class FunctionVocabularyMapping
 
     private FunctionVocabularyXMLMappingEventHandler recentVOMHandler = null;
     private String recentVOMFileName = null;
-    private FunctionVocabularyMappingEventHandler recentURL_VOMHandler = null;
+    //private FunctionVocabularyMappingEventHandler recentURL_VOMHandler = null;
+    private VocabularyMappingData recentVocabularyMappingDataObj = null;
+
+    private boolean elsecaseApplied = false;
 
     public FunctionVocabularyMapping()
     {
@@ -292,6 +303,7 @@ public class FunctionVocabularyMapping
         if (content.trim().equals("")) throw new FunctionException("Content is Empty.", 786, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
         if (searchStr.trim().equals("")) throw new FunctionException("Search word is empty.", 787, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
 
+        elsecaseApplied = false;
         //String content = mapData;
         String readLineOfFile = "";
 
@@ -398,13 +410,17 @@ public class FunctionVocabularyMapping
                 //System.out.println("Invers case : search : " + searchStr + ", src : " + src + ", tgt : " + tgt);
                 //if (src.equals(searchStr)) System.out.println("BINGO!!! ");
             }
-            if (src.equals(searchStr)) return tgt;
+            if (src.equals(searchStr))
+            {
+                elsecaseApplied = false;
+                return tgt;
+            }
         }
         String inverse;
         if (searchInverse) inverse = "inverse";
         else inverse = "forward";
         String errMsg = "Vocabulary mapping (" + inverse + ") search failure. Not found '" + searchStr + "' in " + value + " file";
-
+        elsecaseApplied = true;
         if (elseCasesWhatToDo.equals(caseKeepOriginalValue)) return searchStr;
         else if (elseCasesWhatToDo.equals(caseKeepOriginalValue + "s")) return searchStr;
         else if (elseCasesWhatToDo.equals(caseDoubleQuotation)) return "\"\"";
@@ -574,7 +590,7 @@ public class FunctionVocabularyMapping
         else if (type.equals(typeNamePossibleList[1]))
         {
             //String serviceAddr = serviceField.getText();
-            int idx = fileName.indexOf("=" + Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER);
+            int idx = fileName.indexOf(Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER);
             if (idx < 0)
             {
                 boolean foundSourceParameter = false;
@@ -625,9 +641,33 @@ public class FunctionVocabularyMapping
                     if (foundSourceParameter) fileName = urlS + "?" + newDataLine;
                     //break;
                 }
+
+                String valueTag = "/value/";
+                int idx3 = fileName.toLowerCase().indexOf(valueTag);
+                if (idx3 > 0)
+                {
+                    String tempC = fileName;
+                    String part1 = tempC.substring(0, idx3 + valueTag.length());
+                    tempC = tempC.substring(idx3 + valueTag.length());
+                    int idx4 = tempC.indexOf("/");
+                    String part2 = "";
+                    String part3 = "";
+                    String cc = Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER;
+                    if (idx4 > 0)
+                    {
+                        part2 = tempC.substring(0, idx4);
+                        part3 = tempC.substring(idx4);
+                        fileName = part1 + cc + part2 + cc + part3;
+                    }
+                    else
+                    {
+                        fileName = part1 + cc + tempC + cc;
+                    }
+                }
+
                 if (!foundSourceParameter)
                 {
-                    throw new FunctionException("There is no Data input point (marked '"+Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER+"'). : No Data input point");
+                    throw new FunctionException("There is no Data input point (marked '"+Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER+"'). : No Data input point, addr=" + fileName);
                 }
             }
         }
@@ -657,15 +697,26 @@ public class FunctionVocabularyMapping
         return searchXMLMappingURL(2, "", path, false).get(0);
     }
 
+    public void validateVOMdataFileWithoutRecord(String path) throws FunctionException
+    {
+        validateVOMdataFile(path, false);
+    }
     private void validateVOMdataFile(String path) throws FunctionException
     {
-        if (path.equals(pathNameJustBeforeValidated)) return;
+        validateVOMdataFile(path, true);
+    }
+    private void validateVOMdataFile(String path, boolean setPathNameJustBeforeValidated) throws FunctionException
+    {
         //if (path.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) path = path.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
         String[] arrayRes = extractDomainAndFileName(path);
         //String domain = arrayRes[0];
         String pathName = arrayRes[1];
         String targetPath = "";
-        if (pathName.equals(pathNameJustBeforeValidated)) return;
+        if (setPathNameJustBeforeValidated)
+        {
+            if ((path.equals(pathNameJustBeforeValidated))||
+                (pathName.equals(pathNameJustBeforeValidated))) return;
+        }
 
         pathName = verifyFileName(pathName);
         File file = new File(pathName);
@@ -692,13 +743,13 @@ public class FunctionVocabularyMapping
         String fe = null;
         try
         {
-            loader = new ClassLoaderUtil(xsdFileClassPath);
+            loader = new ClassLoaderUtil(xsdFileClassPath);//, false);
         }
         catch(IOException ie)
         {
             try
             {
-                loader = new ClassLoaderUtil("map/functions/vom.xsd");
+                loader = new ClassLoaderUtil("map/functions/vom.xsd");//, false);
             }
             catch(IOException ie2)
             {
@@ -716,7 +767,7 @@ public class FunctionVocabularyMapping
             String res = (new FileSearchUtil()).searchFile(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
             if (res == null)
             {
-                String res1 = (new FileSearchUtil()).searchFile("caAdapter.jar");
+                String res1 = (new FileSearchUtil()).searchFile("caAdapter-dvts.jar");
                 if (res1 == null) throw new FunctionException(fe);
                 fe = null;
                 try
@@ -740,6 +791,10 @@ public class FunctionVocabularyMapping
         }
         else
         {
+//            if (loader.getInputStreams().size() > 0)
+//            {
+//                xsdFilePath = loader.getURLs().
+//            }
             aFile = new File(loader.getFileNames().get(0));
             xsdFilePath = aFile.getAbsolutePath();
         }
@@ -796,7 +851,11 @@ public class FunctionVocabularyMapping
             }
             throw new FunctionException("Invalid xml format vom file ("+path+") with " + xsdFilePath + messages);
         }
-        pathNameJustBeforeValidated = path;
+
+        if (setPathNameJustBeforeValidated)
+        {
+            pathNameJustBeforeValidated = path;
+        }
     }
 
     private List<String> searchXMLMappingURL(int jobTag, String searchStr, String path, boolean inversTag) throws FunctionException
@@ -911,6 +970,52 @@ public class FunctionVocabularyMapping
     {
         return domainList;
     }
+
+    public List<String> searchMappingURL(String searchStr) throws FunctionException
+    {
+        JAXBContext jc = null;
+        VocabularyMappingData vmd = null;
+
+        try
+        {
+        	jc=JAXBContext.newInstance("gov.nih.nci.caadapter.dvts.common.meta");
+            Unmarshaller u=jc.createUnmarshaller();
+
+            InputStream is = null;
+            String addr = modifyURLForSearch(value, searchStr);
+            //System.out.println("CCCC addr=" + addr);
+            URL url = new URL(addr);
+            URLConnection conn = url.openConnection();
+            is = conn.getInputStream();
+            //is = url.openStream();
+            JAXBElement<VocabularyMappingData> jaxbFormula=u.unmarshal(new StreamSource(is), VocabularyMappingData.class);
+            vmd = jaxbFormula.getValue();
+		}
+        catch(JAXBException je)
+        {
+            throw new FunctionException("VocMappingEventHandler JAXBException : " + je.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+        }
+        catch(SocketException e)
+        {
+            e.printStackTrace();
+            throw new FunctionException("VocMappingEventHandler SocketException : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+            throw new FunctionException("VocMappingEventHandler IOException : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+
+        }
+
+        catch(Exception e)
+        {
+            throw new FunctionException("VocMappingEventHandler Unknown Exception : " + e.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+        }
+        recentVocabularyMappingDataObj = vmd;
+        return vmd.getMappingResults().getResult();
+    }
+    /*
     public List<String> searchMappingURL(String searchStr) throws FunctionException
     {
         String message = "";
@@ -918,12 +1023,13 @@ public class FunctionVocabularyMapping
         List<String> mappingValues = null;
 
         FunctionVocabularyMappingEventHandler handler = null;
+        XMLReader producer = null;
         try
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser parser = factory.newSAXParser();
 
-            XMLReader producer = parser.getXMLReader();
+            producer = parser.getXMLReader();
             //ContentHandler handler = new FunctionVocabularyMappingEventHandler();
             handler = new FunctionVocabularyMappingEventHandler();
             producer.setContentHandler(handler);
@@ -956,6 +1062,12 @@ public class FunctionVocabularyMapping
             throw new FunctionException("VocMappingEventHandler IOException : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
 
         }
+//        catch(SocketException e)
+//        {
+//            e.printStackTrace();
+//            throw new FunctionException("VocMappingEventHandler IOException : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+//
+//        }
         catch(Exception e)
         {
             throw new FunctionException("VocMappingEventHandler Unknown Exception : " + e.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
@@ -971,7 +1083,7 @@ public class FunctionVocabularyMapping
 
         return mappingValues;
     }
-
+    */
     public void setType(String typ) throws FunctionException
     {
         boolean check = false;
@@ -1031,11 +1143,18 @@ public class FunctionVocabularyMapping
     {
         return recentVOMHandler;
     }
-    public FunctionVocabularyMappingEventHandler getRecentUrlVomHandler()
+//    public FunctionVocabularyMappingEventHandler getRecentUrlVomHandler()
+//    {
+//        return recentURL_VOMHandler;
+//    }
+    public VocabularyMappingData getRecentUrlVomHandler()//getRecentVocabularyMappingDataObj()
     {
-        return recentURL_VOMHandler;
+        return recentVocabularyMappingDataObj;
     }
-
+    public boolean wasElsecaseApplied()
+    {
+        return elsecaseApplied;
+    }
     private String verifyFileName(String fileName)
     {
 

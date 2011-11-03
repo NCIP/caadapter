@@ -178,7 +178,8 @@ public class XMLValidator extends Validator
                             new Object[]{xmlFileName, xsd, validateXMLSchema.getErrors()});
                         ValidatorResult one = new ValidatorResult(ValidatorResult.Level.ERROR, msg);
                         result.addValidatorResult(one);
-                        System.out.println("validateXMLSchema.getErrors()" + validateXMLSchema.getErrors());
+                        //System.out.println("validateXMLSchema.getErrors()" + validateXMLSchema.getErrors());
+                        //throw new Exception(msg.toString());
                     }
 
                 }
@@ -189,6 +190,7 @@ public class XMLValidator extends Validator
                     ValidatorResult one = new ValidatorResult(ValidatorResult.Level.ERROR, msg);
                     result.addValidatorResult(one);
                     Log.logException(this, e);
+                    //e.printStackTrace();
                 }
 
             }

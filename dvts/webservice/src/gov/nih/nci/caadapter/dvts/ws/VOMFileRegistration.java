@@ -1,5 +1,10 @@
 package gov.nih.nci.caadapter.dvts.ws;
 
+
+
+import gov.nih.nci.caadapter.dvts.common.util.vom.ManageVOMFile;
+import gov.nih.nci.caadapter.dvts.common.util.Config;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,28 +27,28 @@ import java.util.ArrayList;
  */
 public class VOMFileRegistration extends HttpServlet
 {
-    //????? ???? ?? ?????.
+
     String filename="";
-    //??? ??? ???? ?????.
+
     String filetype="";
     int ser;
-    //???? ????? ?? ?????.
+
     File f = new File("");
     MultipartRequest multi = null;
     CaadapterWSUtil util = new CaadapterWSUtil();
     GeneralUtilitiesWS gUtil = new GeneralUtilitiesWS();
     Enumeration files = null;
     String fileDataPath = "";
-    //String fileDataPath = FileUtil.getInnerInstanceTag();
 
-       // init ?? ??? ???? ???
+
+
     public void init(ServletConfig config) throws ServletException
     {
 
         try
         {
             super.init(config);
-            // System.out.println("initial<br>");
+
         }
         catch(Exception e)
         {
@@ -122,7 +127,7 @@ public class VOMFileRegistration extends HttpServlet
             if (user.equals(util.getAdministratorID()))
             {
                 gUtil.deleteFile(dir);
-                util.returnMessage(out, "Administrator no VOM", util.codeERROR(), "Administrator can not have any own VOM.");
+                util.returnMessage(out, "Administrator's VOM", util.codeERROR(), "Administrator can not have any own VOM.");
                 return;
             }
 
@@ -179,14 +184,15 @@ public class VOMFileRegistration extends HttpServlet
                 name = name.trim();
                 //System.out.println("multi.getFilesystemName(name)= " + filename);
                 if (filename == null) filename = "";
-                if (filename.toLowerCase().endsWith(".vom"))
+                if ((filename.toLowerCase().endsWith(".vom"))||
+                    (filename.toLowerCase().endsWith(".xml")))
                 {
-                    if (vomFile != null)
-                    {
-                        gUtil.deleteFile(dir);
-                        util.returnMessageAndLogging(out, "Duplicate VOM File", util.codeERROR(), "VOM File is duplicated : " + filename, fileDataPath, user, ipAddr, this);
-                        return;
-                    }
+//                    if (vomFile != null)
+//                    {
+//                        gUtil.deleteFile(dir);
+//                        util.returnMessageAndLogging(out, "Duplicate VOM File", util.codeERROR(), "VOM File is duplicated : " + filename, fileDataPath, user, ipAddr, this);
+//                        return;
+//                    }
                     vomFile = multi.getFile(name);
                 }
                 else
@@ -194,10 +200,10 @@ public class VOMFileRegistration extends HttpServlet
                     if ((name.equalsIgnoreCase("vomfile"))&&(filename.trim().equals("")))
                     {
 
-                        gUtil.deleteFile(dir);
-                        util.returnMessageAndLogging(out, "VOM file is absent", util.codeERROR(), "VOM File is not received. : " + filename, fileDataPath, user, ipAddr, this);
-                        return;
-
+                        //gUtil.deleteFile(dir);
+                        //util.returnMessageAndLogging(out, "VOM file is absent", util.codeERROR(), "VOM File is not received. : " + filename, fileDataPath, user, ipAddr, this);
+                        //return;
+                        vomFile = null;
                     }
                     else
                     {
@@ -208,7 +214,7 @@ public class VOMFileRegistration extends HttpServlet
                 }
                 filetype = multi.getContentType(name);
 
-                System.out.println("Filename = " + filename + ", Filetype = " + filetype);
+                //System.out.println("Filename = " + filename + ", Filetype = " + filetype);
             }
         }
         catch(Exception ex)
@@ -218,68 +224,168 @@ public class VOMFileRegistration extends HttpServlet
             return;
         }
 
-        if (vomFile == null)
+//        if (vomFile == null)
+//        {
+//            gUtil.deleteFile(dir);
+//            util.returnMessageAndLogging(out, "No VOM File", util.codeERROR(), "No VOM File is received.", fileDataPath, user, ipAddr, this);
+//            return;
+//        }
+
+        String vom_Name = multi.getParameter("vom");
+
+        if ((vom_Name==null)||(vom_Name.trim().equals("")))
         {
-            gUtil.deleteFile(dir);
-            util.returnMessageAndLogging(out, "No VOM File", util.codeERROR(), "No VOM File is received.", fileDataPath, user, ipAddr, this);
-            return;
+            vom_Name = "";
         }
+        else vom_Name = vom_Name.trim();
 
-        String vom_Name = "";
-        String overwrite = "";
+        String overwrite = multi.getParameter("overwrite");
 
-        String userPath = fileDataPath;
-        try
+        if (overwrite == null) overwrite = "";
+        else overwrite = overwrite.trim();
+
+        if (overwrite.equals("")) overwrite = "No";
+
+        if (overwrite.equalsIgnoreCase("delete"))
         {
-            vom_Name = multi.getParameter("vom");
-            overwrite = multi.getParameter("overwrite");
-
-            if (overwrite == null) overwrite = "no";
-            overwrite = overwrite.trim();
-            if ((vom_Name==null)||(vom_Name.trim().equals("")))
+            if (vom_Name.equals(""))
             {
                 gUtil.deleteFile(dir);
-                util.returnMessageAndLogging(out, "Null VOM name", util.codeERROR(), "VOM Name is null or empty.", userPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "No VOM File for delete", util.codeERROR(), "No VOM File is received. (deleting)", fileDataPath, user, ipAddr, this);
+                if(vomFile != null) vomFile.delete();
                 return;
             }
-            vom_Name = vom_Name.trim();
-            File sDir = new File(fileDataPath + "vom");
-
-            if ((!sDir.exists())||(!sDir.isDirectory()))
+        }
+        else
+        {
+            if (vomFile == null)
             {
-                if (!sDir.mkdirs())
-                {
-                    gUtil.deleteFile(dir);
-                    util.returnMessageAndLogging(out, "'vom' Directory Creation Failure", util.codeERROR(), "Scenario Directory Creation Failure : " + user + File.separator + "vom", userPath, user, ipAddr, this);
-                    return;
-                }
+                gUtil.deleteFile(dir);
+                util.returnMessageAndLogging(out, "No VOM File", util.codeERROR(), "No VOM File is received.", fileDataPath, user, ipAddr, this);
+                if(vomFile != null) vomFile.delete();
+                return;
+            }
+        }
+
+//        if ((vomFile == null)&&(vom_Name.equals("")))
+//        {
+//            gUtil.deleteFile(dir);
+//            util.returnMessageAndLogging(out, "No VOM File", util.codeERROR(), "No VOM File is received.", fileDataPath, user, ipAddr, this);
+//            if(vomFile != null) vomFile.delete();
+//            return;
+//        }
+
+
+
+        String userPath = fileDataPath;
+
+        File sDir = new File(fileDataPath + Config.VOCABULARY_MAPPING_DIR);
+
+        if ((!sDir.exists())||(!sDir.isDirectory()))
+        {
+            if (overwrite.equalsIgnoreCase("delete"))
+            {
+                gUtil.deleteFile(dir);
+                util.returnMessageAndLogging(out, "No 'vom' Directory for deleting", util.codeERROR(), "No 'vom' Directory for deleting : " + user + File.separator + "vom", userPath, user, ipAddr, this);
+                if(vomFile != null) vomFile.delete();
+                return;
+            }
+            if (!sDir.mkdirs())
+            {
+                gUtil.deleteFile(dir);
+                util.returnMessageAndLogging(out, "'vom' Directory Creation Failure", util.codeERROR(), "VOM Directory Creation Failure : " + user + File.separator + "vom", userPath, user, ipAddr, this);
+                if(vomFile != null) vomFile.delete();
+                return;
             }
 
-            String sDirS = sDir.getAbsolutePath();
-            if (!sDirS.endsWith(File.separator)) sDirS = sDirS + File.separator;
+        }
+
+        String valResult = null;
+        if (vomFile != null) valResult = ManageVOMFile.validateNewVOMFile(vomFile.getAbsolutePath());
+        if (valResult != null)
+        {
+            gUtil.deleteFile(dir);
+
+            util.returnMessageAndLogging(out, "Invalid VOM File", util.codeERROR(), valResult, userPath, user, ipAddr, this);
+            if(vomFile != null) vomFile.delete();
+            return;
+        }
+        String sDirS = sDir.getAbsolutePath();
+        if (!sDirS.endsWith(File.separator)) sDirS = sDirS + File.separator;
+
+//        File f2 = new File(sDirS + vomFile.getName());
+//        if ((f2.exists())&&(f2.isFile()))
+//        {
+//            if (overwrite.equalsIgnoreCase("no"))
+//            {
+//                gUtil.deleteFile(dir);
+//
+//                util.returnMessageAndLogging(out, "Already exist file : ", util.codeERROR(), "This File is already exist : " + vomFile.getName(), userPath, user, ipAddr, this);
+//                if(vomFile != null) vomFile.delete();
+//                return;
+//            }
+//        }
+
+        List<String> duplicateDomains = null;
+        if (vomFile != null) duplicateDomains = ManageVOMFile.validateContextForNewVOM(sDir.getAbsolutePath(), vomFile.getAbsolutePath());
+        if ((duplicateDomains != null)&&(duplicateDomains.size() > 0))
+        {
+            gUtil.deleteFile(dir);
+            if(vomFile != null) vomFile.delete();
+            if ((duplicateDomains.size() == 1))
+                util.returnMessageAndLogging(out, "Duplicate Domain(s)", util.codeERROR(), "The domain names '"+duplicateDomains.get(0)+"' in this VOM file is already exist in the context. Delete or change it", userPath, user, ipAddr, this);
+            else
+                util.returnMessageAndLogging(out, "Duplicate Domains", util.codeERROR(), "Following domain names are already exist in the context. Delete or change them", userPath, user, ipAddr, this, duplicateDomains);
+            return;
+        }
+        try
+        {
+
             File vFile = new File(sDirS + filename);
+
+            if (overwrite.equalsIgnoreCase("delete"))
+            {
+                //File vFileDesc = new File(vFile.getAbsolutePath() + ".desc");
+                File f = new File(sDirS + vom_Name);
+
+                if ((!f.exists())||(!f.isFile()))
+                {
+                    gUtil.deleteFile(dir);
+                    if(vomFile != null) vomFile.delete();
+                    util.returnMessageAndLogging(out, "Not found file for delete", util.codeERROR(), "This file is not found. (deleting) : " + vom_Name, userPath, user, ipAddr, this);
+                    return;
+                }
+                if (!f.delete())
+                {
+                    gUtil.deleteFile(dir);
+                    if(vomFile != null) vomFile.delete();
+                    util.returnMessageAndLogging(out, "File delete failure", util.codeERROR(), "Deleting this file is failure. : " + vom_Name, userPath, user, ipAddr, this);
+                    return;
+                }
+
+                ManageVOMFile.refreshContext(sDir.getAbsolutePath());
+                gUtil.deleteFile(dir);
+                if(vomFile != null) vomFile.delete();
+                util.returnMessageAndLogging(out, "Vom File Delete complete", util.codeINFO(), "This VOM fime has been deleted. : " + vom_Name, userPath, user, ipAddr, this);
+                return;
+
+            }
 
             if ((vFile.exists())&&(vFile.isFile()))
             {
                 if (overwrite.equalsIgnoreCase("yes"))
                 {
-                    File vFileDesc = new File(vFile.getAbsolutePath() + ".desc");
-                    vFile.delete();
-                    if ((vFileDesc.exists())&&(vFileDesc.isFile())) vFileDesc.delete();
-                }
-                else if (overwrite.equalsIgnoreCase("delete"))
-                {
-                    File vFileDesc = new File(vFile.getAbsolutePath() + ".desc");
-                    String fileN = vFile.getName();
-                    vFile.delete();
-                    if ((vFileDesc.exists())&&(vFileDesc.isFile())) vFileDesc.delete();
-                    gUtil.deleteFile(dir);
-                    util.returnMessageAndLogging(out, "Vom File Delete complete", util.codeINFO(), "This VOM fime has been deleted. : " + fileN, userPath, user, ipAddr, this);
-                    return;
-
+                    if (!vFile.delete())
+                    {
+                        gUtil.deleteFile(dir);
+                        if(vomFile != null) vomFile.delete();
+                        util.returnMessageAndLogging(out, "File delete failure for overwriting", util.codeERROR(), "Deleting this file is failure. (overwriting) : " + vFile.getName(), userPath, user, ipAddr, this);
+                        return;
+                    }
                 }
                 else
                 {
+                    if(vomFile != null) vomFile.delete();
                     gUtil.deleteFile(dir);
                     util.returnMessageAndLogging(out, "Already exist VOM file", util.codeERROR(), "This VOM fime name is already exist. : " + user + File.separator + vFile.getName(), userPath, user, ipAddr, this);
                     return;
@@ -290,7 +396,7 @@ public class VOMFileRegistration extends HttpServlet
             if (overwrite.equalsIgnoreCase("delete"))
             {
                 gUtil.deleteFile(dir);
-                util.returnMessageAndLogging(out, "Not found file for deleting", util.codeERROR(), "Not found this file for deleting : " + vomFile.getName(), userPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "Not found file for deleting : ", util.codeERROR(), "Not found this file for deleting : " + vomFile.getName(), userPath, user, ipAddr, this);
                 return;
             }
 
@@ -304,13 +410,13 @@ public class VOMFileRegistration extends HttpServlet
 
             gUtil.deleteFile(dir);
 
-            if (!gUtil.saveStringIntoFile(fileDataPath, filename + ".desc", vom_Name + "\r\n" + multi.getParameter("comment")))
-            {
-                util.returnMessageAndLogging(out, "VOM description File Writing Failure", util.codeERROR(), "VOM description File Writing Failure : " + user + File.separator + "vom" + File.separator + filename, userPath, user, ipAddr, this);
-                return;
-            }
+//            if (!gUtil.saveStringIntoFile(fileDataPath, filename + ".desc", vom_Name + "\r\n" + multi.getParameter("comment")))
+//            {
+//                util.returnMessageAndLogging(out, "VOM description File Writing Failure", util.codeERROR(), "VOM description File Writing Failure : " + user + File.separator + "vom" + File.separator + filename, userPath, user, ipAddr, this);
+//                return;
+//            }
             util.returnMessageAndLogging(out, "VOM File Registration Complete!", util.codeINFO(), "This VOM file is successfully registered. : " + user + File.separator + "vom" + File.separator + filename, userPath, user, ipAddr, this);
-
+            ManageVOMFile.refreshContext(sDir.getAbsolutePath());
         }
         catch(Exception e)
         {
@@ -349,7 +455,7 @@ public class VOMFileRegistration extends HttpServlet
             "<head>\n" +
             "<title>VOM File Registration</title>\n" +
             "</head>\n" +
-            "<body bgcolor='pink'>\n" +
+            "<body bgcolor='lightblue'>\n" +
             "<font color='green'>\n" +
             "<center>\n" +
             "<h1>\n" +
@@ -367,24 +473,31 @@ public class VOMFileRegistration extends HttpServlet
         if (isInside) h = h +
             "<tr><td>\n" +
             "<h3><font color=blue>"+ (++seq) +". Context Identification</font><font color=red>*</font></h3>\n" +
-            "\n" +
-            "  Context Name :<input type=text name='user' value=''> &nbsp;&nbsp;&nbsp;<br>\n" +
-            "  PASSWORD:<input type=password name='pass' value=''> &nbsp;&nbsp;&nbsp;\n" +
+            "  <table borde=0>\n" +
+            "     <tr>\n" +
+            "        <td align='right'>Context Name</td>\n" +
+            "        <td align='left'>&nbsp;&nbsp;<input type=text name='user' value=''> &nbsp;<br></td>\n" +
+            "     </tr>\n" +
+            "     <tr>\n" +
+            "         <td align='right'>PASSWORD</td>" +
+            "         <td align='left'>&nbsp;&nbsp;<input type=password name='pass' value=''> &nbsp;</td>\n" +
+            "     </tr>" +
+            "   </table>" +
             "  \n" +
             "</td></tr>\n";
         else h = h + "          <input type='hidden' name='user' value='"+util.getSessionTag() + user+"'>\n";
         h = h +
             "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". Name of Vocabulary Mapping</font><font color=red>*</font>\n" +
+            "<h3><font color=blue>"+ (++seq) +". If you want to delete a vom file, input the file name to this field. </font>\n" + //<font color=red>*</font>\n" +
             "\n" +
             " <input type=text name='vom' value=''> &nbsp;&nbsp;&nbsp;</h3>\n" +
             "  \n" +
             "</td></tr>\n" +
             "<tr><td>\n" +
             "<h3><font color=blue>"+ (++seq) +". What do You Want for this file?</font>\n" +
-            "  <input type=radio name='overwrite' value='Yes'>Overwrite&nbsp;&nbsp;&nbsp;\n" +
-            "  <input type=radio name='overwrite' value='No' checked>New File Registratio&nbsp;&nbsp;&nbsp;\n" +
-            "  <input type=radio name='overwrite' value='Delete' checked>Delete&nbsp;&nbsp;&nbsp;\n" +
+            "  <input type=radio name='overwrite' value='Yes'>Overwrite VOM File&nbsp;&nbsp;&nbsp;\n" +
+            "  <input type=radio name='overwrite' value='No' checked>New VOM File Registration&nbsp;&nbsp;&nbsp;\n" +
+            "  <input type=radio name='overwrite' value='Delete'>Delete&nbsp;&nbsp;&nbsp;\n" +
             //"  <input type=radio name='overwrite' value='Backup'>Backup&nbsp;&nbsp;&nbsp;</h3>\n" +
             "</td></tr>\n" +
 
@@ -396,13 +509,13 @@ public class VOMFileRegistration extends HttpServlet
             "  \n" +
             "</td></tr>\n" +
 
-            "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". Comment</font></h3>\n" +
-            "\n" +
-            "<textarea name='comment' rows=3 cols=50>\n" +
-            "\n" +
-            "</textarea>\n" +
-            "</td></tr>\n" +
+            //"<tr><td>\n" +
+            //"<h3><font color=blue>"+ (++seq) +". Comment</font></h3>\n" +
+            //"\n" +
+            //"<textarea name='comment' rows=3 cols=50>\n" +
+            //"\n" +
+            //"</textarea>\n" +
+            //"</td></tr>\n" +
             "\n" +
             "\n" +
             "<tr><td>\n" +

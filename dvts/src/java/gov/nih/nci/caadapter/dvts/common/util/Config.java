@@ -40,11 +40,13 @@ public class Config {
     public static String REPORT_FILE_DEFAULT_EXTENSION = ".xls";
     public static String VALIDATION_RESULT_SAVE_FILE_EXTENSION = ".txt";
     public static String TEMPORARY_FILE_EXTENSION = ".tmp";
-    public static String VOCABULARY_MAPPING_FILE_EXTENSION = ".vom";
+    public static String VOCABULARY_MAPPING_DIR = "vom";
+    public static String VOCABULARY_MAPPING_FILE_EXTENSION = "." + VOCABULARY_MAPPING_DIR;
     public static String VOCABULARY_MAP_FILE_VALUE_SEPARATOR = "=>";
     public static String TEMPORARY_FILE_PREFIX = "TEMPcaAdapter";
     public static String CAADAPTER_HOME_DIR_TAG = "{caAdapter_Home}";
     public static String VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR = "?@";
+    public static String VOCABULARY_MAP_FILE_NAME_DOMAIN_WILD_CHARACTER = "*.*";
     public static String VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER = "#";
     public static String VOCABULARY_MAP_URL_CONNECTION_TEST_DATA = "!TEST";
 

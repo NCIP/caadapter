@@ -186,17 +186,35 @@ public class GeneralUtilitiesWS {
 
     public String sendOutMessage(String title, String level, String message)
     {
-        return sendOutMessage(title, level, message, null);
+        return sendOutMessage(title, level, message, "");
     }
     public void sendOutMessage(PrintWriter out, String title, String level, String message)
     {
-        out.println(sendOutMessage(title, level, message, null));
+        out.println(sendOutMessage(title, level, message, ""));
     }
     public void sendOutMessage(PrintWriter out, String title, String level, String message, String link)
     {
         out.println(sendOutMessage(title, level, message, link));
     }
+
+    public String sendOutMessage(String title, String level, String message, List<String> displayList)
+    {
+        return sendOutMessage(title, level, message, "", displayList);
+    }
+    public void sendOutMessage(PrintWriter out, String title, String level, String message, List<String> displayList)
+    {
+        out.println(sendOutMessage(title, level, message, "", displayList));
+    }
+    public void sendOutMessage(PrintWriter out, String title, String level, String message, String link, List<String> displayList)
+    {
+        out.println(sendOutMessage(title, level, message, link, displayList));
+    }
+
     public String sendOutMessage(String title, String level, String message, String link)
+    {
+        return sendOutMessage(title, level, message, link, null);
+    }
+    public String sendOutMessage(String title, String level, String message, String link, List<String> displayList)
     {
         String retLine = "";
         retLine = retLine + "<html>";
@@ -212,10 +230,17 @@ public class GeneralUtilitiesWS {
         {
             retLine = retLine + "<h5><a href='"+link+"'>Link Here!</a></h5><br>";
         }
+        if ((displayList != null)&&(displayList.size() > 0))
+        {
+            retLine = retLine + "<br><h5><font color='brown'>";
+            for(String str:displayList)
+                retLine = retLine + str + "<br>";
+            retLine = retLine + "</h5></font><br>";
+        }
         retLine = retLine + "</font></body>";
         retLine = retLine + "</html>";
 
-        return retLine; 
+        return retLine;
     }
 
     public boolean saveStringIntoFile(String dir, String filename, String str)

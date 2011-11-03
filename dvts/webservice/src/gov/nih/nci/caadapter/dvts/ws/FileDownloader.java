@@ -31,6 +31,19 @@ public class FileDownloader extends HttpServlet
         res.setContentType("text/html;charset=KSC5601");
         //PrintWriter out = res.getWriter();
 
+        /*
+        String exsampleTag = req.getParameter("example");
+        if (exsampleTag == null) exsampleTag = "";
+        else exsampleTag = exsampleTag.trim();
+
+        if ((exsampleTag.toLowerCase().equals("yes"))||
+            (exsampleTag.toLowerCase().equals("true")))
+        {
+            doExampleFileDownLoading(req, res);
+            return;
+        }
+        */
+
         String adminID = req.getParameter("adminID");
         if (adminID == null) adminID = "";
         else adminID = adminID.trim();
@@ -132,4 +145,25 @@ public class FileDownloader extends HttpServlet
         */
         System.out.println("File downloading finish (mimeType="+mimeType+") : " + fileO.getAbsolutePath());
     }
+    /*
+    private void doExampleFileDownLoading(HttpServletRequest req, HttpServletResponse res)
+                throws ServletException, IOException
+    {
+        CaadapterWSUtil util = new CaadapterWSUtil();
+
+
+        util.setBaseURLToPropertyfile(req);
+        res.setContentType("text/html;charset=KSC5601");
+        //PrintWriter out = res.getWriter();
+
+        String fileName = req.getParameter("file");
+        if (fileName == null) fileName = "";
+        else fileName = fileName.trim();
+
+        if (fileName.equals("")) return;
+
+        if (fileName.toLowerCase().endsWith(".jar")) fileName = "caAdapter-dvts.jar";
+        else ()
+    }
+    */
 }

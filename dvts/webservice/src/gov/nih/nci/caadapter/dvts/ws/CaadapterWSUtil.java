@@ -5,6 +5,7 @@ import java.util.zip.ZipEntry;
 import java.io.*;
 import java.text.*;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
+import gov.nih.nci.caadapter.dvts.common.util.vom.ManageVOMFile;
 import gov.nih.nci.caadapter.dvts.common.function.DateFunction;
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 import gov.nih.nci.caadapter.dvts.common.Message;
@@ -482,38 +483,73 @@ public class CaadapterWSUtil
 
     public void returnMessage(PrintWriter out, String title, int level, String message)
     {
-        returnMessage(out, title, level, message, null);
+        returnMessage(out, title, level, message, null, null);
     }
     public void returnMessage(PrintWriter out, String title, int level, String message, String link)
     {
-        if (responseTypeXML)
-        {
-            returnMessageXML(out, title, level, message, link);
-        }
-        else
-        {
+//        if (responseTypeXML)
+//        {
+//            returnMessageXML(out, title, level, message, link);
+//        }
+//        else
+//        {
             String sr = getErrorLevel(level);
             if (sr == null) sr = getErrorLevel(codeNONE());
-            util.sendOutMessage(out, title, sr, message, link);
-        }
+            util.sendOutMessage(out, title, sr, message, link, null);
+//        }
     }
 
     public String returnMessage(String title, int level, String message)
     {
-        return returnMessage(title, level, message, null);
+        return returnMessage(title, level, message, null, null);
     }
     public String returnMessage(String title, int level, String message, String link)
     {
-        if (responseTypeXML)
-        {
-            return returnMessageXML(title, level, message, link);
-        }
-        else
-        {
+//        if (responseTypeXML)
+//        {
+//            return returnMessageXML(title, level, message, link);
+//        }
+//        else
+//        {
             String sr = getErrorLevel(level);
             if (sr == null) sr = getErrorLevel(codeNONE());
-            return util.sendOutMessage(title, sr, message, link);
-        }
+            return util.sendOutMessage(title, sr, message, link, null);
+//        }
+    }
+    public void returnMessage(PrintWriter out, String title, int level, String message, List<String> displayList)
+    {
+        returnMessage(out, title, level, message, null, displayList);
+    }
+    public void returnMessage(PrintWriter out, String title, int level, String message, String link, List<String> displayList)
+    {
+//        if (responseTypeXML)
+//        {
+//            returnMessageXML(out, title, level, message, link);
+//        }
+//        else
+//        {
+            String sr = getErrorLevel(level);
+            if (sr == null) sr = getErrorLevel(codeNONE());
+            util.sendOutMessage(out, title, sr, message, link, displayList);
+//        }
+    }
+
+    public String returnMessage(String title, int level, String message, List<String> displayList)
+    {
+        return returnMessage(title, level, message, null, displayList);
+    }
+    public String returnMessage(String title, int level, String message, String link, List<String> displayList)
+    {
+//        if (responseTypeXML)
+//        {
+//            return returnMessageXML(title, level, message, link);
+//        }
+//        else
+//        {
+            String sr = getErrorLevel(level);
+            if (sr == null) sr = getErrorLevel(codeNONE());
+            return util.sendOutMessage(title, sr, message, link, displayList);
+//        }
     }
     private void returnMessageXML(PrintWriter out, String title, int level, String messageStr, String link)
     {
@@ -760,7 +796,7 @@ public class CaadapterWSUtil
     }
     public String returnMessageAndLogging(String title, int code, String res, String userPath, String loginID, String ipAddr, Object sourceObj)
     {
-        String out = returnMessage(title, code, res);
+        String out = returnMessage(title, code, res, null, null);
         String sourceClass = "";
         if (sourceObj != null) sourceClass = sourceObj.getClass().getName();
         addLogRecord(userPath, util.getNowDate() + " : " + title + " ("+loginID+") : from " + ipAddr + ", called by " + sourceClass + " => " + res);
@@ -768,7 +804,22 @@ public class CaadapterWSUtil
     }
     public void returnMessageAndLogging(PrintWriter out, String title, int code, String res, String userPath, String loginID, String ipAddr, Object sourceObj)
     {
-        returnMessage(out, title, code, res);
+        returnMessage(out, title, code, res, null, null);
+        String sourceClass = "";
+        if (sourceObj != null) sourceClass = sourceObj.getClass().getName();
+        addLogRecord(userPath, util.getNowDate() + " : " + title + " ("+loginID+") : from " + ipAddr + ", called by " + sourceClass + " => " + res);
+    }
+    public String returnMessageAndLogging(String title, int code, String res, String userPath, String loginID, String ipAddr, Object sourceObj, List<String> displayList)
+    {
+        String out = returnMessage(title, code, res, displayList);
+        String sourceClass = "";
+        if (sourceObj != null) sourceClass = sourceObj.getClass().getName();
+        addLogRecord(userPath, util.getNowDate() + " : " + title + " ("+loginID+") : from " + ipAddr + ", called by " + sourceClass + " => " + res);
+        return out;
+    }
+    public void returnMessageAndLogging(PrintWriter out, String title, int code, String res, String userPath, String loginID, String ipAddr, Object sourceObj, List<String> displayList)
+    {
+        returnMessage(out, title, code, res, displayList);
         String sourceClass = "";
         if (sourceObj != null) sourceClass = sourceObj.getClass().getName();
         addLogRecord(userPath, util.getNowDate() + " : " + title + " ("+loginID+") : from " + ipAddr + ", called by " + sourceClass + " => " + res);
@@ -1171,6 +1222,8 @@ public class CaadapterWSUtil
         loginID = loginID.trim();
         if (loginID.equals("")) return null;
 
+        if (loginID.startsWith(ManageVOMFile.SAMPLE_CONTEXT_TAG)) return null;
+
         if (loginID.equals(getAccessFailureTag())) return null;
 
         String userPath = getRootScenarioPath() + loginID;
@@ -1458,7 +1511,7 @@ public class CaadapterWSUtil
                     + "      <font color='green'><br><br><br>" + rl
                     + "      <table border=1 bordercolor=\"blue\">" + rl
                     + "        <tr>" + rl
-                    + "          <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">ID</td>" + rl
+                    + "          <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Context</td>" + rl
                     + "          <td width=\"70%\"><input type=\"text\" name=\"" + idVar + "\" size=20 onMouseOver=\"this.style.backgroundColor='yellow'\" onMouseOut=\"this.style.backgroundColor='white'\"></td>" + rl
                     + "        </tr>" + rl
                     + "        <tr>" + rl

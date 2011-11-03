@@ -736,6 +736,10 @@ public class FileUtil
      */
     public static void saveStringIntoTemporaryFile(String tempFileName, String string) throws IOException // inserted by umkis 12/26/2006
     {
+        saveStringIntoTemporaryFile(tempFileName, string, true);
+    }
+    public static void saveStringIntoTemporaryFile(String tempFileName, String string, boolean deleteOnExit) throws IOException // inserted by umkis 12/26/2006
+    {
         FileWriter fw = null;
         File file = null;
         try
@@ -744,14 +748,18 @@ public class FileUtil
             fw.write(string);
             fw.close();
 
-            file = new File(tempFileName);
+
         }
         catch(Exception ie)
         {
             throw new IOException("File Writing Error(" + tempFileName + ") : " + ie.getMessage() + ", value : " + string);
         }
 
-        file.deleteOnExit();
+        if (deleteOnExit)
+        {
+            file = new File(tempFileName);
+            file.deleteOnExit();
+        }
     }
     public static List<String> readFileIntoList(String fileName) throws IOException
     {

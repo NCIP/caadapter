@@ -5,11 +5,12 @@
                      caAdapter WEBSERVICES module                          
 	************************************************************************** 
 -->
-<project name="caadapterWS" default="build:war" basedir=".">
+<project name="caadapter-dvts" default="build:war" basedir=".">
 	<description>
 		webservices
 	</description>	
   
+  <property name="APPLICATION_NAME" value="caadapter-dvts"/>
   <!-- Define project properties !-->
   <property name="ws.module.home" value="${basedir}"/>
   <property name="ws.module.name" value="${ant.project.name}"/>
@@ -74,7 +75,8 @@
 	<property name="dist_ws_dir" location="${dist_root}"/>
 	<property name="deploy_dir" value="${dist_root}/deploy"/>
 	<!-- <property name="dist_ws_file_name" value="${root}/components/webservices/dist/caAdapterWS.war"/> -->
-	<property name="dist_ws_file_name" value="${ws.module.home}/dist/caAdapterWS.war"/>
+	<property name="dist_ws_file_name" value="${ws.module.home}/dist/${APPLICATION_NAME}.war"/>
+	<property name="dist_ws_file_name_dest" value="${ws.module.home}/../dist/${APPLICATION_NAME}.war"/>
 	
 	<zipfileset dir="${ws.module.home}/axislib" prefix="WEB-INF/lib" id="dist.ws.axis.libs">
 		<include name="**/*.jar"/>
@@ -138,6 +140,7 @@
 			<zipfileset refid="dist.root.functions.lib"/ -->
    		</war>
    		<delete dir="${module.build.dir}" failonerror="false"/>
+   		<copyfile src="${dist_ws_file_name}" dest="${dist_ws_file_name_dest}"/>
 	</target>
 
 </project>
