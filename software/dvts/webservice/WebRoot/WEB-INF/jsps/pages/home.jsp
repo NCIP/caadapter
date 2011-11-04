@@ -76,9 +76,9 @@
         </ul>
         <li>At a command window, this command line calls the following GUI screen for domain value translating test.</li>
         <li><font face="courier">java -classpath <i>&lt;caAdapter-dvts.jar file path&gt;</i> gov.nih.nci.caadapter.dvts.ui.ContextVOMTranslationGUI <i>&lt;contextLinkAddress.properties file path&gt;</i></font></li>
-        <li><img src="./images/guitest_screen.jpg" width="260" height="130"></img></li>
+        <li><img src="./images/guitest_screen.jpg" width="300" height="150"></img></li>
 
-             guitest_screen.jpg
+
     </ul>
     <hr>
 	
