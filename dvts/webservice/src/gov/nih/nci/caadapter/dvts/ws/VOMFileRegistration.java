@@ -367,7 +367,7 @@ public class VOMFileRegistration extends HttpServlet
                 ManageVOMFile.refreshContext(sDir.getAbsolutePath());
                 gUtil.deleteFile(dir);
                 if(vomFile != null) vomFile.delete();
-                util.returnMessageAndLogging(out, "DVM (or VOM) File Delete complete", util.codeINFO(), "This DVM (or VOM) fime has been deleted. : " + vom_Name, userPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "DVM (or VOM) File Delete complete", util.codeINFO(), "This DVM (or VOM) file has been deleted. : " + vom_Name, userPath, user, ipAddr, this);
                 return;
 
             }
@@ -388,7 +388,7 @@ public class VOMFileRegistration extends HttpServlet
                 {
                     if(vomFile != null) vomFile.delete();
                     gUtil.deleteFile(dir);
-                    util.returnMessageAndLogging(out, "Already exist DVM (VOM) file", util.codeERROR(), "This DVM (VOM) fime name is already exist. : " + user + File.separator + vFile.getName(), userPath, user, ipAddr, this);
+                    util.returnMessageAndLogging(out, "Already exist DVM (VOM) file", util.codeERROR(), "This DVM (VOM) file name is already exist. : " + user + File.separator + vFile.getName(), userPath, user, ipAddr, this);
                     return;
                 }
             }
@@ -467,46 +467,48 @@ public class VOMFileRegistration extends HttpServlet
             "\n" +
             "<br>\n" +
             "\n" +
-            "Each mark with \"*\" in red color means a essential item<br>\n" +
+            "** 'DVM' (Domain Value Mapping) and 'VOM' (VOcabulary Mapping) are the same meaning<br>\n" +
             "<form name='VOM' method='post' action='"+url+"' ENCTYPE='multipart/form-data'>\n" +
             "\n" +
             "<table border=2 cellpading=10>\n";
         if (isInside) h = h +
             "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". Context Identification</font><font color=red>*</font></h3>\n" +
+            "<h3><font color=blue>"+ (++seq) +". Context Identification</font></h3>\n" +
+            "</td><td>" +
             "  <table borde=0>\n" +
             "     <tr>\n" +
             "        <td align='right'>Context Name</td>\n" +
-            "        <td align='left'>&nbsp;&nbsp;<input type=text name='user' value=''> &nbsp;<br></td>\n" +
+            "        <td align='left'>&nbsp;&nbsp;<input type='text' name='user' value=''> &nbsp;<br></td>\n" +
             "     </tr>\n" +
             "     <tr>\n" +
             "         <td align='right'>PASSWORD</td>" +
-            "         <td align='left'>&nbsp;&nbsp;<input type=password name='pass' value=''> &nbsp;</td>\n" +
+            "         <td align='left'>&nbsp;&nbsp;<input type='password' name='pass' value=''> &nbsp;</td>\n" +
             "     </tr>" +
             "   </table>" +
             "  \n" +
             "</td></tr>\n";
         else h = h + "          <input type='hidden' name='user' value='"+util.getSessionTag() + user+"'>\n";
         h = h +
+
             "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". If you want to delete a DVM (or VOM) file, input the file name to this field. </font>\n" + //<font color=red>*</font>\n" +
-            "\n" +
+            "<h3><font color=blue>"+ (++seq) +". Select one job</font>\n" +
+            "</td><td>" +
+            "  <input type=radio name='overwrite' value='Yes'>Overwrite DVM File&nbsp;&nbsp;&nbsp;<br>\n" +
+            "  <input type=radio name='overwrite' value='No' checked>New DVM File Registration&nbsp;&nbsp;&nbsp;<br>\n" +
+            "  <input type=radio name='overwrite' value='Delete'>Delete DVM File&nbsp;&nbsp;&nbsp;<br>\n" +
+            //"  <input type=radio name='overwrite' value='Backup'>Backup&nbsp;&nbsp;&nbsp;</h3>\n" +
+            "</td></tr>\n" +
+            "<tr><td>\n" +
+            "<h3><font color=blue>"+ (++seq) +". If you select 'Delete a DVM file', input the file name. </font>\n" + //<font color=red>*</font>\n" +
+            "</td><td>\n" +
             " <input type=text name='vom' value=''> &nbsp;&nbsp;&nbsp;</h3>\n" +
             "  \n" +
             "</td></tr>\n" +
             "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". What do You Want for this file?</font>\n" +
-            "  <input type=radio name='overwrite' value='Yes'>Overwrite DVM (or VOM) File&nbsp;&nbsp;&nbsp;\n" +
-            "  <input type=radio name='overwrite' value='No' checked>New DVM (or VOM) File Registration&nbsp;&nbsp;&nbsp;\n" +
-            "  <input type=radio name='overwrite' value='Delete'>Delete&nbsp;&nbsp;&nbsp;\n" +
-            //"  <input type=radio name='overwrite' value='Backup'>Backup&nbsp;&nbsp;&nbsp;</h3>\n" +
-            "</td></tr>\n" +
-
-            "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". DVM (or VOM) File</font><font color=red>*</font>\n" +
-            "\n" +
+            "<h3><font color=blue>"+ (++seq) +". If you select 'Overwrite' or 'New' DVM File, input the file.</h3><h5>Any duplicate domain name is not allowed in the same context.</h5></font>\n" +
+            "</td><td>\n" +
             "  <input type=\"file\" name=\"vomfile\" size=\"30\" style=\"border-top-width:1; style=\"border-right-width:1; \n" +
-            "         style=\"border-bottom-width:1; style=\"border-left-width:1px; border-style:dashed;\"> </h3>\n" +
+            "         style=\"border-bottom-width:1; style=\"border-left-width:1px; border-style:dashed;\">\n" +
             "  \n" +
             "</td></tr>\n" +
 
@@ -519,7 +521,7 @@ public class VOMFileRegistration extends HttpServlet
             //"</td></tr>\n" +
             "\n" +
             "\n" +
-            "<tr><td>\n" +
+            "<tr><td colspan=2>\n" +
             "<input type='submit' value='Submit'>&nbsp;&nbsp;&nbsp;\n" +
             "<input type='reset' value='Cancel'></td>\n" +
             "</tr>\n" +
