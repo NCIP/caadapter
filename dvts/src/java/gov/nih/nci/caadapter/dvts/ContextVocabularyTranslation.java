@@ -5,7 +5,13 @@ import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
 import gov.nih.nci.caadapter.dvts.common.util.Config;
 import gov.nih.nci.caadapter.dvts.common.util.vom.ManageVOMFile;
 import gov.nih.nci.caadapter.dvts.common.tools.ZipUtil;
+import gov.nih.nci.caadapter.dvts.common.meta.*;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -20,6 +26,53 @@ import java.util.StringTokenizer;
  */
 public class ContextVocabularyTranslation
 {
+    public static VocabularyMappingData translateWithObj(String context, String domain, String value)
+    {
+        return translateWithObj(null, context, domain, value, false, false);
+    }
+    public static VocabularyMappingData translateWithObj(String contextAddrFileName, String context, String domain, String value)
+    {
+        return translateWithObj(contextAddrFileName, context, domain, value, false, false);
+    }
+    public static VocabularyMappingData translateWithObj(String contextSymbol, String domain, String value, boolean inverse)
+    {
+        return translateWithObj("", contextSymbol, domain, value, inverse, false);
+    }
+    public static VocabularyMappingData translateWithObj(String contextAddrFileName, String contextSymbol, String domain, String value, boolean inverse)
+    {
+        return translateWithObj(contextAddrFileName, contextSymbol, domain, value, inverse, false);
+    }
+    public static VocabularyMappingData translateWithObj(String contextAddrFileName, String contextSymbol, String domain, String value, boolean inverse, boolean transformSkip)
+    {
+        VocabularyMappingData vmd = null;
+        try
+        {
+            vmd = translateExe(contextAddrFileName, contextSymbol, domain, value, inverse, transformSkip);
+        }
+        catch(Exception ee)
+        {
+            ReturnMessage msge = null;
+
+            String msg = "Except on translation : " + ee.getMessage();
+            System.out.println(msg );
+            msge = new ReturnMessage();
+            msge.setErrorLevel(ErrorLevel.ERROR);
+            msge.setValue(msg);
+
+            MappingSource src = new MappingSource();
+            src.setDomainName(domain);
+            src.setIp("local");
+            src.setSourceValue(value);
+            src.setContext(contextSymbol);
+            src.setInverse(inverse);
+
+            vmd = new VocabularyMappingData();
+            vmd.setMappingResults(new MappingResults());
+            vmd.setMappingSource(src);
+            vmd.setReturnMessage(msge);
+        }
+        return vmd;
+    }
     public static String translate(String context, String domain, String value) throws Exception
     {
         return translate(null, context, domain, value, false, false);
@@ -28,14 +81,25 @@ public class ContextVocabularyTranslation
     {
         return translate(contextAddrFileName, context, domain, value, false, false);
     }
-
+    public static String translate(String contextSymbol, String domain, String value, boolean inverse) throws Exception
+    {
+        return translate("", contextSymbol, domain, value, inverse, false);
+    }
     public static String translate(String contextAddrFileName, String contextSymbol, String domain, String value, boolean inverse) throws Exception
     {
         return translate(contextAddrFileName, contextSymbol, domain, value, inverse, false);
     }
     public static String translate(String contextAddrFileName, String contextSymbol, String domain, String value, boolean inverse, boolean transformSkip) throws Exception
     {
-
+        VocabularyMappingData res = translateExe(contextAddrFileName, contextSymbol, domain, value, inverse, transformSkip);
+        if ((res.getMappingResults().getResult() == null)||(res.getMappingResults().getResult().size() == 0))
+        {
+            throw new Exception("Vocabulary Translation failure (unknown the cause)");
+        }
+        return res.getMappingResults().getResult().get(0);
+    }
+    private static VocabularyMappingData translateExe(String contextAddrFileName, String contextSymbol, String domain, String value, boolean inverse, boolean transformSkip) throws Exception
+    {
         if (contextSymbol == null) contextSymbol = "";
         else contextSymbol = contextSymbol.trim();
         if (contextSymbol.equals("")) throw new Exception("Context value is null.");
@@ -62,32 +126,63 @@ public class ContextVocabularyTranslation
         if (transformSkip) context = contextSymbol;
         else
         {
-            context = searchContextPhysicalAddress(contextAddrFileName, contextSymbol);
-            if ((context == null)||(context.trim().equals("")))
-                context = searchContextSymbolPhysicalAddress(contextAddrFileName, contextSymbol);
-        }
-        //String context = searchContextPhysicalAddress( contextSymbol);
+            if (contextAddrFileName == null) contextAddrFileName = "";
+            else contextAddrFileName = contextAddrFileName.trim();
 
-        if ((context == null)||(context.trim().equals("")))
-        {
-            File file = new File(contextSymbol);
-            //boolean valid = false;
-            if (file.exists())
+            if (!contextAddrFileName.equals(""))
             {
-                String conPath = file.getAbsolutePath();
-                if (file.isDirectory()) context = contextSymbol;
-                else if (file.isFile())
+                context = searchContextPhysicalAddress(contextAddrFileName, contextSymbol);
+                if ((context == null)||(context.trim().equals("")))
                 {
-                    if ((conPath.toLowerCase().equals(".jar"))||
-                        (conPath.toLowerCase().equals(".zip")))
+                    String str = searchContextSymbolPhysicalAddress(contextAddrFileName, contextSymbol);
+                    if ((str != null)||(str.trim().equals(""))) context = contextSymbol;
+                }
+            }
+
+            if (context.equals(""))
+            {
+                File f = new File(contextSymbol);
+                if (f.exists())
+                {
+                    if (f.isFile())
                     {
-                        context = contextSymbol;
+                        if ((f.getName().toLowerCase().equals(".jar"))||
+                            (f.getName().toLowerCase().equals(".zip")))
+                        {
+                            context = contextSymbol;
+                        }
+                        else
+                        {
+                            context = f.getParentFile().getAbsolutePath();
+                            domainFile = f.getName();
+                        }
+                    }
+                    else
+                    {
+                        context = f.getAbsolutePath();
                     }
                 }
             }
-            if (context == null) throw new Exception("This Context cannot be found. : " + contextSymbol);
+
+            if ((contextAddrFileName.equals(""))&&((context == null)||(context.equals(""))))
+            {
+                if ((contextSymbol.toLowerCase().startsWith("http:"))||
+                    (contextSymbol.toLowerCase().startsWith("ftp:"))||
+                    (contextSymbol.toLowerCase().startsWith("https:")))
+                {
+                    context = contextSymbol;
+                }
+                else context = searchContextPhysicalAddress("", contextSymbol);
+
+                if ((context == null)||(context.trim().equals("")))
+                {
+                    String str = searchContextSymbolPhysicalAddress("", contextSymbol);
+                    if ((str != null)||(str.trim().equals(""))) context = contextSymbol;
+                }
+            }
         }
 
+        if ((context == null)||(context.equals(""))) throw new Exception("This Context cannot be found. : " + contextSymbol);
 
         File conFile = new File(context);
         if (conFile.exists())
@@ -142,8 +237,12 @@ public class ContextVocabularyTranslation
                                                                url,
                                                                domain,
                                                                inverse);
-                            if (inverse) return fvm.translateInverseValue(value);
-                            else return fvm.translateValue(value);
+                            String res = "";
+
+                            if (inverse) res = fvm.translateInverseValue(value);
+                            else res = fvm.translateValue(value);
+
+                            return createVocabularyMappingData(contextSymbol, domain, value, inverse, res, fvm.wasElsecaseApplied());
                         }
                         catch(FunctionException fe)
                         {
@@ -246,30 +345,69 @@ public class ContextVocabularyTranslation
                                                vomFile.getAbsolutePath(),
                                                domain,
                                                inverse);
-            if (inverse) return fvm.translateInverseValue(value);
-            else return fvm.translateValue(value);
+
+            String res = "";
+            if (inverse) res = fvm.translateInverseValue(value);
+            else res = fvm.translateValue(value);
+
+            return createVocabularyMappingData(contextSymbol, domain, value, inverse, res, fvm.wasElsecaseApplied());
         }
 
-        try
+        if ((context.toLowerCase().endsWith(".vom"))||
+            (context.toLowerCase().endsWith(".xml"))||
+            (context.toLowerCase().endsWith(".dvm")))
         {
             FunctionVocabularyMapping fvm = new FunctionVocabularyMapping(
                                               (new FunctionVocabularyMapping()).getTypeNamePossibleList()[2],
                                                context,
                                                domain,
                                                inverse);
-            if (inverse) return fvm.translateInverseValue(value);
-            else return fvm.translateValue(value);
+            String res = "";
+            if (inverse) res = fvm.translateInverseValue(value);
+            else res = fvm.translateValue(value);
+
+            return createVocabularyMappingData(contextSymbol, domain, value, inverse, res, fvm.wasElsecaseApplied());
         }
-        catch(FunctionException fe)
-        {}
-
-        List<String> resList = getURLTranslation(context, domain, value, inverse, false);
-
-        return resList.get(0);
+        else
+        {
+            return getURLTranslation(context, domain, value, inverse, false);
+//            List<String> resList = getURLTranslation(context, domain, value, inverse, false);
+//            return resList.get(0);
+        }
     }
-    private static List<String> getURLTranslation(String context, String domain, String value, boolean inverse, boolean searchDomain) throws Exception
+    private static VocabularyMappingData createVocabularyMappingData(String context, String domain, String value, boolean inverse, String result, boolean elsecaseApplied)
     {
-        List<String> res = null;
+        VocabularyMappingData vmd = null;
+        ReturnMessage msge = null;
+
+        String msg = "Vocabulary Translation is successfully finished.";
+        System.out.println(msg);
+        msge = new ReturnMessage();
+        msge.setErrorLevel(ErrorLevel.INFORMATION);
+        msge.setValue(msg);
+
+        MappingSource src = new MappingSource();
+        src.setDomainName(domain);
+        src.setIp("local");
+        src.setSourceValue(value);
+        src.setContext(context);
+        src.setInverse(inverse);
+
+        MappingResults res = new MappingResults();
+        if ((result != null)&&(!result.trim().equals("")))
+            res.getResult().add(result);
+        res.setElsecaseApplied(elsecaseApplied);
+
+        vmd = new VocabularyMappingData();
+        vmd.setMappingSource(src);
+        vmd.setReturnMessage(msge);
+        vmd.setMappingResults(res);
+
+        return vmd;
+    }
+    private static VocabularyMappingData getURLTranslation(String context, String domain, String value, boolean inverse, boolean searchDomain) throws Exception
+    {
+        VocabularyMappingData res = null;
         if (context.toLowerCase().indexOf("/rest") > 0)
         {
             Exception error = null;
@@ -323,7 +461,7 @@ public class ContextVocabularyTranslation
             throw error;
         }
     }
-    private static List<String> getURLTranslationRestful(String context, String domain, String value, boolean inverse, boolean searchDomain) throws Exception
+    private static VocabularyMappingData getURLTranslationRestful(String context, String domain, String value, boolean inverse, boolean searchDomain) throws Exception
     {
 
         String inv = "/inverse";
@@ -367,23 +505,24 @@ public class ContextVocabularyTranslation
 
         if ((res != null)&&(!res.trim().equals("")))
         {
-            if (searchDomain)
-            {
-                //System.out.println("CCC W 2 : " + res);
-                //System.out.println("CCC W 2 urlS=" + urlS);
-                return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
-            }
-            else
-            {
-                List<String> ll = new ArrayList<String>();
-                ll.add(res);
-                return ll;
-            }
+            return fvm.getRecentUrlVomHandler();
+//            if (searchDomain)
+//            {
+//                //System.out.println("CCC W 2 : " + res);
+//                //System.out.println("CCC W 2 urlS=" + urlS);
+//                return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
+//            }
+//            else
+//            {
+//                List<String> ll = new ArrayList<String>();
+//                ll.add(res);
+//                return ll;
+//            }
         }
         throw new Exception("FunctionException : Any result was not found : domain=" + domain + ", value=" + value);
     }
 
-    private static List<String> getURLTranslationWS(String context, String domain, String value, boolean inverse, boolean searchDomain) throws Exception
+    private static VocabularyMappingData getURLTranslationWS(String context, String domain, String value, boolean inverse, boolean searchDomain) throws Exception
     {
 
         String inv = "inverse=true";
@@ -453,8 +592,10 @@ public class ContextVocabularyTranslation
             }
 
             if ((res != null)&&(!res.trim().equals("")))
-                return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
-
+            {
+                return fvm.getRecentUrlVomHandler();
+                //return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
+            }
         }
         //System.out.println("CCC W 1 : " + res + ", context=" +context);
 
@@ -502,18 +643,19 @@ public class ContextVocabularyTranslation
 
         if ((res != null)&&(!res.trim().equals("")))
         {
-            if (searchDomain)
-            {
-                //System.out.println("CCC W 2 : " + res);
-                //System.out.println("CCC W 2 urlS=" + urlS);
-                return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
-            }
-            else
-            {
-                List<String> ll = new ArrayList<String>();
-                ll.add(res);
-                return ll;
-            }
+            return fvm.getRecentUrlVomHandler();
+//            if (searchDomain)
+//            {
+//                //System.out.println("CCC W 2 : " + res);
+//                //System.out.println("CCC W 2 urlS=" + urlS);
+//                return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
+//            }
+//            else
+//            {
+//                List<String> ll = new ArrayList<String>();
+//                ll.add(res);
+//                return ll;
+//            }
         }
         throw new Exception("FunctionException : Any result was not found : domain=" + domain + ", value=" + value);
     }
@@ -738,7 +880,8 @@ public class ContextVocabularyTranslation
             else context = context + "&" + params;
         }
         //System.out.println("CCC XX : " + context);
-        List<String> ll = getURLTranslation(context, "Any", "Any", false, true);
+        VocabularyMappingData obj = getURLTranslation(context, "Any", "Any", false, true);
+        List<String> ll = obj.getMappingResults().getResult();
         if ((ll != null)&&(ll.size() > 0))
         {
             List<String[]> resList = new ArrayList<String[]>();
@@ -817,77 +960,12 @@ public class ContextVocabularyTranslation
                         if (context.endsWith("/EVS")) context = "EVS";
                     }
                 }
+                if (context != null) break;
             }
         }
         return context;
         //if ((context == null)||(context.trim().equals(""))) throw new Exception("This Context cannot be found. : " + contextSymbol);
     }
-
-    public static void main(String[] args)
-    {
-        boolean inverse = false;
-        String hasPropertyFile = null;
-        String context = null;
-        String domain = null;
-        String value = null;
-        String inverseS = null;
-
-        try
-        {
-            if (args[0].toLowerCase().startsWith("-f:"))
-            {
-                hasPropertyFile = args[0].substring(3);
-                context = args[1];
-                domain = args[2];
-                value = args[3];
-                if (args.length == 5) inverseS = args[4];
-            }
-            else
-            {
-                context = args[0];
-                domain = args[1];
-                value = args[2];
-                if (args.length == 4) inverseS = args[3];
-            }
-        }
-        catch(Exception ee)
-        {
-            System.out.println("Usage: commandLine [-f:contextAddressPropertyFileName] and 3 or 4 arguments - context domain inputValue [inverse=true:false]");
-            return;
-        }
-
-        if (inverseS != null)
-        {
-            String inv = inverseS.trim();
-            if (inv.equalsIgnoreCase("true")) inverse = true;
-            else if (inv.equalsIgnoreCase("false")) inverse = false;
-            else if (inv.equalsIgnoreCase("yes")) inverse = true;
-            else if (inv.equalsIgnoreCase("no")) inverse = false;
-            else if (inv.equalsIgnoreCase("t")) inverse = true;
-            else if (inv.equalsIgnoreCase("f")) inverse = false;
-            else if (inv.equalsIgnoreCase("y")) inverse = true;
-            else if (inv.equalsIgnoreCase("n")) inverse = false;
-            else
-            {
-                System.out.println("Usage: commandLine [-f:contextAddressPropertyFileName] and 3 or 4 arguments - context domain inputValue [inverse=true:false]");
-                return;
-            }
-        }
-
-        String result = "";
-
-        try
-        {
-            result = ContextVocabularyTranslation.translate(hasPropertyFile, context, domain, value, inverse, false);
-        }
-        catch(Exception ee)
-        {
-            System.out.println("Error: ..." + ee.getMessage());
-            return;
-        }
-        System.out.println("Result value : " + result);
-    }
-
 
     public static String getDomainXMLPart(String contextAddrFileName, String contextSymbol, String domain) throws Exception
     {
@@ -959,7 +1037,8 @@ public class ContextVocabularyTranslation
                         for (String name:entryNames)
                         {
                             if ((name.toLowerCase().endsWith(".vom"))||
-                            (name.toLowerCase().endsWith(".xml"))) {}
+                                (name.toLowerCase().endsWith(".xml"))||
+                                (name.toLowerCase().endsWith(".dvm"))) {}
                             else continue;
 
                             if ((domainFile != null)&&(!name.equals(domainFile))) continue;
@@ -1039,6 +1118,7 @@ public class ContextVocabularyTranslation
                         String fileName = f.getName();
                         if (fileName.toLowerCase().endsWith(".vom")) {}
                         else if (fileName.toLowerCase().endsWith(".xml")) {}
+                        else if (fileName.toLowerCase().endsWith(".dvm")) {}
                         else continue;
 
                         List<String> domainList = null;
@@ -1136,8 +1216,75 @@ public class ContextVocabularyTranslation
                 }
                 idx1 = idx2;
             }
-            throw new Exception("Invalid vom File ("+n+"): context=" + context + ", domain=" + domain);
+            throw new Exception("Invalid DVM (VOM) File ("+n+"): context=" + context + ", domain=" + domain);
         }
         throw new Exception("getDomainXMLPart() is not for URL, local access only. : context=" + context + ", domain=" + domain);
     }
+
+    public static void main(String[] args)
+    {
+        boolean inverse = false;
+        String hasPropertyFile = null;
+        String context = null;
+        String domain = null;
+        String value = null;
+        String inverseS = null;
+
+        try
+        {
+            if (args[0].toLowerCase().startsWith("-f:"))
+            {
+                hasPropertyFile = args[0].substring(3);
+                context = args[1];
+                domain = args[2];
+                value = args[3];
+                if (args.length == 5) inverseS = args[4];
+            }
+            else
+            {
+                context = args[0];
+                domain = args[1];
+                value = args[2];
+                if (args.length == 4) inverseS = args[3];
+            }
+        }
+        catch(Exception ee)
+        {
+            System.out.println("Usage: commandLine [-f:contextAddressPropertyFileName] and 3 or 4 arguments - context domain inputValue [inverse=true:false]");
+            return;
+        }
+
+        if (inverseS != null)
+        {
+            String inv = inverseS.trim();
+            if (inv.equalsIgnoreCase("true")) inverse = true;
+            else if (inv.equalsIgnoreCase("false")) inverse = false;
+            else if (inv.equalsIgnoreCase("yes")) inverse = true;
+            else if (inv.equalsIgnoreCase("no")) inverse = false;
+            else if (inv.equalsIgnoreCase("t")) inverse = true;
+            else if (inv.equalsIgnoreCase("f")) inverse = false;
+            else if (inv.equalsIgnoreCase("y")) inverse = true;
+            else if (inv.equalsIgnoreCase("n")) inverse = false;
+            else
+            {
+                System.out.println("Usage: commandLine [-f:contextAddressPropertyFileName] and 3 or 4 arguments - context domain inputValue [inverse=true:false]");
+                return;
+            }
+        }
+
+        String result = "";
+
+        try
+        {
+            result = ContextVocabularyTranslation.translate(hasPropertyFile, context, domain, value, inverse, false);
+        }
+        catch(Exception ee)
+        {
+            System.out.println("Error: ..." + ee.getMessage());
+            ee.printStackTrace();
+            return;
+        }
+        System.out.println("Result value : " + result);
+    }
+
 }

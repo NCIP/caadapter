@@ -1875,9 +1875,12 @@ public class FileUtil
     }
     public static List<String> getContextAddresses(String filePath)
     {
+        if (filePath == null) filePath = "";
+        else filePath = filePath.trim();
+
         String path = filePath;
 
-        if ((path == null)||(path.trim().equals(""))) path = (new FileSearchUtil()).searchFileLight(Config.CONTEXT_LINK_ADDRESS_PROPERTY_FILE_NAME);
+        if (filePath.equals("")) path = (new FileSearchUtil()).searchFileLight(Config.CONTEXT_LINK_ADDRESS_PROPERTY_FILE_NAME);
         //if (path == null) path = (new FileSearchUtil()).searchFile(Config.CONTEXT_LINK_ADDRESS_PROPERTY_FILE_NAME);
         try
         {
@@ -1885,7 +1888,7 @@ public class FileUtil
         }
         catch(IOException ie)
         {
-            if ((filePath != null)&&(filePath.trim().equals(""))) return null;
+            if (!filePath.equals("")) return null;
         }
 
         java.util.List<String> contextLine = new ArrayList<String>();

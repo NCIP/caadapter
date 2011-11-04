@@ -8,6 +8,7 @@ import gov.nih.nci.caadapter.dvts.common.ApplicationException;
 import gov.nih.nci.caadapter.dvts.common.Message;
 import gov.nih.nci.caadapter.dvts.common.meta.VocabularyMappingData;
 import gov.nih.nci.caadapter.dvts.common.meta.ReturnMessage;
+import gov.nih.nci.caadapter.dvts.common.meta.ErrorLevel;
 import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
@@ -707,6 +708,7 @@ public class FunctionVocabularyMapping
     }
     private void validateVOMdataFile(String path, boolean setPathNameJustBeforeValidated) throws FunctionException
     {
+        if (type.equals(typeNamePossibleList[1])) return;
         //if (path.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) path = path.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
         String[] arrayRes = extractDomainAndFileName(path);
         //String domain = arrayRes[0];
@@ -1007,12 +1009,23 @@ public class FunctionVocabularyMapping
             throw new FunctionException("VocMappingEventHandler IOException : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
 
         }
-
         catch(Exception e)
         {
             throw new FunctionException("VocMappingEventHandler Unknown Exception : " + e.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
         }
+
+        if ((vmd.getReturnMessage().getErrorLevel() == ErrorLevel.ERROR)||
+            (vmd.getReturnMessage().getErrorLevel() == ErrorLevel.FATAL))
+        {
+            throw new FunctionException("Exception on the Server side : " + vmd.getReturnMessage().getValue(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+        }
+        if ((vmd.getMappingResults() == null)||
+            (vmd.getMappingResults().getResult().size() == 0))
+        {
+            throw new FunctionException("No translated data from the Server side : ", 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+        }
         recentVocabularyMappingDataObj = vmd;
+
         return vmd.getMappingResults().getResult();
     }
     /*

@@ -1511,7 +1511,7 @@ public class CaadapterWSUtil
                     + "      <font color='green'><br><br><br>" + rl
                     + "      <table border=1 bordercolor=\"blue\">" + rl
                     + "        <tr>" + rl
-                    + "          <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Context</td>" + rl
+                    + "          <td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">"+user+" ID</td>" + rl
                     + "          <td width=\"70%\"><input type=\"text\" name=\"" + idVar + "\" size=20 onMouseOver=\"this.style.backgroundColor='yellow'\" onMouseOut=\"this.style.backgroundColor='white'\"></td>" + rl
                     + "        </tr>" + rl
                     + "        <tr>" + rl
