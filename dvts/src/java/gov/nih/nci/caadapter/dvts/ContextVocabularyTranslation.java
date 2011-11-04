@@ -408,7 +408,8 @@ public class ContextVocabularyTranslation
     private static VocabularyMappingData getURLTranslation(String context, String domain, String value, boolean inverse, boolean searchDomain) throws Exception
     {
         VocabularyMappingData res = null;
-        if (context.toLowerCase().indexOf("/rest") > 0)
+        if ((context.toLowerCase().indexOf("/rest") > 0)||
+            (context.indexOf("?") > 0))
         {
             Exception error = null;
             try
@@ -418,6 +419,8 @@ public class ContextVocabularyTranslation
             catch(Exception ee)
             {
                 error = ee;
+                //System.out.println("CCC : " + ee.getMessage());
+                //ee.printStackTrace();
                 res = null;
             }
             if (res == null)
@@ -485,41 +488,42 @@ public class ContextVocabularyTranslation
         if (!cont.endsWith("/")) cont = cont + "/";
 
         String urlS = "";
+        String searchD_msg = "";
         try
         {
-            String domainF = "";
-            if (domainFile != null) domainF = "@" + domainFile;
-            urlS = cont + "domain/" + domain + domainF + "/value/" + value + inv;
-            //System.out.println(" Input URL: "+urlS);
-            fvm = new FunctionVocabularyMapping(
-                                              (new FunctionVocabularyMapping()).getTypeNamePossibleList()[1],
-                                               urlS,
-                                               false);
-
-            res = fvm.translateValue(value);
+            if (searchDomain)
+            {
+                searchD_msg = "searchDomain ";
+                urlS = cont + "searchdomain/" + Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER;
+                fvm = new FunctionVocabularyMapping(
+                                                  (new FunctionVocabularyMapping()).getTypeNamePossibleList()[1],
+                                                   urlS,
+                                                   false);
+                res = fvm.translateValue("true");
+            }
+            else
+            {
+                String domainF = "";
+                if (domainFile != null) domainF = "@" + domainFile;
+                urlS = cont + "domain/" + domain + domainF + "/value/" + value + inv;
+                //System.out.println(" Input URL: "+urlS);
+                fvm = new FunctionVocabularyMapping(
+                                                  (new FunctionVocabularyMapping()).getTypeNamePossibleList()[1],
+                                                   urlS,
+                                                   false);
+                res = fvm.translateValue(value);
+            }
         }
         catch(FunctionException fe)
         {
-            throw new Exception("FunctionException : " + domain + " : " + fe.getMessage());
+            throw new Exception("getURLTranslationRestful() "+searchD_msg+"FunctionException : " + domain + " : " + fe.getMessage() + ", url=" + urlS);
         }
 
         if ((res != null)&&(!res.trim().equals("")))
         {
             return fvm.getRecentUrlVomHandler();
-//            if (searchDomain)
-//            {
-//                //System.out.println("CCC W 2 : " + res);
-//                //System.out.println("CCC W 2 urlS=" + urlS);
-//                return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
-//            }
-//            else
-//            {
-//                List<String> ll = new ArrayList<String>();
-//                ll.add(res);
-//                return ll;
-//            }
         }
-        throw new Exception("FunctionException : Any result was not found : domain=" + domain + ", value=" + value);
+        throw new Exception("getURLTranslationRestful() "+searchD_msg+"FunctionException  : Any result was not found : domain=" + domain + ", value=" + value);
     }
 
     private static VocabularyMappingData getURLTranslationWS(String context, String domain, String value, boolean inverse, boolean searchDomain) throws Exception
@@ -577,18 +581,20 @@ public class ContextVocabularyTranslation
         FunctionVocabularyMapping fvm = null;
         if (searchDomain)
         {
+            String url2 = cont + "searchdomain="+Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER+"true"+ Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER;
+
             try
             {
                 fvm = new FunctionVocabularyMapping(
                                                   (new FunctionVocabularyMapping()).getTypeNamePossibleList()[1],
-                                                   cont + "&searchdomain=true",
+                                                   url2,
                                                    false);
                 if (inverse) res = fvm.translateInverseValue(value);
-                else res = fvm.translateValue(value);
+                else res = fvm.translateValue("true");
             }
             catch(FunctionException fe)
             {
-                System.out.println("getURLTranslationWS() searchDomain Exception : " + fe.getMessage());
+                throw new Exception("getURLTranslationWS() searchDomain Exception : " + fe.getMessage());
             }
 
             if ((res != null)&&(!res.trim().equals("")))
@@ -596,6 +602,7 @@ public class ContextVocabularyTranslation
                 return fvm.getRecentUrlVomHandler();
                 //return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
             }
+            throw new Exception("getURLTranslationWS() searchDomain Exception : No return value, url=" + url2);
         }
         //System.out.println("CCC W 1 : " + res + ", context=" +context);
 
@@ -638,7 +645,7 @@ public class ContextVocabularyTranslation
         }
         catch(FunctionException fe)
         {
-            throw new Exception("FunctionException : " + domain + " : " + fe.getMessage());
+            throw new Exception("getURLTranslationWS() FunctionException : " + domain + " : " + fe.getMessage());
         }
 
         if ((res != null)&&(!res.trim().equals("")))
@@ -657,7 +664,7 @@ public class ContextVocabularyTranslation
 //                return ll;
 //            }
         }
-        throw new Exception("FunctionException : Any result was not found : domain=" + domain + ", value=" + value);
+        throw new Exception("getURLTranslationWS() FunctionException : Any result was not found : domain=" + domain + ", value=" + value);
     }
 
 
@@ -869,6 +876,7 @@ public class ContextVocabularyTranslation
         catch(FunctionException fe)
         {}
 
+        /*
         String params = "searchdomain=true&value=cs";
         if (context.indexOf("?") < 0)
         {
@@ -879,6 +887,7 @@ public class ContextVocabularyTranslation
             if (context.endsWith("&")) context = context + params;
             else context = context + "&" + params;
         }
+        */
         //System.out.println("CCC XX : " + context);
         VocabularyMappingData obj = getURLTranslation(context, "Any", "Any", false, true);
         List<String> ll = obj.getMappingResults().getResult();

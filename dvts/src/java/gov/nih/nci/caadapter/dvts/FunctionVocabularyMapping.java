@@ -592,6 +592,7 @@ public class FunctionVocabularyMapping
         {
             //String serviceAddr = serviceField.getText();
             int idx = fileName.indexOf(Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER);
+            //System.out.println("CCC : urlS=" + fileName);
             if (idx < 0)
             {
                 boolean foundSourceParameter = false;
@@ -664,6 +665,7 @@ public class FunctionVocabularyMapping
                     {
                         fileName = part1 + cc + tempC + cc;
                     }
+                    foundSourceParameter = true;
                 }
 
                 if (!foundSourceParameter)
@@ -983,46 +985,66 @@ public class FunctionVocabularyMapping
         	jc=JAXBContext.newInstance("gov.nih.nci.caadapter.dvts.common.meta");
             Unmarshaller u=jc.createUnmarshaller();
 
-            InputStream is = null;
             String addr = modifyURLForSearch(value, searchStr);
             //System.out.println("CCCC addr=" + addr);
             URL url = new URL(addr);
             URLConnection conn = url.openConnection();
-            is = conn.getInputStream();
-            //is = url.openStream();
+            InputStream is = conn.getInputStream();
+
+//            DataInputStream dis = new DataInputStream(is);
+//            String result = "";
+//            byte bt = 0;
+//
+//            while(true)
+//            {
+//                try { bt = dis.readByte(); }
+//                catch(IOException ie) { break; }
+//                catch(NullPointerException ie) { break; }
+//
+//                char cc = (char) bt;
+//                result = result + cc;
+//            }
+//            dis.close();
+//            JAXBElement<VocabularyMappingData> jaxbFormula=u.unmarshal(new StreamSource(new CharArrayReader(result.toCharArray())), VocabularyMappingData.class);
+
             JAXBElement<VocabularyMappingData> jaxbFormula=u.unmarshal(new StreamSource(is), VocabularyMappingData.class);
+            //System.out.println("CCCCC : GGGGGG addr="+addr+", result=" + result);
+
             vmd = jaxbFormula.getValue();
-		}
+
+            is.close();
+        }
         catch(JAXBException je)
         {
+            je.printStackTrace();
             throw new FunctionException("VocMappingEventHandler JAXBException : " + je.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
         }
         catch(SocketException e)
         {
-            e.printStackTrace();
-            throw new FunctionException("VocMappingEventHandler SocketException : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            //e.printStackTrace();
+            throw new FunctionException("VocMappingEventHandler SocketException : " + e.getMessage(), 713, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
 
         }
         catch(IOException e)
         {
             e.printStackTrace();
-            throw new FunctionException("VocMappingEventHandler IOException : " + e.getMessage(), 716, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            throw new FunctionException("VocMappingEventHandler IOException : " + e.getMessage(), 721, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
 
         }
         catch(Exception e)
         {
-            throw new FunctionException("VocMappingEventHandler Unknown Exception : " + e.getMessage(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            throw new FunctionException("VocMappingEventHandler Unknown Exception : " + e.getMessage(), 723, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
         }
 
         if ((vmd.getReturnMessage().getErrorLevel() == ErrorLevel.ERROR)||
             (vmd.getReturnMessage().getErrorLevel() == ErrorLevel.FATAL))
         {
-            throw new FunctionException("Exception on the Server side : " + vmd.getReturnMessage().getValue(), 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            throw new FunctionException("Exception on the Server side : " + vmd.getReturnMessage().getValue(), 725, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
         }
         if ((vmd.getMappingResults() == null)||
             (vmd.getMappingResults().getResult().size() == 0))
         {
-            throw new FunctionException("No translated data from the Server side : ", 717, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
+            throw new FunctionException("No translated data from the Server side : ", 726, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
         }
         recentVocabularyMappingDataObj = vmd;
 
@@ -1188,16 +1210,43 @@ public class FunctionVocabularyMapping
     private String modifyURLForSearch(String val, String str)
     {
         String sharpChar = Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER;
+        String val1 = "";
+        String val2 = "";
+
         int idx = val.indexOf("=" + sharpChar);
-        String val1 = val.substring(0, idx + sharpChar.length());
-        String val2 = val.substring(idx + sharpChar.length() + 1);
-        idx = val2.indexOf(sharpChar);
-        if (idx < 0) return val.replace(sharpChar, str);
+        if (idx < 0) idx = val.indexOf("/" + sharpChar);
+
+        if (idx > 0)
+        {
+            val1 = val.substring(0, idx + 1);
+            val2 = val.substring(idx + 1 + sharpChar.length());
+        }
         else
         {
-            String val3 = val1 + val2.substring(idx);
+            idx = val.indexOf(sharpChar);
+            if (idx > 0)
+            {
+                val1 = val.substring(0, idx);
+                val2 = val.substring(idx + sharpChar.length());
+            }
+            else return null;
+        }
+
+
+        if (str.equalsIgnoreCase(Config.NULL_VALUE_MARK)) str = "";
+        else if (str.equalsIgnoreCase("&nbsp;")) str = " ";
+        else if (str.equalsIgnoreCase("&lt;")) str = "<";
+        else if (str.equalsIgnoreCase("&gt;")) str = ">";
+        else if (str.equalsIgnoreCase("&amp;")) str = "&";
+
+        idx = val2.indexOf(sharpChar);
+
+        if (idx < 0) return val1 + str + val2;//val.replace(sharpChar, str);
+        else
+        {
+            String val3 = val2.substring(idx + sharpChar.length());
             //System.out.println("FFFF : " + val + " : " + val1 + " : "+val3);
-            return val3.replace(sharpChar, str);
+            return val1 + str + val3;//val3.replace(sharpChar, str);
         }
     }
 }

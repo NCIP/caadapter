@@ -68,21 +68,34 @@ public class EntryPointController
     @RequestMapping(method=RequestMethod.GET, value="/context/{context}/domain/{domain}/value/{value}")
     public ModelAndView translateVOM(@PathVariable String context, @PathVariable String domain, @PathVariable String value)
     {
-        return getTranslatedData(context, domain, value, "false");
+        return getTranslatedData(context, domain, value, "false", false);
+    }
+
+    @RequestMapping(method=RequestMethod.GET, value="/context/{context}/searchdomain")
+    public ModelAndView translateVOM(@PathVariable String context)//, @PathVariable String domain, @PathVariable String value)
+    {
+        return getTranslatedData(context, "searchDomain", "searchDomain", "false", true);
+    }
+    @RequestMapping(method=RequestMethod.GET, value="/context/{context}/searchdomain/{value}")
+    public ModelAndView translateVOM(@PathVariable String context, @PathVariable String value)//, @PathVariable String domain, @PathVariable String value)
+    {
+        if ((value.equalsIgnoreCase("true"))||(value.equalsIgnoreCase("yes")))
+            return getTranslatedData(context, "searchDomain", "searchDomain", "false", true);
+        else return getTranslatedData(context, "", "", "false", false);
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/context/{context}/domain/{domain}/value/{value}/inverse/{inverse}")
     public ModelAndView translateVOM(@PathVariable String context, @PathVariable String domain, @PathVariable String value, @PathVariable String inverse)
     {
-        return getTranslatedData(context, domain, value, inverse);
+        return getTranslatedData(context, domain, value, inverse, false);
     }
     @RequestMapping(method=RequestMethod.GET, value="/context/{context}/domain/{domain}/value/{value}/inverse")
     public ModelAndView translateVOM2(@PathVariable String context, @PathVariable String domain, @PathVariable String value)
     {
-        return getTranslatedData(context, domain, value, "true");
+        return getTranslatedData(context, domain, value, "true", false);
     }
 
-    private ModelAndView getTranslatedData(String context, String domain, String value, String inverseS)
+    private ModelAndView getTranslatedData(String context, String domain, String value, String inverseS, boolean searchDomain)
     {
         boolean inverse = false;
         if ((inverseS != null)&&(!inverseS.trim().equals("")))
@@ -91,14 +104,17 @@ public class EntryPointController
             if ((inverseS.equals("true"))||(inverseS.equals("yes"))) inverse = true;
         }
 
+        String searchDomainS = "false";
+        if (searchDomain) searchDomainS = "true";
+
         String result = "";
         if ((context.trim().equals(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_WILD_CHARACTER))||
             (domain.trim().equals(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_WILD_CHARACTER))||
             (value.trim().equals(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_WILD_CHARACTER)))
         {
-            result = TranslationResponseUtil.assemblResultMessage(context, inverse, "Error", "DVTS Restful service cannot use any wild character. Use web service", value, "unknown", domain, value, false);
+            result = TranslationResponseUtil.assemblResultMessage(context, inverse, "Error", "DVTS Restful service cannot use any wild character. Use web service.", value, "unknown", domain, value, false);
         }
-        else result = TranslationResponseUtil.generateTranslationResult("unknown", context, domain, "false", value, inverse, "", false);
+        else result = TranslationResponseUtil.generateTranslationResult("unknown", context, domain, searchDomainS, value, inverse, "", false);
 
         JAXBContext jc = null;
         VocabularyMappingData vmd = null;

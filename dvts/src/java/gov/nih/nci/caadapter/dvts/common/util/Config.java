@@ -49,6 +49,7 @@ public class Config {
     public static String VOCABULARY_MAP_FILE_NAME_DOMAIN_WILD_CHARACTER = "*.*";
     public static String VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER = "#";
     public static String VOCABULARY_MAP_URL_CONNECTION_TEST_DATA = "!TEST";
+    public static String NULL_VALUE_MARK = "%%NULL%%";
 
     public static String OPEN_DIALOG_TITLE_FOR_CSV_METADATA_FILE = "Open CSV Specification...";
     public static String OPEN_DIALOG_TITLE_FOR_CSV_FILE = "Open CSV File...";
