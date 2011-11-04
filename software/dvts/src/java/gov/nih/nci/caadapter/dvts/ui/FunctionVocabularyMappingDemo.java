@@ -137,7 +137,7 @@ public class FunctionVocabularyMappingDemo extends JFrame implements ActionListe
         searchButton = (JButton) ob[3];
 
         JPanel locationVOMLabelPanel = new JPanel(new BorderLayout());
-        valueLabel = new JLabel("   VOM File Location", JLabel.LEFT);
+        valueLabel = new JLabel("   DVM (VOM) File Location", JLabel.LEFT);
         locationVOMFile = new JLabel(" (File) ", JLabel.LEFT);
         locationVOMURL = new JLabel(" (URL) ", JLabel.LEFT);
 
@@ -185,10 +185,10 @@ public class FunctionVocabularyMappingDemo extends JFrame implements ActionListe
         serviceURLPanel.add(dPanel, BorderLayout.CENTER);
         serviceURLPanel.add(serviceLabel, BorderLayout.NORTH);
 
-        ob = setupRadioButtonPanel(fileLocal, "VOM File (Local)", "Local_VOM", true,
-                                           fileURL, "VOM File (URL)", "URL_VOM", false,
+        ob = setupRadioButtonPanel(fileLocal, "DVM File (Local)", "Local_DVM", true,
+                                           fileURL, "DVM File (URL)", "URL_DVM", false,
                                            serviceURL, "Service URL", "URL", false, false);
-        JPanel radioButtonPanel = wrappingBorder("Select Type of Vocabulary Mapping Resource", (JPanel) ob[0]);
+        JPanel radioButtonPanel = wrappingBorder("Select Type of Domain Value Mapping Resource", (JPanel) ob[0]);
         fileLocal = (JRadioButton) ob[1];
         fileURL = (JRadioButton) ob[2];
         serviceURL = (JRadioButton) ob[3];

@@ -8,6 +8,7 @@ import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
 import gov.nih.nci.caadapter.dvts.common.util.Config;
 import gov.nih.nci.caadapter.dvts.common.util.vom.ManageVOMFile;
+import gov.nih.nci.caadapter.dvts.common.meta.VocabularyMappingData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -147,7 +148,7 @@ public class TranslationResponseUtil
         File vomRepoDir =  new File(vomPath);
         if ((!vomRepoDir.exists())||(!vomRepoDir.isDirectory()))
         {
-            return assemblResultMessage(context, inverse, "Error", "Not found VOM Repositary : " + vomPath, "", ip, domain, value, dataOnly);
+            return assemblResultMessage(context, inverse, "Error", "Not found DVM (or VOM) Repositary : " + vomPath, "", ip, domain, value, dataOnly);
         }
 
         if ((showFile != null)&&(!showFile.trim().equals("")))
@@ -156,20 +157,20 @@ public class TranslationResponseUtil
             else if (showFile.toLowerCase().endsWith(".xml")) {}
             else
             {
-                return assemblResultMessage(context, inverse, "Error", "This is not a VOM file (showing VOM File) : " + showFile, "", ip, domain, value, dataOnly);
+                return assemblResultMessage(context, inverse, "Error", "This is not a DVM (or VOM) file (showing DVM File) : " + showFile, "", ip, domain, value, dataOnly);
             }
 
             String vomFilePath = fileDataPath + File.separator + showFile;
             File showFileF = new File(vomFilePath);
             if ((!showFileF.exists())||(!showFileF.isFile()))
             {
-                return assemblResultMessage(context, inverse, "Error", "This VOM File is not exist. (showing VOM File) : " + vomFilePath, "", ip, domain, value, dataOnly);
+                return assemblResultMessage(context, inverse, "Error", "This DVM (or VOM) File is not exist. (showing DVM File) : " + vomFilePath, "", ip, domain, value, dataOnly);
             }
 
             String cont = FileUtil.readFileIntoString(showFileF.getAbsolutePath());
             if ((cont == null)||(cont.trim().equals("")))
             {
-                return assemblResultMessage(context, inverse, "Error", "Reading Failure VOM File (showing VOM File) : " + vomFilePath, "", ip, domain, value, dataOnly);
+                return assemblResultMessage(context, inverse, "Error", "Reading Failure DVM (or VOM) File (showing DVM File) : " + vomFilePath, "", ip, domain, value, dataOnly);
             }
             return cont;
         }
@@ -384,7 +385,7 @@ public class TranslationResponseUtil
         retLine = retLine + "<tr>";
         String vomHead = "";
         String aln = " align=\"left\"";
-        if (includeVom)  vomHead = "<th"+aln+">VOM File</th>";
+        if (includeVom)  vomHead = "<th"+aln+">DVM (VOM) File</th>";
         retLine = retLine + vomHead + "<th"+aln+">Domain</th><th"+aln+">Inverse allowed</th><th"+aln+">annotation</th>";
         retLine = retLine + "</tr>";
         for(String[] line:list)
