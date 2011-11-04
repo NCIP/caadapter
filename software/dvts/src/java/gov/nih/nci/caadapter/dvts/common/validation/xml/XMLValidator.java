@@ -115,7 +115,7 @@ public class XMLValidator extends Validator
             }
             catch (SAXParseException se)
             {
-                System.out.println("CCCCC SAXParseException("+xmlFileName+") : " + se.getMessage());
+                System.out.println("SAXParseException("+xmlFileName+") : " + se.getMessage());
             }
             catch (Exception e)
             {
@@ -192,7 +192,6 @@ public class XMLValidator extends Validator
                     Log.logException(this, e);
                     //e.printStackTrace();
                 }
-
             }
         }
         return result;

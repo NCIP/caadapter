@@ -29,7 +29,7 @@
 		<constructor-arg ref="jaxbMarshaller" />
 	</bean>-->
     
-    
+    <!--
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="mediaTypes">
 		    <map>
@@ -48,8 +48,8 @@
 		    </list>
 		</property>
 	</bean>
-	
-	<!--bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" /-->
+	-->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" />
 
 	<bean id="entryPointController" class="gov.nih.nci.caadapter.dvts.ws.restful.controlloer.EntryPointController">
 		<property name="entryPointDS" ref="entryPointDS" />
