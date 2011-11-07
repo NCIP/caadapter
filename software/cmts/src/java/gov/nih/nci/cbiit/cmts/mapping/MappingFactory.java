@@ -19,6 +19,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
+//import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl;
+
 import gov.nih.nci.cbiit.cmts.common.XSDParser;
 import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.BaseMeta;
@@ -128,8 +130,8 @@ public class MappingFactory
 		String mappingParentPath=f.getAbsoluteFile().getParentFile().getAbsolutePath();
 		System.out.println("MappingFactory.loadMapping()..mapping Parent:"+mappingParentPath);
 		JAXBContext jc=null;
-//			jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		jc=com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.newInstance("gov.nih.nci.cbiit.cmts.core");
+		jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+//		jc=com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.newInstance("gov.nih.nci.cbiit.cmts.core");
 
 		Unmarshaller u = jc.createUnmarshaller();
 		JAXBElement<Mapping> jaxbElmt = u.unmarshal(new StreamSource(f), Mapping.class);
