@@ -9,9 +9,20 @@
 
    <context-param>
       <param-name>gov.nih.nci.security.configFile</param-name>
-        <param-value>/WEB-INF/conf/ApplicationSecurityConfig.xml</param-value>
+      <param-value>/WEB-INF/conf/ApplicationSecurityConfig.xml</param-value>
    </context-param>
 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/cxfJaxrsBean.xml</param-value>
+	</context-param>
+	<!-- Spring listener -->
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	
    <!-- HibernateUtil Transaction per Request Management -->
 <!--  
  	<filter>
@@ -102,10 +113,10 @@
    	</servlet>
     
     <!-- Servlet: Axis Engine -->
-    <servlet>
+    <!-- servlet>
         <servlet-name>AxisServlet</servlet-name>
         <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
-    </servlet>
+    </servlet -->
     
     <!-- servlet-mapping>
         <servlet-name>AxisServlet</servlet-name>
@@ -114,11 +125,22 @@
     <servlet-mapping>
         <servlet-name>AxisServlet</servlet-name>
         <url-pattern>*.jws</url-pattern>
-    </servlet-mapping-->   
+    </servlet-mapping>   
     <servlet-mapping >
         <servlet-name>AxisServlet</servlet-name>
         <url-pattern>/services/*</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping -->
+    
+    <!-- CXF servlet -->
+    <servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+			<servlet-name>CXFServlet</servlet-name>
+			<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+	
     <servlet-mapping>
         <servlet-name>AddNewScenario</servlet-name>
         <url-pattern>/AddNewScenario</url-pattern>
