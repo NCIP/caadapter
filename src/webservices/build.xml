@@ -34,6 +34,10 @@
 	  		<include name="**/*.jar"/>
 	  		<include name="**/*.zip"/>
   	</fileset>
+  	<fileset dir="${ws.module.home}/cxfLib">
+  		<include name="**/*.jar"/>
+  		<include name="**/*.zip"/>
+  	</fileset>
   </path>
 
   <target name="compile.source" depends="init" description="compile the source">
@@ -54,19 +58,26 @@
 			<exclude name="log4j-1.2.8.jar"/>
 			<exclude name="servlet.jar"/>
 		</lib>
-		<lib dir="${ws.module.home}/axislib" >
+		<lib dir="${ws.module.home}/cxfLib" >
 			<exclude name="commons-logging-1.0.4.jar"/>
 			<exclude name="log4j-1.2.8.jar"/>
+			<exclude name="geronimo-servlet_3.0_spec-1.0.jar"/>
+			<exclude name="**/*/jaxb-api-2.2.1.jar"/>
 		</lib>
 		<lib dir="${ws.module.home}/../../lib" >
 			<exclude name="commons-logging-1.0.4.jar"/>
+			<exclude name="encoderframework.jar"/>
+			<exclude name="encoderfrmwk-xsdextension.jar"/>
+			<exclude name="hl7.jar"/>
+			<exclude name="hl7encoder-xsdextension.jar"/>
+			<exclude name="hl7v2xsd.jar"/>
 			<exclude name="log4j-1.2.8.jar"/>
+			<exclude name="jdom.jar"/>
 			<exclude name="jgraph.jar"/>
+			<exclude name="xbean.jar"/>
 			<exclude name="xercesImpl.jar"/>
 			<exclude name="rt.jar"/>
-		</lib>
-		<lib dir="${ws.module.home}/../../dist" >
-			<include name="cmts.jar"/>
+			<exclude name="jaxb-api-2.2.1.jar"/>
 		</lib>
 		<classes dir="${module.build.dir}" />
 
@@ -79,6 +90,13 @@
 	<target name="local.deploy" depends="package.war">
 		<copy overwrite="true" file="${module.dist.dir}/${ws.module.name}.war"
 		tofile="${project.dist.dir}/${ws.module.name}.war"/>
+	</target>
+	
+	<target name="jar.client" description="create the web service client jars">
+		<jar destfile="${module.dist.dir}/wsClient.jar">
+			<fileset dir="./../../bin" includes="**/test/**/*Client.class"/>
+
+		</jar>
 	</target>
   <target name="init">
       	<echo message="-------- initialize ${ws.module.name}  --------"/>
