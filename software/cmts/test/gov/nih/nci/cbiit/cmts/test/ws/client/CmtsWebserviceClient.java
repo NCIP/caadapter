@@ -18,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
 
 public class CmtsWebserviceClient {
 
@@ -53,38 +52,41 @@ public class CmtsWebserviceClient {
 	
   public static void main(String[] args) {
     try {
-      
-//      String endpointURL = "http://localhost:30210/caadapterWS-cmts/services/cmtsTransformationService";
-      if (args.length<4)
+      if (args.length<3)
       {
     	  System.out.println("TestCaadapterWebservice Usage:[scenarioName]|[sourceString]|[sourceType]|[endURL]");
     	  return;
       }
       System.out.println("CmtsWebserviceClient.main...scenarioName:"+args[0]);
       System.out.println("CmtsWebserviceClient.main...sourceString:"+args[1]);
-      System.out.println("CmtsWebserviceClient.main...sourecType:"+args[2]);
-      System.out.println("CmtsWebserviceClient.main...endURL:"+args[3]);
+      System.out.println("CmtsWebserviceClient.main...endURL:"+args[2]);
       
       //read WS paramters
       String scenarioName= args[0];
       String sourceDataFileName=args[1];
       String sourceDataString =CmtsWebserviceClient.buildCsvString(sourceDataFileName);      
-      String sourceType=args[2];
-      String endpointURL =args[3];
+      String endpointURL =args[2];
       
       
       //build service call
       Service service = new Service();
       Call call = (Call)service.createCall();
       call.setTargetEndpointAddress(new java.net.URL(endpointURL));
-      String methodName = "transformationService";
+//      String methodName ="transformationOneMessage";//
+      String methodName ="transformationService";// "transformationService";
       call.setOperationName(methodName);
-      call.addParameter("mappingScenario", XMLType.XSD_STRING,ParameterMode.IN );
-      call.addParameter("sourceDataString",  XMLType.XSD_STRING, ParameterMode.IN );
-      call.addParameter("sourceType", XMLType.XSD_STRING,ParameterMode.IN );
-      call.setReturnClass(java.util.ArrayList.class);
-      ArrayList res = (ArrayList)call.invoke(new Object[]{scenarioName,sourceDataString, sourceType});
-      System.out.println(res);
+      call.addParameter("arg0", XMLType.XSD_STRING,ParameterMode.IN );
+      call.addParameter("arg1",  XMLType.XSD_STRING, ParameterMode.IN );
+      call.setReturnClass(java.lang.String.class);
+      Object res = call.invoke(new Object[]{scenarioName,sourceDataString});//, sourceType});
+ 
+//      call.addParameter("mappingScenario", XMLType.XSD_STRING,ParameterMode.IN );
+//      call.addParameter("sourceDataString",  XMLType.XSD_STRING, ParameterMode.IN );
+//      call.addParameter("sourceType", XMLType.XSD_STRING,ParameterMode.IN );
+//      call.setReturnClass(java.util.ArrayList.class);
+//      ArrayList<String> res = (ArrayList<String>)call.invoke(new Object[]{scenarioName,sourceDataString});//, sourceType});
+     System.out.println("CmtsWebserviceClient.main()..\n"+res);
+
     }catch(Exception e) {
      	 e.printStackTrace();
     }
