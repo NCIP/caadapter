@@ -5,12 +5,13 @@ import java.util.zip.ZipEntry;
 import java.io.*;
 import java.text.*;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
+import gov.nih.nci.caadapter.dvts.common.util.Config;
 import gov.nih.nci.caadapter.dvts.common.util.vom.ManageVOMFile;
 import gov.nih.nci.caadapter.dvts.common.function.DateFunction;
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 import gov.nih.nci.caadapter.dvts.common.Message;
-import gov.nih.nci.caadapter.dvts.common.tools.ZipUtil;
-import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
+import gov.nih.nci.caadapter.dvts.common.util.ZipUtil;
+import gov.nih.nci.caadapter.dvts.common.util.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResults;
 //import gov.nih.nci.caadapter.dvts.hl7.transformation.TransformationServiceUtil;
@@ -33,7 +34,7 @@ public class CaadapterWSUtil
     private String[] PROPERTY_ITEMS = new String[] {"scs", "h3s", "map", "schema", "comment", "date", "schemaValidation"};
     private String PROPERTY_FILE_NAME = "properties.txt";
     private String PASSWORD_FILE_NAME = "password.txt";
-    private String SERVICE_NAME = "caadapter-dvts";
+    private String SERVICE_NAME = Config.PRODUCT_NAME;
     private String ROOT_PATH = "C:\\"+SERVICE_NAME + File.separator;
     private String ROOT_WEB_DIR = "C:\\resin-2.0.0\\doc\\" + SERVICE_NAME + File.separator;
     private String ENVIRONMENT_PROPERTY_FILE_NAME = "caAdapterDVTS_WSEnvironment.properties";
@@ -67,6 +68,7 @@ public class CaadapterWSUtil
 
     private int LOG_LIMIT = 500;
     private boolean responseTypeXML = false;
+    private boolean alreadyInitialized = false;
 
     private DateFunction dateUtil = new DateFunction();
     GeneralUtilitiesWS util = new GeneralUtilitiesWS();
@@ -87,11 +89,12 @@ public class CaadapterWSUtil
     }
     private void initialize(boolean responseXML)
     {
-        setReturnTypeXML(responseXML);
+
+        //System.out.println("CCC AA current directory : " + (new File("")).getAbsolutePath() + ", FileUtil.getWorkingDirPath()=" + FileUtil.getWorkingDirPath());
         setupEnvironmentProperties();
 
         if (!WORK_DIR.endsWith(File.separator)) WORK_DIR = WORK_DIR + File.separator;
-
+        //System.out.println("CCC BB working directory : " + WORK_DIR);
         tidyOutputDir();
         tidyWorkDir();
     }
@@ -106,6 +109,8 @@ public class CaadapterWSUtil
     }
     private void setupEnvironmentProperties(List<String> list)
     {
+        if (alreadyInitialized) return;
+        alreadyInitialized = true;
         boolean isRepeated = false;
         if (list == null) list = searchEnvironmentPropertiesFile();
         else isRepeated = true;
@@ -118,8 +123,11 @@ public class CaadapterWSUtil
         String rootWebServiceDirectory = null;
         String rootURL = null;
 
+
+
         for (String line:list)
         {
+            //System.out.println("CCCC list line : " + line);
             line = line.trim();
             int idx = line.indexOf("=");
             if (idx <= 0) continue;
@@ -147,21 +155,39 @@ public class CaadapterWSUtil
         }
         if (serviceName != null) SERVICE_NAME = serviceName;
 
-        String workD = FileUtil.getWorkingDirPath();
-        if (!workD.endsWith(File.separator)) workD = workD + File.separator;
-        File d = new File(workD);
-        while(d.getParentFile() != null) d = d.getParentFile();
-
-        if (rootDirectory == null) rootDirectory = d.getAbsolutePath();
-        else
+        if ((rootDirectory == null)||(rootDirectory.trim().equals("")))
         {
-            File dir = new File(rootDirectory);
-            if ((dir.exists())&&(dir.isDirectory())) {}
-            else rootDirectory = d.getAbsolutePath();
+            String workD = FileUtil.getWorkingDirPath();
+            if (!workD.endsWith(File.separator)) workD = workD + File.separator;
+            File d = new File(workD);
+            if ((d.getName().equalsIgnoreCase("bin"))||
+                (d.getName().equalsIgnoreCase("dist"))) d = d.getParentFile();
+
+            File f = (new FileSearchUtil()).searchDir(d, getServiceName(), new String[] {"localhost", "work", "temp"});
+
+            if (f == null)
+            {
+                System.out.println("Cannot find service root directory : " + getServiceName());
+                return;
+            }
+            //else System.out.println("CCCC Service root directory is found : " + f.getAbsolutePath());
+
+
+
+
+            //while(d.getParentFile() != null) d = d.getParentFile();
+
+            if (rootDirectory == null) rootDirectory = f.getAbsolutePath();
+            else
+            {
+                File dir = new File(rootDirectory);
+                if ((dir.exists())&&(dir.isDirectory())) {}
+                else rootDirectory = d.getAbsolutePath();
+            }
         }
         if (!rootDirectory.endsWith(File.separator)) rootDirectory = rootDirectory + File.separator;
 
-        if (rootWebServiceDirectory == null) rootWebServiceDirectory = workD + "doc" + File.separator;
+        if (rootWebServiceDirectory == null) rootWebServiceDirectory = rootDirectory + "doc" + File.separator;
         else
         {
             File dir = new File(rootWebServiceDirectory);
@@ -169,10 +195,10 @@ public class CaadapterWSUtil
             {
                 if (!rootWebServiceDirectory.endsWith(File.separator)) rootWebServiceDirectory = rootWebServiceDirectory + File.separator;
             }
-            else rootWebServiceDirectory = workD + "doc" + File.separator;
+            else rootWebServiceDirectory = rootDirectory + "doc" + File.separator;
         }
 
-        if (rootURL == null) rootURL = "http://155.230.210.233:8080/";
+        if (rootURL == null) rootURL = "http://***:8080/";
 
         boolean isAllExist = true;
         ROOT_PATH = rootDirectory + SERVICE_NAME + File.separator;
@@ -198,6 +224,19 @@ public class CaadapterWSUtil
         else SERVLET_URL = rootURL + SERVICE_SUBDIRECTORY + "/";
         OUTPUT_DIR_URL = ROOT_URL + getOutputDirName() + "/";
 
+
+
+        //ROOT_PATH = "C:\\"+SERVICE_NAME + File.separator;
+    //private String ROOT_WEB_DIR = "C:\\resin-2.0.0\\doc\\" + SERVICE_NAME + File.separator;
+    //private String ENVIRONMENT_PROPERTY_FILE_NAME = "caAdapterDVTS_WSEnvironment.properties";
+    //private String SCENARIO_DIR_NAME = "scenarios";
+    //ROOT_SCENARIO_PATH = ROOT_PATH + SCENARIO_DIR_NAME + File.separator;
+    //private String WORKING_DIR_NAME = "working";
+    WORK_DIR = ROOT_PATH + WORKING_DIR_NAME + File.separator;
+
+
+
+
         if ((!isAllExist)&&((!isRepeated)))
         {
             List<String> ll = generateEnvironmentPropertiesFile();
@@ -208,6 +247,19 @@ public class CaadapterWSUtil
     private List<String> searchEnvironmentPropertiesFile()
     {
         String workDir = FileUtil.getWorkingDirPath().trim();
+        File workDirS = new File(workDir);
+        if (workDirS.getName().equalsIgnoreCase("bin")) workDirS = workDirS.getParentFile();
+        File caAdapterWSDirF = (new FileSearchUtil()).searchDir(workDirS, this.getServiceName(), new String[] {"localhost", "work", "temp"});
+        if (caAdapterWSDirF == null)//||(caAdapterWSDir.trim().equals("")))
+        {
+            workDir = FileUtil.getWorkingDirPath().trim();
+            if (!workDir.endsWith(File.separator)) workDir = workDir + File.separator;
+            workDir = workDir + WORKING_DIR_NAME + File.separator;
+            //File workDirS2 = new File(workDir);
+            //if (!workDirS2.exists()) workDirS2.mkdirs();
+        }
+        else workDir = caAdapterWSDirF.getAbsolutePath();
+
         if (!workDir.endsWith(File.separator)) workDir = workDir + File.separator;
 
         List<String> list = null;
@@ -226,13 +278,20 @@ public class CaadapterWSUtil
     }
     private List<String> generateEnvironmentPropertiesFile()
     {
-        String caAdapterWSDir = (new FileSearchUtil()).searchDir(getServiceName());
-        if ((caAdapterWSDir == null)||(caAdapterWSDir.trim().equals("")))
+        //String caAdapterWSDir = (new FileSearchUtil()).searchDir(getServiceName());
+        String str = FileUtil.getWorkingDirPath();
+        File workDirS = new File(str);
+        if (workDirS.getName().equalsIgnoreCase("bin")) workDirS = workDirS.getParentFile();
+
+        File caAdapterWSDirF = (new FileSearchUtil()).searchDir(workDirS, this.getServiceName(), new String[] {"localhost", "work", "temp"});
+        if (caAdapterWSDirF == null)//||(caAdapterWSDir.trim().equals("")))
         {
-            System.out.println("#### Not found caAdapteWS dir : ");
+            System.out.println("#### Not found "+getServiceName()+" dir : ");
             return null;
         }
+        else System.out.println("CCCC found service dir "+getServiceName()+" dir : ");
 
+        String caAdapterWSDir = caAdapterWSDirF.getAbsolutePath();
         if (!caAdapterWSDir.endsWith(File.separator)) caAdapterWSDir = caAdapterWSDir + File.separator;
         String metaInf = caAdapterWSDir + "META-INF" + File.separator;
         String scenarioDir = metaInf + getServiceName() + File.separator + getScenarioDirName();
@@ -261,7 +320,7 @@ public class CaadapterWSUtil
         }
 
         String tempURL = "";
-        String tempSub = "stellar";
+        String tempSub = "";
         if (arePropertiesFromFile)
         {
            tempURL = BASE_URL;
@@ -275,13 +334,22 @@ public class CaadapterWSUtil
         list.add("SERVICE_SUBDIRECTORY=" + tempSub);
         list.add("LOG_LIMIT=" + LOG_LIMIT);
 
-        String workDir = FileUtil.getWorkingDirPath().trim();
-        if (!workDir.endsWith(File.separator)) workDir = workDir + File.separator;
+        //String workDir = null;//FileUtil.getWorkingDirPath().trim();  ==
+
+
+
+
+
+
+
+
+        //if (!workDir.endsWith(File.separator)) workDir = workDir + File.separator;
         try
         {
             String prop = "";
             for (String line:list) prop = prop + line + "\r\n";
-            FileWriter fw = new FileWriter(workDir + ENVIRONMENT_PROPERTY_FILE_NAME);
+            //FileWriter fw = new FileWriter(workDir + ENVIRONMENT_PROPERTY_FILE_NAME);
+            FileWriter fw = new FileWriter(caAdapterWSDir + ENVIRONMENT_PROPERTY_FILE_NAME);
             fw.write(prop);
             fw.close();
         }

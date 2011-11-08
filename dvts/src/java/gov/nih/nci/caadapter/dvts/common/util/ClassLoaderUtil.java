@@ -9,7 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.dvts.common.util;
 
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
-import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
+import gov.nih.nci.caadapter.dvts.common.util.FileSearchUtil;
 
 import java.net.URL;
 import java.net.URI;
@@ -99,20 +99,38 @@ public class ClassLoaderUtil
     {
         if (streams == null) streams = new ArrayList<InputStream>();
         Enumeration<URL> fileURLs = null;
+        List<URL> listURL = new ArrayList<URL>();
         String messages = "";
-        fileURLs = ClassLoader.getSystemResources(name);
 
-        if (fileURLs == null) throw new IOException("Class loader search Result : " + name + " : Not Found");
+        URL fileURL1 = FileUtil.retrieveResourceURL(name);
+        if (fileURL1 != null) listURL.add(fileURL1);
+
+        if (listURL.size() == 0)
+        {
+            fileURLs = ClassLoader.getSystemResources(name);
+
+            if (fileURLs != null)
+            {//throw new IOException("Class loader search Result : " + name + " : Not Found");
+
+                while(fileURLs.hasMoreElements())
+                {
+                    URL fileURL2 = fileURLs.nextElement();
+                    if (fileURL2 != null)listURL.add(fileURL2);
+                }
+            }
+        }
+
         int count = 0;
-        //System.out.println("&&& 11 URL for ZIP: " + name);
-        while(fileURLs.hasMoreElements())
+        //System.out.println("&&& 11 URL for ZIP: " + name + ", size=" + listURL.size());
+        for (URL fileURL:listURL)
         {
             count++;
-            URL fileURL = fileURLs.nextElement();
+
+            //System.out.println("&&& 19 URL for ZIP: ("+count+") " + name);
             String url = fileURL.toString();
             urls.add(url);
             InputStream stream = null;
-            //System.out.println("&&& 22 URL for ZIP: " + url);
+            //System.out.println("CCCC 22 URL for ZIP: " + url);
             if ((url.toLowerCase().startsWith("jar:"))||(url.toLowerCase().startsWith("zip:")))
             {
 
@@ -184,8 +202,8 @@ public class ClassLoaderUtil
 
         if ((count == 0)||(streams.size() == 0))
         {
-            String res1 = (new FileSearchUtil()).searchFile("caAdapter.jar");
-            if (res1 == null) throw new IOException("Class loader search Result (2) : " + name + " : Not Found (caAdapter.jar)");
+            String res1 = (new FileSearchUtil()).searchFile(Config.PRODUCT_NAME + ".jar");
+            if (res1 == null) throw new IOException("Class loader search Result (2) : " + name + " : Not Found ( "+Config.PRODUCT_NAME+".jar)");
             //System.out.println("&&& 12-1  URL for ZIP: " + res1);
 
             try
@@ -244,12 +262,22 @@ public class ClassLoaderUtil
                 InputStream stream = streams.get(i);
                 String nameS = names.get(i);
 
-
-                String fileName = FileUtil.getTemporaryFileName();
-                if ((nameS.length() > 5)&&(nameS.substring(nameS.length()-4, nameS.length()-3).equals(".")))
+                String nameS2 = "";
+                for (int j=0;j<nameS.length();j++)
                 {
-                    fileName = fileName.substring(0, fileName.length()-4) + "." + nameS.substring(nameS.length()-3);
+                    String achar = nameS.substring(j, j+1);
+                    if ((achar.equals("/"))||(achar.equals(File.separator)))
+                    {
+                        nameS2 = nameS2 + "_";
+                    }
+                    else nameS2 = nameS2 + achar;
                 }
+
+                String fileName = FileUtil.getTemporaryFileName() + nameS2;
+//                if ((nameS.length() > 5)&&(nameS.substring(nameS.length()-4, nameS.length()-3).equals(".")))
+//                {
+//                    fileName = fileName.substring(0, fileName.length()-4) + "." + nameS.substring(nameS.length()-3);
+//                }
 
                 try
                 {
@@ -299,14 +327,14 @@ public class ClassLoaderUtil
                     String nameE = jarEntry.getName();
                     if (nameE.startsWith(name))
                     {
-                        //System.out.println("JarEntry : " + jarEntry.getName());
+                        System.out.println("JarEntry : " + jarEntry.getName());
                         DataInputStream dis = null;
                         try
                         {
                             stream1 = jarFile.getInputStream(jarEntry);
                             streams.add(stream1);
                             names.add(nameE);
-                            //System.out.println("WWWZZ : " + getFileName(nameE) + " : " + nameE);
+                            System.out.println("WWWZZ : " + getFileName(nameE) + " : " + nameE);
                         }
                         catch(IOException ie)
                         {

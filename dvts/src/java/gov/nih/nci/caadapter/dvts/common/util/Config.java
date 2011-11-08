@@ -9,7 +9,7 @@ package gov.nih.nci.caadapter.dvts.common.util;
  */
 public class Config {
 
-    	public static String PRODUCT_NAME = "caAdapter";
+    	public static String PRODUCT_NAME = "caadapter-dvts";
 
 	public static String CAADAPTER_VERSION = "V3.2";
 	public static String CAADAPTER_BUILD_NUMBER = "caAdapter_3_2_Final";
@@ -21,7 +21,8 @@ public class Config {
     public static String PORR_MT040001_XML_File = "./xml/PORR_MT040001.xml";
 
     public static String FUNCTION_DEFINITION_FILE_LOCATION = "./etc/core.fls";
-    public static String VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION = "./etc/vom.xsd";
+    //public static String VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION = "./etc/vom.xsd";
+    public static String VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION = "map/functions/vom.xsd";
     public static String MAP_COMPONENT_SOURCE_TYPE = "source";
     public static String MAP_COMPONENT_TARGET_TYPE = "target";
     public static String MAP_COMPONENT_FUNCTION_TYPE = "function";

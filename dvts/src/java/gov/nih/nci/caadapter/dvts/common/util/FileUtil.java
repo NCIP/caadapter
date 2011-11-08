@@ -10,7 +10,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.dvts.common.util;
 
 import gov.nih.nci.caadapter.dvts.common.Log;
-import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
+import gov.nih.nci.caadapter.dvts.common.util.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.function.DateFunction;
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 
@@ -673,9 +673,35 @@ public class FileUtil
     public static String getUIWorkingDirectoryPath()
     {
         File f = new File("./workingspace");
-        if ((!f.exists())||(!f.isDirectory()))
+        boolean isWritable = true;
+        if ((f.exists())&&(f.isDirectory()))
         {
-            f.mkdirs();
+            isWritable = f.canWrite();
+        }
+        else
+        {
+            if (f.mkdirs())
+            {
+                isWritable = f.canWrite();
+            }
+            else isWritable = false;
+        }
+        if (!isWritable)
+        {
+            String workD = FileUtil.getWorkingDirPath();
+            if (!workD.endsWith(File.separator)) workD = workD + File.separator;
+            File d = new File(workD);
+            if ((d.getName().equalsIgnoreCase("bin"))||
+                (d.getName().equalsIgnoreCase("dist"))) d = d.getParentFile();
+
+            File fi = (new FileSearchUtil()).searchDir(d, Config.PRODUCT_NAME, new String[] {"localhost", "work", "temp"});
+
+            if (fi == null)
+            {
+                System.out.println("Cannot find service root directory : " + Config.PRODUCT_NAME);
+
+            }
+            else return fi.getAbsolutePath();
         }
         return f.getAbsolutePath();
     }
@@ -1528,7 +1554,7 @@ public class FileUtil
                 }
                 catch(MalformedURLException me)
                 {
-                    System.out.println("FileUtil.retrieveResourceURL().6. MalformedURLException : " + me.getMessage());
+                    //System.out.println("FileUtil.retrieveResourceURL().6. MalformedURLException : " + me.getMessage());
                 }
             }
             //else System.out.println("FileUtil.retrieveResourceURL().7.");
