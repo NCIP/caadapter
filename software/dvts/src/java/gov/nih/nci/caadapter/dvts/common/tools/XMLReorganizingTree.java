@@ -7,6 +7,7 @@ import gov.nih.nci.caadapter.dvts.common.validation.xml.XMLValidator;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
 import gov.nih.nci.caadapter.dvts.common.util.ClassLoaderUtil;
+import gov.nih.nci.caadapter.dvts.common.util.ZipUtil;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.parsers.SAXParserFactory;

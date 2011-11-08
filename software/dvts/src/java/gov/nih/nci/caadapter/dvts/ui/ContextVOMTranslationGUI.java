@@ -3,7 +3,7 @@ package gov.nih.nci.caadapter.dvts.ui;
 import gov.nih.nci.caadapter.dvts.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.dvts.ContextVocabularyTranslation;
 import gov.nih.nci.caadapter.dvts.common.Log;
-import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
+import gov.nih.nci.caadapter.dvts.common.util.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 import gov.nih.nci.caadapter.dvts.common.util.DefaultSettings;
 import gov.nih.nci.caadapter.dvts.common.util.Config;
@@ -347,6 +347,16 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
                         }
                         else
                         {
+                            if (frame != null)
+                            {
+                                JOptionPane.showMessageDialog(frame, "This context is not found : " + link, "Invalid Context", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                            if (dialog != null)
+                            {
+                                JOptionPane.showMessageDialog(dialog, "This context is not found : " + link, "Invalid Context", JOptionPane.ERROR_MESSAGE);
+                            }
+
                             contextCombo.setSelectedIndex(currentItemIndex);
                         }
                     }

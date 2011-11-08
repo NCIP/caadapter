@@ -9,7 +9,7 @@ import gov.nih.nci.caadapter.dvts.common.Message;
 import gov.nih.nci.caadapter.dvts.common.meta.VocabularyMappingData;
 import gov.nih.nci.caadapter.dvts.common.meta.ReturnMessage;
 import gov.nih.nci.caadapter.dvts.common.meta.ErrorLevel;
-import gov.nih.nci.caadapter.dvts.common.tools.FileSearchUtil;
+import gov.nih.nci.caadapter.dvts.common.util.FileSearchUtil;
 import gov.nih.nci.caadapter.dvts.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
 import gov.nih.nci.caadapter.dvts.common.util.ClassLoaderUtil;
@@ -716,11 +716,7 @@ public class FunctionVocabularyMapping
         //String domain = arrayRes[0];
         String pathName = arrayRes[1];
         String targetPath = "";
-        if (setPathNameJustBeforeValidated)
-        {
-            if ((path.equals(pathNameJustBeforeValidated))||
-                (pathName.equals(pathNameJustBeforeValidated))) return;
-        }
+
 
         pathName = verifyFileName(pathName);
         File file = new File(pathName);
@@ -739,109 +735,79 @@ public class FunctionVocabularyMapping
                 throw new FunctionException("Invalid path or URL address of vom file ("+pathName+"). : " + ie.getMessage());
             }
         }
-        String xsdFilePath = "";
+        if (setPathNameJustBeforeValidated)
+        {
+            if (targetPath.equals(pathNameJustBeforeValidated)) return;
+        }
+        String xsdFilePath = null;
         File aFile = null;
 
         String xsdFileClassPath = Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION;
         ClassLoaderUtil loader = null;
         String fe = null;
-        try
-        {
-            loader = new ClassLoaderUtil(xsdFileClassPath);//, false);
-        }
-        catch(IOException ie)
-        {
-            try
-            {
-                loader = new ClassLoaderUtil("map/functions/vom.xsd");//, false);
-            }
-            catch(IOException ie2)
-            {
-                fe = "Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage();
-            }
-            //fe = "Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage();
-        }
-        if ((loader == null)||(loader.getFileNames().size() == 0))
-        {
-            fe = "Not Found xml schema file (2) " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")";
-        }
 
-        if (fe != null)
+        URL fileURL1 = FileUtil.retrieveResourceURL(xsdFileClassPath);
+        if (fileURL1 != null)
         {
-            String res = (new FileSearchUtil()).searchFile(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
-            if (res == null)
-            {
-                String res1 = (new FileSearchUtil()).searchFile("caAdapter-dvts.jar");
-                if (res1 == null) throw new FunctionException(fe);
-                fe = null;
-                try
-                {
-                    loader = new ClassLoaderUtil(xsdFileClassPath, res1);
-                }
-                catch(IOException ie)
-                {
-                    fe = "Not Found xml schema file (3)" + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage();
-                }
-                if ((loader == null)||(loader.getFileNames().size() == 0))
-                {
-                    fe = "Not Found xml schema file (4) " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")";
-                }
-                if (fe != null) throw new FunctionException(fe);
-
-                aFile = new File(loader.getFileNames().get(0));
-                xsdFilePath = aFile.getAbsolutePath();
-            }
-            else xsdFilePath = res;
+            xsdFilePath = fileURL1.toString();
+            //System.out.println("CCC path=" + xsdFilePath + ", is=" + setPathNameJustBeforeValidated+", before=" +pathNameJustBeforeValidated);
         }
         else
         {
-//            if (loader.getInputStreams().size() > 0)
-//            {
-//                xsdFilePath = loader.getURLs().
-//            }
-            aFile = new File(loader.getFileNames().get(0));
-            xsdFilePath = aFile.getAbsolutePath();
-        }
-
-        /*
-        try
-        {
-        	URL fileURL= ClassLoader.getSystemResource(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
-        	String filePath=fileURL.getFile();
-        	System.out.println("function spec file Path:"+filePath + " : " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
-
-            aFile = new File(filePath);
-//            new FileReader(aFile);
-        }
-        catch (Exception e)
-        {
-            throw new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + e.getMessage());
-        }
-        xsdFilePath = aFile.getAbsolutePath();
-        System.out.println("xsd absoultePath:"+xsdFilePath);
-        System.out.println(" File exists :"+ aFile.exists());
-
-        try
-        {
-            FileReader reader = new FileReader(aFile);
-            BufferedReader br = new BufferedReader(reader);
-            while(true)
+            String nameS2 = "";
+            for (int j=0;j<xsdFileClassPath.length();j++)
             {
-                String str = br.readLine();
-                if (str == null) break;
-                System.out.println("   %%% : " + str);
+                String achar = xsdFileClassPath.substring(j, j+1);
+                if ((achar.equals("/"))||(achar.equals(File.separator)))
+                {
+                    nameS2 = nameS2 + "_";
+                }
+                else nameS2 = nameS2 + achar;
+            }
+            File wDir = new File(FileUtil.getUIWorkingDirectoryPath());
+            File[] fList = wDir.listFiles();
+            for (File ff:fList)
+            {
+                if (!ff.isFile()) continue;
+                String fName = ff.getName();
+                if (fName.endsWith(nameS2))
+                {
+                    xsdFilePath = ff.getAbsolutePath();
+                    break;
+                }
+            }
+        }
+        if (xsdFilePath == null)
+        {
+            try
+            {
+                loader = new ClassLoaderUtil(xsdFileClassPath);//, false);
+            }
+            catch(IOException ie)
+            {
+                try
+                {
+                    loader = new ClassLoaderUtil("map/functions/vom.xsd");//, false);
+                }
+                catch(IOException ie2)
+                {
+                    fe = "Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage();
+                }
+                //fe = "Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage();
+            }
+            if ((loader == null)||(loader.getFileNames().size() == 0))
+            {
+                fe = "Not Found xml schema file (2) " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")";
             }
 
+            if (fe != null) throw new FunctionException(fe);
+            else
+            {
+                aFile = new File(loader.getFileNames().get(0));
+                xsdFilePath = aFile.getAbsolutePath();
+            }
         }
-        catch(FileNotFoundException fe)
-        {
-            throw new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + fe.getMessage());
-        }
-        catch(IOException fe)
-        {
-            throw new FunctionException("IO Exception " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + fe.getMessage());
-        }
-        */
+
         XMLValidator xmlValidator = new XMLValidator(targetPath, xsdFilePath);
         ValidatorResults result = xmlValidator.validate();
         if (!result.isValid())
@@ -858,7 +824,7 @@ public class FunctionVocabularyMapping
 
         if (setPathNameJustBeforeValidated)
         {
-            pathNameJustBeforeValidated = path;
+            pathNameJustBeforeValidated = targetPath;
         }
     }
 

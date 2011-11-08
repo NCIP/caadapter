@@ -4,7 +4,7 @@ import gov.nih.nci.caadapter.dvts.common.function.FunctionException;
 import gov.nih.nci.caadapter.dvts.common.util.FileUtil;
 import gov.nih.nci.caadapter.dvts.common.util.Config;
 import gov.nih.nci.caadapter.dvts.common.util.vom.ManageVOMFile;
-import gov.nih.nci.caadapter.dvts.common.tools.ZipUtil;
+import gov.nih.nci.caadapter.dvts.common.util.ZipUtil;
 import gov.nih.nci.caadapter.dvts.common.meta.*;
 
 import javax.xml.bind.JAXBContext;
@@ -201,7 +201,8 @@ public class ContextVocabularyTranslation
                         for (String name:entryNames)
                         {
                             if ((name.toLowerCase().endsWith("." + Config.VOCABULARY_MAPPING_DIR))||
-                            (name.toLowerCase().endsWith(".xml"))) {}
+                                (name.toLowerCase().endsWith(".xml"))||
+                                (name.toLowerCase().endsWith(".dvm"))) {}
                             else continue;
 
                             if ((domainFile != null)&&(!name.equals(domainFile))) continue;
@@ -419,7 +420,7 @@ public class ContextVocabularyTranslation
             catch(Exception ee)
             {
                 error = ee;
-                //System.out.println("CCC : " + ee.getMessage());
+
                 //ee.printStackTrace();
                 res = null;
             }
@@ -604,7 +605,7 @@ public class ContextVocabularyTranslation
             }
             throw new Exception("getURLTranslationWS() searchDomain Exception : No return value, url=" + url2);
         }
-        //System.out.println("CCC W 1 : " + res + ", context=" +context);
+
 
 
 //        String domainFile = null;
@@ -653,8 +654,7 @@ public class ContextVocabularyTranslation
             return fvm.getRecentUrlVomHandler();
 //            if (searchDomain)
 //            {
-//                //System.out.println("CCC W 2 : " + res);
-//                //System.out.println("CCC W 2 urlS=" + urlS);
+//
 //                return fvm.getRecentUrlVomHandler().getMappingResults().getResult();
 //            }
 //            else
@@ -710,7 +710,7 @@ public class ContextVocabularyTranslation
         if (contextTransform)
         {
             context = searchContextPhysicalAddress(contextAddrFileName, contextSymbol);
-            //System.out.println("CCCCC XX0 ("+contextSymbol+") : " + context);
+
         }
         else context = contextSymbol;
 
@@ -722,10 +722,10 @@ public class ContextVocabularyTranslation
         List<String[]> domainList = new ArrayList<String[]>();
 
         File conFile = new File(context);
-        //System.out.println("CCCCC XX1 : " + context);
+
         if (conFile.exists())
         {
-            //System.out.println("CCCCC XX2 : " + conFile.getAbsolutePath());
+
             FunctionVocabularyMapping fvm0 = new FunctionVocabularyMapping();
             if (conFile.isFile())
             {
@@ -738,7 +738,8 @@ public class ContextVocabularyTranslation
                     for (String name:entryNames)
                     {
                         if ((name.toLowerCase().endsWith("." + Config.VOCABULARY_MAPPING_DIR))||
-                        (name.toLowerCase().endsWith(".xml"))) {}
+                            (name.toLowerCase().endsWith(".xml"))||
+                            (name.toLowerCase().endsWith(".dvm"))) {}
                         else continue;
 
                         if (!vomFileName.equals(""))
@@ -818,7 +819,8 @@ public class ContextVocabularyTranslation
                     String fileName = f.getName();
 
                     if ((fileName.toLowerCase().endsWith("." + Config.VOCABULARY_MAPPING_DIR))||
-                        (fileName.toLowerCase().endsWith(".xml"))) {}
+                        (fileName.toLowerCase().endsWith(".xml"))||
+                        (fileName.toLowerCase().endsWith(".dvm"))) {}
                     else continue;
 
                     if (!vomFileName.equals(""))
@@ -888,7 +890,7 @@ public class ContextVocabularyTranslation
             else context = context + "&" + params;
         }
         */
-        //System.out.println("CCC XX : " + context);
+
         VocabularyMappingData obj = getURLTranslation(context, "Any", "Any", false, true);
         List<String> ll = obj.getMappingResults().getResult();
         if ((ll != null)&&(ll.size() > 0))
@@ -946,9 +948,9 @@ public class ContextVocabularyTranslation
                     if (idx2 < 0) continue;
                 }
                 String name = line.substring(0, idx2);
-                //System.out.println("CCCCC name=" + name);
+
                 String addr = line.substring(idx2+1);
-                //System.out.println("CCCCC ("+context+") name=" + name + ", addr=" + addr);
+
                 if (symbol)
                 {
                     if (name.equals(contextSymbol))
@@ -1201,13 +1203,13 @@ public class ContextVocabularyTranslation
                 }
 
                 String eleLine = sb.substring(idx1, idx2);
-                //System.out.println("CCCC eleLine = " + eleLine);
+
                 eleLine = eleLine.substring(eleLine.indexOf("name=\"") + 6);
                 eleLine = eleLine.substring(0, eleLine.indexOf("\""));
                 //if (eleLine.indexOf("name=\""+domain+"\"") > 0)
                 if (eleLine.trim().equals(domain))
                 {
-                    //System.out.println("CCCC After Line = " + sb.substring(idx2));
+
                     int idx3 = sb.indexOf("</domain", idx2);
                     if (idx3 < 0)
                     {

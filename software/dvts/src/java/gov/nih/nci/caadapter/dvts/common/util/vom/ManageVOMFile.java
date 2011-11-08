@@ -84,7 +84,7 @@ public class ManageVOMFile
 
         if ((domainInformation == null)||(domainInformation.size() == 0))
         {
-            System.out.println("CCC Context domain info list is null : contextDirS");
+            System.out.println("CCC Context domain info list is null : " + contextDirS + ", doamin=" + domain);
             return null;
         }
 
@@ -96,6 +96,7 @@ public class ManageVOMFile
         else
         {
             d = getInformationItem(domainInformation, contextDirS, domain, 1);
+            if (d != null) return d.trim();
         }
 
         return null;
@@ -207,6 +208,7 @@ public class ManageVOMFile
         }
         catch(Exception ee)
         {
+            System.out.println("ContextVocabularyTranslation.getDomainInformation() : " + ee.getMessage());
             return null;
         }
 

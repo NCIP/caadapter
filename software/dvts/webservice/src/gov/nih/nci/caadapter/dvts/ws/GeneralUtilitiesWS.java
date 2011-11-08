@@ -24,11 +24,32 @@ public class GeneralUtilitiesWS {
         //initialize(false);
     }
 
+    /*
+    public File searchDir(File dir, String fileName)
+    {
+        return searchDir(dir, fileName, -1, null);
+    }
+    public File searchDir(File dir, String fileName, String[] underCondition)
+    {
+        return searchDir(dir, fileName, -1, underCondition);
+    }
+    public File searchDir(File dir, String fileName, int limitDepth, String[] underCondition)
+    {
+        return searchFileAndDir(dir, fileName, limitDepth, underCondition, false);
+    }
     public File searchFile(File dir, String fileName)
     {
-        return searchFile(dir, fileName, -1);
+        return searchFile(dir, fileName, -1, null);
     }
-    public File searchFile(File dir, String fileName, int limitDepth)
+    public File searchFile(File dir, String fileName, String[] underCondition)
+    {
+        return searchFile(dir, fileName, -1, underCondition);
+    }
+    public File searchFile(File dir, String fileName, int limitDepth, String[] underCondition)
+    {
+        return searchFileAndDir(dir, fileName, limitDepth, underCondition, true);
+    }
+    private File searchFileAndDir(File dir, String fileName, int limitDepth, String[] underCondition, boolean isFile)
     {
         if (dir == null) return null;
         if ((!dir.exists())||(!dir.isDirectory())) return null;
@@ -46,7 +67,35 @@ public class GeneralUtilitiesWS {
         if (!dirPath.endsWith(File.separator)) dirPath = dirPath + File.separator;
 
         File pFile = new File(dirPath + fileName);
-        if ((pFile.exists())&&(pFile.isFile())) return pFile;
+        if (pFile.exists())
+        {
+            boolean cTag = true;
+            File tempP = pFile;
+            while ((underCondition != null)&&(underCondition.length > 0))
+            {
+                boolean dTag = false;
+                for (String str:underCondition)
+                {
+                    if (tempP.getName().equals(str))
+                    {
+                        dTag = true;
+                        break;
+                    }
+                }
+                if (dTag) break;
+                if (tempP.getParentFile() == null)
+                {
+                    cTag = false;
+                    break;
+                }
+                tempP = tempP.getParentFile();
+            }
+            if (cTag)
+            {
+                if ((isFile)&&(pFile.isFile())) return pFile;
+                if ((!isFile)&&(pFile.isDirectory())) return pFile;
+            }
+        }
 
         String temp = dirPath.substring(0, (dirPath.length() - File.separator.length()));
         int depth = 0;
@@ -64,12 +113,12 @@ public class GeneralUtilitiesWS {
         for(File file:files)
         {
             if (!file.isDirectory()) continue;
-            File res = searchFile(file, fileName, limitDepth);
+            File res = searchFileAndDir(file, fileName, limitDepth, underCondition, isFile);
             if (res != null) return res;
         }
         return null;
     }
-
+    */
     public String from8859(String src) // 8859??? KSC5601? ??
     {
         if (src== null) return "";
