@@ -62,7 +62,7 @@ public class TransformationServiceImpl implements TransformationWebService{
 			result=transferData(mappingFilePath, tempSourceFile.getPath());
 		} catch (XQException e) {
 			e.printStackTrace();
-			result.add("error in transfering: " + e.getMessage() );
+			result.add("transformation error: " + e.getMessage() );
 		}
 		tempSourceFile.delete();
 		System.out.println("TransformationServiceImpl.transformationService()..return:\n"+result);
