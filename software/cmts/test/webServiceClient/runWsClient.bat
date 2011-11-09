@@ -10,11 +10,16 @@
 SET 
 # END_URL=http://localhost:30210/caadapterWS-cmts/services/transfer
 
+<<<<<<< .mine
+SET END_URL=http://localhost:8080/cxfWS/transfer
+
+=======
 # SET END_URL=http://localhost:8080/caadapterWS-cmts/services/transfer
 
 # DEV server
 SET END_URL=http://caadapter-dev.nci.nih.gov/caadapterWS-cmts/services/transfer
 
+>>>>>>> .r3340
 # SET END_URL=http://localhost:30210/caadapterWS-cmts/ws/AxisServlet/cmtsTransformationService
 
 # scenarioName
