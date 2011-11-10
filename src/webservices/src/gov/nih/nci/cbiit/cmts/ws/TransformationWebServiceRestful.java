@@ -7,7 +7,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
-public interface TransformationWebServiceRestfull {
+public interface TransformationWebServiceRestful {
 
 	@GET
 	@Produces ({MediaType.TEXT_XML, "application/xml"})

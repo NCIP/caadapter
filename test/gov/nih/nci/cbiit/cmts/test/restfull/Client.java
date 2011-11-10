@@ -34,8 +34,6 @@ public final class Client {
         String scenarioName= args[0];
         String sourceDataFileName=args[1];      
         String targetUrl =args[2];
-//    	String targetUrl="http://caadapter-dev.nci.nih.gov/caadapterWS-cmts/services/restfull/transfer";//?scenario=testTwo&source=ttteuo7";
-//        String srcFile="C:/projects/workspace/cmtsSvn/test/webServiceClient/shiporder.xml";     
         String srcData=buildSourceDataString(sourceDataFileName);
 
         System.out.println("connect...:"+targetUrl);

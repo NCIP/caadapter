@@ -2,7 +2,7 @@ package gov.nih.nci.cbiit.cmts.ws;
 
 import java.util.ArrayList;
 
-public class TransformationServiceRestfullImpl implements TransformationWebServiceRestfull{
+public class TransformationServiceRestfulImpl implements TransformationWebServiceRestful{
 
 	private TransformationWebService wsServer;
 	@Override
