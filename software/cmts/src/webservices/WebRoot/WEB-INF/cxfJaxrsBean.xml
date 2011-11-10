@@ -27,7 +27,7 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" /> 
   	<bean class="org.apache.cxf.jaxrs.JAXRSServerFactoryBean" init-method="create">
-    	<property name="address" value="/restfull"/>
+    	<property name="address" value="/restful"/>
     	<property name="serviceBeans">
       		<ref bean="transferBean"/>
     	</property>
@@ -35,6 +35,6 @@
 	<jaxws:endpoint id="transformation"
                   implementor="gov.nih.nci.cbiit.cmts.ws.TransformationServiceImpl"
                   address="/transfer" />
-	<bean class="gov.nih.nci.cbiit.cmts.ws.TransformationServiceRestfullImpl" id="transferBean"/>			  
+	<bean class="gov.nih.nci.cbiit.cmts.ws.TransformationServiceRestfulImpl" id="transferBean"/>			  
 </beans>
 <!-- END SNIPPET: beans -->
