@@ -1,31 +1,23 @@
 # QA server
-
-# SET END_URL=http://cbioqa101.nci.nih.gov:49080/caAdapterWS/services/restful/transfer
-
-# caAdpater Development server
-
-# SET END_URL=http://cbiovdev5054.nci.nih.gov/caAdapterWS/services/restful/transfer
-
-# local server
-SET END_URL=http://localhost:30210/caadapterWS-cmts/services/restful/transfer
-
-# SET END_URL=http://localhost:8080/caadapterWS-cmts/services/restful/transfer
+# SET END_URL=http://caadapter-qa.nci.nih.gov/caadapterWS-cmts/services/restful
 
 # DEV server
-# SET END_URL=http://caadapter-dev.nci.nih.gov/caadapterWS-cmts/services/restfull/transfer
+SET END_URL=http://caadapter-dev.nci.nih.gov/caadapterWS-cmts/services/restful
+
+#local server
+#SET END_URL=http://localhost:30210/caadapterWS-cmts/services/restful
+#SET END_URL=http://localhost:8080/caadapterWS-cmts/services/restful
 
 # scenarioName
-
 SET SCENARIO_NAME=testTwo
 
+# opeartionName
+#SET OPERATION_NAME=transferData
+SET OPERATION_NAME=transferResource
 
-# sourceFileName 
-
-SET SRC_FILE=shipOrder.xml
-
-# SET SRC_TYPE=xml
+# source data resource identifier
+#SET SRC_DATA=shipOrder.xml
+SET SRC_DATA=http://caadapter-dev.nci.nih.gov/caadapter-cmts/sourceTest.html
 
 
-
-
-java -cp wsClient.jar;lib\cxf-2.4.2.jar gov.nih.nci.cbiit.cmts.test.restfull.Client %SCENARIO_NAME% %SRC_FILE% %2 %END_URL%
+java -cp wsClient.jar;lib\cxf-2.4.2.jar gov.nih.nci.cbiit.cmts.test.restfull.Client %SCENARIO_NAME% %SRC_DATA% %2 %END_URL% %OPERATION_NAME%

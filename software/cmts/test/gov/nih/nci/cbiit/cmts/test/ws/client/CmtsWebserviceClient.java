@@ -52,40 +52,46 @@ public class CmtsWebserviceClient {
 	
   public static void main(String[] args) {
     try {
-      if (args.length<3)
+      if (args.length<4)
       {
-    	  System.out.println("TestCaadapterWebservice Usage:[scenarioName]|[sourceString]|[sourceType]|[endURL]");
+    	  System.out.println("TestCaadapterWebservice Usage:[scenarioName]|[sourceData]|[endURL]|[operationName]");
     	  return;
       }
       System.out.println("CmtsWebserviceClient.main...scenarioName:"+args[0]);
-      System.out.println("CmtsWebserviceClient.main...sourceString:"+args[1]);
+      System.out.println("CmtsWebserviceClient.main...sourceData:"+args[1]);
       System.out.println("CmtsWebserviceClient.main...endURL:"+args[2]);
+      System.out.println("CmtsWebserviceClient.main()...operation:"+args[3]);
       
       //read WS paramters
       String scenarioName= args[0];
-      String sourceDataFileName=args[1];
-      String sourceDataString =CmtsWebserviceClient.buildCsvString(sourceDataFileName);      
+      String sourceDataResource=args[1];
+            
       String endpointURL =args[2];
+      String operationnName=args[3];
       
       
       //build service call
       Service service = new Service();
       Call call = (Call)service.createCall();
       call.setTargetEndpointAddress(new java.net.URL(endpointURL));
-//      String methodName ="transformationOneMessage";//
-      String methodName ="transformationService";// "transformationService";
-      call.setOperationName(methodName);
+      call.setOperationName(operationnName);
       call.addParameter("arg0", XMLType.XSD_STRING,ParameterMode.IN );
       call.addParameter("arg1",  XMLType.XSD_STRING, ParameterMode.IN );
       call.setReturnClass(java.lang.String.class);
-      Object res = call.invoke(new Object[]{scenarioName,sourceDataString});//, sourceType});
- 
+      Object result;
+      if(operationnName.equalsIgnoreCase("transferData"))
+      {
+    	  String sourceDataString =CmtsWebserviceClient.buildCsvString(sourceDataResource);
+    	  result = call.invoke(new Object[]{scenarioName,sourceDataString});
+      }
+      else
+    	  result = call.invoke(new Object[]{scenarioName,sourceDataResource});//, sourceType});
 //      call.addParameter("mappingScenario", XMLType.XSD_STRING,ParameterMode.IN );
 //      call.addParameter("sourceDataString",  XMLType.XSD_STRING, ParameterMode.IN );
 //      call.addParameter("sourceType", XMLType.XSD_STRING,ParameterMode.IN );
 //      call.setReturnClass(java.util.ArrayList.class);
 //      ArrayList<String> res = (ArrayList<String>)call.invoke(new Object[]{scenarioName,sourceDataString});//, sourceType});
-     System.out.println("CmtsWebserviceClient.main()..\n"+res);
+     System.out.println("CmtsWebserviceClient.main()..\n"+result);
 
     }catch(Exception e) {
      	 e.printStackTrace();

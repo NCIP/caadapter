@@ -6,6 +6,10 @@ import gov.nih.nci.cbiit.cmts.ws.object.ScenarioRegistration;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -16,67 +20,133 @@ import javax.xml.xquery.XQException;
 public class TransformationServiceImpl implements TransformationWebService{
 
 	@Override
-	public ArrayList<String>  transformationService(String mappingScenario,
+	public ArrayList<String>  transferData(String mappingScenario,
 			String sourceData) {
 		ArrayList<String> result = new ArrayList<String>();
-		System.out.println("TransformationServiceImpl.transformationService()...scenarioName:"+mappingScenario);
-		System.out.println("TransformationServiceImpl.transformationService()...sourceData:\n"+sourceData);
+
+        File tempSourceFile=prepareSourceData(sourceData, result);
+        if (!tempSourceFile.exists())
+        {
+        	result.add("source data is empty: " + sourceData );
+        	return result;
+        }
+        processMappingAndSource(mappingScenario,tempSourceFile,result);
+
+//		tempSourceFile.delete();
+		System.out.println("TransformationServiceImpl.transferData()..return:\n"+result);
+		return result;
+	}
+	
+	@Override
+	public ArrayList<String> transferResource(String mappingScenario,
+			String sourceResource) {
+		ArrayList<String> result = new ArrayList<String>();
+
+        File tempSourceFile=prepareSourceDataFromResource(sourceResource, result);
+        if (!tempSourceFile.exists())
+        {
+        	result.add("source data is not available: " + sourceResource );
+        	return result;
+        }
+        processMappingAndSource(mappingScenario,tempSourceFile,result);
+
+		tempSourceFile.delete();
+		System.out.println("TransformationServiceImpl.transferResource()..return:\n"+result);
+		return result;
+	}
+	
+	private void processMappingAndSource(String mappingScenario, File source, ArrayList<String> result)
+	{
+		System.out.println("TransformationServiceImpl.processMappingAndSource()...scenarioName:"+mappingScenario);
+		System.out.println("TransformationServiceImpl.processMappingAndSource()...sourceData:\n"+source);
 		ScenarioRegistration scenario=null;
 		try {
 			scenario = ScenarioUtil.findScenario(mappingScenario);
 			if (scenario == null) {
 				result.add("Scenario is not found:" + mappingScenario);
- 				return result;
+ 				return ;
 			}
 			System.out
-			.println("TransformationServiceImpl.transformationService()...found mapping scenario:"+scenario.getName());
+			.println("TransformationServiceImpl.processMappingAndSource()...found mapping scenario:"+scenario.getName());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			result.add("mapping error: " + e.getMessage() );
 		}
 
+        try {
+        	String mappingFilePath=ScenarioUtil.CMTS_SCENARIO_HOME+File.separator+scenario.getName()
+        	+File.separator+scenario.getMappingFile();
+//			result=convertData(mappingFilePath, source.getPath());
+			TransformationService transformer =TransformerFactory.getTransformer("xml") ;
+			String xmlResult=transformer.transfer(source.getPath(), mappingFilePath);
+			result.add(xmlResult);
+		} catch (XQException e) {
+			e.printStackTrace();
+			result.add("transformation error: " + e.getMessage() );
+		}
+	}
+	private File prepareSourceData(String sourceDataString, ArrayList<String> message)
+	{
 		String fileName="xmlFile"+Calendar.getInstance().getTimeInMillis();
         FileWriter fw = null;
         
         try
         {
             fw = new FileWriter(new File(fileName));
-            fw.write(sourceData);
+            fw.write(sourceDataString);
             fw.close();
         }
         catch(Exception ie)
         {
-        	result.add("File Writing Error(" + fileName + ") : " + ie.getMessage() );
-        	return result;
+        	message.add("File Writing Error(" + fileName + ") : " + ie.getMessage() );
         }
         File tempSourceFile=new File(fileName);
-        if (!tempSourceFile.exists())
-        {
-        	result.add("source data is empty: " + sourceData );
-        	return result;
-        }
-
-        try {
-        	String mappingFilePath=ScenarioUtil.CMTS_SCENARIO_HOME+File.separator+scenario.getName()
-        	+File.separator+scenario.getMappingFile();
-			result=transferData(mappingFilePath, tempSourceFile.getPath());
-		} catch (XQException e) {
-			e.printStackTrace();
-			result.add("transformation error: " + e.getMessage() );
-		}
-		tempSourceFile.delete();
-		System.out.println("TransformationServiceImpl.transformationService()..return:\n"+result);
-		return result;
+        return tempSourceFile;
 	}
 	
-	private ArrayList<String> transferData(String mappingFile, String sourceDataFile) throws XQException
+	private File prepareSourceDataFromResource(String sourceDataURL, ArrayList<String> message)
 	{
-		ArrayList<String> result = new ArrayList<String>();
-		System.out.println("TransformationServiceImpl.transferData()...looking for transformer...");
-		TransformationService transformer =TransformerFactory.getTransformer("xml") ;
-		String xmlResult=transformer.transfer(sourceDataFile, mappingFile);
-		System.out.println("TransformationServiceImpl.transferData()...resultData:\n"+xmlResult);
-		result.add(xmlResult);
-		return result;
+		String fileName="xmlFile"+Calendar.getInstance().getTimeInMillis();
+        FileWriter fw = null;
+        
+        try
+        {
+            fw = new FileWriter(new File(fileName));
+    		URL url = new URL(sourceDataURL); 
+    		InputStream in=url.openStream();
+    		InputStreamReader sReader=new InputStreamReader(in); 
+
+    		LineNumberReader lReader=new LineNumberReader(sReader);
+    		String line=lReader.readLine();
+    		System.out
+					.println("TransformationServiceImpl.prepareSourceDataFromResource():"+sourceDataURL);
+    		while (line!=null)
+    		{
+    			System.out.println(line);
+    			fw.write(line);
+    			line=lReader.readLine();
+    		}            
+            fw.close();
+        }
+        catch(Exception ie)
+        {
+        	message.add("File Writing Error(" + fileName + ") : " + ie.getMessage() );
+        }
+        File tempSourceFile=new File(fileName);
+        return tempSourceFile;
 	}
+	
+//	private ArrayList<String> convertData(String mappingFile, String sourceDataFile) throws XQException
+//	{
+//		ArrayList<String> result = new ArrayList<String>();
+//		System.out.println("TransformationServiceImpl.transferData()...looking for transformer...");
+//		TransformationService transformer =TransformerFactory.getTransformer("xml") ;
+//		String xmlResult=transformer.transfer(sourceDataFile, mappingFile);
+//		System.out.println("TransformationServiceImpl.transferData()...resultData:\n"+xmlResult);
+//		result.add(xmlResult);
+//		return result;
+//	}
+
+
 }

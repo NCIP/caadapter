@@ -22,11 +22,15 @@ import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
@@ -94,6 +98,33 @@ public class TransformTest {
 
 	/*
 	 * 
+	 */
+	@Test
+	public void testReadRemoteFile() throws IOException
+	{
+//		String fileURI="//nci6116g.nci.nih.gov/group/NCICB/caAdapter/Temp/";
+		String urlValue="http://localhost:30210/caadapter-cmts/index.html";
+//		String urlValue="file://nci6116g.nci.nih.gov/group/NCICB/caAdapter/Temp/test.xml";
+		URL url = new URL(urlValue); 
+//		File f = new File("//10.22.33.122/images");
+//		FileReader reader=new FileReader(f);
+		InputStream in=url.openStream();
+		InputStreamReader sReader=new InputStreamReader(in); 
+
+		LineNumberReader lReader=new LineNumberReader(sReader);
+		String line=lReader.readLine();
+		while (line!=null)
+		{
+			System.out.println("TransformTest.testReadRemoteFile()"+line);
+			line=lReader.readLine();
+		}
+		
+
+
+	}
+	
+	/*
+	 * Test mapping and transformation
 	 */
 	@Test
 	public void testMappingAndTransformation() throws JAXBException, XQException
