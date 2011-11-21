@@ -6,14 +6,23 @@ import javax.jws.WebService;
 @WebService
 public interface TransformationWebService {
 	/**
-	 * caadapter Commong Mapping and Transformation Service module Web Service
-	 * to provide transformation service
-	 * 
+	 *Transfer a data string into target dataset 
 	 * @param mappingScenario
 	 *            The name of the mapping scenario
-	 * @param sourceDataString
+	 * @param sourceData
 	 *            source data in String format
 	 * @return A collection of the transformed XML message
 	 */
-	public ArrayList<String> transformationService(String mappingScenario, String sourceData);
+	public ArrayList<String> transferData(String mappingScenario, String sourceData);
+
+	/**
+	 *Transfer a data string into target dataset 
+	 * @param mappingScenario
+	 *            The name of the mapping scenario
+	 * @param sourceResource
+	 *           URL of source data
+	 * @return A collection of the transformed XML message
+	 */
+	public ArrayList<String> transferResource(String mappingScenario, String sourceResource);
+
 }

@@ -21,26 +21,32 @@ public final class Client {
 
     public static void main(String args[]) throws Exception {
         // Sent HTTP GET request to query data
-        if (args.length<3)
+        if (args.length<4)
         {
-      	  System.out.println("Client Usage:[scenarioName]|[sourceString]|[sourceType]|[endURL]");
+      	  System.out.println("Client Usage:[scenarioName]|[sourceData]|[endURL]|[operation]");
       	  return;
         }
         System.out.println("Client.main...scenarioName:"+args[0]);
         System.out.println("Client.main...sourceString:"+args[1]);
         System.out.println("Client.main...endURL:"+args[2]);
-        
+        System.out.println("Client.main...operation:"+args[3]);
         //read WS paramters
         String scenarioName= args[0];
         String sourceDataFileName=args[1];      
-        String targetUrl =args[2];
-        String srcData=buildSourceDataString(sourceDataFileName);
-
-        System.out.println("connect...:"+targetUrl);
-
-		String srcEncoded=URLEncoder.encode(srcData, "UTF-8");
-		String querySt="scenario="+scenarioName+"&source="+srcEncoded;
-	
+        String endUrl =args[2];
+        String operationName=args[3];
+        
+        String srcURL=sourceDataFileName;
+        if (operationName.equals("transferData"))
+        {
+        	String srcData=buildSourceDataString(sourceDataFileName);
+        	srcURL=URLEncoder.encode(srcData, "UTF-8");
+        }
+		String querySt="scenario="+scenarioName+"&source="+srcURL;
+        
+		String targetUrl=endUrl+"/"+operationName;
+        
+		System.out.println("connect...:"+targetUrl);
 		String urlSt=targetUrl+"?"+querySt;//
 		System.out.println("Client.main()..url\n"+urlSt);
         URL url = new URL(urlSt);

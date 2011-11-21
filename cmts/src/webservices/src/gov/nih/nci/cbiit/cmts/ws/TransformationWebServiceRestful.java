@@ -9,8 +9,26 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public interface TransformationWebServiceRestful {
 
+	/**
+	 *  RESTfull API: transfer source data from string
+	 * @param mappingScenario
+	 * @param sourceData
+	 * @return
+	 */
 	@GET
 	@Produces ({MediaType.TEXT_XML, "application/xml"})
-	@Path("transfer")
-	public ResultList restfullService(@QueryParam("scenario") String mappingScenario, @QueryParam("source") String sourceData);
+	@Path("transferData")
+	public ResultList restfulTransferData(@QueryParam("scenario") String mappingScenario, @QueryParam("source") String sourceData);
+	
+	/**
+	 * RESTfull API: transfer source data from URL
+	 * @param mappingScenario
+	 * @param sourceURL
+	 * @return
+	 */
+	@GET
+	@Produces ({MediaType.TEXT_XML, "application/xml"})
+	@Path("transferResource")
+	public ResultList restfulTransferResource(@QueryParam("scenario") String mappingScenario, @QueryParam("source") String sourceURL);
+
 }
