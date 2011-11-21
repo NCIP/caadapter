@@ -92,13 +92,12 @@
 		tofile="${project.dist.dir}/${ws.module.name}.war"/>
 	</target>
 	
-	<target name="jar.client" description="create the web service client jars">
+	<target name="package.client" depends="init" description="create the web service client jars">
 		<jar destfile="${module.dist.dir}/wsClient.jar">
 			<fileset dir="./../../bin" includes="**/test/**/*Client.class"/>
-
 		</jar>
 	</target>
-  <target name="init">
+  <target name="init" depends="clean">
       	<echo message="-------- initialize ${ws.module.name}  --------"/>
       	<mkdir dir="${module.build.dir}"/>
 	  	<mkdir dir="${module.dist.dir}"/>
