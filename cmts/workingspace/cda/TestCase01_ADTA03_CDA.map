@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core">
     <components>
-        <component location="workingspace\hl7v2\hl7v2xsd\2.4\ADT_A03.xsd" kind="xml" type="source" id="0">
-            <rootElement isChosen="false" isChoice="false" type="ADT_A03.CONTENT" nameSpace="urn:hl7-org:v2xml" name="ADT_A03"/>
+        <component location="..\hl7v2\hl7v2xsd\2.4\ADT_A03.xsd" kind="xml" type="source" id="0">
+            <rootElement isSimple="true" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" type="ADT_A03.CONTENT" nameSpace="urn:hl7-org:v2xml" name="ADT_A03" idSpec="X-path" id="/ADT_A03">
+                <ativated>true</ativated>
+            </rootElement>
         </component>
-        <component location="workingspace\cda\CDA_TestCase01.xsd" kind="xml" type="target" id="1">
-            <rootElement isChosen="false" isChoice="false" type="POCD_MT000040.ClinicalDocument" nameSpace="urn:hl7-org:v3" name="ClinicalDocument"/>
+        <component location="CDA_TestCase01.xsd" kind="xml" type="target" id="1">
+            <rootElement isSimple="true" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" type="POCD_MT000040.ClinicalDocument" nameSpace="urn:hl7-org:v3" name="ClinicalDocument" idSpec="X-path" id="/ClinicalDocument">
+                <ativated>true</ativated>
+            </rootElement>
         </component>
         <component type="function" id="1280246945938">
             <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
@@ -24,19 +28,7 @@
         </component>
         <component type="function" id="1280249073601">
             <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="L" name="constant"/>
-            </function>
-        </component>
-        <component type="function" id="1280249095866">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="Integer" value="tel:" name="constant"/>
-            </function>
-        </component>
-        <component type="function" id="1280249117366">
-            <function method="concatenate" class="gov.nih.nci.cbiit.cmts.function.StringFunction" group="string" name="concatenate">
-                <data input="true" type="string" value="" name="string1"/>
-                <data input="true" type="string" value="" name="string2"/>
-                <data input="false" type="string" name="result"/>
+                <data input="false" type="String" value="H" name="constant"/>
             </function>
         </component>
         <component type="function" id="1287069172904">
@@ -97,6 +89,18 @@
         <component type="function" id="1287783867717">
             <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
                 <data input="false" type="String" value="DEF" name="constant"/>
+            </function>
+        </component>
+        <component type="function" id="1316813919783">
+            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
+                <data input="false" type="String" value="tel:" name="constant"/>
+            </function>
+        </component>
+        <component type="function" id="1316813941345">
+            <function method="concatenate" class="gov.nih.nci.cbiit.cmts.function.StringFunction" group="string" name="concatenate">
+                <data input="true" type="string" value="" name="string1"/>
+                <data input="true" type="string" value="" name="string2"/>
+                <data input="false" type="string" name="result"/>
             </function>
         </component>
     </components>
@@ -192,18 +196,6 @@
         <link>
             <source id="/ClinicalDocument/recordTarget/patientRole/telecom/@use" componentid="1"/>
             <target id="constant" componentid="1280249073601"/>
-        </link>
-        <link>
-            <source id="constant" componentid="1280249095866"/>
-            <target id="string1" componentid="1280249117366"/>
-        </link>
-        <link>
-            <source id="/ADT_A03/PID/PID.13/XTN.1" componentid="0"/>
-            <target id="string2" componentid="1280249117366"/>
-        </link>
-        <link>
-            <source id="/ClinicalDocument/recordTarget/patientRole/telecom/@value" componentid="1"/>
-            <target id="result" componentid="1280249117366"/>
         </link>
         <link>
             <source id="/ADT_A03/PID/PID.11/XAD.1/SAD.1" componentid="0"/>
@@ -373,6 +365,18 @@
             <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/@moodCode" componentid="1"/>
             <target id="constant" componentid="1287783867717"/>
         </link>
+        <link>
+            <source id="constant" componentid="1316813919783"/>
+            <target id="string1" componentid="1316813941345"/>
+        </link>
+        <link>
+            <source id="/ADT_A03/PID/PID.13/XTN.1" componentid="0"/>
+            <target id="string2" componentid="1316813941345"/>
+        </link>
+        <link>
+            <source id="/ClinicalDocument/recordTarget/patientRole/telecom/@value" componentid="1"/>
+            <target id="result" componentid="1316813941345"/>
+        </link>
     </links>
     <tags>
         <tag value="true" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody" kind="choice" componentType="target"/>
@@ -392,8 +396,6 @@
         <view width="100" hight="50" y="119" x="92" componentid="1280247783048"/>
         <view width="100" hight="50" y="186" x="168" componentid="1280248348975"/>
         <view width="100" hight="50" y="284" x="186" componentid="1280249073601"/>
-        <view width="100" hight="50" y="278" x="99" componentid="1280249095866"/>
-        <view width="140" hight="68" y="227" x="277" componentid="1280249117366"/>
         <view width="100" hight="50" y="490" x="203" componentid="1287069172904"/>
         <view width="100" hight="50" y="444" x="145" componentid="1287069638329"/>
         <view width="100" hight="50" y="369" x="84" componentid="1287071959473"/>
@@ -406,5 +408,7 @@
         <view width="100" hight="50" y="578" x="84" componentid="1287779833779"/>
         <view width="100" hight="50" y="464" x="66" componentid="1287783816145"/>
         <view width="100" hight="50" y="328" x="47" componentid="1287783867717"/>
+        <view width="100" hight="50" y="188" x="55" componentid="1316813919783"/>
+        <view width="140" hight="68" y="28" x="70" componentid="1316813941345"/>
     </views>
 </mapping>
