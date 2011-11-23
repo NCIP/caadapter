@@ -97,10 +97,14 @@ public class AddNewScenario extends HttpServlet {
 	    	  // Process the uploaded items
 	    	  String scenarioName=""; //mapping scenario name
 	    	  Iterator <FileItem> iter = items.iterator();
+	    	  String transType="";
 	    	  while (iter.hasNext()) {
 	    		  FileItem item = (FileItem) iter.next();
 
 	    		  if (item.isFormField()) {
+	    			  System.out.println("AddNewScenario.doPost()..item is formField:"+item.getFieldName()+"="+item.getString());
+	    			  if (item.getFieldName().equals("transformationType")) 
+	    				  transType = item.getString();
 	    			  if (item.getFieldName().equals("scenarioName")) {
 	    				  scenarioName = item.getString();
 	    				  path = System.getProperty("gov.nih.nci.cbiit.cmts.path");
@@ -149,11 +153,10 @@ public class AddNewScenario extends HttpServlet {
 		    				    	return;
 	    				        }
 	    				  }
-
 	    			  }
 	    		  } else {
 	    			  String fieldName = item.getFieldName();
-
+	    			  System.out.println("AddNewScenario.doPost()..item is NOT formField:"+item.getFieldName()+"="+item.getString());
 	    			  String filePath = item.getName();
 	    			  String fileName=extractOriginalFileName(filePath);
 	    			  System.out.println("AddNewScenario.doPost()..original file Name:"+fileName);
@@ -165,7 +168,10 @@ public class AddNewScenario extends HttpServlet {
 	    				  String uploadedMapBak=uploadedFilePath+ ".bak";
 	    				  //write bak of Mapping file
 	    				  item.write(new File(uploadedMapBak));
-	    				  updateMapping(uploadedMapBak, path+File.separator+scenarioName);
+	    				  if (uploadedFilePath.endsWith(".map"))
+	    					  updateMapping(uploadedMapBak, path+File.separator+scenarioName);
+	    				  else //xslt and xq
+	    					  item.write(new File(uploadedFilePath));
 	    			  }
 	    			  else if (fieldName.equals("sourceXsdName"))
 	    			  {
@@ -183,7 +189,7 @@ public class AddNewScenario extends HttpServlet {
 	    			  }
 	    		  }
 	    	  }
-	    	  ScenarioUtil.addNewScenarioRegistration(scenarioName);
+	    	  ScenarioUtil.addNewScenarioRegistration(scenarioName, transType);
 	    	  res.sendRedirect("successmsg.do");
 
 		}catch(NullPointerException ne) {

@@ -62,7 +62,7 @@ public class CmtsWebserviceClient {
       System.out.println("CmtsWebserviceClient.main...endURL:"+args[2]);
       System.out.println("CmtsWebserviceClient.main()...operation:"+args[3]);
       
-      //read WS paramters
+      //read WS parameters
       String scenarioName= args[0];
       String sourceDataResource=args[1];
             

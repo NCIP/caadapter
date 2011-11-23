@@ -32,7 +32,8 @@
 					name="results"/> 
  		<table cellpadding="3" cellspacing="0" border="0" class="dataTable" width="100%">
 			<tr><th class="dataTableHeader" scope="col" align="center">Scenario Name</th>
-				<th class="dataTableHeader" scope="col" align="center">Map File (<i>map</i>)</th>
+				<th class="dataTableHeader" scope="col" align="center">Transformation Type</th>
+				<th class="dataTableHeader" scope="col" align="center">Instruction File (<i>map</i>)</th>
 				<th class="dataTableHeader" scope="col" align="center">Source Schema File (<i>xsd</i>)</th>
 				<th class="dataTableHeader" scope="col" align="center">Target Schema File (<i>xsd</i>)</th>
 				<!-- th class="dataTableHeader" scope="col" align="center">Vocabulary Mappings (<i>vom</i>)</th -->
@@ -43,6 +44,10 @@
 				<tr class="dataRowLight">
 					<td class="dataCellText">
 						<bean:write name="item" property="name"/>
+					</td>
+					<td class="dataCellText">
+						<logic:notPresent name="item"  property="transferType">&nbsp;</logic:notPresent>
+						<bean:write name="item" property="transferType"/>
 					</td>
 					<td class="dataCellText">
 						<bean:write name="item" property="mappingFile"/>
@@ -56,22 +61,13 @@
 						</logic:present>
 					</td>
 					<td class="dataCellText">
-						<bean:write name="item" property="targetFile"/>
-					</td>
-					<!-- td class="dataCellText">
-						<logic:notPresent name="item"  property="vocabuaryMappings">					
+						<logic:notPresent name="item"  property="targetFile">					
 							<i>N/A</i>
 						</logic:notPresent>
-						<logic:present name="item"  property="vocabuaryMappings">
-							<bean:define id="vomList" name="item" property="vocabuaryMappings"/>
-								<ul>							
-									<logic:iterate id="vomItem" name="vomList" 
-										type="java.lang.String">
-										<li><bean:write name="vomItem"/></li>							
-									</logic:iterate>
-								</ul>
+						<logic:present name="item"  property="targetFile">
+							<bean:write name="item" property="targetFile"/>
 						</logic:present>
-					</td -->
+					</td>
 					<td class="dataCellText">
 						<bean:write name="item" property="dateCreate"/>
 						<!-- bean:define id="cDate" name="item" property="dateCreate"/  -->

@@ -78,7 +78,7 @@ public class TransformationServiceImpl implements TransformationWebService{
         	String mappingFilePath=ScenarioUtil.CMTS_SCENARIO_HOME+File.separator+scenario.getName()
         	+File.separator+scenario.getMappingFile();
 //			result=convertData(mappingFilePath, source.getPath());
-			TransformationService transformer =TransformerFactory.getTransformer("xml") ;
+			TransformationService transformer =TransformerFactory.getTransformer("."+scenario.getTransferType()) ;
 			String xmlResult=transformer.transfer(source.getPath(), mappingFilePath);
 			result.add(xmlResult);
 		} catch (XQException e) {

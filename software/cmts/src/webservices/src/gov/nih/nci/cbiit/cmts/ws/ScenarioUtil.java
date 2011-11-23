@@ -75,17 +75,17 @@ public class ScenarioUtil {
 		for (File childFile:scnHomeFolder.listFiles())
 		{
 			String scnName=childFile.getName();
-			ScenarioRegistration oneReg=loadScenarioRegistration(CMTS_SCENARIO_HOME+"/"+ scnName);
+			ScenarioRegistration oneReg=loadScenarioRegistration(CMTS_SCENARIO_HOME+"/"+ scnName, null);
 			oneReg.setName(scnName);
 			regList.add(oneReg);
 		}
  	}
 
-	public static void addNewScenarioRegistration(String scnName) throws ParserConfigurationException, SAXException, IOException
+	public static void addNewScenarioRegistration(String scnName, String transferType) throws ParserConfigurationException, SAXException, IOException
 	{
 		System.out.println("ScenarioUtil.addNewScenarioRegistration()..add scenario into respository:"+scnName);
 		String scnPath=CMTS_SCENARIO_HOME+"/"+scnName;
-		ScenarioRegistration oneReg=loadScenarioRegistration(scnPath);
+		ScenarioRegistration oneReg=loadScenarioRegistration(scnPath, transferType);
 		oneReg.setName(scnName);
 		if (regList!=null)
 		{
@@ -102,16 +102,17 @@ public class ScenarioUtil {
 		}
 	}
 
-	private static ScenarioRegistration loadScenarioRegistration(String scenarioName) throws ParserConfigurationException, SAXException, IOException
+	private static ScenarioRegistration loadScenarioRegistration(String scenarioPath, String scenarioType) throws ParserConfigurationException, SAXException, IOException
 	{
 		ScenarioRegistration oneReg=new ScenarioRegistration();
-		File scenarioFolder=new File(scenarioName);
+		oneReg.setTransferType(scenarioType);
+		File scenarioFolder=new File(scenarioPath);
 		if (!scenarioFolder.exists())
 		{
-			oneReg.setName(scenarioName+" is invalid");
+			oneReg.setName(scenarioPath+" is invalid");
 			return oneReg;
 		}
-		oneReg.setName(scenarioName);
+		oneReg.setName(scenarioPath);
 		//empty scenario
 		if (!scenarioFolder.isDirectory())
 			return oneReg;
@@ -121,11 +122,10 @@ public class ScenarioUtil {
 		for (File childFile:scenarioFolder.listFiles())
 		{
 			String chldFileName=childFile.getName();
-			if (chldFileName.endsWith(".map")
-					||chldFileName.endsWith(".map"))
+			if (chldFileName.endsWith(".map"))
 			{
 				oneReg.setMappingFile(chldFileName);
-				System.out.println("ScenarioUtil.loadScenarioRegistration()..mapping:"+chldFileName);
+				oneReg.setTransferType("map");
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 //dbf.setValidating(true);
                 DocumentBuilder db = dbf.newDocumentBuilder();
@@ -142,6 +142,16 @@ public class ScenarioUtil {
 		    		else if (typeAttr.getValue().equals("target"))
 		    			oneReg.setTargetFile(locationAttr.getValue());
 		    	}
+			}
+			else if (chldFileName.endsWith(".xsl"))
+			{
+				oneReg.setMappingFile(chldFileName);
+				oneReg.setTransferType("xsl");
+			}
+			else if (chldFileName.endsWith(".xq"))
+			{
+				oneReg.setMappingFile(chldFileName);
+				oneReg.setTransferType("xq");
 			}
 		}
 
