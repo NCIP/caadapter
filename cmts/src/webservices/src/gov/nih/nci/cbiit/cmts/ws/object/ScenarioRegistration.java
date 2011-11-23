@@ -24,12 +24,19 @@ import java.util.List;
 public class ScenarioRegistration {
 
 	private String name;
+	private String transferType;
 	private String mappingFile;
 	private String targetFile;
 	private String sourceSpecFile;
 	private List<String> vocabuaryMappings;
 	private Date dateCreated;
 
+	public String getTransferType() {
+		return transferType;
+	}
+	public void setTransferType(String transferType) {
+		this.transferType = transferType;
+	}
 	/**
 	 * @return the createDate
 	 */

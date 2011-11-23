@@ -12,24 +12,31 @@
 		<tr>
 			<td valign="top">
 				<FORM ACTION="AddNewScenario" ENCTYPE="multipart/form-data" METHOD=POST>
-					<table boarder=0>
+					<table border="0">
 					<tr>
-					<td>Mapping Scenario Name:</td><td> <input type=text name="scenarioName"><br></td>
+						<td>Transformation Type:</td>
+						<td>
+							<menu>
+								<input type="radio" value ="map" name="tranformationType" checked>Mapping
+								<input type="radio" value ="xsl" name="tranformationType">XSLT
+								<input type="radio" value ="xq" name="tranformationType">XQuery
+							</menu>
+						</td>
 					</tr>
 					<tr>
-					<td>Mapping File(map):</td><td><INPUT TYPE=FILE NAME=mappingFileName></td>
+					<td>Transformation Scenario Name:</td><td> <input type=text name="scenarioName"><br></td>
 					</tr>
 					<tr>
-					<td>Source Schema File(xsd):</td><td><INPUT TYPE=FILE NAME=sourceXsdName></td>
+					<td>Transformation Instruction(.map, .xsl, .xq):</td><td><INPUT TYPE=FILE NAME=mappingFileName></td>
 					</tr>
 					<tr>
-					<td>Target Schema File(xsd):</td><td><INPUT TYPE=FILE NAME=targetXsdName></td>
+					<td>Source Schema File(.xsd):</td><td><INPUT TYPE=FILE NAME=sourceXsdName></td>
 					</tr>
-					<!-- tr>
-						<td>Vocabulary mapping file:</td><td><INPUT TYPE=FILE NAME=vocabularyMappingFileName></td>
-					</tr -->
+					<tr>
+					<td>Target Schema File(.xsd):</td><td><INPUT TYPE=FILE NAME=targetXsdName></td>
+					</tr>
 					<tr><td colspan=2>
-					<input type=submit value="Add Mapping Scenario"></td>
+					<input type=submit value="Add Transformation Scenario"></td>
 					</tr>
 				</FORM>
 			</td>
