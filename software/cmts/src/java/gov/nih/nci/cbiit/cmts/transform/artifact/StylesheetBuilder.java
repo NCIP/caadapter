@@ -30,9 +30,438 @@ public class StylesheetBuilder extends XQueryBuilder {
 		// TODO Auto-generated constructor stub
 	}
 
-	public XSLTStylesheet buildStyleSheet()
+	public String buildStyleSheetString()
 	{
-		stylesheet =new XSLTStylesheet();
+        XQueryBuilder xqueryBuilder=new XQueryBuilder(mapping);
+	    String xmlResult=xqueryBuilder.getXQuery(false);
+        String xslt = setupTransformXQueryToXSLT(xmlResult);
+        return xslt;
+    }
+    private String setupTransformXQueryToXSLT(String text)
+    {
+        if (text == null) return "";
+        String tx = text.trim();
+        if (!tx.toLowerCase().startsWith("declare ")) return null;
+
+        try
+        {
+            int idx1 = tx.toLowerCase().indexOf("document");
+            //String buf = tx.substring(0, idx1).trim() + "\r\n";
+            tx = tx.substring(idx1 + ("document").length() + 1, tx.lastIndexOf("}")).trim();
+
+            String cx = setupTransformXQueryToXSLT(tx, 0);
+            //return buf + cx;
+            return "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n" +
+                    "<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\r\n" +
+                    "   <xsl:template match=\"/\">\r\n" +
+                    cx +
+                    "   </xsl:template>\r\n" +
+                    "</xsl:stylesheet>";
+        }
+        catch(Exception ee)
+        {
+            System.out.println("Error:" + ee.getMessage());
+            return text;
+        }
+    }
+    private String setupTransformXQueryToXSLT(String text, int level)
+    {
+        String unitSpace = "   ";
+        String space = unitSpace;
+        for (int i=0;i<level;i++) space = space + unitSpace;
+        level++;
+
+        String buf = "";
+
+        boolean blockSkip = false;
+        boolean elementPresent = false;
+        while(true)
+        {
+            text = text.trim();
+            //System.out.println("Level("+level+"): " + text);
+
+            //if ((text.toLowerCase().startsWith("document")) ||
+            //    (text.toLowerCase().startsWith("element "))
+            if (text.toLowerCase().startsWith("element "))
+            {
+                int idx = text.indexOf("{");
+                String eleName = text.substring(("element").length(), idx).trim();
+                if (text.toLowerCase().startsWith("element <choice>")) blockSkip = true;
+                else
+                {
+                    buf = buf + space + "<" + eleName + ">\r\n";// + space + "{" + "\r\n";
+                }
+                text = text.substring(idx).trim();
+                idx = getBlockIndex(text);
+                String sub = setupTransformXQueryToXSLT(text.substring(1, idx), level);
+                text = text.substring(idx + 1).trim();
+                String tail = "</" + eleName + ">";
+                if (text.startsWith(","))
+                {
+                    text = text.substring(1).trim();
+                    tail = tail + "";
+                }
+                if (blockSkip)
+                {
+                    blockSkip = false;
+                    tail = "";
+                    if (text.startsWith("\"\"")) text = text.substring(2).trim();
+                }
+                elementPresent = true;
+                buf = buf + sub + space + tail + "\r\n";
+            }
+            else if (text.toLowerCase().startsWith("attribute "))
+            {
+                int idx = text.indexOf("{");
+                buf = buf + space + "<xsl:attribute name=\"" + text.substring(("attribute").length(), idx).trim() + "\">\r\n";
+                text = text.substring(idx).trim();
+                idx = getBlockIndex(text);
+                String sub = text.substring(1, idx);
+                String tSub = transformContentToXSLT(sub, space, unitSpace);
+
+                text = text.substring(idx + 1).trim();
+                String tail = space + "</xsl:attribute>";
+                if (text.startsWith(","))
+                {
+                    text = text.substring(1).trim();
+                    //tail = "";
+                }
+                buf = buf + tSub + tail + "\r\n";
+            }
+            else if (text.toLowerCase().startsWith("for "))
+            {
+                String returnStr = "return";
+                int idx = text.toLowerCase().indexOf(returnStr);
+                String forLine = text.substring(0, idx);
+                text = text.substring(idx + returnStr.length()).trim();
+                forLine = forLine.substring(forLine.indexOf("in") + 2).trim();
+                int idx1 = forLine.indexOf("$");
+                int idx2 = forLine.indexOf("/");
+                if ((idx1 >= 0)&&(idx2 > 0)&&(idx1 < idx2))
+                {
+                    forLine = forLine.substring(idx2 + 1);
+                }
+                String forXSLT = "<xsl:for-each select=\""+forLine+"\">";
+                String forTail = "</xsl:for-each>";
+
+                String sub2 = "";
+                if (text.toLowerCase().startsWith("element "))
+                {
+                    idx = getBlockIndex(text);
+                    String eleLine = text.substring(0, idx + 1);
+                    sub2 = setupTransformXQueryToXSLT(eleLine, level);
+                    text = text.substring(idx+1).trim();
+                    elementPresent = true;
+                }
+                else
+                {
+                    System.out.println("CCCCC Weired Text : " + text);
+                    sub2 = "#### Error ####";
+                }
+
+                if (text.startsWith(","))
+                {
+                    text = text.substring(1).trim();
+                }
+                buf = buf + space + forXSLT + "\r\n" + sub2 + space + forTail + "\r\n";
+
+                //text = text.substring(idx + returnStr.length()).trim();
+                //buf = buf + space + text.substring(0, idx + 6) + "\r\n";
+                //text = text.substring(idx + 6).trim();
+            }
+            else if ((text.toLowerCase().startsWith("$item"))&&(text.toLowerCase().indexOf("/text()") > 0))
+            {
+                int idx = text.toLowerCase().indexOf("/text()");
+                text = text.substring(idx + ("/text()").length()).trim();
+                if (!elementPresent) buf = buf + space + "<xsl:value-of select=\".\"/>\r\n";
+            }
+            else if (text.startsWith("\"\""))
+            {
+                text = text.substring(2).trim();
+            }
+            else if (text.startsWith("\""))
+            {
+                text = text.substring(1).trim();
+                int idx = text.indexOf("\"");
+                if (idx > 0)
+                {
+                    String str = text.substring(0, idx);
+                    text = text.substring(idx+1).trim();
+                    buf = buf + space + "<xsl:text>"+str+"</xsl:text>\r\n";
+                }
+            }
+            else if (text.toLowerCase().startsWith("string(\""))
+            {
+                text = text.substring(("string(\"").length()).trim();
+                int idx = text.indexOf("\"");
+                if (idx > 0)
+                {
+                    String str = text.substring(0, idx);
+                    text = text.substring(idx+1).trim();
+                    while (text.startsWith(")")) text = text.substring(1).trim();
+                    buf = buf + space + "<xsl:value-of select=\"string(&quot;" + str + "&quot;)\" />\r\n";
+                }
+            }
+            else if (text.indexOf("(") >= 0)
+            {
+                int idx1 = text.indexOf("(");
+                int idx2 = getBlockIndex(text, "(", ")");
+                if ((idx2 < 0)||(idx1 > idx2))
+                {
+                    System.out.println("CCCCC Something weired Xquery line (3) : " + text);
+                    break;
+                }
+                String functionL = text.substring(0, idx2 + 1);
+                text = text.substring(idx2 + 1);
+
+                String str = transformFunctionItem(functionL);
+                if (str == null)
+                {
+                    System.out.println("CCCCC Something weired Xquery line (4) : " + text + ", functionL=" + functionL);
+                    break;
+                }
+
+                buf = buf + space + "<xsl:value-of select=\""+str+"\" />\r\n";
+            }
+            else if (text.equals(""))
+            {
+                break;
+            }
+            else
+            {
+                System.out.println("CCCCC Something weired Xquery line : " + text);
+                break;
+            }
+        }
+        return buf;
+    }
+    private String transformContentToXSLT(String sub, String space, String unitSpace)
+    {
+        String tSub = null;
+        sub = sub.trim();
+        //System.out.println("CCCCC 110 sub=" + sub);
+        if ((sub.toLowerCase().startsWith("data(doc($"))||
+            (sub.toLowerCase().startsWith("data($item"))||
+            (sub.toLowerCase().startsWith("$item_"))||
+            (sub.toLowerCase().startsWith("doc($")))
+        {
+            int idx = sub.indexOf("/");
+            if (idx > 0)
+            {
+                String con = sub.substring(idx + 1).trim();
+                //System.out.println("CCCCC 111 con=" + con);
+                while (con.endsWith(")")) con = con.substring(0, con.length()-1).trim();
+                tSub = space + unitSpace + "<xsl:value-of select=\"" + con + "\"/>\r\n";
+                //System.out.println("CCCCC 112 tSub=" + tSub);
+            }
+        }
+        else if (sub.startsWith("\""))
+        {
+            String sub2 = sub.substring(sub.indexOf("\"")+1);
+            String con = sub2.substring(0, sub2.indexOf("\""));
+            tSub = space + unitSpace + "<xsl:text>"+con+"</xsl:text>\r\n";
+        }
+        else if (sub.toLowerCase().startsWith("string(\""))
+        {
+            String sub2 = sub.substring(sub.indexOf("\"")+1);
+            String con = sub2.substring(0, sub2.indexOf("\""));
+            tSub = space + unitSpace + "<xsl:value-of select=\"string(&quot;" + con + "&quot;)\" />\r\n";
+        }
+        if (tSub != null) return tSub;
+
+        int idx = sub.indexOf("(");
+        if (idx <= 0) return null;
+
+        //tSub = space + unitSpace + "<xsl:value-of select=\""+transformContentToXSLT_item(sub)+"\" />\r\n";
+
+        tSub = space + unitSpace + "<xsl:value-of select=\""+transformFunctionItem(sub)+"\" />\r\n";
+
+
+        return tSub;
+    }
+    private String transformFunctionItem(String sub)
+    {
+        sub = sub.trim();
+        int idx1 = sub.indexOf("(");
+        int idx2 = getBlockIndex(sub, "(", ")");
+
+        if ((idx2 < 0)||(idx1 > idx2))
+        {
+            //System.out.println("CCCC 1 text=" + sub + ", idx1=" + idx1 + ", idx2=" + idx2);
+            return null;
+        }
+
+        String inner = sub.substring(idx1 + 1, idx2) + "\t";
+        String funcName = sub.substring(0, idx1);
+        String transformedInner = "";
+        if (!inner.trim().equals(""))
+        {
+            int open = 0;
+            String s = "";
+
+            for(int i=0;i<inner.length();i++)
+            {
+                String achar = inner.substring(i, i + 1);
+                if (achar.equals("(")) open++;
+                if (achar.equals(")"))
+                {
+                    open--;
+                }
+                s = s + achar;
+                if (open != 0) continue;
+
+                String delimit = null;
+                if (achar.equals(",")) delimit = ",";
+                if (achar.equals("\t")) delimit = "";
+                if (s.endsWith("mod")) delimit = "mod";
+                if (delimit != null)
+                {
+                    s = s.substring(0, s.length()-delimit.length());
+                    String str = "";
+                    //System.out.println("CCCC 22 text=" + s + ", idx1=" + idx1 + ", idx2=" + idx2);
+
+                    if (s.indexOf("(") >= 0)
+                    {
+                        if ((s.toLowerCase().startsWith("data(doc($"))||
+                            (s.toLowerCase().startsWith("data($item"))||
+                            (s.toLowerCase().startsWith("doc($docn"))||
+                            (s.toLowerCase().startsWith("$item")))
+                        {
+                            int idx3 = s.indexOf("/");
+                            if (idx3 > 0)
+                            {
+                                String con = s.substring(idx3 + 1).trim();
+                                while (con.endsWith(")")) con = con.substring(0, con.length()-1).trim();
+                                str = con;
+                            }
+                            else str = null;
+                            //str = transformContentToXSLT_item(s);
+                        }
+                        //if (s.startsWith("doc($docN")) str = transformContentToXSLT_item(s);
+                        else if (s.startsWith("string("))
+                        {
+                            String sub2 = s.substring(s.indexOf("\"")+1);
+                            String con = sub2.substring(0, sub2.indexOf("\""));
+                            str = "string(&quot;" + con + "&quot;)";
+                            //str = transformContentToXSLT_item(s);
+                        }
+                        else
+                        {
+                            //System.out.println("CCCC 39 text=" + s + ", idx1=" + idx1 + ", idx2=" + idx2);
+
+                            str = transformFunctionItem(s);
+                        }
+                    }
+                    else str = transformContentToXSLT_item(s);
+                    if ((str == null)||(str.trim().equals("")))
+                    {
+                        //System.out.println("CCCC 3 text=" + s + ", idx1=" + idx1 + ", idx2=" + idx2);
+                        return null;
+                    }
+                    //else System.out.println("CCCC 223 text=" + str);
+
+
+                    transformedInner = transformedInner + str + " " + delimit + " ";
+                    s = "";
+                    str = "";
+                }
+            }
+        }
+        String funcName2 = funcName;
+        if (funcName.equals("doc")) funcName2 = "document";
+        else if (funcName.equals("replace")) funcName2 = "translate";
+
+        return funcName2 + "(" + transformedInner + ")";
+    }
+    private String transformContentToXSLT_item(String sub)
+    {
+        String tSub = null;
+        if ((sub.toLowerCase().startsWith("data(doc($"))||
+            (sub.toLowerCase().startsWith("data($item"))||
+            (sub.toLowerCase().startsWith("doc($docn"))||
+            (sub.toLowerCase().startsWith("$item")))
+        {
+            int idx = sub.indexOf("/");
+            if (idx > 0)
+            {
+                String con = sub.substring(idx + 1).trim();
+                while (con.endsWith(")")) con = con.substring(0, con.length()-1).trim();
+                tSub = con;
+            }
+            else return null;
+        }
+        //if (sub.toLowerCase().startsWith("data(doc($docname)/"))
+        //{
+        //    String con = sub.substring(("data(doc($docname)/").length());
+        //    if (con.endsWith(")")) con = con.substring(0, con.length()-1);
+        //    tSub = con;
+        //}
+        else if ((sub.startsWith("\""))||(sub.toLowerCase().startsWith("string(\"")))
+        {
+            String sub2 = sub.substring(sub.indexOf("\"")+1);
+            String con = sub2.substring(0, sub2.indexOf("\""));
+            tSub = "string(&quot;" + con + "&quot;)";
+
+        }
+        else if (sub.toLowerCase().startsWith("string(\""))
+        {
+            String sub2 = sub.substring(sub.indexOf("\"")+1);
+            String con = sub2.substring(0, sub2.indexOf("\""));
+            tSub = "string(&quot;" + con + "&quot;)";
+        }
+        if (tSub != null) return tSub;
+
+        int idx = sub.indexOf("(");
+        if (idx < 0) return null;
+        int idx2 = getBlockIndex(sub, "(", ")");
+        if (idx2 < 0) return null;
+        String functionTitle = sub.substring(0,idx);
+        String core = sub.substring(idx + 1, idx2) + ",";
+
+        String bufLine = functionTitle + "(";
+        String buf = "";
+        for(int i=0;i<core.length();i++)
+        {
+            String achar = core.substring(i, i + 1);
+            if (achar.equals(","))
+            {
+                buf = buf.trim();
+                if (!buf.equals(""))
+                {
+                   bufLine = bufLine + transformContentToXSLT_item(buf) + ",";
+                }
+                buf = "";
+            }
+            else buf = buf + achar;
+        }
+
+        if (bufLine.endsWith(",")) bufLine = bufLine.substring(0, bufLine.length()-1);
+        return bufLine + ")";
+    }
+    private int getBlockIndex(String text)
+    {
+        return getBlockIndex(text, "{", "}");
+    }
+    private int getBlockIndex(String text, String openB, String closeB)
+    {
+        int open = 0;
+
+        for(int i=0;i<text.length();i++)
+        {
+            String achar = text.substring(i, i + 1);
+            if (achar.equals(openB)) open++;
+            if (achar.equals(closeB))
+            {
+                open--;
+                if (open == 0) return i;
+            }
+        }
+        return -1;
+    }
+
+    public XSLTStylesheet buildStyleSheet()
+	{
+        stylesheet =new XSLTStylesheet();
 		
 		XSLTTemplate rootTemplate=new XSLTTemplate();
 		rootTemplate.setMatch("/");
@@ -188,7 +617,8 @@ public class StylesheetBuilder extends XQueryBuilder {
 		}
 		xpathStack.pop();
 	}
-	/**
+
+    /**
 	 * Set values for the attributes of an element
 	 * Case I: The attribute is mapped from a source item
 	 * Case II.1: The attribute is mapped to the out put port of a function without input port

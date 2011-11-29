@@ -99,7 +99,12 @@ public class XQueryBuilder {
 	 * generate XQuery
 	 * @return XQuery String
 	 */
-	public String getXQuery() {
+    public String getXQuery()
+    {
+        return getXQuery(true);
+    }
+    public String getXQuery(boolean indent)
+    {
 		List<Component> l = mapping.getComponents().getComponent();
 		Component tgt = null;
 		Component src=null;
@@ -124,6 +129,7 @@ public class XQueryBuilder {
 
         String xqry = sbQuery.toString();
         //System.out.println("XQueryBuilder.getXQuery(). A XQuery..:"+xqry);
+        if (!indent) return xqry;
         String xqry2 = setupXQueryStructuredIndenation(xqry);
         //System.out.println("XQueryBuilder.getXQuery(). B XQuery..:"+xqry2);
         return xqry2;

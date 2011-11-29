@@ -190,8 +190,10 @@ public class MappingTransformer extends DefaultTransformer {
 				continue;
 			}
 		}
-		XsdSchemaErrorHandler xsdErrorHandler=new XsdSchemaErrorHandler();
-		Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, xsdErrorHandler);
+        System.out.println("CCCC targetSchema=" + targetSchema);
+        XsdSchemaErrorHandler xsdErrorHandler=new XsdSchemaErrorHandler();
+
+        Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, xsdErrorHandler);
 		if (!xsdErrorHandler.getErrorMessage().isEmpty())
 		{
 			//add xsd schema validation message only if error occurs
