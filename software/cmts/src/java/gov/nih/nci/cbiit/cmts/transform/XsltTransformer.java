@@ -2,11 +2,8 @@ package gov.nih.nci.cbiit.cmts.transform;
 
  
 import gov.nih.nci.cbiit.cmts.transform.artifact.RDFEncoder;
-import gov.nih.nci.caadapter.common.util.FileUtil;
 
 import java.io.StringWriter;
-import java.io.File;
-import java.io.CharArrayReader;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -47,11 +44,8 @@ public XsltTransformer() throws XQException {
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-        String str = sWriter.getBuffer().toString();
-        //System.out.println("CCCC out = " + str);
-        RDFEncoder rdfEncoder=new RDFEncoder(str);
+		}		
+		RDFEncoder rdfEncoder=new RDFEncoder(sWriter.getBuffer().toString());
 		String xmlResult=rdfEncoder.getFormatedRDF();
 		return xmlResult;
 	}
@@ -63,170 +57,29 @@ public XsltTransformer() throws XQException {
 		Transformer transformer = xmlTransFactory.newTransformer(xsltStream);
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setErrorListener(new XSLTErrorListener());		
-
-        String xml = FileUtil.readFileIntoString(sourceFile);
-        if ((xml == null)||(xml.trim().equals("")))
-        {
-            throw new TransformerException("Not found or reading failure of this source XML file : " +  sourceFile);
-        }
-        String s = checkNameSpaceAttr(xml);
-        StreamSource sourceStream = new StreamSource(new CharArrayReader(s.toCharArray()));
-
-        //System.out.println("CCCC DDD xml=" + s);
-        //StreamSource sourceStream = new StreamSource(sourceFile);
+		
+		StreamSource sourceStream = new StreamSource(sourceFile);
 		transformer.transform(sourceStream,resultStream);
 	}
-	private String checkNameSpaceAttr(String xml)
-    {
-        String namespaceTag = " xmlns=\"";
-        if (xml.indexOf(namespaceTag) < 0) return xml;
-        String s = "";
-        boolean head = false;
-        boolean foundHead = false;
-        boolean remark = false;
-        boolean skip = false;
-        String before = "";
-
-        for(int i=0;i<xml.length();i++)
-        {
-            String achar = xml.substring(i, i+1);
-            if (skip)
-            {
-               if (achar.equals("\""))
-               {
-                   skip = false;
-                   foundHead = true;
-                   continue;
-               }
-            }
-            else s = s + achar;
-            if (foundHead) continue;
-            if (remark)
-            {
-                if (s.endsWith("-->")) remark = false;
-                continue;
-            }
-            if (s.endsWith("<!--"))
-            {
-                remark = true;
-                continue;
-            }
-
-            if (achar.equals(">"))
-            {
-                skip = false;
-                if (head)
-                {
-                    foundHead = true;
-                    head = false;
-                }
-                continue;
-            }
-
-            if (head)
-            {
-
-                if (s.endsWith(namespaceTag))
-                {
-                    skip = true;
-                    s = s.substring(0, s.length() - namespaceTag.length());
-                }
-                continue;
-            }
-
-            if (before.equals("<"))
-            {
-                char ch = achar.toCharArray()[0];
-                byte bt = (byte) ch;
-                boolean isNormalChar = false;
-                if ((bt >= 48)&&(bt <=57)) isNormalChar = true;
-                if ((bt >= 97)&&(bt <=122)) isNormalChar = true;
-                if ((bt >= 65)&&(bt <=90)) isNormalChar = true;
-                if (isNormalChar)
-                {
-                    head = true;
-                    continue;
-                }
-            }
-
-            before = achar;
-        }
-        return s;
-    }
-    public static void main(String args[]){
-
-        String source_xml = "";
-        String xslt = "";
-        String output = null;
-        String tempOut = "result_out199293948493948.xml";
-
-        if (args.length<2)
+	
+	public static void main(String args[]){
+		if (args.length<2)
 		{
-			//System.out.println("XsltTransformer.main()...\nusage:sourcedata:stylesheet");
-			//System.exit(0);
-
-            //source_xml = "c:\\tmp\\cdcatalog2.xml";
-            //xslt = "c:\\tmp\\cdcatalog2.xsl";
-
-            source_xml = "C:\\project\\subversion\\software\\cmts\\workingspace\\cda\\ADT_A03_test.xml";
-            xslt = "C:\\project\\subversion\\software\\cmts\\workingspace\\cda\\tt2.xsl";
-        } else if (args.length<3)
-		{
-            source_xml = args[0];
-            xslt = args[1];
-            //args[2]="result_out.xml";
-		}
-        else if (args.length==3)
-		{
-            source_xml = args[0];
-            xslt = args[1];
-            output = args[2];
-		}
-        else
-        {
-            System.out.println("XsltTransformer.main()...\nusage: sourceXML_File stylesheet_File [outputXML_File]");
+			System.out.println("XsltTransformer.main()...\nusage:sourcedata:stylesheet");
 			System.exit(0);
-        }
+		} else if (args.length<3)
+		{
+			args[3]="result_out.xml";
+		}	
 
-        boolean t = false;
-        if (source_xml == null)  t = true;
-        else if (source_xml.trim().equals(""))  t = true;
-        else if (xslt == null)  t = true;
-        else if (xslt.trim().equals(""))  t = true;
-
-        if (t)
-        {
-            System.out.println("XsltTransformer.main()...\nsource xml or XSLT is null.");
-			System.exit(0);
-        }
-
-        try {
+		try {
 			XsltTransformer st = new XsltTransformer();
-			System.out.println("XsltTransformer.main()...Source Data:"+source_xml);
-			System.out.println("XsltTransformer.main()...XSLT Templage:"+xslt);
-
-            if ((output == null)||(output.trim().equals("")))  output = tempOut;
-            else
-            {
-                System.out.println("XsltTransformer.main()...Result Data:"+output);
-            }
+			System.out.println("XsltTransformer.main()...Source Data:"+args[0]);
+			System.out.println("XsltTransformer.main()...XSLT Templage:"+args[1]);
+			System.out.println("XsltTransformer.main()...Result Data:"+args[2]);
 			
-			  st.transform(source_xml, xslt, output);
-
-            if (output.equals(tempOut))
-            {
-                File file = new File(output);
-
-                if ((file.exists())&&(file.isFile()))
-                {
-                    System.out.println("XSLT transforming result("+file.getAbsolutePath()+"):");
-
-                    System.out.println(FileUtil.readFileIntoString(file.getAbsolutePath()));
-                    file.delete();
-                }
-                else System.out.println("XSLT transforming result: something wrong!!");
-            }
-        } catch(TransformerConfigurationException e) {
+			  st.transform(args[0],args[1],args[2]);
+		} catch(TransformerConfigurationException e) {
 			  System.err.println("Invalid factory configuration");
 			  System.err.println(e);
 		} catch(TransformerException e) {
