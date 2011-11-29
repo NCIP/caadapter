@@ -108,7 +108,7 @@ public class StylesheetBuilder extends XQueryBuilder {
         if (tempMeta != null) elementMeta = tempMeta;
         Element tgtDataElement= new Element(nameE);
 		//case III: The element is not mapped, but its attribute is mapped
-		encodeAttribute(tgtDataElement,elementMeta, targetElementXpath);
+		encodeAttribute(tgtDataElement,elementMeta, targetElementXpath, parentMappedXPath);
         if(link!=null)
         {
 			String tgtMappingSrc=link.getSource().getId();
@@ -196,11 +196,13 @@ public class StylesheetBuilder extends XQueryBuilder {
 	 * Case III :use fixed value first -- the highest precedence
 	 * Case IV : use default value
 	 * Case V: Ignore this attribute
+	 * @param elementData - Target Element data or template
 	 * @param elementMeta - Target Element meta
-	 * @param mappedSourceNodeId - The previously mapped source node path, which is associated with the variable on varStack
+	 * @param targetElementMetaXpath - The xml path of target element
+	 * @param matchedAncestor - The previously mapped source node path, which is associated with the "select" attribute of last "for-each" loop
 	 */
 	private void encodeAttribute(Element targetData, ElementMeta targetMeta,
-			String targetElementMetaXpath)
+			String targetElementMetaXpath, String matchedAncestor)
 	{
 		for (AttributeMeta attrMeta:targetMeta.getAttrData())
 		{
@@ -222,11 +224,15 @@ public class StylesheetBuilder extends XQueryBuilder {
 	        	 * case I.2: link source is an attribute
 	        	 */
 				String tgtMappingSrc=link.getSource().getId();
+				String localPath =QueryBuilderUtil.retrieveRelativePath(matchedAncestor, tgtMappingSrc);
+
 				//I.1 is default
-				String selectExp=".";
-				if (tgtMappingSrc.indexOf("@")>-1)
-					//case I.1
-					selectExp=tgtMappingSrc.substring(tgtMappingSrc.indexOf("@"));
+				String selectExp=localPath.substring(1);// ".";
+//				if (tgtMappingSrc.indexOf("@")>-1)
+//					//case I.1
+//					selectExp=tgtMappingSrc.substring(tgtMappingSrc.indexOf("@"));
+//				else 
+//					selectExp=tgtMappingSrc;
 				addAttributeTemplate(targetData,  attrMeta.getName(), null, selectExp);
 			}
 			else if(metaToFunctionLinks.get(targetAttributePath)!=null) 
