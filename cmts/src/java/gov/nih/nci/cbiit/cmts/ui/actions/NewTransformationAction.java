@@ -129,13 +129,15 @@ public class NewTransformationAction extends AbstractContextAction
 				transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_HL7_V2_TO_CDA);
 			else
 			{
-				if (mappingFile.endsWith(".xsl"))
+				if (mappingFile.toLowerCase().endsWith(".xsl"))
 					transformer=TransformerFactory.getTransformer(".xsl");
-                else if (mappingFile.endsWith(".xslt"))
+                else if (mappingFile.toLowerCase().endsWith(".xslt"))
 					transformer=TransformerFactory.getTransformer(".xsl");
-                else if (mappingFile.endsWith(".xq"))
+                else if (mappingFile.toLowerCase().endsWith(".xq"))
 					transformer=TransformerFactory.getTransformer(".xq");
-                else if (mappingFile.endsWith(".xquery"))
+                else if (mappingFile.toLowerCase().endsWith(".xquery"))
+					transformer=TransformerFactory.getTransformer(".xq");
+                else if (mappingFile.toLowerCase().endsWith(".xql"))
 					transformer=TransformerFactory.getTransformer(".xq");
                 else
 					transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);

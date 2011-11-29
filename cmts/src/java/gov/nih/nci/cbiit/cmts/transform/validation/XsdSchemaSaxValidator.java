@@ -75,8 +75,24 @@ public class XsdSchemaSaxValidator {
       String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
       SchemaFactory factory = SchemaFactory.newInstance(language);
       factory.setErrorHandler(errorHandler);
+
+      File file = null;
+      String name2 = name;
+      while(true)
+      {
+          file = new File(name2);
+          if ((file.exists())&&(file.isFile())) break;
+          if (name2.toLowerCase().startsWith("file:/"))
+          {
+              name2 = name2.substring(6);
+              while(name2.startsWith("/")) name2 = name2.substring(1);
+              continue;
+          }
+          return null;
+      }
+
       try {
-		schema = factory.newSchema(new File(name));
+		schema = factory.newSchema(file);
 	} catch (SAXException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
