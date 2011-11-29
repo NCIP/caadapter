@@ -121,16 +121,11 @@ public class NewArtifactAction extends AbstractContextAction
 			if (transformationType.equals(ActionConstants.NEW_XSLT_STYLESHEET))
 			{
 				StylesheetBuilder transformer = new StylesheetBuilder(map);
-
-                xmlResult = transformer.buildStyleSheetString();
-
-                /*
-                StringWriter writer = new StringWriter();
-
-                XSLTStylesheet xsltSheet=transformer.buildStyleSheet();
+				
+				StringWriter writer = new StringWriter();
+				XSLTStylesheet xsltSheet=transformer.buildStyleSheet();
 				xsltSheet.writeOut(writer);
 				xmlResult=writer.toString();
-				*/
 			}
 			else if (transformationType.equals(ActionConstants.NEW_XQUERY_STATEMENT))
 			{
