@@ -1,9 +1,6 @@
 package gov.nih.nci.cbiit.cmts.transform.artifact;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 import org.jdom.Element;
 
@@ -33,26 +30,34 @@ public class StylesheetBuilder extends XQueryBuilder {
 	public XSLTStylesheet buildStyleSheet()
 	{
 		stylesheet =new XSLTStylesheet();
-		
+
 		XSLTTemplate rootTemplate=new XSLTTemplate();
 		rootTemplate.setMatch("/");
-		
+
 		List<Component> l = mapping.getComponents().getComponent();
 		Component tgt = null;
 		Component src=null;
 		for (Component c:l) {
-			if (c.getType().equals(ComponentType.TARGET)) 
+			if (c.getType().equals(ComponentType.TARGET))
 				tgt = c;
 			else if (c.getType().equals(ComponentType.SOURCE))
 				src=c;
-			
+
 		}
-		stylesheet.addTempate(rootTemplate);
+        Set<String> set = links.keySet();
+        Iterator<String> iter = set.iterator();
+        while(iter.hasNext())
+        {
+            String str = iter.next();
+            System.out.println("CCCCC Link Key set : " + str);
+        }
+
+        stylesheet.addTempate(rootTemplate);
 		xpathStack = new Stack<String>();
 		processTargetElement(tgt.getRootElement(), "", rootTemplate);
 		return stylesheet;
 	}
-	
+
     /**
 	 * Process a target element:
 	 * Case I: The element is mapped to a source node
@@ -72,9 +77,12 @@ public class StylesheetBuilder extends XQueryBuilder {
 			XSLTTemplate parentTemplate)
 	{
 		xpathStack.push(elementMeta.getName());
-		String targetElementXpath=QueryBuilderUtil.buildXPath(xpathStack);
-		LinkType link = links.get(targetElementXpath);
-		String childElementRef=parentMappedXPath;
+		String targetElementXpath = QueryBuilderUtil.buildXPath(xpathStack);
+
+        LinkType link = links.get(targetElementXpath);
+        LinkType fLink = metaToFunctionLinks.get(targetElementXpath);
+
+        String childElementRef=parentMappedXPath;
         String nameE = elementMeta.getName();
         if (nameE.endsWith("]"))
         {
@@ -82,39 +90,45 @@ public class StylesheetBuilder extends XQueryBuilder {
             if(idx < 0) nameE = nameE.substring(0, (nameE.length() - 1));
             else nameE = nameE.substring(0, idx);
         }
-        ElementMeta tempMeta = null;
-        
-        while (nameE.equals("<choice>"))
-        {
-            if (elementMeta.getChildElement().size() == 0) break;
 
-            for (ElementMeta cMeta:elementMeta.getChildElement())
-            {
-                System.out.println("   CCCX <choice> child meta name="  + cMeta.getName() + ", isIsChosen()=" + cMeta.isIsChosen());
-                if (cMeta.isIsChosen())
-                {
-                    tempMeta = cMeta;
-                    nameE = tempMeta.getName();
-                    //break;
-                }
-            }
-            if (tempMeta == null) break;
-        }
-        if (nameE.equals("<choice>"))
+        boolean hasMapped = false;
+
+        hasMapped = encodeAttributeCheck(elementMeta, targetElementXpath);
+        if(link!=null) hasMapped = true;
+        if (fLink!=null) hasMapped = true;
+
+        boolean hasMappedDesc = hasMappedDescenant(elementMeta);
+
+        // If neither this node nor descendent is mapped return.
+        if ((!hasMapped)&&(!hasMappedDesc))
         {
-            for(ElementMeta e:elementMeta.getChildElement()) processTargetElement(e,childElementRef, parentTemplate);
+            xpathStack.pop();
             return;
         }
-        if (tempMeta != null) elementMeta = tempMeta;
+
+        // If this node is a <choice> element, bypass to child nodes.
+        if ((nameE.equalsIgnoreCase("<choice>"))||(nameE.toLowerCase().startsWith("<choice>")))
+        {
+            for(ElementMeta e:elementMeta.getChildElement())
+            {
+                processTargetElement(e, parentMappedXPath, parentTemplate);
+            }
+
+            xpathStack.pop();
+            return;
+        }
+
         Element tgtDataElement= new Element(nameE);
-		//case III: The element is not mapped, but its attribute is mapped
-		encodeAttribute(tgtDataElement,elementMeta, targetElementXpath, parentMappedXPath);
+
+        encodeAttribute(tgtDataElement,elementMeta, targetElementXpath, parentMappedXPath);
+
         if(link!=null)
         {
-			String tgtMappingSrc=link.getSource().getId();
+            hasMapped = true;
+            String tgtMappingSrc=link.getSource().getId();
 			if (tgtMappingSrc.indexOf("@")>-1)
 			{
-				//case I.1: link source is an attribute 
+				//case I.1: link source is an attribute
 				XSLTElement valueElment=new XSLTElement("value-of");
 				String selectExp=tgtMappingSrc.substring(parentMappedXPath.length()+1);
 				valueElment.setAttribute("select", selectExp);
@@ -134,7 +148,7 @@ public class StylesheetBuilder extends XQueryBuilder {
 				{
 					//apply content if this target element is leaf
 					XSLTApplyTemplates elementApply=new XSLTApplyTemplates();
-					elementApply.setSelect(".");	
+					elementApply.setSelect(".");
 					tgtDataElement.addContent(elementApply);
 				}
 				forEach.addContent(tgtDataElement);
@@ -143,11 +157,13 @@ public class StylesheetBuilder extends XQueryBuilder {
         }
         else
         {
-    		parentTemplate.addContent(tgtDataElement);
-			LinkType fLink = metaToFunctionLinks.get(targetElementXpath);
+            parentTemplate.addContent(tgtDataElement);
+            //LinkType fLink = metaToFunctionLinks.get(targetElementXpath);
 			if (fLink!=null)
 			{
-				//Case II: The element is mapped to function output port
+                hasMapped = true;
+
+                //Case II: The element is mapped to function output port
 				String functionId=fLink.getTarget().getComponentid();
 				FunctionType inputFunction=functions.get(functionId);
 				if (inputFunction.getData().size()==1)
@@ -169,23 +185,26 @@ public class StylesheetBuilder extends XQueryBuilder {
 				}
 			}
         }
-		if (hasMappedDescenant(elementMeta))
+
+        if (hasMappedDesc)
 		{
-			//case IV: Neither the element nor its attribute is mapped. But its descendant
+            //case IV: Neither the element nor its attribute is mapped. But its descendant
 			//is mapped
-			for(ElementMeta e:elementMeta.getChildElement()) 
+            XSLTCallTemplate callTemplate=new XSLTCallTemplate();
+//			String tmpName=targetElementXpath.replace("/", "_")+"_"+e.getName();//varName+varCount++;
+            String tmpName=varName+varCount++;
+            callTemplate.setCalledTemplate(tmpName);
+            tgtDataElement.addContent(callTemplate);
+            XSLTTemplate calledTemplate =new XSLTTemplate();
+            calledTemplate.setAttribute("name", tmpName);
+            stylesheet.addTempate(calledTemplate);
+
+            for(ElementMeta e:elementMeta.getChildElement())
 			{
-				XSLTCallTemplate callTemplate=new XSLTCallTemplate();
-//				String tmpName=targetElementXpath.replace("/", "_")+"_"+e.getName();//varName+varCount++;
-				String tmpName=varName+varCount++;
-				callTemplate.setCalledTemplate(tmpName);
-				tgtDataElement.addContent(callTemplate);
-				XSLTTemplate calledTemplate =new XSLTTemplate();
-				calledTemplate.setAttribute("name", tmpName);
-				stylesheet.addTempate(calledTemplate);
-				processTargetElement(e,childElementRef, calledTemplate);
-			}
-		}
+                processTargetElement(e,childElementRef, calledTemplate);
+            }
+
+        }
 		xpathStack.pop();
 	}
 	/**
@@ -196,81 +215,107 @@ public class StylesheetBuilder extends XQueryBuilder {
 	 * Case III :use fixed value first -- the highest precedence
 	 * Case IV : use default value
 	 * Case V: Ignore this attribute
-	 * @param elementData - Target Element data or template
-	 * @param elementMeta - Target Element meta
+	 * @param targetData - Target Element data or template
+	 * @param targetMeta - Target Element meta
 	 * @param targetElementMetaXpath - The xml path of target element
 	 * @param matchedAncestor - The previously mapped source node path, which is associated with the "select" attribute of last "for-each" loop
 	 */
-	private void encodeAttribute(Element targetData, ElementMeta targetMeta,
+    private void encodeAttribute(Element targetData, ElementMeta targetMeta,
 			String targetElementMetaXpath, String matchedAncestor)
 	{
-		for (AttributeMeta attrMeta:targetMeta.getAttrData())
+
+
+
+            for (AttributeMeta attrMeta:targetMeta.getAttrData())
+            {
+
+                if (attrMeta.getFixedValue()!=null)
+                {
+                    //case III
+                    addAttributeTemplate(targetData, attrMeta.getName(), attrMeta.getFixedValue(), null);
+                    continue;
+                }
+                String targetAttributePath=targetElementMetaXpath+"/@"+attrMeta.getName();
+                LinkType link = links.get(targetAttributePath);
+
+                if (link!=null)
+                {
+                    /**
+                     * Case I: The attribute is mapped from a source item
+                     * Case I.1: link source is an element
+                     * case I.2: link source is an attribute
+                     */
+                    String tgtMappingSrc=link.getSource().getId();
+                    String localPath =QueryBuilderUtil.retrieveRelativePath(matchedAncestor, tgtMappingSrc);
+
+                    //I.1 is default
+                    String selectExp=localPath.substring(1);// ".";
+    //				if (tgtMappingSrc.indexOf("@")>-1)
+    //					//case I.1
+    //					selectExp=tgtMappingSrc.substring(tgtMappingSrc.indexOf("@"));
+    //				else
+    //					selectExp=tgtMappingSrc;
+                    addAttributeTemplate(targetData,  attrMeta.getName(), null, selectExp);
+
+                }
+                else if(metaToFunctionLinks.get(targetAttributePath)!=null)
+                {
+                    //case II
+                    LinkType fLink = metaToFunctionLinks.get(targetAttributePath);
+                    String functionId=fLink.getTarget().getComponentid();
+                    FunctionType inputFunction=functions.get(functionId);
+                    String attrValueExpression=".";
+                    if (inputFunction.getData().size()==1)
+                    {
+                        //Case II.1: The linked function dose not have input port
+                        FunctionType functionType=functions.get(fLink.getTarget().getComponentid());
+                        attrValueExpression=(String)QueryBuilderUtil.generateXpathExpressionForFunctionWithoutInput(functionType);
+                    }
+                    else
+                    {
+                        //Case II.2: The linked function has one or more input ports
+                        attrValueExpression=createXpathExpressionForFunctionWithInput(fLink,  "");
+                    }
+                    addAttributeTemplate(targetData, attrMeta.getName(), null, attrValueExpression);
+
+                }
+                else if (attrMeta.getDefaultValue()!=null)
+                    //case IV
+                    addAttributeTemplate(targetData, attrMeta.getName(), attrMeta.getDefaultValue(), null);
+                else
+                    //case V
+                    continue;
+
+            }
+
+    }
+    private boolean encodeAttributeCheck(ElementMeta targetMeta, String targetElementMetaXpath)
+	{
+        boolean hasMapped = false;
+        for (AttributeMeta attrMeta:targetMeta.getAttrData())
 		{
 
-			if (attrMeta.getFixedValue()!=null)
-			{
-				//case III
-				addAttributeTemplate(targetData, attrMeta.getName(), attrMeta.getFixedValue(), null);
-				continue;
-			}
 			String targetAttributePath=targetElementMetaXpath+"/@"+attrMeta.getName();
 			LinkType link = links.get(targetAttributePath);
 
 			if (link!=null)
 			{
-	        	/**
-	        	 * Case I: The attribute is mapped from a source item
-	        	 * Case I.1: link source is an element  
-	        	 * case I.2: link source is an attribute
-	        	 */
-				String tgtMappingSrc=link.getSource().getId();
-				String localPath =QueryBuilderUtil.retrieveRelativePath(matchedAncestor, tgtMappingSrc);
-
-				//I.1 is default
-				String selectExp=localPath.substring(1);// ".";
-//				if (tgtMappingSrc.indexOf("@")>-1)
-//					//case I.1
-//					selectExp=tgtMappingSrc.substring(tgtMappingSrc.indexOf("@"));
-//				else 
-//					selectExp=tgtMappingSrc;
-				addAttributeTemplate(targetData,  attrMeta.getName(), null, selectExp);
-			}
-			else if(metaToFunctionLinks.get(targetAttributePath)!=null) 
+	        	hasMapped = true;
+            }
+			else if(metaToFunctionLinks.get(targetAttributePath)!=null)
 			{
-				//case II
-				LinkType fLink = metaToFunctionLinks.get(targetAttributePath);
-				String functionId=fLink.getTarget().getComponentid();
-				FunctionType inputFunction=functions.get(functionId);
-				String attrValueExpression=".";
-				if (inputFunction.getData().size()==1)
-				{
-					//Case II.1: The linked function dose not have input port
-					FunctionType functionType=functions.get(fLink.getTarget().getComponentid());
-					attrValueExpression=(String)QueryBuilderUtil.generateXpathExpressionForFunctionWithoutInput(functionType);
-				}
-				else
-				{
-					//Case II.2: The linked function has one or more input ports
-					attrValueExpression=createXpathExpressionForFunctionWithInput(fLink,  "");
-				}				
-				addAttributeTemplate(targetData, attrMeta.getName(), null, attrValueExpression);
-			}
-			else if (attrMeta.getDefaultValue()!=null)
-				//case IV
-				addAttributeTemplate(targetData, attrMeta.getName(), attrMeta.getFixedValue(), null);
-			else
-				//case V
-				continue;				
-			
+				hasMapped = true;
+            }
 		}
-	}
+        return hasMapped;
+    }
 		
-	/**
+    /**
 	 * Set content of an attribute template
 	 * Case I: set literal data as inline text
 	 * Case II: Set xpath expression for runtime data
 	 * @param element
-	 * @param attributeTemplate
+	 * @param attributeName
 	 * @param inlineText
 	 * @param selectExpression
 	 */
