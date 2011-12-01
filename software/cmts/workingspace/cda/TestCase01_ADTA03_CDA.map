@@ -1,414 +1,424 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core">
     <components>
-        <component location="..\hl7v2\hl7v2xsd\2.4\ADT_A03.xsd" kind="xml" type="source" id="0">
-            <rootElement isSimple="true" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" type="ADT_A03.CONTENT" nameSpace="urn:hl7-org:v2xml" name="ADT_A03" idSpec="X-path" id="/ADT_A03">
+        <component id="0" type="source" kind="xml" location="..\hl7v2\hl7v2xsd\2.4\ADT_A03.xsd">
+            <rootElement isChoice="false" isChosen="false" isEnabled="false" isRecursive="false" isSimple="true" id="/ADT_A03" idSpec="X-path" name="ADT_A03" nameSpace="urn:hl7-org:v2xml" type="ADT_A03.CONTENT">
                 <ativated>true</ativated>
             </rootElement>
         </component>
-        <component location="CDA_TestCase01.xsd" kind="xml" type="target" id="1">
-            <rootElement isSimple="true" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" type="POCD_MT000040.ClinicalDocument" nameSpace="urn:hl7-org:v3" name="ClinicalDocument" idSpec="X-path" id="/ClinicalDocument">
+        <component id="1" type="target" kind="xml" location="CDA_TestCase01.xsd">
+            <rootElement isChoice="false" isChosen="false" isEnabled="false" isRecursive="false" isSimple="true" id="/ClinicalDocument" idSpec="X-path" name="ClinicalDocument" nameSpace="urn:hl7-org:v3" type="POCD_MT000040.ClinicalDocument">
                 <ativated>true</ativated>
             </rootElement>
         </component>
-        <component type="function" id="1280246945938">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="A123" name="constant"/>
+        <component id="1280246945938" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="A123" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1280247783048">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="Discharge Sumary" name="constant"/>
+        <component id="1280247783048" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="Discharge Sumary" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1280248348975">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="L" name="constant"/>
+        <component id="1280248348975" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="L" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1280249073601">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="H" name="constant"/>
+        <component id="1280249073601" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="H" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287069172904">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="CDA Record" name="constant"/>
+        <component id="1287069172904" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="CDA Record" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287069638329">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="2.56.34.2345.5434.444" name="constant"/>
+        <component id="1287069638329" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="2.56.34.2345.5434.444" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287071959473">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="2.56.34.2345.5434.555" name="constant"/>
+        <component id="1287071959473" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="2.56.34.2345.5434.555" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287072120907">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="completed" name="constant"/>
+        <component id="1287072120907" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="completed" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287073762630">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="Observation results" name="constant"/>
+        <component id="1287073762630" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="Observation results" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287073824316">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="OBSR" name="constant"/>
+        <component id="1287073824316" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="OBSR" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287073894408">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="PRCS" name="constant"/>
+        <component id="1287073894408" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="PRCS" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287073942891">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="COMP" name="constant"/>
+        <component id="1287073942891" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="COMP" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287779779220">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="ACCM" name="constant"/>
+        <component id="1287779779220" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="ACCM" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287779833779">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="APT" name="constant"/>
+        <component id="1287779833779" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="APT" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287783816145">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="ALRT" name="constant"/>
+        <component id="1287783816145" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="ALRT" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1287783867717">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="DEF" name="constant"/>
+        <component id="1287783867717" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="DEF" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1316813919783">
-            <function method="retrieveValue" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" group="constant" name="constant">
-                <data input="false" type="String" value="tel:" name="constant"/>
+        <component id="1316813919783" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="tel:" type="String" input="false"/>
             </function>
         </component>
-        <component type="function" id="1316813941345">
-            <function method="concatenate" class="gov.nih.nci.cbiit.cmts.function.StringFunction" group="string" name="concatenate">
-                <data input="true" type="string" value="" name="string1"/>
-                <data input="true" type="string" value="" name="string2"/>
-                <data input="false" type="string" name="result"/>
+        <component id="1316813941345" type="function">
+            <function name="concatenate" group="string" class="gov.nih.nci.cbiit.cmts.function.StringFunction" method="concatenate">
+                <data name="string1" value="" type="string" input="true"/>
+                <data name="string2" value="" type="string" input="true"/>
+                <data name="result" type="string" input="false"/>
+            </function>
+        </component>
+        <component id="1322269528581" type="function">
+            <function name="constant" group="constant" class="gov.nih.nci.cbiit.cmts.function.ConstantFunction" method="retrieveValue">
+                <data name="constant" value="9988" type="Integer" input="false"/>
             </function>
         </component>
     </components>
     <links>
         <link>
-            <source id="/ClinicalDocument/typeId/@extension" componentid="1"/>
-            <target id="constant" componentid="1280246945938"/>
+            <source componentid="1" id="/ClinicalDocument/typeId/@extension"/>
+            <target componentid="1280246945938" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/MSH/MSH.10" componentid="0"/>
-            <target id="/ClinicalDocument/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/MSH/MSH.10"/>
+            <target componentid="1" id="/ClinicalDocument/id/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/MSH/MSH.11/PT.1" componentid="0"/>
-            <target id="/ClinicalDocument/code/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/MSH/MSH.11/PT.1"/>
+            <target componentid="1" id="/ClinicalDocument/code/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/MSH/MSH.7/TS.1" componentid="0"/>
-            <target id="/ClinicalDocument/effectiveTime/@value" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/MSH/MSH.7/TS.1"/>
+            <target componentid="1" id="/ClinicalDocument/effectiveTime/@value"/>
         </link>
         <link>
-            <source id="/ADT_A03/MSH/MSH.11/PT.2" componentid="0"/>
-            <target id="/ClinicalDocument/confidentialityCode/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/MSH/MSH.11/PT.2"/>
+            <target componentid="1" id="/ClinicalDocument/confidentialityCode/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/MSH/MSH.19/CE.2" componentid="0"/>
-            <target id="/ClinicalDocument/languageCode/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/MSH/MSH.19/CE.2"/>
+            <target componentid="1" id="/ClinicalDocument/languageCode/@code"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/title" componentid="1"/>
-            <target id="constant" componentid="1280247783048"/>
+            <source componentid="1" id="/ClinicalDocument/title"/>
+            <target componentid="1280247783048" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.1" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/typeId/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.1"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/typeId/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.3/CX.1" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.3/CX.1"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/id/@extension"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/recordTarget/patientRole/patient/name/@use" componentid="1"/>
-            <target id="constant" componentid="1280248348975"/>
+            <source componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/name/@use"/>
+            <target componentid="1280248348975" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.5/XPN.1/FN.1" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;/family" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.5/XPN.1/FN.1"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;/family"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.7/TS.1" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/birthTime/@value" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.7/TS.1"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/birthTime/@value"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.8" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/administrativeGenderCode/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.8"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/administrativeGenderCode/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.16/CE.1" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/maritalStatusCode/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.16/CE.1"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/maritalStatusCode/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.16/CE.2" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/maritalStatusCode/@displayName" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.16/CE.2"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/maritalStatusCode/@displayName"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.16/CE.3" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/maritalStatusCode/@codeSystem" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.16/CE.3"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/maritalStatusCode/@codeSystem"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.17/CE.1" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/religiousAffiliationCode/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.17/CE.1"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/religiousAffiliationCode/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.17/CE.2" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/religiousAffiliationCode/@displayName" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.17/CE.2"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/religiousAffiliationCode/@displayName"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.17/CE.3" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/religiousAffiliationCode/@codeSystem" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.17/CE.3"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/religiousAffiliationCode/@codeSystem"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.19" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.19"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/id/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.19/@LongName" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/id/@assigningAuthorityName" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.19/@LongName"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/id/@assigningAuthorityName"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/recordTarget/patientRole/telecom/@use" componentid="1"/>
-            <target id="constant" componentid="1280249073601"/>
+            <source componentid="1" id="/ClinicalDocument/recordTarget/patientRole/telecom/@use"/>
+            <target componentid="1280249073601" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.11/XAD.1/SAD.1" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/addr/&lt;choice&gt;/state" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.11/XAD.1/SAD.1"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/addr/&lt;choice&gt;/state"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.1" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.1"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/id/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.2" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/code/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.2"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/code/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.44/TS.1" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/effectiveTime/@value" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.44/TS.1"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/effectiveTime/@value"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.36" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/dischargeDispositionCode/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.36"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/dischargeDispositionCode/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.7/XCN.1" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.7/XCN.1"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/id/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.7/XCN.2/FN.1" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/assignedPerson/name/&lt;choice&gt;/family" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.7/XCN.2/FN.1"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/assignedPerson/name/&lt;choice&gt;/family"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.7/XCN.14/HD.2" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/id/@assigningAuthorityName" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.7/XCN.14/HD.2"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/id/@assigningAuthorityName"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.10" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/code/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.10"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/code/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.3/PL.1" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id[1]/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.3/PL.1"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id[1]/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.3/PL.2" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id[1]/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.3/PL.2"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id[1]/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/PV1/PV1.3/PL.3" componentid="0"/>
-            <target id="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PV1/PV1.3/PL.3"/>
+            <target componentid="1" id="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.3/CE.1" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/code/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.3/CE.1"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/code/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.3/CE.3" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/code/@codeSystem" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.3/CE.3"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/code/@codeSystem"/>
         </link>
         <link>
-            <source id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.3/CE.2" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/code/@displayName" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.3/CE.2"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/code/@displayName"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/title" componentid="1"/>
-            <target id="constant" componentid="1287069172904"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/title"/>
+            <target componentid="1287069172904" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.1" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.1"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/id/@extension"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/id/@root" componentid="1"/>
-            <target id="constant" componentid="1287069638329"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/id/@root"/>
+            <target componentid="1287069638329" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.5/TS.1" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/effectiveTime/@value" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/ADT_A03.PROCEDURE/PR1/PR1.5/TS.1"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/effectiveTime/@value"/>
         </link>
         <link>
-            <source id="/ADT_A03/OBX/OBX.5" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/text" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/OBX/OBX.5"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/text"/>
         </link>
         <link>
-            <source id="/ADT_A03/OBX/OBX.1" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/OBX/OBX.1"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/id/@extension"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/id/@root" componentid="1"/>
-            <target id="constant" componentid="1287071959473"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/id/@root"/>
+            <target componentid="1287071959473" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/OBX/OBX.4" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/derivationExpr" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/OBX/OBX.4"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/derivationExpr"/>
         </link>
         <link>
-            <source id="/ADT_A03/OBX/OBX.3/CE.1" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/code/@code" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/OBX/OBX.3/CE.1"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/code/@code"/>
         </link>
         <link>
-            <source id="/ADT_A03/OBX/OBX.3/CE.2" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/code/@displayName" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/OBX/OBX.3/CE.2"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/code/@displayName"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/statusCode/@code" componentid="1"/>
-            <target id="constant" componentid="1287072120907"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/statusCode/@code"/>
+            <target componentid="1287072120907" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/OBX/OBX.14/TS.1" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/effectiveTime/@value" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/OBX/OBX.14/TS.1"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/effectiveTime/@value"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/title" componentid="1"/>
-            <target id="constant" componentid="1287073762630"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/title"/>
+            <target componentid="1287073762630" id="constant"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/typeId/@extension" componentid="1"/>
-            <target id="constant" componentid="1287073824316"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/typeId/@extension"/>
+            <target componentid="1287073824316" id="constant"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/typeId/@extension" componentid="1"/>
-            <target id="constant" componentid="1287073894408"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/typeId/@extension"/>
+            <target componentid="1287073894408" id="constant"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/typeId/@extension" componentid="1"/>
-            <target id="constant" componentid="1287073942891"/>
+            <source componentid="1" id="/ClinicalDocument/component/typeId/@extension"/>
+            <target componentid="1287073942891" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/MSH/MSH.7/TS.1" componentid="0"/>
-            <target id="/ClinicalDocument/author/time/@value" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/MSH/MSH.7/TS.1"/>
+            <target componentid="1" id="/ClinicalDocument/author/time/@value"/>
         </link>
         <link>
-            <source id="/ADT_A03/MSH/MSH.4/HD.1" componentid="0"/>
-            <target id="/ClinicalDocument/author/assignedAuthor/id/@extension" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/MSH/MSH.4/HD.1"/>
+            <target componentid="1" id="/ClinicalDocument/author/assignedAuthor/id/@extension"/>
         </link>
         <link>
-            <source id="/ADT_A03/MSH/MSH.4/HD.2" componentid="0"/>
-            <target id="/ClinicalDocument/author/assignedAuthor/id/@assigningAuthorityName" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/MSH/MSH.4/HD.2"/>
+            <target componentid="1" id="/ClinicalDocument/author/assignedAuthor/id/@assigningAuthorityName"/>
         </link>
         <link>
-            <source id="/ADT_A03/OBX" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/OBX"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry"/>
         </link>
         <link>
-            <source id="/ADT_A03/ADT_A03.PROCEDURE/PR1" componentid="0"/>
-            <target id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/ADT_A03.PROCEDURE/PR1"/>
+            <target componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/@classCode" componentid="1"/>
-            <target id="constant" componentid="1287779779220"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/@classCode"/>
+            <target componentid="1287779779220" id="constant"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/@moodCode" componentid="1"/>
-            <target id="constant" componentid="1287779833779"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure/@moodCode"/>
+            <target componentid="1287779833779" id="constant"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.5/XPN.2" componentid="0"/>
-            <target id="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;[1]/given" componentid="1"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.5/XPN.2"/>
+            <target componentid="1" id="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;[1]/given"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/@classCode" componentid="1"/>
-            <target id="constant" componentid="1287783816145"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/@classCode"/>
+            <target componentid="1287783816145" id="constant"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/@moodCode" componentid="1"/>
-            <target id="constant" componentid="1287783867717"/>
+            <source componentid="1" id="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation/@moodCode"/>
+            <target componentid="1287783867717" id="constant"/>
         </link>
         <link>
-            <source id="constant" componentid="1316813919783"/>
-            <target id="string1" componentid="1316813941345"/>
+            <source componentid="1316813919783" id="constant"/>
+            <target componentid="1316813941345" id="string1"/>
         </link>
         <link>
-            <source id="/ADT_A03/PID/PID.13/XTN.1" componentid="0"/>
-            <target id="string2" componentid="1316813941345"/>
+            <source componentid="0" id="/ADT_A03/PID/PID.13/XTN.1"/>
+            <target componentid="1316813941345" id="string2"/>
         </link>
         <link>
-            <source id="/ClinicalDocument/recordTarget/patientRole/telecom/@value" componentid="1"/>
-            <target id="result" componentid="1316813941345"/>
+            <source componentid="1" id="/ClinicalDocument/recordTarget/patientRole/telecom/@value"/>
+            <target componentid="1316813941345" id="result"/>
+        </link>
+        <link>
+            <source componentid="1" id="/ClinicalDocument/id/@root"/>
+            <target componentid="1322269528581" id="constant"/>
         </link>
     </links>
     <tags>
-        <tag value="true" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody" kind="choice" componentType="target"/>
-        <tag value="1" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component" kind="clone" componentType="target"/>
-        <tag value="true" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure" kind="choice" componentType="target"/>
-        <tag value="true" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation" kind="choice" componentType="target"/>
-        <tag value="1" key="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id" kind="clone" componentType="target"/>
-        <tag value="1" key="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id" kind="clone" componentType="target"/>
-        <tag value="true" key="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/assignedPerson/name/&lt;choice&gt;/family" kind="choice" componentType="target"/>
-        <tag value="true" key="/ClinicalDocument/recordTarget/patientRole/addr/&lt;choice&gt;/state" kind="choice" componentType="target"/>
-        <tag value="1" key="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;" kind="clone" componentType="target"/>
-        <tag value="true" key="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;/family" kind="choice" componentType="target"/>
-        <tag value="true" key="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;[1]/given" kind="choice" componentType="target"/>
+        <tag componentType="target" kind="choice" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody" value="true"/>
+        <tag componentType="target" kind="clone" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component" value="1"/>
+        <tag componentType="target" kind="choice" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component/section/entry/&lt;choice&gt;/procedure" value="true"/>
+        <tag componentType="target" kind="choice" key="/ClinicalDocument/component/&lt;choice&gt;/structuredBody/component[1]/section/entry/&lt;choice&gt;/observation" value="true"/>
+        <tag componentType="target" kind="clone" key="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id" value="1"/>
+        <tag componentType="target" kind="clone" key="/ClinicalDocument/componentOf/encompassingEncounter/location/healthCareFacility/id" value="1"/>
+        <tag componentType="target" kind="choice" key="/ClinicalDocument/componentOf/encompassingEncounter/responsibleParty/assignedEntity/assignedPerson/name/&lt;choice&gt;/family" value="true"/>
+        <tag componentType="target" kind="choice" key="/ClinicalDocument/recordTarget/patientRole/addr/&lt;choice&gt;/state" value="true"/>
+        <tag componentType="target" kind="clone" key="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;" value="1"/>
+        <tag componentType="target" kind="choice" key="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;/family" value="true"/>
+        <tag componentType="target" kind="choice" key="/ClinicalDocument/recordTarget/patientRole/patient/name/&lt;choice&gt;[1]/given" value="true"/>
     </tags>
     <views>
-        <view width="100" hight="50" y="68" x="100" componentid="1280246945938"/>
-        <view width="100" hight="50" y="119" x="92" componentid="1280247783048"/>
-        <view width="100" hight="50" y="186" x="168" componentid="1280248348975"/>
-        <view width="100" hight="50" y="284" x="186" componentid="1280249073601"/>
-        <view width="100" hight="50" y="490" x="203" componentid="1287069172904"/>
-        <view width="100" hight="50" y="444" x="145" componentid="1287069638329"/>
-        <view width="100" hight="50" y="369" x="84" componentid="1287071959473"/>
-        <view width="100" hight="50" y="573" x="153" componentid="1287072120907"/>
-        <view width="100" hight="50" y="641" x="82" componentid="1287073762630"/>
-        <view width="100" hight="50" y="380" x="250" componentid="1287073824316"/>
-        <view width="100" hight="50" y="42" x="214" componentid="1287073894408"/>
-        <view width="100" hight="50" y="227" x="89" componentid="1287073942891"/>
-        <view width="100" hight="50" y="514" x="90" componentid="1287779779220"/>
-        <view width="100" hight="50" y="578" x="84" componentid="1287779833779"/>
-        <view width="100" hight="50" y="464" x="66" componentid="1287783816145"/>
-        <view width="100" hight="50" y="328" x="47" componentid="1287783867717"/>
-        <view width="100" hight="50" y="188" x="55" componentid="1316813919783"/>
-        <view width="140" hight="68" y="28" x="70" componentid="1316813941345"/>
+        <view componentid="1280246945938" x="100" y="68" hight="50" width="100"/>
+        <view componentid="1280247783048" x="92" y="119" hight="50" width="100"/>
+        <view componentid="1280248348975" x="168" y="186" hight="50" width="100"/>
+        <view componentid="1280249073601" x="186" y="284" hight="50" width="100"/>
+        <view componentid="1287069172904" x="203" y="490" hight="50" width="100"/>
+        <view componentid="1287069638329" x="145" y="444" hight="50" width="100"/>
+        <view componentid="1287071959473" x="84" y="369" hight="50" width="100"/>
+        <view componentid="1287072120907" x="153" y="573" hight="50" width="100"/>
+        <view componentid="1287073762630" x="82" y="641" hight="50" width="100"/>
+        <view componentid="1287073824316" x="250" y="380" hight="50" width="100"/>
+        <view componentid="1287073894408" x="214" y="42" hight="50" width="100"/>
+        <view componentid="1287073942891" x="89" y="227" hight="50" width="100"/>
+        <view componentid="1287779779220" x="90" y="514" hight="50" width="100"/>
+        <view componentid="1287779833779" x="84" y="578" hight="50" width="100"/>
+        <view componentid="1287783816145" x="66" y="464" hight="50" width="100"/>
+        <view componentid="1287783867717" x="47" y="328" hight="50" width="100"/>
+        <view componentid="1316813919783" x="55" y="188" hight="50" width="100"/>
+        <view componentid="1316813941345" x="70" y="28" hight="68" width="140"/>
+        <view componentid="1322269528581" x="258" y="143" hight="50" width="100"/>
     </views>
 </mapping>
