@@ -42,16 +42,11 @@ public class StylesheetBuilder extends XQueryBuilder {
 				tgt = c;
 			else if (c.getType().equals(ComponentType.SOURCE))
 				src=c;
-
 		}
-        Set<String> set = links.keySet();
-        Iterator<String> iter = set.iterator();
-        while(iter.hasNext())
-        {
-            String str = iter.next();
-            System.out.println("CCCCC Link Key set : " + str);
-        }
 
+        ElementMeta srcRootMeta=src.getRootElement();
+		if (srcRootMeta!=null&&srcRootMeta.getNameSpace()!=null)
+			stylesheet.getRootElement().setAttribute("xpath-default-namespace", srcRootMeta.getNameSpace());
         stylesheet.addTempate(rootTemplate);
 		xpathStack = new Stack<String>();
 		processTargetElement(tgt.getRootElement(), "", rootTemplate);
