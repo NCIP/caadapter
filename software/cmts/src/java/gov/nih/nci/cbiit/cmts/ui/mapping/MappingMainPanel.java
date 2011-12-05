@@ -110,28 +110,42 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		{
 			if (SELECT_SOURCE.equals(command))
 			{
-				//this.sourceButtonPanel.repaint();
-				File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-						SOURCE_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
-				if (file != null)
-				{
-					processOpenSourceTree(file, true, true);
-				}
-			}
+                if (sTree == null)
+                {
+                    //this.sourceButtonPanel.repaint();
+                    File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
+                            SOURCE_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
+                    if (file != null)
+                    {
+                        processOpenSourceTree(file, true, true);
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "The Source Tree is already occupied.\n Create a new mapping panel and use it.", "Alredy Occupied Source Tree", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 			else if (SELECT_TARGET.equals(command))
 			{
-				//this.targetButtonPanel.repaint();
-				File file = DefaultSettings.getUserInputOfFileFromGUI(this,
-						//						TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
-						//FileUtil.getUIWorkingDirectoryPath(),
-						//					TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
-						//last added fileExtension :.h3s will be set as default
-						Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION+";"+TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
-				if (file != null)
-				{
-					processOpenTargetTree(file, true, true);
-				}
-			}
+                if (tTree == null)
+                {
+                    //this.targetButtonPanel.repaint();
+                    File file = DefaultSettings.getUserInputOfFileFromGUI(this,
+                            //						TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+                            //FileUtil.getUIWorkingDirectoryPath(),
+                            //					TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+                            //last added fileExtension :.h3s will be set as default
+                            Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION+";"+TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+                    if (file != null)
+                    {
+                        processOpenTargetTree(file, true, true);
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "The Target Tree is already occupied.\n Create a new mapping panel and use it.", "Alredy Occupied Target Tree", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 		}
 		catch (Exception e1)
 		{

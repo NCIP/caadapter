@@ -283,12 +283,18 @@ public class MainMenuBar extends JMenuBar
         //		closeMenuItem.setAction(null);
         //		closeMenuItem.setAction(defaultCloseAction);
         //		actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
-        saveMenuItem.getAction().setEnabled(false);
-        saveAsMenuItem.getAction().setEnabled(false);
+//        saveMenuItem.getAction().setEnabled(false);
+//        saveAsMenuItem.getAction().setEnabled(false);
 //		anotateMenuItem.getAction().setEnabled(false);
 //		validateMenuItem.getAction().setEnabled(false);
-		closeMenuItem.getAction().setEnabled(false);
-		closeAllMenuItem.getAction().setEnabled(hasActiveDocument);
+//		closeMenuItem.getAction().setEnabled(false);
+
+
+
+        saveMenuItem.getAction().setEnabled(hasActiveDocument);
+        saveAsMenuItem.getAction().setEnabled(hasActiveDocument);
+		closeMenuItem.getAction().setEnabled(hasActiveDocument);
+        closeAllMenuItem.getAction().setEnabled(hasActiveDocument);
     }
 
     private void resetNewSubMenu(boolean hasActiveDocument)

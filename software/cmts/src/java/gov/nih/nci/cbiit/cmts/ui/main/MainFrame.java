@@ -171,7 +171,8 @@ public class MainFrame extends JFrame
 		{
 			rightSideToolbar.add(rightSideButton);
 			rightSidePanel.add(rightSideToolbar, BorderLayout.CENTER);
-		}
+            if (tabbedPane.getComponentCount() > 0) rightSideButton.setEnabled(true);
+        }
 		toolBarPanel.remove(currentToolBarPanel);
 		currentToolBarPanel.removeAll();
 		currentToolBarPanel.add(newToolBar, BorderLayout.CENTER);
