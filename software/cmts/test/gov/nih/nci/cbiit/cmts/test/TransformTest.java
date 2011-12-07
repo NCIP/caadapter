@@ -137,8 +137,8 @@ public class TransformTest {
 		System.out.println("$$$$$$ query: \n"+queryString);
 		MappingTransformer tester= new MappingTransformer();
 
-		String xmlResult[]=tester.transfer(srcFile, mappingFile);
-		System.out.println("TransformTest.testMappingAndTransformation()\n"+xmlResult[0]);
+		String xmlResult=tester.transfer(srcFile, mappingFile);
+		System.out.println("TransformTest.testMappingAndTransformation()\n"+xmlResult);
 		
 	}
 	/**
@@ -218,12 +218,11 @@ public class TransformTest {
 		
 		MappingTransformer tester= new MappingTransformer();
 		String dataSource="workingspace/hl7v2/ADT_03.xml";
- 		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.transfer(dataSource, mapFile)[0], false));
+ 		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.transfer(dataSource, mapFile), false));
 		
 		w = new FileWriter("bin/tranform.out.xml");
-		String result[] =tester.transfer(dataSource, mapFile);
-
-        w.write(result[0]);
+		String result=tester.transfer(dataSource, mapFile);
+		w.write(result);
 		w.close();
 		
 		//using validator
@@ -240,7 +239,7 @@ public class TransformTest {
 		ErrorHandler handler=new XsdSchemaErrorHandler();
 		
 		Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, handler);
-		XsdSchemaSaxValidator.validateXmlData(schema, result[0], handler);
+		XsdSchemaSaxValidator.validateXmlData(schema, result, handler);
 	}
 
 	@Test
