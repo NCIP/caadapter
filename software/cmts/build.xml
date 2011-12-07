@@ -100,6 +100,7 @@
 				<include name="commons-logging-1.0.4.jar"/>
 				<include name="dom4j-1.4.jar"/>
 				<include name="BrowserLauncher2-1_3.jar"/>
+				<include name="knuHL7V2tree.jar"/>
 				<!-- include name="encoderframework.jar"/>
 				<include name="encoderfrmwk-xsdextension.jar"/>
 				<include name="hl7.jar"/>
