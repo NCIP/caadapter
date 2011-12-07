@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<shiporderList>
+<shiporder orderid="889923"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="shiporder.xsd">
+ <orderperson>JohnSmith</orderperson>
+ <shipto>
+  <name>Ola Nordmann</name>
+  <address>Langgt 23</address>
+  <city>4000 Stavanger</city>
+  <country>Norway</country>
+ </shipto>
+ <item>
+  <title>Empire Burlesque</title>
+  <note>Special Edition</note>
+  <quantity>1</quantity>
+  <price>10.90</price>
+ </item>
+ <item>
+  <title>Hide your heart</title>
+  <note>current Edition</note>
+  <quantity>1</quantity>
+  <price>9.90</price>
+ </item>
+ <item>
+  <title>Java Exercise</title>
+  <note>later Edition</note>
+  <quantity>2</quantity>
+  <price>30.00</price>
+ </item>
+</shiporder>
+
+<shiporder orderid="889924"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="shiporder.xsd">
+ <orderperson>JohnSmith</orderperson>
+ <shipto>
+  <name>Ola Nordmann</name>
+  <address>Langgt 23</address>
+  <city>4000 Stavanger</city>
+  <country>Norway</country>
+ </shipto>
+ <item>
+  <title>Empire Burlesque</title>
+  <note>Special Edition</note>
+  <quantity>1</quantity>
+  <price>10.90</price>
+ </item>
+ <item>
+  <title>Hide your heart</title>
+  <note>current Edition</note>
+  <quantity>1</quantity>
+  <price>9.90</price>
+ </item>
+ <item>
+  <title>Java Exercise</title>
+  <note>later Edition</note>
+  <quantity>2</quantity>
+  <price>30.00</price>
+ </item>
+</shiporder>
+
+<shiporder orderid="889925"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="shiporder.xsd">
+ <orderperson>JohnSmith</orderperson>
+ <shipto>
+  <name>Ola Nordmann</name>
+  <address>Langgt 23</address>
+  <city>4000 Stavanger</city>
+  <country>Norway</country>
+ </shipto>
+ <item>
+  <title>Empire Burlesque</title>
+  <note>Special Edition</note>
+  <quantity>1</quantity>
+  <price>10.90</price>
+ </item>
+ <item>
+  <title>Hide your heart</title>
+  <note>current Edition</note>
+  <quantity>1</quantity>
+  <price>9.90</price>
+ </item>
+ <item>
+  <title>Java Exercise</title>
+  <note>later Edition</note>
+  <quantity>2</quantity>
+  <price>30.00</price>
+ </item>
+</shiporder>
+
+</shiporderList>

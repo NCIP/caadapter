@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core">
+    <components>
+        <component location="shiporderCollection.xsd" kind="xml" type="source" id="0">
+            <rootElement isSimple="false" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" name="shiporderList" idSpec="X-path">
+                <ativated>true</ativated>
+            </rootElement>
+        </component>
+        <component location="printorderCollection.xsd" kind="xml" type="target" id="1">
+            <rootElement isSimple="false" isRecursive="false" isEnabled="false" isChosen="false" isChoice="false" name="printorderList" idSpec="X-path">
+                <ativated>true</ativated>
+            </rootElement>
+        </component>
+    </components>
+    <links>
+        <link>
+            <source id="/shiporderList" componentid="0"/>
+            <target id="/printorderList" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder" componentid="0"/>
+            <target id="/printorderList/printorder" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/@orderid" componentid="0"/>
+            <target id="/printorderList/printorder/@orderid" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/orderperson" componentid="0"/>
+            <target id="/printorderList/printorder/buyer" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/shipto" componentid="0"/>
+            <target id="/printorderList/printorder/address" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/shipto/name" componentid="0"/>
+            <target id="/printorderList/printorder/address/name" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/shipto/address" componentid="0"/>
+            <target id="/printorderList/printorder/address/street" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/shipto/city" componentid="0"/>
+            <target id="/printorderList/printorder/address/city" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/shipto/country" componentid="0"/>
+            <target id="/printorderList/printorder/address/country" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/item" componentid="0"/>
+            <target id="/printorderList/printorder/item" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/item/title" componentid="0"/>
+            <target id="/printorderList/printorder/item/name" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/item/note" componentid="0"/>
+            <target id="/printorderList/printorder/item/description" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/item/quantity" componentid="0"/>
+            <target id="/printorderList/printorder/item/quantity" componentid="1"/>
+        </link>
+        <link>
+            <source id="/shiporderList/shiporder/item/price" componentid="0"/>
+            <target id="/printorderList/printorder/item/price" componentid="1"/>
+        </link>
+    </links>
+    <tags/>
+    <views/>
+</mapping>
