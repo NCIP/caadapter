@@ -67,16 +67,11 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 	private boolean SOURCE_DATA_REQUIRED=true;
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
-    private JTextField resultSeq;
-    private JButton decreaseSeq;
-    private JButton increaseSeq;
     private String transformationType;
     private File targetDataFile;
-    private java.util.List<Object> messageList;
+    private java.util.List <Object> messageList;
     private JScrollPane scrollPane = null;
     private ValidationMessagePane validationMessagePane = null;
-    private TransformationService transformer = null;
-    private int messageSeq = -1;
 
     public MessagePanel(MainFrameContainer mainFrame)
     {
@@ -110,32 +105,13 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		
 		JPanel leftPanel = new JPanel(new BorderLayout());
-		//JPanel navigationPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        JPanel navigationPanel = buildNavigationPanel();
-        /*
+		JPanel navigationPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+
 //		RegenerateHL7V3MessageAction regenerateAction = new RegenerateHL7V3MessageAction(this);
 		JButton regenerateButton = new JButton("Regenerate");//regenerateAction);
-		regenerateButton.addActionListener(this);
-
-        navigationPanel.add(regenerateButton, BorderLayout.NORTH);
-
-        decreaseSeq = new JButton("<");
-		decreaseSeq.addActionListener(this);
-        resultSeq = new JTextField();
-        resultSeq.setEditable(false);
-        increaseSeq = new JButton(">");
-		increaseSeq.addActionListener(this);
-
-        JPanel navigationSouthPanel = new JPanel(new BorderLayout());
-        navigationSouthPanel.add(resultSeq, BorderLayout.CENTER);
-        navigationSouthPanel.add(decreaseSeq, BorderLayout.WEST);
-        navigationSouthPanel.add(increaseSeq, BorderLayout.EAST);
-
-        navigationPanel.add(regenerateButton, BorderLayout.NORTH);
-        navigationPanel.add(navigationSouthPanel, BorderLayout.SOUTH);
-        */
-
-        leftPanel.add(navigationPanel, BorderLayout.NORTH);
+		navigationPanel.add(regenerateButton);
+ 		regenerateButton.addActionListener(this);
+		leftPanel.add(navigationPanel, BorderLayout.NORTH);
 		splitPane.setLeftComponent(leftPanel);
 
 		JPanel fieldsOuterPanel = new JPanel(new BorderLayout());
@@ -166,49 +142,14 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 		return splitPane;
 	}
 
-    private JPanel buildNavigationPanel()
-    {
-
-        JPanel navigationPanel = new JPanel(new GridBagLayout());
-
-
-		JButton regenerateButton = new JButton("Regenerate");//regenerateAction);
-		regenerateButton.addActionListener(this);
-
-        decreaseSeq = new JButton("<");
-		decreaseSeq.addActionListener(this);
-        resultSeq = new JTextField("       ");
-        resultSeq.setEditable(false);
-        increaseSeq = new JButton(">");
-		increaseSeq.addActionListener(this);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        Insets insets = new Insets(5, 5, 5, 5);
-        gbc.gridx = 0;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = insets;
-        navigationPanel.add(regenerateButton, gbc);
-
-        GridBagConstraints gbc2 = new GridBagConstraints();
-        gbc2.insets = insets;
-
-        navigationPanel.add(decreaseSeq, gbc2);
-        navigationPanel.add(resultSeq, gbc2);
-        navigationPanel.add(increaseSeq, gbc2);
-
-        return navigationPanel;
-    }
-
-    private JComponent contructCenterPanel()
+	private JComponent contructCenterPanel()
 	{
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		DefaultSettings.setDefaultFeatureForJSplitPane(splitPane);
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPane = new JScrollPane();
-		setMessageText(new String[] {""});
+		setMessageText("");
 		splitPane.setTopComponent(scrollPane);
 
 		validationMessagePane = new ValidationMessagePane();
@@ -246,16 +187,7 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 
     public void actionPerformed(ActionEvent e)
     {
-        if ((e.getSource() == increaseSeq)||(e.getSource() == decreaseSeq))
-        {
-            if ((messageList == null)||(messageList.size() < 1)) return;
-            if (e.getSource() == increaseSeq) messageSeq++;
-            else messageSeq--;
-            setupNavigationData();
-            return;
-        }
-
-        try {
+    	try {
             if (transformationType==null
 				||transformationType==""
 					||transformationType==ActionConstants.NEW_XML_Transformation)
@@ -274,11 +206,11 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
                 }
 
 			    TransformationService transformer=TransformerFactory.getTransformer(transformationType);
-                String xmlResult[]=transformer.transfer(sourceFile, mappingFile);
+                String xmlResult=transformer.transfer(sourceFile, mappingFile);
 			    setMessageText(xmlResult);
 			    setSourceDataURI(sourceFile);
 			    setTransformationMappingURI(mappingFile);
-			    //setValidationMessage(transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
+			    setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
 
 
 //                setMessageText("");
@@ -293,7 +225,7 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
             }
             else
             {
-                setMessageText(new String[] {""});
+                setMessageText("");
                 String xmlResult="";
 			    String artType=".xsl";
                 String mapFile = mapFileNameField.getText();
@@ -320,7 +252,7 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
                 }
 			    setViewFileExtension(artType);
 
-			    setMessageText(new String[] {xmlResult});
+			    setMessageText(xmlResult);
 			    //JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
             }
 
@@ -367,69 +299,14 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
         this.transformationType = transformationType;
 	}
 
-	public void setMessageText(String[] text)
+	public void setMessageText(String text)
     {
     	//JTextArea outputMessageArea = new JTextArea(setupXQueryStructuredIndenation(text));
-        if ((text == null)||(text.length == 0))
-        {
-            JOptionPane.showMessageDialog(this, "Message is null or empty", "Eepty Message", JOptionPane.ERROR_MESSAGE);
-            decreaseSeq.setEnabled(false);
-		    increaseSeq.setEnabled(false);
-            resultSeq.setText("       ");
-            return;
-        }
-        messageList = new java.util.ArrayList<Object>();
-        for(int i=0;i<text.length;i++) messageList.add(text[i]);
-
-        messageSeq = 0;
-
-        setupNavigationData();
-    }
-    private void setupNavigationData()
-    {
-        if (messageList.size() == 1)
-        {
-            decreaseSeq.setEnabled(false);
-		    increaseSeq.setEnabled(false);
-            resultSeq.setText("  1/1  ");
-        }
-        else
-        {
-            if (messageSeq == 0) decreaseSeq.setEnabled(false);
-            else decreaseSeq.setEnabled(true);
-            if (messageSeq == (messageList.size() - 1)) increaseSeq.setEnabled(false);
-            else increaseSeq.setEnabled(true);
-
-            String ss = "" + (messageSeq + 1) + "/" + messageList.size();
-            if (ss.length() == 3) ss = "  " + ss  + "  ";
-            if (ss.length() == 4) ss = "  " + ss  + " ";
-            if (ss.length() == 5) ss = " " + ss  + " ";
-            if (ss.length() == 6) ss = " " + ss  + "";
-            resultSeq.setText(ss);
-        }
-        String message = (String)messageList.get(messageSeq);
-        JTextArea outputMessageArea = new JTextArea(message);
+        JTextArea outputMessageArea = new JTextArea(text);
         outputMessageArea.setEditable(false);
         scrollPane.getViewport().setView(outputMessageArea);
-        try
-        {
-            if (transformer instanceof MappingTransformer)
-                this.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(), message));
-
-            //TransformationService transformer=TransformerFactory.getTransformer(trType);
-            //setValidationMessage(transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(), message));
-        }
-        catch(Exception xe)
-        {
-
-        }
     }
-    
 
-    public void setTransformationService(TransformationService transform)
-    {
-        transformer = transform;
-    }
     public void setValidationMessage(List validationMessage)
     {
     	validationMessagePane.setMessageList(validationMessage);	

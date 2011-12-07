@@ -68,11 +68,8 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 				}
 			}
 		}
-        String extension = viewerPanel.getViewFileExtension();
-        if (extension.equals(".xq")) extension = ".xql";
-        File file = DefaultSettings.getUserInputOfFileFromGUI(viewerPanel, extension, "Save As...", true, true);
-		
-        if (file != null)
+		File file = DefaultSettings.getUserInputOfFileFromGUI(viewerPanel, viewerPanel.getViewFileExtension(), "Save As...", true, true);
+		if (file != null)
 			setSuccessfullyPerformed(processSaveFile(file));
 		
 		return isSuccessfullyPerformed();

@@ -135,7 +135,7 @@ public class NewArtifactAction extends AbstractContextAction
 			}
 			newMsgPane.setViewFileExtension(artType);
 			mainFrame.addNewTab(newMsgPane,artType);
-			newMsgPane.setMessageText(new String[] {xmlResult});
+			newMsgPane.setMessageText(xmlResult);
 //			newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);
 //			newMsgPane.setTargetDataFile(w.getDestFile());

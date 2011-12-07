@@ -32,7 +32,7 @@ public class Hl7v2XmlTransformer extends MappingTransformer {
 	}
 	
 	@Override
-	protected String[] parseRawData(String sourceRawDataFile, Mapping map) throws JAXBException, IOException
+	protected String parseRawData(String sourceRawDataFile, Mapping map) throws JAXBException, IOException
 	{
 		String fileName="xmlFile"+Calendar.getInstance().getTimeInMillis();
 		String schemaUri="";
@@ -73,7 +73,7 @@ public class Hl7v2XmlTransformer extends MappingTransformer {
 			}
 		}		
 		xmlV2Out.close();
-		return new String[] {fileName};
+		return fileName;
 	}
 
 }

@@ -11,8 +11,6 @@ package gov.nih.nci.cbiit.cmts.util;
 
 import gov.nih.nci.cbiit.cmts.common.XSDParser;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
-import gov.nih.nci.caadapter.common.util.*;
-//import gov.nih.nci.caadapter.common.util.FileUtil;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -475,116 +473,6 @@ public class FileUtil
     public static String searchFile(String fileName)
     {
         return searchFile(null, null, fileName, null, true);
-    }
-
-    public static String[] divideSourceRawDataFile(String sourceRawDataFile, String root) throws IOException
-    {
-        List<String> sourceLines = gov.nih.nci.caadapter.common.util.FileUtil.readFileIntoList(sourceRawDataFile);
-
-        if ((sourceLines == null)||(sourceLines.size() == 0))
-            throw new IOException("Empty File : " + sourceRawDataFile);
-
-
-        List<String> outcon = new ArrayList<String>();
-
-        String c = "";
-        String topTag = null;
-        boolean topTagLine = false;
-        String headName = null;
-        boolean headNameLine = false;
-        boolean isRemark = false;
-        int dp = -1;
-        for(String line:sourceLines)
-        {
-            int i = 0;
-            line = line + "\r\n";
-            for(i=0;i<line.length();i++)
-            {
-                String achar = line.substring(i, i+1);
-                c = c + achar;
-                if (isRemark)
-                {
-                    if (c.endsWith("-->")) isRemark = false;
-                    continue;
-                }
-                if (c.endsWith("<!--"))
-                {
-                    isRemark = true;
-                    continue;
-                }
-                if (c.endsWith("<?"))
-                {
-                    topTag = "<?";
-                    topTagLine = true;
-                    continue;
-                }
-                if (topTagLine)
-                {
-                    topTag = topTag + achar;
-                    if (topTag.endsWith("?>"))
-                    {
-                        c = "";
-                        topTagLine = false;
-                    }
-                    continue;
-                }
-                if (topTag == null) continue;
-                if (headNameLine)
-                {
-                    if ((achar.equals(" "))||(achar.equals(">"))||(achar.equals("\n"))||(achar.equals("\t")))
-                    {
-                        headNameLine = false;
-                        headName = headName.trim();
-                        if (headName.equals("<" + root))
-                        {
-                            return new String[] {sourceRawDataFile};
-                            //return sourceDataInstance;
-                        }
-                        c = "";
-                    }
-                    else headName = headName + achar;
-                    continue;
-                }
-                if (headName == null)
-                {
-                    if (c.endsWith("<"))
-                    {
-                        headNameLine = true;
-                        headName = "<";
-                    }
-                    continue;
-                }
-                if ((c.endsWith("<" + root + " "))||(c.endsWith("<" + root + ">")))
-                {
-                    if (dp < 0)
-                    {
-                        dp = 1;
-                        c = "<" + root + achar;
-                    }
-                    else dp++;
-                }
-                if ((c.endsWith("</" + root + " "))||(c.endsWith("</" + root + ">")))
-                {
-                    dp--;
-                    if (dp < 0) throw new IOException("Not welformed XML : " + sourceRawDataFile);
-
-                    if (dp == 0)
-                    {
-                        String xml = topTag + "\r\n" + c.substring(0, c.length() - (root.length() + 3)) + "</" + root + ">";
-                        String tFile = gov.nih.nci.caadapter.common.util.FileUtil.getTemporaryFileName(".xml");
-                        gov.nih.nci.caadapter.common.util.FileUtil.saveStringIntoTemporaryFile(tFile, xml);
-                        outcon.add(tFile);
-                        c = "";
-                        //temporaryFileCreated = true;
-                    }
-                }
-            }
-        }
-        if (outcon.size() == 0) throw new IOException("No useful xml content in this file : " + sourceRawDataFile);
-        String[] strArr = new String[outcon.size()];
-        for (int i=0;i<outcon.size();i++) strArr[i] = outcon.get(i);
-        //sourceDataInstance = strArr;
-        return strArr;
     }
 }
 

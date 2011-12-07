@@ -9,8 +9,7 @@ import gov.nih.nci.cbiit.cmts.transform.TransformationService;
 public class DefaultTransformer implements TransformationService {
 
 	private boolean presentable;
-    protected String[] sourceDataInstance = null;
-    @Override
+	@Override
 	public boolean isPresentable() {
 		// TODO Auto-generated method stub
 		return presentable;
@@ -23,7 +22,7 @@ public class DefaultTransformer implements TransformationService {
 	}
 
 	@Override
-	public String[] transfer(String sourceFile, String processInstruction) {
+	public String transfer(String sourceFile, String processInstruction) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -34,10 +33,5 @@ public class DefaultTransformer implements TransformationService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-    @Override
-    public String[] getSourceDataInstances()
-    {
-        return sourceDataInstance;
-    }
 
 }
