@@ -35,8 +35,8 @@ public class Hl7V2Test {
 		String mapping="workingspace/Hl7v2ToXml/mapping.xml";
 		String srcV2Msg="workingspace/Hl7v2ToXml/ADT_A03.hl7";
 		Hl7v2XmlTransformer transformer= new Hl7v2XmlTransformer();
-		String result=transformer.transfer(srcV2Msg, mapping);
-		System.out.println("Hl7V2Test.testMapAndTransformation()..\n"+result);
+		String[] result=transformer.transfer(srcV2Msg, mapping);
+		System.out.println("Hl7V2Test.testMapAndTransformation()..\n"+result[0]);
 		
 	}
 	@Test public void testLoaderV2Encoder()
@@ -74,7 +74,7 @@ public class Hl7V2Test {
 		MappingTransformer tester= new MappingTransformer();
  
 		FileWriter w = new FileWriter("tranform.out.xml");
-		w.write(tester.transfer("outv2.xml", mapFile));
+		w.write(tester.transfer("outv2.xml", mapFile)[0]);
 		w.close();
 		Assert.assertNotNull(v2Encoder);
 	}
