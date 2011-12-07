@@ -79,8 +79,9 @@ public class TransformationServiceImpl implements TransformationWebService{
         	+File.separator+scenario.getMappingFile();
 //			result=convertData(mappingFilePath, source.getPath());
 			TransformationService transformer =TransformerFactory.getTransformer("."+scenario.getTransferType()) ;
-			String xmlResult=transformer.transfer(source.getPath(), mappingFilePath);
-			result.add(xmlResult);
+			String[] xmlResults=transformer.transfer(source.getPath(), mappingFilePath);
+			for(String xmlResult:xmlResults)
+                result.add(xmlResult);
 		} catch (XQException e) {
 			e.printStackTrace();
 			result.add("transformation error: " + e.getMessage() );
