@@ -64,9 +64,6 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
                 if (node.isLeaf())
                     setIcon(elementNodeIcon);
 
-//                ElementMetaLoader.MyTreeObject ob = (ElementMetaLoader.MyTreeObject) node.getUserObject();
-//                ElementMeta meta = (ElementMeta)ob.getUserObject();
-//                if (meta.isIsEnabled()) setIcon(elementNodeIcon);
                 ElementMeta meta = (ElementMeta)baseMeta;
                 if ((meta.isIsRecursive())&&(!meta.isAtivated())&&(meta.getChildElement().size() > 0))
                 {
@@ -82,7 +79,7 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
                 }
                 if (baseMeta.getName().startsWith("<choice>"))
                 {
-                    String lbText=getText();
+                    String lbText=cardinalityView(baseMeta);//getText();
                     String htmlText="<html><font color=blue><I>"+lbText.replace("<choice>", "&lt;choice&gt;")+"</I></font></html>";
                     setText(htmlText);
                 }
