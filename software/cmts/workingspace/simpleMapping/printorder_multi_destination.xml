@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<printorder orderid="889923" printType="text/html">
+  <buyer>JohnSmith</buyer>
+  <item>
+    <name>Empire Burlesque</name>
+    <description>Special Edition</description>
+    <quantity>1</quantity>
+    <price>10900</price>
+  </item>
+  <addressee>
+    <name>
+      <given_name PUBLICID="2179589" VERSION="2.0">Ola</given_name>
+      <family_name PUBLICID="2179591" VERSION="2.0">Nordmann</family_name>
+    </name>
+    <street>Langgt 23</street>
+    <city>4000 Stavanger</city>
+    <country>Norway</country>
+  </addressee>
+  <addressee>
+    <name>
+      <given_name PUBLICID="2179589" VERSION="2.0">Morris</given_name>
+      <family_name PUBLICID="2179591" VERSION="2.0">Tular</family_name>
+    </name>
+    <street>3234 Goldman Blvd.</street>
+    <city>Dorise</city>
+    <country>Canada</country>
+  </addressee>
+  <addressee>
+    <name>
+      <given_name PUBLICID="2179589" VERSION="2.0">Hyman</given_name>
+      <family_name PUBLICID="2179591" VERSION="2.0">Solaris</family_name>
+    </name>
+    <street>1121</street>
+    <city>Malrata</city>
+    <country>Germany</country>
+  </addressee>
+</printorder>
+

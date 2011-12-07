@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<shiporder orderid="889923"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="shiporder_multi_destination.xsd">
+ <orderperson>JohnSmith</orderperson>
+ <item>
+  <title>Empire Burlesque</title>
+  <note>Special Edition</note>
+  <quantity>1</quantity>
+  <price>10.90</price>
+ </item>
+ <shipto>
+  <name>
+      <firstname>Ola</firstname>
+      <lastname>Nordmann</lastname>
+  </name>
+  <address>Langgt 23</address>
+  <city>4000 Stavanger</city>
+  <country>Norway</country>
+ </shipto>
+ <shipto>
+  <name>
+      <firstname>Morris</firstname>
+      <lastname>Tular</lastname>
+  </name>
+  <address>3234 Goldman Blvd.</address>
+  <city>Dorise</city>
+  <country>Canada</country>
+ </shipto>
+ <shipto>
+  <name>
+      <firstname>Hyman</firstname>
+      <lastname>Solaris</lastname>
+  </name>
+  <address>1121</address>
+  <city>Malrata</city>
+  <country>Germany</country>
+ </shipto>
+ 
+</shiporder>
