@@ -129,6 +129,11 @@ public class MainMenuBar extends JMenuBar
         actionMap.put(ActionConstants.CLOSE_ALL, closeAllAction);
         menuItemMap.put(ActionConstants.CLOSE_ALL, closeAllMenuItem);
 
+        OpenMapFileAction openMapAction = new OpenMapFileAction(mainFrame);
+        JMenuItem openMapFileItem = new JMenuItem(openMapAction);
+        actionMap.put(ActionConstants.OPEN_MAP_FILE, openMapAction);
+        menuItemMap.put(ActionConstants.OPEN_MAP_FILE, openMapFileItem);
+
         JMenuItem exitMenuItem = null;
         if (isEnableExitMenu())
         {
@@ -142,7 +147,8 @@ public class MainMenuBar extends JMenuBar
         fileMenu.setMnemonic('F');
         fileMenu.add(constructNewCmtsMenu());
         fileMenu.addSeparator();
-        fileMenu.add(constructOpenMenu());
+        //fileMenu.add(constructOpenMenu());
+        fileMenu.add(openMapFileItem);  
         fileMenu.addSeparator();
         fileMenu.add(saveMenuItem);
         fileMenu.add(saveAsMenuItem);

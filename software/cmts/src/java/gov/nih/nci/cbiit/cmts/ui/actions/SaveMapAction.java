@@ -27,7 +27,7 @@ import java.io.File;
 public class SaveMapAction extends SaveAsMapAction
 {
 
-	private static final String TOOL_TIP_DESCRIPTION = "Save a Mapping File";
+	private static final String TOOL_TIP_DESCRIPTION = "Save File";
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.

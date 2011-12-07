@@ -144,12 +144,14 @@ public class NewTransformationAction extends AbstractContextAction
 			}
 			String sourceFile =w.getDataFile().getPath();//FileUtil.getRelativePath(w.getDataFile());
 			
-			String xmlResult=transformer.transfer(sourceFile, mappingFile);
-			newMsgPane.setMessageText(xmlResult);
-			newMsgPane.setSourceDataURI(sourceFile);
+			String[] xmlResult=transformer.transfer(sourceFile, mappingFile);
+            newMsgPane.setTransformationService(transformer);
+            newMsgPane.setMessageText(xmlResult);
+
+            newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);
-			if (transformer instanceof MappingTransformer)
-				newMsgPane.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
+			//if (transformer instanceof MappingTransformer)
+			//	newMsgPane.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
 			JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
 		}
 		else

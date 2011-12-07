@@ -196,6 +196,7 @@ public class ContextManager implements ChangeListener
             {
                 ContextManagerClient contextClient = (ContextManagerClient) currentPanel;
                 getToolBarHandler().removeAllActions();
+                /*
                 java.util.List<Action> actions = contextClient.getToolbarActionList();
                 for(int i=0;i<actions.size();i++)
 				{//includes open, save, close, validate, etc.
@@ -205,19 +206,55 @@ public class ContextManager implements ChangeListener
 						getToolBarHandler().addAction(action, true);
 					}
 				}
-
+                */
                 JButton closeButton = null;
-                Action action = contextClient.getDefaultCloseAction();
-                if(action!=null)
+                Action closeAction = contextClient.getDefaultCloseAction();
+                if(closeAction !=null)
                 {
-                	action.setEnabled(true);
-                    closeButton = new JButton(action);
+                	closeAction.setEnabled(true);
+                    closeButton = new JButton(closeAction);
                     closeButton.setEnabled(true);
                     closeButton.setText("");
                 }
 
+                JButton saveButton = null;
+                Action saveAction = contextClient.getDefaultSaveAction();
+                if(saveAction!=null)
+                {
+                	saveAction.setEnabled(true);
+                    saveButton = new JButton(saveAction);
+                    saveButton.setEnabled(true);
+                    saveButton.setText("");
+                }
+
+                /*
+                JButton saveAsButton = null;
+                Map actionMap_ = contextClient.getMenuItems(MenuConstants.FILE_MENU_NAME);
+		        Action saveAsAction = (Action) actionMap_.get(ActionConstants.SAVE_AS);
+                if(saveAsAction!=null)
+                {
+                    saveAsAction.setEnabled(true);
+                    saveAsButton = new JButton(saveAsAction);
+                    saveAsButton.setEnabled(true);
+                    saveAsButton.setText("");
+                }
+                */
+
+                JButton openButton = null;
+                Action openAction = contextClient.getDefaultOpenAction();
+                if(openAction!=null)
+                {
+                	openAction.setEnabled(true);
+                    openButton = new JButton(openAction);
+                    openButton.setEnabled(true);
+                    openButton.setText("");
+                }
+
+
                 //update the toolbar
-        		
+        		toolBarHandler.getToolBar().add(openAction);
+                toolBarHandler.getToolBar().add(saveAction);
+                //toolBarHandler.getToolBar().add(saveAsAction);
                 mainFrame.updateToolBar(toolBarHandler.getToolBar(), closeButton);
 
                 //update the menus
@@ -230,7 +267,21 @@ public class ContextManager implements ChangeListener
             else
             {//we could possibly be here b/c user closed the last tab, roll back to menu's original state.
                 getToolBarHandler().removeAllActions();
-        		
+
+
+
+                /*
+                ContextManagerClient contextClient = ContextManagerClient;
+                Action action = contextClient.getDefaultCloseAction();
+                JButton closeButton = null;
+                if(action!=null)
+                {
+                	action.setEnabled(true);
+                    closeButton = new JButton(action);
+                    closeButton.setEnabled(true);
+                    closeButton.setText("");
+                }
+                */
                 mainFrame.updateToolBar(toolBarHandler.getToolBar());
                 menu.resetMenus(false);
             }

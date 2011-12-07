@@ -46,7 +46,7 @@ public class XQueryTransformer extends MappingTransformer {
 			XQueryTransformer transformer = new XQueryTransformer();
 			try {
 				FileWriter sWriter = new FileWriter(new File(args[2]));
-				sWriter.write(transformer.transfer(args[0],args[1]));
+				sWriter.write((transformer.transfer(args[0],args[1]))[0]);
 				sWriter.flush();
 				sWriter.close();
 			} catch (IOException e) {

@@ -24,7 +24,9 @@ public interface TransformationService {
 	 * @param processInstruction URI of transformation file
 	 * @return
 	 */
-	public String transfer(String sourceFile, String processInstruction);
+	public String[] transfer(String sourceFile, String processInstruction);
 	public void setPresentable(boolean value);
 	public boolean isPresentable();
+    public String[] getSourceDataInstances();
+
 }

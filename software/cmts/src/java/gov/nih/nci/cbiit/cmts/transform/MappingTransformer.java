@@ -11,10 +11,13 @@ import gov.nih.nci.cbiit.cmts.common.ApplicationMessage;
 import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.core.Component;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.transform.artifact.RDFEncoder;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -33,6 +36,7 @@ import javax.xml.xquery.XQResultSequence;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
+import javax.swing.tree.TreeNode;
 
 import net.sf.saxon.Configuration;
 import net.sf.saxon.xqj.SaxonXQDataSource;
@@ -53,9 +57,10 @@ public class MappingTransformer extends DefaultTransformer {
 	// Connection for querying
 	private XQConnection conn;
 	private boolean temporaryFileCreated = false;
-	
+    private String instructionFile = null;
 
-	/**
+
+    /**
 	 * constructor
 	 * 
 	 * @throws XQException
@@ -79,10 +84,28 @@ public class MappingTransformer extends DefaultTransformer {
 		System.out.println("MappingTransformer.main()...Result Data:"+args[2]);
 		try {
 			MappingTransformer transformer = new MappingTransformer();
-			FileWriter sWriter = new FileWriter(new File(args[2]));
-			sWriter.write(transformer.transfer(args[0],args[1]));
-			sWriter.flush();
-			sWriter.close();
+			FileWriter sWriter = null;
+            String[] res = transformer.transfer(args[0],args[1]);
+            if (res.length == 1)
+            {
+                sWriter = new FileWriter(new File(args[2]));
+                sWriter.write(res[0]);
+                sWriter.flush();
+			    sWriter.close();
+            }
+            else
+            {
+                for(int i=0;i<res.length;i++)
+                {
+                    String fileN = "_" + i + "_" + args[2];
+                    sWriter = new FileWriter(new File(fileN));
+                    sWriter.write(res[i]);
+                    System.out.println("Output #1:" + fileN);
+                    sWriter.flush();
+			        sWriter.close();
+                }
+            }
+
 		} catch (XQException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,26 +148,36 @@ public class MappingTransformer extends DefaultTransformer {
 	}
 	
 	@Override
-	public String transfer(String sourceFile, String mappingFile) {
+	public String[] transfer(String sourceFile, String mappingFile) {
 		// TODO Auto-generated method stub
 		try {
-			XQPreparedExpression exp = prepareXQExpression(mappingFile);
+            List<String> listStr = new ArrayList<String>();
+            XQPreparedExpression exp = prepareXQExpression(mappingFile);
 			// parse raw data to a temporary file
 			//if source is HL7 v2, the target namespace is set as null
-			String tempXmlSrc = parseRawData(sourceFile, mapping);
-			URI sourcUri=new File(sourceFile).toURI();
-			exp.bindString(new QName("docName"), sourcUri.getPath(), conn
-					.createAtomicType(XQItemType.XQBASETYPE_STRING));
-			XQResultSequence result = exp.executeQuery();
-			String rawResult = result.getSequenceAsString(new Properties());
-			RDFEncoder rdfEncoder=new RDFEncoder(rawResult);
-			String xmlResult=rdfEncoder.getFormatedRDF();
-			if (isTemporaryFileCreated()) {
-				File tmpFile = new File(tempXmlSrc);
-				tmpFile.delete();
-			}
-			return xmlResult;
-		} catch (JAXBException e) {
+            instructionFile = mappingFile;
+            String[] tempXmlSrcArr = parseRawData(sourceFile, mapping);
+            for(String tempXmlSrc:tempXmlSrcArr)
+            {
+                //System.out.println("CCCC file : " + tempXmlSrc);
+                //System.out.println("CCCC content : " + FileUtil.readFileIntoString(tempXmlSrc));
+                URI sourcUri=new File(tempXmlSrc).toURI();
+                exp.bindString(new QName("docName"), sourcUri.getPath(), conn
+                        .createAtomicType(XQItemType.XQBASETYPE_STRING));
+                XQResultSequence result = exp.executeQuery();
+                String rawResult = result.getSequenceAsString(new Properties());
+                RDFEncoder rdfEncoder=new RDFEncoder(rawResult);
+                String xmlResult=rdfEncoder.getFormatedRDF();
+                if (isTemporaryFileCreated()) {
+                    File tmpFile = new File(tempXmlSrc);
+                    tmpFile.delete();
+                }
+                listStr.add(xmlResult);
+            }
+            String[] arr = new String[listStr.size()];
+            for(int i=0;i<listStr.size();i++) arr[i] = listStr.get(i);
+            return arr;
+        } catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (XQException e) {
@@ -166,15 +199,140 @@ public class MappingTransformer extends DefaultTransformer {
 	 * @return URI of pre-processed source data, it may be a temporary file
 	 * @throws JAXBException
 	 * @throws IOException
-	 * @throws ApplicationException 
-	 * @throws ApplicationException
+	 * @throws JAXBException
+	 * @throws IOException
 	 */
-	protected String parseRawData(String sourceRawDataFile, Mapping map)
+	protected String[] parseRawData(String sourceRawDataFile, Mapping map)
 			throws JAXBException, IOException {
-		// do nothing
-		return sourceRawDataFile;
-	}
-	@Override
+		//List<String> list = new ArrayList<String>();
+        String sourceRoot = null;
+        if (map != null)
+        {
+            Mapping.Components components = map.getComponents();
+            List<Component> l = components.getComponent();
+            for(Component c:l)
+            {
+                if(c.getType().equals(ComponentType.SOURCE))
+                {
+                    sourceRoot = c.getRootElement().getName();
+                }
+                if (sourceRoot != null) break;
+            }
+        }
+        else
+        {
+            sourceRoot = searchRootElementName(instructionFile);
+        }
+
+        if ((sourceRoot == null)||(sourceRoot.trim().equals("")))
+            throw new IOException("Source head node name is not found. : " + instructionFile);
+
+        String[] res = gov.nih.nci.cbiit.cmts.util.FileUtil.divideSourceRawDataFile(sourceRawDataFile, sourceRoot);
+
+        if ((res.length == 1)&&(res[0].equals(sourceRawDataFile))) temporaryFileCreated = false;
+        else temporaryFileCreated = true;
+        sourceDataInstance = res;
+        return res;
+    }
+
+    private String searchRootElementName(String insFile)
+    {
+        List<String> cont = null;
+        try
+        {
+            cont = FileUtil.readFileIntoList(insFile);
+        }
+        catch(IOException ie)
+        {
+            System.out.println("searchRootElementName() IOException : " + ie.getMessage());
+            return null;
+        }
+        if ((cont == null)||(cont.size() == 0))
+        {
+            System.out.println("searchRootElementName() empty file ");
+            return null;
+        }
+
+        String c = "";
+        String before = "";
+        String docVar = "";
+        String docVarCore = null;
+        boolean docVarTag = false;
+        String headCore = "";
+        boolean headCoreTag = false;
+        for(String line:cont)
+        {
+            line = line.trim() + " ";
+            for (int i=0;i<line.length();i++)
+            {
+                String achar = line.substring(i, i+1);
+                if (achar.equals("\t")) achar = " ";
+                if ((before.equals(" "))&&(achar.equals(" "))) {}
+                else
+                {
+                    c = c + achar;
+                    if (docVarTag) docVar = docVar + achar;
+                }
+
+                if (docVarTag)
+                {
+                    if (achar.equals(";"))
+                    {
+                        docVarTag = false;
+                        docVar = docVar.substring(0, docVar.length()-1).trim();
+                        if (docVar.toLowerCase().endsWith(" as xs:string external"))
+                        {
+                            docVarCore = docVar.substring(0, docVar.indexOf(" "));
+                            if (docVarCore.trim().equals("$"))
+                            {
+                                docVarCore = null;
+                                docVar = "";
+                            }
+                        }
+                        else
+                        {
+                            docVar = "";
+                        }
+                    }
+                    if ((docVarCore == null)&&(c.toLowerCase().endsWith(" declare ")))
+                    {
+                        docVarTag = false;
+                        docVar = "";
+                    }
+                    if ((c.toLowerCase().endsWith(" element "))||
+                        (c.toLowerCase().endsWith(" document "))||
+                        (achar.equals("{")))
+                    {
+                        System.out.println("searchRootElementName() Invalid XQuery format ");
+                        return null;
+                    }
+                }
+                if ((docVarCore == null)&&(c.toLowerCase().endsWith("declare variable $")))
+                {
+                    docVar = "$";
+                    docVarTag = true;
+                }
+
+                before = achar;
+                if (docVarCore == null) continue;
+                if (headCoreTag)
+                {
+                    if ((achar.equals(" "))||
+                        (achar.equals("/"))||
+                        (achar.equals("}"))||
+                        (achar.equals(")")))
+                    {
+                       return headCore;
+                    }
+                    else headCore = headCore + achar;
+                }
+                if (c.endsWith("doc("+docVarCore+")/")) headCoreTag = true;
+            }
+        }
+        return null;
+    }
+
+    @Override
 	public List<ApplicationResult> validateXmlData(Object validator, String xmlData)
 	{
 		List<ApplicationResult> rtnList=new ArrayList<ApplicationResult>();
@@ -190,7 +348,7 @@ public class MappingTransformer extends DefaultTransformer {
 				continue;
 			}
 		}
-        System.out.println("CCCC targetSchema=" + targetSchema);
+        //System.out.println("CCCC targetSchema=" + targetSchema);
         XsdSchemaErrorHandler xsdErrorHandler=new XsdSchemaErrorHandler();
 
         Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, xsdErrorHandler);

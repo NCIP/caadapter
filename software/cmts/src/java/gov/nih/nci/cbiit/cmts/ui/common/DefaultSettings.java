@@ -291,18 +291,37 @@ public class DefaultSettings
                     continue;
                 }
 
-                //since this point on, file will not be null.
-                for(FileFilter fileFilter:fileFilters)
+                if (file.getName().startsWith("\""))
                 {
-                    if (GeneralUtilities.areEqual(fileFilter, fileChooser.getFileFilter()))
-                    {//if and only if the currently used file filter in fileChooser is the same as the given fileFilter.
-                        if (!fileFilter.accept(file))
-                        {
-                            String ext = ((SingleFileFilter)fileFilter).getExtension();
-                            if (ext.endsWith("*")) ext = ext.substring(0, ext.length()-1);
-                            file = FileUtil.appendFileNameWithGivenExtension(file, ext, true);
+                    File parent = file.getParentFile();
+                    String parPath = parent.getAbsolutePath();
+                    if (!parPath.endsWith(File.separator)) parPath = parPath + File.separator;
+                    String fName = file.getName().substring(1);
+                    int idx = fName.indexOf("\"");
+                    if (idx > 0) fName = fName.substring(0, idx);
+                    fName = fName.trim();
+                    if (fName.equals(""))
+                    {
+                        JOptionPane.showMessageDialog(parentComponent, "File Name is null. Please select a file again.", "Null file name", JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+                    file = new File(parPath + fName);
+                }
+                else
+                {
+                    //since this point on, file will not be null.
+                    for(FileFilter fileFilter:fileFilters)
+                    {
+                        if (GeneralUtilities.areEqual(fileFilter, fileChooser.getFileFilter()))
+                        {//if and only if the currently used file filter in fileChooser is the same as the given fileFilter.
+                            if (!fileFilter.accept(file))
+                            {
+                                String ext = ((SingleFileFilter)fileFilter).getExtension();
+                                if (ext.endsWith("*")) ext = ext.substring(0, ext.length()-1);
+                                file = FileUtil.appendFileNameWithGivenExtension(file, ext, true);
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
                 if (checkDuplicate)
