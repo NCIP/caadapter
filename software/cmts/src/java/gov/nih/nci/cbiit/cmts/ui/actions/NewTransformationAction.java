@@ -39,13 +39,13 @@ public class NewTransformationAction extends AbstractContextAction
 {
 
 	private static final Character XML_COMMAND_MNEMONIC = new Character('X');
-	private static final KeyStroke XML_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false);
+	//hotkey//private static final KeyStroke XML_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false);
 
 	private static final Character CSV_COMMAND_MNEMONIC = new Character('C');
-	private static final KeyStroke CSV_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false);
+	//hotkey//private static final KeyStroke CSV_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false);
 
 	private static final Character HL7_COMMAND_MNEMONIC = new Character('H');
-	private static final KeyStroke HL7_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK, false);
+	//hotkey//private static final KeyStroke HL7_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK, false);
 
 	private MainFrameContainer mainFrame;
 	private String transformationType=ActionConstants.NEW_XML_Transformation;
@@ -82,17 +82,17 @@ public class NewTransformationAction extends AbstractContextAction
 					||transformationType==ActionConstants.NEW_XML_Transformation)
 		{
 			setMnemonic(XML_COMMAND_MNEMONIC);
-			setAcceleratorKey(XML_ACCELERATOR_KEY_STROKE);
+			//hotkey//setAcceleratorKey(XML_ACCELERATOR_KEY_STROKE);
 		}
 		else if (transformationType==ActionConstants.NEW_CSV_Transformation)
 		{
 			setMnemonic(CSV_COMMAND_MNEMONIC);
-			setAcceleratorKey(CSV_ACCELERATOR_KEY_STROKE);
+			//hotkey//setAcceleratorKey(CSV_ACCELERATOR_KEY_STROKE);
 		}
 		else if (transformationType==ActionConstants.NEW_HL7_V2_Transformation)
 		{
 			setMnemonic(HL7_COMMAND_MNEMONIC);
-			setAcceleratorKey(HL7_ACCELERATOR_KEY_STROKE);
+			//hotkey//setAcceleratorKey(HL7_ACCELERATOR_KEY_STROKE);
 		}
 		setActionCommandType(DESKTOP_ACTION_TYPE);
 		//do not know how to set the icon location name, or just do not matter.

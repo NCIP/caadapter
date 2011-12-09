@@ -35,7 +35,7 @@ public class BannerMainPanel extends JPanel
         String s = null;
         if (mainContainer != null)
         {
-            //s = JOptionPane.showInputDialog(mainContainer, "Select Banner Image code (0-4)", "Select Banner", JOptionPane.PLAIN_MESSAGE);
+            s = JOptionPane.showInputDialog(mainContainer, "Select Banner Image code (0-4)", "Select Banner", JOptionPane.PLAIN_MESSAGE);
         }
         if (s == null) s = "0";
         else s = s.trim();

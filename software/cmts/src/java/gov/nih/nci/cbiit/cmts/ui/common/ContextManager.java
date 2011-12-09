@@ -12,11 +12,11 @@ import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.main.MainMenuBar;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAsAction;
 
-import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -196,6 +196,7 @@ public class ContextManager implements ChangeListener
             {
                 ContextManagerClient contextClient = (ContextManagerClient) currentPanel;
                 getToolBarHandler().removeAllActions();
+                /*
                 java.util.List<Action> actions = contextClient.getToolbarActionList();
                 for(int i=0;i<actions.size();i++)
 				{//includes open, save, close, validate, etc.
@@ -205,19 +206,62 @@ public class ContextManager implements ChangeListener
 						getToolBarHandler().addAction(action, true);
 					}
 				}
-
+                */
                 JButton closeButton = null;
-                Action action = contextClient.getDefaultCloseAction();
-                if(action!=null)
+                Action closeAction = contextClient.getDefaultCloseAction();
+                if(closeAction !=null)
                 {
-                	action.setEnabled(true);
-                    closeButton = new JButton(action);
+                	closeAction.setEnabled(true);
+                    closeButton = new JButton(closeAction);
                     closeButton.setEnabled(true);
                     closeButton.setText("");
                 }
 
+
+                Action saveAction = contextClient.getDefaultSaveAction();
+
+
+
+                JButton saveAsButton = null;
+                Map actionMap_ = contextClient.getMenuItems(MenuConstants.FILE_MENU_NAME);
+		        Action saveAsAction = (Action) actionMap_.get(ActionConstants.SAVE_AS);
+                DefaultSaveAsAction defaultSaveAsAction = null;
+                if(saveAsAction!=null)
+                {
+                    defaultSaveAsAction = (DefaultSaveAsAction) saveAsAction;
+                    defaultSaveAsAction.setEnabled(true);
+
+                    ImageIcon imageIco = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
+                    defaultSaveAsAction.setIcon(imageIco);
+                    defaultSaveAsAction.setShortDescription("Save AS another file");
+
+                }
+
+
+
+                Action openAction = contextClient.getDefaultOpenAction();
+                if(openAction == null)
+                {
+                    openAction = new OpenMapFileAction(mainFrame);
+                }
+
+
+
+
+                NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
+                ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+                newMapAction.setIcon(newImageIcon);
+                newMapAction.setShortDescription("New Mapping File");
+
+
+
+
+
                 //update the toolbar
-        		
+                toolBarHandler.getToolBar().add(newMapAction);
+                toolBarHandler.getToolBar().add(openAction);
+                toolBarHandler.getToolBar().add(saveAction);
+                if (defaultSaveAsAction != null) toolBarHandler.getToolBar().add(defaultSaveAsAction);
                 mainFrame.updateToolBar(toolBarHandler.getToolBar(), closeButton);
 
                 //update the menus
@@ -230,7 +274,31 @@ public class ContextManager implements ChangeListener
             else
             {//we could possibly be here b/c user closed the last tab, roll back to menu's original state.
                 getToolBarHandler().removeAllActions();
-        		
+
+
+                NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
+                ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+                newMapAction.setIcon(newImageIcon);
+                newMapAction.setShortDescription("New Mapping File");
+
+                newMapAction.setEnabled(true);
+
+                toolBarHandler.getToolBar().add(newMapAction);
+
+                OpenMapFileAction openAction = new OpenMapFileAction(mainFrame);
+                toolBarHandler.getToolBar().add(openAction);
+                /*
+                ContextManagerClient contextClient = ContextManagerClient;
+                Action action = contextClient.getDefaultCloseAction();
+                JButton closeButton = null;
+                if(action!=null)
+                {
+                	action.setEnabled(true);
+                    closeButton = new JButton(action);
+                    closeButton.setEnabled(true);
+                    closeButton.setText("");
+                }
+                */
                 mainFrame.updateToolBar(toolBarHandler.getToolBar());
                 menu.resetMenus(false);
             }

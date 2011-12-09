@@ -47,10 +47,10 @@ public class NewArtifactAction extends AbstractContextAction
 {
 
 	private static final Character XSLT_COMMAND_MNEMONIC = new Character('S');
-	private static final KeyStroke XSLT_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false);
+	//hotkey//private static final KeyStroke XSLT_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false);
 	
 	private static final Character XQUERY_COMMAND_MNEMONIC = new Character('Q');
-	private static final KeyStroke XQUERY_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK, false);
+	//hotkey//private static final KeyStroke XQUERY_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK, false);
 
 	private MainFrameContainer mainFrame;
 	private String transformationType=ActionConstants.NEW_XSLT_STYLESHEET;
@@ -88,12 +88,12 @@ public class NewArtifactAction extends AbstractContextAction
 					||transformationType==ActionConstants.NEW_XQUERY_STATEMENT)						
 		{
 			setMnemonic(XQUERY_COMMAND_MNEMONIC);
-			setAcceleratorKey(XQUERY_ACCELERATOR_KEY_STROKE);
+			//hotkey//setAcceleratorKey(XQUERY_ACCELERATOR_KEY_STROKE);
 		}
 		else if (transformationType==ActionConstants.NEW_XSLT_STYLESHEET) 
 		{
 			setMnemonic(XSLT_COMMAND_MNEMONIC);
-			setAcceleratorKey(XSLT_ACCELERATOR_KEY_STROKE);
+			//hotkey//setAcceleratorKey(XSLT_ACCELERATOR_KEY_STROKE);
 		}
 		setActionCommandType(DESKTOP_ACTION_TYPE);
 	}

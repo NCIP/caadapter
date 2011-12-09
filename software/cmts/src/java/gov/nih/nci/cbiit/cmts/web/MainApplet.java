@@ -8,6 +8,8 @@ import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.main.BannerMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MainToolBarHandler;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
+import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
 
 
 import java.awt.*;
@@ -122,7 +124,26 @@ public MainApplet() throws HeadlessException
     private JPanel constructToolbarPanel()
     {
         JPanel rtnPanel = new JPanel(new BorderLayout());
-        rtnPanel.add(ContextManager.getContextManager().getToolBarHandler().getToolBar(), BorderLayout.CENTER);
+
+        JToolBar toolBar = ContextManager.getContextManager().getToolBarHandler().getToolBar();
+        if (toolBar == null)
+        {
+             toolBar = new JToolBar();
+        }
+        if (toolBar.getComponentCount() == 0)
+        {
+            NewMapFileAction newMapAction = new NewMapFileAction(instanceContainer);
+            ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+            newMapAction.setIcon(newImageIcon);
+            newMapAction.setShortDescription("New Mapping File");
+
+            newMapAction.setEnabled(true);
+            OpenMapFileAction openAction = new OpenMapFileAction(instanceContainer);
+            toolBar.add(newMapAction);
+            toolBar.add(openAction);
+        }
+
+        rtnPanel.add(toolBar, BorderLayout.CENTER);
         rtnPanel.add(new JPanel(), BorderLayout.EAST);
         return rtnPanel;
     }

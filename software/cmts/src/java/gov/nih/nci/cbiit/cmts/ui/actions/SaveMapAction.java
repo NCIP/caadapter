@@ -27,7 +27,7 @@ import java.io.File;
 public class SaveMapAction extends SaveAsMapAction
 {
 
-	private static final String TOOL_TIP_DESCRIPTION = "Save a Mapping File";
+	private static final String TOOL_TIP_DESCRIPTION = "Save File";
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
@@ -44,7 +44,7 @@ public class SaveMapAction extends SaveAsMapAction
 	{//override super class's one to plug in its own attributes.
 		setIcon(DefaultSaveAction.IMAGE_ICON);
 		setMnemonic(DefaultSaveAction.COMMAND_MNEMONIC);
-		setAcceleratorKey(DefaultSaveAction.ACCELERATOR_KEY_STROKE);
+		//hotkey//setAcceleratorKey(DefaultSaveAction.ACCELERATOR_KEY_STROKE);
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
 		setShortDescription(TOOL_TIP_DESCRIPTION);
 	}

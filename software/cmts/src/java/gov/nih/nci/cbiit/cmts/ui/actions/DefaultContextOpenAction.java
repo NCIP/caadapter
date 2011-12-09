@@ -42,7 +42,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 
 	protected static final String COMMAND_NAME = ActionConstants.OPEN;
 	protected static final Character COMMAND_MNEMONIC = new Character('O');
-	protected static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false);
+	//hotkey//protected static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false);
 	protected static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
 	protected static final String TOOL_TIP_DESCRIPTION = ActionConstants.OPEN;
 
@@ -81,7 +81,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 	protected void setAdditionalAttributes()
 	{//override super class's one to plug in its own attributes.
 		setMnemonic(COMMAND_MNEMONIC);
-		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
+		//hotkey//setAcceleratorKey(ACCELERATOR_KEY_STROKE);
 		setActionCommandType(DESKTOP_ACTION_TYPE);
 		setShortDescription(TOOL_TIP_DESCRIPTION);
 	}

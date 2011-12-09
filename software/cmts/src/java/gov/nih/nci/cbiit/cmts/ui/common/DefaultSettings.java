@@ -291,18 +291,46 @@ public class DefaultSettings
                     continue;
                 }
 
-                //since this point on, file will not be null.
-                for(FileFilter fileFilter:fileFilters)
+                if (file.getName().startsWith("\""))
                 {
-                    if (GeneralUtilities.areEqual(fileFilter, fileChooser.getFileFilter()))
-                    {//if and only if the currently used file filter in fileChooser is the same as the given fileFilter.
-                        if (!fileFilter.accept(file))
-                        {
-                            String ext = ((SingleFileFilter)fileFilter).getExtension();
-                            if (ext.endsWith("*")) ext = ext.substring(0, ext.length()-1);
-                            file = FileUtil.appendFileNameWithGivenExtension(file, ext, true);
+                    if (!file.getName().endsWith("\""))
+                    {
+                        JOptionPane.showMessageDialog(parentComponent, "Invalid usage of '\"' character in file name. (1) : " + file.getName(), "Invalid file name", JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+                    String fName = file.getName().substring(1, file.getName().length() - 1).trim();
+
+                    if (fName.indexOf("\"") >= 0)
+                    {
+                        JOptionPane.showMessageDialog(parentComponent, "Invalid usage of '\"' character in file name. (2) : " + fName, "Invalid file name", JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+                    if (fName.equals(""))
+                    {
+                        JOptionPane.showMessageDialog(parentComponent, "File Name is null. Please select a file again.", "Null file name", JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+                    File parent = file.getParentFile();
+                    String parPath = parent.getAbsolutePath();
+                    if (!parPath.endsWith(File.separator)) parPath = parPath + File.separator;
+
+                    file = new File(parPath + fName);
+                }
+                else
+                {
+                    //since this point on, file will not be null.
+                    for(FileFilter fileFilter:fileFilters)
+                    {
+                        if (GeneralUtilities.areEqual(fileFilter, fileChooser.getFileFilter()))
+                        {//if and only if the currently used file filter in fileChooser is the same as the given fileFilter.
+                            if (!fileFilter.accept(file))
+                            {
+                                String ext = ((SingleFileFilter)fileFilter).getExtension();
+                                if (ext.endsWith("*")) ext = ext.substring(0, ext.length()-1);
+                                file = FileUtil.appendFileNameWithGivenExtension(file, ext, true);
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
                 if (checkDuplicate)

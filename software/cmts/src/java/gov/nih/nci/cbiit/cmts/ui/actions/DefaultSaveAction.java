@@ -33,7 +33,7 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 {
 	public static final String COMMAND_NAME = ActionConstants.SAVE;
 	public static final Character COMMAND_MNEMONIC = new Character('S');
-	public static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false);
+	//hotkey//public static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false);
 	public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileSave.gif"));
 	public static final String TOOL_TIP_DESCRIPTION = "Save";
 
@@ -70,7 +70,7 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 	protected void setAdditionalAttributes()
 	{//override super class's one to plug in its own attributes.
 		setMnemonic(COMMAND_MNEMONIC);
-		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
+		//hotkey//setAcceleratorKey(ACCELERATOR_KEY_STROKE);
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
 		setShortDescription(TOOL_TIP_DESCRIPTION);
 	}

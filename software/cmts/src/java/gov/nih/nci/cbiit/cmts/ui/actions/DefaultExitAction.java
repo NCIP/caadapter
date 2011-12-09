@@ -35,7 +35,7 @@ public class DefaultExitAction extends AbstractContextAction
 {
     private static final String COMMAND_NAME = "      " + ActionConstants.EXIT;
     private static final Character COMMAND_MNEMONIC = new Character('E');
-    private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F4, Event.ALT_MASK, false);
+    //hotkey//private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F4, Event.ALT_MASK, false);
 
     private MainFrameContainer mainFrame;
 
@@ -66,7 +66,7 @@ public class DefaultExitAction extends AbstractContextAction
         super(name, icon);
         this.mainFrame = mainFrame;
         setMnemonic(COMMAND_MNEMONIC);
-        setAcceleratorKey(ACCELERATOR_KEY_STROKE);
+        //hotkey//setAcceleratorKey(ACCELERATOR_KEY_STROKE);
         setActionCommandType(DESKTOP_ACTION_TYPE);
         //do not know how to set the icon location name, or just do not matter.
     }

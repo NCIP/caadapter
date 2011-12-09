@@ -34,6 +34,7 @@ import gov.nih.nci.cbiit.cmts.ui.tree.TreeMouseAdapter;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeSelectionHandler;
 import gov.nih.nci.cbiit.cmts.util.ResourceUtils;
 
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,6 +51,7 @@ import java.applet.Applet;
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.bind.JAXBException;
 
 import org.apache.xerces.impl.xs.XSComplexTypeDecl;
@@ -110,7 +112,14 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		{
 			if (SELECT_SOURCE.equals(command))
 			{
-                if (sTree == null)
+                int res = JOptionPane.YES_OPTION;
+                if (sTree != null)
+                {
+                    res = JOptionPane.showConfirmDialog(this, "All Mapping data will be removed. Are you sure?", "WARNING: All Mapping Data Removed", JOptionPane.WARNING_MESSAGE);
+                }
+                //FileUtil.downloadFromInputStreamToFile()
+
+                if (res == JOptionPane.YES_OPTION)
                 {
                     //this.sourceButtonPanel.repaint();
                     File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
@@ -120,14 +129,16 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
                         processOpenSourceTree(file, true, true);
                     }
                 }
-                else
-                {
-                    JOptionPane.showMessageDialog(this, "The Source Tree is already occupied.\n Create a new mapping panel and use it.", "Alredy Occupied Source Tree", JOptionPane.ERROR_MESSAGE);
-                }
             }
 			else if (SELECT_TARGET.equals(command))
 			{
-                if (tTree == null)
+                int res = JOptionPane.YES_OPTION;
+                if (tTree != null)
+                {
+                    res = JOptionPane.showConfirmDialog(this, "All Mapping data will be removed. Are you sure?", "WARNING: All Mapping Data Removed", JOptionPane.WARNING_MESSAGE);
+                }
+
+                if (res == JOptionPane.YES_OPTION)
                 {
                     //this.targetButtonPanel.repaint();
                     File file = DefaultSettings.getUserInputOfFileFromGUI(this,
@@ -141,10 +152,6 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
                         processOpenTargetTree(file, true, true);
                     }
                 }
-                else
-                {
-                    JOptionPane.showMessageDialog(this, "The Target Tree is already occupied.\n Create a new mapping panel and use it.", "Alredy Occupied Target Tree", JOptionPane.ERROR_MESSAGE);
-                }
             }
 		}
 		catch (Exception e1)
@@ -157,7 +164,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 	protected void buildSourceTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
 	{
 		TreeNode nodes=loadSourceTreeData(metaInfo,absoluteFile);
-
+        DefaultMutableTreeNode hNode = (DefaultMutableTreeNode) nodes;
+        //System.out.println("CCCCC head node value ("+absoluteFile.getName()+") : " + hNode.getUserObject().toString());
 		//Build the source tree
 		sTree = new MappingSourceTree(middlePanel, nodes);
 		sTree.addMouseListener(new TreeMouseAdapter());
@@ -167,7 +175,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		sTree.setDragEnabled(true);
 //		sTree.setDropMode(DropMode.ON);
 		sTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		sourceScrollPane.setViewportView(sTree);
+        sTree.repaint();
+        sourceScrollPane.setViewportView(sTree);
 
 		if (tTree != null && isToResetGraph)
 		{
@@ -641,12 +650,14 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		CellRenderXSObject srcRoot = userSelectRoot(p);
 		if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
-		 
+		mapping = null;
 		MappingFactory.loadMetaXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName(), ComponentType.SOURCE);
 
 		buildSourceTree(getMapping(), file, isToResetGraph);
 		sTree.setSchemaParser(p);
-		sTree.expandAll();
+        DefaultMutableTreeNode hNode = (DefaultMutableTreeNode) sTree.getRootTreeNode();
+        //System.out.println("CCCCC head node value (2 : "+file.getName()+") : " + hNode.getUserObject().toString());
+        sTree.expandAll();
 		return true;
 	}
 
@@ -665,7 +676,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		CellRenderXSObject trgtRoot = userSelectRoot(p);
 		if(trgtRoot == null || trgtRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
-		MappingFactory.loadMetaXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName(), ComponentType.TARGET);
+        mapping = null;
+        MappingFactory.loadMetaXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName(), ComponentType.TARGET);
 
 		buildTargetTree(getMapping(), file, isToResetGraph);
 		tTree.setSchemaParser(p);

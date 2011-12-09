@@ -35,9 +35,9 @@ import java.io.File;
  */
 public class DefaultSaveAsAction extends AbstractContextAction
 {
-	protected static final String COMMAND_NAME = "      " + ActionConstants.SAVE_AS;
+	protected static final String COMMAND_NAME = ActionConstants.SAVE_AS;
 	protected static final Character COMMAND_MNEMONIC = new Character('a');
-	public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("blank.gif"));
+	public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
 
 	protected transient MainFrameContainer mainFrame = null;
 	protected transient File defaultFile = null;

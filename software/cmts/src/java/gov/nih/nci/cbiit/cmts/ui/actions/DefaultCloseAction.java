@@ -33,7 +33,7 @@ public class DefaultCloseAction extends AbstractContextAction
 {
 	protected static final String COMMAND_NAME = ActionConstants.CLOSE;
 	protected static final Character COMMAND_MNEMONIC = new Character('C');
-	protected static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F4, Event.CTRL_MASK, false);
+	//hotkey//protected static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F4, Event.CTRL_MASK, false);
 
     public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("closePane.png"));
     public static final String TOOL_TIP_DESCRIPTION = "Close this tab";
@@ -62,7 +62,7 @@ public class DefaultCloseAction extends AbstractContextAction
 	protected void setAdditionalAttributes()
 	{//override super class's one to plug in its own attributes.
 		setMnemonic(COMMAND_MNEMONIC);
-		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
+		//hotkey//setAcceleratorKey(ACCELERATOR_KEY_STROKE);
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
         setIcon(IMAGE_ICON);
 		setShortDescription(TOOL_TIP_DESCRIPTION);
