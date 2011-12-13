@@ -21,6 +21,7 @@ import gov.nih.nci.cbiit.cmts.ui.actions.NewTransformationAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
+import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 
 import javax.swing.*;
 
@@ -145,7 +146,10 @@ public class MainMenuBar extends JMenuBar
         // link them together
         JMenu fileMenu = new JMenu(MenuConstants.FILE_MENU_NAME);
         fileMenu.setMnemonic('F');
-        fileMenu.add(constructNewCmtsMenu());
+        JMenu newMenu = constructNewCmtsMenu();
+        ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+        newMenu.setIcon(newImageIcon);
+        fileMenu.add(newMenu);
         fileMenu.addSeparator();
         //fileMenu.add(constructOpenMenu());
         fileMenu.add(openMapFileItem);

@@ -139,6 +139,8 @@ public class NewTransformationAction extends AbstractContextAction
 					transformer=TransformerFactory.getTransformer(".xq");
                 else if (mappingFile.toLowerCase().endsWith(".xql"))
 					transformer=TransformerFactory.getTransformer(".xq");
+                else if (mappingFile.toLowerCase().endsWith(".xqm"))
+					transformer=TransformerFactory.getTransformer(".xq");
                 else
 					transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);
 			}

@@ -338,17 +338,24 @@ public final class UIHelper
 			result = (MappableNode)findTreeNodeWithXmlPath(rootNode, (String)dtObjectXmlPath);
 		}
 
-		if(result == null)
+
+        if(result == null)
         {
 //		    int c = 0;
 //            if(treeRoot instanceof DefaultMappableTreeNode) c=1;
 //		    else if (treeRoot instanceof FunctionBoxGraphCell) c=2;
 //            else if (treeRoot instanceof FunctionBoxGraphPort) c=3;
+            if ((dtObjectXmlPath.trim().equals("constant"))||
+                (dtObjectXmlPath.trim().equals("currentDate"))) {}
+            else
+            {
+                System.out.println("UIHelper.constructMappableNodeObjectXmlPath():Could not find the data obj in the given tree rooted by '" + treeRoot + "'. path:"+ dtObjectXmlPath);
+            }
 
-            System.out.println("UIHelper.constructMappableNodeObjectXmlPath():Could not find the data obj in the given tree rooted by '" + treeRoot + "'. path:"+ dtObjectXmlPath);
-			//Log.logError(internalInstance, (new StringBuilder()).append("Could not find the datatypeBaseObject '").append(dtObjectXmlPath).append("' in the given tree rooted by '").append(treeRoot).append("'.").toString());
+            //Log.logError(internalInstance, (new StringBuilder()).append("Could not find the datatypeBaseObject '").append(dtObjectXmlPath).append("' in the given tree rooted by '").append(treeRoot).append("'.").toString());
 			//Log.logError(internalInstance, (new StringBuilder()).append("treeRoot is of type '").append(treeRoot != null ? treeRoot.getClass().getName() : "null").append("'").toString());
 		}
+
 		return result;
 	}
 

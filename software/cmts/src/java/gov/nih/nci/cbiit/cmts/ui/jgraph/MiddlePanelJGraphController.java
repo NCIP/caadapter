@@ -82,7 +82,10 @@ public class MiddlePanelJGraphController {
 
 	private DefaultPropertiesSwitchController propertiesSwitchController;
 
-	public MiddlePanelJGraphController(MappingMainPanel mappingPan) {
+    private List<LinkpointType> sourceMissedLink = new ArrayList<LinkpointType>();
+    private List<LinkpointType> targetMissedLink = new ArrayList<LinkpointType>();
+
+    public MiddlePanelJGraphController(MappingMainPanel mappingPan) {
 		mappingPanel = mappingPan;
 	}
 
@@ -468,7 +471,7 @@ public class MiddlePanelJGraphController {
 		return mappingData;
 	}
 
-	public void setMappingData(Mapping mappingData) {
+	public void setMappingData(Mapping mappingData, boolean isRebuild) {
 		if (isGraphChanged()
 				|| getMiddlePanel().getGraph().getRoots().length > 0) {// if
 																		// changed,
@@ -499,9 +502,13 @@ public class MiddlePanelJGraphController {
 	 * and target tree have been loaded successfully.
 	 */
 	private synchronized void constructMappingGraph() {
-		if (mappingData.getLinks() == null) {
+        sourceMissedLink = new ArrayList<LinkpointType>();
+        targetMissedLink = new ArrayList<LinkpointType>();
+        //System.out.println("CCCCC mapping data == constructMappingGraph()");
+        if (mappingData.getLinks() == null) {
 			mappingData.setLinks(new Mapping.Links());
-		}
+            //System.out.println("CCCCC mapping link data is null.");
+        }
 		Hashtable<String, FunctionBoxGraphCell> functionBoxHash = new Hashtable<String, FunctionBoxGraphCell>();
 		if (mappingData.getViews() != null) {
 			// process function box
@@ -560,9 +567,10 @@ public class MiddlePanelJGraphController {
 				// The link target is a function port
 				FunctionBoxGraphCell targetFunctionBox = functionBoxHash
 						.get(targetMapComp.getComponentid());
-				if (functionBoxHash.get(sourceMapComp.getComponentid()) != null) {
+                FunctionBoxGraphCell functionBox = null;
+                if (functionBoxHash.get(sourceMapComp.getComponentid()) != null) {
 					// The link source is a function port
-					FunctionBoxGraphCell functionBox = functionBoxHash
+					functionBox = functionBoxHash
 							.get(sourceMapComp.getComponentid());
 					linkFunctionPortToFunctionPort(functionBox
 							.findPortByName(sourceMapComp.getId()),
@@ -579,7 +587,9 @@ public class MiddlePanelJGraphController {
 				} else
 					// from target tree to function port
 					sourceNode = getTargetMappableNode(sourceMapComp);
-				createMapping(sourceNode, targetNode);
+                String sourceDef = "";
+                if (functionBox != null) sourceDef = functionBox.getFunctionDef().getName();
+                createMapping(sourceNode, targetNode, sourceDef);
 			} else {
 				sourceNode = getSourceMappableNode(sourceMapComp);
 				targetNode = getTargetMappableNode(targetMapComp);
@@ -593,7 +603,18 @@ public class MiddlePanelJGraphController {
 		String id = sourceMapComp.getId();
 		sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel
 				.getSourceTree().getModel().getRoot(), id);
-		return sourceNode;
+        if (sourceNode == null)
+        {
+            if ((id.trim().equals("constant"))||
+                (id.trim().equals("currentDate"))) {}
+            else
+            {
+                sourceMissedLink.add(sourceMapComp);
+                //System.out.println("UIHelper.constructMappableNodeObjectXmlPath():Could not find the data obj in the given tree rooted by '" + treeRoot + "'. path:"+ dtObjectXmlPath);
+            }
+
+        }
+        return sourceNode;
 	}
 
 	private MappableNode getTargetMappableNode(LinkpointType targetMapComp) {
@@ -601,7 +622,8 @@ public class MiddlePanelJGraphController {
 		String id = targetMapComp.getId();
 		targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel
 				.getTargetTree().getModel().getRoot(), id);
-		return targetNode;
+        if (targetNode == null) targetMissedLink.add(targetMapComp);
+        return targetNode;
 	}
 
 	/**
@@ -611,8 +633,13 @@ public class MiddlePanelJGraphController {
 	 * @param targetNode
 	 * @return if mapping is successfully created.
 	 */
-	public boolean createMapping(MappableNode sourceNode,
-			MappableNode targetNode) {
+    public boolean createMapping(MappableNode sourceNode,
+			MappableNode targetNode)
+    {
+        return createMapping(sourceNode, targetNode, "");
+    }
+    public boolean createMapping(MappableNode sourceNode,
+			MappableNode targetNode, String id) {
 		boolean result = false;
 		// to remember the list of cells, edges, etc. that involve in the
 		// mapping.
@@ -626,9 +653,12 @@ public class MiddlePanelJGraphController {
 					}
 					msg += "target node is null";
 				}
-				msg += "!";
-				System.out.println(msg);
-				result = false;
+				msg += "! : " + id;
+                //if ((id.equals("currentDate"))||(id.equals("constant"))) {}
+                //else 
+                    System.out.println(msg);
+                //throw new Exception(msg);
+                result = false;
 				return result;
 			}
 
@@ -973,6 +1003,15 @@ public class MiddlePanelJGraphController {
 	public void setMappingPanel(MappingMainPanel mappingPanel) {
 		this.mappingPanel = mappingPanel;
 	}
+
+    public List<LinkpointType> getSourceMissedLink()
+    {
+        return sourceMissedLink;
+    }
+    public List<LinkpointType> getTargetMissedLink()
+    {
+        return targetMissedLink;
+    }
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $ HISTORY: Revision 1.13 2009/11/03

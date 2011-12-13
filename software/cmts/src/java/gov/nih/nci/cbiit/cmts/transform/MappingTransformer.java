@@ -190,7 +190,7 @@ public class MappingTransformer extends DefaultTransformer {
 				continue;
 			}
 		}
-        System.out.println("CCCC targetSchema=" + targetSchema);
+        //System.out.println("CCCC targetSchema=" + targetSchema);
         XsdSchemaErrorHandler xsdErrorHandler=new XsdSchemaErrorHandler();
 
         Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, xsdErrorHandler);
