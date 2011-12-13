@@ -149,7 +149,6 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
                 while(targetFile.startsWith("/")) targetFile = targetFile.substring(1);
             }
 
-
             File f = new File(targetFile);
             //System.out.println("CCCCC HHG : file compare : " + f.getAbsolutePath() + " :: " + file.getAbsolutePath());
             if ((f.exists())&&(f.isFile())&&(file.exists())&&(file.isFile()))

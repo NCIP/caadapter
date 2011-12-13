@@ -171,17 +171,20 @@ public class MappingFactory
                         (mapComp.getType() != ComponentType.TARGET)) continue;
 
                     String xsdLocation2 = mappingParentPath+File.separator+mapComp.getLocation();
+                    File xsdFile = null;
                     while(true)
                     {
-                        File ff = new File(xsdLocation2);
-                        if ((ff.exists())&&(ff.isFile()))
+                        xsdFile = new File(xsdLocation2);
+                        if ((xsdFile.exists())&&(xsdFile.isFile()))
                         {
                             xsdLocation = xsdLocation2;
                             break;
                         }
                         if (xsdLocation.equals(xsdLocation2))
                         {
-                            throw new JAXBException("Invalid XSD file path : " + xsdLocation);
+                            xsdFile = null;
+                            break;
+                            //throw new JAXBException("Invalid XSD file path : " + xsdLocation);
                         }
                         else xsdLocation2 = xsdLocation;
                     }
@@ -193,7 +196,8 @@ public class MappingFactory
                         //sourceHeadMeta = mapComp.getRootElement();
                         if ((sourceXSD != null)&&(sourceXSD.exists())&&(sourceXSD.isFile()))
                         {
-                            xsdLocation = sourceXSD.getAbsolutePath();
+                            xsdFile = sourceXSD;
+                            //xsdLocation = sourceXSD.getAbsolutePath();
                             //mapComp.setLocation(xsdLocation);
                         }
                         else sourceParser=metaParser;
@@ -203,30 +207,15 @@ public class MappingFactory
                         //targetHeadMeta = mapComp.getRootElement();
                         if ((targetXSD != null)&&(targetXSD.exists())&&(targetXSD.isFile()))
                         {
-                            xsdLocation = targetXSD.getAbsolutePath();
+                            xsdFile = targetXSD;
+                            //xsdLocation = targetXSD.getAbsolutePath();
                             //mapComp.setLocation(xsdLocation);
                         }
                         else targetParser=metaParser;
                     }
 
-                    String fileH = "file:/";
-                    while(true)
-                    {
-                        if (xsdLocation.toLowerCase().startsWith(fileH))
-                        {
-                            xsdLocation = xsdLocation.substring(fileH.length());
-                            while(xsdLocation.startsWith("/")) xsdLocation = xsdLocation.substring(1);
-                        }
-                        else if (xsdLocation.toLowerCase().indexOf(fileH) > 0)
-                        {
-                            xsdLocation = xsdLocation.substring(xsdLocation.toLowerCase().indexOf(fileH) + fileH.length());
-                            while(xsdLocation.startsWith("/")) xsdLocation = xsdLocation.substring(1);
-                        }
-                        else break;
-                    }
-
-                    //metaParser.loadSchema((new File(xsdLocation)).toURI().toString(),null);
-                    metaParser.loadSchema((new File(xsdLocation)).getPath(), null);
+                    if (xsdFile != null) metaParser.loadSchema(xsdFile.toURI().toString(), null);
+                    else metaParser.loadSchema(xsdLocation, null);
 //                    mapComp.setLocation(xsdLocation);
                     boolean res = MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
                     if (!res) throw new JAXBException("Namespace or root element name is mismatched with this XSD file. : " + xsdLocation);
@@ -246,8 +235,8 @@ public class MappingFactory
             {
                 String msg = ee.getMessage();
                 if ((msg == null)||(msg.trim().equals("")))
-                	msg = "Failed to read or parse schema document (1) - " + xsdLocation;
-                throw new JAXBException(ee.getClass().getCanonicalName()+":"+msg);
+                	msg = ee.getClass().getCanonicalName()+":"+ "Failed to read or parse schema document (1) - " + xsdLocation;
+                throw new JAXBException(msg);
 
             }
             catch(Exception ee)
