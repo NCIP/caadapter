@@ -12,22 +12,12 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
  
 
 public class TreeMouseAdapter extends MouseAdapter {
-
-//    MappingMainPanel parentPanel;
-//    MappingBaseTree baseTree;
-//    public TreeMouseAdapter(MappingMainPanel panel, MappingBaseTree tree)
-//    {
-//        super();
-//        parentPanel = panel;
-//        baseTree = tree;
-//    }
 
     /**
 	 * Invoked when the mouse has been clicked on a component.
