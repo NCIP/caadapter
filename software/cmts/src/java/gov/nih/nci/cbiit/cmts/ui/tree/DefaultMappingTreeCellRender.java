@@ -13,7 +13,6 @@ import gov.nih.nci.cbiit.cmts.core.BaseMeta;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
-import gov.nih.nci.cbiit.cmts.ui.function.FunctionTypeNodeLoader;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -22,7 +21,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.Color;
 import java.awt.Component;
-import java.util.List;
 
 /**
  * The class defines the default tree cell renderer for mapping panel.
