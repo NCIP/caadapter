@@ -20,7 +20,7 @@
 		<li>Create source data schema file: <b>xsd</b></li>
 		<li>Create target data schema file: <b>xsd</b></li>
 		<li>Create transformation mapping file <b>(map)</b> between source schema file <b>(xsd)</b> and target schema file <b>(xsd)</b></li>
-		<li><i>Optional</i>: Generate transformation XQuery file: <b>xq</b></li>
+		<li><i>Optional</i>: Generate transformation XQuery file: <b>xql</b></li>
 		<li><i>Optional</i>: Generate transformation XSLT file: <b>xsl</b></li>
 	</ul>
 	<h1>Step Two: Register Mapping Scenario</h1>

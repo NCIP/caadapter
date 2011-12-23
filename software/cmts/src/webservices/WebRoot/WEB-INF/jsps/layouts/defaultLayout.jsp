@@ -2,7 +2,7 @@
 <!-- Layout of the web pages -->
 <html>
 <head>
-	<title>caAdapter Portal</title>
+	<title>caAdapter CMTS Web Service Managemant Portal</title>
 	<link rel="stylesheet" type="text/css" href="css/styleSheet.css" />
 	<link rel="icon" href="images/favicon.ico" />
 	<link rel="shortcut icon" href="images/favicon.ico" />
@@ -11,23 +11,23 @@
 	<script src="js/TipCode.js" type="text/javascript"></script>
 	
 	<style type="text/css">
-		<!--
+
 		.style1 {
 			font-size: 10px;
 			font-style: italic;
 			color: #FFFFFF;
 		}
-		-->	
+
 	</style>
 	
 	<script language="JavaScript" type="text/JavaScript">	
-		<!--
+
 		function MM_preloadImages() { //v3.0
 		  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
 		    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
 		    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
 		}
-		//-->
+
 	</script>
 </head>
 
@@ -46,8 +46,9 @@
   
   	<tr><td height="100%" valign="top">
       	<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
-        	<tr><td colspan="2" height="50"><tiles:insert attribute="applicationHeader"/></td></tr>
-        	<tr>
+        	<!--<tr><td colspan="2" height="50">&gt;tiles:insert attribute="applicationHeader"/&lt;</td></tr> -->
+            <tr><td colspan="2" height="34"><tiles:insert attribute="applicationHeader"/></td></tr>
+            <tr>
             	<td width="190" valign="top" class="subMenu"><tiles:insert attribute="subMenu"/></td> 
             	<td valign="top" width="100%">
                 <table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%"> 

@@ -50,8 +50,13 @@
   	</javac>
    </target>
 
+
+
   <target name="package.war" depends="compile.source" description ="Create ebservice war file ...${module.dist.dir}/${ws.module.name}.war">
-  	<war destfile="${module.dist.dir}/${ws.module.name}.war" webxml="${ws.module.home}/WebRoot/WEB-INF/web.xml">
+  	<jar destfile="${module.dist.dir}/../${ws.module.name}.jar">
+             <fileset dir="${module.build.dir}"/>
+    </jar>
+    <war destfile="${module.dist.dir}/${ws.module.name}.war" webxml="${ws.module.home}/WebRoot/WEB-INF/web.xml">
 		<zipfileset dir="${ws.module.home}/WebRoot" />
 		<lib dir="${module.lib.dir}" >
 			<exclude name="commons-logging-1.0.4.jar"/>
@@ -90,9 +95,12 @@
 	<target name="local.deploy" depends="package.war">
 		<copy overwrite="true" file="${module.dist.dir}/${ws.module.name}.war"
 		tofile="${project.dist.dir}/${ws.module.name}.war"/>
-	</target>
-	
-	<target name="package.client" depends="init" description="create the web service client jars">
+
+    </target>
+
+
+
+    <target name="package.client" depends="init" description="create the web service client jars">
 		<jar destfile="${module.dist.dir}/wsClient.jar">
 			<fileset dir="./../../bin" includes="**/test/**/*Client.class"/>
 		</jar>
@@ -108,4 +116,13 @@
       	<delete dir="${module.build.dir}" failonerror="false"/>
       	<delete dir="${module.dist.dir}" failonerror="false"/>
   </target>
+  <!--
+  <target name="jar" depends="compile.source" description="build WS jar file">
+    <jar destfile="${module.dist.dir}/caAdapterWS-cmts.jar">
+             <fileset dir="${module.build.dir}"/>
+
+    </jar>
+    <delete dir="${module.build.dir}" failonerror="false"/>
+  </target>
+  -->
 </project>

@@ -32,9 +32,13 @@ public class TransformationServiceImpl implements TransformationWebService{
         }
         processMappingAndSource(mappingScenario,tempSourceFile,result);
 
-//		tempSourceFile.delete();
-		System.out.println("TransformationServiceImpl.transferData()..return:\n"+result);
-		return result;
+		tempSourceFile.delete();
+//		System.out.println("CCCCC 881 TransformationServiceImpl.transferData()..: scenarioName="+mappingScenario);
+//        System.out.println("       82 TransformationServiceImpl.transferData()..: sourceData="+sourceData);
+//        System.out.println("       83 TransformationServiceImpl.transferData()..: tempSourceFile="+tempSourceFile.getAbsolutePath());
+//
+//        System.out.println("       84 TransformationServiceImpl.transferData()..: Result="+result);
+        return result;
 	}
 	
 	@Override
@@ -51,14 +55,20 @@ public class TransformationServiceImpl implements TransformationWebService{
         processMappingAndSource(mappingScenario,tempSourceFile,result);
 
 		tempSourceFile.delete();
-		System.out.println("TransformationServiceImpl.transferResource()..return:\n"+result);
+//        System.out.println("CCCCC 891 TransformationServiceImpl.transferResource()..: scenarioName="+mappingScenario);
+//        System.out.println("       92 TransformationServiceImpl.transferResource()..: sourceData="+sourceResource);
+//        System.out.println("       93 TransformationServiceImpl.transferResource()..: tempSourceFile="+tempSourceFile.getAbsolutePath());
+//
+//        System.out.println("       94 TransformationServiceImpl.transferResource()..: Result="+result);
+
+        //System.out.println("TransformationServiceImpl.transferResource()..return:\n"+result);
 		return result;
 	}
 	
 	private void processMappingAndSource(String mappingScenario, File source, ArrayList<String> result)
 	{
-		System.out.println("TransformationServiceImpl.processMappingAndSource()...scenarioName:"+mappingScenario);
-		System.out.println("TransformationServiceImpl.processMappingAndSource()...sourceData:\n"+source);
+		//System.out.println("TransformationServiceImpl.processMappingAndSource()...scenarioName:"+mappingScenario);
+		//System.out.println("TransformationServiceImpl.processMappingAndSource()...sourceData:\n"+source);
 		ScenarioRegistration scenario=null;
 		try {
 			scenario = ScenarioUtil.findScenario(mappingScenario);
@@ -66,8 +76,7 @@ public class TransformationServiceImpl implements TransformationWebService{
 				result.add("Scenario is not found:" + mappingScenario);
  				return ;
 			}
-			System.out
-			.println("TransformationServiceImpl.processMappingAndSource()...found mapping scenario:"+scenario.getName());
+			//System.out.println("TransformationServiceImpl.processMappingAndSource()...found mapping scenario:"+scenario.getName());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -119,12 +128,11 @@ public class TransformationServiceImpl implements TransformationWebService{
 
     		LineNumberReader lReader=new LineNumberReader(sReader);
     		String line=lReader.readLine();
-    		System.out
-					.println("TransformationServiceImpl.prepareSourceDataFromResource():"+sourceDataURL);
+    		//System.out.println("TransformationServiceImpl.prepareSourceDataFromResource():"+sourceDataURL);
     		while (line!=null)
     		{
     			System.out.println(line);
-    			fw.write(line);
+    			fw.write(line + "\n");
     			line=lReader.readLine();
     		}            
             fw.close();
