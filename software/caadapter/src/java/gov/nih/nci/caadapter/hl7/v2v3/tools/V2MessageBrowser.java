@@ -11,7 +11,7 @@ package gov.nih.nci.caadapter.hl7.v2v3.tools;
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
-import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
+import edu.knu.medinfo.hl7.v2tree.meta_old.MetaDataLoader;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.help.HelpContentElement;
@@ -176,7 +176,7 @@ public class V2MessageBrowser extends JPanel implements ActionListener
             String metaS = ((String)meta).trim();
             if (metaS.equals(""))
             {
-                metadataPath = FileUtil.getV2ResourceMetaDataLoader();
+                metadataPath = V2MetaUtil.getV2ResourceMetaDataLoader();
                 if (metadataPath == null)
                 {
                     throw new HL7MessageTreeException("No v2 resource zip file");
@@ -184,7 +184,7 @@ public class V2MessageBrowser extends JPanel implements ActionListener
             }
             else
             {
-                metadataPath = FileUtil.getV2ResourceMetaDataLoader(metaS);
+                metadataPath = V2MetaUtil.getV2ResourceMetaDataLoader(metaS);
                 if (metadataPath == null)
                 {
                     throw new HL7MessageTreeException("Invalid v2 resource path or zip file : " + metaS);
@@ -668,7 +668,7 @@ public class V2MessageBrowser extends JPanel implements ActionListener
         try
         {
             //treeHL7V2Main = new HL7V2MessageTree(metadataPath);
-            treeHL7V2Main = new HL7V2MessageTree(FileUtil.getV2ResourceMetaDataLoader());
+            treeHL7V2Main = new HL7V2MessageTree(V2MetaUtil.getV2ResourceMetaDataLoader());
             treeHL7V2Main.setVersion("2.5");
             treeHL7V2Main.parse(msg);
         }
