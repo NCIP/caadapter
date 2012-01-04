@@ -30,7 +30,14 @@
 
 <xs:complexType name="addresstype">
  <xs:sequence>
-  <xs:element name="name" type="CDE_name"/>
+  <xs:element name="name" type="CDE_name">
+   	<xs:annotation>
+    	<xs:documentation>NCI CBIIT:caDSR </xs:documentation>
+      	<xs:appinfo>
+      		<ncistuff PUBLICID="2222323" VERSION="1.0"/>
+      	</xs:appinfo>
+  	</xs:annotation>
+  </xs:element>
   <xs:element name="street" type="stringtype"/>
   <xs:element name="city" type="stringtype"/>
   <xs:element name="country" type="stringtype"/>
