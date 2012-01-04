@@ -77,7 +77,6 @@ public class MappingTest {
 //		ElementMeta e = p.getElementMeta("urn:hl7-org:v3", "testELM");
 //		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "COCT_MT530000UV.Act");
 		
-		System.out.println("MappingTest.testParseXSD()...metacount:"+BaseMeta.metaCount);
 //		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 //		Marshaller u = jc.createMarshaller();
 //		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
@@ -113,7 +112,6 @@ public class MappingTest {
 		try {
 		p.loadSchema("workingspace/hl7v3/multicacheschemas/PORR_IN049006UV01.xsd", null);
 		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "triggerFor", 7);
-		System.out.println("MappingTest.testParseHL7v3XSD()...metacount:"+BaseMeta.metaCount);
 //		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 //		Marshaller u = jc.createMarshaller();
 //		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));

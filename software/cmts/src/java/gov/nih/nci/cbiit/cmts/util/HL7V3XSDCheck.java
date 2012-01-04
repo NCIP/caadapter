@@ -17,7 +17,6 @@ public class HL7V3XSDCheck {
 		String elmName=xsdFile.substring(0,xsdFile.indexOf(".xsd"));
 		p.loadSchema(dirPath+"/multicacheschemas/"+xsdFile, null);
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v3", elmName);	
-		System.out.println("HL7V3XSDCheck.main()...metacount:"+BaseMeta.metaCount);
 	}
 
 }

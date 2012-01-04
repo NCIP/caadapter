@@ -301,20 +301,6 @@ public class MainFrame extends JFrame
 		}
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void mainb(String[] args) {
-		// TODO Auto-generated method stub
-		XSDParser p = new XSDParser();
-		String dirPath=args[0];
-		String xsdFile=args[1];//"FICR_IN926306UV03.xsd"; //args[0];
-		String elmName=xsdFile.substring(0,xsdFile.indexOf(".xsd"));
-		p.loadSchema(dirPath+"/multicacheschemas/"+xsdFile, null);
-		ElementMeta e = p.getElementMeta("urn:hl7-org:v3", elmName);	
-		System.out.println("HL7V3XSDCheck.main()...metacount:"+BaseMeta.metaCount);
-	}
-	
 	public static void main(String[] args)
 	{
 		//Preferences.loadDefaults();

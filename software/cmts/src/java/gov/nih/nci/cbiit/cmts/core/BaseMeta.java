@@ -52,46 +52,44 @@ import javax.xml.bind.annotation.XmlType;
 public abstract class BaseMeta implements Serializable, PropertiesProvider, Cloneable{
 
     @XmlAttribute
+	private String annotationString;
+    private boolean ativated = true;
+	@XmlAttribute
+    private String defaultValue;
+	@XmlAttribute
     private String id;
     @XmlAttribute
     private String idSpec="X-path";
-    @XmlAttribute
-    private String defaultValue;
 	@XmlAttribute
     private String name;
 	@XmlAttribute
     private String nameSpace;
+	
     @XmlAttribute
     private Boolean required;
 	@XmlAttribute
     private String type;
-
-    private boolean ativated = true;
-	public static int metaCount=0;
 	public BaseMeta()
+	{	}
+	@Override
+	public Object clone()
 	{
-		metaCount++;
-//		System.out.println("BaseMeta.BaseMeta()...:"+metaCount);
+		try {
+			BaseMeta clonnedObj=(BaseMeta)super.clone();
+			return clonnedObj;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
 	}
-    public Boolean isRequired() {
-		return required;
-	}
-	public void setRequired(Boolean isRequired) {
-		this.required = isRequired;
-	}
-    public Boolean isAtivated() {
-		return ativated;
-	}
-	public void setAtivated(Boolean isAtivated) {
-		this.ativated = isAtivated;
+	public String getAnnotationString() {
+		return annotationString;
 	}
     public String getDefaultValue() {
 		return defaultValue;
 	}
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
-    /**
+	/**
      * Gets the value of the id property.
      * 
      * @return
@@ -113,7 +111,7 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
     public String getIdSpec() {
             return idSpec;
     }
-    /**
+	/**
      * Gets the value of the name property.
      * 
      * @return
@@ -124,14 +122,12 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
     public String getName() {
         return name;
     }
-
-	/**
+    /**
 	 * @return the nameSpace
 	 */
 	public String getNameSpace() {
 		return nameSpace;
 	}
-
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		Class<?> beanClass = this.getClass();
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
@@ -146,12 +142,29 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 		result.addPropertyDescriptors(this, propList);
 		return result;
 	}
-
     /**
 	 * @return the type
 	 */
 	public String getType() {
 		return type;
+	}
+    public Boolean isAtivated() {
+		return ativated;
+	}
+    public Boolean isRequired() {
+		return required;
+	}
+
+	public void setAnnotationString(String annotationString) {
+		this.annotationString = annotationString;
+	}
+
+	public void setAtivated(Boolean isAtivated) {
+		this.ativated = isAtivated;
+	}
+
+    public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
     /**
@@ -196,6 +209,10 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 	public void setNameSpace(String nameSpace) {
 		this.nameSpace = nameSpace;
 	}
+	public void setRequired(Boolean isRequired) {
+		this.required = isRequired;
+	}
+	
 	/**
 	 * @param type the type to set
 	 */
@@ -210,18 +227,5 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 			return getName();
 		
 		return getNameSpace()+":"+getName();
-	}
-	
-	@Override
-	public Object clone()
-	{
-		try {
-			BaseMeta clonnedObj=(BaseMeta)super.clone();
-			return clonnedObj;
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		return null;
 	}
 }
