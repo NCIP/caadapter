@@ -17,8 +17,7 @@ public class SchemaAnnotationUtil {
 			return tagValue;
 		String rtnValue=tagValue.substring(tagValue.indexOf(">")+1, tagValue.lastIndexOf("</"));
 		rtnValue=SchemaAnnotationUtil.trim(rtnValue,' ');
-		rtnValue.replaceAll("\\s", "");
-		return rtnValue;
+		return rtnValue.replaceAll("\\s+", " ");
 	}
 	
 	private static String trim(String source, char c) 

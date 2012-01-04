@@ -171,8 +171,8 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 
     public void setAnnotationString(String annotationString) {
 		this.annotationString = annotationString;
-		setAppInfo(SchemaAnnotationUtil.extractTagValue(annotationString, "appinfo"));
-		setDocumentation(SchemaAnnotationUtil.extractTagValue(annotationString, "documentation"));
+		setAppInfo("    "+SchemaAnnotationUtil.extractTagValue(annotationString, "appinfo"));
+		setDocumentation("    "+SchemaAnnotationUtil.extractTagValue(annotationString, "documentation"));
 	}
 
     public void setAppInfo(String appInfo) {
