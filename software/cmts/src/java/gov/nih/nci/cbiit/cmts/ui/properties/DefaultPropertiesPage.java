@@ -9,15 +9,12 @@
 
 package gov.nih.nci.cbiit.cmts.ui.properties;
 
-
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-
-import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.mapping.CDEPropertyPanel;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -81,10 +78,10 @@ public class DefaultPropertiesPage extends JSplitPane
         if (!cdePane.doesHaveOwnData())
         {
             setDividerLocation(0);
-            //this.setOneTouchExpandable(false);
         }
+       
         else setDividerLocation(120);
-		this.repaint();
+        this.repaint();
 	}
 }
 
