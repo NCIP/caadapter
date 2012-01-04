@@ -19,10 +19,10 @@ public interface TransformationService {
 	 */
 	public List<ApplicationResult> validateXmlData(Object validator, String xmlData);
 	/**
-	 * Transfer source data into target data using mapping file
+	 * Transfer source data into target data using process instruction file
 	 * @param sourceFile URI of source data file
-	 * @param processInstruction URI of transformation file
-	 * @return
+	 * @param processInstruction URI of transformation file, such as, mapping, XQuery artifact, or XSLT style sheet artfact
+	 * @return Result XML data
 	 */
 	public String transfer(String sourceFile, String processInstruction);
 	public void setPresentable(boolean value);
