@@ -213,9 +213,11 @@ public class ElementMeta
 		propList.add(new PropertyDescriptor("Multiplicity Index", beanClass, "getMultiplicityIndex", null));
 		propList.add(new PropertyDescriptor("Recursive", beanClass, "isIsRecursive", null));
 		propList.add(new PropertyDescriptor("Simple Type", beanClass, "isIsSimple", null));
-
+		
         if (concreteDataType != null) propList.add(new PropertyDescriptor("Concrete Data Type", beanClass, "getConcreteDataType", null));
-
+        propList.add(new PropertyDescriptor("Annotation", beanClass, "getAnnotationString", null));
+        propList.add(new PropertyDescriptor("Documentation", beanClass, "getDocumentation", null));
+        propList.add(new PropertyDescriptor("Application Info", beanClass, "getAppInfo", null));
         PropertiesResult result = super.getPropertyDescriptors();
 		result.addPropertyDescriptors(this, propList);
 		return result;

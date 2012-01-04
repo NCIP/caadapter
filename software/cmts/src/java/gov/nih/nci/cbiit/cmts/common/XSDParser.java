@@ -7,19 +7,15 @@
  */
 package gov.nih.nci.cbiit.cmts.common;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.util.*;
-import java.net.URL;
 
+import org.apache.xerces.impl.xs.XSAnnotationImpl;
 import org.apache.xerces.xs.*;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import gov.nih.nci.cbiit.cmts.core.*;
-import gov.nih.nci.cbiit.cmts.util.FileUtil;
 import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
-import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
@@ -261,6 +257,16 @@ public class XSDParser  {
         ret.setNameSpace(item.getNamespace());
         ret.setName(item.getName());
         ret.setIsSimple(false);
+        if (item.getAnnotations()!=null&&item.getAnnotations().getLength()>0)
+        {
+        	for (int i=0;i<item.getAnnotations().getLength();i++)
+        	{
+        		XSObject xsObj=item.getAnnotations().item(i);
+        	}
+        	XSAnnotationImpl annImpl=(XSAnnotationImpl)item.getAnnotations().item(0);
+        	
+        	ret.setAnnotationString(annImpl.getAnnotationString());
+        }
 
         String qname = "{" + item.getNamespace() + "}" + item.getName();
         if(item.getName()==null)
@@ -439,6 +445,9 @@ public class XSDParser  {
         }finally{
             elStack.pop();
         }
+        XSAnnotation annotation=item.getAnnotation();
+        if (annotation!=null)
+        	ret.setAnnotationString(annotation.getAnnotationString());
         ret.setType((item.getTypeDefinition().getNamespace()==null||item.getTypeDefinition().getNamespace().equals(defaultNS))?
                     item.getTypeDefinition().getName()
                     :item.getTypeDefinition().getNamespace()+":"+item.getTypeDefinition().getName());
@@ -460,7 +469,8 @@ public class XSDParser  {
         ret.setNameSpace(attr.getNamespace());
         ret.setName(attr.getName());
         ret.setRequired(item.getRequired());
-
+        if (item.getAnnotations()!=null&&item.getAnnotations().getLength()>0)
+        	ret.setAnnotationString(((XSAnnotation)item.getAnnotations().item(0)).getAnnotationString());
         ret.setType((attr.getTypeDefinition().getNamespace()==null||attr.getTypeDefinition().getNamespace().equals(defaultNS))?
                 attr.getTypeDefinition().getName()
                 :attr.getTypeDefinition().getNamespace()+":"+attr.getTypeDefinition().getName());
@@ -502,10 +512,7 @@ public class XSDParser  {
             while(meta.getChildElement().size() > 0) meta.getChildElement().remove(0);
             meta.getChildElement().addAll(0, newMeta.getChildElement());
         }
-        //else System.out.println("Result is null Loading XSDParser.expandElementMetaWithLazyLoad()...deep loading:"+meta + ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
-
-
-    }
+     }
 }
 
 /**

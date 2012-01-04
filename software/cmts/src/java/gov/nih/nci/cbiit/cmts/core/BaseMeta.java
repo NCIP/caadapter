@@ -15,6 +15,7 @@ import java.util.List;
 
 import gov.nih.nci.cbiit.cmts.common.PropertiesProvider;
 import gov.nih.nci.cbiit.cmts.ui.properties.PropertiesResult;
+import gov.nih.nci.cbiit.cmts.util.SchemaAnnotationUtil;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -53,9 +54,14 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 
     @XmlAttribute
 	private String annotationString;
+    @XmlAttribute
+	private String appInfo;
+    @XmlAttribute
     private boolean ativated = true;
 	@XmlAttribute
     private String defaultValue;
+    @XmlAttribute
+	private String documentation;
 	@XmlAttribute
     private String id;
     @XmlAttribute
@@ -86,8 +92,14 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 	public String getAnnotationString() {
 		return annotationString;
 	}
-    public String getDefaultValue() {
+    public String getAppInfo() {
+		return appInfo;
+	}
+	public String getDefaultValue() {
 		return defaultValue;
+	}
+    public String getDocumentation() {
+		return documentation;
 	}
 	/**
      * Gets the value of the id property.
@@ -128,7 +140,7 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 	public String getNameSpace() {
 		return nameSpace;
 	}
-	public PropertiesResult getPropertyDescriptors() throws Exception {
+    public PropertiesResult getPropertyDescriptors() throws Exception {
 		Class<?> beanClass = this.getClass();
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
@@ -148,18 +160,26 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 	public String getType() {
 		return type;
 	}
-    public Boolean isAtivated() {
+
+	public Boolean isAtivated() {
 		return ativated;
 	}
-    public Boolean isRequired() {
+
+	public Boolean isRequired() {
 		return required;
 	}
 
-	public void setAnnotationString(String annotationString) {
+    public void setAnnotationString(String annotationString) {
 		this.annotationString = annotationString;
+		setAppInfo(SchemaAnnotationUtil.extractTagValue(annotationString, "appinfo"));
+		setDocumentation(SchemaAnnotationUtil.extractTagValue(annotationString, "documentation"));
 	}
 
-	public void setAtivated(Boolean isAtivated) {
+    public void setAppInfo(String appInfo) {
+		this.appInfo = appInfo;
+	}
+
+    public void setAtivated(Boolean isAtivated) {
 		this.ativated = isAtivated;
 	}
 
@@ -167,7 +187,10 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 		this.defaultValue = defaultValue;
 	}
 
-    /**
+    public void setDocumentation(String documentation) {
+		this.documentation = documentation;
+	}
+	/**
      * Sets the value of the id property.
      * 
      * @param value
@@ -178,8 +201,8 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
     public void setId(String value) {
         this.id = value;
     }
-
-    /**
+	
+	/**
      * Sets the value of the idSpec property.
      * 
      * @param value
@@ -190,8 +213,8 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
     public void setIdSpec(String value) {
         this.idSpec = value;
     }
-
-    /**
+	
+	/**
      * Sets the value of the name property.
      * 
      * @param value
@@ -202,8 +225,7 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
     public void setName(String value) {
         this.name = value;
     }
-
-    /**
+	/**
 	 * @param nameSpace the nameSpace to set
 	 */
 	public void setNameSpace(String nameSpace) {
@@ -212,14 +234,12 @@ public abstract class BaseMeta implements Serializable, PropertiesProvider, Clon
 	public void setRequired(Boolean isRequired) {
 		this.required = isRequired;
 	}
-	
 	/**
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
-	
 	@Override
 	public String toString()
 	{

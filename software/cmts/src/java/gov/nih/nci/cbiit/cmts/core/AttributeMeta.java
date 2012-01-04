@@ -67,7 +67,9 @@ public class AttributeMeta
 		propList.add( new PropertyDescriptor("Fixed Value", beanClass, "getFixedValue", null));
 		propList.add( new PropertyDescriptor("Fixed", beanClass, "isIsFixed", null));
 		propList.add(new PropertyDescriptor("Valid", beanClass, "isIsValid", null));
-
+		propList.add(new PropertyDescriptor("Annotation", beanClass, "getAnnotationString", null));
+        propList.add(new PropertyDescriptor("Documentation", beanClass, "getDocumentation", null));
+        propList.add(new PropertyDescriptor("Application Info", beanClass, "getAppInfo", null));
 		PropertiesResult result =super.getPropertyDescriptors();
 		result.addPropertyDescriptors(this, propList);
 		return result;
