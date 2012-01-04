@@ -7,14 +7,20 @@
  */
 package gov.nih.nci.cbiit.cmts.ui.tree;
 
+import gov.nih.nci.cbiit.cmts.core.BaseMeta;
+import gov.nih.nci.cbiit.cmts.ui.mapping.ElementMetaLoader;
+
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Insets;
 import java.awt.dnd.Autoscroll;
+import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -43,6 +49,7 @@ public class AutoscrollableTree extends JTree implements Autoscroll
 	public AutoscrollableTree()
 	{
 		super(new DefaultMutableTreeNode("Loading...", true));
+		this.setToolTipText("");
 	}
 
 	/**
@@ -174,6 +181,23 @@ public class AutoscrollableTree extends JTree implements Autoscroll
 		//	int hsize=size*2;
 		Rectangle rect = new Rectangle(p.x - hsize, p.y - hsize, size, size);
 		this.scrollRectToVisible(rect);
+	}
+
+	@Override
+	public String getToolTipText(MouseEvent event) {
+		// TODO Auto-generated method stub
+		if (getRowForLocation(event.getX(), event.getY()) == -1)
+	          return null;
+		TreePath curPath = getPathForLocation(event.getX(), event.getY());
+
+	    if (curPath==null)
+	    	return null;
+	    DefaultMutableTreeNode  currntNode=(DefaultMutableTreeNode )curPath.getLastPathComponent();
+	    Object userObj = currntNode.getUserObject();
+        if(userObj instanceof ElementMetaLoader.MyTreeObject)
+        	userObj = ((ElementMetaLoader.MyTreeObject)userObj).getUserObject();
+        BaseMeta baseMeta=(BaseMeta)userObj;
+	    return baseMeta.getAnnotationString();
 	}
 }
 /**
