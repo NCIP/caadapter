@@ -131,7 +131,7 @@ public class TransformationServiceImpl implements TransformationWebService{
     		//System.out.println("TransformationServiceImpl.prepareSourceDataFromResource():"+sourceDataURL);
     		while (line!=null)
     		{
-    			System.out.println(line);
+    			//System.out.println(line);
     			fw.write(line + "\n");
     			line=lReader.readLine();
     		}            

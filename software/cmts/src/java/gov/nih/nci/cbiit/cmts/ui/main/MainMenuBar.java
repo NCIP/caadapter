@@ -119,6 +119,8 @@ public class MainMenuBar extends JMenuBar
         menuItemMap.put(ActionConstants.SAVE, saveMenuItem);
         DefaultSaveAsAction defaultSaveAsAction = new DefaultSaveAsAction(mainFrame);
         JMenuItem saveAsMenuItem = new JMenuItem(defaultSaveAsAction);
+        ImageIcon saveAsImageIcon = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
+        saveAsMenuItem.setIcon(saveAsImageIcon);
         actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
         menuItemMap.put(ActionConstants.SAVE_AS, saveAsMenuItem);
         DefaultCloseAction defaultCloseAction = new DefaultCloseAction(mainFrame);
