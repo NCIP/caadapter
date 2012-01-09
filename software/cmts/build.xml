@@ -79,7 +79,7 @@
 					<include name="**/*.bmp"/>
 					<exclude name="**/*webapp*"/>
 			</fileset>
-			<!-- zipfileset src="${project.docs.home}/${proejct.online.help}" prefix="help"/ -->
+			<zipfileset dir="./doc" includes="CMTS_User_Guide_Document.pdf" prefix="help"/>
 		</war>	
 		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">	
 			<property name="ws.module.name" value="caadapterWS-cmts" />
@@ -175,20 +175,12 @@
 	
 	<target name="jar" depends="compile" description="create the distribution jars">
 		<echo> ${distribution.manifest.class.property} </echo>
-		<!-- copy todir="${build.dir}">
-			<fileset dir="resources">
-				<exclude name="**/CVS/**" />
-			</fileset>
-		</copy -->
 		<jar destfile="${dist.dir}/cmts.jar">
-			<fileset dir="${build.dir}" excludes="**/Test.class"/><!--**/ui/**" / -->
-			<!-- fileset dir="${basedir}" includes="config/*.*" /-->
-			<!-- fileset dir="${etc.dir}" excludes="**/ucum-expression.xml" /-->
-			<!-- fileset dir="${src.dir}" excludes="**/*.java" /-->
+			<fileset dir="${build.dir}" excludes="**/Test.class"/>
 		</jar>
 		<jar destfile="${dist.dir}/cmts-resources.jar">
 			<fileset dir="${resources.dir}" excludes="**/CVS/**" />
-			<fileset dir="${etc.dir}" excludes="**/CVS/**" />
+			<fileset dir="${etc.dir}" includes="CMTS_About.txt" />
 		</jar>
 		<jar destfile="${dist.dir}/cmtsUI.jar">
 			<fileset dir="${build.dir}" includes="**/ui/**" />
