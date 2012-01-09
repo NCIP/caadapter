@@ -33,7 +33,7 @@ public interface ActionConstants
 	String EXIT = "Exit";
 	String HELP_TOPIC = "HELP_TOPIC";
 
-	String HELP = "Help - Contents and Index...";
+	String HELP = "Help ";
 	String GENERATE_REPORT = "Generate Report...";
 	String VALIDATE = "Validate";
 	String ANOTATE = "Anotate";

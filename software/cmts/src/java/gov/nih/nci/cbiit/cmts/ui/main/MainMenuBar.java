@@ -8,13 +8,14 @@
 
 package gov.nih.nci.cbiit.cmts.ui.main;
 
-
+import gov.nih.nci.cbiit.cmts.ui.actions.AboutViewAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.AbstractContextAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultCloseAllAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultCloseAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAsAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultExitAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.HelpViewAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewArtifactAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewTransformationAction;
@@ -28,8 +29,6 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
 import java.awt.*;
 
 import netscape.javascript.JSObject;
@@ -70,8 +69,11 @@ public class MainMenuBar extends JMenuBar
 
         add(constructFileMenu());
         JMenu helpMenu=new JMenu("Help");
-        helpMenu.add(new JMenuItem("About caAdapter CMTS"));
-        helpMenu.add(new JMenuItem("Help - Content and Index"));
+        JMenuItem aboutItem=new JMenuItem(new AboutViewAction(mainFrame.getMainApplet())); 
+        helpMenu.add(aboutItem);
+        
+        JMenuItem helpItem=new JMenuItem(new HelpViewAction(mainFrame.getMainApplet())); 
+        helpMenu.add(helpItem);
         add(helpMenu);
     }
 
