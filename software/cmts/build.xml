@@ -180,7 +180,8 @@
 		</jar>
 		<jar destfile="${dist.dir}/cmts-resources.jar">
 			<fileset dir="${resources.dir}" excludes="**/CVS/**" />
-			<fileset dir="${etc.dir}" includes="CMTS_About.txt" />
+			<!--<fileset dir="${etc.dir}" includes="CMTS_About.txt" />-->
+			<fileset dir="${etc.dir}" includes="**" />
 		</jar>
 		<jar destfile="${dist.dir}/cmtsUI.jar">
 			<fileset dir="${build.dir}" includes="**/ui/**" />
