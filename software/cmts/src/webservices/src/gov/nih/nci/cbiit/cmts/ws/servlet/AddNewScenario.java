@@ -339,8 +339,8 @@ public class AddNewScenario extends HttpServlet {
 	    				continue;
 			    	String localName=extractOriginalFileName(locationAttr.getValue());
 //			    	locationAttr.setValue(fileHome+File.separator+cmpType+File.separator+localName);
-			    	//locationAttr.setValue(cmpType+File.separator+localName.toLowerCase());
-                    locationAttr.setValue(cmpType+File.separator+localName);
+			    	locationAttr.setValue(cmpType+File.separator+localName.toLowerCase());
+                    //locationAttr.setValue(cmpType+File.separator+localName);
                 }
 //	    		//update VOM reference
 //	    		Attr groupAttr = component.getAttributeNode("group");
@@ -413,8 +413,8 @@ public class AddNewScenario extends HttpServlet {
 
                         path = path.substring(idx3 + 1);
                     }
-                    //xsd2 = xsd2 + path.toLowerCase();
-                    xsd2 = xsd2 + path;
+                    xsd2 = xsd2 + path.toLowerCase();
+                    //xsd2 = xsd2 + path;
                 }
                 xsdList2.add(xsd2);
             }
