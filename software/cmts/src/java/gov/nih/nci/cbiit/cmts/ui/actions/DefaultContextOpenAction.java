@@ -43,8 +43,10 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 	protected static final String COMMAND_NAME = ActionConstants.OPEN;
 	protected static final Character COMMAND_MNEMONIC = new Character('O');
 	//hotkey//protected static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false);
-	protected static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
-	protected static final String TOOL_TIP_DESCRIPTION = ActionConstants.OPEN;
+	//protected static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
+    protected static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("ico_open.bmp"));
+
+    protected static final String TOOL_TIP_DESCRIPTION = ActionConstants.OPEN;
 
 	protected transient MainFrameContainer mainFrame;
 	protected transient ActionEvent actionEvent;

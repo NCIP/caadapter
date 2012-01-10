@@ -53,21 +53,37 @@
 						<bean:write name="item" property="mappingFile"/>
 					</td>
 					<td class="dataCellText">
-						<logic:notPresent name="item"  property="sourceSpecFile">					
+						<logic:notPresent name="item" property="sourceSpecFile">
 							<i>N/A</i>
 						</logic:notPresent>
 						<logic:present name="item"  property="sourceSpecFile">	
 				 			<bean:write name="item" property="sourceSpecFile"/>
-						</logic:present>
-					</td>
+                        </logic:present>
+                        <logic:present name="item" property="subSourceSpecFiles">
+                            <ul>
+                                <lh>Included Files</lh>
+                                <logic:iterate name="item" id="data" property="subSourceSpecFiles">
+                                    <li><bean:write name="data"/></li>
+                                </logic:iterate>
+                            </ul>
+                        </logic:present>
+                    </td>
 					<td class="dataCellText">
 						<logic:notPresent name="item"  property="targetFile">					
 							<i>N/A</i>
 						</logic:notPresent>
 						<logic:present name="item"  property="targetFile">
 							<bean:write name="item" property="targetFile"/>
-						</logic:present>
-					</td>
+                        </logic:present>
+                        <logic:present name="item" property="subTargetSpecFiles">
+                            <ul>
+                                <lh>Included Files</lh>
+                                <logic:iterate name="item" id="data" property="subTargetSpecFiles">
+                                    <li><bean:write name="data"/></li>
+                                </logic:iterate>
+                            </ul>
+                        </logic:present>
+                    </td>
 					<td class="dataCellText">
 						<bean:write name="item" property="dateCreate"/>
 						<!-- bean:define id="cDate" name="item" property="dateCreate"/  -->

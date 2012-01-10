@@ -119,41 +119,106 @@ public class ScenarioUtil {
 		long lastMdTime=scenarioFolder.lastModified();
 		Date mdDate=new Date(lastMdTime);
 		oneReg.setDateCreate(mdDate);
-		for (File childFile:scenarioFolder.listFiles())
+
+        String sourceSpecFileName = "";
+        String targetSpecFileName = "";
+        List<File> subDirs = null;
+        for (File childFile:scenarioFolder.listFiles())
 		{
 			String chldFileName=childFile.getName();
-			if (chldFileName.endsWith(".map"))
-			{
-				oneReg.setMappingFile(chldFileName);
-				oneReg.setTransferType("map");
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                //dbf.setValidating(true);
-                DocumentBuilder db = dbf.newDocumentBuilder();
+            if (childFile.isFile())
+            {
+                if (chldFileName.endsWith(".map"))
+                {
+                    oneReg.setMappingFile(chldFileName);
+                    oneReg.setTransferType("map");
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                    //dbf.setValidating(true);
+                    DocumentBuilder db = dbf.newDocumentBuilder();
 
-                Document xmlDOM = db.parse(childFile);
-		    	NodeList components =xmlDOM.getElementsByTagName("component");
-		    	for(int i = 0; i< components.getLength();i++) {
-		    		Element component = (Element)components.item(i);
-		    		//update location of SCS, H3S
-		    		Attr locationAttr = component.getAttributeNode("location");
-		    		Attr typeAttr = component.getAttributeNode("type");
-		    		if (typeAttr.getValue().equals("source"))
-		    			oneReg.setSourceSpecFile(locationAttr.getValue());
-		    		else if (typeAttr.getValue().equals("target"))
-		    			oneReg.setTargetFile(locationAttr.getValue());
-		    	}
-			}
-			else if (chldFileName.endsWith(".xsl"))
-			{
-				oneReg.setMappingFile(chldFileName);
-				oneReg.setTransferType("xsl");
-			}
-			else if (chldFileName.endsWith(".xq"))
-			{
-				oneReg.setMappingFile(chldFileName);
-				oneReg.setTransferType("xq");
-			}
-		}
+                    Document xmlDOM = db.parse(childFile);
+                    NodeList components =xmlDOM.getElementsByTagName("component");
+                    for(int i = 0; i< components.getLength();i++) {
+                        Element component = (Element)components.item(i);
+                        //update location of SCS, H3S
+                        Attr locationAttr = component.getAttributeNode("location");
+                        Attr typeAttr = component.getAttributeNode("type");
+                        if (typeAttr.getValue().equals("source"))
+                        {
+                            String val = locationAttr.getValue();
+                            oneReg.setSourceSpecFile(val);
+                            sourceSpecFileName = val;
+//                            int idx = val.lastIndexOf("/");
+//                            if (idx < 0) idx = val.lastIndexOf("\\");
+//                            if (idx < 0) sourceSpecFileName = val;
+//                            else  sourceSpecFileName = val.substring(idx + 1);
+                        }
+
+                        else if (typeAttr.getValue().equals("target"))
+                        {
+                            String val = locationAttr.getValue();
+                            oneReg.setTargetFile(val);
+                            targetSpecFileName = val;
+//                            int idx = val.lastIndexOf("/");
+//                            if (idx < 0) idx = val.lastIndexOf("\\");
+//                            if (idx < 0) targetSpecFileName = val;
+//                            else targetSpecFileName = val.substring(idx + 1);
+                        }
+
+                    }
+                }
+                else if (chldFileName.endsWith(".xsl"))
+                {
+                    oneReg.setMappingFile(chldFileName);
+                    oneReg.setTransferType("xsl");
+                }
+                else if (chldFileName.endsWith(".xq"))
+                {
+                    oneReg.setMappingFile(chldFileName);
+                    oneReg.setTransferType("xq");
+                }
+            }
+            else if (childFile.isDirectory())
+            {
+                if (subDirs == null) subDirs = new ArrayList<File>();
+                subDirs.add(childFile);
+
+            }
+        }
+        if (subDirs != null)
+        {
+            for(File childFile:subDirs)
+            {
+                String chldFileName = childFile.getName();
+                if (chldFileName.equalsIgnoreCase("source"))
+                {
+                    for (File childSource:childFile.listFiles())
+                    {
+                        if (!childSource.isFile()) continue;
+                        String sname = childSource.getName();
+                        if (sname.toLowerCase().endsWith(".bak")) continue;
+                        if (sname.equalsIgnoreCase(sourceSpecFileName)) continue;
+                        if (sourceSpecFileName.toLowerCase().endsWith("/" + sname.toLowerCase())) continue;
+                        if (sourceSpecFileName.toLowerCase().endsWith("\\" + sname.toLowerCase())) continue;
+                        oneReg.addSubSourceSpecFiles(chldFileName + "\\" + sname);
+                    }
+
+                }
+                else if (chldFileName.equalsIgnoreCase("target"))
+                {
+                    for (File childTarget:childFile.listFiles())
+                    {
+                        if (!childTarget.isFile()) continue;
+                        String tname = childTarget.getName();
+                        if (tname.toLowerCase().endsWith(".bak")) continue;
+                        if (tname.equalsIgnoreCase(targetSpecFileName)) continue;
+                        if (targetSpecFileName.toLowerCase().endsWith("/" + tname.toLowerCase())) continue;
+                        if (targetSpecFileName.toLowerCase().endsWith("\\" + tname.toLowerCase())) continue;
+                        oneReg.addSubTargetSpecFiles(chldFileName + "\\" + tname);
+                    }
+                }
+            }
+        }
 
 		return oneReg;
 	}

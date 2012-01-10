@@ -30,8 +30,10 @@ public class ScenarioRegistration {
 	private String sourceSpecFile;
 	private List<String> vocabuaryMappings;
 	private Date dateCreated;
+    private List<String> subSourceSpecFiles;
+    private List<String> subTargetSpecFiles;
 
-	public String getTransferType() {
+    public String getTransferType() {
 		return transferType;
 	}
 	public void setTransferType(String transferType) {
@@ -78,20 +80,42 @@ public class ScenarioRegistration {
 	 */
 	public String getTargetFile() {
 		return targetFile;
-	}
-	/**
+    }
+//    public String getTargetFile() {
+//		String res = targetFile;
+//        if ((subTargetSpecFiles == null)||(subTargetSpecFiles.size() == 0)) return res;
+//
+//        for (String str:subTargetSpecFiles)
+//        {
+//            res = res + "<br>" + str;
+//        }
+//        return res;
+//    }
+    /**
 	 * @param targetFile the targetFile to set
 	 */
 	public void setTargetFile(String targetFile) {
 		this.targetFile = targetFile;
 	}
-	/**
+
+
+    /**
 	 * @return the sourceSpecFile
 	 */
 	public String getSourceSpecFile() {
 		return sourceSpecFile;
 	}
-	/**
+//    public String getSourceSpecFile() {
+//		String res = sourceSpecFile;
+//        if ((subSourceSpecFiles == null)||(subSourceSpecFiles.size() == 0)) return res;
+//
+//        for (String str:subSourceSpecFiles)
+//        {
+//            res = res + "<br>" + str;
+//        }
+//        return res;
+//    }
+    /**
 	 * @param sourceSpecFile the sourceSpecFile to set
 	 */
 	public void setSourceSpecFile(String sourceSpecFile) {
@@ -121,6 +145,57 @@ public class ScenarioRegistration {
 		vocabuaryMappings.add(newVom);
 	}
 
+    /**
+	 * Add one source spec file into mapping scenario
+	 * @param newFile
+	 */
+    public void addSubSourceSpecFiles(String newFile)
+	{
+		if (subSourceSpecFiles==null)
+			subSourceSpecFiles=new ArrayList<String>();
+		subSourceSpecFiles.add(newFile);
+	}
+    /**
+	 * @return the subSourceSpecFiles
+	 */
+	public List<String> getSubSourceSpecFiles() {
+		return subSourceSpecFiles;
+	}
+//    public String getSubSourceSpecFiles() {
+//		if ((subSourceSpecFiles == null)||(subSourceSpecFiles.size() == 0)) return "";
+//        String res = "";
+//        for (String str:subSourceSpecFiles)
+//        {
+//            res = "<br/>" + str;
+//        }
+//        return res;
+//    }
+
+    /**
+	 * Add one target spec file into mapping scenario
+	 * @param newFile
+	 */
+    public void addSubTargetSpecFiles(String newFile)
+	{
+		if (subTargetSpecFiles==null)
+			subTargetSpecFiles=new ArrayList<String>();
+		subTargetSpecFiles.add(newFile);
+	}
+    /**
+	 * @return the subTargetSpecFiles
+	 */
+	public List<String> getSubTargetSpecFiles() {
+		return subTargetSpecFiles;
+	}
+//    public String getSubTargetSpecFiles() {
+//		if ((subTargetSpecFiles == null)||(subTargetSpecFiles.size() == 0)) return "";
+//        String res = "";
+//        for (String str:subTargetSpecFiles)
+//        {
+//            res = "<br/>" + str;
+//        }
+//        return res;
+//    }
 }
 
 

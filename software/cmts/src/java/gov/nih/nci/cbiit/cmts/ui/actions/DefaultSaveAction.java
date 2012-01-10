@@ -34,8 +34,10 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 	public static final String COMMAND_NAME = ActionConstants.SAVE;
 	public static final Character COMMAND_MNEMONIC = new Character('S');
 	//hotkey//public static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false);
-	public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileSave.gif"));
-	public static final String TOOL_TIP_DESCRIPTION = "Save";
+	//public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileSave.gif"));
+    public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("ico_save.bmp"));
+		
+    public static final String TOOL_TIP_DESCRIPTION = "Save";
 
 	private static final String LOGID = "$RCSfile: DefaultSaveAction.java,v $";
 	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmts/src/gov/nih/nci/cbiit/cmts/ui/actions/DefaultSaveAction.java,v 1.2 2009-11-23 18:32:47 wangeug Exp $";
