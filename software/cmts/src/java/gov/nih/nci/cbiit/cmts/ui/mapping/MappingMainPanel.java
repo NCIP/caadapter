@@ -59,7 +59,7 @@ import org.apache.xerces.xs.XSNamedMap;
 import org.apache.xerces.xs.XSObject;
 
 /**
- * This class 
+ * This class
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
@@ -93,7 +93,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 	private MappingTargetTree tTree = null;
 	private MiddlePanelJGraphController graphController =null;
     private CellRenderXSObject selectedRootTempStore = null;
-    
+
     public MappingMainPanel(MainFrameContainer mainFrame) throws Exception
 	{
 		this.setBorder(BorderFactory.createEmptyBorder());
@@ -420,7 +420,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		Action openAction=contextManager.getDefinedAction(ActionConstants.OPEN_MAP_FILE);
 		return openAction;
 	}
-	
+
 
 
 
@@ -458,12 +458,12 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 				contextManager.enableAction(ActionConstants.SAVE_AS, true);
 			}
 		}
-		
+
 		//since the action depends on the panel instance,
 		//the old action instance should be removed
 		if (actionMap!=null)
 			contextManager.removeClientMenuAction("CMTS", menu_name, "");
-		
+
 		action = new SaveMapAction(this);
 		contextManager.addClientMenuAction("CMTS", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
 		action.setEnabled(true);
@@ -554,7 +554,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		//sourceLocationArea.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
         sourceLocationArea.setPreferredSize(new Dimension((frameWidth / 10), 24));
 	    sourceLocationPanel.add(sourceLocationArea, BorderLayout.CENTER);
-		
+
 		JButton openSourceButton = new JButton(SELECT_SOURCE);
 		sourceLocationPanel.add(openSourceButton, BorderLayout.EAST);
 		openSourceButton.setMnemonic('S');
@@ -724,7 +724,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		buildSourceTree(mapping, null, false);
 		sTree.setSchemaParser(MappingFactory.sourceParser);
 		sTree.expandAll();
-		
+
 		//build target tree
 		buildTargetTree(mapping, null, false);
 		tTree.setSchemaParser(MappingFactory.targetParser);

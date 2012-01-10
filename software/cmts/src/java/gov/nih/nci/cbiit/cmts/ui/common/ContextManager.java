@@ -222,7 +222,7 @@ public class ContextManager implements ChangeListener
 
 
 
-                JButton saveAsButton = null;
+                //JButton saveAsButton = null;
                 Map actionMap_ = contextClient.getMenuItems(MenuConstants.FILE_MENU_NAME);
 		        Action saveAsAction = (Action) actionMap_.get(ActionConstants.SAVE_AS);
                 DefaultSaveAsAction defaultSaveAsAction = null;
@@ -231,7 +231,8 @@ public class ContextManager implements ChangeListener
                     defaultSaveAsAction = (DefaultSaveAsAction) saveAsAction;
                     defaultSaveAsAction.setEnabled(true);
 
-                    ImageIcon imageIco = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
+                    //ImageIcon imageIco = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
+                    ImageIcon imageIco = new ImageIcon(DefaultSettings.getImage("ico_saveAs.bmp"));
                     defaultSaveAsAction.setIcon(imageIco);
                     defaultSaveAsAction.setShortDescription("Save AS another file");
 
@@ -249,7 +250,8 @@ public class ContextManager implements ChangeListener
 
 
                 NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
-                ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+                //ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+                ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("ico_new.bmp"));
                 newMapAction.setIcon(newImageIcon);
                 newMapAction.setShortDescription("New Mapping File");
 
@@ -277,7 +279,8 @@ public class ContextManager implements ChangeListener
 
 
                 NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
-                ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+                //ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+                ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("ico_new.bmp"));
                 newMapAction.setIcon(newImageIcon);
                 newMapAction.setShortDescription("New Mapping File");
 
@@ -352,6 +355,16 @@ public class ContextManager implements ChangeListener
         {
             menuItem.setAction(null);
             menuItem.setAction(act);
+            if (act instanceof DefaultSaveAsAction)
+            {
+                if (menuItem.getIcon() == null)
+                {
+                    //ImageIcon imageIco = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
+                    ImageIcon imageIco = new ImageIcon(DefaultSettings.getImage("ico_saveAs.bmp"));
+                    menuItem.setIcon(imageIco);
+                }
+            }
+
             menuItem.setEnabled(true);
             return true;
         }

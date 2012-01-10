@@ -8,8 +8,10 @@
 package gov.nih.nci.cbiit.cmts.mapping;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.zip.ZipEntry;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -35,6 +37,8 @@ import gov.nih.nci.cbiit.cmts.core.MetaConstants;
 import gov.nih.nci.cbiit.cmts.core.TagType;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Components;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
+import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.hl7.v2v3.tools.ZipUtil;
 
 /**
  * This class is used to generate CMTS Mapping
@@ -48,15 +52,15 @@ import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
  */
 public class MappingFactory
 {
-	public static XSDParser sourceParser;
-	public static XSDParser targetParser;
+    public static XSDParser sourceParser;
+    public static XSDParser targetParser;
     public static ElementMeta sourceHeadMeta;
     public static ElementMeta targetHeadMeta;
 
     public static boolean loadMetaXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
-		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
-		if(e==null)
+        ElementMeta e = schemaParser.getElementMeta(rootNS, root);
+        if(e==null)
         {
             e = schemaParser.getElementMetaFromComplexType(rootNS, root, MetaConstants.SCHEMA_LAZY_LOADINTG_INITIAL);
             //if(e==null)System.out.println("CCCCC HHH2 : " + schemaParser.getSchemaURI() + " : " + e);
@@ -68,72 +72,404 @@ public class MappingFactory
         if(e==null) return false;
 
         if (m.getComponents()!=null)
-			for (Component mapComp:m.getComponents().getComponent())
-			{
-				if (mapComp.getRootElement()!=null
-						&mapComp.getType().equals(type))
-				{
-					//clear the childElement list and attribute list for backward compatible
-					mapComp.getRootElement().getChildElement().clear();
-					mapComp.getRootElement().getChildElement().addAll(e.getChildElement());
-					mapComp.getRootElement().getAttrData().clear();
-					mapComp.getRootElement().getAttrData().addAll(e.getAttrData());
+            for (Component mapComp:m.getComponents().getComponent())
+            {
+                if (mapComp.getRootElement()!=null
+                        &mapComp.getType().equals(type))
+                {
+                    //clear the childElement list and attribute list for backward compatible
+                    mapComp.getRootElement().getChildElement().clear();
+                    mapComp.getRootElement().getChildElement().addAll(e.getChildElement());
+                    mapComp.getRootElement().getAttrData().clear();
+                    mapComp.getRootElement().getAttrData().addAll(e.getAttrData());
                     if (type==ComponentType.SOURCE) sourceHeadMeta = mapComp.getRootElement();
                     else targetHeadMeta = mapComp.getRootElement();
                     return true;
-				}
-			}
-		Component endComp = new Component();
-		endComp.setKind(KindType.XML);
-		endComp.setId(getNewComponentId(m));
-		endComp.setLocation(schemaParser.getSchemaURI());
+                }
+            }
+        Component endComp = new Component();
+        endComp.setKind(KindType.XML);
+        endComp.setId(getNewComponentId(m));
+        endComp.setLocation(schemaParser.getSchemaURI());
 
-		endComp.setRootElement(e);
-		endComp.setType(type);
-		m.getComponents().getComponent().add(endComp);
+        endComp.setRootElement(e);
+        endComp.setType(type);
+        m.getComponents().getComponent().add(endComp);
         return true;
     }
 
-	private static String getNewComponentId(Mapping m){
-		if(m.getComponents() == null)
-			m.setComponents(new Components());
-		int num = 0;
-		for(Component c:m.getComponents().getComponent()){
-			int tmp = -1;
-			try{
-				tmp = Integer.parseInt(c.getId());
-			}catch(Exception ignored){}
-			if(tmp>=num)
-				num = tmp+1;
-		}
-		return String.valueOf(num);
-	}
-	/**
-	 * add link to specified Mapping
-	 * @param m - Mapping object to load into
-	 * @param srcComponentId -  source component id
-	 * @param srcPath - source object path
-	 * @param tgtComponentId - target component id
-	 * @param tgtPath - target object path
-	 */
-	public static void addLink(Mapping m, String srcComponentId, String srcPath, String tgtComponentId, String tgtPath) {
-		LinkType l = new LinkType();
-		LinkpointType lp = new LinkpointType();
-		lp.setComponentid(srcComponentId);
-		lp.setId(srcPath);
-		l.setSource(lp);
-		lp = new LinkpointType();
-		lp.setComponentid(tgtComponentId);
-		lp.setId(tgtPath);
-		l.setTarget(lp);
-		if(m.getLinks() == null) m.setLinks(new Links());
-		m.getLinks().getLink().add(l);
-	}
+    private static String getNewComponentId(Mapping m){
+        if(m.getComponents() == null)
+            m.setComponents(new Components());
+        int num = 0;
+        for(Component c:m.getComponents().getComponent()){
+            int tmp = -1;
+            try{
+                tmp = Integer.parseInt(c.getId());
+            }catch(Exception ignored){}
+            if(tmp>=num)
+                num = tmp+1;
+        }
+        return String.valueOf(num);
+    }
+    /**
+     * add link to specified Mapping
+     * @param m - Mapping object to load into
+     * @param srcComponentId -  source component id
+     * @param srcPath - source object path
+     * @param tgtComponentId - target component id
+     * @param tgtPath - target object path
+     */
+    public static void addLink(Mapping m, String srcComponentId, String srcPath, String tgtComponentId, String tgtPath) {
+        LinkType l = new LinkType();
+        LinkpointType lp = new LinkpointType();
+        lp.setComponentid(srcComponentId);
+        lp.setId(srcPath);
+        l.setSource(lp);
+        lp = new LinkpointType();
+        lp.setComponentid(tgtComponentId);
+        lp.setId(tgtPath);
+        l.setTarget(lp);
+        if(m.getLinks() == null) m.setLinks(new Links());
+        m.getLinks().getLink().add(l);
+    }
     public static Mapping loadMapping(File f) throws JAXBException
     {
         return loadMapping(f, null, null, null);
     }
-	public static Mapping loadMapping(File f, File sourceXSD, File targetXSD, Mapping mapData) throws JAXBException
+    public static Mapping loadMapping(File f, File sourceXSD, File targetXSD, Mapping mapData) throws JAXBException
+    {
+        Mapping mapLoaded = null;
+        String mappingParentPath = null;
+        if (mapData == null)
+        {
+            System.out.println("MappingFactory.loadMapping()...mappingFile:"+f.getAbsolutePath());
+            mappingParentPath=f.getAbsoluteFile().getParentFile().getAbsolutePath();
+            System.out.println("MappingFactory.loadMapping()..mapping Parent:"+mappingParentPath);
+            JAXBContext jc=null;
+            jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+    //		jc=com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.newInstance("gov.nih.nci.cbiit.cmts.core");
+
+            Unmarshaller u = jc.createUnmarshaller();
+            JAXBElement<Mapping> jaxbElmt = u.unmarshal(new StreamSource(f), Mapping.class);
+            mapLoaded=jaxbElmt.getValue();
+        }
+        else
+        {
+            mapLoaded=mapData;
+            mappingParentPath=f.getAbsoluteFile().getParentFile().getAbsolutePath();
+            System.out.println("MappingFactory.loadMapping()2..mapping Parent:"+mappingParentPath);
+        }
+        System.out.println("MappingFactory.loadMapping()...mapLoaded:"+mapLoaded);
+        //re-connect the meta structure for source and target schemas
+        for (Component mapComp:mapLoaded.getComponents().getComponent())
+        {
+            if (mapComp.getRootElement() == null) continue;
+            String xsdLocation = mapComp.getLocation();
+            try
+            {
+
+                if ((mapComp.getType() != ComponentType.SOURCE)&&
+                    (mapComp.getType() != ComponentType.TARGET)) continue;
+
+                String xsdLocation2 = mappingParentPath+File.separator+mapComp.getLocation();
+                Object xsdObj = null;
+                //File xsdFile = null;
+                String sORt = "";
+                while(true)
+                {
+                    File xsdFile = new File(xsdLocation2);
+                    if ((xsdFile.exists())&&(xsdFile.isFile()))
+                    {
+                        xsdLocation = xsdLocation2;
+                        xsdObj = xsdFile;
+                        break;
+                    }
+                    xsdFile = null;
+                    xsdObj = null;
+                    if (xsdLocation.equals(xsdLocation2)) break;
+                    else xsdLocation2 = xsdLocation;
+                }
+
+                System.out.println("MappingFactory.loadMapping()..schema:"+mapComp.getType()+"="+xsdLocation);
+                XSDParser metaParser = new XSDParser();
+                if (mapComp.getType()==ComponentType.SOURCE)
+                {
+                    sORt = "Source";
+                    if ((sourceXSD != null)&&(sourceXSD.exists())&&(sourceXSD.isFile()))
+                    {
+                        //xsdFile = sourceXSD;
+                        xsdObj = sourceXSD;
+                    }
+                    //if (sourceXSDObj != null) xsdObj = sourceXSDObj;
+                    else sourceParser=metaParser;
+                }
+                else
+                {
+                    sORt = "Target";
+                    if ((targetXSD != null)&&(targetXSD.exists())&&(targetXSD.isFile()))
+                    {
+                        //xsdFile = targetXSD;
+                        xsdObj = targetXSD;
+                    }
+                    //if (targetXSDObj != null) xsdObj = targetXSDObj;
+                    else targetParser=metaParser;
+                }
+
+                if (xsdObj != null)
+                {
+                    //System.out.println("CCCCC HHH A : " + xsdFile.getAbsolutePath());
+                    if (xsdObj instanceof File) metaParser.loadSchema(((File)xsdObj).toURI().toString(), null);
+                    else metaParser.loadSchema(xsdObj.toString(), null);
+                }
+                else  metaParser.loadSchema(xsdLocation, null);
+
+//                    mapComp.setLocation(xsdLocation);
+
+
+                String erMessage = null;
+                while(true)
+                {
+                    boolean res = MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
+                    if (res) break;
+
+                    if (xsdObj != null)
+                        throw new JAXBException("Namespace or root element name is mismatched with "+sORt+" XSD file. : " + xsdObj.toString());
+                    String c = null;
+                    try
+                    {
+                        c = FileUtil.downloadFromURLtoTempFile(xsdLocation);
+                    }
+                    catch(IOException ie)
+                    {
+                        erMessage = ie.getMessage();
+                        c = null;
+                        //throw new JAXBException(ie.getMessage());
+                    }
+                    if ((c != null)&&(!c.trim().equals("")))
+                    {
+                        File fz = new File(c);
+                        if ((fz.exists())&&(fz.isFile()))
+                        {
+                            fz.delete();
+                            throw new JAXBException("Namespace or root element name is mismatched with "+sORt+" XSD location. : " + xsdLocation);
+                        }
+                        //else throw new JAXBException("Invalid URL as "+sORt+" XSD location. : " + xsdLocation);
+                    }
+                    String xsdF = xsdLocation;
+                    while(true)
+                    {
+                        int idx = xsdF.indexOf(File.separator);
+                        if (idx >= 0)
+                        {
+                            xsdF = xsdF.substring(idx + File.separator.length());
+                            continue;
+                        }
+                        idx = xsdF.indexOf("/");
+                        if (idx >= 0)
+                        {
+                            xsdF = xsdF.substring(idx + 1);
+                            continue;
+                        }
+                        break;
+                    }
+                    File currentDir = new File(mappingParentPath);
+                    if ((!currentDir.exists())||(!currentDir.isDirectory()))
+                        throw new JAXBException("Invalid "+sORt+" XSD location. (1) : " + xsdLocation);
+
+                    File[] list = currentDir.listFiles();
+                    String newLocation = null;
+                    for (File file:list)
+                    {
+                        if (!file.isFile()) continue;
+                        String fn = file.getName();
+                        if (fn.toLowerCase().endsWith(".zip")) {}
+                        else if (fn.toLowerCase().endsWith(".jar")) {}
+                        else continue;
+                        System.out.println("CCCC zip file Name:" + fn);
+                        ZipUtil zipUtil = null;
+
+                        try
+                        {
+                            zipUtil = new ZipUtil(file.getAbsolutePath());
+                        }
+                        catch(IOException ie)
+                        {
+                            System.out.println("CCCC irir : " + ie.getMessage());
+                            continue;
+                        }
+                        ZipEntry zipEntry = null;
+                        try
+                        {
+                            zipEntry = zipUtil.searchEntryWithWholeName(xsdF);
+                        }
+                        catch(IOException ie)
+                        {
+                            List<String> list1 = zipUtil.getEntryNames();
+                            String select = null;
+                            int number = -1;
+                            for(String str:list1)
+                            {
+                                int count = -1;
+                                if (!str.endsWith(xsdF)) continue;
+                                if (str.equals(xsdF)) count = 0;
+                                else
+                                {
+                                    String loc = xsdLocation.substring(0, xsdLocation.length()-xsdF.length());
+                                    String ent = str.substring(0, str.length()-xsdF.length());
+                                    int cnt2 = 0;
+                                    for(int i=0;i<ent.length();i++)
+                                    {
+                                        if (i >= loc.length()) break;
+                                        String acharL = loc.substring(loc.length()-(i+1), loc.length()-i);
+                                        String acharE = ent.substring(ent.length()-(i+1), ent.length()-i);
+                                        if (acharL.equals("\\")) acharL = "/";
+                                        if (acharE.equals("\\")) acharE = "/";
+                                        if (acharL.equals(acharE)) cnt2++;
+                                        else break;
+                                    }
+                                    if (cnt2 > 0) count = cnt2;
+                                }
+                                if (count > number)
+                                {
+                                    number = count;
+                                    select = str;
+                                }
+                            }
+                            if (select != null)
+                            {
+                                zipEntry = zipUtil.getZipFile().getEntry(select);
+                            }
+                            else zipEntry = null;
+                        }
+
+                        //System.out.println("CCCC new XSD location:" + xsdF);
+                        if (zipEntry == null) continue;
+                        newLocation = zipUtil.getAccessURL(zipEntry);
+                        if (newLocation != null) break;
+                    }
+                    if (newLocation == null)
+                    {
+                        //System.out.println("CCCC new XSD location:" + xsdF);
+                        //if (erMessage == null)
+                        throw new JAXBException("Invalid "+sORt+" XSD location. (2) : " + xsdLocation);
+                    }
+                    System.out.println("CCCC new XSD location:" + newLocation);
+                    metaParser.loadSchema(newLocation, null);
+                    res = MappingFactory.loadMetaXSD(mapLoaded, metaParser, mapComp.getRootElement().getNameSpace(),mapComp.getRootElement().getName(),mapComp.getType() );
+                    if (!res) //throw new JAXBException("Invalid "+sORt+" XSD location. (3) : " + xsdLocation);
+                        throw new JAXBException("Namespace or root element name is mismatched with "+sORt+" XSD file. : " + xsdLocation);
+                    break;
+                }
+                mapComp.setLocation(metaParser.getSchemaURI());
+                if (mapComp.getType()==ComponentType.SOURCE)
+                {
+                    if ((sourceXSD != null)&&(sourceXSD.exists())&&(sourceXSD.isFile())) sourceParser=metaParser;
+                    //if (sourceXSDObj != null) sourceParser=metaParser;
+                }
+                else
+                {
+                    if ((targetXSD != null)&&(targetXSD.exists())&&(targetXSD.isFile())) targetParser=metaParser;
+                    //if (targetXSDObj != null) targetParser=metaParser;
+                }
+
+            }
+            catch(JAXBException ee)
+            {
+                String msg = ee.getMessage();
+                if ((msg == null)||(msg.trim().equals("")))
+                    msg = ee.getClass().getCanonicalName()+":"+ "Failed to read or parse schema document (1) - " + xsdLocation;
+                //System.out.println("CCCC =======");
+                //ee.printStackTrace();
+                throw new JAXBException(msg);
+
+            }
+            catch(Exception ee)
+            {
+                String msg = ee.getMessage();
+                if ((msg == null)||(msg.trim().equals("")))
+                    msg = "Failed to read or parse schema document - " + xsdLocation;
+                ee.printStackTrace();
+                throw new JAXBException(ee.getClass().getCanonicalName()+":"+msg);
+
+            }
+        }
+
+
+        if ((mapLoaded.getTags().getTag() != null)&&(mapLoaded.getTags().getTag().size() > 0))
+        {
+            Hashtable <String, BaseMeta> srcMetaHash=new Hashtable <String, BaseMeta>();
+            Hashtable <String, BaseMeta> trgtMetaHash=new Hashtable <String, BaseMeta>();
+            //pre-process mapping for annotation
+            for (Component mapComp:mapLoaded.getComponents().getComponent())
+            {
+                if (mapComp.getType().value().equals(ComponentType.SOURCE.value()))
+                {
+                    mapComp.getRootElement().setId("/"+mapComp.getRootElement().getName());
+                    processMeta(srcMetaHash, mapComp.getRootElement(), null, mapLoaded.getTags().getTag());
+                }
+                else if (mapComp.getType().value().equals(ComponentType.TARGET.value()))
+                {
+                    mapComp.getRootElement().setId("/"+mapComp.getRootElement().getName());
+                    processMeta(trgtMetaHash,mapComp.getRootElement(), null, mapLoaded.getTags().getTag());
+                }
+            }
+
+            //sort tags with precedence from low to high
+            // 0 -- componentType; enumValues: source, taret, function
+            // 1 -- key; allowing value: entry's xpath
+            // 2 -- componentKind; enumValues: choice, clone
+            // 3 -- value; the ordered ASCII characters
+            Collections.sort(mapLoaded.getTags().getTag());
+            for (TagType tag:mapLoaded.getTags().getTag())
+            {
+                if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
+                {
+                    processAnnotationTag (tag, srcMetaHash, mapLoaded.getTags().getTag());
+                }
+                else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
+                {
+                    processAnnotationTag (tag, trgtMetaHash, mapLoaded.getTags().getTag());
+                }
+            }
+        }
+
+
+
+
+        if ((mapLoaded.getLinks().getLink() != null)&&(mapLoaded.getLinks().getLink().size() > 0))
+        {
+
+            for (LinkType link:mapLoaded.getLinks().getLink())
+            {
+                if ((link.getSource().getComponentid().equals("0"))||
+                    (link.getSource().getComponentid().equals("1")))
+                {
+                    String id = link.getSource().getId();
+                    //System.out.println("CCCX Source("+link.getSource().getComponentid()+") : id=" + id);
+                    BaseMeta meta = searchElementMeta(id);
+                    //if (meta == null) meta = searchElementMeta(id, ComponentType.TARGET);
+                }
+
+                if ((link.getTarget().getComponentid().equals("0"))||
+                    (link.getTarget().getComponentid().equals("1")))
+                {
+                    String id = link.getTarget().getId();
+                    //System.out.println("CCCX Target("+link.getTarget().getComponentid()+") : id=" + id);
+                    BaseMeta meta = searchElementMeta(id);
+                    //if (meta == null) meta = searchElementMeta(id, ComponentType.SOURCE);
+                }
+
+            }
+        }
+
+
+
+        return mapLoaded;
+        //if (mapData == null) return  jaxbElmt.getValue();
+    }
+
+/*
     {
         Mapping mapLoaded = null;
         String mappingParentPath = null;
@@ -323,13 +659,13 @@ public class MappingFactory
         return mapLoaded;
         //if (mapData == null) return  jaxbElmt.getValue();
 	}
-
-	private static void processAnnotationTag(TagType tag, Hashtable <String, BaseMeta>  metaHash, List<TagType> tagList)
-	{
+*/
+    private static void processAnnotationTag(TagType tag, Hashtable <String, BaseMeta>  metaHash, List<TagType> tagList)
+    {
         //v System.out.println("CCCX processAnnotationTag: " + tag.getKey());
         if ((metaHash == null)||(metaHash.size() ==0)) return;
         String parentKey=tag.getKey().substring(0, tag.getKey().lastIndexOf("/"));
-		ElementMeta elmntMeta=(ElementMeta)metaHash.get(tag.getKey());
+        ElementMeta elmntMeta=(ElementMeta)metaHash.get(tag.getKey());
         if (elmntMeta == null)
         {
             BaseMeta meta = searchElementMeta(tag.getKey(), tag.getComponentType());
@@ -346,38 +682,38 @@ public class MappingFactory
             else parentMeta = (ElementMeta)meta;
         }
         if (tag.getKind().value().equals(KindType.CLONE.value()))
-		{
-			ElementMeta cloneElement=(ElementMeta)elmntMeta.clone();
-			int insertingIndx=0;
+        {
+            ElementMeta cloneElement=(ElementMeta)elmntMeta.clone();
+            int insertingIndx=0;
 
-			//find the position of the element being cloned
-			for (ElementMeta siblingElmnt:parentMeta.getChildElement())
-			{
-				insertingIndx++;
-				if (siblingElmnt.getName().equals(elmntMeta.getName()))
-					break;
-			}
-			cloneElement.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
-			cloneElement.setId(parentMeta.getId()+"/"+cloneElement.getName());
-			parentMeta.getChildElement().add(insertingIndx+cloneElement.getMultiplicityIndex().intValue()-1, cloneElement);
-			List<ElementMeta> pList = new ArrayList<ElementMeta>();
+            //find the position of the element being cloned
+            for (ElementMeta siblingElmnt:parentMeta.getChildElement())
+            {
+                insertingIndx++;
+                if (siblingElmnt.getName().equals(elmntMeta.getName()))
+                    break;
+            }
+            cloneElement.setMultiplicityIndex(BigInteger.valueOf(Integer.valueOf(tag.getValue()).intValue()));
+            cloneElement.setId(parentMeta.getId()+"/"+cloneElement.getName());
+            parentMeta.getChildElement().add(insertingIndx+cloneElement.getMultiplicityIndex().intValue()-1, cloneElement);
+            List<ElementMeta> pList = new ArrayList<ElementMeta>();
             pList.add(parentMeta);
             processMeta(metaHash, cloneElement, pList, tagList);
-		}
-		else if (tag.getKind().value().equals(KindType.CHOICE.value()))
-		{
-			System.out.println("MappingFactory.processAnnotationTag()..choosen element:"+tag.getKey());
-			elmntMeta.setIsChosen(true);
+        }
+        else if (tag.getKind().value().equals(KindType.CHOICE.value()))
+        {
+            System.out.println("MappingFactory.processAnnotationTag()..choosen element:"+tag.getKey());
+            elmntMeta.setIsChosen(true);
             if (elmntMeta.getChildElement().size() == 0)
             {
                 if (tag.getComponentType()==ComponentType.SOURCE) sourceParser.expandElementMetaWithLazyLoad(elmntMeta);
                 else targetParser.expandElementMetaWithLazyLoad(elmntMeta);
             }
         }
-		else if (tag.getKind().value().equals(KindType.RECURSION.value()))
-		{
+        else if (tag.getKind().value().equals(KindType.RECURSION.value()))
+        {
 
-			ElementMeta recursiveMeta=searchRecursiveAncestor(metaHash, elmntMeta, elmntMeta.getType());
+            ElementMeta recursiveMeta=searchRecursiveAncestor(metaHash, elmntMeta, elmntMeta.getType());
             if (recursiveMeta != null)
             {
                 ElementMeta recursiveMetaClone=(ElementMeta)recursiveMeta.clone();
@@ -395,40 +731,40 @@ public class MappingFactory
             else System.out.println("Cannot find the ancester of recursive node : name="+ elmntMeta.getName() + ", namespace=" + elmntMeta.getNameSpace() + ", type=" + elmntMeta);
         }
 
-	}
-	/**
-	 * Recursive search ancestor element meta to find the recursive type
-	 * @param metaHash
-	 * @param element
-	 * @param recursionType
-	 * @return ElementMeta
-	 */
-	private static ElementMeta searchRecursiveAncestor(Hashtable <String, BaseMeta>  metaHash, ElementMeta element, String recursionType)
-	{
-		ElementMeta parentMeta;
-		String parentKey=element.getId().substring(0,element.getId().lastIndexOf("/"));
-		parentMeta=(ElementMeta)metaHash.get(parentKey);
-		if (parentMeta==null)
-			return parentMeta;
+    }
+    /**
+     * Recursive search ancestor element meta to find the recursive type
+     * @param metaHash
+     * @param element
+     * @param recursionType
+     * @return ElementMeta
+     */
+    private static ElementMeta searchRecursiveAncestor(Hashtable <String, BaseMeta>  metaHash, ElementMeta element, String recursionType)
+    {
+        ElementMeta parentMeta;
+        String parentKey=element.getId().substring(0,element.getId().lastIndexOf("/"));
+        parentMeta=(ElementMeta)metaHash.get(parentKey);
+        if (parentMeta==null)
+            return parentMeta;
         else if (parentMeta.getType() == null) {}
         else if (element.getType() == null) {}
         else if (parentMeta.getType().equals(element.getType()))
-			return parentMeta;
-		return searchRecursiveAncestor(metaHash,  parentMeta, recursionType);
-	}
+            return parentMeta;
+        return searchRecursiveAncestor(metaHash,  parentMeta, recursionType);
+    }
 
-	/**
-	 * Set unique ID for each element meta and attribute meta, these IDs are
-	 * referred as processing links
-	 * @param metaHash
-	 * @param element
-	 */
+    /**
+     * Set unique ID for each element meta and attribute meta, these IDs are
+     * referred as processing links
+     * @param metaHash
+     * @param element
+     */
     //private static void processMeta(Hashtable <String, BaseMeta>  metaHash, ElementMeta element, ElementMeta parent)
-	//{
+    //{
     //    processMeta(metaHash, element, parent, null);
     //}
     private static void processMeta(Hashtable <String, BaseMeta>  metaHash, ElementMeta element, List<ElementMeta> parents, List<TagType> tagList)
-	{
+    {
         if (parents == null) parents = new ArrayList<ElementMeta>();
         String addedTag = getAddedTag(element, tagList);
         boolean find = false;
@@ -474,8 +810,8 @@ public class MappingFactory
 
 
         if (element.isIsRecursive()&&element.isIsEnabled()) //typeStack.contains(currentType))
-			return;
-		//process attribute
+            return;
+        //process attribute
         if ((find)&&(addedTag.indexOf("/@") > 0))
         {
             for (AttributeMeta attr:element.getAttrData())
@@ -499,7 +835,7 @@ public class MappingFactory
                 processMeta(metaHash, childElement, parents, tagList);
             }
         }
-	}
+    }
     private static String getAddedTag(BaseMeta baseMeta, List<TagType> tagList)
     {
         String addedTag = null;
@@ -522,41 +858,41 @@ public class MappingFactory
     }
 
     public static void saveMapping(File f, Mapping m) throws JAXBException {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
-		Marshaller u = jc.createMarshaller();
+        JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
+        Marshaller u = jc.createMarshaller();
 
-		//do not persistent the meta structure
-		Hashtable<String, List<ElementMeta>> rootChildListHash=new Hashtable<String, List<ElementMeta>>();
-		Hashtable<String, List<AttributeMeta>> rootAttrListHash=new Hashtable<String, List<AttributeMeta>>();
-		for (Component mapComp:m.getComponents().getComponent())
-		{
-			if (mapComp.getRootElement()!=null)
-			{
-				List<ElementMeta> childList=new ArrayList<ElementMeta>();
-				childList.addAll(mapComp.getRootElement().getChildElement());
-				rootChildListHash.put(mapComp.getLocation()+mapComp.getId(), childList);
-				mapComp.getRootElement().getChildElement().clear();
+        //do not persistent the meta structure
+        Hashtable<String, List<ElementMeta>> rootChildListHash=new Hashtable<String, List<ElementMeta>>();
+        Hashtable<String, List<AttributeMeta>> rootAttrListHash=new Hashtable<String, List<AttributeMeta>>();
+        for (Component mapComp:m.getComponents().getComponent())
+        {
+            if (mapComp.getRootElement()!=null)
+            {
+                List<ElementMeta> childList=new ArrayList<ElementMeta>();
+                childList.addAll(mapComp.getRootElement().getChildElement());
+                rootChildListHash.put(mapComp.getLocation()+mapComp.getId(), childList);
+                mapComp.getRootElement().getChildElement().clear();
 
-				List<AttributeMeta> attrList=new ArrayList<AttributeMeta>();
-				attrList.addAll(mapComp.getRootElement().getAttrData());
-				rootAttrListHash.put(mapComp.getLocation()+mapComp.getId(), attrList);
-				mapComp.getRootElement().getAttrData().clear();
-			}
-		}
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement<Mapping>(new QName("mapping"),Mapping.class, m), f);
+                List<AttributeMeta> attrList=new ArrayList<AttributeMeta>();
+                attrList.addAll(mapComp.getRootElement().getAttrData());
+                rootAttrListHash.put(mapComp.getLocation()+mapComp.getId(), attrList);
+                mapComp.getRootElement().getAttrData().clear();
+            }
+        }
+        u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+        u.marshal(new JAXBElement<Mapping>(new QName("mapping"),Mapping.class, m), f);
 
-		//put the unmarshalled children back
-		for (Component mapComp:m.getComponents().getComponent())
-		{
-			if (mapComp.getRootElement()!=null)
-			{
-				mapComp.getRootElement().getChildElement().addAll(rootChildListHash.get(mapComp.getLocation()+mapComp.getId()));
-				mapComp.getRootElement().getAttrData().addAll(rootAttrListHash.get(mapComp.getLocation()+mapComp.getId()));
-				String xsdLocation=f.getParent()+File.separator+mapComp.getLocation();
-				mapComp.setLocation(xsdLocation);
-			}
-		}
+        //put the unmarshalled children back
+        for (Component mapComp:m.getComponents().getComponent())
+        {
+            if (mapComp.getRootElement()!=null)
+            {
+                mapComp.getRootElement().getChildElement().addAll(rootChildListHash.get(mapComp.getLocation()+mapComp.getId()));
+                mapComp.getRootElement().getAttrData().addAll(rootAttrListHash.get(mapComp.getLocation()+mapComp.getId()));
+                String xsdLocation=f.getParent()+File.separator+mapComp.getLocation();
+                mapComp.setLocation(xsdLocation);
+            }
+        }
     }
     private static BaseMeta searchElementMeta(String path)
     {

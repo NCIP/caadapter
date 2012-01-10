@@ -120,9 +120,12 @@ public class MainMenuBar extends JMenuBar
         actionMap.put(ActionConstants.SAVE, defaultSaveAction);
         menuItemMap.put(ActionConstants.SAVE, saveMenuItem);
         DefaultSaveAsAction defaultSaveAsAction = new DefaultSaveAsAction(mainFrame);
+        //ImageIcon saveAsImageIcon = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
+        ImageIcon saveAsImageIcon = new ImageIcon(DefaultSettings.getImage("ico_saveAs.bmp"));
+        defaultSaveAsAction.setIcon(saveAsImageIcon);
         JMenuItem saveAsMenuItem = new JMenuItem(defaultSaveAsAction);
-        ImageIcon saveAsImageIcon = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
-        saveAsMenuItem.setIcon(saveAsImageIcon);
+
+        //saveAsMenuItem.setIcon(saveAsImageIcon);
         actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
         menuItemMap.put(ActionConstants.SAVE_AS, saveAsMenuItem);
         DefaultCloseAction defaultCloseAction = new DefaultCloseAction(mainFrame);
@@ -151,7 +154,8 @@ public class MainMenuBar extends JMenuBar
         JMenu fileMenu = new JMenu(MenuConstants.FILE_MENU_NAME);
         fileMenu.setMnemonic('F');
         JMenu newMenu = constructNewCmtsMenu();
-        ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+        //ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+        ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("ico_new.bmp"));
         newMenu.setIcon(newImageIcon);
         fileMenu.add(newMenu);
         fileMenu.addSeparator();
@@ -278,6 +282,8 @@ public class MainMenuBar extends JMenuBar
         resetOpenSubMenu(hasActiveDocument);
         JMenuItem saveMenuItem = menuItemMap.get(ActionConstants.SAVE);
         JMenuItem saveAsMenuItem = menuItemMap.get(ActionConstants.SAVE_AS);
+        //ImageIcon saveAsImageIcon = new ImageIcon(DefaultSettings.getImage("fileSaveAs.gif"));
+        //saveAsMenuItem.setIcon(saveAsImageIcon);
 //		JMenuItem validateMenuItem = menuItemMap.get(ActionConstants.VALIDATE);
 		JMenuItem closeMenuItem = menuItemMap.get(ActionConstants.CLOSE);
 		JMenuItem closeAllMenuItem = menuItemMap.get(ActionConstants.CLOSE_ALL);

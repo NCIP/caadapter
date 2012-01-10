@@ -165,7 +165,8 @@ public class MainFrame extends JFrame
         if (toolBar.getComponentCount() == 0)
         {
             NewMapFileAction newMapAction = new NewMapFileAction(instanceContainer);
-            ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+            //ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
+            ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("ico_new.bmp"));
             newMapAction.setIcon(newImageIcon);
             newMapAction.setShortDescription("New Mapping File");
 
