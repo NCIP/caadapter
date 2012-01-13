@@ -32,7 +32,9 @@ import gov.nih.nci.cbiit.cmts.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.MappingTargetTree;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeMouseAdapter;
 import gov.nih.nci.cbiit.cmts.ui.tree.TreeSelectionHandler;
+import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 import gov.nih.nci.cbiit.cmts.util.ResourceUtils;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 
 
 import java.awt.*;
@@ -127,7 +129,35 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 			DefaultSettings.reportThrowableToLogAndUI(this, e1, "", this, false, false);
 		}
 	}
-
+    /*
+    private void refreshPanel()
+    {
+        if (mapping == null) return;
+        MappingFactory.saveMapping(persistentFile, mappingData);
+		try
+		{
+			if (!GeneralUtilities.areEqual(defaultFile, file))
+			{//not equal, change it.
+				removeFileUsageListener(defaultFile, viewerPanel);
+				defaultFile = file;
+			}
+			postActionPerformed(viewerPanel);
+//			JOptionPane.showMessageDialog(viewerPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+			viewerPanel.setSaveFile(file);
+			return true;
+		}
+		catch(Throwable e)
+		{
+			//restore the change value since something occurred and believe the save process is aborted.
+			viewerPanel.setChanged(oldChangeValue);
+			//rethrow the exeception
+			e.printStackTrace();
+			throw new Exception(e);
+		}
+        MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
+            rPanel.processOpenMapFile(mapFile, rMap);
+    }
+    */
     private void processingButtonOpenSource() throws Exception
     {
         //this.sourceButtonPanel.repaint();
@@ -162,43 +192,88 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         }
 
         Mapping rMap = null;
-
+        Mapping mapping1 = null;
         try
         {
-            //System.out.println("CCCCC HHH98 : " + file.getAbsolutePath());
-            rMap = compareMappingData(file, ComponentType.SOURCE);
+            while(true)
+            {
+                //System.out.println("CCCCC HHH98 : " + file.getAbsolutePath());
+                mapping1 = getGraphController().retrieveMappingData(false);
+                if ((mapping1 == null)||(mapping1.getLinks().getLink().size() == 0))
+                {
+                    Mapping m = null;
+                    try
+                    {
+                        m = getReorganizedMappingData();
+                    }
+                    catch(Exception e)
+                    {
+                        break;
+                    }
+                    //Mapping m = getMapping();
+                    if ((m == null)||(m.getLinks().getLink().size() == 0)) break;
+                    else mapping1 = m;
+
+                }
+                rMap = compareMappingData(file, ComponentType.SOURCE, mapping1);
+                break;
+            }
         }
         catch(Exception ee)
         {
             int res = JOptionPane.showConfirmDialog(this, ee.getMessage() + "\nAll Mapping data will be removed. Are you sure?", "WARNING: Mapping Data Removed", JOptionPane.WARNING_MESSAGE);
+            ee.printStackTrace();
             if (res == JOptionPane.YES_OPTION) rMap = null;
             else return;
         }
 
         if (rMap != null)
         {
-            MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
-            rPanel.processOpenMapFile(mapFile, rMap);
-            int missed = rPanel.getGraphController().getSourceMissedLink().size();
-
+            //System.out.println("CCCCC Source1 (rMap != null)" + file.getName());
+            int missed = 0;
+            if (mapFile != null)
+            {
+                MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
+                rPanel.processOpenMapFile(mapFile, rMap);
+                missed = rPanel.getGraphController().getSourceMissedLink().size();
+            }
+            else
+            {
+                String tempS = FileUtil.getTemporaryFileName(".map");
+                boolean success = true;
+                try
+                {
+                    MappingFactory.saveMapping(new File(tempS), mapping1);
+                }
+                catch(Exception ee)
+                {
+                    success = false;
+                    System.out.println("Temp map saving failure: " + ee.getMessage());
+                }
+                if (success)
+                {
+                    File ff = new File(tempS);
+                    MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
+                    rPanel.processOpenMapFile(ff, rMap);
+                    missed = rPanel.getGraphController().getSourceMissedLink().size();
+                    //File ff = new File(tempS);
+                    ff.delete();
+                }
+            }
             int res = JOptionPane.YES_OPTION;
             if (missed != 0)
             {
                 res = JOptionPane.showConfirmDialog(this, "" + missed + " Mapping data will be removed. Are you sure?", "WARNING: Lost Mapping Data", JOptionPane.WARNING_MESSAGE);
             }
-            if (res == JOptionPane.YES_OPTION)
-            {
-                //processOpenSourceTree(file, true, true, rMap);
-                //System.out.println("CCCCC FF2 ");
-                processOpenMapFile(null, rMap);
-            }
-            //getGraphController().setMappingData(rMap, false);
+            if (res == JOptionPane.YES_OPTION) processOpenMapFile(null, rMap);
+
         }
         else if (file != null)
         {
             processOpenSourceTree(file, true, true, selectedRootTempStore);
             selectedRootTempStore = null;
         }
+        //else System.out.println("CCCCC Source3 else");
     }
     private void processingButtonOpenTarget() throws Exception
     {
@@ -232,10 +307,32 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         }
 
         Mapping rMap = null;
-
+        Mapping mapping1 = null;
         try
         {
-            rMap = compareMappingData(file, ComponentType.TARGET);
+            while(true)
+            {
+                //System.out.println("CCCCC HHH99 : " + file.getAbsolutePath());
+                mapping1 = getGraphController().retrieveMappingData(false);
+                if ((mapping1 == null)||(mapping1.getLinks().getLink().size() == 0))
+                {
+                    Mapping m = null;
+                    try
+                    {
+                        m = getReorganizedMappingData();
+                    }
+                    catch(Exception e)
+                    {
+                        break;
+                    }
+                    //Mapping m = getMapping();
+                    if ((m == null)||(m.getLinks().getLink().size() == 0)) break;
+                    else mapping1 = m;
+
+                }
+                rMap = compareMappingData(file, ComponentType.TARGET, mapping1);
+                break;
+            }
         }
         catch(Exception ee)
         {
@@ -246,28 +343,50 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 
         if (rMap != null)
         {
-            MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
-            rPanel.processOpenMapFile(mapFile, rMap);
-            int missed = rPanel.getGraphController().getTargetMissedLink().size();
-
+            int missed = 0;
+            if (mapFile != null)
+            {
+                MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
+                rPanel.processOpenMapFile(mapFile, rMap);
+                missed = rPanel.getGraphController().getSourceMissedLink().size();
+            }
+            else
+            {
+                String tempS = FileUtil.getTemporaryFileName(".map");
+                boolean success = true;
+                try
+                {
+                    MappingFactory.saveMapping(new File(tempS), mapping1);
+                }
+                catch(Exception ee)
+                {
+                    success = false;
+                    System.out.println("Temp map saving failure(Target): " + ee.getMessage());
+                }
+                if (success)
+                {
+                    File ff = new File(tempS);
+                    MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
+                    rPanel.processOpenMapFile(ff, rMap);
+                    missed = rPanel.getGraphController().getTargetMissedLink().size();
+                    //File ff = new File(tempS);
+                    ff.delete();
+                }
+            }
             int res = JOptionPane.YES_OPTION;
             if (missed != 0)
             {
                 res = JOptionPane.showConfirmDialog(this, "" + missed + " Mapping data will be removed. Are you sure?", "WARNING: Lost Mapping Data", JOptionPane.WARNING_MESSAGE);
             }
-            if (res == JOptionPane.YES_OPTION)
-            {
-                //processOpenSourceTree(file, true, true, rMap);
-                //System.out.println("CCCCC FF3 ");
-                processOpenMapFile(null, rMap);
-            }
-
+            if (res == JOptionPane.YES_OPTION) processOpenMapFile(null, rMap);
         }
         else if (file != null)
         {
+            //System.out.println("CCCCC Target2 (file != null) : " + file.getName());
             processOpenTargetTree(file, true, true, selectedRootTempStore);
             selectedRootTempStore = null;
         }
+        //else System.out.println("CCCCC Target3 else");
     }
 
 
@@ -757,7 +876,11 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         {
             getGraphController().setMappingData(mapping, true);
         }
-        if (file == null) setSaveFile(mapFile);
+        if (file == null)
+        {
+            if (mapFile != null)
+                setSaveFile(mapFile);
+        }
         else
         {
             //System.out.println("CCCCC GGGG : map file = " + file.getAbsolutePath());
@@ -797,7 +920,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
             return false;
 
-        mapping = null;
+        //mapping = null;
         //System.out.println("CCCCC HHH991 : " + file.getAbsolutePath() + ", xsdParser=" + p.getSchemaURI());
         MappingFactory.loadMetaXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName(), ComponentType.SOURCE);
 
@@ -829,14 +952,14 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		return true;
 	}
     */
-    private Mapping compareMappingData(File xsdFile, ComponentType type) throws Exception
+    private Mapping compareMappingData(File xsdFile, ComponentType type, Mapping mapping1) throws Exception
 	{
-        Mapping mapping1 = getGraphController().retrieveMappingData(false);
-        //Mapping mapping1 = getReorganizedMappingData();
-
-        if (mapping1 == null) return null;
-
-        if (mapping1.getLinks().getLink().size() == 0) return null;
+//        Mapping mapping1 = getGraphController().retrieveMappingData(false);
+//        //Mapping mapping1 = getReorganizedMappingData();
+//
+//        if (mapping1 == null) return null;
+//
+//        if (mapping1.getLinks().getLink().size() == 0) return null;
 
         XSDParser p = new XSDParser();
 		p.loadSchema(xsdFile.getPath(), null);
@@ -879,7 +1002,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 
         if(trgtRoot == null || trgtRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
-        mapping = null;
+        //mapping = null;
         //System.out.println("CCCCC HHH993 : " + file.getAbsolutePath() + ", xsdParser=" + p.getSchemaURI());
         MappingFactory.loadMetaXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName(), ComponentType.TARGET);
 
@@ -936,7 +1059,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		selectedRootTempStore = chosenRoot;
         return chosenRoot;
 	}
-	
+
 	public void persistFile(File persistentFile)
 	{
 
@@ -949,10 +1072,10 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 			//set relative path for source and target schema files.
 
             String sourceRelatve=ResourceUtils.getRelativePath(sTree.getSchemaParser().getSchemaURI(),
-					persistentFile.getCanonicalFile().toURI().toString(), 
+					persistentFile.getCanonicalFile().toURI().toString(),
 					File.separator);
-			String targetRelatve=ResourceUtils.getRelativePath(tTree.getSchemaParser().getSchemaURI(), 
-					persistentFile.getCanonicalFile().toURI().toString(), 
+			String targetRelatve=ResourceUtils.getRelativePath(tTree.getSchemaParser().getSchemaURI(),
+					persistentFile.getCanonicalFile().toURI().toString(),
 					File.separator);
 			for (Component mapComp:mappingData.getComponents().getComponent())
 			{

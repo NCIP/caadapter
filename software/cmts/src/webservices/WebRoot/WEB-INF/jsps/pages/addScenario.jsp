@@ -43,6 +43,10 @@
 					</tr>
                 <%
 
+                    String methodS = request.getParameter("methd");
+                    if ((methodS == null)||(methodS.trim().equals(""))) methodS = "addScenarioRegistration";
+                    else methodS = methodS.trim();
+
                     String strS = request.getParameter("sourceNum");
                     String strT = request.getParameter("targetNum");
 
@@ -82,7 +86,7 @@
                 %>
                     <tr>
 					<td>Source Schema File(.xsd):</td><td><INPUT TYPE="FILE" NAME="sourceXsdName<%= iStr%>"></td>
-                    <td><a href="addScenario.do?methd=addScenarioRegistration&sourceNum=<%= (srcNum + 1)%>&targetNum=<%= tgtNum%>">Add a Source XSD field</a></td>
+                    <td><a href="addScenario.do?methd=<%= methodS%>&sourceNum=<%= (srcNum + 1)%>&targetNum=<%= tgtNum%>">Add a Source XSD field</a></td>
                     </tr>
                 <%
                          }
@@ -105,7 +109,7 @@
                 %>
                     <tr>
 					<td>Target Schema File(.xsd):</td><td><INPUT TYPE="FILE" NAME="targetXsdName<%= iStr%>"></td>
-                    <td><a href="addScenario.do?methd=addScenarioRegistration&sourceNum=<%= srcNum%>&targetNum=<%= (tgtNum+1)%>">Add a Target XSD field</a></td>
+                    <td><a href="addScenario.do?methd=<%= methodS%>&sourceNum=<%= srcNum%>&targetNum=<%= (tgtNum+1)%>">Add a Target XSD field</a></td>
                     </tr>
                 <%
                          }
@@ -119,7 +123,8 @@
                          }
                     } %>
                     <tr><td colspan=3>
-					<input type=submit value="Add Transformation Scenario"></td>
+                    <INPUT TYPE="hidden" NAME="methd" VALUE="<%= methodS%>">
+                    <input type="submit" value="Add Transformation Scenario"></td>
 					</tr>
 				</FORM>
 			</td>

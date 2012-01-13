@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -55,9 +56,13 @@ import org.xml.sax.SAXParseException;
 
 public class AddNewScenario extends HttpServlet {
 
+    private String SOURCE_DIRECTORY_TAG = "source";
+    private String TARGET_DIRECTORY_TAG = "target";
     private String path;
-    private List<String> sourceXSDList = new ArrayList<String>();
-    private List<String> targetXSDList = new ArrayList<String>();
+
+    private List<String> includedXSDList = new ArrayList<String>();
+    //private List<String> targetXSDList = new ArrayList<String>();
+    //private String scenarioHomePath = "";
 
        /** **********************************************************
 	    *  doPost()
@@ -100,96 +105,129 @@ public class AddNewScenario extends HttpServlet {
 	    	  List <FileItem> /* FileItem */ items =upload.parseRequest(req);
 
 	    	  // Process the uploaded items
-	    	  String jobType=""; // add, update or delete scenario
-              String scenarioName=""; //mapping scenario name
+	    	  String method=""; // add, update or delete scenario
+              String scenarioName = null; //mapping scenario name
               Iterator <FileItem> iter = items.iterator();
 	    	  String transType="";
 
-              while (iter.hasNext()) {
+              List<FileItem> fileItemList = new ArrayList<FileItem>();
+
+              while (iter.hasNext())
+              {
 	    		  FileItem item = (FileItem) iter.next();
 
-	    		  if (item.isFormField()) {
+	    		  if (item.isFormField())
+                  {
 	    			  System.out.println("AddNewScenario.doPost()..item is formField:"+item.getFieldName()+"="+item.getString());
 	    			  //if (item.getFieldName().equals("jobType")) jobType = item.getString();
 
                       if (item.getFieldName().equals("transformationType")) transType = item.getString();
+                      if (item.getFieldName().equals("methd"))
+                      {
+                          method = item.getString();
+                          System.out.println("AddNewScenario.doPost()...methodName:"+method);
+                      }
 
-                      if (item.getFieldName().equals("scenarioName")) {
+                      if (item.getFieldName().equals("scenarioName"))
+                      {
 	    				  scenarioName = item.getString();
-	    				  path = System.getProperty("gov.nih.nci.cbiit.cmts.path");
-	    				  if (path==null)
-	    					  path=ScenarioUtil.CMTS_SCENARIO_HOME;
-	    				  File scnHome=new File(path);
-	    				  if (!scnHome.exists())
-                          {
-                              if (!scnHome.mkdir())
-                              {
-                                  String errMsg="Scenario home directory creation filure, not able to save:"+scenarioName;
-	    				    	  System.out.println("AddNewScenario.doPost()...:"+errMsg);
-	    				    	  req.setAttribute("rtnMessage", errMsg);
-	    				    	  res.sendRedirect("errormsg.do");
-	    				    	  return;
-                              }
-                          }
+                      }
+                  }
+                  else fileItemList.add(item);
+              }
 
-	    				  String scenarioPath=path+File.separator +scenarioName;
-	    				  System.out.println("AddNewScenario.doPost()...scenarioPath:"+scenarioPath);
-	    				  boolean exists = (new File(scenarioPath)).exists();
-	    				  if (exists) 
-	    				  {
-	    				    	String errMsg="Scenario exists, not able to save:"+scenarioName;
-	    				    	System.out.println("AddNewScenario.doPost()...:"+errMsg);
-	    				    	req.setAttribute("rtnMessage", errMsg);
-	    				    	res.sendRedirect("errormsg.do");
-	    				    	return;
-	    				  } else {
-	    				    	boolean success = (new File(scenarioPath)).mkdir();
-	    				        if (!success) 
-	    				        {
-	    				        	String errMsg="Faild to create scenario:"+scenarioName;
-		    				    	System.out.println("AddNewScenario.doPost()...:"+errMsg);
-		    				    	req.setAttribute("rtnMessage", errMsg);
-		    				    	res.sendRedirect("errormsg.do");
-		    				    	return;
-	    				        }
-                                fileList.add(scenarioPath);
-                                //if (transType.equals("map"))
-                                //{
-                                    success = (new File(scenarioPath+File.separator+"source")).mkdir();
-                                    if (!success)
-                                    {
-                                        String errMsg="Faild to create source schema folder:"+scenarioName;
-                                        System.out.println("AddNewScenario.doPost()...:"+errMsg);
-                                        req.setAttribute("rtnMessage", errMsg);
-                                        deleteDirAndFilesOnError(fileList);
-                                        res.sendRedirect("errormsg.do");
-                                        return;
-                                    }
-                                    fileList.add(scenarioPath+File.separator+"source");
-                                    success = (new File(scenarioPath+File.separator+"target")).mkdir();
-                                    if (!success)
-                                    {
-                                        String errMsg="Faild to create target schema folder:"+scenarioName;
-                                        System.out.println("AddNewScenario.doPost()...:"+errMsg);
-                                        req.setAttribute("rtnMessage", errMsg);
-                                        deleteDirAndFilesOnError(fileList);
-                                        res.sendRedirect("errormsg.do");
-                                        return;
-                                    }
-                                    fileList.add(scenarioPath+File.separator+"target");
-                                //}
-                          }
-	    			  }
-	    		  } else {
+              if ((scenarioName == null)||(scenarioName.trim().equals("")))
+              {
+                  String errMsg="Failure : Scenario Name is Null";
+                  System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                  req.setAttribute("rtnMessage", errMsg);
+                  res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                  return;
+              }
+              else
+              {
+                  scenarioName = scenarioName.trim();
+                  path = System.getProperty("gov.nih.nci.cbiit.cmts.path");
+                  if (path==null)
+                      path=ScenarioUtil.CMTS_SCENARIO_HOME;
+                  File scnHome=new File(path);
+                  if (!scnHome.exists())
+                  {
+                      if (!scnHome.mkdir())
+                      {
+                          String errMsg="Scenario home directory creation filure, not able to save:"+scenarioName;
+                          System.out.println("AddNewScenario.doPost()...:"+errMsg);
+                          req.setAttribute("rtnMessage", errMsg);
+                          res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                          return;
+                      }
+                  }
+
+                  String scenarioPath=path+File.separator +scenarioName;
+                  System.out.println("AddNewScenario.doPost()...scenarioPath:"+scenarioPath);
+                  boolean exists = (new File(scenarioPath)).exists();
+                  //scenarioHomePath = scenarioPath;
+                  if (exists)
+                  {
+                        String errMsg="Scenario exists, not able to save:"+scenarioName;
+                        System.out.println("AddNewScenario.doPost()...:"+errMsg);
+                        req.setAttribute("rtnMessage", errMsg);
+                        res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                        return;
+                  } else {
+                        boolean success = (new File(scenarioPath)).mkdir();
+                        if (!success)
+                        {
+                            String errMsg="Faild to create scenario:"+scenarioName;
+                            System.out.println("AddNewScenario.doPost()...:"+errMsg);
+                            req.setAttribute("rtnMessage", errMsg);
+                            res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                            return;
+                        }
+                        fileList.add(scenarioPath);
+
+                        String sourcePath = scenarioPath+File.separator+SOURCE_DIRECTORY_TAG;
+                        success = (new File(sourcePath)).mkdir();
+                        if (!success)
+                        {
+                            String errMsg="Faild to create source schema folder:"+scenarioName;
+                            System.out.println("AddNewScenario.doPost()...:"+errMsg);
+                            req.setAttribute("rtnMessage", errMsg);
+                            deleteDirAndFilesOnError(fileList);
+                            res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                            return;
+                        }
+                        fileList.add(sourcePath);
+                        String targetPath = scenarioPath+File.separator+TARGET_DIRECTORY_TAG;
+                        success = (new File(targetPath)).mkdir();
+                        if (!success)
+                        {
+                            String errMsg="Faild to create target schema folder:"+scenarioName;
+                            System.out.println("AddNewScenario.doPost()...:"+errMsg);
+                            req.setAttribute("rtnMessage", errMsg);
+                            deleteDirAndFilesOnError(fileList);
+                            res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                            return;
+                        }
+                        fileList.add(targetPath);
+                  }
+	    	  }
+
+              boolean isSourceZip = false;
+              boolean isTargetZip = false;
+              if (fileItemList.size() > 0)
+              {
+                  for(FileItem item:fileItemList)
+                  {
 	    			  String fieldName = item.getFieldName();
 	    			  System.out.println("AddNewScenario.doPost()..item is NOT formField:"+item.getFieldName());//+"="+item.getString());
 	    			  String filePath = item.getName();
 	    			  String fileName=extractOriginalFileName(filePath);
-	    			  System.out.println("AddNewScenario.doPost()..original file Name:"+fileName);
-                      System.out.println("                       ..original file Path:"+filePath);
+	    			  System.out.println("AddNewScenario.doPost()..original file Name:"+fileName + ", Path="+filePath);
+                      //System.out.println("                       ..original file Path:"+filePath);
                       if (fileName==null||fileName.equals(""))
 	    				  continue;
-	    			  String uploadedFilePath=path+File.separator+scenarioName+File.separator+ fileName;
+	    			  String uploadedFilePath=path+File.separator+scenarioName+File.separator+ fileName.toLowerCase();
 	    			  if (fieldName.equals("mappingFileName")) {
 	    				  System.out.println("AddNewScenario.doPost()...mapping file:"+uploadedFilePath);
 	    				  String uploadedMapBak=uploadedFilePath+ ".bak";
@@ -211,8 +249,8 @@ public class AddNewScenario extends HttpServlet {
                       else
                       {
                           String sourceORtarget = null;
-                          if (fieldName.startsWith("sourceXsdName")) sourceORtarget = "source";
-                          else if (fieldName.startsWith("targetXsdName")) sourceORtarget = "target";
+                          if (fieldName.startsWith("sourceXsdName")) sourceORtarget = SOURCE_DIRECTORY_TAG;
+                          else if (fieldName.startsWith("targetXsdName")) sourceORtarget = TARGET_DIRECTORY_TAG;
 
                           if (sourceORtarget != null)
                           {
@@ -230,17 +268,18 @@ public class AddNewScenario extends HttpServlet {
                                       item.write(new File(uploadedFilePath));
                                       fileList.add(uploadedFilePath);
                                       String bakupFileName = uploadedFilePath + ".bak";
-                                      if (replaceXSDFile(uploadedFilePath, bakupFileName))
+                                      if (replaceXSDFile(uploadedFilePath, bakupFileName, sourceORtarget))
                                       {
                                           fileList.add(bakupFileName);
+
                                       }
                                       else
                                       {
                                           String errMsg="Faild to upload this "+sourceORtarget+" schema file:"+fileName;
-                                          System.out.println("AddNewScenario.doPost()...:"+errMsg);
+                                          System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
                                           req.setAttribute("rtnMessage", errMsg);
                                           deleteDirAndFilesOnError(fileList);
-                                          res.sendRedirect("errormsg.do");
+                                          res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
                                           return;
                                       }
                                   //}
@@ -258,6 +297,32 @@ public class AddNewScenario extends HttpServlet {
                                       System.out.println("AddNewScenario.doPost().."+sourceORtarget+" schema file:"+uploadedFilePath);
                                       item.write(new File(uploadedFilePath));
                                       fileList.add(uploadedFilePath);
+                                      if (sourceORtarget.equals(SOURCE_DIRECTORY_TAG))
+                                      {
+                                          if (isSourceZip)
+                                          {
+                                              String errMsg="Only one zip file allowed ("+sourceORtarget+") :"+fileName;
+                                              System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                                              req.setAttribute("rtnMessage", errMsg);
+                                              deleteDirAndFilesOnError(fileList);
+                                              res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                                              return;
+                                          }
+                                          else isSourceZip = true;
+                                      }
+                                      else
+                                      {
+                                          if (isTargetZip)
+                                          {
+                                              String errMsg="Only one zip file allowed ("+sourceORtarget+") :"+fileName;
+                                              System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                                              req.setAttribute("rtnMessage", errMsg);
+                                              deleteDirAndFilesOnError(fileList);
+                                              res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                                              return;
+                                          }
+                                          else isTargetZip = true;
+                                      }
                                   //}
                               }
                               //else
@@ -268,7 +333,64 @@ public class AddNewScenario extends HttpServlet {
                       }
                   }
 	    	  }
-	    	  ScenarioUtil.addNewScenarioRegistration(scenarioName, transType);
+
+              List<String> notFoundfiles = new ArrayList<String>();
+              for(String pathXSD:includedXSDList)
+              {
+                  String xsdPath = path+File.separator+scenarioName+File.separator+ pathXSD;
+                  File ff = new File(xsdPath);
+                  if ((!ff.exists())||(!ff.isFile()))
+                  {
+                      if (isSourceZip)
+                      {
+                          if (pathXSD.startsWith(SOURCE_DIRECTORY_TAG + File.separator)) {}
+                          else notFoundfiles.add(pathXSD);
+                      }
+                      else if (isTargetZip)
+                      {
+                          if (pathXSD.startsWith(TARGET_DIRECTORY_TAG + File.separator)) {}
+                          else notFoundfiles.add(pathXSD);
+                      }
+                      else notFoundfiles.add(pathXSD);
+                  }
+                  else
+                  {
+//                      String sourceORtarget = null;
+//                      if (isSourceZip)
+//                      {
+//                          if (pathXSD.startsWith(SOURCE_DIRECTORY_TAG + File.separator)) sourceORtarget = SOURCE_DIRECTORY_TAG;
+//                      }
+//                      if (isTargetZip)
+//                      {
+//                          if (pathXSD.startsWith(TARGET_DIRECTORY_TAG + File.separator)) sourceORtarget = TARGET_DIRECTORY_TAG;
+//                      }
+//                      if (sourceORtarget != null)
+//                      {
+//                          String errMsg=sourceORtarget + " is ZIP file";
+//                          System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+//                          req.setAttribute("rtnMessage", errMsg);
+//                          deleteDirAndFilesOnError(fileList);
+//                          res.sendRedirect("errormsg.do");
+//                          return;
+//                      }
+                  }
+              }
+
+              if (notFoundfiles.size() > 0)
+              {
+                  String errMsg="Incomplete XSD files. " + notFoundfiles.size() + " files are absent. - ";
+                  if (notFoundfiles.size() == 1) errMsg="Incomplete XSD files. One file is absent. - ";
+                  for (String c:notFoundfiles) errMsg = errMsg + "<br>" + c;
+                  System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+
+                  req.setAttribute("rtnMessage", errMsg);
+                  deleteDirAndFilesOnError(fileList);
+                  res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                  return;
+              }
+
+
+              ScenarioUtil.addNewScenarioRegistration(scenarioName, transType);
 	    	  res.sendRedirect("successmsg.do");
 
 		}catch(NullPointerException ne) {
@@ -276,14 +398,14 @@ public class AddNewScenario extends HttpServlet {
               ne.printStackTrace();
                 req.setAttribute("rtnMessage", ne.getMessage());
                 deleteDirAndFilesOnError(fileList);
-                res.sendRedirect("errormsg.do");
+                res.sendRedirect("errormsg.do"+ "?message=" + URLEncoder.encode(ne.getMessage(), "UTF-8"));
 	        }
 		catch(Exception e) {
             System.out.println("Error in doPost: " + e);
             e.printStackTrace();
             req.setAttribute("rtnMessage", e.getMessage());
             deleteDirAndFilesOnError(fileList);
-            res.sendRedirect("error.do");
+            res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
         }
 	   }
        private void deleteDirAndFilesOnError(List<String> fileList)
@@ -340,6 +462,8 @@ public class AddNewScenario extends HttpServlet {
 			    	String localName=extractOriginalFileName(locationAttr.getValue());
 //			    	locationAttr.setValue(fileHome+File.separator+cmpType+File.separator+localName);
 			    	locationAttr.setValue(cmpType+File.separator+localName.toLowerCase());
+                    includedXSDList.add(cmpType+File.separator+localName.toLowerCase());
+                    System.out.println("CCCCC updateMapping Add file list : " + cmpType+File.separator+localName.toLowerCase());
                     //locationAttr.setValue(cmpType+File.separator+localName);
                 }
 //	    		//update VOM reference
@@ -371,7 +495,7 @@ public class AddNewScenario extends HttpServlet {
 	     * @param fileName XSD File name
 	     *
 	     */
-		private boolean replaceXSDFile(String fileName, String backupFileName)
+		private boolean replaceXSDFile(String fileName, String backupFileName, String sourceORtarget)
         {
             List<String> xsdList = null;
             try
@@ -414,6 +538,8 @@ public class AddNewScenario extends HttpServlet {
                         path = path.substring(idx3 + 1);
                     }
                     xsd2 = xsd2 + path.toLowerCase();
+                    includedXSDList.add(sourceORtarget + File.separator + path.toLowerCase());
+                    System.out.println("CCCCC replaceXSDFile : " + sourceORtarget + File.separator + path.toLowerCase());
                     //xsd2 = xsd2 + path;
                 }
                 xsdList2.add(xsd2);
