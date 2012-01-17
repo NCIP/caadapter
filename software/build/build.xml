@@ -191,18 +191,18 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	</path>
 
 	<!-- Task definitions -->
-	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.classpath" />
-	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask" classpathref="bda-utils.classpath"/>
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="bda-utils.classpath"/>
+	<!-- taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.classpath" / -->
+	<!-- taskdef name="for" classname="net.sf.antcontrib.logic.ForTask" classpathref="bda-utils.classpath"/ -->
+	<!-- taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="bda-utils.classpath"/ -->
 
 	<!-- Includes- include BDA marcos -->
-	<if>
+	<!-- if>
 		<equals arg1="${bda.debug}" arg2="true"/>
 		<then>
 			<echoproperties/>
 		</then>
-	</if>
-	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
+	</if -->
+	<!-- import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" / -->
 
 	<!-- Start logging -->
 	<mkdir dir="${log.dir}" />
@@ -212,12 +212,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<record name="${log.dir}/install-${install.time}.log" action="start" />
 	
 	<!-- Echo properties to catch AHP variables at build time-->
-	<if>
+	<!-- if>
 		<equals arg1="${bda.debug}" arg2="true"/>
 		<then>
 			<echoproperties/>
 		</then>
-	</if>
+	</if -->
 	<!-- Fix first time build issue -->
 	<mkdir dir="${download.dir}"/>
 
@@ -256,7 +256,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<available file="${jboss.dest.file}" property="jboss.tools.exists" />
 		<available file="${jbosscp.dest.file}" property="jbosscp.tools.exists" />
 		<!-- If jboss is required to build, then check for jboss in jboss.home, then check for in jboss in working directory, if not found then download it into this that directory.  If found at any point set local.jboss.home to where it is found.  This can be passed to sub-projects so then can compile code against distribution.  This is especially important on AntHillPro server which will not have jboss present, thus will have to use a copy in the working area.  This also makes it easier to start the project, if the developer does not yet have jboss installed, build will download it and install it so build can proceed. -->
-		<if>
+		<!-- if>
 			<equals arg1="${require.jboss}" arg2="true" />
 			<then>
 				<available file="${jboss.home}/lib/commons-httpclient.jar" property="rt.jboss.exists" />
@@ -289,7 +289,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 				</if>
 
 			</then>
-		</if>
+		</if -->
 	</target>
 
 	<target name="ivy:clean" description="Cleans up the ivy cache of this project and all sub-projects">
@@ -306,8 +306,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	</target>
 
 	<target name="validate:pre:build">
-		<validate-pre-build
-			/>
+		<!-- validate-pre-build
+			/ -->
 	</target>
 
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" 
@@ -967,7 +967,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	</target>
 
 	<target name="keygen">
-		<generate-jar-signing-keystore
-			/>
+		<!-- generate-jar-signing-keystore
+			/ -->
 	</target>
 </project>
