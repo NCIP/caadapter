@@ -11,6 +11,20 @@
 		</tr>
 	
 		<tr>
-			Success!!
+<%
+
+    String messageS = request.getParameter("message");
+    if ((messageS == null)||(messageS.trim().equals("")))
+    {
+%>
+            Success!!
+<%
+    }
+    else
+    {
+        %><%= messageS%><%
+    }
+%>
+
 		</tr>												
  </table>

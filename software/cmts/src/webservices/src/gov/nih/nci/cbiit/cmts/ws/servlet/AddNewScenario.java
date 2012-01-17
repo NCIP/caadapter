@@ -60,7 +60,7 @@ public class AddNewScenario extends HttpServlet {
     private String TARGET_DIRECTORY_TAG = "target";
     private String path;
 
-    private List<String> includedXSDList = new ArrayList<String>();
+    private List<String> includedXSDList = null;
     //private List<String> targetXSDList = new ArrayList<String>();
     //private String scenarioHomePath = "";
 
@@ -70,6 +70,7 @@ public class AddNewScenario extends HttpServlet {
 	   public void doPost (HttpServletRequest req, HttpServletResponse res)
 	      throws ServletException, IOException
 	   {
+           includedXSDList = new ArrayList<String>();
            List<String> fileList = new ArrayList<String>();
           try
           {
@@ -110,6 +111,8 @@ public class AddNewScenario extends HttpServlet {
               Iterator <FileItem> iter = items.iterator();
 	    	  String transType="";
 
+              boolean deletionTag = false;
+
               List<FileItem> fileItemList = new ArrayList<FileItem>();
 
               while (iter.hasNext())
@@ -131,12 +134,44 @@ public class AddNewScenario extends HttpServlet {
                       if (item.getFieldName().equals("scenarioName"))
                       {
 	    				  scenarioName = item.getString();
+
+                          if (scenarioName != null)
+                          {
+                              scenarioName = scenarioName.trim();
+                              String scenarioDeleteTag = "##scenariodelete:";
+
+                              if (scenarioName.startsWith(scenarioDeleteTag))
+                              {
+                                  scenarioName = scenarioName.substring(scenarioDeleteTag.length());
+                                  String deletionPassword = "";
+                                  String scenarioName2 = scenarioName;
+                                  int iddx = scenarioName.indexOf(":");
+                                  if (iddx > 0)
+                                  {
+                                      scenarioName2 = scenarioName.substring(0, iddx).trim();
+                                      deletionPassword = scenarioName.substring(iddx + 1).trim();
+                                  }
+                                  if (deletionPassword.equals("12345A"))
+                                  {
+                                      deletionTag = true;
+                                      scenarioName = scenarioName2;
+                                  }
+                                  else
+                                  {
+                                      String errMsg="Failure : Invalid Password for scenario deletion";
+                                      System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                                      req.setAttribute("rtnMessage", errMsg);
+                                      res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                                      return;
+                                  }
+                              }
+                          }
                       }
                   }
                   else fileItemList.add(item);
               }
 
-              if ((scenarioName == null)||(scenarioName.trim().equals("")))
+              if ((scenarioName == null)||(scenarioName.equals("")))
               {
                   String errMsg="Failure : Scenario Name is Null";
                   System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
@@ -165,16 +200,45 @@ public class AddNewScenario extends HttpServlet {
 
                   String scenarioPath=path+File.separator +scenarioName;
                   System.out.println("AddNewScenario.doPost()...scenarioPath:"+scenarioPath);
-                  boolean exists = (new File(scenarioPath)).exists();
+                  File scenarioDir = new File(scenarioPath);
+                  boolean exists = scenarioDir.exists();
                   //scenarioHomePath = scenarioPath;
                   if (exists)
                   {
+                      if (deletionTag)
+                      {
+                          if (deleteScenario(scenarioDir))
+                          {
+                              res.sendRedirect("successmsg.do?message="+ URLEncoder.encode("Scenario Deletion Success : " + scenarioName, "UTF-8"));
+                          }
+                          else
+                          {
+                                String errMsg="Scenario deleting failure:"+scenarioName;
+                                System.out.println("AddNewScenario.doPost()...:"+errMsg);
+                                req.setAttribute("rtnMessage", errMsg);
+                                res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                                return;
+                          }
+                          return;
+                      }
+                      else
+                      {
                         String errMsg="Scenario exists, not able to save:"+scenarioName;
                         System.out.println("AddNewScenario.doPost()...:"+errMsg);
                         req.setAttribute("rtnMessage", errMsg);
                         res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
                         return;
+                      }
                   } else {
+
+                      if (deletionTag)
+                      {
+                          String errMsg="Scenario is NOT exists for deleting:"+scenarioName;
+                          System.out.println("AddNewScenario.doPost()...:"+errMsg);
+                          req.setAttribute("rtnMessage", errMsg);
+                          res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                          return;
+                      }
                         boolean success = (new File(scenarioPath)).mkdir();
                         if (!success)
                         {
@@ -623,4 +687,15 @@ public class AddNewScenario extends HttpServlet {
 	       outputter.output(jdomDoc,writer);
 	       writer.close();
 	   }
+    private boolean deleteScenario(File scenarioDir)
+    {
+        if (scenarioDir.isFile()) return scenarioDir.delete();
+
+        File[] fileL = scenarioDir.listFiles();
+        for(File f:fileL)
+        {
+            if (!deleteScenario(f)) return false;
+        }
+        return scenarioDir.delete();
+    }
 }
