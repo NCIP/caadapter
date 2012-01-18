@@ -93,7 +93,7 @@ public class ElementMetaLoader implements Serializable
         String seq ="";
         if (node.getParent() != null) seq = "" + node.getParent().getIndex(node);
 
-        System.out.println("CCCX VV("+nodeMode+") " + space + "("+depth+")"+ seq + "--" + node.toString());
+        //System.out.println("CCCX VV("+nodeMode+") " + space + "("+depth+")"+ seq + "--" + node.toString());
         depth++;
         for (int i=0;i<node.getChildCount();i++)
         {

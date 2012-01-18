@@ -549,7 +549,7 @@ public class AddNewScenario extends HttpServlet {
 //			    	locationAttr.setValue(fileHome+File.separator+cmpType+File.separator+localName);
 			    	locationAttr.setValue(cmpType+File.separator+localName.toLowerCase());
                     includedXSDList.add(cmpType+File.separator+localName.toLowerCase());
-                    System.out.println("CCCCC updateMapping Add file list : " + cmpType+File.separator+localName.toLowerCase());
+                    //System.out.println("CCCCC updateMapping Add file list : " + cmpType+File.separator+localName.toLowerCase());
                     //locationAttr.setValue(cmpType+File.separator+localName);
                 }
 //	    		//update VOM reference
@@ -625,7 +625,7 @@ public class AddNewScenario extends HttpServlet {
                     }
                     xsd2 = xsd2 + path.toLowerCase();
                     includedXSDList.add(sourceORtarget + File.separator + path.toLowerCase());
-                    System.out.println("CCCCC replaceXSDFile : " + sourceORtarget + File.separator + path.toLowerCase());
+                    //System.out.println("CCCCC replaceXSDFile : " + sourceORtarget + File.separator + path.toLowerCase());
                     //xsd2 = xsd2 + path;
                 }
                 xsdList2.add(xsd2);

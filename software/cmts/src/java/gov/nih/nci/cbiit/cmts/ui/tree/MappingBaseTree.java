@@ -100,7 +100,7 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
                 if ((chldElmtMeta.getChildElement() != null)&&(chldElmtMeta.getChildElement().size() > 0))
                 {
                     cTag = true;
-                    System.out.println("CCCX Child Already Exist("+selectedMeta.getName()+") : " + chldElmtMeta.getName());
+                    //System.out.println("CCCX Child Already Exist("+selectedMeta.getName()+") : " + chldElmtMeta.getName());
                     int newNodeType=ElementMetaLoader.SOURCE_MODE;
                     if (this instanceof MappingTargetTree)
                         newNodeType=ElementMetaLoader.TARGET_MODE;
