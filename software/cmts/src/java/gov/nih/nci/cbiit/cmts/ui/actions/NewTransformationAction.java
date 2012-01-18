@@ -145,15 +145,29 @@ public class NewTransformationAction extends AbstractContextAction
 					transformer=TransformerFactory.getTransformer(TransformationService.TRANSFER_XML_TO_XML);
 			}
 			String sourceFile =w.getDataFile().getPath();//FileUtil.getRelativePath(w.getDataFile());
-			
-			String xmlResult=transformer.transfer(sourceFile, mappingFile);
-			newMsgPane.setMessageText(xmlResult);
-			newMsgPane.setSourceDataURI(sourceFile);
-			newMsgPane.setTransformationMappingURI(mappingFile);
-			if (transformer instanceof MappingTransformer)
-				newMsgPane.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
-			JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
-		}
+			String xmlResult = null;
+            try
+            {
+                xmlResult=transformer.transfer(sourceFile, mappingFile);
+            }
+            catch(Exception ee)
+            {
+                throw new Exception("Transformation Error("+ee.getClass().getCanonicalName()+"): Check if the source XML is welformed or valid.");
+            }
+            if ((xmlResult == null)||(xmlResult.trim().equals("")))
+            {
+                JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Output is null. Check the data", "Null Result", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                newMsgPane.setMessageText(xmlResult);
+                newMsgPane.setSourceDataURI(sourceFile);
+                newMsgPane.setTransformationMappingURI(mappingFile);
+                if (transformer instanceof MappingTransformer)
+                    newMsgPane.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
+                JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
 		else
 			JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has cancelled !", "Cancel Complete", JOptionPane.INFORMATION_MESSAGE);
 		setSuccessfullyPerformed(true);
