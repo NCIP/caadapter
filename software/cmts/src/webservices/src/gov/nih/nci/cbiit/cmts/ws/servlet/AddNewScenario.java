@@ -200,24 +200,46 @@ public class AddNewScenario extends HttpServlet {
 
                   String scenarioPath=path+File.separator +scenarioName;
                   System.out.println("AddNewScenario.doPost()...scenarioPath:"+scenarioPath);
-                  File scenarioDir = new File(scenarioPath);
-                  boolean exists = scenarioDir.exists();
+                  File scenarioDir = null;
+                  boolean exists = false;
+                  for(File f2:scnHome.listFiles())
+                  {
+                      if (!f2.isDirectory()) continue;
+                      String fName = f2.getName();
+                      if (fName.equalsIgnoreCase(scenarioName))
+                      {
+                          scenarioDir = f2;
+                          exists = true;
+                          break;
+                      }
+                  }
+                  //boolean exists = scenarioDir.exists();
                   //scenarioHomePath = scenarioPath;
                   if (exists)
                   {
                       if (deletionTag)
                       {
+                          boolean deletionSuccess = true;
                           if (deleteScenario(scenarioDir))
                           {
-                              res.sendRedirect("successmsg.do?message="+ URLEncoder.encode("Scenario Deletion Success : " + scenarioName, "UTF-8"));
+                              try
+                              {
+                                ScenarioUtil.deleteOneScenarioRegistration(scenarioName);
+                              }
+                              catch(Exception e1)
+                              {
+                                 deletionSuccess = false;
+                              }
                           }
+                          else deletionSuccess = false;
+
+                          if (deletionSuccess) res.sendRedirect("successmsg.do?message="+ URLEncoder.encode("Scenario Deletion Success : " + scenarioName, "UTF-8"));
                           else
                           {
                                 String errMsg="Scenario deleting failure:"+scenarioName;
                                 System.out.println("AddNewScenario.doPost()...:"+errMsg);
                                 req.setAttribute("rtnMessage", errMsg);
                                 res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
-                                return;
                           }
                           return;
                       }
@@ -233,7 +255,7 @@ public class AddNewScenario extends HttpServlet {
 
                       if (deletionTag)
                       {
-                          String errMsg="Scenario is NOT exists for deleting:"+scenarioName;
+                          String errMsg="This Scenario is NOT exists for deleting:"+scenarioName;
                           System.out.println("AddNewScenario.doPost()...:"+errMsg);
                           req.setAttribute("rtnMessage", errMsg);
                           res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));

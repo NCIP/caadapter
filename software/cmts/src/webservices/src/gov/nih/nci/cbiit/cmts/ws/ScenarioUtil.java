@@ -46,7 +46,8 @@ public class ScenarioUtil {
 
 		if (regList==null||regList.isEmpty())
 			return null;
-		for (ScenarioRegistration scenario:regList)
+        if (scenarioName == null) return null;
+        for (ScenarioRegistration scenario:regList)
 		{
 			if (scenario.getName().equalsIgnoreCase(scenarioName.trim()))
 				return scenario;
@@ -59,7 +60,28 @@ public class ScenarioUtil {
 			initRepository();
 		return regList;
 	}
+    public static void updateScenarioRegistrations() throws Exception
+	{
+		regList = null;
+		initRepository();
+	}
+    public static void deleteOneScenarioRegistration(String scenarioName) throws Exception
+	{
+		if (regList==null)
+			initRepository();
 
+		if (regList==null||regList.isEmpty()) return;
+        if (scenarioName == null) return;
+
+        for (ScenarioRegistration scenario:regList)
+		{
+			if (scenario.getName().equalsIgnoreCase(scenarioName.trim()))
+            {
+                regList.remove(scenario);
+                break;
+            }
+        }
+	}
 	private static void initRepository()throws Exception
 	{
 
