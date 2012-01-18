@@ -501,17 +501,17 @@ public class XSDParser  {
     public void expandElementMetaWithLazyLoad(ElementMeta meta)
     {
 
-        ElementMeta newMeta=this.getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
+//        ElementMeta newMeta=this.getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
 
-        if (newMeta != null)
-        {
-            System.out.println("Deep Loading XSDParser.expandElementMetaWithLazyLoad()...extended node:"+meta+ ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
-            while(meta.getAttrData().size() > 0) meta.getAttrData().remove(0);
-            meta.getAttrData().addAll(0, newMeta.getAttrData());
-
-            while(meta.getChildElement().size() > 0) meta.getChildElement().remove(0);
-            meta.getChildElement().addAll(0, newMeta.getChildElement());
-        }
+//        if (newMeta != null)
+//        {
+//            System.out.println("Deep Loading XSDParser.expandElementMetaWithLazyLoad()...extended node:"+meta+ ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
+//            while(meta.getAttrData().size() > 0) meta.getAttrData().remove(0);
+//            meta.getAttrData().addAll(0, newMeta.getAttrData());
+//
+//            while(meta.getChildElement().size() > 0) meta.getChildElement().remove(0);
+//            meta.getChildElement().addAll(0, newMeta.getChildElement());
+//        }
      }
 }
 

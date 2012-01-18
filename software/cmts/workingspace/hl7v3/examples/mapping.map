@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="..\.\multicacheschemas\PORT_IN020001UV01.xsd" kind="xml" type="target" id="0">
+        <component location="..\multicacheschemas\PORT_IN020001UV01.xsd" kind="xml" type="target" id="0">
             <rootElement isChosen="false" isChoice="false" nameSpace="urn:hl7-org:v3" name="PORT_IN020001UV01"/>
         </component>
         <component location="purchase.xsd" kind="xml" type="source" id="1">

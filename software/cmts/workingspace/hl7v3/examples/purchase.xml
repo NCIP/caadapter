@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <purchaseOrder orderDate="1999-10-20"
+xmlns="http://cbiit.nci.nih.gov/po.xsd"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:NamespaceSchemaLocation="purchase.xsd">
 <!--
