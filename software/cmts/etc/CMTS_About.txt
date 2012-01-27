@@ -1,4 +1,4 @@
-caAdapter Common Mapping ang Translational Service (CMTS)
+caAdapter Common Mapping and Translational Service (CMTS)
 Version 1.0
 
 caAdapter is an open source tool set with the goal of creating standards-based infrastructure components to 
