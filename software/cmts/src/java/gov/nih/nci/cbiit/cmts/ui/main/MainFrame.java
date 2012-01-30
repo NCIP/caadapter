@@ -14,6 +14,7 @@ import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MainToolBarHandler;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
@@ -205,24 +206,21 @@ public class MainFrame extends JFrame
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMainFrame#addNewTab(javax.swing.JPanel)
 	 */
-	public void addNewTab(JPanel panel) {
-		if (tabbedPane.getTabCount() == 0) {
-			centerPanel.removeAll();
-			centerPanel.setLayout(new BorderLayout());
-			centerPanel.add(tabbedPane, BorderLayout.CENTER);
-		}
-		String title = null;
-
-		if (panel instanceof MappingMainPanel) {
-			title = "Untitled_" + (tabbedPane.getTabCount()+1) + ".map";
-		}
-		else
-			title = "Untitled_" + (tabbedPane.getTabCount()+1) + ".dat";
-		tabbedPane.addTab(title, panel);
-		tabbedPane.setSelectedComponent(panel);
-		System.out.println("Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
-		tabMap.put(panel.getClass(), panel);
-	}
+    public void addNewTab(JPanel panel, String tabKind)
+    {
+        if (tabbedPane.getTabCount() == 0) {
+            centerPanel.removeAll();
+            centerPanel.setLayout(new BorderLayout());
+            centerPanel.add(tabbedPane, BorderLayout.CENTER);
+        }
+        String title = ActionConstants.FILE_NAME_UNTITLED_TAG + (tabbedPane.getTabCount()+1);
+        if (tabKind!=null)
+        title =title + tabKind;
+        tabbedPane.addTab(title, panel);
+        tabbedPane.setSelectedComponent(panel);
+        System.out.println("Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
+        tabMap.put(panel.getClass(), panel);
+    }
 
     /* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMainFrame#closeTab()

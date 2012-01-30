@@ -17,6 +17,7 @@ import gov.nih.nci.cbiit.cmts.transform.artifact.StylesheetBuilder;
 import gov.nih.nci.cbiit.cmts.transform.artifact.XSLTStylesheet;
 import gov.nih.nci.cbiit.cmts.ui.actions.SaveAsMapAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.SaveMapAction;
+import gov.nih.nci.cbiit.cmts.ui.actions.NewTransformationAction;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
@@ -25,6 +26,7 @@ import gov.nih.nci.cbiit.cmts.ui.main.AbstractTabPanel;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -72,6 +74,7 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
     private java.util.List <Object> messageList;
     private JScrollPane scrollPane = null;
     private ValidationMessagePane validationMessagePane = null;
+    private boolean isSaved = false;
 
     public MessagePanel(MainFrameContainer mainFrame)
     {
@@ -205,12 +208,24 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
                     return;
                 }
 
-			    TransformationService transformer=TransformerFactory.getTransformer(transformationType);
-                String xmlResult=transformer.transfer(sourceFile, mappingFile);
-			    setMessageText(xmlResult);
-			    setSourceDataURI(sourceFile);
-			    setTransformationMappingURI(mappingFile);
-			    setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
+                NewTransformationAction transformationAction = new NewTransformationAction(mainFrame);
+                boolean runRes = true;
+                try
+                {
+                    runRes = transformationAction.mainTransformationProcess(this, transformationType, mappingFile, sourceFile);
+                }
+                catch(Exception ee)
+                {
+                    JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), ee.getMessage(), "Transformation error", JOptionPane.ERROR_MESSAGE);
+                }
+                //TransformationService transformer=TransformerFactory.getTransformer(transformationType);
+                //transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),
+                //        sourceFile);
+                //String xmlResult=transformer.transfer(sourceFile, mappingFile);
+			    //setMessageText(xmlResult);
+			    //setSourceDataURI(sourceFile);
+			    //setTransformationMappingURI(mappingFile);
+			    //setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
 
 
 //                setMessageText("");
@@ -256,11 +271,11 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 			    //JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
             }
 
-    	} catch (XQException e1) {
+    	} /*catch (XQException e1) {
 			// TODO Auto-generated catch block
             JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "XQException : " + e1.getMessage(), "XQException", JOptionPane.ERROR_MESSAGE);
             e1.printStackTrace();
-		} catch (IOException e2) {
+		}*/ catch (IOException e2) {
 			// TODO Auto-generated catch block
             JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "IOException : " + e2.getMessage(), "IOException", JOptionPane.ERROR_MESSAGE);
             e2.printStackTrace();
@@ -305,6 +320,23 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
         JTextArea outputMessageArea = new JTextArea(text);
         outputMessageArea.setEditable(false);
         scrollPane.getViewport().setView(outputMessageArea);
+        isSaved = false;
+    }
+    public boolean hasBeenSaved()
+    {
+        return isSaved;
+    }
+    public String getDisplayedMessage()
+    {
+        try
+        {
+            JTextArea msgPane=(JTextArea)scrollPane.getViewport().getView();
+			return msgPane.getText();
+        }
+        catch(Exception ee)
+        {
+            return null;
+        }
     }
 
     public void setValidationMessage(List validationMessage)
@@ -348,7 +380,8 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+        isSaved = true;
+    }
 }
 
 /**

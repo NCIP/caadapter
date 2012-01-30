@@ -11,6 +11,8 @@ import gov.nih.nci.cbiit.cmts.common.ApplicationMessage;
 import gov.nih.nci.cbiit.cmts.common.ApplicationResult;
 import gov.nih.nci.cbiit.cmts.core.ComponentType;
 import gov.nih.nci.cbiit.cmts.core.Mapping;
+import gov.nih.nci.cbiit.cmts.core.Component;
+import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmts.transform.artifact.RDFEncoder;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
@@ -23,6 +25,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Stack;
 
 import javax.xml.validation.Schema;
 import javax.xml.xquery.XQConnection;
@@ -109,7 +112,8 @@ public class MappingTransformer extends DefaultTransformer {
 	protected XQPreparedExpression prepareXQExpression(String instruction) throws XQException, JAXBException
 	{
 		mapping = MappingFactory.loadMapping(new File(instruction));
-		XQueryBuilder builder = new XQueryBuilder(mapping);
+
+        XQueryBuilder builder = new XQueryBuilder(mapping);
 		String queryString = builder.getXQuery();
         String mm = "";
         for (int i=0;i<queryString.length();i++)
@@ -131,7 +135,8 @@ public class MappingTransformer extends DefaultTransformer {
 			XQPreparedExpression exp = prepareXQExpression(mappingFile);
 			// parse raw data to a temporary file
 			//if source is HL7 v2, the target namespace is set as null
-			String tempXmlSrc = parseRawData(sourceFile, mapping);
+            //System.out.println("CCCC 441");
+            String tempXmlSrc = parseRawData(sourceFile, mapping);
 			URI sourcUri=new File(sourceFile).toURI();
 			exp.bindString(new QName("docName"), sourcUri.getPath(), conn
 					.createAtomicType(XQItemType.XQBASETYPE_STRING));
@@ -143,7 +148,10 @@ public class MappingTransformer extends DefaultTransformer {
 				File tmpFile = new File(tempXmlSrc);
 				tmpFile.delete();
 			}
-			return xmlResult;
+
+            return reorganizeTargetNameSpace(xmlResult);
+
+            //return xmlResult;
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -166,8 +174,7 @@ public class MappingTransformer extends DefaultTransformer {
 	 * @return URI of pre-processed source data, it may be a temporary file
 	 * @throws JAXBException
 	 * @throws IOException
-	 * @throws ApplicationException 
-	 * @throws ApplicationException
+	 *
 	 */
 	protected String parseRawData(String sourceRawDataFile, Mapping map)
 			throws JAXBException, IOException {
@@ -175,29 +182,52 @@ public class MappingTransformer extends DefaultTransformer {
 		return sourceRawDataFile;
 	}
 	@Override
-	public List<ApplicationResult> validateXmlData(Object validator, String xmlData)
+    public List<ApplicationResult> validateXmlData(Object validator, String xmlData)
+	{
+        return validateXmlData_Base(validator, xmlData, ComponentType.TARGET);
+    }
+    public List<ApplicationResult> validateSourceXmlData(Object validator, String xmlData)
+	{
+        return validateXmlData_Base(validator, xmlData, ComponentType.SOURCE);
+    }
+    private List<ApplicationResult> validateXmlData_Base(Object validator, String xmlData, ComponentType compType)
 	{
 		List<ApplicationResult> rtnList=new ArrayList<ApplicationResult>();
 		//using validator
-		String targetSchema=null;
-		Mapping mapping=(Mapping)validator;
+		String schemaValidate = null;
+        //String sourceSchema=null;
+        Mapping mapping=(Mapping)validator;
 		for (gov.nih.nci.cbiit.cmts.core.Component mapComp:mapping.getComponents().getComponent())
 		{
 			if (mapComp.getRootElement()!=null
 					&&mapComp.getType().equals(ComponentType.TARGET))
 			{
-				targetSchema=mapComp.getLocation();
+                if (compType.equals(ComponentType.TARGET))
+                    schemaValidate=mapComp.getLocation();
 				continue;
 			}
-		}
+            if (mapComp.getRootElement()!=null
+					&&mapComp.getType().equals(ComponentType.SOURCE))
+			{
+                if (compType.equals(ComponentType.SOURCE))
+                    schemaValidate=mapComp.getLocation();
+
+				continue;
+			}
+        }
         //System.out.println("CCCC targetSchema=" + targetSchema);
+        if (schemaValidate == null)
+        {
+            System.out.println("Not found "+compType.value()+" schema file for validation. error#22");
+            return null;
+        }
         XsdSchemaErrorHandler xsdErrorHandler=new XsdSchemaErrorHandler();
 
-        Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, xsdErrorHandler);
+        Schema schema=XsdSchemaSaxValidator.loadSchema(schemaValidate, xsdErrorHandler);
 		if (!xsdErrorHandler.getErrorMessage().isEmpty())
 		{
 			//add xsd schema validation message only if error occurs
-			ApplicationMessage xsdInfor=new ApplicationMessage("Target XSD Schema Validation");
+			ApplicationMessage xsdInfor=new ApplicationMessage(compType.value() + " XSD Schema Validation");
 			rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xsdInfor));
 			rtnList.addAll(xsdErrorHandler.getErrorMessage());
 		}
@@ -215,6 +245,56 @@ public class MappingTransformer extends DefaultTransformer {
 		// TODO Auto-generated method stub
 		return mapping;
 	}
+
+    private String reorganizeTargetNameSpace(String xmlResult)
+    {
+        List<Component> l = mapping.getComponents().getComponent();
+        Component tgt = null;
+        Component src = null;
+        for (Component c:l) {
+            if (c.getType().equals(ComponentType.TARGET))
+                tgt = c;
+            if (c.getType().equals(ComponentType.SOURCE))
+                src = c;
+        }
+        String targetRootNameSpace = null;
+        String sourceRootNameSpace = null;
+        if (tgt.getRootElement()!=null&&tgt.getRootElement().getNameSpace()!=null) targetRootNameSpace = tgt.getRootElement().getNameSpace();
+        if (src.getRootElement()!=null&&src.getRootElement().getNameSpace()!=null) sourceRootNameSpace = src.getRootElement().getNameSpace();
+
+        String changeResult = "";
+        String xmlResult2 = xmlResult;
+
+
+        while ((targetRootNameSpace != null)&&(!targetRootNameSpace.trim().equals("")))
+        {
+            targetRootNameSpace = targetRootNameSpace.trim();
+            if ((sourceRootNameSpace != null)&&(targetRootNameSpace.equals(sourceRootNameSpace.trim()))) break;
+
+            String searchTag = " xmlns=\"";
+            int idx = xmlResult2.indexOf(searchTag);
+            if (idx < 0)
+            {
+                int idx5 = xmlResult2.indexOf("?>");
+                if (idx5 > 0)
+                {
+                    changeResult = changeResult + xmlResult2.substring(0, idx5 + 2);
+                    xmlResult2 =  xmlResult2.substring(idx5 + 2);
+                }
+                int idx6 = xmlResult2.indexOf(">");
+                if (idx6 < 0) break;
+                changeResult = changeResult + xmlResult2.substring(0, idx6) + searchTag + targetRootNameSpace + "\"" + xmlResult2.substring(idx6);
+                return changeResult;
+            }
+            changeResult = changeResult + xmlResult2.substring(0, idx + searchTag.length());
+            xmlResult2 = xmlResult2.substring(idx + searchTag.length());
+            int idx2 = xmlResult2.indexOf("\"");
+            if (idx2 < 0) break;
+            changeResult = changeResult + targetRootNameSpace + xmlResult2.substring(idx2);
+            return changeResult;
+        }
+        return xmlResult;
+    }
 }
 
 /**

@@ -118,7 +118,7 @@ public class XQueryBuilder {
     {
         List<Component> l = mapping.getComponents().getComponent();
         Component tgt = null;
-        Component src=null;
+        Component src = null;
         for (Component c:l) {
             if (c.getType().equals(ComponentType.TARGET))
                 tgt = c;
@@ -132,6 +132,8 @@ public class XQueryBuilder {
         ElementMeta srcRootMeta=src.getRootElement();
         if (srcRootMeta!=null&&srcRootMeta.getNameSpace()!=null)
             sbQuery.append("declare default element namespace \""+srcRootMeta.getNameSpace() +"\";" + sep);
+        //if (tgt.getRootElement()!=null&&tgt.getRootElement().getNameSpace()!=null)
+        //    sbQuery.append("declare default element namespace \""+tgt.getRootElement().getNameSpace() +"\";" + sep);
         sbQuery.append("declare variable $docName as xs:string external;" + sep +"document{");
         varStack.push("doc($docName)");
         System.out.println("XQueryBuilder.getXQuery()...:"+tgt.getRootElement().getNameSpace());

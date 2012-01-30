@@ -3,6 +3,7 @@ package gov.nih.nci.cbiit.cmts.web;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.main.MainMenuBar;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.ui.main.BannerMainPanel;
@@ -212,7 +213,7 @@ public MainApplet() throws HeadlessException
             centerPanel.setLayout(new BorderLayout());
             centerPanel.add(tabbedPane, BorderLayout.CENTER);
         }
-        String title ="Untitled_" + (tabbedPane.getTabCount()+1);
+        String title = ActionConstants.FILE_NAME_UNTITLED_TAG + (tabbedPane.getTabCount()+1);
         if (tabKind!=null)
         title =title + tabKind;
         tabbedPane.addTab(title, panel);

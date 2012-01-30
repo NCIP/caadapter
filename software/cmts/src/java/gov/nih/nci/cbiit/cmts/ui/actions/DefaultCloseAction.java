@@ -12,6 +12,8 @@ import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
+import gov.nih.nci.cbiit.cmts.ui.message.MessagePanel;
 import gov.nih.nci.cbiit.cmts.web.MainApplet;
 
 import javax.swing.*;
@@ -92,7 +94,58 @@ public class DefaultCloseAction extends AbstractContextAction
 		{
 			if (ownerFrame != null)
 			{
-				ownerFrame.closeTab();
+                JTabbedPane tab = ownerFrame.getTabbedPane();
+                //tab.getSelectedIndex()
+                Component comp = tab.getSelectedComponent();
+                boolean excutableClose = true;
+                //System.out.println("CCCC vv component compName:"+comp.getName()+", tabTitle:" + tab.getTitleAt(tab.getSelectedIndex()) + ", className:" + comp.getClass().getCanonicalName()  );
+                if (comp instanceof MappingMainPanel)
+                {
+                    MappingMainPanel mappingPanel = (MappingMainPanel) comp;
+                    //System.out.println("CCCC vv MappingMainPanel");
+                    if (mappingPanel.isChanged())
+                    {
+                        int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "There are unsaved Mapping data. Are you sure to close?", "Unsave Mapping data", JOptionPane.YES_NO_OPTION);
+                        if (yesORno == JOptionPane.NO_OPTION) return isSuccessfullyPerformed();
+                    }
+                }
+                else if (comp instanceof MessagePanel)
+                {
+                    MessagePanel panel = (MessagePanel) comp;
+
+                    String dispMesg = panel.getDisplayedMessage();
+
+                    if ((dispMesg != null)&&(!dispMesg.trim().equals("")))
+                    {
+                        if (!panel.hasBeenSaved())
+                        {
+                            int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "Output is not saved yet. Are you sure to close?", "Unsaved Output data", JOptionPane.YES_NO_OPTION);
+                            if (yesORno == JOptionPane.NO_OPTION) return isSuccessfullyPerformed();
+                        }
+//                        String tabTitle = tab.getTitleAt(tab.getSelectedIndex());
+//                        String untitledTag = ActionConstants.FILE_NAME_UNTITLED_TAG;
+//                        while (tabTitle.startsWith(untitledTag))
+//                        {
+//                            String temp = tabTitle.substring(untitledTag.length());
+//                            int idx = temp.indexOf(".");
+//                            if (idx < 0) break;
+//                            temp = temp.substring(0, idx);
+//                            try
+//                            {
+//                                Integer.parseInt(temp);
+//                            }
+//                            catch(NumberFormatException ne)
+//                            {
+//                                break;
+//                            }
+//                            int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "Output is not saved yet. Are you sure to close?", "Unsaved Output data", JOptionPane.YES_NO_OPTION);
+//                            if (yesORno == JOptionPane.NO_OPTION) return isSuccessfullyPerformed();
+//                            break;
+//                        }
+                    }
+                }
+
+                ownerFrame.closeTab();
 				ownerFrame.resetCenterPanel();  // inserted by umkis on 01/18/2006, defaect# 252
             }
 			else

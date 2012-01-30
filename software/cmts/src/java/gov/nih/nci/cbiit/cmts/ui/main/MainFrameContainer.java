@@ -83,7 +83,7 @@ public class MainFrameContainer
     }
     public void addNewTab(JPanel mappingPanel, String tabKind)
     {
-        if (mainFrame != null) mainFrame.addNewTab(mappingPanel);
+        if (mainFrame != null) mainFrame.addNewTab(mappingPanel, tabKind);
         if (mainApplet != null) mainApplet.addNewTab(mappingPanel, tabKind);
     }
 

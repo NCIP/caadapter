@@ -13,11 +13,7 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.zip.ZipEntry;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
@@ -152,7 +148,19 @@ public class MappingFactory
     //		jc=com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.newInstance("gov.nih.nci.cbiit.cmts.core");
 
             Unmarshaller u = jc.createUnmarshaller();
-            JAXBElement<Mapping> jaxbElmt = u.unmarshal(new StreamSource(f), Mapping.class);
+            JAXBElement<Mapping> jaxbElmt = null;
+            try
+            {
+                jaxbElmt = u.unmarshal(new StreamSource(f), Mapping.class);
+            }
+            catch(UnmarshalException ee1)
+            {
+                throw new JAXBException("This File is not a valid mapping file : " + f.getAbsolutePath());
+            }
+            catch(Exception ee2)
+            {
+                throw new JAXBException("Mapping file opening error : " + f.getAbsolutePath() + "\n" + ee2.getMessage());
+            }
             mapLoaded=jaxbElmt.getValue();
         }
         else
@@ -170,7 +178,17 @@ public class MappingFactory
         }
         System.out.println("MappingFactory.loadMapping()...mapLoaded:"+mapLoaded);
         //re-connect the meta structure for source and target schemas
-        for (Component mapComp:mapLoaded.getComponents().getComponent())
+        List<Component> listCom = null;
+        try
+        {
+            listCom = mapLoaded.getComponents().getComponent();
+        }
+        catch(Exception ee)
+        {
+            throw new JAXBException("This File is not a valid mapping file (XSLT or XQ) : " + f.getAbsolutePath());
+        }
+        if ((listCom == null)||(listCom.size() == 0)) throw new JAXBException("This File is not a valid mapping file or empty : " + f.getAbsolutePath());
+        for (Component mapComp:listCom)
         {
             if (mapComp.getRootElement() == null) continue;
             String xsdLocation = mapComp.getLocation();

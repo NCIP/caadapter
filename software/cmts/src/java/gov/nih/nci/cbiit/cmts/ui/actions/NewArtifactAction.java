@@ -134,7 +134,8 @@ public class NewArtifactAction extends AbstractContextAction
 				artType=".xq";
 			}
 			newMsgPane.setViewFileExtension(artType);
-			mainFrame.addNewTab(newMsgPane,artType);
+            if (artType.equals(".xq")) mainFrame.addNewTab(newMsgPane,".xql");
+            else mainFrame.addNewTab(newMsgPane,artType);
 			newMsgPane.setMessageText(xmlResult);
 //			newMsgPane.setSourceDataURI(sourceFile);
 			newMsgPane.setTransformationMappingURI(mappingFile);

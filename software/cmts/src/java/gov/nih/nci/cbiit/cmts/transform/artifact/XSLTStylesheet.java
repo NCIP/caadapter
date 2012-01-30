@@ -14,12 +14,23 @@ import org.jdom.output.XMLOutputter;
 public class XSLTStylesheet extends Document  {
 	protected static Namespace xsltNamespace=Namespace.getNamespace("xsl","http://www.w3.org/1999/XSL/Transform");
 	private static Namespace xsNamespace=Namespace.getNamespace("xs","http://www.w3.org/2001/XMLSchema");
-	public XSLTStylesheet()
+    public XSLTStylesheet(String namespace)
 	{
-		super();
+        super();
+        initXSLTStylesheet(namespace);
+    }
+    public XSLTStylesheet()
+	{
+        super();
+        initXSLTStylesheet(null);
+    }
+    private void initXSLTStylesheet(String namespace)
+	{
+
 		XSLTElement xlstRoot = new XSLTElement("transform");
 		xlstRoot.addNamespaceDeclaration(xsNamespace);
-		xlstRoot.setAttribute("version", "2.0");
+        if ((namespace != null)&&(!namespace.trim().equals(""))) xlstRoot.addNamespaceDeclaration(Namespace.getNamespace("",namespace));
+        xlstRoot.setAttribute("version", "2.0");
 		setRootElement(xlstRoot);
 		XSLTElement outputElement=new XSLTElement("output");
 		outputElement.setAttribute("method","xml");

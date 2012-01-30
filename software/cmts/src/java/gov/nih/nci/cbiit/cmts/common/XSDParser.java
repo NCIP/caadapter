@@ -107,7 +107,7 @@ public class XSDParser  {
 
     /***
      * Find mappable names:Elment, ComplexType
-     * @return
+     * @return XSNamedMap[]
      */
     public XSNamedMap[] getMappableNames(){
         XSNamedMap[] map = new XSNamedMap[2];
@@ -202,7 +202,7 @@ public class XSDParser  {
             else if(xsItem instanceof XSComplexTypeDefinition)
             {
 
-                ElementMeta m = processComplexType((XSComplexTypeDefinition)xsItem, depth);
+                ElementMeta m = processComplexType((XSComplexTypeDefinition)xsItem, depth, false);
                 if (m == null)
                 {
                     System.out.println("Null element meta, namespace= " +  namespace + ", name=" + name);
@@ -223,7 +223,7 @@ public class XSDParser  {
      * Process a list of XSObject
      * @param itemList: XSParticle, XSAttributeUse
      * @param depth
-     * @return
+     * @return List<BaseMeta>
      */
     private List<BaseMeta> processList(XSObjectList itemList, int depth){
         if(debug) System.out.println(getPrefix(depth)+"XSObjectList{" + itemList.getLength() + "}" + "["+itemList.getClass()+"]");
@@ -248,9 +248,9 @@ public class XSDParser  {
      * It represents the Complex Type Definition schema component.
      * @param item
      * @param depth
-     * @return
+     * @return  ElementMeta
      */
-    private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
+    private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth, boolean depthAdd){
         if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 
         ElementMeta ret=new ElementMeta();
@@ -264,7 +264,7 @@ public class XSDParser  {
         		XSObject xsObj=item.getAnnotations().item(i);
         	}
         	XSAnnotationImpl annImpl=(XSAnnotationImpl)item.getAnnotations().item(0);
-        	
+
         	ret.setAnnotationString(annImpl.getAnnotationString());
         }
 
@@ -276,7 +276,11 @@ public class XSDParser  {
 
         try {
             if (depth<0)
-                return ret;
+            {
+                if (depthAdd) depth = MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL;
+                else
+                    return ret;
+            }
             //if recursive use return here
             if(recursive){
                 ret.setIsRecursive(true);
@@ -341,7 +345,7 @@ public class XSDParser  {
      * It define the usage of its associated term such as, annotations, maxOccurs, maxOccursUnbound, minOccurs
      * @param item
      * @param depth
-     * @return
+     * @return  List<BaseMeta>
      */
     private List<BaseMeta> processParticle(XSParticle item, int depth){
         if(item == null){
@@ -387,7 +391,7 @@ public class XSDParser  {
      * Objects implementing XSElementDeclaration, XSModelGroup and XSWildcard interfaces also implement this interface.
      * @param item
      * @param depth
-     * @return
+     * @return List<BaseMeta>
      */
     private List<BaseMeta> processTerm(XSTerm item, int depth){
         ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
@@ -421,7 +425,7 @@ public class XSDParser  {
      * This interface extends XSTerm and represents the Element Declaration schema component
      * @param item
      * @param depth
-     * @return
+     * @return ElementMeta
      */
     private ElementMeta processElement(XSElementDeclaration item, int depth){
         if(debug) System.out.println(getPrefix(depth)+"Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
@@ -430,9 +434,12 @@ public class XSDParser  {
         ElementMeta ret = null;
         try{
             XSTypeDefinition type = item.getTypeDefinition();
+            String typeStr = (type.getNamespace()==null||type.getNamespace().equals(defaultNS))?
+                    type.getName()
+                    :type.getNamespace()+":"+type.getName();
             if(type instanceof XSComplexTypeDefinition){
                 //System.out.println("CCCX processElement() depth = " + depth);
-                ret = processComplexType((XSComplexTypeDefinition)type, depth);
+                ret = processComplexType((XSComplexTypeDefinition)type, depth, (typeStr == null));
             }
 
             if (ret==null)
@@ -457,7 +464,7 @@ public class XSDParser  {
      * Process XSAttributeUse object
      * The XSAttributeUse interface extends XSObject and represents the Attribute Use schema component.
      * @param item
-     * @return
+     * @return AttributeMeta
      */
     private AttributeMeta processAttribute(XSAttributeUse item, int depth){
         if(item == null){
@@ -500,19 +507,19 @@ public class XSDParser  {
 
     public void expandElementMetaWithLazyLoad(ElementMeta meta)
     {
+        if (meta.getType() == null) return;
+        ElementMeta newMeta=this.getElementMetaFromComplexType(meta.getNameSpace(), meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
 
-//        ElementMeta newMeta=this.getElementMetaFromComplexType(meta.getNameSpace(),meta.getType(), MetaConstants.SCHEMA_LAZY_LOADINTG_INCREMENTAL);
+        if (newMeta != null)
+        {
+            System.out.println("Deep Loading XSDParser.expandElementMetaWithLazyLoad()...extended node:"+meta+ ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
+            while(meta.getAttrData().size() > 0) meta.getAttrData().remove(0);
+            meta.getAttrData().addAll(0, newMeta.getAttrData());
 
-//        if (newMeta != null)
-//        {
-//            System.out.println("Deep Loading XSDParser.expandElementMetaWithLazyLoad()...extended node:"+meta+ ", type=" + meta.getType() + ", nameSpace="+meta.getNameSpace() + ", name=" + meta.getName());
-//            while(meta.getAttrData().size() > 0) meta.getAttrData().remove(0);
-//            meta.getAttrData().addAll(0, newMeta.getAttrData());
-//
-//            while(meta.getChildElement().size() > 0) meta.getChildElement().remove(0);
-//            meta.getChildElement().addAll(0, newMeta.getChildElement());
-//        }
-     }
+            while(meta.getChildElement().size() > 0) meta.getChildElement().remove(0);
+            meta.getChildElement().addAll(0, newMeta.getChildElement());
+        }
+    }
 }
 
 /**

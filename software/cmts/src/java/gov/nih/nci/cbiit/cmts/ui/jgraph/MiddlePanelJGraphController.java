@@ -159,7 +159,8 @@ public class MiddlePanelJGraphController {
 				functionInstance.getChildren().toArray(), portAttributes, null,
 				parentMap, null);
 		setGraphChanged(true);
-		return true;
+        
+        return true;
 		// EDIT does not work!
 		// graph.getGraphLayoutCache().edit(functionBoxVertex.getChildren().toArray(),
 		// portAttributes);
@@ -705,7 +706,8 @@ public class MiddlePanelJGraphController {
 			targetNode.setMapStatus(true);
 			setGraphChanged(true);
 		}
-		return result;
+
+        return result;
 	}
 
 	private boolean createTreeToTreeDirectMapping(

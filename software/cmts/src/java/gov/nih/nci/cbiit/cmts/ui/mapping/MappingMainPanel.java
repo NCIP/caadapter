@@ -95,6 +95,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 	private MappingTargetTree tTree = null;
 	private MiddlePanelJGraphController graphController =null;
     private CellRenderXSObject selectedRootTempStore = null;
+    //private boolean hasBeenChanged = false;
 
     public MappingMainPanel(MainFrameContainer mainFrame) throws Exception
 	{
@@ -107,7 +108,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		marquee.setController(graphController);
 		this.add(getCenterPanel(true), BorderLayout.CENTER);
 		this.setViewFileExtension(".map");
-	}
+        setChanged(false);
+    }
 
 	public void actionPerformed(ActionEvent e)
 	{
@@ -272,6 +274,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         {
             processOpenSourceTree(file, true, true, selectedRootTempStore);
             selectedRootTempStore = null;
+
+            setChanged(true);
         }
         //else System.out.println("CCCCC Source3 else");
     }
@@ -385,6 +389,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
             //System.out.println("CCCCC Target2 (file != null) : " + file.getName());
             processOpenTargetTree(file, true, true, selectedRootTempStore);
             selectedRootTempStore = null;
+
+            setChanged(true);
         }
         //else System.out.println("CCCCC Target3 else");
     }
@@ -889,6 +895,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         }
         getMiddlePanel().renderInJGraph();
 		System.out.println("CmtsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
+        //hasBeenChanged = false;
+        setChanged(false);
 //        if (newMapping == null)
 //        {
 //            //this.mapping = mapping;
@@ -1099,7 +1107,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		}
 		//clear the change flag.
 		getGraphController().setGraphChanged(false);
-	}
+        setChanged(false);
+    }
 
     public Mapping getReorganizedMappingData()
 	{
@@ -1111,6 +1120,11 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         return mappingData;
 
 	}
+    public boolean isChanged()
+	{
+        if (getGraphController().isGraphChanged()) return true;
+        return super.isChanged();
+    }
 }
 
 /**
