@@ -166,6 +166,11 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
                 SOURCE_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
         if ((file == null)||(!file.exists())||(!file.isFile())) return;
+        if (!file.getName().toLowerCase().endsWith(SOURCE_TREE_FILE_DEFAULT_EXTENTION.toLowerCase()))
+        {
+            //JOptionPane.showMessageDialog(this, "This file is not a XML schema (" + SOURCE_TREE_FILE_DEFAULT_EXTENTION + ") file : " + file.getName(), "Not a schema file", JOptionPane.ERROR_MESSAGE);
+            //return;
+        }
         String targetFile = targetLocationArea.getText();
         if ((targetFile != null)&&(!targetFile.trim().equals("")))
         {
@@ -224,7 +229,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         catch(Exception ee)
         {
             int res = JOptionPane.showConfirmDialog(this, ee.getMessage() + "\nAll Mapping data will be removed. Are you sure?", "WARNING: Mapping Data Removed", JOptionPane.WARNING_MESSAGE);
-            ee.printStackTrace();
+            //ee.printStackTrace();
             if (res == JOptionPane.YES_OPTION) rMap = null;
             else return;
         }
@@ -272,7 +277,15 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         }
         else if (file != null)
         {
-            processOpenSourceTree(file, true, true, selectedRootTempStore);
+            try
+            {
+                processOpenSourceTree(file, true, true, selectedRootTempStore);
+            }
+            catch(Exception ee)
+            {
+                JOptionPane.showMessageDialog(this, ee.getMessage() + " : " + file.getName(), "Building Source Tree Failure", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             selectedRootTempStore = null;
 
             setChanged(true);
@@ -282,8 +295,13 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
     private void processingButtonOpenTarget() throws Exception
     {
         File file = DefaultSettings.getUserInputOfFileFromGUI(this,
-                        Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION+";"+TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+                        TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
         if ((file == null)||(!file.exists())||(!file.isFile())) return;
+        if (!file.getName().toLowerCase().endsWith(TARGET_TREE_FILE_DEFAULT_EXTENTION.toLowerCase()))
+        {
+            //JOptionPane.showMessageDialog(this, "This file is not a XML schema (" + TARGET_TREE_FILE_DEFAULT_EXTENTION + ") file : " + file.getName(), "Not a schema file", JOptionPane.ERROR_MESSAGE);
+            //return;
+        }
         String sourceFile = sourceLocationArea.getText();
         if ((sourceFile != null)&&(!sourceFile.trim().equals("")))
         {
@@ -387,7 +405,16 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         else if (file != null)
         {
             //System.out.println("CCCCC Target2 (file != null) : " + file.getName());
-            processOpenTargetTree(file, true, true, selectedRootTempStore);
+            try
+            {
+                processOpenTargetTree(file, true, true, selectedRootTempStore);
+            }
+            catch(Exception ee)
+            {
+                JOptionPane.showMessageDialog(this, ee.getMessage() + " : " + file.getName(), "Building Target Tree Failure", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             selectedRootTempStore = null;
 
             setChanged(true);
@@ -1037,12 +1064,20 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 	/**
 	 * Promote user to select a root node:Element or Complex type
 	 * @param xsdParser
-	 * @return
+	 * @return CellRenderXSObject
 	 */
-	private CellRenderXSObject userSelectRoot(XSDParser xsdParser)
+	private CellRenderXSObject userSelectRoot(XSDParser xsdParser) throws Exception
 	{
-		XSNamedMap[] map = xsdParser.getMappableNames();
-		ArrayList<CellRenderXSObject> choices = new ArrayList<CellRenderXSObject>();
+        XSNamedMap[] map = null;
+        try
+        {
+            map = xsdParser.getMappableNames();
+        }
+        catch(Exception ee)
+        {
+            throw new Exception("Schema file parsing failure. Check if the XML Schema file is invalid.");
+        }
+        ArrayList<CellRenderXSObject> choices = new ArrayList<CellRenderXSObject>();
 
 		for(int i=0; i<map[0].getLength(); i++)
 			choices.add(new CellRenderXSObject(map[0].item(i)));//.getName();
