@@ -185,7 +185,7 @@ public class MappingFactory
         }
         catch(Exception ee)
         {
-            throw new JAXBException("This File is not a valid mapping file (XSLT or XQ) : " + f.getAbsolutePath());
+            throw new JAXBException("This File is not a valid mapping file. : " + f.getAbsolutePath());
         }
         if ((listCom == null)||(listCom.size() == 0)) throw new JAXBException("This File is not a valid mapping file or empty : " + f.getAbsolutePath());
         for (Component mapComp:listCom)
@@ -315,42 +315,56 @@ public class MappingFactory
 
                     File[] list = currentDir.listFiles();
                     String newLocation = null;
-                    for (File file:list)
+                    int n = 0;
+                    while(true)
                     {
-                        if (!file.isFile()) continue;
-                        String fn = file.getName();
-                        if (fn.toLowerCase().endsWith(".zip")) {}
-                        else if (fn.toLowerCase().endsWith(".jar")) {}
-                        else continue;
-                        //System.out.println("CCCC zip file Name:" + fn);
-                        ZipUtil zipUtil = null;
-
-                        try
+                        File child_sORt = null;
+                        for (File file:list)
                         {
-                            zipUtil = new ZipUtil(file.getAbsolutePath());
-                        }
-                        catch(IOException ie)
-                        {
-                            //System.out.println("CCCC irir : " + ie.getMessage());
-                            continue;
-                        }
-                        ZipEntry zipEntry = null;
-                        try
-                        {
-                            zipEntry = zipUtil.searchEntryWithWholeName(xsdF);
-                        }
-                        catch(IOException ie)
-                        {
-                            List<String> list1 = zipUtil.getEntryNames();
-                            String select = null;
-                            int number = -1;
-                            for(String str:list1)
+                            if (file.isDirectory())
                             {
-                                int count = -1;
-                                if (!str.endsWith(xsdF)) continue;
-                                if (str.equals(xsdF)) count = 0;
-                                else
+                                if (file.getName().equalsIgnoreCase(sORt)) child_sORt = file;
+                            }
+                            if (!file.isFile()) continue;
+                            String fn = file.getName();
+                            if (fn.toLowerCase().endsWith(".zip")) {}
+                            else if (fn.toLowerCase().endsWith(".jar")) {}
+                            else continue;
+                            //System.out.println("CCCC zip file Name:" + fn);
+                            ZipUtil zipUtil = null;
+
+                            try
+                            {
+                                zipUtil = new ZipUtil(file.getAbsolutePath());
+                            }
+                            catch(IOException ie)
+                            {
+                                //System.out.println("CCCC irir : " + ie.getMessage());
+                                continue;
+                            }
+                            ZipEntry zipEntry = null;
+                            try
+                            {
+                                zipEntry = zipUtil.searchEntryWithWholeName(xsdF);
+                            }
+                            catch(IOException ie)
+                            {
+                                List<String> list1 = zipUtil.getEntryNames();
+                                String select = null;
+                                int number = -1;
+                                for(String str:list1)
                                 {
+                                    int count = -1;
+
+                                    if (str.equalsIgnoreCase(xsdF))
+                                    {
+                                        select = str;
+                                        break;
+                                    }
+
+                                    if (str.toLowerCase().endsWith("/"+xsdF.toLowerCase())) {}
+                                    else if (str.toLowerCase().endsWith("\\"+xsdF.toLowerCase())) {}
+                                    else continue;
                                     String loc = xsdLocation.substring(0, xsdLocation.length()-xsdF.length());
                                     String ent = str.substring(0, str.length()-xsdF.length());
                                     int cnt2 = 0;
@@ -361,28 +375,35 @@ public class MappingFactory
                                         String acharE = ent.substring(ent.length()-(i+1), ent.length()-i);
                                         if (acharL.equals("\\")) acharL = "/";
                                         if (acharE.equals("\\")) acharE = "/";
-                                        if (acharL.equals(acharE)) cnt2++;
+                                        if (acharL.equalsIgnoreCase(acharE)) cnt2++;
                                         else break;
                                     }
                                     if (cnt2 > 0) count = cnt2;
-                                }
-                                if (count > number)
-                                {
-                                    number = count;
-                                    select = str;
-                                }
-                            }
-                            if (select != null)
-                            {
-                                zipEntry = zipUtil.getZipFile().getEntry(select);
-                            }
-                            else zipEntry = null;
-                        }
 
-                        //System.out.println("CCCC new XSD location:" + xsdF);
-                        if (zipEntry == null) continue;
-                        newLocation = zipUtil.getAccessURL(zipEntry);
+                                    if (count > number)
+                                    {
+                                        number = count;
+                                        select = str;
+                                    }
+                                }
+                                if (select != null)
+                                {
+                                    zipEntry = zipUtil.getZipFile().getEntry(select);
+                                }
+                                else zipEntry = null;
+                            }
+
+                            //System.out.println("CCCC new XSD location:" + xsdF);
+                            if (zipEntry == null) continue;
+                            newLocation = zipUtil.getAccessURL(zipEntry);
+                            if (newLocation != null) break;
+                        }
                         if (newLocation != null) break;
+                        if (n > 0) break;
+                        if (child_sORt == null) break;
+
+                        list = child_sORt.listFiles();
+                        n++;
                     }
                     if (newLocation == null)
                     {

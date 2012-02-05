@@ -290,15 +290,40 @@ public class DefaultSettings
                     JOptionPane.showMessageDialog(parentComponent, "No file is selected. Please select a file.", "No file selected", JOptionPane.ERROR_MESSAGE);
                     continue;
                 }
-
-                if (file.getName().startsWith("\""))
+                //System.out.println("CCCCC FF 1 : " + file.getName() + ", path=" + file.getAbsolutePath());
+                String fileName = file.getName();
+                String path = file.getAbsolutePath();
+                boolean isFullPath = false;
+                if ((!fileName.startsWith("\""))&&(path.endsWith("\"")))
                 {
-                    if (!file.getName().endsWith("\""))
+                    if (path.startsWith("\""))
                     {
-                        JOptionPane.showMessageDialog(parentComponent, "Invalid usage of '\"' character in file name. (1) : " + file.getName(), "Invalid file name", JOptionPane.ERROR_MESSAGE);
+                        fileName = path;
+                    }
+                    else
+                    {
+                        int idx = path.substring(0, path.length()-1).indexOf("\"");
+                        if (idx < 0)
+                        {
+                            JOptionPane.showMessageDialog(parentComponent, "Invalid usage of '\"' character in file name. (0) : " + path, "Invalid file name", JOptionPane.ERROR_MESSAGE);
+                            continue;
+                        }
+                        else
+                        {
+                            fileName = path.substring(idx);
+                            isFullPath = true;
+                            //System.out.println("CCCCC FF 1 : " + fileName + ", path=" + file.getAbsolutePath());
+                        }
+                    }
+                }
+                if (fileName.startsWith("\""))
+                {
+                    if (!fileName.endsWith("\""))
+                    {
+                        JOptionPane.showMessageDialog(parentComponent, "Invalid usage of '\"' character in file name. (1) : " + fileName, "Invalid file name", JOptionPane.ERROR_MESSAGE);
                         continue;
                     }
-                    String fName = file.getName().substring(1, file.getName().length() - 1).trim();
+                    String fName = fileName.substring(1, fileName.length() - 1).trim();
 
                     if (fName.indexOf("\"") >= 0)
                     {
@@ -314,7 +339,15 @@ public class DefaultSettings
                     String parPath = parent.getAbsolutePath();
                     if (!parPath.endsWith(File.separator)) parPath = parPath + File.separator;
 
-                    file = new File(parPath + fName);
+                    if (isFullPath) file = new File(fName);
+                    else file = new File(parPath + fName);
+
+                    File par = file.getParentFile();
+                    if ((!par.exists())||(!par.isDirectory()))
+                    {
+                        JOptionPane.showMessageDialog(parentComponent, "This directory is not exist. : " + par.getAbsolutePath(), "Not exist dirctory", JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
                 }
                 else
                 {

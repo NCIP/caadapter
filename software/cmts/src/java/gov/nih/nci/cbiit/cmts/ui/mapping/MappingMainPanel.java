@@ -1136,10 +1136,12 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+            JOptionPane.showMessageDialog(getParent(), e.getMessage(), "JAXBException", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			//e.printStackTrace();
+            JOptionPane.showMessageDialog(getParent(), e.getMessage(), "Save Failure", JOptionPane.ERROR_MESSAGE);
+        }
 		//clear the change flag.
 		getGraphController().setGraphChanged(false);
         setChanged(false);

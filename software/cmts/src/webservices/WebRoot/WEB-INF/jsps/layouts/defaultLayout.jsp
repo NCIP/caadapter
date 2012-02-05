@@ -3,10 +3,11 @@
 <html>
 <head>
 	<title>caAdapter CMTS Web Service Managemant Portal</title>
-	<link rel="stylesheet" type="text/css" href="css/styleSheet.css" />
+
+    <link rel="stylesheet" type="text/css" href="css/styleSheet.css" />
 	<link rel="icon" href="images/favicon.ico" />
 	<link rel="shortcut icon" href="images/favicon.ico" />
-	
+	<!--
 	<script src="js/script.js" type="text/javascript"></script>
 	<script src="js/TipCode.js" type="text/javascript"></script>
 	
@@ -29,6 +30,8 @@
 		}
 
 	</script>
+	-->
+
 </head>
 
 <body>

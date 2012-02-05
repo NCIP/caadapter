@@ -189,15 +189,17 @@ public class ScenarioUtil {
 
                     }
                 }
-                else if (chldFileName.endsWith(".xsl"))
+                else if ((chldFileName.toLowerCase().endsWith(".xsl"))||(chldFileName.toLowerCase().endsWith(".xslt")))
                 {
                     oneReg.setMappingFile(chldFileName);
                     oneReg.setTransferType("xsl");
                 }
-                else if (chldFileName.endsWith(".xq"))
+                else if ((chldFileName.toLowerCase().endsWith(".xq"))||
+                         (chldFileName.toLowerCase().endsWith(".xql"))||
+                         (chldFileName.toLowerCase().endsWith(".xquery")))
                 {
                     oneReg.setMappingFile(chldFileName);
-                    oneReg.setTransferType("xq");
+                    oneReg.setTransferType("xql");
                 }
             }
             else if (childFile.isDirectory())

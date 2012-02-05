@@ -191,6 +191,10 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
     	try {
+
+            String displayedMessage = getDisplayedMessage();
+            if (displayedMessage == null) displayedMessage = "";
+            else displayedMessage = displayedMessage.trim();
             if (transformationType==null
 				||transformationType==""
 					||transformationType==ActionConstants.NEW_XML_Transformation)
@@ -267,8 +271,26 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
                 }
 			    setViewFileExtension(artType);
 
-			    setMessageText(xmlResult);
-			    //JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+                if (xmlResult == null) xmlResult = "";
+                else xmlResult = xmlResult.trim();
+
+                if (xmlResult.equals(""))
+                    JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "This Result is Null or Empty. Check the input data.", "Null Result", JOptionPane.ERROR_MESSAGE);
+
+                setMessageText(xmlResult);
+
+                if ((!displayedMessage.equals(""))&&(!xmlResult.equals("")))
+                {
+                    if (xmlResult.equals(displayedMessage))
+                    {
+                        JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration is successfully finished. But nothing changed", "Regeneration", JOptionPane.WARNING_MESSAGE);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration is successfully finished.", "Regeneration", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                //JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration has completed successfully !", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
             }
 
     	} /*catch (XQException e1) {
@@ -378,8 +400,9 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 			JOptionPane.showMessageDialog(getParent(), "Data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			//e.printStackTrace();
+            JOptionPane.showMessageDialog(getParent(), e.getMessage(), "Save Failure", JOptionPane.ERROR_MESSAGE);
+        }
         isSaved = true;
     }
 }

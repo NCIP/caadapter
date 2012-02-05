@@ -4,7 +4,7 @@
 <!-- target of anchor to skip menus -->
 <a name="content" />
       
-<table summary="" cellpadding="0" cellspacing="0" border="0" width="600" height="100%">
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="800" height="100%">
       <!-- banner begins -->      
 		<tr>
 			<td width="100%" class="welcomeTitleCopy2" height="20">Welcome to the caAdapter CMTS Web Services Management Portal</td>
@@ -24,13 +24,22 @@
 						</td>
                         <td>&nbsp;</td>
                     </tr>  -->
+<%
+                    String methodDef = "addScenarioRegistration";
+                    String methodS = request.getParameter("methd");
+                    if ((methodS == null)||(methodS.trim().equals(""))) methodS = methodDef;
+                    else methodS = methodS.trim();
+
+              if (methodS.equals(methodDef))
+              {
+%>
                     <tr>
 						<td>Transformation Type:</td>
 						<td>
 							<menu>
-								<input type="radio" value ="map" name="tranformationType" checked>Mapping
-								<input type="radio" value ="xsl" name="tranformationType">XSLT
-								<input type="radio" value ="xq" name="tranformationType">XQuery
+								<input type="radio" value ="map" name="transformationType" checked>Mapping
+								<input type="radio" value ="xsl" name="transformationType">XSL or XSLT
+								<input type="radio" value ="xq" name="transformationType">XQuery
 							</menu>
 						</td>
                         <td>&nbsp;</td>
@@ -41,11 +50,9 @@
 					<tr>
 					<td>Transformation Instruction(.map, .xsl, .xql):</td><td><INPUT TYPE="FILE" NAME="mappingFileName"></td><td>&nbsp;</td>
 					</tr>
-                <%
+<%
 
-                    String methodS = request.getParameter("methd");
-                    if ((methodS == null)||(methodS.trim().equals(""))) methodS = "addScenarioRegistration";
-                    else methodS = methodS.trim();
+
 
                     String strS = request.getParameter("sourceNum");
                     String strT = request.getParameter("targetNum");
@@ -85,7 +92,7 @@
                         {
                 %>
                     <tr>
-					<td>Source Schema File(.xsd):</td><td><INPUT TYPE="FILE" NAME="sourceXsdName<%= iStr%>"></td>
+					<td>Source Schema File(xsd or zip):</td><td><INPUT TYPE="FILE" NAME="sourceXsdName<%= iStr%>"></td>
                     <td><a href="addScenario.do?methd=<%= methodS%>&sourceNum=<%= (srcNum + 1)%>&targetNum=<%= tgtNum%>">Add a Source XSD field</a></td>
                     </tr>
                 <%
@@ -108,7 +115,7 @@
                         {
                 %>
                     <tr>
-					<td>Target Schema File(.xsd):</td><td><INPUT TYPE="FILE" NAME="targetXsdName<%= iStr%>"></td>
+					<td>Target Schema File(xsd or zip):</td><td><INPUT TYPE="FILE" NAME="targetXsdName<%= iStr%>"></td>
                     <td><a href="addScenario.do?methd=<%= methodS%>&sourceNum=<%= srcNum%>&targetNum=<%= (tgtNum+1)%>">Add a Target XSD field</a></td>
                     </tr>
                 <%
@@ -119,14 +126,39 @@
                     <tr>
 					<td>&nbsp;</td><td><INPUT TYPE="FILE" NAME="targetXsdName<%= iStr%>"></td><td>&nbsp;</td>
 					</tr>
+
                 <%
                          }
-                    } %>
+                    }
+                %>
+                    <tr>
+					<td>Security Code(Required):</td><td><INPUT TYPE="text" NAME="deleteSecurityCode"></td>
+                    <td>Needed when delete this Scenario</td>
+                    </tr>
                     <tr><td colspan=3>
                     <INPUT TYPE="hidden" NAME="methd" VALUE="<%= methodS%>">
                     <input type="submit" value="Add Transformation Scenario"></td>
 					</tr>
-				</FORM>
+                <%
+              }
+              else if (methodS.equalsIgnoreCase("deleteScenario"))
+              {
+                %>
+                    <tr>
+					<td>Scenario Name(Required):</td><td> <input type="text" name="scenarioName"><br></td><td>&nbsp;</td>
+					</tr>
+                    <tr>
+					<td>Security Code(Required):</td><td><INPUT TYPE="password" NAME="deleteSecurityCode"></td>
+                    <td>&nbsp;</td>
+                    </tr>
+                    <tr><td colspan=3>
+                    <INPUT TYPE="hidden" NAME="methd" VALUE="<%= methodS%>">
+                    <input type="submit" value="Delete Transformation Scenario"></td>
+					</tr>
+ <%
+              }
+ %>
+                </FORM>
 			</td>
 		</tr>												
  </table>

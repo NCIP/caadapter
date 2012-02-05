@@ -84,10 +84,11 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	{
 		boolean oldChangeValue = viewerPanel.isChanged();
 		preActionPerformed(viewerPanel);
-		viewerPanel.persistFile(file);
+
 		try
 		{
-			if (!GeneralUtilities.areEqual(defaultFile, file))
+            viewerPanel.persistFile(file);
+            if (!GeneralUtilities.areEqual(defaultFile, file))
 			{//not equal, change it.
 				removeFileUsageListener(defaultFile, viewerPanel);
 				defaultFile = file;

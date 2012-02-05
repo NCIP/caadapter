@@ -29,9 +29,9 @@ public class TransformerFactory {
  			rtnTransformer.setPresentable(true);
  			return rtnTransformer;
  		}
- 		else if (transformerType.equals(".xsl"))
+ 		else if ((transformerType.toLowerCase().equals(".xsl"))||(transformerType.toLowerCase().equals(".xslt")))
  			return new XsltTransformer();
- 		else if (transformerType.equals(".xq"))
+ 		else if ((transformerType.toLowerCase().equals(".xq"))||(transformerType.toLowerCase().equals(".xql"))||(transformerType.toLowerCase().equals(".xquery")))
  			return new XQueryTransformer();
  		else if (transformerType.equalsIgnoreCase("XML"))
  			return new MappingTransformer();

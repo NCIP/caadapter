@@ -27,7 +27,7 @@
 	<p>
 	<ul>
 		<li>Set unique scenario name</li>
-		<li>Upload transformation instruction file: <b>map, xq, xsl</b></li>
+		<li>Upload transformation instruction file: <b>map, xql or xsl</b></li>
 		<li><i>Optional</i>: Upload source schema file:<b>xsd</b> (required only for mapping transformation)</li>
 		<li><i>Optional</i>: Upload target schema file: <b>xsd</b> (required only for mapping transformation)</li>
 		<!-- li>Upload the vocabulary mapping file if source is an HL7 V2 message and a vocabulary mapping file being  used: <b>vom</b></li -->

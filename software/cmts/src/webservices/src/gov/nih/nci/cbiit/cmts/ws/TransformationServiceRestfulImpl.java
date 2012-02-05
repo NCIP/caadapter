@@ -14,8 +14,8 @@ public class TransformationServiceRestfulImpl implements TransformationWebServic
 				.println("TransformationServiceRestfullImpl.restfulTransferData...called");
 		System.out
 				.println("TransformationServiceRestfullImpl.restfulTransferData...scenario:"+mappingScenario);
-		System.out
-				.println("TransformationServiceRestfullImpl.restfulTransferData...sourcedata:\n"+sourceData);
+		//System.out
+		//		.println("TransformationServiceRestfullImpl.restfulTransferData...sourcedata:\n"+sourceData);
 		ArrayList<String> transList=wsServer.transferData(mappingScenario, sourceData);
 		ResultList rtnList= new ResultList();
 

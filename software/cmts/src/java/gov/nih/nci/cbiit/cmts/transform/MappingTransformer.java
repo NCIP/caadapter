@@ -248,6 +248,7 @@ public class MappingTransformer extends DefaultTransformer {
 
     private String reorganizeTargetNameSpace(String xmlResult)
     {
+        if (mapping == null) return xmlResult;
         List<Component> l = mapping.getComponents().getComponent();
         Component tgt = null;
         Component src = null;
