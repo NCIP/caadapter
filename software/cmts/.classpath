@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/resources"/>
-	<classpathentry kind="src" path="src/webservices/src"/>
-	<classpathentry excluding="bin/|dist/|doc/|src/cxfWebservice/|src/java/|src/resources/|src/web/|src/webservices/|src/webservices/src/|test/|testLib/|workingspace/" kind="src" path=""/>
 	<classpathentry kind="src" path="src/java"/>
-	<classpathentry excluding="webServiceClient/" kind="src" path="test"/>
+	<classpathentry kind="src" path="etc"/>
+	<classpathentry kind="src" path="src/resources"/>
+	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/saxon9-xqj.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9.jar"/>
 	<classpathentry kind="lib" path="lib/jgraph.jar"/>
 	<classpathentry kind="lib" path="testLib/junit-4.5.jar"/>
-	<classpathentry kind="lib" path="lib/BrowserLauncher2-1_3.jar"/>
-	<classpathentry kind="lib" path="lib/caAdapter.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.0.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/testLib"/>
 	<classpathentry kind="lib" path="lib/jdom.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="lib/jaxen-jdom.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caAdapter.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="testLib/hl7v2xsd.zip"/>
 	<classpathentry kind="lib" path="lib/encoderframework.jar"/>
 	<classpathentry kind="lib" path="lib/encoderfrmwk-xsdextension.jar"/>
+	<classpathentry kind="lib" path="lib/hl7.jar"/>
+	<classpathentry kind="lib" path="lib/hl7encoder-xsdextension.jar"/>
 	<classpathentry kind="lib" path="lib/xbean.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/webServiceLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/webServiceClient"/>
-	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/BrowserLauncher2-1_3.jar"/>
 	<classpathentry kind="lib" path="lib/plugin.jar"/>
-	<classpathentry kind="lib" path="lib/saxon9.jar"/>
-	<classpathentry kind="lib" path="lib/jaxb-api-2.2.1.jar"/>
-	<classpathentry kind="lib" path="src/webservices/WebRoot/WEB-INF/lib/struts.jar"/>
-	<classpathentry kind="lib" path="src/webservices/cxfLib/jsr311-api-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="src/webservices/cxfLib/xmlschema-core-2.0.jar"/>
-	<classpathentry kind="lib" path="src/webservices/cxfLib/neethi-3.0.1.jar"/>
-	<classpathentry kind="lib" path="src/webservices/cxfLib/cxf-2.4.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
