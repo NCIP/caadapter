@@ -143,7 +143,8 @@ public class MainMenuBar extends JMenuBar
         menuItemMap.put(ActionConstants.OPEN_MAP_FILE, openMapFileItem);
 
         JMenuItem exitMenuItem = null;
-        if (isEnableExitMenu())
+        //if (isEnableExitMenu())
+        if (mainFrame.getMainFrame() != null)
         {
             DefaultExitAction exitAction = new DefaultExitAction(mainFrame);//.getAssociatedUIComponent());
             exitMenuItem = new JMenuItem(exitAction);

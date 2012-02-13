@@ -89,6 +89,9 @@ public class DefaultExitAction extends AbstractContextAction
         }
         if (mainFrame.getMainApplet() != null)
         {
+            JOptionPane.showMessageDialog(getAssociatedUIComponent(), "CMTS is running on a web browser. \nPlease, Use the 'Exit' menu of this Web Browser.", "CMTS on a Web Browser", JOptionPane.WARNING_MESSAGE);
+            return false;
+            /*
             try
             {
                 JSObject win = (JSObject) JSObject.getWindow(mainFrame.getMainApplet());
@@ -118,10 +121,12 @@ public class DefaultExitAction extends AbstractContextAction
                     com = com.getParent();
                 }
             }
+            */
         }
         System.out.println("*****Exit Failure!!!");
         setSuccessfullyPerformed(false);
         return false;
+
     }
 
     /**

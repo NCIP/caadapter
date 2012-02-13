@@ -222,10 +222,13 @@ public class OpenMapFileAction extends DefaultContextOpenAction
                 }
                 catch (Throwable e1)
 				{
-                    //System.out.println("SwingWorker.done() : 4");
-
-                    //log the exception, but not report
-					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame.getAssociatedUIComponent(), false, false);
+                    String message = e1.getMessage();
+                    if (message.startsWith(ActionConstants.MESSAGE_NOT_A_MAPPING_FILE))
+                    {
+                        JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Sorry! This file cannot be opened : " + file.getName() +"\nFile Opening is Canceled.",
+                                ActionConstants.MESSAGE_NOT_A_MAPPING_FILE, JOptionPane.WARNING_MESSAGE);
+                    }
+                    else DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame.getAssociatedUIComponent(), false, false);
 					mainFrame.closeTab();
                     //report the nice to have message
 					everythingGood = false;
@@ -261,9 +264,33 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
-		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame.getAssociatedUIComponent(), //getUIWorkingDirectoryPath(),
-				DefaultSettings.MAP_FILE_DEFAULT_EXTENTION, "Open Transformation Mapping", false, false);
-		if (file != null)
+        File file = null;
+        while(true)
+        {
+            file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame.getAssociatedUIComponent(), //getUIWorkingDirectoryPath(),
+			    	DefaultSettings.MAP_FILE_DEFAULT_EXTENTION, ActionConstants.OPEN_MAP_FILE, false, false);
+            if (file == null)
+            {
+                JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Opening File is Canceled.",
+                        "Cancel Open File", JOptionPane.INFORMATION_MESSAGE);
+                return isSuccessfullyPerformed();
+            }
+
+            if (file.getName().toLowerCase().endsWith(".map")) break;
+            else
+            {
+                int ans = JOptionPane.showConfirmDialog(mainFrame.getAssociatedUIComponent(), "The File type of your select is not a '.map' file. : " + file.getName() + "\nDo you want to go on, anyway?",
+                                              "Not Mapping File", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (ans == JOptionPane.YES_OPTION) break;
+                else
+                {
+                    JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Opening File is Canceled.",
+                        "Cancel Open File", JOptionPane.INFORMATION_MESSAGE);
+                    return isSuccessfullyPerformed();
+                }
+            }
+        }
+        if (file != null)
 		{
 			openFile = file;
 			MappingMainPanel panel;

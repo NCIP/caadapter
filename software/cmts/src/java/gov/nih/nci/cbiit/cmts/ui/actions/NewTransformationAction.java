@@ -134,6 +134,7 @@ public class NewTransformationAction extends AbstractContextAction
         //MessagePanel newMsgPane=new MessagePanel();
 
             //String mappingFile=w.getMapFile().getPath();
+        String displayedMessage = newMsgPane.getDisplayedMessage();
         newMsgPane.setMessageText("");
         newMsgPane.setValidationMessage(null);
 
@@ -196,9 +197,9 @@ public class NewTransformationAction extends AbstractContextAction
 
                 if (errCount > 0)
                 {
-                    String msg =  "The XML validator found " + errCount + " errors in the source XML. Do you want to progress?\n"+ errMsg;
-                    if (errCount == 1) msg =  "The XML validator found an error in the source XML. Do you want to progress?\n" + errMsg;
-                    int rr = JOptionPane.showConfirmDialog(mainFrame.getAssociatedUIComponent(), msg, "ERROR in Source XML", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+                    String msg = "" +errCount+ " Errors are found in the source XML file as following.\nHowever, the target XML can be generated. Do you want it, anyway?\nErrors:\n"+ errMsg;
+                    if (errCount == 1) msg = "One Error is found in the source XML file as following.\nHowever, the target XML can be generated. Do you want it, anyway?\nError: \n" + errMsg;
+                    int rr = JOptionPane.showConfirmDialog(mainFrame.getAssociatedUIComponent(), msg, "Source XML validation report", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if (rr != JOptionPane.YES_OPTION) return false;
                 }
             }
@@ -222,7 +223,23 @@ public class NewTransformationAction extends AbstractContextAction
                 newMsgPane.setTransformationMappingURI(mappingFile);
                 if (transformer instanceof MappingTransformer)
                     newMsgPane.setValidationMessage( transformer.validateXmlData(((MappingTransformer)transformer).getTransformationMapping(),xmlResult));
-                JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Transformation Complete", JOptionPane.INFORMATION_MESSAGE);
+                //
+
+                if ((displayedMessage != null)&&(!displayedMessage.equals("")))
+                {
+                    if (xmlResult.equals(displayedMessage))
+                    {
+                        JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration is successfully finished. But nothing changed", "Regeneration", JOptionPane.WARNING_MESSAGE);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Regeneration is successfully finished.", "Regeneration", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Transformation Complete", JOptionPane.INFORMATION_MESSAGE);
+
+
+
             }
         return true;
     }

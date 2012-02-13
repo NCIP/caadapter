@@ -33,6 +33,8 @@ import gov.nih.nci.cbiit.cmts.core.MetaConstants;
 import gov.nih.nci.cbiit.cmts.core.TagType;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Components;
 import gov.nih.nci.cbiit.cmts.core.Mapping.Links;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
+//import gov.nih.nci.cbiit.cmts.util.ZipFileUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.ZipUtil;
 
@@ -155,7 +157,7 @@ public class MappingFactory
             }
             catch(UnmarshalException ee1)
             {
-                throw new JAXBException("This File is not a valid mapping file : " + f.getAbsolutePath());
+                throw new JAXBException(ActionConstants.MESSAGE_NOT_A_MAPPING_FILE  + " (MappingFactory.loadMapping()) : " + f.getName());
             }
             catch(Exception ee2)
             {
@@ -185,7 +187,7 @@ public class MappingFactory
         }
         catch(Exception ee)
         {
-            throw new JAXBException("This File is not a valid mapping file. : " + f.getAbsolutePath());
+            throw new JAXBException(ActionConstants.MESSAGE_NOT_A_MAPPING_FILE + " This File is not a valid mapping file. : " + f.getName());
         }
         if ((listCom == null)||(listCom.size() == 0)) throw new JAXBException("This File is not a valid mapping file or empty : " + f.getAbsolutePath());
         for (Component mapComp:listCom)
@@ -292,27 +294,29 @@ public class MappingFactory
                         }
                         //else throw new JAXBException("Invalid URL as "+sORt+" XSD location. : " + xsdLocation);
                     }
-                    String xsdF = xsdLocation;
-                    while(true)
-                    {
-                        int idx = xsdF.indexOf(File.separator);
-                        if (idx >= 0)
-                        {
-                            xsdF = xsdF.substring(idx + File.separator.length());
-                            continue;
-                        }
-                        idx = xsdF.indexOf("/");
-                        if (idx >= 0)
-                        {
-                            xsdF = xsdF.substring(idx + 1);
-                            continue;
-                        }
-                        break;
-                    }
+//                    String xsdF1 = xsdLocation;
+//                    while(true)
+//                    {
+//                        int idx = xsdF.indexOf(File.separator);
+//                        if (idx >= 0)
+//                        {
+//                            xsdF = xsdF.substring(idx + File.separator.length());
+//                            continue;
+//                        }
+//                        idx = xsdF.indexOf("/");
+//                        if (idx >= 0)
+//                        {
+//                            xsdF = xsdF.substring(idx + 1);
+//                            continue;
+//                        }
+//                        break;
+//                    }
                     File currentDir = new File(mappingParentPath);
-                    if ((!currentDir.exists())||(!currentDir.isDirectory()))
-                        throw new JAXBException("Invalid "+sORt+" XSD location. (1) : " + xsdLocation);
 
+                    String messageInvalidXSDPath = "Not Found this " + sORt + " schema file in the map data. : " + xsdLocation;
+                    if ((!currentDir.exists())||(!currentDir.isDirectory()))
+                        throw new JAXBException(messageInvalidXSDPath + "  .");
+                        //throw new JAXBException("Invalid "+sORt+" XSD location. (1) : " + xsdLocation);
                     File[] list = currentDir.listFiles();
                     String newLocation = null;
                     int n = 0;
@@ -343,6 +347,10 @@ public class MappingFactory
                                 continue;
                             }
                             ZipEntry zipEntry = null;
+                            zipEntry = getXSDZipEntryFromZip(zipUtil, xsdLocation);
+
+
+                            /*
                             try
                             {
                                 zipEntry = zipUtil.searchEntryWithWholeName(xsdF);
@@ -392,10 +400,18 @@ public class MappingFactory
                                 }
                                 else zipEntry = null;
                             }
+                            */
 
                             //System.out.println("CCCC new XSD location:" + xsdF);
-                            if (zipEntry == null) continue;
+                            if (zipEntry == null)
+                            {
+                                zipUtil.getZipFile().close();
+                                continue;
+                            }
                             newLocation = zipUtil.getAccessURL(zipEntry);
+
+                            zipUtil.getZipFile().close();
+
                             if (newLocation != null) break;
                         }
                         if (newLocation != null) break;
@@ -416,7 +432,11 @@ public class MappingFactory
                         {
                             newLocation = xsdLocation.substring(idxx);
                         }
-                        else throw new JAXBException("Invalid "+sORt+" XSD location. (2) : " + xsdLocation);
+                        else
+                        {
+                            throw new JAXBException(messageInvalidXSDPath + "  ..");
+                            //throw new JAXBException("Invalid "+sORt+" XSD location. (2) : " + xsdLocation);
+                        }
                     }
                     //System.out.println("CCCC new XSD location:" + newLocation);
                     metaParser.loadSchema(newLocation, null);
@@ -424,7 +444,11 @@ public class MappingFactory
                     if (!res) //throw new JAXBException("Invalid "+sORt+" XSD location. (3) : " + xsdLocation);
                     {
                         String msg1 = "Namespace or root element name is mismatched with "+sORt+" XSD file. : " + xsdLocation;
-                        if (newLocation.toLowerCase().startsWith("file:/")) msg1 = "Invalid "+sORt+" XSD location. (3) : " + xsdLocation;
+                        if (newLocation.toLowerCase().startsWith("file:/"))
+                        {
+                            //msg1 = "Invalid "+sORt+" XSD location. (3) : " + xsdLocation;
+                            msg1 = messageInvalidXSDPath + "  ...";
+                        }
                         throw new JAXBException(msg1);
                     }
 
@@ -449,7 +473,7 @@ public class MappingFactory
                 if ((msg == null)||(msg.trim().equals("")))
                     msg = ee.getClass().getCanonicalName()+":"+ "Failed to read or parse schema document (1) - " + xsdLocation;
                 //System.out.println("CCCC =======");
-                //ee.printStackTrace();
+                ee.printStackTrace();
                 throw new JAXBException(msg);
 
             }
@@ -1113,6 +1137,107 @@ public class MappingFactory
             }
         }
         return ret;
+    }
+    public static ZipEntry getXSDZipEntryFromZip(ZipUtil zipUtil, String xsdLocation)
+    {
+        return getXSDZipEntryFromZip(zipUtil, xsdLocation, false, false);
+    }
+    public static ZipEntry getXSDZipEntryFromZip(ZipUtil zipUtil, String xsdLocation, boolean checkSingle, boolean caseSeparate)
+    {
+
+        String filePath = xsdLocation;
+        if (filePath==null||filePath.trim().equals(""))
+			   return null;
+       int subIndx=0;
+       if (filePath.lastIndexOf("/")>-1)
+           subIndx=filePath.lastIndexOf("/");
+       else if (filePath.lastIndexOf("\\")>-1)
+           subIndx=filePath.lastIndexOf("\\");
+       String xsdName ="";
+
+       if (subIndx>0) xsdName = filePath.substring(subIndx+1);
+       else xsdName = filePath;
+
+        ZipEntry zipEntry = null;
+        try
+        {
+            zipEntry = zipUtil.searchEntryWithWholeName(xsdName);
+        }
+        catch(IOException ie)
+        {
+            List<String> list1 = zipUtil.getEntryNames();
+            String select = null;
+            int number = -1;
+            int findEntries = 0;
+            for(String str:list1)
+            {
+                int count = -1;
+
+                boolean cTag1 = false;
+                if (caseSeparate) cTag1 = str.equals(xsdName);
+                else cTag1 = str.equalsIgnoreCase(xsdName);
+                if (cTag1)
+                //if (str.equalsIgnoreCase(xsdName))
+                {
+                    select = str;
+                    break;
+                }
+
+                String cTag2 = "";
+                String cTag3 = "";
+                if (caseSeparate)
+                {
+                    cTag2 = str;
+                    cTag3 = xsdName;
+                }
+                else
+                {
+                    cTag2 = str.toLowerCase();
+                    cTag3 = xsdName.toLowerCase();
+                }
+
+                if (cTag2.endsWith("/"+cTag3))
+                {
+                    findEntries++;
+                }
+                else if (cTag2.endsWith("\\"+cTag3))
+                {
+                    findEntries++;
+                }
+                else continue;
+
+                if ((checkSingle)&&(findEntries > 1)) return null;
+
+                String loc = xsdLocation.substring(0, xsdLocation.length()-xsdName.length());
+                String ent = str.substring(0, str.length()-xsdName.length());
+                int cnt2 = 0;
+                for(int i=0;i<ent.length();i++)
+                {
+                    if (i >= loc.length()) break;
+                    String acharL = loc.substring(loc.length()-(i+1), loc.length()-i);
+                    String acharE = ent.substring(ent.length()-(i+1), ent.length()-i);
+                    if (acharL.equals("\\")) acharL = "/";
+                    if (acharE.equals("\\")) acharE = "/";
+                    if (acharL.equalsIgnoreCase(acharE)) cnt2++;
+                    else break;
+                }
+                if (cnt2 > 0) count = cnt2;
+
+                if (count > number)
+                {
+                    number = count;
+                    select = str;
+                }
+            }
+            if (select != null)
+            {
+                zipEntry = zipUtil.getZipFile().getEntry(select);
+            }
+            else zipEntry = null;
+        }
+
+        //System.out.println("CCCC new XSD location:" + xsdF);
+        return zipEntry;
     }
 }
 

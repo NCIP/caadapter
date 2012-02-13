@@ -14,16 +14,21 @@ import gov.nih.nci.caadapter.security.domain.Permissions;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.ZipUtil;
 import gov.nih.nci.cbiit.cmts.ws.ScenarioUtil;
+import gov.nih.nci.cbiit.cmts.common.XSDParser;
+import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+//import gov.nih.nci.cbiit.cmts.util.ZipFileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.net.URLEncoder;
+import java.net.URL;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -65,10 +70,11 @@ public class AddNewScenario extends HttpServlet {
 
     private String sourceOriginalXSDPath = null;
     private String targetOriginalXSDPath = null;
+    private String mappingFileName = null;
 
     private List<String> includedXSDList = null;
     private List<String> tempXSDList = null;
-    private List<String> alreadyWriteXSDList = null;
+    private List<String> alreadyFoundXSDURLList = null;
     //private List<String> targetXSDList = new ArrayList<String>();
     //private String scenarioHomePath = "";
 
@@ -448,6 +454,15 @@ public class AddNewScenario extends HttpServlet {
                           {
                               if (fileName.toLowerCase().endsWith(".xsd"))
                               {
+                                  if ((transType.equals("xq"))||(transType.equals("xsl")))
+                                  {
+                                      String errMsg = "Transformation Type '" + transType + "' doesn't need any schema file.";
+                                      System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                                      req.setAttribute("rtnMessage", errMsg);
+                                      deleteDirAndFilesOnError(fileList);
+                                      res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                                      return;
+                                  }
                                   uploadedFilePath=path+File.separator+scenarioName+File.separator+sourceORtarget+File.separator+fileName;
                                   //File file = new File(uploadedFilePath);
                                   //if ((file.exists())&&(file.isFile()))
@@ -460,14 +475,24 @@ public class AddNewScenario extends HttpServlet {
                                       item.write(new File(uploadedFilePath));
                                       fileList.add(uploadedFilePath);
                                       String bakupFileName = uploadedFilePath + ".bak";
-                                      if (replaceXSDFile(uploadedFilePath, bakupFileName, sourceORtarget))
+                                      boolean ok = true;
+                                      String er = "";
+                                      try
+                                      {
+                                          ok = replaceXSDFile(uploadedFilePath, bakupFileName, sourceORtarget, null);
+                                      }
+                                      catch(Exception ee)
+                                      {
+                                          er = ee.getMessage();
+                                          ok = false;
+                                      }
+                                      if (ok)
                                       {
                                           fileList.add(bakupFileName);
-
                                       }
                                       else
                                       {
-                                          String errMsg="Faild to upload this "+sourceORtarget+" schema file:"+fileName;
+                                          String errMsg="Faild to upload this "+sourceORtarget+" schema file="+fileName + ", " + er;
                                           System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
                                           req.setAttribute("rtnMessage", errMsg);
                                           deleteDirAndFilesOnError(fileList);
@@ -478,6 +503,15 @@ public class AddNewScenario extends HttpServlet {
                               }
                               else if ((fileName.toLowerCase().endsWith(".zip"))||(fileName.toLowerCase().endsWith(".jar")))
                               {
+                                  if ((transType.equals("xq"))||(transType.equals("xsl")))
+                                  {
+                                      String errMsg = "Transformation Type '" + transType + "' doesn't need any zip file.";
+                                      System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                                      req.setAttribute("rtnMessage", errMsg);
+                                      deleteDirAndFilesOnError(fileList);
+                                      res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                                      return;
+                                  }
                                   uploadedFilePath=path+File.separator+scenarioName+File.separator+sourceORtarget + File.separator + fileName;//sourceORtarget+File.separator+fileName;
                                   //File file = new File(uploadedFilePath);
                                   //if ((file.exists())&&(file.isFile()))
@@ -526,15 +560,41 @@ public class AddNewScenario extends HttpServlet {
                   }
 	    	  }
 
+              //boolean sourceZipCheckPass = false;
+              //boolean targetZipCheckPass = false;
               if ((pathSourceZip != null)||(sourceOriginalXSDPath != null))
               {
-                  extractXSDFileFromZip(pathSourceZip, sourceOriginalXSDPath);
-                  sourceOriginalXSDPath = null;
+                  try
+                  {
+                      extractXSDFileFromZip(pathSourceZip, sourceOriginalXSDPath, SOURCE_DIRECTORY_TAG);
+                      sourceOriginalXSDPath = null;
+                  }
+                  catch(Exception ee)
+                  {
+                      String errMsg="Incomplete Source ZIP ("+pathSourceZip+") file. : " + ee.getMessage();
+                      req.setAttribute("rtnMessage", errMsg);
+                      deleteDirAndFilesOnError(fileList);
+                      res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                      return;
+                  }
+                  //sourceZipCheckPass = true;
               }
               if ((pathTargetZip != null)||(targetOriginalXSDPath != null))
               {
-                  extractXSDFileFromZip(pathTargetZip, targetOriginalXSDPath);
-                  targetOriginalXSDPath = null;
+                  try
+                  {
+                      extractXSDFileFromZip(pathTargetZip, targetOriginalXSDPath, TARGET_DIRECTORY_TAG);
+                      targetOriginalXSDPath = null;
+                  }
+                  catch(Exception ee)
+                  {
+                      String errMsg="Incomplete Target ZIP ("+pathTargetZip+") file. : " + ee.getMessage();
+                      req.setAttribute("rtnMessage", errMsg);
+                      deleteDirAndFilesOnError(fileList);
+                      res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                      return;
+                  }
+                  //targetZipCheckPass = true;
               }
 
               List<String> notFoundfiles = new ArrayList<String>();
@@ -544,7 +604,10 @@ public class AddNewScenario extends HttpServlet {
                   File ff = new File(xsdPath);
                   if ((!ff.exists())||(!ff.isFile()))
                   {
-                      notFoundfiles.add(pathXSD);
+                      //if ((sourceZipCheckPass)&&(pathXSD.startsWith(SOURCE_DIRECTORY_TAG + File.separator))) {}
+                      //else if ((targetZipCheckPass)&&(pathXSD.startsWith(TARGET_DIRECTORY_TAG + File.separator))) {}
+                      //else
+                          notFoundfiles.add(pathXSD);
                   }
               }
 
@@ -561,6 +624,24 @@ public class AddNewScenario extends HttpServlet {
                   deleteDirAndFilesOnError(fileList);
                   res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
                   return;
+              }
+
+              if (mappingFileName != null)
+              {
+                  try
+                  {
+                      MappingFactory.loadMapping(new File(mappingFileName));
+                  }
+                  catch(Exception ee)
+                  {
+                      String errMsg = ee.getMessage();
+                      System.out.println("AddNewScenario.doPost()...ERROR on Load mapping file:"+errMsg);
+
+                      req.setAttribute("rtnMessage", errMsg);
+                      deleteDirAndFilesOnError(fileList);
+                      res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                      return;
+                  }
               }
 
 
@@ -590,27 +671,32 @@ public class AddNewScenario extends HttpServlet {
            doPost(req, res);
        }
 
-    private void extractXSDFileFromZip(String zipPath, String xsdPath)
+    private void extractXSDFileFromZip(String zipPath, String xsdPath, String sourceORtarget) throws Exception
     {
         if ((zipPath == null)||(zipPath.trim().equals(""))) return;
         if ((xsdPath == null)||(xsdPath.trim().equals(""))) return;
 
-        ZipUtil zipUtil = null;
-
-        try
+        File zipFile = new File(zipPath);
+        if ((!zipFile.exists())||(!zipFile.isFile()))
         {
-            zipUtil = new ZipUtil(zipPath);
+            throw new Exception("This is not a file : " + zipPath);
         }
-        catch(IOException ie)
-        {
-            return;
-        }
+        ZipUtil zipUtil = new ZipUtil(zipFile.getAbsolutePath());
 
         String dir = (new File(zipPath)).getParentFile().getAbsolutePath();
         if (!dir.endsWith(File.separator)) dir = dir + File.separator;
-        alreadyWriteXSDList = new ArrayList<String>();
-        extractXSDFileFromZip(zipUtil, xsdPath, dir);
-        alreadyWriteXSDList = null;
+        alreadyFoundXSDURLList = new ArrayList<String>();
+
+        Exception ee1 = null;
+        try
+        {
+            extractXSDFileFromZip(zipUtil, xsdPath, null, sourceORtarget);
+        }
+        catch (Exception ee)
+        {
+            ee1 = ee;
+        }
+        alreadyFoundXSDURLList = null;
         try
         {
             zipUtil.getZipFile().close();
@@ -619,30 +705,178 @@ public class AddNewScenario extends HttpServlet {
         {
             System.out.println("ERROR : Zip file closing failure ("+zipPath+") : " + ie.getMessage());
         }
+        if (ee1 != null) throw ee1;
     }
-    private void extractXSDFileFromZip(ZipUtil zipUtil, String xsdLocation, String dir)
+    private void extractXSDFileFromZip(ZipUtil zipUtil, String xsdLocation, String parentUrl, String sourceORtarget) throws Exception
     {
-        String xsdName = extractOriginalFileName(xsdLocation);
-        ZipEntry zipEntry = getXSDZipEntryFromZip(zipUtil, xsdLocation);
-        if (zipEntry == null)
+
+        String urlT = "";
+        String errMsg = null;
+        if ((parentUrl == null)||(parentUrl.trim().equals("")))
         {
-            System.out.println("ERROR01 : Zip file finding entry failure : " + xsdLocation);
-            return;
+            ZipEntry zipEntry = MappingFactory.getXSDZipEntryFromZip(zipUtil, xsdLocation);
+            if (zipEntry == null)
+            {
+                System.out.println("ERROR01 : Zip file finding entry failure : " + xsdLocation);
+                return;
+            }
+
+            urlT = zipUtil.getAccessURL(zipEntry);
         }
-        String tempFileName = "";
-        try
+        else
         {
-            tempFileName = zipUtil.copyEntryToFile(zipEntry, dir);
+            String tempUrl = parentUrl;
+            String tempLoc = xsdLocation;
+            //System.out.println("CCCCC 55 location=" + xsdLocation + ", parUrl=" + tempUrl);
+            while(true)
+            {
+                if (tempUrl.endsWith("/")) tempUrl = tempUrl.substring(0, tempUrl.length()-1);
+                int idx = tempLoc.indexOf("/");
+                if (idx < 0) idx = tempLoc.indexOf("\\");
+                if (idx < 0)
+                {
+                    tempUrl = tempUrl + "/" + tempLoc;
+                    break;
+                }
+                String d = tempLoc.substring(0, idx + 1).trim();
+                tempLoc = tempLoc.substring(idx + 1);
+                if (d.equals("./")) continue;
+                else if (d.equals(""))
+                {
+                    throw new Exception("invalid xsd path in this zip. (2) url=" + parentUrl + ", Location=" + xsdLocation);
+                }
+                else if (d.equals("../"))
+                {
+                    int idx2 = tempUrl.lastIndexOf("/");
+                    if (idx2 < 0)
+                    {
+                        errMsg = "invalid xsd path in this zip. url=" + parentUrl + ", Location=" + xsdLocation;
+                        break;
+                        //throw new Exception(errMsg);
+                    }
+                    tempUrl = tempUrl.substring(0, idx2 + 1);
+                    if (tempUrl.indexOf("!") < 0)
+                    {
+                        errMsg = "invalid xsd path in this zip. Null parent! url=" + parentUrl + ", Location=" + xsdLocation;
+                        break;
+                        //throw new Exception(errMsg);
+                    }
+
+                }
+                else tempUrl = tempUrl + "/" + d;
+            }
+            urlT = tempUrl;
         }
-        catch(IOException ie)
+        List<String> lines = null;
+
+        boolean alreadyFoundURL = false;
+        for (String str:alreadyFoundXSDURLList)
         {
-            System.out.println("ERROR02 : ZipEntry tempfile saving failure ("+xsdLocation+") : " + ie.getMessage());
-            return;
+            if (urlT.equals(str)) alreadyFoundURL = true;
         }
-        if (tempFileName == null)
+        if (alreadyFoundURL) return;
+
+        String fn = null;
+        for(int i=0;i<2;i++)
         {
-            System.out.println("ERROR03 : ZipEntry tempfile saving failure. Already Exist.("+xsdLocation+") : ");
-            return;
+            try
+            {
+                fn = FileUtil.downloadFromURLtoTempFile(urlT);
+                lines = FileUtil.readFileIntoList(fn);
+                //(new File(fn)).delete();
+                break;
+            }
+            catch(IOException ie)
+            {
+                boolean makeError = true;
+                while(i == 0)
+                {
+                    int idx32 = urlT.indexOf("!/");
+                    //if (idx32 < 0) break;
+                    ZipEntry zipEntry = null;
+                    if ((errMsg != null)||(idx32 < 0)) zipEntry = MappingFactory.getXSDZipEntryFromZip(zipUtil, xsdLocation);
+                    else zipEntry = MappingFactory.getXSDZipEntryFromZip(zipUtil, urlT.substring(idx32 + 2));
+                    if (zipEntry == null)
+                    {
+                        System.out.println("CCCC 54" + "zip entry is null. : " + xsdLocation + ", url=" + urlT);
+                        break;
+                    }
+                    urlT = zipUtil.getAccessURL(zipEntry);
+                    makeError = false;
+                    break;
+                }
+                if (makeError)
+                {
+                    if (errMsg != null)
+                    {
+                        System.out.println(errMsg + ", " + ie.getMessage());
+                        throw new Exception(errMsg);
+                    }
+                    else throw new Exception("ZIP URL dowm Load error ("+urlT+") : " + ie.getMessage());
+                }
+            }
+        }
+        int idx21 = urlT.lastIndexOf("/");
+        //if (idx21 < 0) idx21 = urlT.lastIndexOf("!");
+        if (idx21 < 0) throw new Exception("Invalid Url form : " + urlT);
+        String parUrl = urlT.substring(0, idx21);
+        if ((lines == null)||(lines.size() == 0)) throw new Exception("Empty zip entry : " + urlT);
+        else
+        {
+            boolean isEmpty = true;
+            for (String line:lines) if (!line.trim().equals("")) isEmpty = false;
+            if (isEmpty) throw new Exception("Empty zip entry (2) : " + urlT);
+        }
+        alreadyFoundXSDURLList.add(urlT);
+        //System.out.println("CCCC Found XSD zip entry : " + urlT + ", parUrl=" +parUrl);
+
+        File fileToDir = (new File(zipUtil.getZipFile().getName())).getParentFile();
+        String fileToDirStr = fileToDir.getAbsolutePath();
+        if (!fileToDirStr.endsWith(File.separator)) fileToDirStr = fileToDirStr + File.separator;
+        String fileName = extractOriginalFileName(xsdLocation);
+        replaceXSDFile(fn, null, sourceORtarget, fileToDirStr + fileName.toLowerCase());
+
+        if ((tempXSDList != null)&&(tempXSDList.size() > 0))
+        {
+            for (String str:tempXSDList)
+            {
+                if (!str.trim().equals("")) extractXSDFileFromZip(zipUtil, str, parUrl, sourceORtarget);
+            }
+        }
+    }
+
+
+
+
+
+
+    /*
+    private void extractXSDFileFromZip2(ZipUtil zipUtil, String xsdLocation, String dir, String parentUrl)
+    {
+        //String xsdName = extractOriginalFileName(xsdLocation);
+        if ((parentUrl == null)||(parentUrl.trim().equals("")))
+        {
+            ZipEntry zipEntry = getXSDZipEntryFromZip(zipUtil, xsdLocation);
+            if (zipEntry == null)
+            {
+                System.out.println("ERROR01 : Zip file finding entry failure : " + xsdLocation);
+                return;
+            }
+            String tempFileName = "";
+            try
+            {
+                tempFileName = zipUtil.copyEntryToFile(zipEntry, dir);
+            }
+            catch(IOException ie)
+            {
+                System.out.println("ERROR02 : ZipEntry tempfile saving failure ("+xsdLocation+") : " + ie.getMessage());
+                return;
+            }
+            if (tempFileName == null)
+            {
+                System.out.println("ERROR03 : ZipEntry tempfile saving failure. Already Exist.("+xsdLocation+") : ");
+                return;
+            }
         }
         if (!replaceXSDFile(tempFileName, null, (new File(dir)).getName()))
         {
@@ -670,7 +904,8 @@ public class AddNewScenario extends HttpServlet {
             }
         }
     }
-    private ZipEntry getXSDZipEntryFromZip(ZipUtil zipUtil, String xsdLocation)
+
+    private ZipEntry getXSDZipEntryFromZip1(ZipUtil zipUtil, String xsdLocation)
     {
         String xsdName = extractOriginalFileName(xsdLocation);
 
@@ -687,25 +922,31 @@ public class AddNewScenario extends HttpServlet {
             for(String str:list1)
             {
                 int count = -1;
-                if (!str.endsWith(xsdName)) continue;
-                if (str.equals(xsdName)) count = 0;
-                else
+
+                if (str.equalsIgnoreCase(xsdName))
                 {
-                    String loc = xsdLocation.substring(0, xsdLocation.length()-xsdName.length());
-                    String ent = str.substring(0, str.length()-xsdName.length());
-                    int cnt2 = 0;
-                    for(int i=0;i<ent.length();i++)
-                    {
-                        if (i >= loc.length()) break;
-                        String acharL = loc.substring(loc.length()-(i+1), loc.length()-i);
-                        String acharE = ent.substring(ent.length()-(i+1), ent.length()-i);
-                        if (acharL.equals("\\")) acharL = "/";
-                        if (acharE.equals("\\")) acharE = "/";
-                        if (acharL.equals(acharE)) cnt2++;
-                        else break;
-                    }
-                    if (cnt2 > 0) count = cnt2;
+                    select = str;
+                    break;
                 }
+
+                if (str.toLowerCase().endsWith("/"+xsdName.toLowerCase())) {}
+                else if (str.toLowerCase().endsWith("\\"+xsdName.toLowerCase())) {}
+                else continue;
+                String loc = xsdLocation.substring(0, xsdLocation.length()-xsdName.length());
+                String ent = str.substring(0, str.length()-xsdName.length());
+                int cnt2 = 0;
+                for(int i=0;i<ent.length();i++)
+                {
+                    if (i >= loc.length()) break;
+                    String acharL = loc.substring(loc.length()-(i+1), loc.length()-i);
+                    String acharE = ent.substring(ent.length()-(i+1), ent.length()-i);
+                    if (acharL.equals("\\")) acharL = "/";
+                    if (acharE.equals("\\")) acharE = "/";
+                    if (acharL.equalsIgnoreCase(acharE)) cnt2++;
+                    else break;
+                }
+                if (cnt2 > 0) count = cnt2;
+
                 if (count > number)
                 {
                     number = count;
@@ -722,7 +963,7 @@ public class AddNewScenario extends HttpServlet {
         //System.out.println("CCCC new XSD location:" + xsdF);
         return zipEntry;
     }
-
+    */
        private void deleteDirAndFilesOnError(List<String> fileList)
 	   {
            if (fileList.size() == 0) return;
@@ -837,7 +1078,8 @@ public class AddNewScenario extends HttpServlet {
 	     * @param fileName XSD File name
 	     *
 	     */
-		private boolean replaceXSDFile(String fileName, String backupFileName, String sourceORtarget)
+
+        private boolean replaceXSDFile(String fileName, String backupFileName, String sourceORtarget, String toFileName) throws Exception
         {
             List<String> xsdList = null;
             try
@@ -849,12 +1091,73 @@ public class AddNewScenario extends HttpServlet {
                 return false;
             }
 
+            File file1 = new File(fileName);
+            if ((toFileName != null)&&(!toFileName.trim().equals(""))) fileName = toFileName;
             List<String> xsdList2 = new ArrayList<String>();
             tempXSDList = new ArrayList<String>();
             String locationAttr = "schemaLocation=\"";
+
+            String xsdT = "";
+            String xsd = null;
+            boolean skipping = false;
             for (int i=0;i<xsdList.size();i++)
             {
-                String xsd = xsdList.get(i);
+                String xsdT2 = xsdList.get(i);
+                xsdT = "";
+                xsd = null;
+                int idxx1 = -1;
+                int idxx2 = -1;
+
+                while(true)
+                {
+                    idxx1 = xsdT2.indexOf("<!--");
+                    idxx2 = xsdT2.indexOf("-->");
+                    if (idxx1 >= 0)
+                    {
+                        if (idxx2 > 0)
+                        {
+                            //System.out.println("both - idxx1=" + idxx1 + ", idxx2=" + idxx2 + ", skipping=" + skipping + ", line=" + xsdList.get(i));
+                            if (idxx2 < idxx1)
+                            {
+                                if (!skipping) throw new Exception("Invalid XSD Remark (3)("+fileName+") : " + xsdList.get(i));
+                                xsdT2 = xsdT2.substring(idxx2 + 3);
+                                skipping = false;
+                                //throw new Exception("Invalid XSD Remark ("+fileName+") : " + xsdT2);
+                            }
+                            else
+                            {
+                                xsdT = xsdT + xsdT2.substring(0, idxx1);
+                                xsdT2 = xsdT2.substring(idxx2 + 3);
+                                skipping = false;
+                            }
+                        }
+                        else
+                        {
+                            //System.out.println("CCCCC 55 idxx1 only   idxx1=" + idxx1 + ", idxx2=" + idxx2 + ", skipping=" + skipping + ", line=" + xsdList.get(i));
+                            xsd = xsdT2.substring(0, idxx1);
+                            skipping = true;
+                            break;
+                        }
+                    }
+                    else if (idxx2 >= 0)
+                    {
+                        //System.out.println("CCCCC 55 idxx2 only   idxx1=" + idxx1 + ", idxx2=" + idxx2 + ", skipping=" + skipping + ", line=" + xsdList.get(i));
+                        if (!skipping) throw new Exception("Invalid XSD Remark (2)("+fileName+") : " + xsdT2);
+                        xsdT2 = xsdT2.substring(idxx2 + 3);
+                        skipping = false;
+                    }
+                    else break;
+                }
+                if (skipping)
+                {
+                    //System.out.println("CCCCC 55 skipping   idxx1=" + idxx1 + ", idxx2=" + idxx2 + ", skipping=" + skipping + ", line=" + xsdList.get(i));
+                    if (xsd != null) xsdT = xsdT + xsd;
+                    else continue;
+                }
+                else xsdT = xsdT + xsdT2;
+
+                if (xsdT.trim().equals("")) continue;
+                xsd = xsdT;
                 String xsd2 = "";
                 while(true)
                 {
@@ -863,6 +1166,17 @@ public class AddNewScenario extends HttpServlet {
                     {
                         xsd2 = xsd2 + xsd;
                         break;
+                    }
+                    else if (idx1 == 0) {}
+                    else
+                    {
+                        String ach = xsd.substring(idx1-1, idx1);
+                        if ((ach.equals(" "))||(ach.equals("\t"))) {}
+                        else
+                        {
+                            xsd2 = xsd2 + xsd;
+                            break;
+                        }
                     }
                     String sub = xsd.substring(0, idx1 + locationAttr.length());
                     xsd2 = xsd2 + sub;
@@ -910,16 +1224,23 @@ public class AddNewScenario extends HttpServlet {
                 xsdList2.add(xsd2);
             }
 
-            File file1 = new File(fileName);
+            //File file1 = new File(fileName);
             String nm = file1.getName();
             File parent = file1.getParentFile();
+            if ((toFileName != null)&&(!toFileName.trim().equals("")))
+            {
+                File file2 = new File(toFileName);
+                nm = file2.getName();
+                parent = file2.getParentFile();
+            }
+
             while(!parent.getName().equalsIgnoreCase(sourceORtarget))
             {
                 parent = parent.getParentFile();
                 if (parent == null)
                 {
-                    System.out.println("ERROR : Not found " + sourceORtarget + "directory.");
-                    return false;
+                    throw new Exception("ERROR : Not found " + sourceORtarget + "directory.");
+                    //return false;
                 }
             }
             String parPath = parent.getAbsolutePath();
@@ -943,14 +1264,14 @@ public class AddNewScenario extends HttpServlet {
                 fw = new FileWriter(fileName);
                 for (int i=0;i<xsdList2.size();i++)
                 {
-                    String xsd = xsdList2.get(i);
-                    fw.write(xsd + "\n");
+                    String xsdC = xsdList2.get(i);
+                    fw.write(xsdC + "\n");
                 }
                 fw.close();
              }
             catch(Exception ie)
             {
-                return false;
+                throw new Exception("Failure writing XSD file from ZIP : " + ie.getMessage());
             }
             System.out.println("CCCC XSD file writing success : " + fileName);
             return true;
@@ -1010,6 +1331,7 @@ public class AddNewScenario extends HttpServlet {
 	       FileWriter writer = new FileWriter(file);
 	       outputter.output(jdomDoc,writer);
 	       writer.close();
-	   }
+           mappingFileName = file.getAbsolutePath();
+       }
 
 }

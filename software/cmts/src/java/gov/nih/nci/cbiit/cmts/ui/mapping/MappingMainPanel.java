@@ -1075,7 +1075,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         }
         catch(Exception ee)
         {
-            throw new Exception("Schema file parsing failure. Check if the XML Schema file is invalid.");
+            //throw new Exception("Schema file parsing failure. Check if the XML Schema file is invalid.");
+            throw new Exception("There may be somthing wrong in this schema file. \nCheck its wellformedness or validity.");
         }
         ArrayList<CellRenderXSObject> choices = new ArrayList<CellRenderXSObject>();
 
