@@ -197,8 +197,8 @@ public class NewTransformationAction extends AbstractContextAction
 
                 if (errCount > 0)
                 {
-                    String msg = "" +errCount+ " Errors are found in the source XML file as following.\nHowever, the target XML can be generated. Do you want it, anyway?\nErrors:\n"+ errMsg;
-                    if (errCount == 1) msg = "One Error is found in the source XML file as following.\nHowever, the target XML can be generated. Do you want it, anyway?\nError: \n" + errMsg;
+                    String msg = "" +errCount+ " Errors are found in the source XML file as following.\nThe result may be with something wrong due to these. Do you want to go on, anyway?\nErrors:\n"+ errMsg;
+                    if (errCount == 1) msg = "One Error is found in the source XML file as following.\nThe result may be with something wrong due to this. Do you want to go on, anyway?\nError: \n" + errMsg;
                     int rr = JOptionPane.showConfirmDialog(mainFrame.getAssociatedUIComponent(), msg, "Source XML validation report", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if (rr != JOptionPane.YES_OPTION) return false;
                 }
@@ -237,9 +237,6 @@ public class NewTransformationAction extends AbstractContextAction
                     }
                 }
                 else JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Transformation has completed successfully !", "Transformation Complete", JOptionPane.INFORMATION_MESSAGE);
-
-
-
             }
         return true;
     }

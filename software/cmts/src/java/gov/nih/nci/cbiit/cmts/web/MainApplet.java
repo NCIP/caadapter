@@ -259,7 +259,8 @@ public MainApplet() throws HeadlessException
 
     public void processWindowEvent(WindowEvent e, Window win) {
 		//		Log.logInfo(this, "processWindowEvent() invoked with '" + e + "'.");
-		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+		if (e.getID() == WindowEvent.WINDOW_CLOSING)
+        {
 			//his.getMenuBar();
             if (win != null) win.dispose();
             this.setVisible(false);

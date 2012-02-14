@@ -89,9 +89,9 @@ public class DefaultExitAction extends AbstractContextAction
         }
         if (mainFrame.getMainApplet() != null)
         {
-            JOptionPane.showMessageDialog(getAssociatedUIComponent(), "CMTS is running on a web browser. \nPlease, Use the 'Exit' menu of this Web Browser.", "CMTS on a Web Browser", JOptionPane.WARNING_MESSAGE);
-            return false;
-            /*
+            //JOptionPane.showMessageDialog(getAssociatedUIComponent(), "CMTS is running on a web browser. \nPlease, Use the 'Exit' menu of this Web Browser.", "CMTS on a Web Browser", JOptionPane.WARNING_MESSAGE);
+            //return false;
+
             try
             {
                 JSObject win = (JSObject) JSObject.getWindow(mainFrame.getMainApplet());
@@ -106,23 +106,32 @@ public class DefaultExitAction extends AbstractContextAction
             {
                 System.out.println("JSException: " + je.getMessage());
                 Container com = mainFrame.getMainApplet();
-                while(com != null)
+                try
                 {
-                    //System.out.println("  This Container: " + com.getClass().getCanonicalName());
-                    if (com instanceof Window)
+                    while(com != null)
                     {
-                        Window win = (Window) com;
-                        WindowEvent we = new WindowEvent(win, WindowEvent.WINDOW_CLOSING);
-                        System.out.println("Exit caAdapter_cmts from Running on a AppletViewer or another Applet applecation: " + com.getClass().getCanonicalName());
-                        mainFrame.getMainApplet().processWindowEvent(we, win);
-                        setSuccessfullyPerformed(true);
-                        return true;
+                        //System.out.println("  This Container: " + com.getClass().getCanonicalName());
+                        if (com instanceof Window)
+                        {
+                            Window win = (Window) com;
+                            WindowEvent we = new WindowEvent(win, WindowEvent.WINDOW_CLOSING);
+                            System.out.println("Exit caAdapter_cmts from Running on a AppletViewer or another Applet applecation: " + com.getClass().getCanonicalName());
+                            mainFrame.getMainApplet().processWindowEvent(we, win);
+                            setSuccessfullyPerformed(true);
+                            return true;
+                        }
+                        com = com.getParent();
                     }
-                    com = com.getParent();
+                }
+                catch(Exception ee)
+                {
+
                 }
             }
-            */
+
         }
+        JOptionPane.showMessageDialog(getAssociatedUIComponent(), "This web browser cannot be closed by CMTS. \nUse the 'Exit' menu of this Web Browser.", "Exit Failure from Web Browser", JOptionPane.WARNING_MESSAGE);
+
         System.out.println("*****Exit Failure!!!");
         setSuccessfullyPerformed(false);
         return false;
