@@ -809,10 +809,17 @@ public class AddNewScenario extends HttpServlet {
                 {
                     if (errMsg != null)
                     {
-                        System.out.println(errMsg + ", " + ie.getMessage());
-                        throw new Exception(errMsg);
+                        System.out.println("ERROR : " + errMsg + ", message=" + ie.getMessage());
+                        //throw new Exception(errMsg);
+                        return;
                     }
-                    else throw new Exception("ZIP URL dowm Load error ("+urlT+") : " + ie.getMessage());
+                    else
+                    {
+
+                        System.out.println("ERROR : ZIP URL dowm Load error ("+urlT+") : message=" + ie.getMessage());
+                        return;
+                        //throw new Exception("ZIP URL dowm Load error ("+urlT+") : " + ie.getMessage());
+                    }
                 }
             }
         }
