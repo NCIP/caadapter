@@ -83,6 +83,12 @@ public class DefaultExitAction extends AbstractContextAction
      */
     protected boolean doAction(ActionEvent e)
     {
+        DefaultCloseAllAction closeAllAction = new DefaultCloseAllAction(mainFrame);
+
+
+        if (!closeAllAction.doAction(e)) return isSuccessfullyPerformed();
+
+        /*
         int indexUnchanged = -1;
         String unsavedTabTitle = null;
         JTabbedPane tab = null;
@@ -152,7 +158,7 @@ public class DefaultExitAction extends AbstractContextAction
             JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "The content of '" + unsavedTabTitle + "' tab is not saved yet. Close or save this first.", "Unsaved Content", JOptionPane.WARNING_MESSAGE);
             return isSuccessfullyPerformed();
         }
-
+        */
         if (mainFrame.getMainFrame() != null)
         {
             WindowEvent we = new WindowEvent(mainFrame.getMainFrame(), WindowEvent.WINDOW_CLOSING);

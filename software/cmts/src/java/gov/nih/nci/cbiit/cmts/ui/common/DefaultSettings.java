@@ -573,11 +573,11 @@ public class DefaultSettings
         {
             if (parentComponent != null && !(parentComponent instanceof Container))
             {
-                JOptionPane.showMessageDialog(parentComponent.getParent(), reportMsg, "Exception Occurred(1)", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parentComponent.getParent(), reportMsg, "Error Detected - ", JOptionPane.ERROR_MESSAGE);
             }
             else
             {
-                JOptionPane.showMessageDialog(parentComponent, reportMsg, "Exception Occurred(2)", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parentComponent, reportMsg, "Error Detected", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

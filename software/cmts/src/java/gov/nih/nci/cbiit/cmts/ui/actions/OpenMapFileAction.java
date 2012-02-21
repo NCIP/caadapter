@@ -223,7 +223,13 @@ public class OpenMapFileAction extends DefaultContextOpenAction
                 catch (Throwable e1)
 				{
                     String message = e1.getMessage();
-                    if (message.startsWith(ActionConstants.MESSAGE_NOT_A_MAPPING_FILE))
+                    if (message == null)
+                    {
+                        //e1.printStackTrace();
+                        JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Null Pointer Error : " + file.getName(),
+                                ActionConstants.MESSAGE_NOT_A_MAPPING_FILE, JOptionPane.ERROR_MESSAGE);
+                    }
+                    else if (message.startsWith(ActionConstants.MESSAGE_NOT_A_MAPPING_FILE))
                     {
                         JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Sorry! This file cannot be opened : " + file.getName() +"\nFile Opening is Canceled.",
                                 ActionConstants.MESSAGE_NOT_A_MAPPING_FILE, JOptionPane.WARNING_MESSAGE);

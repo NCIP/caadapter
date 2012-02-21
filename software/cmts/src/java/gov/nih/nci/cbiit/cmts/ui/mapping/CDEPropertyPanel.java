@@ -49,9 +49,11 @@ public class CDEPropertyPanel extends JPanel implements ActionListener {
         centerPanel.add(metaVersion, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
-        cdeElementLink=new JButton("<html><a href=\"https://cdebrowser.nci.nih.gov/CDEBrowser/\">caDSR Element Details</a></html>");
+        //cdeElementLink=new JButton("<html><a href=\"https://cdebrowser.nci.nih.gov/CDEBrowser/\">caDSR Element Details</a></html>");
 
+        cdeElementLink=new JButton("caDSR Element Details");
 
+        cdeElementLink.setForeground(Color.BLUE);
 
         cdeElementLink.addActionListener(this);
         cdeElementLink.setEnabled(false);

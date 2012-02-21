@@ -518,11 +518,25 @@ public class MappingFactory
             {
                 if (tag.getComponentType().value().equals(ComponentType.SOURCE.value()))
                 {
-                    processAnnotationTag (tag, srcMetaHash, mapLoaded.getTags().getTag());
+                    try
+                    {
+                        processAnnotationTag(tag, srcMetaHash, mapLoaded.getTags().getTag());
+                    }
+                    catch(Exception ee)
+                    {
+                        throw new JAXBException("Invalid Source tag link ID:" + ee.getMessage());
+                    }
                 }
                 else if (tag.getComponentType().value().equals(ComponentType.TARGET.value()))
                 {
-                    processAnnotationTag (tag, trgtMetaHash, mapLoaded.getTags().getTag());
+                    try
+                    {
+                        processAnnotationTag (tag, trgtMetaHash, mapLoaded.getTags().getTag());
+                    }
+                    catch(Exception ee)
+                    {
+                        throw new JAXBException("Invalid Target tag link ID:" + ee.getMessage());
+                    }
                 }
             }
         }
@@ -540,7 +554,14 @@ public class MappingFactory
                 {
                     String id = link.getSource().getId();
                     //System.out.println("CCCX Source("+link.getSource().getComponentid()+") : id=" + id);
-                    BaseMeta meta = searchElementMeta(id);
+                    try
+                    {
+                        BaseMeta meta = searchElementMeta(id);
+                    }
+                    catch(Exception ee)
+                    {
+                        throw new JAXBException("Invalid Source link ID:" + ee.getMessage());
+                    }
                     //if (meta == null) meta = searchElementMeta(id, ComponentType.TARGET);
                 }
 
@@ -549,7 +570,14 @@ public class MappingFactory
                 {
                     String id = link.getTarget().getId();
                     //System.out.println("CCCX Target("+link.getTarget().getComponentid()+") : id=" + id);
-                    BaseMeta meta = searchElementMeta(id);
+                    try
+                    {
+                        BaseMeta meta = searchElementMeta(id);
+                    }
+                    catch(Exception ee)
+                    {
+                        throw new JAXBException("Invalid Target link ID:" + ee.getMessage());
+                    }
                     //if (meta == null) meta = searchElementMeta(id, ComponentType.SOURCE);
                 }
 
@@ -776,7 +804,7 @@ public class MappingFactory
         //if (mapData == null) return  jaxbElmt.getValue();
 	}
 */
-    private static void processAnnotationTag(TagType tag, Hashtable <String, BaseMeta>  metaHash, List<TagType> tagList)
+    private static void processAnnotationTag(TagType tag, Hashtable <String, BaseMeta>  metaHash, List<TagType> tagList) throws Exception
     {
         //v System.out.println("CCCX processAnnotationTag: " + tag.getKey());
         if ((metaHash == null)||(metaHash.size() ==0)) return;
@@ -785,16 +813,16 @@ public class MappingFactory
         if (elmntMeta == null)
         {
             BaseMeta meta = searchElementMeta(tag.getKey(), tag.getComponentType());
-            if (meta == null) System.out.println("*UUU1 Not found element meta: " + tag.getKey());
-            else if (!(meta instanceof ElementMeta)) System.out.println("*UUU1 This is Not an element meta: " + tag.getKey());
+            if (meta == null) throw new Exception("Not found element meta: " + tag.getKey());
+            else if (!(meta instanceof ElementMeta)) throw new Exception("This is Not an element meta: " + tag.getKey());
             else elmntMeta = (ElementMeta)meta;
         }
         ElementMeta parentMeta=(ElementMeta)metaHash.get(parentKey);
         if (parentMeta == null)
         {
             BaseMeta meta = searchElementMeta(parentKey, tag.getComponentType());
-            if (meta == null) System.out.println("*UUU2 Not found parent meta: " + parentKey);
-            else if (!(meta instanceof ElementMeta)) System.out.println("*UUU2 This is Not an element meta: " + tag.getKey());
+            if (meta == null) throw new Exception("Not found parent meta: " + parentKey);
+            else if (!(meta instanceof ElementMeta)) throw new Exception("This is Not an element meta: " + tag.getKey());
             else parentMeta = (ElementMeta)meta;
         }
         if (tag.getKind().value().equals(KindType.CLONE.value()))
@@ -844,7 +872,7 @@ public class MappingFactory
                 processMeta(metaHash, elmntMeta, pList, tagList);
                 elmntMeta.setIsEnabled(true);
             }
-            else System.out.println("Cannot find the ancester of recursive node : name="+ elmntMeta.getName() + ", namespace=" + elmntMeta.getNameSpace() + ", type=" + elmntMeta);
+            else throw new Exception("Cannot find the ancester of recursive node : name="+ elmntMeta.getName() + ", namespace=" + elmntMeta.getNameSpace() + ", type=" + elmntMeta);
         }
 
     }
@@ -1010,11 +1038,11 @@ public class MappingFactory
             }
         }
     }
-    private static BaseMeta searchElementMeta(String path)
+    private static BaseMeta searchElementMeta(String path) throws Exception
     {
        return searchElementMeta(path, null);
     }
-    private static BaseMeta searchElementMeta(String path, ComponentType type)
+    private static BaseMeta searchElementMeta(String path, ComponentType type) throws Exception
     {
         while(path.startsWith("/")) path = path.substring(1);
         ElementMeta elem = null;
@@ -1024,8 +1052,8 @@ public class MappingFactory
             else if (path.startsWith(targetHeadMeta.getName())) type = ComponentType.TARGET;
             else
             {
-                System.out.println("This id is not identified. => " + path);
-                return null;
+                throw new Exception("This id is not identified. => " + path);
+                //return null;
             }
         }
 
@@ -1047,8 +1075,8 @@ public class MappingFactory
 
             if (attrID != null)
             {
-                System.out.println("Invalid attribute item(" + type.value() + ") => " + attrID);
-                return null;
+                throw new Exception("Invalid attribute item(" + type.value() + ") => " + attrID);
+                //return null;
             }
             if (token.startsWith("@")) attrID = token;
 
@@ -1059,15 +1087,15 @@ public class MappingFactory
                     n++;
                     if ((elem.getChildElement() == null)||(elem.getChildElement().size() == 0))
                     {
-                        System.out.println("Head Node doesn't have any child element(" + type.value() + ") => " + token);
-                        return null;
+                        throw new Exception("Head Node doesn't have any child element(" + type.value() + ") => " + token);
+                        //return null;
                     }
                     else continue;
                 }
                 else
                 {
-                    System.out.println("Head Node not found searchElementMeta(" + type.value() + ") => " + token + " <> " + elem.getName());
-                    return null;
+                    throw new Exception("Head Node not found searchElementMeta(" + type.value() + ") => " + token + " <> " + elem.getName());
+                    //return null;
                 }
             }
 
@@ -1115,8 +1143,8 @@ public class MappingFactory
             }
             if (tEle == null)
             {
-                System.out.println("Node not found node searchElementMeta(" + type.value() + ") => " + token + " at " + path);
-                return null;
+                throw new Exception("Node not found node searchElementMeta(" + type.value() + ") => " + token + " at " + path);
+                //return null;
             }
             //parent = elem;
             if (tEle instanceof ElementMeta)

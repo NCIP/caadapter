@@ -13,13 +13,25 @@ if (typeof(mylink) == 'string')
    href=mylink;
 else
    href=mylink.href;
-window.open(href, windowname, 'width=1000,height=700,scrollbars=yes,menubar=no,toolbar=no,titlebar=no,location=no,status=no,resizable=yes');
-//self.close();
+
+var userwidth = (screen.width - 80);
+var userheight = (screen.height - 50);
+
+if (userheight > 720) userheight = 720;
+
+var leftVal = (screen.width - userwidth) / 2;
+var topVal = (screen.height - userheight) / 2;
+
+
+
+window.open(href, windowname, 'width=' +userwidth+ ',height=' +userheight+ ',left=' +leftVal+ ',top=' +topVal+ ',scrollbars=yes,menubar=no,toolbar=no,titlebar=yes,location=no,status=yes,resizable=yes', true);
+self.close();
 return false;
 }
 //-->
 </SCRIPT>
-<BODY>
+<BODY onLoad="popup('index_main.html', 'ad')">
+<!--
 <br>
 <center>
 This Page is temporary and intermediate to CMTS main content for securty purpose.<br>
@@ -30,5 +42,7 @@ For starting CMTS, Press the following button.<br>
 
 <br>Please, close this window manually after closing the CMTS main page.
 </center>
+-->
+</BODY>
 
-</BODY></HTML>
+</HTML>
