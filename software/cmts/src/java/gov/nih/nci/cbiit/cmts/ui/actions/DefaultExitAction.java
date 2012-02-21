@@ -12,12 +12,16 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
+import gov.nih.nci.cbiit.cmts.ui.message.MessagePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import netscape.javascript.JSObject;
 import netscape.javascript.JSException;
@@ -79,6 +83,76 @@ public class DefaultExitAction extends AbstractContextAction
      */
     protected boolean doAction(ActionEvent e)
     {
+        int indexUnchanged = -1;
+        String unsavedTabTitle = null;
+        JTabbedPane tab = null;
+        try
+		{
+            if (mainFrame != null)
+			{
+                java.util.List<Component> tabComps = mainFrame.getAllTabs();
+                tab = mainFrame.getTabbedPane();
+                //System.out.println("CCCC tab.getTabCount()=" + tab.getTabCount());
+                for(int i=0;i<tab.getTabCount();i++)
+                //for(Component comp:tabComps)
+                {
+                    indexUnchanged = -1;
+                    //JTabbedPane tab = mainFrame.getTabbedPane();
+                    //tab.getSelectedIndex()
+                    //int i = tab.get
+                    Component comp = tab.getComponentAt(i);
+                    //boolean excutableClose = true;
+                    //System.out.println("CCCC vv component compName:"+comp.getName()+", tabTitle:" + tab.getTitleAt(i) + ", className:" + comp.getClass().getCanonicalName()  );
+                    if (comp instanceof MappingMainPanel)
+                    {
+                        MappingMainPanel mappingPanel = (MappingMainPanel) comp;
+                        //System.out.println("CCCC vv MappingMainPanel");
+                        if (mappingPanel.isChanged())
+                        {
+                            indexUnchanged = i;
+                            unsavedTabTitle = tab.getTitleAt(i);
+                            break;
+                        }
+
+                    }
+                    else if (comp instanceof MessagePanel)
+                    {
+                        MessagePanel panel = (MessagePanel) comp;
+
+                        String dispMesg = panel.getDisplayedMessage();
+
+                        if ((dispMesg != null)&&(!dispMesg.trim().equals("")))
+                        {
+                            if (!panel.hasBeenSaved())
+                            {
+                                indexUnchanged = i;
+                                unsavedTabTitle = tab.getTitleAt(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+                //ownerFrame.closeTab();
+				//ownerFrame.resetCenterPanel();  // inserted by umkis on 01/18/2006, defaect# 252
+            }
+			else
+			{
+				System.err.println("Main Frame is null. Ignore!");
+			}
+
+		}
+		catch (Exception e1)
+		{
+            e1.printStackTrace();
+		}
+
+        if (indexUnchanged >= 0)
+        {
+            tab.setSelectedIndex(indexUnchanged);
+            JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "The content of '" + unsavedTabTitle + "' tab is not saved yet. Close or save this first.", "Unsaved Content", JOptionPane.WARNING_MESSAGE);
+            return isSuccessfullyPerformed();
+        }
+
         if (mainFrame.getMainFrame() != null)
         {
             WindowEvent we = new WindowEvent(mainFrame.getMainFrame(), WindowEvent.WINDOW_CLOSING);
@@ -91,6 +165,21 @@ public class DefaultExitAction extends AbstractContextAction
         {
             //JOptionPane.showMessageDialog(getAssociatedUIComponent(), "CMTS is running on a web browser. \nPlease, Use the 'Exit' menu of this Web Browser.", "CMTS on a Web Browser", JOptionPane.WARNING_MESSAGE);
             //return false;
+            /*
+            try
+            {
+                mainFrame.getMainApplet().getAppletContext().showDocument(new URL("javascript:doClose()"));
+                System.out.println("Exit caAdapter_cmts from Running on a Web Browser - new URL(\"javascript:doClose()\")");
+
+                setSuccessfullyPerformed(true);
+                return true;
+            }
+            catch (MalformedURLException me)
+            {
+                System.out.println("Faiure : Exit caAdapter_cmts from Running on a Web Browser - new URL(\"javascript:doClose()\")");
+            }
+            */
+
 
             try
             {

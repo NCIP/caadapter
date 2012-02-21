@@ -279,7 +279,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
             if (file.getName().toLowerCase().endsWith(".map")) break;
             else
             {
-                int ans = JOptionPane.showConfirmDialog(mainFrame.getAssociatedUIComponent(), "The File type of your select is not a '.map' file. : " + file.getName() + "\nDo you want to go on, anyway?",
+                int ans = JOptionPane.showConfirmDialog(mainFrame.getAssociatedUIComponent(), "The file type of your selection is not '.map'. : " + file.getName() + "\nDo you want to continue, anyway?",
                                               "Not Mapping File", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (ans == JOptionPane.YES_OPTION) break;
                 else

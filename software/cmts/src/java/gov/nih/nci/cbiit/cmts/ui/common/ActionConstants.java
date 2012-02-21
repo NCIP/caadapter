@@ -48,7 +48,7 @@ public interface ActionConstants
 	String NEW_XML_CDA_Transformation = "XML to CDA Transformation";
 	String NEW_CSV_CDA_Transformation = "CSV to CDA Transformation";
 	String NEW_HL7_V2_CDA_Transformation = "HL7 v2 to CDA Transformation";
-    String FILE_NAME_UNTITLED_TAG = "Untitled__";
+    String FILE_NAME_UNTITLED_TAG = "Untitled_";
     String MESSAGE_NOT_A_MAPPING_FILE = "NOT A MAPPING FILE....";
 	
 }

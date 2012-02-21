@@ -105,7 +105,7 @@ public class DefaultCloseAction extends AbstractContextAction
                     //System.out.println("CCCC vv MappingMainPanel");
                     if (mappingPanel.isChanged())
                     {
-                        int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "There are unsaved Mapping data. Are you sure to close?", "Unsave Mapping data", JOptionPane.YES_NO_OPTION);
+                        int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "There are unsaved Mapping data. Are you sure to close?", "Unsave Mapping data", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                         if (yesORno == JOptionPane.NO_OPTION) return isSuccessfullyPerformed();
                     }
                 }
@@ -119,7 +119,7 @@ public class DefaultCloseAction extends AbstractContextAction
                     {
                         if (!panel.hasBeenSaved())
                         {
-                            int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "Output is not saved yet. Are you sure to close?", "Unsaved Output data", JOptionPane.YES_NO_OPTION);
+                            int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "Output is not saved yet. Are you sure to close?", "Unsaved Output data", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                             if (yesORno == JOptionPane.NO_OPTION) return isSuccessfullyPerformed();
                         }
 //                        String tabTitle = tab.getTitleAt(tab.getSelectedIndex());

@@ -197,8 +197,8 @@ public class NewTransformationAction extends AbstractContextAction
 
                 if (errCount > 0)
                 {
-                    String msg = "" +errCount+ " Errors are found in the source XML file as following.\nThe result may be with something wrong due to these. Do you want to go on, anyway?\nErrors:\n"+ errMsg;
-                    if (errCount == 1) msg = "One Error is found in the source XML file as following.\nThe result may be with something wrong due to this. Do you want to go on, anyway?\nError: \n" + errMsg;
+                    String msg = "" +errCount+ " Errors are found in the source XML file as following.\nThese may make some effects to the result. Do you want to continue, anyway?\nErrors:\n"+ errMsg;
+                    if (errCount == 1) msg = "One Error is found in the source XML file as following.\nThis may make some effects to the result. Do you want to continue, anyway?\nError: \n" + errMsg;
                     int rr = JOptionPane.showConfirmDialog(mainFrame.getAssociatedUIComponent(), msg, "Source XML validation report", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if (rr != JOptionPane.YES_OPTION) return false;
                 }

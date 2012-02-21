@@ -4,11 +4,11 @@ import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmts.core.ElementMeta;
 import gov.nih.nci.cbiit.cmts.util.CdeBrowserLauncher;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.applet.Applet;
+import java.net.URL;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -47,7 +47,11 @@ public class CDEPropertyPanel extends JPanel implements ActionListener {
 
         add(metaVersion, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
         cdeElementLink=new JButton("<html><a href=\"https://cdebrowser.nci.nih.gov/CDEBrowser/\">caDSR Element Details</a></html>");
+
+
+
         cdeElementLink.addActionListener(this);
         cdeElementLink.setEnabled(false);
         cdeElementLink.setBorder(null);
@@ -125,7 +129,40 @@ public class CDEPropertyPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         // TODO Auto-generated method stub
-        CdeBrowserLauncher.BrowseCDE(metaPublicId.getText(), metaVersion.getText());
+        boolean isFrame = true;
+        Applet applet = null;
+        Container container = this.getParent();
+        while(container != null)
+        {
+            if (container instanceof Frame)
+            {
+                isFrame = true;
+                break;
+            }
+            else if (container instanceof Applet)
+            {
+                isFrame = false;
+                applet = (Applet) container;
+                break;
+            }
+            container = container.getParent();
+        }
+
+        if (applet != null)
+        {
+            try
+            {         applet.getAppletContext().showDocument(new URL("https://cdebrowser.nci.nih.gov/CDEBrowser/search?elementDetails=9&FirstTimer=0&PageId=ElementDetailsGroup&publicId="+metaPublicId.getText()+"&version="+metaVersion.getText()), "_blank");
+                //applet.getAppletContext().showDocument(new URL("javascript:window.open('https://cdebrowser.nci.nih.gov/CDEBrowser/search?elementDetails=9&FirstTimer=0&PageId=ElementDetailsGroup&publicId="+metaPublicId.getText()+"&version="+metaVersion.getText()+"', 'caDSR Element Details', 'width=1000,height=700,scrollbars=yes,menubar=no,toolbar=no,titlebar=no,location=no,status=no')"));
+            }
+            catch(Exception me)
+            {
+                applet = null;
+            }
+        }
+
+        if (applet == null)
+            CdeBrowserLauncher.BrowseCDE(metaPublicId.getText(), metaVersion.getText());
+
     }
 
 
