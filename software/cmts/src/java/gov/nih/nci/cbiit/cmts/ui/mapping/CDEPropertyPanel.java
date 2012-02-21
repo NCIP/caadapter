@@ -25,27 +25,28 @@ public class CDEPropertyPanel extends JPanel implements ActionListener {
 
     public CDEPropertyPanel ()
     {
-        super(new GridBagLayout());
+        super(new BorderLayout());
         initUI();
     }
 
     private void initUI()
     {
+        JPanel centerPanel = new JPanel(new GridBagLayout());
         Insets insets = new Insets(2, 2, 2, 2);
         label1=new JLabel("Public ID");
         metaPublicId=new JLabel("");
-        add(label1,new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+        centerPanel.add(label1,new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0) );
 
-        add(metaPublicId, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
+        centerPanel.add(metaPublicId, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
         label2=new JLabel("Version");
         metaVersion=new JLabel("");
-        add(label2,new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+        centerPanel.add(label2,new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0) );
 
-        add(metaVersion, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
+        centerPanel.add(metaVersion, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
         cdeElementLink=new JButton("<html><a href=\"https://cdebrowser.nci.nih.gov/CDEBrowser/\">caDSR Element Details</a></html>");
@@ -56,14 +57,17 @@ public class CDEPropertyPanel extends JPanel implements ActionListener {
         cdeElementLink.setEnabled(false);
         cdeElementLink.setBorder(null);
         cdeElementLink.setHorizontalTextPosition(AbstractButton.LEADING);//.LEADING);
+        //cdeElementLink.setSize((int)(this.getSize().getWidth() / 0.8), 30);
         cdeElementLink.setVisible(false);
         label1.setVisible(false);
         label2.setVisible(false);
 //		add(cdeLinkLabel,new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 //				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0) );
 
-        add(cdeElementLink, new GridBagConstraints(0, 2, 3, 1, 1.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        //add(cdeElementLink, new GridBagConstraints(0, 2, 3, 1, 1.0, 0.0,
+        //        GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        add(centerPanel, BorderLayout.CENTER);
+        add(cdeElementLink, BorderLayout.SOUTH);
 
         TitledBorder titledBorder = BorderFactory.createTitledBorder("CDE Information");
         setBorder(titledBorder);
