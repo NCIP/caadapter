@@ -16,7 +16,19 @@
 				method="currentTime">
 				<data name="currentTime" type="time" input="false" />
 	</function>
-	<!--  function name="changeFormat" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+    <function name="currentDateHL7" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+			method="currentDateHL7">
+			<data name="currentDateHL7" type="string" input="false" />
+	</function>
+	<function name="currentDateTimeHL7" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+				method="currentDateTimeHL7">
+				<data name="currentDateTimeHL7" type="string" input="false" />
+	</function>
+	<function name="currentTimeHL7" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+				method="currentTimeHL7">
+				<data name="currentTimeHL7" type="string" input="false" />
+	</function>
+    <!--  function name="changeFormat" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
 		method="changeFormat">
 		<data name="fromFormat" type="string" input="true" />
 		<data name="dateIn" type="string" input="true" />
@@ -28,7 +40,13 @@
 		<data name="endDate" type="string" input="true" />
 		<data name="duration" type="int" input="false" />
 	</function>
-	<function name="abs" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="abs">
+    <!--function name="countHL7Days" group="dateTime" class="gov.nih.nci.cbiit.cmts.function.DateTimeFunction"
+		method="countDaysHL7">
+		<data name="startDate" type="string" input="true" />
+		<data name="endDate" type="string" input="true" />
+		<data name="duration" type="int" input="false" />
+	</function-->
+    <function name="abs" group="math" class="gov.nih.nci.cbiit.cmts.function.MathFunction" method="abs">
 		<data name="input" type="double" input="true" />
 		<data name="output" type="double" input="false" />
 	</function>

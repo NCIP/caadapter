@@ -79,7 +79,8 @@ public class DefaultCloseAllAction extends AbstractContextAction
 		java.util.List<Component> componentList = mainFrame.getAllTabs();
 		int count = componentList.size();//tabbedPane.getComponentCount();
 		ArrayList<AbstractContextAction> actionList = new ArrayList<AbstractContextAction>();
-		for (int i = 0; i < count; i++)
+        //boolean closedAllSuccessfully = true;
+        for (int i = 0; i < count; i++)
 		{//retrieve the list of close actions,
 			//shall call individual after the loop, since the close action will remove the referred tab
 			//which will cause the component count decreased.
@@ -118,7 +119,11 @@ public class DefaultCloseAllAction extends AbstractContextAction
 		}
 		finally
 		{//roll back the mode.
-			ContextManager.getContextManager().setInClosingAllOrShutdownMode(false, isSuccessfullyPerformed());
+			if (isSuccessfullyPerformed())
+            {
+                if (mainFrame.getAllTabs().size() == 0)
+                    ContextManager.getContextManager().setInClosingAllOrShutdownMode(false, isSuccessfullyPerformed());
+            }
 		}
 		return isSuccessfullyPerformed();
 	}

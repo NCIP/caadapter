@@ -53,6 +53,25 @@ function doClose()
        self.close()
    }
 }
+function relocate()
+{
+    var userwidth = (screen.width - 100);
+    var userheight = (screen.height - 80);
+
+    if (screen.width < 1150)
+    {
+        userwidth = (screen.width - 50);
+        userheight = (screen.height - 40);
+    }
+
+    //if (userheight > 720) userheight = 800;
+    self.resizeTo(userwidth, userheight);
+
+    var leftVal = (screen.width - userwidth) / 2;
+    var topVal = (screen.height - userheight) / 2;
+
+    self.movTo(leftVal, topVal);
+}
 function popup(mylink, windowname)
 {
 if (! window.focus)return true;
@@ -86,7 +105,7 @@ document.oncontextmenu=new Function("return false")
 </SCRIPT>
 
 </HEAD>
-<BODY dir=ltr class=section-tools>
+<BODY dir="ltr" cass="section-tools" onLoad="relocate()">
 
 <STYLE type=text/css>@import url("https://cabig.nci.nih.gov/portal_css/caBigPloneSkin/ploneStyles6797.css" );
 </STYLE>
@@ -164,7 +183,9 @@ document.oncontextmenu=new Function("return false")
 				 	  type="application/x-java-applet"
                       alt="gov.nih.nci.cbiit.cmts.web.MainApplet.class"
                       codebase="."
-				 	  archive="caAdapter.jar, cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar,plugin.jar,BrowserLauncher2-1_3.jar,commons-io-2.0.1.jar">
+                      MAYSCRIPT=true
+
+                       archive="caAdapter.jar, cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar,plugin.jar,BrowserLauncher2-1_3.jar,commons-io-2.0.1.jar">
 		</embed>
         <!--
         <OBJECT

@@ -11,7 +11,7 @@
 		</tr>
 		<tr>
 			<td valign="top">
-				<FORM ACTION="AddNewScenario" ENCTYPE="multipart/form-data" METHOD=POST>
+				<FORM ACTION="AddNewScenario" ENCTYPE="multipart/form-data" METHOD="POST" autocomplete="off">
 					<table border="0">
                     <!--<tr>
 						<td>Job Type:</td>
@@ -45,7 +45,7 @@
                         <td>&nbsp;</td>
                     </tr>
 					<tr>
-					<td>Transformation Scenario Name:</td><td> <input type="text" name="scenarioName"><br></td><td>&nbsp;</td>
+					<td>Transformation Scenario Name:</td><td> <input type="text" name="scenarioName" ><br></td><td>&nbsp;</td>
 					</tr>
 					<tr>
 					<td>Transformation Instruction(.map, .xsl, .xql):</td><td><INPUT TYPE="FILE" NAME="mappingFileName"></td><td>&nbsp;</td>
@@ -148,7 +148,7 @@
 					<td>Scenario Name(Required):</td><td> <input type="text" name="scenarioName"><br></td><td>&nbsp;</td>
 					</tr>
                     <tr>
-					<td>Security Code(Required):</td><td><INPUT TYPE="password" NAME="deleteSecurityCode"></td>
+					<td>Security Code(Required):</td><td><INPUT TYPE="text" NAME="deleteSecurityCode"></td>
                     <td>&nbsp;</td>
                     </tr>
                     <tr><td colspan=3>

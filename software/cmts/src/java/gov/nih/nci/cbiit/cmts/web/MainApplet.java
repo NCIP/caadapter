@@ -27,6 +27,7 @@ public class MainApplet extends JApplet {
     private JPanel centerPanel;
     private JPanel currentToolBarPanel;
     private Map<Class, JComponent> tabMap;
+    private MainMenuBar frameMenu;
 
     private static MainFrameContainer instanceContainer = null;
 
@@ -72,7 +73,7 @@ public MainApplet() throws HeadlessException
 
         instanceContainer = new MainFrameContainer(this);
 
-        MainMenuBar frameMenu=new MainMenuBar(instanceContainer);//this);
+        frameMenu=new MainMenuBar(instanceContainer);//this);
         contextManager.setMenu(frameMenu);
         contextManager.setToolBarHandler(new MainToolBarHandler());
 		contextManager.initContextManager(instanceContainer);
@@ -235,6 +236,10 @@ public MainApplet() throws HeadlessException
 			return false;
 		}
 	}
+    public MainMenuBar getMainMenuBar()
+    {
+        return frameMenu;
+    }
 
     public void updateToolBar(JToolBar newToolBar) {
         updateToolBar(newToolBar, null);

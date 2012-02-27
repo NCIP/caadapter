@@ -1,10 +1,89 @@
+
 <!-- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">-->
 <HTML> <!--lang=en xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"> -->
   <HEAD>
-     <TITLE>caAdapter Common Mapping and Transformation Service (CMTS) Intermediation Page</TITLE>
-</HEAD>
-<SCRIPT TYPE="text/javascript">
+     <TITLE>caAdapter Common Mapping and Transformation Service (CMTS)</TITLE>
+     <!--<META content=text/html;charset=utf-8 http-equiv=Content-Type>
+     <META name=GENERATOR content="MSHTML 8.00.6001.19120">
+     <META HTTP-EQUIV="imagetoolbar" CONTENT="no"> -->
+     <script language="Javascript">
 <!--
+// Browser Detection Javascript
+// copyright 1 February 2003, by Stephen Chapman, Felgall Pty Ltd
+
+// You have permission to copy and use this javascript provided that
+// the content of the script is not changed in any way.
+
+function whichBrs()
+{
+var agt=navigator.userAgent.toLowerCase();
+if (agt.indexOf("chrome") != -1) return 'Chrome';
+if (agt.indexOf("opera") != -1) return 'Opera';
+if (agt.indexOf("staroffice") != -1) return 'Star Office';
+if (agt.indexOf("webtv") != -1) return 'WebTV';
+if (agt.indexOf("beonex") != -1) return 'Beonex';
+if (agt.indexOf("chimera") != -1) return 'Chimera';
+if (agt.indexOf("netpositive") != -1) return 'NetPositive';
+if (agt.indexOf("phoenix") != -1) return 'Phoenix';
+if (agt.indexOf("firefox") != -1) return 'Firefox';
+if (agt.indexOf("safari") != -1) return 'Safari';
+if (agt.indexOf("skipstone") != -1) return 'SkipStone';
+if (agt.indexOf("msie") != -1) return 'Internet Explorer';
+if (agt.indexOf("netscape") != -1) return 'Netscape';
+if (agt.indexOf("mozilla/5.0") != -1) return 'Mozilla';
+if (agt.indexOf('\/') != -1) {
+if (agt.substr(0,agt.indexOf('\/')) != 'mozilla') {
+return navigator.userAgent.substr(0,agt.indexOf('\/'));}
+else return 'Netscape';} else if (agt.indexOf(' ') != -1)
+return navigator.userAgent.substr(0,agt.indexOf(' '));
+else return navigator.userAgent;
+}
+
+function doClose()
+{
+   var agt=whichBrs()
+   //alert('Window Close. Are you sure? :' + agt)
+
+   if (agt.indexOf('Internet Explorer') < 0)
+   {
+       alert('This web browser ('+agt+') cannot be closed by this menu. Use the web breowser`s Exit menu.')
+   }
+   else
+   {
+       //alert('Window Close. Are you sure?')
+       self.close()
+   }
+}
+function relocate()
+{
+    var userwidth = (screen.width - 100);
+    var userheight = (screen.height - 50);
+
+    if (screen.width <= 1024)
+    {
+        userwidth = (screen.width - 50);
+    }
+    else if (screen.width <= 1200)
+    {
+        userwidth = (screen.width - 70);
+    }
+    if (screen.height <= 768)
+    {
+        userheight = (screen.height - 10);
+    }
+    else if (screen.height <= 870)
+    {
+        userheight = (screen.height - 30);
+    }
+
+    if (userheight > 900) userheight = 900;
+    self.resizeTo(userwidth, userheight);
+
+    var leftVal = (screen.width - userwidth) / 2;
+    var topVal = (screen.height - userheight) / 2;
+
+    self.moveTo(leftVal, topVal);
+}
 function popup(mylink, windowname)
 {
 if (! window.focus)return true;
@@ -13,36 +92,136 @@ if (typeof(mylink) == 'string')
    href=mylink;
 else
    href=mylink.href;
-
-var userwidth = (screen.width - 80);
-var userheight = (screen.height - 50);
-
-if (userheight > 720) userheight = 720;
-
-var leftVal = (screen.width - userwidth) / 2;
-var topVal = (screen.height - userheight) / 2;
-
-
-
-window.open(href, windowname, 'width=' +userwidth+ ',height=' +userheight+ ',left=' +leftVal+ ',top=' +topVal+ ',scrollbars=yes,menubar=no,toolbar=no,titlebar=yes,location=no,status=yes,resizable=yes', true);
-self.close();
+window.open(href, windowname, 'width=1000,height=700,scrollbars=yes,menubar=no,toolbar=no,titlebar=no,location=no,status=no');
+//self.close();
 return false;
 }
-//-->
-</SCRIPT>
-<BODY onLoad="popup('index_main.html', 'ad')">
-<!--
-<br>
-<center>
-This Page is temporary and intermediate to CMTS main content for securty purpose.<br>
-For starting CMTS, Press the following button.<br>
-<form>
-<input type="button" value="Start CMTS" onClick="popup('index_main.html', 'ad')">
-</form>
-
-<br>Please, close this window manually after closing the CMTS main page.
-</center>
 -->
-</BODY>
+</script>
 
-</HTML>
+<SCRIPT TYPE="text/javascript">
+<!--
+//Disable right click script
+//visit http://www.rainbow.arch.scriptmania.com/scripts/
+var message="Sorry, right-click has been disabled";
+///////////////////////////////////
+function clickIE() {if (document.all) {(message);return false;}}
+function clickNS(e) {if
+(document.layers||(document.getElementById&&!document.all)) {
+if (e.which==2||e.which==3) {(message);return false;}}}
+if (document.layers)
+{document.captureEvents(Event.MOUSEDOWN);document.onmousedown=clickNS;}
+else{document.onmouseup=clickNS;document.oncontextmenu=clickIE;}
+document.oncontextmenu=new Function("return false")
+// -->
+</SCRIPT>
+
+</HEAD>
+<BODY dir="ltr" cass="section-tools" onLoad="relocate()">
+
+<STYLE type=text/css>@import url("https://cabig.nci.nih.gov/portal_css/caBigPloneSkin/ploneStyles6797.css" );
+</STYLE>
+
+<DIV align=left>
+<TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" bgColor=#a90101>
+  <TBODY>
+  <TR bgColor=#a90101>
+    <TD height=34 width=700 align=left>
+      <A href="http://www.cancer.gov/">
+         <IMG title="National Cancer Institute" border=0 alt="National Cancer Institute"
+             src="https://cabig.nci.nih.gov/logotype.gif" width=283 height=34>
+      </A>
+    </TD>
+    <TD>&nbsp;</TD>
+    <TD height=34 width=177 align=right>
+       <A href="http://www.cancer.gov/">
+          <IMG title="U.S. National Institutes of Health" border=0
+              alt="U.S. National Institutes of Health"
+              src="https://cabig.nci.nih.gov/tagline.gif" width=177 height=34>
+       </A>
+    </TD>
+    <TD height=34 width=118 align=right>
+       <A href="http://www.cancer.gov/">
+          <IMG title=www.cancer.gov border=0 alt="www.cancer.gov"
+              src="https://cabig.nci.nih.gov/cancergov.gif" width=118 height=34>
+       </A>
+    </TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</DIV>
+
+<DIV align=left>
+<TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" bgColor=#2e3257>
+  <TBODY>
+  <TR bgColor=#2e3257>
+    <TD height=34 width=222 align=left valign=middle>
+      <A href="https://cabig.nci.nih.gov/tools/caAdapter">
+         <IMG title="caAdapter Banner" border=0 alt="caBIG Project caAdapter team"
+             src="caAdapter_banner.bmp" width=222 height=34>
+      </A>
+    </TD>
+    <TD height=34 width=309 align=left valign=middle>
+
+      <IMG title="caAdapter CMTS Text" border=0 alt="Common Mapping and Transformation Service (CMTS)"
+             src="caAdapter_banner_CMTS.bmp" width=309 height=34>
+
+    </TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <!--
+    <TH colspan=2 align=right>
+       <FORM style="WHITE-SPACE: nowrap" method=get name=searchform action=https://google1.nci.nih.gov/search>
+          <INPUT value=esn_collection type=hidden name=site>
+          <INPUT value=esn_frontend type=hidden name=client>
+          <INPUT value=xml_no_dtd type=hidden name=output>
+          <INPUT value=esn_frontend type=hidden name=proxystylesheet>
+          <INPUT accessKey=4 id=searchGadget class=searchTextField title="Search Site" size=15 name=q>
+          <INPUT class=searchButton value=Search type=submit name=btnG>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       </FORM>
+    </TH>
+    -->
+  </TR>
+  </TBODY>
+</TABLE>
+
+
+</DIV>
+
+
+	<center>
+        <embed code="gov.nih.nci.cbiit.cmts.web.MainApplet.class"
+				 	  width="100%" height="560"
+				 	  type="application/x-java-applet"
+                      alt="gov.nih.nci.cbiit.cmts.web.MainApplet.class"
+                      codebase="."
+                      MAYSCRIPT=true
+
+                       archive="caAdapter.jar, cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar,plugin.jar,BrowserLauncher2-1_3.jar,commons-io-2.0.1.jar">
+		</embed>
+        <!--
+        <OBJECT
+				classid="clsid:CAFEEFAC-0016-0000-FFFF-ABCDEFFEDCBA"
+				width="100%" height="620">
+			<param name="type" value="application/x-java-applet" />
+			<param name="code" value="gov.nih.nci.cbiit.cmts.web.MainApplet.class" />
+			<param name="codebase" value="." />
+			<param name="archive" value="caAdapter.jar, cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar,plugin.jar,BrowserLauncher2-1_3.jar,commons-io-2.0.1.jar"/>
+			<param name="align" value="center" />
+			<param name="name" value="caAdapter Common Mapping & Transformation Service" />
+			<comment>
+			   <embed code="gov.nih.nci.cbiit.cmts.web.MainApplet.class"
+				 	  width="100%" height="620"
+				 	  type="application/x-java-applet"
+				 	  codebase="."
+				 	  archive="caAdapter.jar, cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar,plugin.jar,BrowserLauncher2-1_3.jar,commons-io-2.0.1.jar"
+				 	  pluginspage="http://java.sun.com/javase/downloads/ea.jsp">
+				  <noembed>
+				 	 No Java Applet Support on this Web Browser.
+				  </noembed>
+			   </embed>
+			</comment>
+		</OBJECT>
+		-->
+	</center>
+</BODY></HTML>

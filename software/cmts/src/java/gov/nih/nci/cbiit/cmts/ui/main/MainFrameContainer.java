@@ -118,5 +118,10 @@ public class MainFrameContainer
         if (mainApplet != null) mainApplet.updateToolBar(newToolBar, rightSideButton);
     }
 
-
+    public MainMenuBar getMainMenuBar()
+    {
+        if (mainFrame != null) return mainFrame.getMainMenuBar();
+        if (mainApplet != null) return mainApplet.getMainMenuBar();
+        return null;
+    }
 }

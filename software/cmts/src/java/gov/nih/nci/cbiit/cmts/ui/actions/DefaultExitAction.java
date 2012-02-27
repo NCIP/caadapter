@@ -86,7 +86,10 @@ public class DefaultExitAction extends AbstractContextAction
         DefaultCloseAllAction closeAllAction = new DefaultCloseAllAction(mainFrame);
 
 
-        if (!closeAllAction.doAction(e)) return isSuccessfullyPerformed();
+        if (!closeAllAction.doAction(e))
+        {
+            if (mainFrame.getAllTabs().size() > 0) return isSuccessfullyPerformed();
+        }
 
         /*
         int indexUnchanged = -1;
@@ -190,7 +193,10 @@ public class DefaultExitAction extends AbstractContextAction
             try
             {
                 JSObject win = (JSObject) JSObject.getWindow(mainFrame.getMainApplet());
-                win.eval("self.close();");
+
+                //String webBrowser = (String) win.eval("whichBrs()");
+                win.eval("doClose()");
+                //win.eval("self.close();");
                 //win.eval("window.close()");
                 System.out.println("Exit caAdapter_cmts from Running on a Web Browser : " + win.getClass().getCanonicalName());
 

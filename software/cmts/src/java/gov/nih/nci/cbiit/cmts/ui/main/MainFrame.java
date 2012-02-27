@@ -49,7 +49,9 @@ public class MainFrame extends JFrame
 
 	private Map<Class, JComponent> tabMap;
 
-	//private static MainFrame instance = null;
+    private MainMenuBar frameMenu;
+
+    //private static MainFrame instance = null;
     private static MainFrameContainer instanceContainer = null;
 
     private MainFrame(){
@@ -80,7 +82,7 @@ public class MainFrame extends JFrame
 
             instanceContainer = new MainFrameContainer(this);
 
-            MainMenuBar frameMenu=new MainMenuBar(instanceContainer);
+            frameMenu=new MainMenuBar(instanceContainer);
 			contextManager.setMenu(frameMenu);
 			contextManager.setToolBarHandler(new MainToolBarHandler());
 			contextManager.initContextManager(instanceContainer);
@@ -374,8 +376,12 @@ public class MainFrame extends JFrame
 			super.processWindowEvent(e);
 		}
 	}
+    public MainMenuBar getMainMenuBar()
+    {
+        return frameMenu;
+    }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMainFrame#exit()
 	 */
 	public void exit() {

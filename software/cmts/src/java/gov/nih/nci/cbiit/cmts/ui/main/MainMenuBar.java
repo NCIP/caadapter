@@ -25,11 +25,17 @@ import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 
 import javax.swing.*;
+import javax.swing.event.MenuListener;
+import javax.swing.event.MenuEvent;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.FocusEvent;
 
 import netscape.javascript.JSObject;
 import netscape.javascript.JSException;
@@ -54,6 +60,8 @@ public class MainMenuBar extends JMenuBar
     private Map<String, AbstractContextAction> actionMap;
     private Map<String, JMenuItem> menuItemMap;
     private Map<String, JMenu> menuMap;
+
+    private JMenuItem exitMenuItem = null;
 
     public MainMenuBar(MainFrameContainer mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
@@ -142,18 +150,22 @@ public class MainMenuBar extends JMenuBar
         actionMap.put(ActionConstants.OPEN_MAP_FILE, openMapAction);
         menuItemMap.put(ActionConstants.OPEN_MAP_FILE, openMapFileItem);
 
-        JMenuItem exitMenuItem = null;
+
         if (isEnableExitMenu())
-        //if (mainFrame.getMainFrame() != null)
         {
             DefaultExitAction exitAction = new DefaultExitAction(mainFrame);//.getAssociatedUIComponent());
             exitMenuItem = new JMenuItem(exitAction);
             actionMap.put(ActionConstants.EXIT, exitAction);
             menuItemMap.put(ActionConstants.EXIT, exitMenuItem);
+
+
         }
         // link them together
         JMenu fileMenu = new JMenu(MenuConstants.FILE_MENU_NAME);
         fileMenu.setMnemonic('F');
+
+
+
         JMenu newMenu = constructNewCmtsMenu();
         //ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("_Add_tables.gif"));
         ImageIcon newImageIcon = new ImageIcon(DefaultSettings.getImage("ico_new.bmp"));
@@ -178,6 +190,56 @@ public class MainMenuBar extends JMenuBar
         defaultSaveAsAction.setEnabled(false);
         defaultCloseAction.setEnabled(false);
         closeAllAction.setEnabled(false);
+
+        //fileMenu.addActionListener(
+        fileMenu.addMenuListener(
+           new MenuListener()
+           {
+               public void menuCanceled(MenuEvent e) {}
+               public void menuDeselected(MenuEvent e) {}
+               public void menuSelected(MenuEvent e)
+               {
+                   //System.out.println("aa0");
+                   if (mainFrame.getMainApplet() != null)
+                   {
+                       JMenuItem exitMenu;
+                       try
+                       {
+                           exitMenu = mainFrame.getMainApplet().getMainMenuBar().getExitMenuItem();
+                       }
+                       catch(Exception ee)
+                       {
+                           return;
+                       }
+                       if (!exitMenu.isEnabled()) return;
+                       String webBrowser = null;
+                        try
+                        {
+                            //System.out.println("aa1");
+                            JSObject win = (JSObject) JSObject.getWindow(mainFrame.getMainApplet());
+                            //System.out.println("aa2");
+                            webBrowser = (String) win.eval("whichBrs()");
+                            //System.out.println("aa3 : webBrowser=" + webBrowser);
+                        }
+                        catch(JSException je)
+                        {
+                            System.out.println("Failure : JSObject.getWindow() : " + je.getMessage());
+                            webBrowser = null;
+                        }
+
+                        if ((webBrowser != null)&&(!webBrowser.trim().equals("")))
+                        {
+                            if (!webBrowser.equalsIgnoreCase("Internet Explorer"))
+                            {
+                                exitMenu.setToolTipText("On " + webBrowser + " browser, this menu doesn't work.\nPlease, use web browser's 'Exit' menu.");
+                                exitMenu.setEnabled(false);
+                            }
+                        }
+                   }
+               }
+           }
+        );
+
         return fileMenu;
     }
 
@@ -369,7 +431,10 @@ public class MainMenuBar extends JMenuBar
             // closeAllMenuItem.invalidate();
         }
     }
-
+    public JMenuItem getExitMenuItem()
+    {
+        return exitMenuItem;
+    }
     private boolean isEnableExitMenu()
     {
         if (mainFrame.getMainFrame() != null)
