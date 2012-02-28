@@ -132,8 +132,8 @@
                     }
                 %>
                     <tr>
-					<td>Security Code(Required):</td><td><INPUT TYPE="text" NAME="deleteSecurityCode"></td>
-                    <td>Needed when delete this Scenario</td>
+					<td>Delete Confirmation Code(Required):</td><td><INPUT TYPE="text" NAME="deleteSecurityCode"></td>
+                    <td>Keep this value for delete this scenario</td>
                     </tr>
                     <tr><td colspan=3>
                     <INPUT TYPE="hidden" NAME="methd" VALUE="<%= methodS%>">
@@ -145,10 +145,10 @@
               {
                 %>
                     <tr>
-					<td>Scenario Name(Required):</td><td> <input type="text" name="scenarioName"><br></td><td>&nbsp;</td>
+					<td>Scenario Name:</td><td> <input type="text" name="scenarioName"><br></td><td>&nbsp;</td>
 					</tr>
                     <tr>
-					<td>Security Code(Required):</td><td><INPUT TYPE="text" NAME="deleteSecurityCode"></td>
+					<td>Delete Confirmation Code:</td><td><INPUT TYPE="text" NAME="deleteSecurityCode"></td>
                     <td>&nbsp;</td>
                     </tr>
                     <tr><td colspan=3>

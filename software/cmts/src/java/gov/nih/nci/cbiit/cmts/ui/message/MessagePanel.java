@@ -398,12 +398,12 @@ public class MessagePanel extends AbstractTabPanel implements ActionListener
 			writer.write(msgPane.getText());
 			writer.close();
             isSaved = true;
-            JOptionPane.showMessageDialog(getParent(), "Data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(getParent(), "Data has been saved successfully.", "Saving Complete", JOptionPane.INFORMATION_MESSAGE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
             isSaved = false;
-            JOptionPane.showMessageDialog(getParent(), e.getMessage(), "Save Failure", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(getParent(), e.getMessage(), "Saving Failure", JOptionPane.ERROR_MESSAGE);
         }
 
     }

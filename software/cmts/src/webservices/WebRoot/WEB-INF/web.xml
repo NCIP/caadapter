@@ -116,6 +116,7 @@
         <servlet-class>gov.nih.nci.cbiit.cmts.ws.servlet.InvalidAccessWarning</servlet-class>
         <load-on-startup>1</load-on-startup>
    	</servlet>
+
     
     <!-- Servlet: Axis Engine -->
     <!-- servlet>
@@ -150,12 +151,22 @@
         <servlet-name>AddNewScenario</servlet-name>
         <url-pattern>/AddNewScenario</url-pattern>
     </servlet-mapping>
+    <!--servlet-mapping>
+        <servlet-name>InvalidAccessWarning</servlet-name>
+        <url-pattern>/cgi-bin/</url-pattern>
+    </servlet-mapping-->
     <servlet-mapping>
         <servlet-name>InvalidAccessWarning</servlet-name>
-        <url-pattern>/cgi-bin/*</url-pattern>
+        <url-pattern>/InvalidAccessWarning</url-pattern>
     </servlet-mapping>
       <servlet-mapping>
     	<servlet-name>strutsAction</servlet-name>
     	<url-pattern>*.do</url-pattern>
   	</servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errormsg.do?message=InvalidAccessWarning</location>
+    </error-page>
+
 </web-app>

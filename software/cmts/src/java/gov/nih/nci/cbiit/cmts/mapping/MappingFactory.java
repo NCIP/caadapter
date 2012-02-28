@@ -206,8 +206,20 @@ public class MappingFactory
                 {
                     String xsdLocation3 = xsdLocation.substring(6);
                     while(xsdLocation3.startsWith("/")) xsdLocation3 = xsdLocation3.substring(1);
-                    File f1 = new File(xsdLocation3);
-                    if ((f1.exists())||(f1.isFile())) xsdObj = f1;
+                    String tempT = xsdLocation3;
+                    while(true)
+                    {
+                        File f1 = new File(tempT);
+                        if ((f1.exists())||(f1.isFile()))
+                        {
+                            //xsdLocation3 = f1.getAbsolutePath();
+                            xsdObj = f1;
+                            break;
+                        }
+                        if (!File.separator.equals("/")) break;
+                        if (tempT.startsWith("/")) break;
+                        tempT = "/" + tempT;
+                    }
                 }
 
                 String xsdLocation2 = mappingParentPath+File.separator+mapComp.getLocation();
