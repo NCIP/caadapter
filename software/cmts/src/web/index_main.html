@@ -74,14 +74,40 @@ function relocate()
 }
 function popup(mylink, windowname)
 {
-if (! window.focus)return true;
-var href;
-if (typeof(mylink) == 'string')
-   href=mylink;
-else
-   href=mylink.href;
-window.open(href, windowname, 'width=1000,height=700,scrollbars=yes,menubar=no,toolbar=no,titlebar=no,location=no,status=no');
-//self.close();
+    if (! window.focus)return true;
+    var href;
+    if (typeof(mylink) == 'string')
+       href=mylink;
+    else
+       href=mylink.href;
+
+    var userwidth = (screen.width - 100);
+    var userheight = (screen.height - 50);
+
+    if (screen.width <= 1024)
+    {
+        userwidth = (screen.width - 50);
+    }
+    else if (screen.width <= 1200)
+    {
+        userwidth = (screen.width - 70);
+    }
+    if (screen.height <= 768)
+    {
+        userheight = (screen.height - 10);
+    }
+    else if (screen.height <= 870)
+    {
+        userheight = (screen.height - 30);
+    }
+
+    if (userheight > 900) userheight = 900;
+
+    var leftVal = (screen.width - userwidth) / 2;
+    var topVal = (screen.height - userheight) / 2;
+
+    window.open(href, windowname, 'scrollbars=yes,menubar=no,toolbar=no,titlebar=no,location=no,status=no');
+
 return false;
 }
 -->
@@ -105,111 +131,6 @@ document.oncontextmenu=new Function("return false")
 </SCRIPT>
 
 </HEAD>
-<BODY dir="ltr" cass="section-tools" onLoad="relocate()">
+<BODY dir="ltr" cass="section-tools" onLoad="popup('index.html', 'caAdapter CMTS')">
 
-<STYLE type=text/css>@import url("https://cabig.nci.nih.gov/portal_css/caBigPloneSkin/ploneStyles6797.css" );
-</STYLE>
-
-<DIV align=left>
-<TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" bgColor=#a90101>
-  <TBODY>
-  <TR bgColor=#a90101>
-    <TD height=34 width=700 align=left>
-      <A href="http://www.cancer.gov/">
-         <IMG title="National Cancer Institute" border=0 alt="National Cancer Institute"
-             src="https://cabig.nci.nih.gov/logotype.gif" width=283 height=34>
-      </A>
-    </TD>
-    <TD>&nbsp;</TD>
-    <TD height=34 width=177 align=right>
-       <A href="http://www.cancer.gov/">
-          <IMG title="U.S. National Institutes of Health" border=0
-              alt="U.S. National Institutes of Health"
-              src="https://cabig.nci.nih.gov/tagline.gif" width=177 height=34>
-       </A>
-    </TD>
-    <TD height=34 width=118 align=right>
-       <A href="http://www.cancer.gov/">
-          <IMG title=www.cancer.gov border=0 alt="www.cancer.gov"
-              src="https://cabig.nci.nih.gov/cancergov.gif" width=118 height=34>
-       </A>
-    </TD>
-  </TR>
-  </TBODY>
-</TABLE>
-</DIV>
-
-<DIV align=left>
-<TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" bgColor=#2e3257>
-  <TBODY>
-  <TR bgColor=#2e3257>
-    <TD height=34 width=222 align=left valign=middle>
-      <A href="https://cabig.nci.nih.gov/tools/caAdapter">
-         <IMG title="caAdapter Banner" border=0 alt="caBIG Project caAdapter team"
-             src="caAdapter_banner.bmp" width=222 height=34>
-      </A>
-    </TD>
-    <TD height=34 width=309 align=left valign=middle>
-
-      <IMG title="caAdapter CMTS Text" border=0 alt="Common Mapping and Transformation Service (CMTS)"
-             src="caAdapter_banner_CMTS.bmp" width=309 height=34>
-
-    </TD>
-    <TD>&nbsp;</TD>
-    <TD>&nbsp;</TD>
-    <!--
-    <TH colspan=2 align=right>
-       <FORM style="WHITE-SPACE: nowrap" method=get name=searchform action=https://google1.nci.nih.gov/search>
-          <INPUT value=esn_collection type=hidden name=site>
-          <INPUT value=esn_frontend type=hidden name=client>
-          <INPUT value=xml_no_dtd type=hidden name=output>
-          <INPUT value=esn_frontend type=hidden name=proxystylesheet>
-          <INPUT accessKey=4 id=searchGadget class=searchTextField title="Search Site" size=15 name=q>
-          <INPUT class=searchButton value=Search type=submit name=btnG>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       </FORM>
-    </TH>
-    -->
-  </TR>
-  </TBODY>
-</TABLE>
-
-
-</DIV>
-
-
-	<center>
-        <embed code="gov.nih.nci.cbiit.cmts.web.MainApplet.class"
-				 	  width="100%" height="600"
-				 	  type="application/x-java-applet"
-                      alt="gov.nih.nci.cbiit.cmts.web.MainApplet.class"
-                      codebase="."
-                      MAYSCRIPT=true
-
-                       archive="caAdapter.jar, cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar,plugin.jar,BrowserLauncher2-1_3.jar,commons-io-2.0.1.jar">
-		</embed>
-        <!--
-        <OBJECT
-				classid="clsid:CAFEEFAC-0016-0000-FFFF-ABCDEFFEDCBA"
-				width="100%" height="620">
-			<param name="type" value="application/x-java-applet" />
-			<param name="code" value="gov.nih.nci.cbiit.cmts.web.MainApplet.class" />
-			<param name="codebase" value="." />
-			<param name="archive" value="caAdapter.jar, cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar,plugin.jar,BrowserLauncher2-1_3.jar,commons-io-2.0.1.jar"/>
-			<param name="align" value="center" />
-			<param name="name" value="caAdapter Common Mapping & Transformation Service" />
-			<comment>
-			   <embed code="gov.nih.nci.cbiit.cmts.web.MainApplet.class"
-				 	  width="100%" height="620"
-				 	  type="application/x-java-applet"
-				 	  codebase="."
-				 	  archive="caAdapter.jar, cmts-resources.jar,cmts.jar,cmtsUI.jar,commons-beanutils.jar,commons-logging-1.0.4.jar,dom4j-1.4.jar,jaxen-jdom.jar,jdom.jar,jgraph.jar,log4j-1.2.8.jar,saxon9-xqj.jar,saxon9.jar,xbean.jar,xercesImpl.jar,plugin.jar,BrowserLauncher2-1_3.jar,commons-io-2.0.1.jar"
-				 	  pluginspage="http://java.sun.com/javase/downloads/ea.jsp">
-				  <noembed>
-				 	 No Java Applet Support on this Web Browser.
-				  </noembed>
-			   </embed>
-			</comment>
-		</OBJECT>
-		-->
-	</center>
 </BODY></HTML>
