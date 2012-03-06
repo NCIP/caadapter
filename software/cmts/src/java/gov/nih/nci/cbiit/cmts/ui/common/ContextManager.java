@@ -15,6 +15,8 @@ import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.DefaultSaveAsAction;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
+import gov.nih.nci.cbiit.cmts.ui.message.MessagePanel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -45,20 +47,20 @@ public class ContextManager implements ChangeListener
     private boolean inClosingAllOrShutdownMode = false;
     private Map<String, MenuActionMaps> clientMenuActions=null;
     private static ContextManager mgrSingleton;
-    
+
     /**
      * Private constructor works for singleton instance
      *
      */
     private ContextManager()
-    { 
+    {
     }
-    
+
     public void setToolBarHandler(ToolBarHandler newToolBarHandler)
     {
     	toolBarHandler =newToolBarHandler;
     }
-    
+
     /**
      * initialize the ContextManager only once with mainFrame
      * @param owner
@@ -67,18 +69,18 @@ public class ContextManager implements ChangeListener
     {
     	mainFrame = owner;
     	contextFileManager = new ContextFileManager(mainFrame);
-//    	menu = new MainMenuBar(mainFrame); 
-    	clientMenuActions = Collections.synchronizedMap(new HashMap<String, MenuActionMaps>());    	    
+//    	menu = new MainMenuBar(mainFrame);
+    	clientMenuActions = Collections.synchronizedMap(new HashMap<String, MenuActionMaps>());
 
     }
-   
+
     public static ContextManager getContextManager()
     {
     	if (mgrSingleton==null)
     		mgrSingleton=new ContextManager();
     	return mgrSingleton;
     }
-    
+
     public Map getClientMenuActions(String svcName, String menuName)
     {
     	MenuActionMaps menuMaps=(MenuActionMaps)clientMenuActions.get(svcName);
@@ -87,13 +89,13 @@ public class ContextManager implements ChangeListener
     	else
     		return null;
     }
-    
+
     public void addClientMenuAction(String svcName,String menuName, String actionName, Action action)
     {
     	MenuActionMaps menuMaps=(MenuActionMaps)clientMenuActions.get(svcName);
     	if (menuMaps==null)
     		menuMaps=new MenuActionMaps(svcName);
-    	
+
     	if (menuName.equalsIgnoreCase(MenuConstants.FILE_MENU_NAME))
     		menuMaps.addFileMenuAction(actionName, action);
 //		else if (menuName.equalsIgnoreCase(MenuConstants.REPORT_MENU_NAME))
@@ -102,16 +104,16 @@ public class ContextManager implements ChangeListener
 			menuMaps.addToolBarMenuAction(actionName, action);
     	clientMenuActions.put(svcName, menuMaps);
     }
-    
+
     public void removeClientMenuAction (String svcName, String menuName, String actionName)
     {
     	if (svcName==null||svcName.equals(""))
     		return;
-    	
-    	//remove all action for the service 
+
+    	//remove all action for the service
     	if (menuName==null||menuName.equals(""))
     		clientMenuActions.remove(svcName);
-    	
+
     	MenuActionMaps menuMaps=(MenuActionMaps)clientMenuActions.get(svcName);
     	if (menuMaps==null)
     		return;
@@ -141,7 +143,7 @@ public class ContextManager implements ChangeListener
     {
         return contextFileManager;
     }
-    
+
     /**
      * Return the currently active panel.
      *
@@ -170,8 +172,18 @@ public class ContextManager implements ChangeListener
         {
             nowPanel = (JComponent) mainFrame.getTabbedPane().getComponentAt(selectedIndex);
         }
-
-        if (!GeneralUtilities.areEqual(nowPanel, currentPanel))
+        else
+        {
+            if (mainFrame.getTabbedPane().getTabCount() >= 1)
+            {
+                int tabIndex = mainFrame.getTabbedPane().getTabCount() - 1;
+                nowPanel = (JComponent) mainFrame.getTabbedPane().getComponentAt(tabIndex);
+                mainFrame.getTabbedPane().setSelectedIndex(tabIndex);
+            }
+        }
+        //System.out.println("ContextManagement.stateChanged(ChangeEvent e) ("+mainFrame.getTabbedPane().getTabCount()+") now=" + nowPanel + "\ncurrent=" + currentPanel);
+        //JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent()," ("+mainFrame.getTabbedPane().getTabCount()+") now=" + nowPanel + "\ncurrent=" + currentPanel);
+        if (((currentPanel == null)&&(nowPanel != null))||(!GeneralUtilities.areEqual(nowPanel, currentPanel)))
         {
             currentPanel = nowPanel;
             updateMenu();
@@ -191,10 +203,20 @@ public class ContextManager implements ChangeListener
     {
         try
         {
-        	System.out.println("ContextManager.updateMenu()..current Panel:"+currentPanel);
-            if(currentPanel instanceof ContextManagerClient)
+        	//System.out.println("ContextManager.updateMenu()..current Panel:"+currentPanel);
+
+            //if(currentPanel == null)
+                //JOptionPane.showMessageDialog(currentPanel, "ContextManager.updateMenu().. null panel");
+            //else
+                //JOptionPane.showMessageDialog(currentPanel, "ContextManager.updateMenu().. class=" + currentPanel.getClass().getCanonicalName());
+
+            ContextManagerClient contextClient = null;
+            if(currentPanel instanceof ContextManagerClient) contextClient = (ContextManagerClient) currentPanel;
+            else if(currentPanel instanceof MappingMainPanel) contextClient = (MappingMainPanel) currentPanel;
+            else if(currentPanel instanceof MessagePanel) contextClient = (MessagePanel) currentPanel;
+            if (contextClient != null)
             {
-                ContextManagerClient contextClient = (ContextManagerClient) currentPanel;
+                //ContextManagerClient contextClient = (ContextManagerClient) currentPanel;
                 getToolBarHandler().removeAllActions();
                 /*
                 java.util.List<Action> actions = contextClient.getToolbarActionList();
@@ -343,14 +365,14 @@ public class ContextManager implements ChangeListener
             }
         }
     }
-    
+
     private boolean updateMenuAction(Map actionMap, String actionConstant)
     {
     	JMenuItem menuItem=this.getMenu().getDefinedMenuItem(actionConstant);
     	if (menuItem==null)
     		return false;
         Action act = (Action) actionMap.get(actionConstant);
-        
+
         if (act != null)
         {
             menuItem.setAction(null);
@@ -373,7 +395,7 @@ public class ContextManager implements ChangeListener
             return false;
         }
     }
-    
+
 //    private void updateMenu_save(Map actionMap, String menu_name)
 //    {
 //        if (menu_name == MenuConstants.FILE_MENU_NAME)

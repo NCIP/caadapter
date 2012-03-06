@@ -123,7 +123,7 @@ public class MappingTransformer extends DefaultTransformer {
             else if (achar.equals(">")) mm = mm + "&gt;";
             else mm = mm + achar;
         }
-        System.out.println("CCCC queryString=" + mm);
+        //System.out.println("CCCC queryString=" + mm);
         XQPreparedExpression exp = getConn().prepareExpression(mm);
 
 		return exp;

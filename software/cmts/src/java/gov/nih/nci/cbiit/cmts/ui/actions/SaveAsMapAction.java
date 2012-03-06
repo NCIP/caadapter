@@ -12,6 +12,7 @@ import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.AbstractTabPanel;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmts.ui.message.MessagePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -61,13 +62,25 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 				MappingMainPanel mappingMain=(MappingMainPanel)viewerPanel;
 				if(mappingMain.getSourceTree()==null || mappingMain.getTargetTree()==null)
 				{
-					String msg = "Enter both source and target information before saving the map specification.";
-					JOptionPane.showMessageDialog(viewerPanel, msg, "Error", JOptionPane.ERROR_MESSAGE);
+					String msg = "Enter both source and target schema file before saving the map specification.";
+					JOptionPane.showMessageDialog(viewerPanel, msg, "No mapping data for Saving", JOptionPane.ERROR_MESSAGE);
 					setSuccessfullyPerformed(false);
 					return false;
 				}
 			}
-		}
+            else if (viewerPanel instanceof MessagePanel)
+			{
+				MessagePanel messagePanel =(MessagePanel)viewerPanel;
+                String s = messagePanel.getDisplayedMessage();
+                if(s == null || s.trim().equals(""))
+				{
+					String msg = "There is nothing Data for saving.";
+					JOptionPane.showMessageDialog(viewerPanel, msg, "No Data for saving.", JOptionPane.ERROR_MESSAGE);
+					setSuccessfullyPerformed(false);
+					return false;
+				}
+			}
+        }
 
         String extension = viewerPanel.getViewFileExtension();
         if (extension.equals(".xq")) extension = ".xql";

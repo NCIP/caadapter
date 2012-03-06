@@ -37,8 +37,14 @@ public MainApplet() throws HeadlessException
 		{
 			try
 			{
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			}
+                String os = System.getProperty("os.name");
+                System.out.println("Running caadapter-cmts on " + os);
+                if (os.toLowerCase().startsWith("windows"))
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                else
+                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+
+            }
 			catch (ClassNotFoundException e1)
 			{
 				// TODO Auto-generated catch block
@@ -181,9 +187,12 @@ public MainApplet() throws HeadlessException
     {
         java.util.List<Component> resultList = new java.util.ArrayList<Component>();
         int count = tabbedPane.getComponentCount();
-        for (int i = 0; i < count; i++) {
-            Component comp = tabbedPane.getComponentAt(i);
-            resultList.add(comp);
+        if (count > 0)
+        {
+            for (int i = 0; i < count; i++) {
+                Component comp = tabbedPane.getComponentAt(i);
+                resultList.add(comp);
+            }
         }
         return resultList;
     }

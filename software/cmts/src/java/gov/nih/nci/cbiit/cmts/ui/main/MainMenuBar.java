@@ -77,10 +77,10 @@ public class MainMenuBar extends JMenuBar
 
         add(constructFileMenu());
         JMenu helpMenu=new JMenu("Help");
-        JMenuItem aboutItem=new JMenuItem(new AboutViewAction(mainFrame.getMainApplet())); 
+        JMenuItem aboutItem=new JMenuItem(new AboutViewAction(mainFrame.getMainApplet()));
         helpMenu.add(aboutItem);
-        
-        JMenuItem helpItem=new JMenuItem(new HelpViewAction(mainFrame.getMainApplet())); 
+
+        JMenuItem helpItem=new JMenuItem(new HelpViewAction(mainFrame.getMainApplet()));
         helpMenu.add(helpItem);
         add(helpMenu);
     }
@@ -372,12 +372,42 @@ public class MainMenuBar extends JMenuBar
 //		validateMenuItem.getAction().setEnabled(false);
 //		closeMenuItem.getAction().setEnabled(false);
 
+        if (hasActiveDocument)
+        {
+            saveMenuItem.getAction().setEnabled(true);
+            saveAsMenuItem.getAction().setEnabled(true);
+            closeMenuItem.getAction().setEnabled(true);
+            closeAllMenuItem.getAction().setEnabled(true);
+        }
+        else
+        {
+            boolean cTag = false;
+            try
+            {
+                cTag = ((mainFrame.getAllTabs() != null)&&(mainFrame.getAllTabs().size() > 0));
+            }
+            catch(ArrayIndexOutOfBoundsException ae)
+            {
+                cTag = false;
+            }
 
+            if (cTag)
+            {
+                saveMenuItem.getAction().setEnabled(true);
+                saveAsMenuItem.getAction().setEnabled(true);
+                closeMenuItem.getAction().setEnabled(true);
+                closeAllMenuItem.getAction().setEnabled(true);
+            }
+            else
+            {
+                saveMenuItem.getAction().setEnabled(false);
+                saveAsMenuItem.getAction().setEnabled(false);
+                closeMenuItem.getAction().setEnabled(false);
+                closeAllMenuItem.getAction().setEnabled(false);
+            }
+        }
 
-        saveMenuItem.getAction().setEnabled(hasActiveDocument);
-        saveAsMenuItem.getAction().setEnabled(hasActiveDocument);
-		closeMenuItem.getAction().setEnabled(hasActiveDocument);
-        closeAllMenuItem.getAction().setEnabled(hasActiveDocument);
+        
     }
 
     private void resetNewSubMenu(boolean hasActiveDocument)

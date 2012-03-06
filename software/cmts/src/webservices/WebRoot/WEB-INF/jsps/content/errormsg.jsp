@@ -52,6 +52,12 @@
                 else if (i == 39) bl = true;                  // "'"
                 else if (i == 47) bl = true;                  // "/"
                 else if (i == 92) bl = true;                  // "\"
+                else if (i == 45) bl = true;                  // "-"
+                else if (i == 95) bl = true;                  // "_"
+                else if (i == 40) bl = true;                  // "("
+                else if (i == 41) bl = true;                  // ")"
+                else if (i == 64) bl = true;                  // "@"
+                else if (i == 37) bl = true;                  // "%"
 
                 if (bl) message2 = message2 + c;
             }
