@@ -86,6 +86,7 @@ public class AddNewScenario extends HttpServlet {
 	   {
            includedXSDList = new ArrayList<String>();
            List<String> fileList = new ArrayList<String>();
+           String daTag = "12345Abc";
           try
           {
             /* disable security for caAdatper 4.3 release 03-31-2009
@@ -223,7 +224,7 @@ public class AddNewScenario extends HttpServlet {
                   {
                       if (!scnHome.mkdir())
                       {
-                          String errMsg="Scenario home directory creation filure, not able to save:"+scenarioName;
+                          String errMsg="Scenario home directory creation failure. Not able to save:"+scenarioName;
                           System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
                           req.setAttribute("rtnMessage", errMsg);
                           res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -254,7 +255,7 @@ public class AddNewScenario extends HttpServlet {
                       {
                           if ((deletionTag == null)&&(securityCode == null))
                           {
-                                String errMsg="No Password for scenarion deletion:"+scenarioName;
+                                String errMsg="No delete confirmation code for scenario deleting:"+scenarioName;
                                 System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
                                 req.setAttribute("rtnMessage", errMsg);
                                 res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -276,8 +277,8 @@ public class AddNewScenario extends HttpServlet {
                           }
                           if (!pass)
                           {
-                              if ((deletionTag != null)&&(deletionTag.trim().equals("12345Abc"))) pass = true;
-                              if ((securityCode != null)&&(securityCode.trim().equals("12345Abc"))) pass = true;
+                              if ((deletionTag != null)&&(deletionTag.trim().equals(daTag))) pass = true;
+                              if ((securityCode != null)&&(securityCode.trim().equals(daTag))) pass = true;
                           }
                           if (!pass)
                           {
@@ -304,7 +305,7 @@ public class AddNewScenario extends HttpServlet {
                           if (deletionSuccess) res.sendRedirect("successmsg.do?message="+ URLEncoder.encode("Scenario Deletion Success : " + scenarioName, "UTF-8"));
                           else
                           {
-                                String errMsg="Scenario deleting failure:"+scenarioName;
+                                String errMsg="Scenario deletion failure:"+scenarioName;
                                 System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
                                 req.setAttribute("rtnMessage", errMsg);
                                 res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -313,7 +314,7 @@ public class AddNewScenario extends HttpServlet {
                       }
                       else
                       {
-                        String errMsg="Scenario exists, not able to save:"+scenarioName+"<br>If you want to update, delete scenario first.";
+                        String errMsg="Scenario already exists. Not able to save:"+scenarioName+"<br>If you want to update this scenario. Delete the scenario first.";
                         System.out.println("AddNewScenario.doPost()...:"+errMsg);
                         req.setAttribute("rtnMessage", errMsg);
                         res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -342,7 +343,7 @@ public class AddNewScenario extends HttpServlet {
 
                       if ((securityCode == null)||(securityCode.trim().equals("")))
                       {
-                          String errMsg="Null Security code: This must be input for scenario deletion in the future.";
+                          String errMsg="Null delete confirmation code: This must be input for scenario deleting in the future.";
                             System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
                             req.setAttribute("rtnMessage", errMsg);
                             deleteDirAndFilesOnError(fileList);
@@ -359,7 +360,7 @@ public class AddNewScenario extends HttpServlet {
                       }
                       catch(Exception ie)
                       {
-                          String errMsg="Security Code saving error.";
+                          String errMsg="Delete confirmation Code Saving error.";
                           System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
                           req.setAttribute("rtnMessage", errMsg);
                           deleteDirAndFilesOnError(fileList);
@@ -405,7 +406,7 @@ public class AddNewScenario extends HttpServlet {
 	    			  String fieldName = item.getFieldName();
 
 
-                      System.out.println("AddNewScenario.doPost()..item is NOT formField:"+item.getFieldName());//+"="+item.getString());
+                      //System.out.println("AddNewScenario.doPost()..item is NOT formField:"+item.getFieldName());//+"="+item.getString());
 	    			  String filePath = item.getName();
 	    			  String fileName=extractOriginalFileName(filePath);
                       if (fileName==null||fileName.equals(""))
@@ -415,15 +416,7 @@ public class AddNewScenario extends HttpServlet {
 
 
                       String tempFileName = fileName;
-                      int idxT = tempFileName.toLowerCase().lastIndexOf(".");
-                      if (idxT > 0)
-                      {
-                          tempFileName = tempFileName.substring(idxT + 1);
-                          if (tempFileName.toLowerCase().startsWith(transType.toLowerCase()))
-                          {
-                              instructionFileFound = true;
-                          }
-                      }
+
 
                       String uploadedFilePath=path+File.separator+scenarioName+File.separator+ fileName.toLowerCase();
 	    			  if (fieldName.equals("mappingFileName")) {
@@ -431,7 +424,34 @@ public class AddNewScenario extends HttpServlet {
 	    				  String uploadedMapBak=uploadedFilePath+ ".bak";
 	    				  //write bak of Mapping file
 	    				  item.write(new File(uploadedMapBak));
-	    				  if (uploadedFilePath.toLowerCase().endsWith(".map"))
+
+                          int idxT = tempFileName.lastIndexOf(".");
+                          if (idxT <= 0)
+                          {
+                              String errMsg = "This File cannot be identify its file type : " + tempFileName;
+                              System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                              req.setAttribute("rtnMessage", errMsg);
+                              deleteDirAndFilesOnError(fileList);
+                              res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                              return;
+                          }
+                          tempFileName = tempFileName.substring(idxT + 1);
+                          if (tempFileName.toLowerCase().startsWith(transType.toLowerCase()))
+                          {
+                              instructionFileFound = true;
+                          }
+                          else
+                          {
+                              String errMsg = "Not Matched between Transformation Type `"+transType+"` and the Instruction File type. : " + tempFileName;
+                              System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                              req.setAttribute("rtnMessage", errMsg);
+                              deleteDirAndFilesOnError(fileList);
+                              res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                              return;
+                          }
+
+
+                          if (uploadedFilePath.toLowerCase().endsWith(".map"))
                           {
                               updateMapping(uploadedMapBak, path+File.separator+scenarioName);
                               fileList.add(uploadedMapBak);
@@ -456,7 +476,7 @@ public class AddNewScenario extends HttpServlet {
                               {
                                   if ((transType.equals("xq"))||(transType.equals("xsl")))
                                   {
-                                      String errMsg = "Transformation Type '" + transType + "' doesn't need any schema file.";
+                                      String errMsg = "Transformation Type -" + transType + "- doesn't need any schema file.";
                                       System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
                                       req.setAttribute("rtnMessage", errMsg);
                                       deleteDirAndFilesOnError(fileList);
@@ -492,7 +512,7 @@ public class AddNewScenario extends HttpServlet {
                                       }
                                       else
                                       {
-                                          String errMsg="Faild to upload this "+sourceORtarget+" schema file="+fileName + ", " + er;
+                                          String errMsg="Faild to upload this "+sourceORtarget+" schema file - "+fileName + ": " + er;
                                           System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
                                           req.setAttribute("rtnMessage", errMsg);
                                           deleteDirAndFilesOnError(fileList);
@@ -505,7 +525,7 @@ public class AddNewScenario extends HttpServlet {
                               {
                                   if ((transType.equals("xq"))||(transType.equals("xsl")))
                                   {
-                                      String errMsg = "Transformation Type '" + transType + "' doesn't need any zip file.";
+                                      String errMsg = "Transformation Type `" + transType + "` doesn`t need any zip file.";
                                       System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
                                       req.setAttribute("rtnMessage", errMsg);
                                       deleteDirAndFilesOnError(fileList);
@@ -527,7 +547,7 @@ public class AddNewScenario extends HttpServlet {
                                       {
                                           if (pathSourceZip != null)
                                           {
-                                              String errMsg="Only one zip file allowed ("+sourceORtarget+") :"+fileName;
+                                              String errMsg="Only one zip file allowed - "+sourceORtarget+" :"+fileName;
                                               System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
                                               req.setAttribute("rtnMessage", errMsg);
                                               deleteDirAndFilesOnError(fileList);
@@ -540,7 +560,7 @@ public class AddNewScenario extends HttpServlet {
                                       {
                                           if (pathTargetZip != null)
                                           {
-                                              String errMsg="Only one zip file allowed ("+sourceORtarget+") :"+fileName;
+                                              String errMsg="Only one zip file allowed - "+sourceORtarget+" :"+fileName;
                                               System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
                                               req.setAttribute("rtnMessage", errMsg);
                                               deleteDirAndFilesOnError(fileList);
@@ -571,7 +591,7 @@ public class AddNewScenario extends HttpServlet {
                   }
                   catch(Exception ee)
                   {
-                      String errMsg="Incomplete Source ZIP ("+pathSourceZip+") file. : " + ee.getMessage();
+                      String errMsg="Incomplete Source ZIP - "+pathSourceZip+" - file. : " + ee.getMessage();
                       req.setAttribute("rtnMessage", errMsg);
                       deleteDirAndFilesOnError(fileList);
                       res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -588,7 +608,7 @@ public class AddNewScenario extends HttpServlet {
                   }
                   catch(Exception ee)
                   {
-                      String errMsg="Incomplete Target ZIP ("+pathTargetZip+") file. : " + ee.getMessage();
+                      String errMsg="Incomplete Target ZIP - "+pathTargetZip+" - file. : " + ee.getMessage();
                       req.setAttribute("rtnMessage", errMsg);
                       deleteDirAndFilesOnError(fileList);
                       res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -616,7 +636,7 @@ public class AddNewScenario extends HttpServlet {
                   String errMsg="Incomplete XSD files. " + notFoundfiles.size() + " files are absent. - ";
                   if (notFoundfiles.size() == 1) errMsg="Incomplete XSD files. One file is absent. - ";
 
-                  if (!instructionFileFound) errMsg = "Not Matched between Transformation Type ("+transType+") and the Instruction File type.";
+                  if (!instructionFileFound) errMsg = "No Instruction File is uploaded.";
                   else for (String c:notFoundfiles) errMsg = errMsg + "<br>" + c;
                   System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
 

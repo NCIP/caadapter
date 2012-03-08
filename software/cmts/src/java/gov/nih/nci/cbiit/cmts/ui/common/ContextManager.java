@@ -180,8 +180,9 @@ public class ContextManager implements ChangeListener
                 nowPanel = (JComponent) mainFrame.getTabbedPane().getComponentAt(tabIndex);
                 mainFrame.getTabbedPane().setSelectedIndex(tabIndex);
             }
+            System.out.println("ContextManagement.stateChanged(ChangeEvent e) (tabCount="+mainFrame.getTabbedPane().getTabCount()+") now=" + nowPanel + "\ncurrent=" + currentPanel);
         }
-        //System.out.println("ContextManagement.stateChanged(ChangeEvent e) ("+mainFrame.getTabbedPane().getTabCount()+") now=" + nowPanel + "\ncurrent=" + currentPanel);
+        System.out.println("ContextManagement.stateChanged(ChangeEvent e) (tabCount="+mainFrame.getTabbedPane().getTabCount()+") currentTabIndex=" + selectedIndex);
         //JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent()," ("+mainFrame.getTabbedPane().getTabCount()+") now=" + nowPanel + "\ncurrent=" + currentPanel);
         if (((currentPanel == null)&&(nowPanel != null))||(!GeneralUtilities.areEqual(nowPanel, currentPanel)))
         {

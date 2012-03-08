@@ -38,7 +38,8 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	public SaveAsMapAction(AbstractTabPanel mappingPanel)
 	{
 		this(COMMAND_NAME,null, mappingPanel);
-	}
+        viewerPanel = mappingPanel;
+    }
 
 	/**
 	 * Defines an <code>Action</code> object with the specified

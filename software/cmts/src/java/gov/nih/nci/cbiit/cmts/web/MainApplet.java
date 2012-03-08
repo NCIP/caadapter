@@ -226,8 +226,11 @@ public MainApplet() throws HeadlessException
         String title = ActionConstants.FILE_NAME_UNTITLED_TAG + (tabbedPane.getTabCount()+1);
         if (tabKind!=null)
         title =title + tabKind;
+        System.out.println("** firstTabCount1=" + tabbedPane.getTabCount());
         tabbedPane.addTab(title, panel);
+        System.out.println("** secondTabCount1=" + tabbedPane.getTabCount());
         tabbedPane.setSelectedComponent(panel);
+        //System.out.println("CCCC AB tabCount3=" + tabbedPane.getTabCount());
         System.out.println("Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
         tabMap.put(panel.getClass(), panel);
     }
