@@ -163,7 +163,7 @@ public class AddNewScenario extends HttpServlet {
                       {
 	    				  scenarioName = itemValue;
 
-                          if (scenarioName != null)
+                          if ((scenarioName != null)&&(!scenarioName.trim().equals("")))
                           {
                               scenarioName = scenarioName.trim();
                               String scenarioDeleteTag = "##scenariodelete:";
@@ -195,12 +195,16 @@ public class AddNewScenario extends HttpServlet {
                                   }
                               }
                           }
+                          else
+                          {
+
+                          }
                       }
                   }
                   else fileItemList.add(item);
               }
 
-              if ((scenarioName == null)||(scenarioName.equals("")))
+              if ((scenarioName == null)||(scenarioName.trim().equals("")))
               {
                   String errMsg="Failure : Scenario Name is Null";
                   System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
@@ -208,6 +212,29 @@ public class AddNewScenario extends HttpServlet {
                   res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
                   return;
               }
+              scenarioName = scenarioName.trim();
+
+
+                for (char c:scenarioName.toCharArray())
+                {
+                    byte b = (byte) c;
+                    int i = (int) b;
+                    String bl = null;
+                    if ((i >= 97)&&(i <= 122)) bl = "" + c;         // lowercase alphabetic
+                    else if ((i >= 65)&&(i <= 90)) bl = "" + c;     // uppercase alphabetic
+                    else if ((i >= 48)&&(i <= 57)) bl = "" + c;     // numeric char
+                    else if (i == 45) bl = "" + c;                  // "-"
+                    else if (i == 95) bl = "" + c;                  // "_"
+
+                    if (bl == null)
+                    {
+                          String errMsg="Invalid character for scenario name : only alpha-numeric, hypen and underscore. : " + scenarioName;
+                          System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                          req.setAttribute("rtnMessage", errMsg);
+                          res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                          return;
+                    }
+                }
 
               //if (method.equalsIgnoreCase("deleteScenario"))
               //{
@@ -646,7 +673,7 @@ public class AddNewScenario extends HttpServlet {
                   return;
               }
 
-              if (mappingFileName != null)
+              if ((transType.toLowerCase().equals("map"))&&(mappingFileName != null))
               {
                   try
                   {
