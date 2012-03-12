@@ -4,7 +4,7 @@
     <title>
     	<bean:message key="caAdapter.webservice.access.message" />
 	</title>
-    <html:base/>
+    <!--<html:base/> -->
   </head>
   <body bgcolor="white">
 

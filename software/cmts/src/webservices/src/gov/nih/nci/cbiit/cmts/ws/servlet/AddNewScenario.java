@@ -84,6 +84,15 @@ public class AddNewScenario extends HttpServlet {
 	   public void doPost (HttpServletRequest req, HttpServletResponse res)
 	      throws ServletException, IOException
 	   {
+           path = null;
+
+           sourceOriginalXSDPath = null;
+           targetOriginalXSDPath = null;
+           mappingFileName = null;
+
+           tempXSDList = null;
+           alreadyFoundXSDURLList = null;
+
            includedXSDList = new ArrayList<String>();
            List<String> fileList = new ArrayList<String>();
            String daTag = "12345Abc";
@@ -144,7 +153,7 @@ public class AddNewScenario extends HttpServlet {
 
                       if (formFieldName.equals("transformationType"))
                       {
-                          transType = itemValue.toLowerCase();
+                          transType = itemValue.trim().toLowerCase();
                           if (transType.startsWith("xq")) transType = "xq";
                           if (transType.startsWith("xsl")) transType = "xsl";
                       }
