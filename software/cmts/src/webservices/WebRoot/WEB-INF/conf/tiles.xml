@@ -41,7 +41,7 @@
 		<put name="content" value="/WEB-INF/jsps/content/error.jsp" />
 	</definition>
 	
-	<!-- Tiles.Disclaimer.Page -->
+	<!-- Tiles.Disclaimer.Page  -->
 	<definition name="Tiles.Disclaimer.Page" extends="Base">
 		<put name="mainMenu" value="/WEB-INF/jsps/layouts/loginMenu.jsp" />
 		<put name="content" value="/WEB-INF/jsps/content/disclaimer.jsp" />
