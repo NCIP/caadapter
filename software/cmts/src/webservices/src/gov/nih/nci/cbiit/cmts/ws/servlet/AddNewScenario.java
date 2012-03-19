@@ -7,15 +7,16 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.cbiit.cmts.ws.servlet;
 
-import gov.nih.nci.caadapter.security.dao.AbstractSecurityDAO;
-import gov.nih.nci.caadapter.security.dao.DAOFactory;
-import gov.nih.nci.caadapter.security.dao.SecurityAccessIF;
-import gov.nih.nci.caadapter.security.domain.Permissions;
+//import gov.nih.nci.caadapter.security.dao.AbstractSecurityDAO;
+//import gov.nih.nci.caadapter.security.dao.DAOFactory;
+//import gov.nih.nci.caadapter.security.dao.SecurityAccessIF;
+//import gov.nih.nci.caadapter.security.domain.Permissions;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.ZipUtil;
 import gov.nih.nci.cbiit.cmts.ws.ScenarioUtil;
-import gov.nih.nci.cbiit.cmts.common.XSDParser;
+//import gov.nih.nci.cbiit.cmts.common.XSDParser;
 import gov.nih.nci.cbiit.cmts.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 //import gov.nih.nci.cbiit.cmts.util.ZipFileUtil;
 
 import java.io.File;
@@ -95,7 +96,7 @@ public class AddNewScenario extends HttpServlet {
 
            includedXSDList = new ArrayList<String>();
            List<String> fileList = new ArrayList<String>();
-           String daTag = "12345Abc";
+
           try
           {
             /* disable security for caAdatper 4.3 release 03-31-2009
@@ -302,7 +303,8 @@ public class AddNewScenario extends HttpServlet {
                           {
                               if (!f2.isFile()) continue;
                               String fName = f2.getName();
-                              if ((fName.equalsIgnoreCase("SecurityCode.txt"))||(fName.equalsIgnoreCase("password.txt")))
+                              if ((fName.equalsIgnoreCase(ActionConstants.SCENARIO_DELETE_SECURITY_CONFIRMATION_CODE_FILE))||
+                                  (fName.equalsIgnoreCase("password.txt")))
                               {
                                   String tr = FileUtil.readFileIntoString(f2.getAbsolutePath());
                                   if ((tr == null)||(tr.trim().equals(""))) continue;
@@ -313,6 +315,7 @@ public class AddNewScenario extends HttpServlet {
                           }
                           if (!pass)
                           {
+                              String daTag = ActionConstants.NEW_ADD_SCENARIO_TAG;
                               if ((deletionTag != null)&&(deletionTag.trim().equals(daTag))) pass = true;
                               if ((securityCode != null)&&(securityCode.trim().equals(daTag))) pass = true;
                           }
@@ -669,8 +672,8 @@ public class AddNewScenario extends HttpServlet {
 
               if ((notFoundfiles.size() > 0)||(!instructionFileFound))
               {
-                  String errMsg="Incomplete XSD files. " + notFoundfiles.size() + " files are absent. - ";
-                  if (notFoundfiles.size() == 1) errMsg="Incomplete XSD files. One file is absent. - ";
+                  String errMsg="Incomplete XSD files. Following " + notFoundfiles.size() + " required files are not uploaded. - ";
+                  if (notFoundfiles.size() == 1) errMsg="Incomplete XSD files. Following one required file is not uploaded. - ";
 
                   if (!instructionFileFound) errMsg = "No Instruction File is uploaded.";
                   else for (String c:notFoundfiles) errMsg = errMsg + "<br>" + c;
@@ -854,7 +857,7 @@ public class AddNewScenario extends HttpServlet {
                     else zipEntry = MappingFactory.getXSDZipEntryFromZip(zipUtil, urlT.substring(idx32 + 2));
                     if (zipEntry == null)
                     {
-                        System.out.println("CCCC 54" + "zip entry is null. : " + xsdLocation + ", url=" + urlT);
+                        //System.out.println("CCCC 54" + "zip entry is null. : " + xsdLocation + ", url=" + urlT);
                         break;
                     }
                     urlT = zipUtil.getAccessURL(zipEntry);
@@ -1336,7 +1339,7 @@ public class AddNewScenario extends HttpServlet {
             {
                 throw new Exception("Failure writing XSD file from ZIP : " + ie.getMessage());
             }
-            System.out.println("CCCC XSD file writing success : " + fileName);
+            //System.out.println("CCCC XSD file writing success : " + fileName);
             return true;
         }
         /**

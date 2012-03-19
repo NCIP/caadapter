@@ -31,30 +31,40 @@ public class QueryBuilderUtil {
 		StringBuilder ancestorPath = new StringBuilder();
 		StringTokenizer stCur = new StringTokenizer(referencePath, "/");
 		StringTokenizer stNew = new StringTokenizer(absolutePath, "/");
- 
+        //System.out.println("CCCC ...return...referencePath="+referencePath+", absolutePath="+absolutePath +", ancestorPath="+ ancestorPath);
 		//find the common shared ancestor
-		while(stCur.hasMoreTokens() && stNew.hasMoreTokens()) 
+        String equalsToken = null;
+        while(stCur.hasMoreTokens() && stNew.hasMoreTokens())
 		{
-			String t = stCur.nextToken(); 
-			if (t.equals(stNew.nextToken()))
- 				ancestorPath.append("/").append(t);
-			else 
+			String t = stCur.nextToken();
+            String s = stNew.nextToken();
+            //System.out.println("CCCC ...referenceToken="+t+", absoluteToken="+s);
+
+            if (t.equals(s))
+            {
+                ancestorPath.append("/").append(t);
+                equalsToken = t;
+            }
+            else
 				break;
 		}
 		String ret = "";
-		if (ancestorPath.length()!=0)//there not any shared ancestor
+        //System.out.println("CCCC ...ancestorPath="+ancestorPath);
+        if (ancestorPath.length()!=0)//there not any shared ancestor
 		{	
 			//There are shared ancestor
 			ret += "/..";
 			while(stCur.hasMoreTokens()) {
 				ret += "/..";
-				stCur.nextToken();
-			}
+				String c = stCur.nextToken();
+                //System.out.println("CCCC ...referenceRemainToken="+c+", returnCandi="+ret);
+            }
 			
 			ret += absolutePath.substring(ancestorPath.toString().length());
 		}
-		System.out.println("QueryBuilderUtil.retrieveRelativePath()...return...home="+referencePath+"...path="+absolutePath+"..relative="+ret);
-		return ret;	
+		if ((equalsToken != null)&&(!equalsToken.trim().equals(""))&&(ret.endsWith("/.."))) ret = ret + "/" + equalsToken;
+        System.out.println("QueryBuilderUtil.retrieveRelativePath()...return...home="+referencePath+"...path="+absolutePath+"..relative="+ret);
+		return ret;
 	}
 	
 	public static String buildXPath(Stack<String>  pathStack) 

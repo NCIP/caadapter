@@ -51,6 +51,7 @@ import java.util.Map;
 import java.applet.Applet;
 
 import javax.swing.*;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -95,6 +96,9 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 	private MappingTargetTree tTree = null;
 	private MiddlePanelJGraphController graphController =null;
     private CellRenderXSObject selectedRootTempStore = null;
+    private CellRenderXSObject sourceRootTempStore = null;
+    private CellRenderXSObject targetRootTempStore = null;
+
     //private boolean hasBeenChanged = false;
 
     public MappingMainPanel(MainFrameContainer mainFrame) throws Exception
@@ -118,16 +122,18 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		{
             if (SELECT_SOURCE.equals(command))
 			{
-                processingButtonOpenSource();
+                //processingButtonOpenSource();
+                processingButtonOpen(ComponentType.SOURCE);
             }
 			else if (SELECT_TARGET.equals(command))
 			{
-                processingButtonOpenTarget();
+                //processingButtonOpenTarget();
+                processingButtonOpen(ComponentType.TARGET);
             }
 		}
 		catch (Exception e1)
 		{
-			e1.printStackTrace();
+			//e1.printStackTrace();
 			DefaultSettings.reportThrowableToLogAndUI(this, e1, "", this, false, false);
 		}
 	}
@@ -160,43 +166,129 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
             rPanel.processOpenMapFile(mapFile, rMap);
     }
     */
-    private void processingButtonOpenSource() throws Exception
+
+    private void processingButtonOpen(ComponentType type) throws Exception
     {
         //this.sourceButtonPanel.repaint();
-        File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-                SOURCE_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
-        if ((file == null)||(!file.exists())||(!file.isFile())) return;
-        if (!file.getName().toLowerCase().endsWith(SOURCE_TREE_FILE_DEFAULT_EXTENTION.toLowerCase()))
+        File file = null;
+        String oppositFile = null;
+        String selfFile = null;
+        File oppositF = null;
+        File selfF = null;
+        String oppositS = null;
+        String selfS = null;
+        if (type.value().equals(ComponentType.SOURCE.value()))
         {
-            //JOptionPane.showMessageDialog(this, "This file is not a XML schema (" + SOURCE_TREE_FILE_DEFAULT_EXTENTION + ") file : " + file.getName(), "Not a schema file", JOptionPane.ERROR_MESSAGE);
-            //return;
+            file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
+                    SOURCE_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
+            if ((file == null)||(!file.exists())||(!file.isFile())) return;
+            if (!file.getName().toLowerCase().endsWith(SOURCE_TREE_FILE_DEFAULT_EXTENTION.toLowerCase()))
+            {
+                //JOptionPane.showMessageDialog(this, "This file is not a XML schema (" + SOURCE_TREE_FILE_DEFAULT_EXTENTION + ") file : " + file.getName(), "Not a schema file", JOptionPane.ERROR_MESSAGE);
+                //return;
+            }
+            oppositFile = targetLocationArea.getText();
+            selfFile = sourceLocationArea.getText();
+            //oppositF = null;
+            oppositS = "Target";
+            selfS = "Source";
         }
-        String targetFile = targetLocationArea.getText();
-        if ((targetFile != null)&&(!targetFile.trim().equals("")))
+        else
+        {
+            file = DefaultSettings.getUserInputOfFileFromGUI(this,
+                        TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+            if ((file == null)||(!file.exists())||(!file.isFile())) return;
+            if (!file.getName().toLowerCase().endsWith(TARGET_TREE_FILE_DEFAULT_EXTENTION.toLowerCase()))
+            {
+                //JOptionPane.showMessageDialog(this, "This file is not a XML schema (" + TARGET_TREE_FILE_DEFAULT_EXTENTION + ") file : " + file.getName(), "Not a schema file", JOptionPane.ERROR_MESSAGE);
+                //return;
+            }
+            oppositFile = sourceLocationArea.getText();
+            selfFile = targetLocationArea.getText();
+            //oppositF = null;
+            oppositS = "Source";
+            selfS = "Target";
+        }
+        if ((oppositFile != null)&&(!oppositFile.trim().equals("")))
         {
             String fileH = "file:/";
-            if (targetFile.toLowerCase().startsWith(fileH))
+            if (oppositFile.toLowerCase().startsWith(fileH))
             {
-                targetFile = targetFile.substring(fileH.length());
-                while(targetFile.startsWith("/")) targetFile = targetFile.substring(1);
+                oppositFile = oppositFile.substring(fileH.length());
+                while(oppositFile.startsWith("/")) oppositFile = oppositFile.substring(1);
             }
-            else if (targetFile.toLowerCase().indexOf(fileH) > 0)
+            else if (oppositFile.toLowerCase().indexOf(fileH) > 0)
             {
-                targetFile = targetFile.substring(targetFile.toLowerCase().indexOf(fileH) + fileH.length());
-                while(targetFile.startsWith("/")) targetFile = targetFile.substring(1);
+                oppositFile = oppositFile.substring(oppositFile.toLowerCase().indexOf(fileH) + fileH.length());
+                while(oppositFile.startsWith("/")) oppositFile = oppositFile.substring(1);
             }
 
-            File f = new File(targetFile);
+            oppositF = new File(oppositFile);
             //System.out.println("CCCCC HHG : file compare : " + f.getAbsolutePath() + " :: " + file.getAbsolutePath());
-            if ((f.exists())&&(f.isFile())&&(file.exists())&&(file.isFile()))
+            if ((oppositF.exists())&&(oppositF.isFile())&&(file.exists())&&(file.isFile()))
             {
-                if (f.getAbsolutePath().equals(file.getAbsolutePath()))
+                if (oppositF.getAbsolutePath().equals(file.getAbsolutePath()))
                 {
-                    JOptionPane.showMessageDialog(this, "This is the same file as the Target", "Same with the Target", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    //JOptionPane.showMessageDialog(this, "This is the same file as the Target", "Same with the Target", JOptionPane.ERROR_MESSAGE);
+                    //return;
+                    int res = JOptionPane.showConfirmDialog(this, "This is the same file as the "+oppositS+". Are you sure?", "WARNING:Same with the " +oppositS, JOptionPane.WARNING_MESSAGE);
+                    if (res == JOptionPane.YES_OPTION) {}
+                    else return;
                 }
             }
         }
+        if ((selfFile != null)&&(!selfFile.trim().equals("")))
+        {
+            String fileH = "file:/";
+            if (selfFile.toLowerCase().startsWith(fileH))
+            {
+                selfFile = selfFile.substring(fileH.length());
+                while(selfFile.startsWith("/")) selfFile = selfFile.substring(1);
+            }
+            else if (selfFile.toLowerCase().indexOf(fileH) > 0)
+            {
+                selfFile = selfFile.substring(selfFile.toLowerCase().indexOf(fileH) + fileH.length());
+                while(selfFile.startsWith("/")) selfFile = selfFile.substring(1);
+            }
+
+            selfF = new File(selfFile);
+            //System.out.println("CCCCC HHG : file compare : " + f.getAbsolutePath() + " :: " + file.getAbsolutePath());
+            if ((selfF.exists())&&(selfF.isFile())&&(file.exists())&&(file.isFile()))
+            {
+                if (selfF.getAbsolutePath().equals(file.getAbsolutePath()))
+                {
+                    //JOptionPane.showMessageDialog(this, "This is the same file as the Target", "Same with the Target", JOptionPane.ERROR_MESSAGE);
+                    //return;
+                    int res = JOptionPane.showConfirmDialog(this, "This is the same file as the "+selfS+" already input. Are you sure?", "WARNING:Already Exist with the " +selfS, JOptionPane.WARNING_MESSAGE);
+                    if (res == JOptionPane.YES_OPTION) {}
+                    else return;
+                }
+            }
+        }
+
+        CellRenderXSObject selectedRoot2 = null;
+
+        XSDParser p = new XSDParser();
+        p.loadSchema(file.getPath(), null);//(file);
+
+        try
+        {
+            selectedRoot2 = userSelectRoot(p);
+        }
+        catch(Exception ee)
+        {
+            JOptionPane.showMessageDialog(this, "Select "+selfS+" Root Element Failure : " + ee.getMessage(), "Select "+selfS+" Root Element Failure", JOptionPane.ERROR_MESSAGE);
+            selectedRoot2 = null;
+        }
+
+        if(selectedRoot2 == null || selectedRoot2.getCoreObject().getName().trim().length() == 0)
+        {
+            selectedRootTempStore = null;
+            return;
+        }
+        else selectedRootTempStore = selectedRoot2;
+
+        boolean isEmptyLink = false;
 
         Mapping rMap = null;
         Mapping mapping1 = null;
@@ -206,7 +298,19 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
             {
                 //System.out.println("CCCCC HHH98 : " + file.getAbsolutePath());
                 mapping1 = getGraphController().retrieveMappingData(false);
-                if ((mapping1 == null)||(mapping1.getLinks().getLink().size() == 0))
+
+                boolean cTag = false;
+
+                if (isEmptyLink)
+                {
+                    if (mapping1 == null) cTag = true;
+                }
+                else
+                {
+                    if ((mapping1 == null)||(mapping1.getLinks().getLink().size() == 0)) cTag = true;
+                }
+
+                if (cTag)
                 {
                     Mapping m = null;
                     try
@@ -218,20 +322,53 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
                         break;
                     }
                     //Mapping m = getMapping();
-                    if ((m == null)||(m.getLinks().getLink().size() == 0)) break;
-                    else mapping1 = m;
+                    if (isEmptyLink)
+                    {
+                        if (m == null) break;
+                        else mapping1 = m;
+                    }
+                    else
+                    {
+                        if ((m == null)||(m.getLinks().getLink().size() == 0)) break;
+                        else mapping1 = m;
+                    }
+
 
                 }
-                rMap = compareMappingData(file, ComponentType.SOURCE, mapping1);
+                //try
+                //{
+                    rMap = compareMappingData(file, type, mapping1);
+                    if (rMap == null)
+                    {
+                        JOptionPane.showMessageDialog(this, selfS+" Tree Reconstruction is Canceled.", "Rebuilding "+selfS+" Tree Canceled", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                //}
+                //catch(Exception je)
+                //{
+                //    System.out.println("CCCC ddd " + je.getMessage());
+                //   je.printStackTrace();
+                //   rMap = null;
+                //}
                 break;
             }
         }
         catch(Exception ee)
         {
-            int res = JOptionPane.showConfirmDialog(this, ee.getMessage() + "\nAll Mapping data will be removed. Are you sure?", "WARNING: Mapping Data Removed", JOptionPane.WARNING_MESSAGE);
-            //ee.printStackTrace();
-            if (res == JOptionPane.YES_OPTION) rMap = null;
-            else return;
+            rMap = null;
+            ee.printStackTrace();
+            while(true)
+            {
+                if (mapping1 == null) break;
+                int linkSize = mapping1.getLinks().getLink().size();
+                if (linkSize > 0)
+                {
+                    int res = JOptionPane.showConfirmDialog(this, ee.getMessage() + "\nAll Mapping data will be removed. Are you sure?", "WARNING: Mapping Data Removed", JOptionPane.WARNING_MESSAGE);
+                    //ee.printStackTrace();
+                    if (res == JOptionPane.YES_OPTION) break;
+                    else return;
+                }
+            }
         }
 
         if (rMap != null)
@@ -242,7 +379,10 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
             {
                 MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
                 rPanel.processOpenMapFile(mapFile, rMap);
-                missed = rPanel.getGraphController().getSourceMissedLink().size();
+                if (type.value().equals(ComponentType.SOURCE.value()))
+                    missed = rPanel.getGraphController().getSourceMissedLink().size();
+                else
+                    missed = rPanel.getGraphController().getTargetMissedLink().size();
             }
             else
             {
@@ -262,7 +402,10 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
                     File ff = new File(tempS);
                     MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
                     rPanel.processOpenMapFile(ff, rMap);
-                    missed = rPanel.getGraphController().getSourceMissedLink().size();
+                    if (type.value().equals(ComponentType.SOURCE.value()))
+                        missed = rPanel.getGraphController().getSourceMissedLink().size();
+                    else
+                        missed = rPanel.getGraphController().getTargetMissedLink().size();
                     //File ff = new File(tempS);
                     ff.delete();
                 }
@@ -273,155 +416,166 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
                 res = JOptionPane.showConfirmDialog(this, "" + missed + " Mapping data will be removed. Are you sure?", "WARNING: Lost Mapping Data", JOptionPane.WARNING_MESSAGE);
             }
             if (res == JOptionPane.YES_OPTION) processOpenMapFile(null, rMap);
-
-        }
-        else if (file != null)
-        {
-            try
-            {
-                processOpenSourceTree(file, true, true, selectedRootTempStore);
-            }
-            catch(Exception ee)
-            {
-                JOptionPane.showMessageDialog(this, ee.getMessage() + " : " + file.getName(), "Building Source Tree Failure", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            selectedRootTempStore = null;
-
+            //hasBeenChanged = true;
             setChanged(true);
         }
-        //else System.out.println("CCCCC Source3 else");
-    }
-    private void processingButtonOpenTarget() throws Exception
-    {
-        File file = DefaultSettings.getUserInputOfFileFromGUI(this,
-                        TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
-        if ((file == null)||(!file.exists())||(!file.isFile())) return;
-        if (!file.getName().toLowerCase().endsWith(TARGET_TREE_FILE_DEFAULT_EXTENTION.toLowerCase()))
-        {
-            //JOptionPane.showMessageDialog(this, "This file is not a XML schema (" + TARGET_TREE_FILE_DEFAULT_EXTENTION + ") file : " + file.getName(), "Not a schema file", JOptionPane.ERROR_MESSAGE);
-            //return;
-        }
-        String sourceFile = sourceLocationArea.getText();
-        if ((sourceFile != null)&&(!sourceFile.trim().equals("")))
-        {
-            String fileH = "file:/";
-            if (sourceFile.toLowerCase().startsWith(fileH))
-            {
-                sourceFile = sourceFile.substring(fileH.length());
-                while(sourceFile.startsWith("/")) sourceFile = sourceFile.substring(1);
-            }
-            else if (sourceFile.toLowerCase().indexOf(fileH) > 0)
-            {
-                sourceFile = sourceFile.substring(sourceFile.toLowerCase().indexOf(fileH) + fileH.length());
-                while(sourceFile.startsWith("/")) sourceFile = sourceFile.substring(1);
-            }
+        else if (file != null)
+        {   //System.out.println("CCCCC "+selfS+" file : " + selfFile);
 
-            File f = new File(sourceFile);
-            if ((f.exists())&&(f.isFile())&&(file.exists())&&(file.isFile()))
+            if (selfF != null)
             {
-                if (f.getAbsolutePath().equals(file.getAbsolutePath()))
+                if (oppositF == null)
                 {
-                    JOptionPane.showMessageDialog(this, "This is the same file as the Source", "Same with the Source", JOptionPane.ERROR_MESSAGE);
+                    mapping = null;
+                    getMapping();
+                }
+                boolean wasError = false;
+
+                Mapping mapping2 = getGraphController().retrieveMappingData(false);
+                //System.out.println("CCCC 9 mapping2=" + mapping2 + ", mapping="+mapping+", " + oppositS + "=" + oppositFile );
+                //if (mapping == null) mapping = getGraphController().retrieveMappingData(false);
+
+                while ((mapping2 != null)&&(oppositF != null))
+                {
+                    boolean cTag = false;
+                    if (type.value().equals(ComponentType.SOURCE.value()))
+                        if (targetRootTempStore != null) cTag = true;
+                    else
+                        if (sourceRootTempStore != null) cTag = true;
+
+
+                    if (cTag)
+                    {
+                        try
+                        {
+                            mapping = null;
+                            getMapping();
+                            if (type.value().equals(ComponentType.SOURCE.value()))
+                            {
+                                //System.out.println("CCCC 11 processOpenTargetTree(oppositF, true, true, targetRootTempStore);");
+                                processOpenTargetTree(oppositF, true, true, targetRootTempStore);
+                            }
+                            else
+                            {
+                                //System.out.println("CCCC 12 processOpenSourceTree(oppositF, true, true, sourceRootTempStore);");
+                                processOpenSourceTree(oppositF, true, true, sourceRootTempStore);
+
+                            }
+                        }
+                        catch(Exception ee)
+                        {
+                            JOptionPane.showMessageDialog(this, "Reconstruct Failure:" + ee.getMessage() + " : " + oppositF.getName(), "Rebuilding "+selfS+" Tree Failure", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        break;
+                    }
+
+                    List<Component> listCom = null;
+
+                    try
+                    {
+                        listCom = mapping2.getComponents().getComponent();
+                    }
+                    catch(Exception ee)
+                    {
+                        wasError = true;
+                        break;
+                    }
+                    if ((listCom == null)||(listCom.size() == 0))
+                    {
+                        wasError = true;
+                        break;
+                    }
+                    Component oppositCom = null;
+                    for (Component mapComp:listCom)
+                    {
+
+                        if ((mapComp.getType() != ComponentType.SOURCE)&&
+                           (mapComp.getType() != ComponentType.TARGET)) continue;
+
+                        if (mapComp.getRootElement() == null) continue;
+
+                        if (type.value().equals(ComponentType.SOURCE.value()))
+                        {
+                            if (mapComp.getType() == ComponentType.TARGET)
+                            {
+                                oppositCom = mapComp;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (mapComp.getType() == ComponentType.SOURCE)
+                            {
+                                oppositCom = mapComp;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (oppositCom == null)
+                    {
+                        wasError = true;
+                        break;
+                    }
+
+                    String namespace = oppositCom.getRootElement().getNameSpace();
+                    String name = oppositCom.getRootElement().getName();
+
+                    try
+                    {
+                        mapping = null;
+                        getMapping();
+                        if (type.value().equals(ComponentType.SOURCE.value()))
+                        {
+                            //System.out.println("CCCC 21  processOpenTargetTree(oppositF, true, true, namespace, name);");
+                            processOpenTargetTree(oppositF, true, true, namespace, name);
+                        }
+                        else
+                        {
+                            //System.out.println("CCCC 22 processOpenSourceTree(oppositF, true, true, namespace, name);");
+                            processOpenSourceTree(oppositF, true, true, namespace, name);
+                        }
+                    }
+                    catch(Exception ee)
+                    {
+                        wasError = true;
+                        break;
+                    }
+                    break;
+                }
+                if (wasError)
+                {
+                    JOptionPane.showMessageDialog(this, oppositS + " Tree Reconstructing error", "Building "+oppositS+" Tree Failure", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
-        }
 
-        Mapping rMap = null;
-        Mapping mapping1 = null;
-        try
-        {
-            while(true)
-            {
-                //System.out.println("CCCCC HHH99 : " + file.getAbsolutePath());
-                mapping1 = getGraphController().retrieveMappingData(false);
-                if ((mapping1 == null)||(mapping1.getLinks().getLink().size() == 0))
-                {
-                    Mapping m = null;
-                    try
-                    {
-                        m = getReorganizedMappingData();
-                    }
-                    catch(Exception e)
-                    {
-                        break;
-                    }
-                    //Mapping m = getMapping();
-                    if ((m == null)||(m.getLinks().getLink().size() == 0)) break;
-                    else mapping1 = m;
-
-                }
-                rMap = compareMappingData(file, ComponentType.TARGET, mapping1);
-                break;
-            }
-        }
-        catch(Exception ee)
-        {
-            int res = JOptionPane.showConfirmDialog(this, "New Target XSD File '"+file.getName()+"' is not matched with currnet Mapping Data. \nAll Mapping data will be removed. Are you sure?", "WARNING: Mapping Data Removed", JOptionPane.WARNING_MESSAGE);
-            if (res == JOptionPane.YES_OPTION) rMap = null;
-            else return;
-        }
-
-        if (rMap != null)
-        {
-            int missed = 0;
-            if (mapFile != null)
-            {
-                MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
-                rPanel.processOpenMapFile(mapFile, rMap);
-                missed = rPanel.getGraphController().getSourceMissedLink().size();
-            }
-            else
-            {
-                String tempS = FileUtil.getTemporaryFileName(".map");
-                boolean success = true;
-                try
-                {
-                    MappingFactory.saveMapping(new File(tempS), mapping1);
-                }
-                catch(Exception ee)
-                {
-                    success = false;
-                    System.out.println("Temp map saving failure(Target): " + ee.getMessage());
-                }
-                if (success)
-                {
-                    File ff = new File(tempS);
-                    MappingMainPanel rPanel = new MappingMainPanel(mainFrame);
-                    rPanel.processOpenMapFile(ff, rMap);
-                    missed = rPanel.getGraphController().getTargetMissedLink().size();
-                    //File ff = new File(tempS);
-                    ff.delete();
-                }
-            }
-            int res = JOptionPane.YES_OPTION;
-            if (missed != 0)
-            {
-                res = JOptionPane.showConfirmDialog(this, "" + missed + " Mapping data will be removed. Are you sure?", "WARNING: Lost Mapping Data", JOptionPane.WARNING_MESSAGE);
-            }
-            if (res == JOptionPane.YES_OPTION) processOpenMapFile(null, rMap);
-        }
-        else if (file != null)
-        {
-            //System.out.println("CCCCC Target2 (file != null) : " + file.getName());
             try
             {
-                processOpenTargetTree(file, true, true, selectedRootTempStore);
+                if (type.value().equals(ComponentType.SOURCE.value()))
+                    processOpenSourceTree(file, true, true, selectedRootTempStore);
+                else
+                    processOpenTargetTree(file, true, true, selectedRootTempStore);
             }
             catch(Exception ee)
             {
-                JOptionPane.showMessageDialog(this, ee.getMessage() + " : " + file.getName(), "Building Target Tree Failure", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, ee.getMessage() + " : " + file.getName(), "Building "+selfS+" Tree Failure", JOptionPane.ERROR_MESSAGE);
+                selectedRootTempStore = null;
                 return;
             }
+            if (type.value().equals(ComponentType.SOURCE.value()))
+                sourceRootTempStore = selectedRootTempStore;
+            else
+                targetRootTempStore = selectedRootTempStore;
 
             selectedRootTempStore = null;
 
             setChanged(true);
+            //hasBeenChanged = true;
         }
-        //else System.out.println("CCCCC Target3 else");
+        //else System.out.println("CCCCC Source3 else");
     }
-
 
     protected void buildSourceTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
 	{
@@ -429,8 +583,10 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         //DefaultMutableTreeNode hNode = (DefaultMutableTreeNode) nodes;
         //System.out.println("CCCCC head node value ("+absoluteFile.getName()+") : " + hNode.getUserObject().toString());
 		//Build the source tree
-		sTree = new MappingSourceTree(middlePanel, nodes);
-		sTree.addMouseListener(new TreeMouseAdapter());
+        //System.out.println("Source tree head 11 : " + nodes.toString() + ", file=" + absoluteFile);
+        sTree = new MappingSourceTree(middlePanel, nodes);
+        //System.out.println("Source tree head 22 : " + sTree.getRootTreeNode().toString());
+        sTree.addMouseListener(new TreeMouseAdapter());
 		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getGraphController());
 		sTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		sTree.setTransferHandler(new TreeDragTransferHandler());
@@ -460,7 +616,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		{
 			this.getRootPane().repaint();
 		}
-	}
+        
+    }
 
 	protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
 	{
@@ -949,20 +1106,36 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         p.loadSchema(file.getPath(), null);//(file);
         CellRenderXSObject srcRoot = null;
 
-        if (selectedRoot == null) srcRoot = userSelectRoot(p);
+        if (selectedRoot == null)
+        {
+            srcRoot = userSelectRoot(p);
+            //selectedRoot = srcRoot;
+        }
         else  srcRoot = selectedRoot;
 
         if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
             return false;
 
-        //mapping = null;
-        //System.out.println("CCCCC HHH991 : " + file.getAbsolutePath() + ", xsdParser=" + p.getSchemaURI());
+
         MappingFactory.loadMetaXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName(), ComponentType.SOURCE);
 
         buildSourceTree(getMapping(), file, isToResetGraph);
         sTree.setSchemaParser(p);
-        //DefaultMutableTreeNode hNode = (DefaultMutableTreeNode) sTree.getRootTreeNode();
-        //System.out.println("CCCCC head node value (2 : "+file.getName()+") : " + hNode.getUserObject().toString());
+
+        sTree.expandAll();
+
+        return true;
+	}
+    protected boolean processOpenSourceTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI, String namespace, String name) throws Exception
+	{
+
+        XSDParser p = new XSDParser();
+        p.loadSchema(file.getPath(), null);//(file);
+
+        MappingFactory.loadMetaXSD(getMapping(), p,namespace, name, ComponentType.SOURCE);
+
+        buildSourceTree(getMapping(), file, isToResetGraph);
+        sTree.setSchemaParser(p);
         sTree.expandAll();
 
         return true;
@@ -998,17 +1171,22 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 
         XSDParser p = new XSDParser();
 		p.loadSchema(xsdFile.getPath(), null);
-		CellRenderXSObject srcRoot = userSelectRoot(p);
-		if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
-			throw new Exception("Finding root object is Failure : " + xsdFile.getName());
+        CellRenderXSObject srcRoot = null;
+        if (selectedRootTempStore == null)
+            srcRoot = userSelectRoot(p);
+        else srcRoot = selectedRootTempStore;
+
+        if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
+            return null;
+            //throw new Exception("Finding root object is Failure : " + xsdFile.getName());
         //Mapping mapping2 = new Mapping();
         //System.out.println("CCCCC HHH992 : " + xsdFile.getAbsolutePath() + ", xsdParser=" + p.getSchemaURI());
         //MappingFactory.loadMetaXSD(mapping2, p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName(), ComponentType.SOURCE);
 
 
         Mapping mapping3 = null;
-        if (type == ComponentType.SOURCE) mapping3 = MappingFactory.loadMapping(mapFile, xsdFile, null, mapping1);
-        else if (type == ComponentType.TARGET) mapping3 = MappingFactory.loadMapping(mapFile, null, xsdFile, mapping1);
+        if (type == ComponentType.SOURCE) mapping3 = MappingFactory.loadMapping(mapFile, xsdFile, null, mapping1, true);
+        else if (type == ComponentType.TARGET) mapping3 = MappingFactory.loadMapping(mapFile, null, xsdFile, mapping1, true);
 
         return mapping3;
 
@@ -1032,7 +1210,11 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 		p.loadSchema(file.getPath(), null);
 		CellRenderXSObject trgtRoot = null;
 
-        if (selectedRoot == null) trgtRoot = userSelectRoot(p);
+        if (selectedRoot == null)
+        {
+            trgtRoot = userSelectRoot(p);
+            //selectedRoot = trgtRoot;
+        }
         else trgtRoot = selectedRoot;
 
         if(trgtRoot == null || trgtRoot.getCoreObject().getName().trim().length() == 0)
@@ -1048,7 +1230,22 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 
     }
 
-	@Override
+    protected boolean processOpenTargetTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI, String namespace, String name) throws Exception
+	{
+//		String fileExtension = FileUtil.getFileExtension(file, true);
+		XSDParser p = new XSDParser();
+		p.loadSchema(file.getPath(), null);
+
+        MappingFactory.loadMetaXSD(getMapping(), p, namespace, name, ComponentType.TARGET);
+
+		buildTargetTree(getMapping(), file, isToResetGraph);
+		tTree.setSchemaParser(p);
+		tTree.expandAll();
+		return true;
+
+    }
+
+    @Override
 	public void setSize(int width, int height)
 	{
 		double topCenterFactor = 1;
@@ -1145,6 +1342,7 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
         }
 		//clear the change flag.
 		getGraphController().setGraphChanged(false);
+        //hasBeenChanged = false;
         setChanged(false);
     }
 

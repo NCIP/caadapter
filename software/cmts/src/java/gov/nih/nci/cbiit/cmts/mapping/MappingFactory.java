@@ -133,13 +133,19 @@ public class MappingFactory
     }
     public static Mapping loadMapping(File f) throws JAXBException
     {
-        return loadMapping(f, null, null, null);
+        return loadMapping(f, null, null, null, false);
     }
     public static Mapping loadMapping(File f, File sourceXSD, File targetXSD, Mapping mapData) throws JAXBException
-
+    {
+        return loadMapping(f, sourceXSD, targetXSD, mapData, false);
+    }
+    public static Mapping loadMapping(File f, File sourceXSD, File targetXSD, Mapping mapData, boolean ignoreInvalidID) throws JAXBException
     {
         Mapping mapLoaded = null;
         String mappingParentPath = null;
+
+        String sourceID = null;
+        String targetID = null;
         if (mapData == null)
         {
             System.out.println("MappingFactory.loadMapping()...mappingFile:"+f.getAbsolutePath());
@@ -245,6 +251,7 @@ public class MappingFactory
                 XSDParser metaParser = new XSDParser();
                 if (mapComp.getType()==ComponentType.SOURCE)
                 {
+                    sourceID = mapComp.getId();
                     sORt = "Source";
                     if ((sourceXSD != null)&&(sourceXSD.exists())&&(sourceXSD.isFile()))
                     {
@@ -257,6 +264,7 @@ public class MappingFactory
                 else
                 {
                     sORt = "Target";
+                    targetID = mapComp.getId();
                     if ((targetXSD != null)&&(targetXSD.exists())&&(targetXSD.isFile()))
                     {
                         //xsdFile = targetXSD;
@@ -561,36 +569,81 @@ public class MappingFactory
 
             for (LinkType link:mapLoaded.getLinks().getLink())
             {
-                if ((link.getSource().getComponentid().equals("0"))||
-                    (link.getSource().getComponentid().equals("1")))
+                if ((link.getSource().getComponentid().equals(sourceID))||
+                    (link.getSource().getComponentid().equals(targetID)))
                 {
                     String id = link.getSource().getId();
                     //System.out.println("CCCX Source("+link.getSource().getComponentid()+") : id=" + id);
+                    ComponentType type = null;
+                    if (link.getSource().getComponentid().equals(sourceID))
+                    {
+                        type = ComponentType.SOURCE;
+                    }
+                    if (link.getSource().getComponentid().equals(targetID))
+                    {
+                        type = ComponentType.TARGET;
+                    }
+
+                    BaseMeta meta = null;
+                    String msg = null;
                     try
                     {
-                        BaseMeta meta = searchElementMeta(id);
+                        meta = searchElementMeta(id, type);
                     }
                     catch(Exception ee)
                     {
-                        throw new JAXBException("Invalid Source link ID:" + ee.getMessage());
+                        //if (!ignoreInvalidID)
+                        meta = null;
+                        msg = "Invalid Source link ID:" + ee.getMessage();
                     }
-                    //if (meta == null) meta = searchElementMeta(id, ComponentType.TARGET);
+                    if (meta == null) System.out.println("Null Source path ID : " + id);
+                    if ((!ignoreInvalidID)&&(msg != null))
+                            throw new JAXBException(msg);
                 }
 
-                if ((link.getTarget().getComponentid().equals("0"))||
-                    (link.getTarget().getComponentid().equals("1")))
+                if ((link.getTarget().getComponentid().equals(sourceID))||
+                    (link.getTarget().getComponentid().equals(targetID)))
                 {
                     String id = link.getTarget().getId();
                     //System.out.println("CCCX Target("+link.getTarget().getComponentid()+") : id=" + id);
+                    ComponentType type = null;
+                    if (link.getTarget().getComponentid().equals(sourceID))
+                    {
+                        type = ComponentType.SOURCE;
+                    }
+                    if (link.getTarget().getComponentid().equals(targetID))
+                    {
+                        type = ComponentType.TARGET;
+                    }
+                    BaseMeta meta = null;
+                    String msg = null;
                     try
                     {
-                        BaseMeta meta = searchElementMeta(id);
+                        meta = searchElementMeta(id, type);
                     }
                     catch(Exception ee)
                     {
-                        throw new JAXBException("Invalid Target link ID:" + ee.getMessage());
+                        //if (!ignoreInvalidID)
+                        meta = null;
+                        msg = "Invalid Target link ID:" + ee.getMessage();
                     }
-                    //if (meta == null) meta = searchElementMeta(id, ComponentType.SOURCE);
+                    if (meta == null) System.out.println("Null Target path ID : " + id);
+//                    try
+//                    {
+//                        //if (meta == null)
+//                        if (msg != null)
+//                        {
+//                            meta = searchElementMeta(id, ComponentType.SOURCE);
+//                            msg = null;
+//                        }
+//                    }
+//                    catch(Exception ee)
+//                    {
+//                        meta = null;
+//                        if (msg == null) msg = "Invalid Target link ID (2):" + ee.getMessage();
+//                    }
+                    if ((!ignoreInvalidID)&&(msg != null))
+                            throw new JAXBException(msg);
                 }
 
             }
@@ -1050,10 +1103,10 @@ public class MappingFactory
             }
         }
     }
-    private static BaseMeta searchElementMeta(String path) throws Exception
-    {
-       return searchElementMeta(path, null);
-    }
+    //private static BaseMeta searchElementMeta(String path) throws Exception
+    //{
+    //   return searchElementMeta(path, null);
+    //}
     private static BaseMeta searchElementMeta(String path, ComponentType type) throws Exception
     {
         while(path.startsWith("/")) path = path.substring(1);
@@ -1072,6 +1125,7 @@ public class MappingFactory
         if (type==ComponentType.SOURCE) elem = sourceHeadMeta;
         else elem = targetHeadMeta;
 
+        if (path.equals(elem.getName())) return elem;
 
         StringTokenizer st = new StringTokenizer(path, "/");
         int n = 0;

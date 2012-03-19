@@ -301,6 +301,7 @@ public class XQueryBuilder {
             String var = "$item_temp"+String.valueOf(varStack.size());
             sbQuery.append("for "+var+" in " +varStack.peek() );
             sbQuery.append(localpath);
+            //System.out.println("CCCCC XQuery gen local path : " + localpath);
             varStack.push(var);
 
             sbQuery.append(" return ");

@@ -130,6 +130,7 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
             ((DefaultTreeModel)getModel()).reload(treeNode);
 		    ((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();//.repaint();
         }
+        else ((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();
     }
 	/**
 	 * Reset the ElementMeta and create new treeNode

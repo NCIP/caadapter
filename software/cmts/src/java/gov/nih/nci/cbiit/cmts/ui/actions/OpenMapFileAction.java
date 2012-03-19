@@ -225,7 +225,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
                     String message = e1.getMessage();
                     if (message == null)
                     {
-                        //e1.printStackTrace();
+                        e1.printStackTrace();
                         JOptionPane.showMessageDialog(mainFrame.getAssociatedUIComponent(), "Null Pointer Error : " + file.getName(),
                                 ActionConstants.MESSAGE_NOT_A_MAPPING_FILE, JOptionPane.ERROR_MESSAGE);
                     }
