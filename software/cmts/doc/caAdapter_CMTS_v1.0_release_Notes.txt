@@ -1,7 +1,7 @@
                         Release Notes
 
          caAdapter Common Mapping and Transformation Service (CMTS) 1.0
-                        February, 2012
+                        April, 2012
 
                      National Cancer Institute
          Center for Biomedical Informatics and Information Technology
@@ -26,9 +26,7 @@
 ----------------------------------------------------------------
 2.0 Bugs and Known Issues
 ----------------------------------------------------------------
-	2.1 CMTS can support date/time data in the format defined by W3C XML schema.
-		http://www.w3.org/TR/xmlschema11-2/
-	2.2 CMTS only support concrete data types for mapping and transformation.
+	N/A
 ----------------------------------------------------------------
 3.0 Support
 ----------------------------------------------------------------
