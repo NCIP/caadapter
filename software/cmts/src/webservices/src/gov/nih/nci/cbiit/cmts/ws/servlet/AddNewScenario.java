@@ -214,6 +214,8 @@ public class AddNewScenario extends HttpServlet {
                   else fileItemList.add(item);
               }
 
+
+
               if ((scenarioName == null)||(scenarioName.trim().equals("")))
               {
                   String errMsg="Failure : Scenario Name is Null";
@@ -292,7 +294,7 @@ public class AddNewScenario extends HttpServlet {
                       {
                           if ((deletionTag == null)&&(securityCode == null))
                           {
-                                String errMsg="No delete confirmation code for scenario deleting:"+scenarioName;
+                                String errMsg="No delete confirmation code for delete scenario:"+scenarioName;
                                 System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
                                 req.setAttribute("rtnMessage", errMsg);
                                 res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -321,7 +323,7 @@ public class AddNewScenario extends HttpServlet {
                           }
                           if (!pass)
                           {
-                              String errMsg="Invalid Security Code for deleting scenario:"+scenarioName;
+                              String errMsg="Invalid Delete Confirmation Code for delete scenario:"+scenarioName;
                                 System.out.println("AddNewScenario.doPost()..Error:"+errMsg);
                                 req.setAttribute("rtnMessage", errMsg);
                                 res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -351,9 +353,10 @@ public class AddNewScenario extends HttpServlet {
                           }
                           return;
                       }
-                      else
+                      else // method value is 'addNewScenario'
                       {
-                        String errMsg="Scenario already exists. Not able to save:"+scenarioName+"<br>If you want to update this scenario. Delete the scenario first.";
+                        //String errMsg="Scenario already exists. Not able to save:"+scenarioName+"<br>If you want to update this scenario. Delete the scenario first.";
+                        String errMsg="Scenario already exists. Not able to save:"+scenarioName;
                         System.out.println("AddNewScenario.doPost()...:"+errMsg);
                         req.setAttribute("rtnMessage", errMsg);
                         res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
@@ -382,31 +385,35 @@ public class AddNewScenario extends HttpServlet {
 
                       if ((securityCode == null)||(securityCode.trim().equals("")))
                       {
-                          String errMsg="Null delete confirmation code: This must be input for scenario deleting in the future.";
-                            System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
-                            req.setAttribute("rtnMessage", errMsg);
-                            deleteDirAndFilesOnError(fileList);
-                            res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
-                            return;
+                          //String errMsg="Null delete confirmation code: This must be input for delete scenario in the future.";
+                            //System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
+                            //req.setAttribute("rtnMessage", errMsg);
+                            //deleteDirAndFilesOnError(fileList);
+                            //res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                            //return;
                       }
-                      String securityCodePath = scenarioPath+File.separator+"SecurityCode.txt";
-                      FileWriter fw = null;
-                      try
+                      else
                       {
-                          fw = new FileWriter(securityCodePath);
-                          fw.write(securityCode);
-                          fw.close();
+                          String securityCodePath = scenarioPath+File.separator+ActionConstants.SCENARIO_DELETE_SECURITY_CONFIRMATION_CODE_FILE;
+                          FileWriter fw = null;
+                          try
+                          {
+                              fw = new FileWriter(securityCodePath);
+                              fw.write(securityCode);
+                              fw.close();
+                          }
+                          catch(Exception ie)
+                          {
+                              String errMsg="Delete confirmation Code Saving error.";
+                              System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
+                              req.setAttribute("rtnMessage", errMsg);
+                              deleteDirAndFilesOnError(fileList);
+                              res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                              return;
+                          }
+                          fileList.add(securityCodePath);
                       }
-                      catch(Exception ie)
-                      {
-                          String errMsg="Delete confirmation Code Saving error.";
-                          System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
-                          req.setAttribute("rtnMessage", errMsg);
-                          deleteDirAndFilesOnError(fileList);
-                          res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
-                          return;
-                      }
-                      fileList.add(securityCodePath);
+
 
                         String sourcePath = scenarioPath+File.separator+SOURCE_DIRECTORY_TAG;
                         success = (new File(sourcePath)).mkdir();

@@ -15,6 +15,8 @@ import gov.nih.nci.cbiit.cmts.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
+import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
+import gov.nih.nci.cbiit.cmts.ui.message.MessagePanel;
 
 import javax.swing.*;
 
@@ -80,17 +82,62 @@ public class DefaultCloseAllAction extends AbstractContextAction
 		int count = componentList.size();//tabbedPane.getComponentCount();
 		ArrayList<AbstractContextAction> actionList = new ArrayList<AbstractContextAction>();
         //boolean closedAllSuccessfully = true;
+
+        String ll = "";
+        int cnt = 0;
         for (int i = 0; i < count; i++)
 		{//retrieve the list of close actions,
 			//shall call individual after the loop, since the close action will remove the referred tab
 			//which will cause the component count decreased.
 			Component comp = componentList.get(i);
-			if (comp instanceof ContextManagerClient)
+
+            if (comp instanceof ContextManagerClient)
 			{
-				actionList.add((AbstractContextAction) ((ContextManagerClient) comp).getDefaultCloseAction());
+                String title = mainFrame.getTabbedPane().getTitleAt(i);
+                if (comp instanceof MappingMainPanel)
+                {
+                    MappingMainPanel panel = (MappingMainPanel) comp;
+                    if (panel.isChanged())
+                    {
+                        ll = ll + "\n" + title;
+                        cnt++;
+                    }
+                }
+                else if (comp instanceof MessagePanel)
+                {
+                    MessagePanel panel = (MessagePanel) comp;
+                    if (!panel.hasBeenSaved())
+                    {
+                        ll = ll + "\n" + title;
+                        cnt++;
+                    }
+                }
+
+                actionList.add((AbstractContextAction) ((ContextManagerClient) comp).getDefaultCloseAction());
 			}
 		}
-		try
+        String message = null;
+        String titleT = "Unsaved documents found";
+        if (cnt == 1)
+        {
+            String m2 = "Are you sure to close all tabs?";
+            titleT = "Unsaved document found";
+            if (count == 1) m2 = "Are you sure to close this tab?";
+
+            message = "One document '" + ll.trim() + "' is not saved yet. " + m2;
+        }
+        else if (cnt > 1)
+        {
+            message = "Following "+cnt+" documents are not saved yet. Are you sure to close all tabs?\n" + ll;
+        }
+
+        if (message != null)
+        {
+            int n = JOptionPane.showConfirmDialog(mainFrame.getAssociatedUIComponent(), message, titleT, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (n != JOptionPane.YES_OPTION) return isSuccessfullyPerformed();
+        }
+
+        try
 		{
 			//shall notify context manager not to update context anymore.
 			ContextManager.getContextManager().setInClosingAllOrShutdownMode(true, false);
@@ -98,7 +145,12 @@ public class DefaultCloseAllAction extends AbstractContextAction
 			for (int i = 0; i < size; i++)
 			{
 				AbstractContextAction action = actionList.get(i);
-				action.actionPerformed(e);
+                if (action instanceof DefaultCloseAction)
+                {
+                    DefaultCloseAction closeA = (DefaultCloseAction) action;
+                    closeA.setForceClose(true);
+                }
+                action.actionPerformed(e);
 				if (!action.isSuccessfullyPerformed())
 				{//stop at the first failed execution of close action.
 					this.setSuccessfullyPerformed(false);

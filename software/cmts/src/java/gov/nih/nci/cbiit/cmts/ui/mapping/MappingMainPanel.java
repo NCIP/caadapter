@@ -76,8 +76,8 @@ public class MappingMainPanel extends AbstractTabPanel implements ActionListener
 	private static final String Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION = ".map";
 	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE = "Open source data schema";
 	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE = "Open target data schema";
-	private static final String SELECT_CSV_TIP = "select CSV";
-	private static final String SELECT_HMD_TIP = "select HMD";
+	private static final String SELECT_CSV_TIP = "select XSD";
+	private static final String SELECT_HMD_TIP = "select XSD";
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_TARGET = "Open Target...";
 	private static final String SOURCE_TREE_FILE_DEFAULT_EXTENTION = ".xsd";

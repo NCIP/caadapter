@@ -40,7 +40,7 @@ public class DefaultCloseAction extends AbstractContextAction
     public static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("closePane.png"));
     public static final String TOOL_TIP_DESCRIPTION = "Close this tab";
 
-
+    private boolean forceClose = false;
 
     protected MainFrameContainer ownerFrame = null;
 
@@ -98,17 +98,21 @@ public class DefaultCloseAction extends AbstractContextAction
                 //tab.getSelectedIndex()
                 Component comp = tab.getSelectedComponent();
                 boolean excutableClose = true;
-                //System.out.println("CCCC vv component compName:"+comp.getName()+", tabTitle:" + tab.getTitleAt(tab.getSelectedIndex()) + ", className:" + comp.getClass().getCanonicalName()  );
+                String tabTitle = tab.getTitleAt(tab.getSelectedIndex());
+                //System.out.println("CCCC vv component compName:"+comp.getName()+", tabTitle:" + tabTitle + ", className:" + comp.getClass().getCanonicalName()  );
+
                 if (comp instanceof MappingMainPanel)
                 {
                     MappingMainPanel mappingPanel = (MappingMainPanel) comp;
                     //System.out.println("CCCC vv MappingMainPanel");
-                    if (mappingPanel.isChanged())
+                    if (!forceClose)
                     {
-                        int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "There are unsaved Mapping data. Are you sure to close?", "Unsave Mapping data", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                        if (yesORno == JOptionPane.YES_OPTION) {}
-                        else return isSuccessfullyPerformed();
-
+                        if (mappingPanel.isChanged())
+                        {
+                            int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "There are unsaved Mapping data in '"+tabTitle+"'. Are you sure to close?", "Unsave Mapping data", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                            if (yesORno == JOptionPane.YES_OPTION) {}
+                            else return isSuccessfullyPerformed();
+                        }
                     }
                 }
                 else if (comp instanceof MessagePanel)
@@ -119,11 +123,14 @@ public class DefaultCloseAction extends AbstractContextAction
 
                     if ((dispMesg != null)&&(!dispMesg.trim().equals("")))
                     {
-                        if (!panel.hasBeenSaved())
+                        if (!forceClose)
                         {
-                            int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "Output is not saved yet. Are you sure to close?", "Unsaved Output data", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                            if (yesORno == JOptionPane.YES_OPTION) {}
-                            else return isSuccessfullyPerformed();
+                            if (!panel.hasBeenSaved())
+                            {
+                                int yesORno = JOptionPane.showConfirmDialog(ownerFrame.getAssociatedUIComponent(), "Output '"+tabTitle+"' is not saved yet. Are you sure to close?", "Unsaved Output data", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                                if (yesORno == JOptionPane.YES_OPTION) {}
+                                else return isSuccessfullyPerformed();
+                            }
                         }
 //                        String tabTitle = tab.getTitleAt(tab.getSelectedIndex());
 //                        String untitledTag = ActionConstants.FILE_NAME_UNTITLED_TAG;
@@ -174,6 +181,11 @@ public class DefaultCloseAction extends AbstractContextAction
 	{
 		return ownerFrame.getAssociatedUIComponent();
 	}
+
+    protected void setForceClose(boolean set)
+    {
+        forceClose = set;
+    }
 }
 
 /**

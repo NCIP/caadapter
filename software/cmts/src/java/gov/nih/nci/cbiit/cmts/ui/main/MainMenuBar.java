@@ -77,7 +77,7 @@ public class MainMenuBar extends JMenuBar
 
         add(constructFileMenu());
         JMenu helpMenu=new JMenu("Help");
-        JMenuItem aboutItem=new JMenuItem(new AboutViewAction(mainFrame.getMainApplet()));
+        JMenuItem aboutItem=new JMenuItem(new AboutViewAction(mainFrame));
         helpMenu.add(aboutItem);
 
         JMenuItem helpItem=new JMenuItem(new HelpViewAction(mainFrame.getMainApplet()));

@@ -38,7 +38,7 @@
 						<td>
 							<menu>
 								<input type="radio" value ="map" name="transformationType" checked>Mapping
-								<input type="radio" value ="xsl" name="transformationType">XSL or XSLT
+								<input type="radio" value ="xsl" name="transformationType">XSL
 								<input type="radio" value ="xq" name="transformationType">XQuery
 							</menu>
 						</td>
@@ -48,7 +48,7 @@
 					<td>Transformation Scenario Name:</td><td> <input type="text" name="scenarioName" ><br></td><td>&nbsp;</td>
 					</tr>
 					<tr>
-					<td>Transformation Instruction(.map, .xsl, .xql):</td><td><INPUT TYPE="FILE" NAME="mappingFileName"></td><td>&nbsp;</td>
+					<td>Transformation Instruction(.map, .xsl, .xql):</td><td><INPUT TYPE="FILE" NAME="mappingFileName" accept="*.map, *.xsl, *.xslt, *.xql, *.xq"></td><td>&nbsp;</td>
 					</tr>
 <%
 
@@ -92,7 +92,7 @@
                         {
                 %>
                     <tr>
-					<td>Source Schema File(xsd or zip):</td><td><INPUT TYPE="FILE" NAME="sourceXsdName<%= iStr%>"></td>
+					<td>Source Schema File(xsd or zip):</td><td><INPUT TYPE="FILE" NAME="sourceXsdName<%= iStr%>" accept="text/xml, application/rdf+xml, application/zip"></td>
                     <td><a href="addScenario.do?methd=<%= methodS%>&sourceNum=<%= (srcNum + 1)%>&targetNum=<%= tgtNum%>">Add a Source XSD field</a></td>
                     </tr>
                 <%
@@ -101,7 +101,7 @@
                          {
                 %>
                     <tr>
-					<td>&nbsp;</td><td><INPUT TYPE="FILE" NAME="sourceXsdName<%= iStr%>"></td><td>&nbsp;</td>
+					<td>&nbsp;</td><td><INPUT TYPE="FILE" NAME="sourceXsdName<%= iStr%>" accept="text/xml, application/rdf+xml, application/zip"></td><td>&nbsp;</td>
 					</tr>
                 <%
                          }
@@ -115,7 +115,7 @@
                         {
                 %>
                     <tr>
-					<td>Target Schema File(xsd or zip):</td><td><INPUT TYPE="FILE" NAME="targetXsdName<%= iStr%>"></td>
+					<td>Target Schema File(xsd or zip):</td><td><INPUT TYPE="FILE" NAME="targetXsdName<%= iStr%>" accept="text/xml, application/rdf+xml, application/zip"></td>
                     <td><a href="addScenario.do?methd=<%= methodS%>&sourceNum=<%= srcNum%>&targetNum=<%= (tgtNum+1)%>">Add a Target XSD field</a></td>
                     </tr>
                 <%
@@ -124,17 +124,17 @@
                          {
                 %>
                     <tr>
-					<td>&nbsp;</td><td><INPUT TYPE="FILE" NAME="targetXsdName<%= iStr%>"></td><td>&nbsp;</td>
+					<td>&nbsp;</td><td><INPUT TYPE="FILE" NAME="targetXsdName<%= iStr%>" accept="text/xml, application/rdf+xml, application/zip"></td><td>&nbsp;</td>
 					</tr>
 
                 <%
                          }
                     }
                 %>
-                    <tr>
+                    <!--<tr>
 					<td>Delete Confirmation Code(Required):</td><td><INPUT TYPE="text" NAME="deleteSecurityCode"></td>
                     <td>Keep this value for delete this scenario</td>
-                    </tr>
+                    </tr> -->
                     <tr><td colspan=3>
                     <INPUT TYPE="hidden" NAME="methd" VALUE="<%= methodS%>">
                     <input type="submit" value="Add Transformation Scenario"></td>

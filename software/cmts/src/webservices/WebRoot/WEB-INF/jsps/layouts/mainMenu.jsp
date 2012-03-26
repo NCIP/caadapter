@@ -20,8 +20,8 @@
 		<td height="20" class="mainMenuItem" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()" onclick="document.location.href='#'">
 			<a class="mainMenuLink" href="addScenario.do?methd=addScenarioRegistration">ADD SCENARIO</a> </td>
 		<td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td>
-        <td height="20" class="mainMenuItem" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()" onclick="document.location.href='#'">
+        <!--<td height="20" class="mainMenuItem" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()" onclick="document.location.href='#'">
 			<a class="mainMenuLink" href="addScenario.do?methd=deleteScenario">DELETE SCENARIO</a> </td>
-		<td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td>
+		<td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td> -->
     </tr>
 </table>
