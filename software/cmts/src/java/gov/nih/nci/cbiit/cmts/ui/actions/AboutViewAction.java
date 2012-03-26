@@ -2,7 +2,7 @@ package gov.nih.nci.cbiit.cmts.ui.actions;
 
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmts.ui.common.AboutWindow;
+
 import gov.nih.nci.cbiit.cmts.ui.main.MainFrameContainer;
 import gov.nih.nci.cbiit.cmts.util.CdeBrowserLauncher;
 import gov.nih.nci.caadapter.common.util.FileUtil;
