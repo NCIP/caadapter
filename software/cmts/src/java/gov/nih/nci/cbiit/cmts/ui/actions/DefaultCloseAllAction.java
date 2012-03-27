@@ -176,7 +176,17 @@ public class DefaultCloseAllAction extends AbstractContextAction
                 if (mainFrame.getAllTabs().size() == 0)
                     ContextManager.getContextManager().setInClosingAllOrShutdownMode(false, isSuccessfullyPerformed());
             }
-		}
+            int size = actionList.size();
+            for (int i = 0; i < size; i++)
+            {
+                AbstractContextAction action = actionList.get(i);
+                if (action instanceof DefaultCloseAction)
+                {
+                    DefaultCloseAction closeA = (DefaultCloseAction) action;
+                    closeA.setForceClose(false);
+                }
+            }
+        }
 		return isSuccessfullyPerformed();
 	}
 

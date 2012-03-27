@@ -38,7 +38,7 @@
 						<td>
 							<menu>
 								<input type="radio" value ="map" name="transformationType" checked>Mapping
-								<input type="radio" value ="xsl" name="transformationType">XSL
+								<input type="radio" value ="xsl" name="transformationType">XSLT
 								<input type="radio" value ="xq" name="transformationType">XQuery
 							</menu>
 						</td>

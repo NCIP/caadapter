@@ -20,10 +20,11 @@
                 <td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'),showCursor()" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'),hideCursor()" height="20" onclick="document.location.href='#'"><a class="subMenuSecondary" href="http://ncicb.nci.nih.gov">NCICB HOME</a></td>
               </tr>
               <tr>
-                <td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'),showCursor()" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'),hideCursor()" height="20" onclick="document.location.href='#'"><a class="subMenuSecondary" href="http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/caadapter/">caAdapter Home</a></td>
+                <td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'),showCursor()" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'),hideCursor()" height="20" onclick="document.location.href='#'"><a class="subMenuSecondary" href="https://cabig.nci.nih.gov/community/tools/caAdapter">caAdapter Home</a></td>
               </tr> 
               <tr>
-			     <td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'),showCursor()" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'),hideCursor()" height="20" onclick="document.location.href='#'"><a class="subMenuSecondary" href="http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/caadapter/docs/caAdapter_Documentation">caAdapter Documentation</a></td>
+                  <!--td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'),showCursor()" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'),hideCursor()" height="20" onclick="document.location.href='#'"><a class="subMenuSecondary" href="http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/caadapter/docs/caAdapter_Documentation">caAdapter Documentation</a></td-->
+                  <td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'),showCursor()" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'),hideCursor()" height="20" onclick="document.location.href='#'"><a class="subMenuSecondary" href="https://wiki.nci.nih.gov/display/caCORE/caAdapter#caAdapter-Documentation">caAdapter Documentation</a></td>
               </tr>
               <tr>
                 <td class="subMenuFill" height="100%">&nbsp;</td>

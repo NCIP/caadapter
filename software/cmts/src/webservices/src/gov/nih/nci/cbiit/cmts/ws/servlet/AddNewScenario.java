@@ -214,7 +214,14 @@ public class AddNewScenario extends HttpServlet {
                   else fileItemList.add(item);
               }
 
-
+              if ((deletionTag != null)||(method.equalsIgnoreCase("deleteScenario")))
+              {
+                  String errMsg="Sorry.. Delete scenario is currently not in service.";
+                  System.out.println("AddNewScenario.doPost()...ERROR:"+errMsg);
+                  req.setAttribute("rtnMessage", errMsg);
+                  res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                  return;
+              }
 
               if ((scenarioName == null)||(scenarioName.trim().equals("")))
               {
@@ -317,9 +324,10 @@ public class AddNewScenario extends HttpServlet {
                           }
                           if (!pass)
                           {
-                              String daTag = ActionConstants.NEW_ADD_SCENARIO_TAG;
-                              if ((deletionTag != null)&&(deletionTag.trim().equals(daTag))) pass = true;
-                              if ((securityCode != null)&&(securityCode.trim().equals(daTag))) pass = true;
+                              //String daTag = ActionConstants.NEW_ADD_SCENARIO_TAG;
+
+                              //if ((deletionTag != null)&&(deletionTag.trim().equals(daTag))) pass = true;
+                              //if ((securityCode != null)&&(securityCode.trim().equals(daTag))) pass = true;
                           }
                           if (!pass)
                           {
@@ -386,11 +394,11 @@ public class AddNewScenario extends HttpServlet {
                       if ((securityCode == null)||(securityCode.trim().equals("")))
                       {
                           //String errMsg="Null delete confirmation code: This must be input for delete scenario in the future.";
-                            //System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
-                            //req.setAttribute("rtnMessage", errMsg);
-                            //deleteDirAndFilesOnError(fileList);
-                            //res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
-                            //return;
+                          //System.out.println("AddNewScenario.doPost()...Error:"+errMsg);
+                          //req.setAttribute("rtnMessage", errMsg);
+                          //deleteDirAndFilesOnError(fileList);
+                          //res.sendRedirect("errormsg.do" + "?message=" + URLEncoder.encode(errMsg, "UTF-8"));
+                          //return;
                       }
                       else
                       {

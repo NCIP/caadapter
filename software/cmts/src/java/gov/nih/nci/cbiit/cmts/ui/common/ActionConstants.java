@@ -43,7 +43,7 @@ public interface ActionConstants
 	String NEW_XML_Transformation = "XML to XML Transformation";
 	String NEW_XSLT_STYLESHEET="XSLT Stylesheet Artifact";
 	String NEW_XQUERY_STATEMENT="XQuery Artifact";
-    String NEW_ADD_SCENARIO_TAG = "12345Abc";
+    //String NEW_ADD_SCENARIO_TAG = "***";
     String NEW_CSV_Transformation = "CSV to XML Transformation";
 	String NEW_HL7_V2_Transformation = "HL7 v2 to XML Transformation";
 	String NEW_XML_CDA_Transformation = "XML to CDA Transformation";
