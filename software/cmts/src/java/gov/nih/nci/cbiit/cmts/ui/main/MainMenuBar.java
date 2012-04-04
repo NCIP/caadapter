@@ -80,7 +80,7 @@ public class MainMenuBar extends JMenuBar
         JMenuItem aboutItem=new JMenuItem(new AboutViewAction(mainFrame));
         helpMenu.add(aboutItem);
 
-        JMenuItem helpItem=new JMenuItem(new HelpViewAction(mainFrame.getMainApplet()));
+        JMenuItem helpItem=new JMenuItem(new HelpViewAction(mainFrame));
         helpMenu.add(helpItem);
         add(helpMenu);
     }
