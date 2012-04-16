@@ -169,7 +169,16 @@
 			<exclude name="bin/**" />
 			<exclude name="build/**" />
 			<exclude name="dist/**" />
+			<exclude name="log/**" />
+			<exclude name="classes/**" />
 			<exclude name="**/CVS/**" />
+			<exclude name="**/.svn/**" />
+			<exclude name="workingspace/hl7v3/**" />
+			<exclude name="workingspace/hl7v2/**" />
+			<exclude name="workingspace/RDF/**" />
+			<exclude name="workingspace/CDSIC_ODM/**" />
+			<exclude name="workingspace/cda2/**" />
+			<exclude name="workingspace/coreschemas/**" />
 		</zip>
 	</target>
 	

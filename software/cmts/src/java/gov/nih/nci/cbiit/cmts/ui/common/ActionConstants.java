@@ -52,7 +52,9 @@ public interface ActionConstants
     String FILE_NAME_UNTITLED_TAG = "Untitled_";
     String MESSAGE_NOT_A_MAPPING_FILE = "NOT A MAPPING FILE....";
 	String SCENARIO_DELETE_SECURITY_CONFIRMATION_CODE_FILE = "SecurityCode.txt";
-    String CMTS_HELP_MENU_CONTENT_URL = "https://wiki.nci.nih.gov/display/caCORE/caAdapter+Common+Mapping+and+Transformation+Service+v1.0+User%27s+Guide";
+    //String CMTS_HELP_MENU_CONTENT_URL = "https://wiki.nci.nih.gov/display/caCORE/caAdapter+Common+Mapping+and+Transformation+Service+v1.0+User%27s+Guide";
+    String CMTS_HELP_MENU_CONTENT_URL = "https://wiki.nci.nih.gov/x/TI14B";
+
 }
 
 /**
