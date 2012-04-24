@@ -1,4 +1,4 @@
-<project name="Common Mapping and Transformation Service" default="jar" basedir=".">
+<project name="Common Mapping and Transformation Service" default="build:caadapter-wars" basedir=".">
 	<!-- Tell ant to use my environment variables -->
 	<property environment="env" />
 	<property file="./build.properties" />
@@ -281,7 +281,7 @@
 
 	<target name="doc" description="Generate JavaDoc">
 		<mkdir dir="${javadoc.dir}" />
-		<javadoc destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="CMPS">
+		<javadoc destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="CMTS">
 
 			<packageset dir="${src.dir}" defaultexcludes="yes">
 				<include name="gov/nih/nci/cbiit/cmts/**" />
