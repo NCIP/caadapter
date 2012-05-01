@@ -179,6 +179,7 @@
 			<exclude name="workingspace/CDSIC_ODM/**" />
 			<exclude name="workingspace/cda2/**" />
 			<exclude name="workingspace/coreschemas/**" />
+			<exclude name="doc/**" />
 		</zip>
 	</target>
 	
