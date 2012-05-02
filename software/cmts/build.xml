@@ -79,7 +79,7 @@
 					<include name="**/*.bmp"/>
 					<exclude name="**/*webapp*"/>
 			</fileset>
-			<zipfileset dir="./doc" includes="CMTS_User_Guide_Document.pdf" prefix="help"/>
+			<!--zipfileset dir="./doc" includes="CMTS_User_Guide_Document.pdf" prefix="help"/-->
 		</war>	
 		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">	
 			<property name="ws.module.name" value="caadapterWS-cmts" />
@@ -201,6 +201,8 @@
 			</manifest>
 		</jar>
 		<delete dir="${build.dir}" failonerror="false"/>
+		<copy file="${dist.dir}/cmts.jar" tofile="${lib.dir}/cmts.jar" overwrite="true" />
+		<copy file="${dist.dir}/cmts-resources.jar" tofile="${lib.dir}/cmts-resources.jar" overwrite="true" />
 	</target>
 	
 	<target name="clean">
