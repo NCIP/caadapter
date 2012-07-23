@@ -18,10 +18,7 @@ import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMiddlePanel;
 
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,8 +117,27 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
                 if (cTag)
                 {
                     isChanged = true;
-                    treeNode.remove(chldCnt-1);
-                    treeNode.insert(newChildNode, chldCnt-1);
+
+                    DefaultMutableTreeNode d = (DefaultMutableTreeNode)treeNode.getChildAt(chldCnt-1);
+                    ElementMetaLoader.MyTreeObject dDel =(ElementMetaLoader.MyTreeObject)d.getUserObject();
+			        BaseMeta dMeta=(BaseMeta)dDel.getUserObject();
+                    if (!(dMeta instanceof ElementMeta))
+                    {
+                        System.out.println("Error treeExpanded(TreeExpansionEvent event) : Changed Meta ("+d.toString()+") is not a element Meta");
+                        return;
+                    }
+                    try
+                    {
+                        replaceUserObject(treeNode.getChildAt(chldCnt-1), newChildNode);
+                    }
+                    catch(Exception ee)
+                    {
+                        System.out.println("Error new child replace erroe : " + ee.getMessage());
+                        return;
+                    }
+
+                    //treeNode.remove(chldCnt-1);
+                    //treeNode.insert(newChildNode, chldCnt-1);
                 }
             }
 		}
@@ -132,7 +148,57 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
         }
         else ((MappingMiddlePanel)mappingMiddlePanel).renderInJGraph();
     }
-	/**
+    private void replaceUserObject(TreeNode f_Node, TreeNode t_Node) throws Exception
+    {
+        DefaultMutableTreeNode fNode = (DefaultMutableTreeNode) f_Node;
+        DefaultMutableTreeNode tNode = (DefaultMutableTreeNode) t_Node;
+        //System.out.println("CCCX DD : " + fNode.toString() + "' and '" + tNode.toString() + "'");
+        ElementMetaLoader.MyTreeObject tTreeObject =(ElementMetaLoader.MyTreeObject) tNode.getUserObject();
+	    fNode.setUserObject(tTreeObject);
+
+        if ((fNode.getChildCount() == 0)&&(tNode.getChildCount() == 0)) return;
+        else if ((fNode.getChildCount() == 0)&&(tNode.getChildCount() > 0))
+        {
+            for(int i=0;i<tNode.getChildCount();i++) fNode.add((DefaultMutableTreeNode)tNode.getChildAt(i));
+            //return;
+        }
+        else if (fNode.getChildCount() <= tNode.getChildCount())
+        {
+            List<DefaultMutableTreeNode> list = new ArrayList<DefaultMutableTreeNode>();
+            for(int i=0;i<fNode.getChildCount();i++)
+            {
+                DefaultMutableTreeNode aNode = null;
+                DefaultMutableTreeNode fcNode = (DefaultMutableTreeNode) fNode.getChildAt(i);
+                for(int j=0;j<tNode.getChildCount();j++)
+                {
+                    DefaultMutableTreeNode tcNode = (DefaultMutableTreeNode) tNode.getChildAt(j);
+                    if (fcNode.toString().equals(tcNode.toString()))
+                    {
+                        aNode = tcNode;
+                        break;
+                    }
+                }
+                if (aNode == null) throw new Exception("Not found '" + fcNode.toString() + "' under '" + tNode.toString() + "'");
+                replaceUserObject(fcNode, aNode);
+                list.add(aNode);
+            }
+
+            for(int i=0;i<tNode.getChildCount();i++)
+            {
+                DefaultMutableTreeNode tcNode = (DefaultMutableTreeNode) tNode.getChildAt(i);
+                boolean included = false;
+                for (DefaultMutableTreeNode aNode:list)
+                {
+                    if (aNode.toString().equals(tcNode.toString())) included = true;
+                }
+                if (!included) fNode.add(tcNode);
+            }
+
+            //return;
+        }
+        else throw new Exception("Not not matched the number of children between '" + fNode.toString() + "' and '" + tNode.toString() + "'");
+    }
+    /**
 	 * Reset the ElementMeta and create new treeNode
 	 * @param meta
 	 * @return DefaultMutableTreeNode
