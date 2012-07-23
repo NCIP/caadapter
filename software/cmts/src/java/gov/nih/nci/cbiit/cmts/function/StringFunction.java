@@ -125,10 +125,37 @@ public class StringFunction {
 		String stStart=(String)paramters.get("start");
 		String stEnd=(String)paramters.get("end");
 		rtnBf.append("substring("+stOne+"," 
-				+stStart+","+stEnd+")");
+				+findNumericValue(stStart)+","+findNumericValue(stEnd)+")");
 		return rtnBf.toString();
 	}
-	/**
+    private String findNumericValue(String str)
+    {
+        if (isNumeric(str)) return str;
+        String s1 = "string(\"";
+        String s2 = "\")";
+        int idx1 = str.toLowerCase().indexOf(s1);
+        int idx2 = str.indexOf(s2);
+        if ((idx1 >= 0)&&(idx2 > 0)&&(idx1 < idx2))
+        {
+            String c = str.substring(idx1 + s1.length(), idx2);
+            if (isNumeric(c)) return c;
+        }
+        return str;
+    }
+    private boolean isNumeric(String str)
+    {
+        if ((str == null)||(str.trim().equals(""))) return false;
+        try
+        {
+            Integer.parseInt(str);
+        }
+        catch(NumberFormatException ne)
+        {
+            return false;
+        }
+        return true;
+    }
+    /**
 	 * Returns a string that is created by replacing the given pattern with the replace argument
 	 * Example: replace("Bella Italia", "l", "*")
 	 * Result: 'Be**a Ita*ia'
