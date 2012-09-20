@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project name="caAdapter" default="build:dist.bin">
+<!--project name="caAdapter" default="build:dist.bin"-->
+<project name="caAdapter" default="build:war">
     <description>
         **************************************************************************
         caAdapter DVTS ANT BUILD SCRIPT
