@@ -20,7 +20,16 @@
 		<url-pattern>*.jnlp</url-pattern>
 	 </servlet-mapping>
 	-->
-	 <welcome-file-list>
+    <servlet>
+        <servlet-name>WebFunctionService</servlet-name>
+        <servlet-class>gov.nih.nci.cbiit.cmts.web.WebFunctionService</servlet-class>
+        <load-on-startup>1</load-on-startup>
+   	</servlet>
+    <servlet-mapping>
+        <servlet-name>WebFunctionService</servlet-name>
+        <url-pattern>/WebFunctionService</url-pattern>
+    </servlet-mapping>
+     <welcome-file-list>
 	      	<welcome-file>index.jsp</welcome-file>
 	      	<welcome-file>index.html</welcome-file>
 	 </welcome-file-list>

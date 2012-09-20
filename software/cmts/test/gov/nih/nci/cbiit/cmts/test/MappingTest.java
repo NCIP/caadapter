@@ -83,7 +83,7 @@ public class MappingTest {
 //		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder.meta.xml"));
 	
 		} catch (Exception e) {
-			System.out.println("MappingTest.testParseXSD()...metacount:"+BaseMeta.metaCount);
+			//System.out.println("MappingTest.testParseXSD()...metacount:"+BaseMeta.metaCount);
 			// TODO: handle exception
 			e.printStackTrace();
 		}
@@ -118,7 +118,7 @@ public class MappingTest {
 //		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/COCT_MT010000UV01.meta.xml"));
 	
 		} catch (Exception e) {
-			System.out.println("MappingTest.testParseHL7v3XSD()...metacount:"+BaseMeta.metaCount);
+			//System.out.println("MappingTest.testParseHL7v3XSD()...metacount:"+BaseMeta.);
 			// TODO: handle exception
 			e.printStackTrace();
 		}

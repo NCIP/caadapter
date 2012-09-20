@@ -11,12 +11,14 @@ import gov.nih.nci.cbiit.cmts.ui.mapping.MainToolBarHandler;
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.ui.actions.NewMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.net.URL;
 
 import javax.swing.*;
 
@@ -103,6 +105,13 @@ public MainApplet() throws HeadlessException
         enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         this.setVisible(true);
         this.setFocusable(true);
+
+        //if (mainApplet != null)
+        //{
+            //FileUtil.setCodeBase(this.getCodeBase());
+            //System.out.println("Applet codeBase=" + this.getCodeBase());
+    
+        //}
 }
 
     private Component constructCenterPanel() {

@@ -124,16 +124,43 @@ public class DateFunction
        return getMonthsBetweenDates(fromDate, defaultDateFormatString, toDate, defaultDateFormatString);
     }
 
+    public String getDaysBetweenDates(java.util.Date objFromDate, java.util.Date objToDate) //throws FunctionException
+    {
+        fromCal.setTime(objFromDate);
+        toCal.setTime(objToDate);
+
+        Long millis = toCal.getTimeInMillis() - fromCal.getTimeInMillis();
+        if (millis < 0l)
+        {
+            fromCal.setTime(objToDate);
+            toCal.setTime(objFromDate);
+            millis = toCal.getTimeInMillis() - fromCal.getTimeInMillis();
+        }
+        int days = (int) (millis / (1000*60*60*24));
+        int daySecondsOfFrom = (fromCal.get(Calendar.HOUR)*3600) + (fromCal.get(Calendar.MINUTE)*60) + (fromCal.get(Calendar.SECOND));
+        int daySecondsOfTo = (toCal.get(Calendar.HOUR)*3600) + (toCal.get(Calendar.MINUTE)*60) + (toCal.get(Calendar.SECOND));
+        if (daySecondsOfTo < daySecondsOfFrom) days++;
+        return Integer.toString(days);
+    }
+
     public String getDaysBetweenDates(String fromDate, String fromFormat, String toDate, String toFormat) throws FunctionException
     {
-       setCalendarInstances(fromDate, fromFormat, toDate, toFormat);
+        SimpleDateFormat objFromFormat = checkSimpleDateFormat(fromFormat);
+        SimpleDateFormat objToFormat = checkSimpleDateFormat(toFormat);
+        java.util.Date objFromDate = parseDateFromString(objFromFormat, fromDate);
+        java.util.Date objToDate = parseDateFromString(objToFormat, toDate);
 
-       Long millis = toCal.getTimeInMillis() - fromCal.getTimeInMillis();
-       int days = (int) (millis / (1000*60*60*24));
-       int daySecondsOfFrom = (fromCal.get(Calendar.HOUR)*3600) + (fromCal.get(Calendar.MINUTE)*60) + (fromCal.get(Calendar.SECOND));
-       int daySecondsOfTo = (toCal.get(Calendar.HOUR)*3600) + (toCal.get(Calendar.MINUTE)*60) + (toCal.get(Calendar.SECOND));
-       if (daySecondsOfTo < daySecondsOfFrom) days++;
-       return Integer.toString(days);
+        return getDaysBetweenDates(objFromDate, objToDate);
+//        fromCal.setTime(objFromDate);
+//        toCal.setTime(objToDate);
+//        setCalendarInstances(fromDate, fromFormat, toDate, toFormat);
+//
+//        Long millis = toCal.getTimeInMillis() - fromCal.getTimeInMillis();
+//        int days = (int) (millis / (1000*60*60*24));
+//        int daySecondsOfFrom = (fromCal.get(Calendar.HOUR)*3600) + (fromCal.get(Calendar.MINUTE)*60) + (fromCal.get(Calendar.SECOND));
+//        int daySecondsOfTo = (toCal.get(Calendar.HOUR)*3600) + (toCal.get(Calendar.MINUTE)*60) + (toCal.get(Calendar.SECOND));
+//        if (daySecondsOfTo < daySecondsOfFrom) days++;
+//        return Integer.toString(days);
     }
     public String setMatchedDateFormat(String format, String date)
     {

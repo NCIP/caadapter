@@ -32,6 +32,17 @@ import java.util.jar.JarEntry;
 
 public class FileUtil
 {
+    private static URL codeBaseURL = null;
+
+    public static void setCodeBase(URL url)
+    {
+        codeBaseURL = url;
+    }
+    public static URL getCodeBase()
+    {
+        
+        return codeBaseURL;
+    }
     /**
      * This function will return the file with the given extension. If it already contains, return immediately.
      * @param file
@@ -470,9 +481,45 @@ public class FileUtil
         }
         return null;
     }
+
     public static String searchFile(String fileName)
     {
         return searchFile(null, null, fileName, null, true);
+    }
+    public static String findNumericValue(String str)
+    {
+        return findNumericValue(str, true);
+    }
+    public static String findNumericValue(String str, boolean checkNumeric)
+    {
+        if (isNumeric(str)) return str;
+        String s1 = "string(\"";
+        String s2 = "\")";
+        int idx1 = str.toLowerCase().indexOf(s1);
+        int idx2 = str.indexOf(s2);
+        if ((idx1 >= 0)&&(idx2 > 0)&&(idx1 < idx2))
+        {
+            String c = str.substring(idx1 + s1.length(), idx2);
+            if (checkNumeric)
+            {
+                if (isNumeric(c)) return c;
+            }
+            else return c;
+        }
+        return str;
+    }
+    public static boolean isNumeric(String str)
+    {
+        if ((str == null)||(str.trim().equals(""))) return false;
+        try
+        {
+            Integer.parseInt(str);
+        }
+        catch(NumberFormatException ne)
+        {
+            return false;
+        }
+        return true;
     }
 }
 

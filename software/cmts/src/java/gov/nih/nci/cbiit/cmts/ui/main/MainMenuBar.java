@@ -23,6 +23,7 @@ import gov.nih.nci.cbiit.cmts.ui.actions.OpenMapFileAction;
 import gov.nih.nci.cbiit.cmts.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.MenuConstants;
 import gov.nih.nci.cbiit.cmts.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import javax.swing.*;
 import javax.swing.event.MenuListener;
@@ -36,6 +37,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import netscape.javascript.JSObject;
 import netscape.javascript.JSException;
@@ -199,9 +202,37 @@ public class MainMenuBar extends JMenuBar
                public void menuDeselected(MenuEvent e) {}
                public void menuSelected(MenuEvent e)
                {
-                   //System.out.println("aa0");
+                   URL u = FileUtil.getCodeBase();
+                       if (u != null) {} //System.out.println("C - Already exist - Applet documentBase=" + u.toString());
+                       else
+                       {
+                           try
+                           {
+                            URL u1 = mainFrame.getMainApplet().getDocumentBase();
+                            System.out.println("Applet documentBase=" + u1.toString());
+                            FileUtil.setCodeBase(u1);
+                           }
+                           catch(Exception ee)
+                           {
+                                URL url = null;
+                                String urlStr = "http://caadapter.nci.nih.gov/caadapter-cmts/";
+                                try
+                                {
+                                    url = new URL(urlStr);
+                                }
+                                catch(MalformedURLException me)
+                                {
+                                    url = null;
+                                }
+                                if (url != null) FileUtil.setCodeBase(url);
+                           }
+                       }
                    if (mainFrame.getMainApplet() != null)
                    {
+
+
+
+
                        JMenuItem exitMenu;
                        try
                        {

@@ -2,9 +2,11 @@ package gov.nih.nci.cbiit.cmts.ui.main;
 
 import gov.nih.nci.cbiit.cmts.ui.mapping.MappingMainPanel;
 import gov.nih.nci.cbiit.cmts.web.MainApplet;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,6 +34,8 @@ public class MainFrameContainer
     }
     public MainApplet getMainApplet()
     {
+
+
         return mainApplet;
     }
 
@@ -44,18 +48,57 @@ public class MainFrameContainer
     {
         mainFrame = null;
         mainApplet = ma;
+
+
+
     }
 
     public Component getAssociatedUIComponent()
     {
         if (mainFrame != null) return mainFrame;
-        if (mainApplet != null) return mainApplet;
+        if (mainApplet != null)
+        {
+//            try
+//            {
+//                URL u =FileUtil.getCodeBase();
+//                if (u != null) System.out.println("A - Already exist - Applet documentBase=" + u.toString());
+//                else
+//                {
+//                    URL u1 = mainApplet.getDocumentBase();
+//                    System.out.println("A - Now input - Applet documentBase=" + u1.toString());
+//                    FileUtil.setCodeBase(u1);
+//                }
+//            }
+//            catch(Exception ee)
+//            {
+//                ee.printStackTrace();
+//            }
+            return mainApplet;
+        }
         return null;
     }
     public Container getAssociatedUIContainer()
     {
         if (mainFrame != null) return mainFrame;
-        if (mainApplet != null) return mainApplet;
+        if (mainApplet != null)
+        {
+//            try
+//            {
+//                URL u =FileUtil.getCodeBase();
+//                if (u != null) System.out.println("B - Already exist - Applet documentBase=" + u.toString());
+//                else
+//                {
+//                    URL u1 = mainApplet.getDocumentBase();
+//                    System.out.println("B - Now input - Applet documentBase=" + u1.toString());
+//                    FileUtil.setCodeBase(u1);
+//                }
+//            }
+//            catch(Exception ee)
+//            {
+//                ee.printStackTrace();
+//            }
+            return mainApplet;
+        }
         return null;
     }
 

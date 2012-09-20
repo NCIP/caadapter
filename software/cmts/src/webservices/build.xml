@@ -50,7 +50,7 @@
   	</javac>
    </target>
 
-  <target name="package.war" depends="compile.source" description ="Create ebservice war file ...${module.dist.dir}/${ws.module.name}.war">
+  <target name="package.war" depends="compile.source" description ="Create webservice war file ...${module.dist.dir}/${ws.module.name}.war">
     <war destfile="${module.dist.dir}/${ws.module.name}.war" webxml="${ws.module.home}/WebRoot/WEB-INF/web.xml">
 		<zipfileset dir="${ws.module.home}/WebRoot" />
 		<lib dir="${module.lib.dir}" >

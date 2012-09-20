@@ -67,10 +67,18 @@
 		<antcall target="webapp:sign_resources">
 			<param name="RESOURCE_HOME" value="${dist.dir}/webapp"/>
 		</antcall>
-
+        
+                
+        
 		<echo message=""/>
 		<echo message="-------- creating ${webapp.warfile.name} file (copied to deploy/webapp) --------"/>
 		<war destfile="${dist.dir}/${webapp.warfile.name}" webxml="${web.src.dir}/web.xml">
+		    <lib dir="${web.src.dir}/WEB-INF/lib" >
+			    <exclude name="jardiff.jar"/>
+			    <exclude name="jnlp-servlet.jar"/>
+			    <exclude name="jnlp.jar"/>
+			    <exclude name="commons-fileupload-1.1.jar"/>
+		    </lib>
 			<fileset dir="${dist.dir}/webapp">
 				<exclude name="${jar-signing.keystore.abs-location}"/>
 			</fileset>
@@ -79,6 +87,7 @@
 					<include name="**/*.bmp"/>
 					<exclude name="**/*webapp*"/>
 			</fileset>
+			<classes dir="${web.src.dir}/WEB-INF/classes" />
 			<!--zipfileset dir="./doc" includes="CMTS_User_Guide_Document.pdf" prefix="help"/-->
 		</war>	
 		<ant inheritAll="false" inheritRefs="false" antfile="build.xml" target="package.war" dir="src/webservices">	
@@ -114,6 +123,8 @@
 				<include name="xercesImpl.jar"/>
 				<include name="plugin.jar"/>
 				<include name="commons-io-2.0.1.jar"/>
+				<!--include name="servlet.jar"/-->
+				<!--include name="commons-fileupload-1.1.jar"/-->
 			</fileset>
 			<fileset dir="${dist.dir}">
 				<include name="cmts.jar"/>
@@ -185,6 +196,8 @@
 	
 	<target name="jar" depends="compile" description="create the distribution jars">
 		<echo> ${distribution.manifest.class.property} </echo>
+		<!--copy file="${build.dir}/gov/nih/nci/cbiit/cmts/web/WebFunctionService.class" tofile="${web.src.dir}/WEB-INF/classes/gov/nih/nci/cbiit/cmts/web/WebFunctionService.class" overwrite="true" />
+		<delete file="${build.dir}/gov/nih/nci/cbiit/cmts/web/WebFunctionService.class" failonerror="true" /-->
 		<jar destfile="${dist.dir}/cmts.jar">
 			<fileset dir="${build.dir}" excludes="**/Test.class"/>
 		</jar>
@@ -200,8 +213,12 @@
 				<attribute name="Class-Path" value=". lib/cmts.jar lib/cmts-resources.jar ${distribution.manifest.class.property}" />
 			</manifest>
 		</jar>
+		
+		
+        <delete dir="${build.dir}" failonerror="false"/>		
 		<delete dir="${build.dir}" failonerror="false"/>
 		<copy file="${dist.dir}/cmts.jar" tofile="${lib.dir}/cmts.jar" overwrite="true" />
+		<copy file="${dist.dir}/cmts.jar" tofile="${web.src.dir}/WEB-INF/lib/cmts.jar" overwrite="true" />
 		<copy file="${dist.dir}/cmts-resources.jar" tofile="${lib.dir}/cmts-resources.jar" overwrite="true" />
 	</target>
 	

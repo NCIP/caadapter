@@ -133,7 +133,28 @@ public class NewArtifactAction extends AbstractContextAction
 				xmlResult=xqueryBuilder.getXQuery();
 				artType=".xq";
 			}
-			newMsgPane.setViewFileExtension(artType);
+
+            String xmlResult2 = xmlResult;
+            for(String key:new String[] {"amp;", "lt;", "gt;", "quot;"})
+            {
+                String temp = "";
+                String key2 = "&amp;" + key;
+                while(true)
+                {
+                    int idx = xmlResult2.toLowerCase().indexOf(key2);
+                    if (idx < 0)
+                    {
+                        temp = temp + xmlResult2;
+                        break;
+                    }
+                    temp = temp + xmlResult2.substring(0, idx) + "&" + key;
+                    xmlResult2 = xmlResult2.substring(idx + key2.length());
+                }
+                xmlResult2 = temp;
+            }
+            xmlResult = xmlResult2;
+
+            newMsgPane.setViewFileExtension(artType);
             if (artType.equals(".xq")) mainFrame.addNewTab(newMsgPane,".xql");
             else mainFrame.addNewTab(newMsgPane,artType);
 			newMsgPane.setMessageText(xmlResult);
