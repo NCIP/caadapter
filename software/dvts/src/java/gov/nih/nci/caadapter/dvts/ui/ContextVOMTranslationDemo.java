@@ -265,7 +265,7 @@ public class ContextVOMTranslationDemo extends JFrame implements ActionListener
             {
                 if (!(file1.getName().toLowerCase().endsWith(Config.VOCABULARY_MAPPING_FILE_EXTENSION)))
                 {
-                    JOptionPane.showMessageDialog(this, "This is not a DVM (VOM) File.", "Not a DVM (VOM) File",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "This is not a VOM File.", "Not a VOM File",JOptionPane.ERROR_MESSAGE);
                     ready = false;
                 }
             }
@@ -280,7 +280,7 @@ public class ContextVOMTranslationDemo extends JFrame implements ActionListener
 
                 if (cnt == 0)
                 {
-                    JOptionPane.showMessageDialog(this, "This Directory have no DVM (VOM) File.", "Not a DVM (VOM) Directory", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "This Directory have no VOM File.", "Not a VOM Directory", JOptionPane.ERROR_MESSAGE);
                     ready = false;
                 }
             }
@@ -294,7 +294,7 @@ public class ContextVOMTranslationDemo extends JFrame implements ActionListener
                     domainCollectButton.setEnabled(false);
                     contextField.setText(pathValue);
                 }
-                else JOptionPane.showMessageDialog(this, "This Context have no DVM (VOM) domain.", "No DVM (VOM) Domain", JOptionPane.ERROR_MESSAGE);
+                else JOptionPane.showMessageDialog(this, "This Context have no VOM domain.", "No VOM Domain", JOptionPane.ERROR_MESSAGE);
 
             }
             //contextField.setText(pathValue);
@@ -455,12 +455,12 @@ public class ContextVOMTranslationDemo extends JFrame implements ActionListener
                 catch(FunctionException fe)
                 {
                     domainL = null;
-                    //if (message) JOptionPane.showMessageDialog(this, "No DVM (VOM) File in Context", "This context doesn't have any DVM (VOM) File.", JOptionPane.ERROR_MESSAGE);
+                    //if (message) JOptionPane.showMessageDialog(this, "No VOM File in Context", "This context doesn't have any VOM File.", JOptionPane.ERROR_MESSAGE);
                 }
 
                 if ((domainL == null)||(domainL.size() == 0))
                 {
-                    if (message) JOptionPane.showMessageDialog(this, "No DVM (VOM) File in Context", "This context doesn't have any DVM (VOM) File.", JOptionPane.ERROR_MESSAGE);
+                    if (message) JOptionPane.showMessageDialog(this, "No VOM File in Context", "This context doesn't have any VOM File.", JOptionPane.ERROR_MESSAGE);
                 }
                 else for(String str:domainL) domainList.add(str);
             }

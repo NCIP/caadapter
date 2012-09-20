@@ -354,7 +354,7 @@ public class ContextVocabularyTranslation
             return createVocabularyMappingData(contextSymbol, domain, value, inverse, res, fvm.wasElsecaseApplied());
         }
 
-        if ((context.toLowerCase().endsWith(".vom"))||
+        if ((context.toLowerCase().endsWith("." + Config.VOCABULARY_MAPPING_DIR))||
             (context.toLowerCase().endsWith(".xml"))||
             (context.toLowerCase().endsWith(".dvm")))
         {
@@ -1047,7 +1047,7 @@ public class ContextVocabularyTranslation
                         String entryN = null;
                         for (String name:entryNames)
                         {
-                            if ((name.toLowerCase().endsWith(".vom"))||
+                            if ((name.toLowerCase().endsWith("." + Config.VOCABULARY_MAPPING_DIR))||
                                 (name.toLowerCase().endsWith(".xml"))||
                                 (name.toLowerCase().endsWith(".dvm"))) {}
                             else continue;
@@ -1127,7 +1127,7 @@ public class ContextVocabularyTranslation
                     {
                         if (!f.isFile()) continue;
                         String fileName = f.getName();
-                        if (fileName.toLowerCase().endsWith(".vom")) {}
+                        if (fileName.toLowerCase().endsWith("." + Config.VOCABULARY_MAPPING_DIR)) {}
                         else if (fileName.toLowerCase().endsWith(".xml")) {}
                         else if (fileName.toLowerCase().endsWith(".dvm")) {}
                         else continue;
@@ -1227,7 +1227,7 @@ public class ContextVocabularyTranslation
                 }
                 idx1 = idx2;
             }
-            throw new Exception("Invalid DVM (VOM) File ("+n+"): context=" + context + ", domain=" + domain);
+            throw new Exception("Invalid VOM File ("+n+"): context=" + context + ", domain=" + domain);
         }
         throw new Exception("getDomainXMLPart() is not for URL, local access only. : context=" + context + ", domain=" + domain);
     }

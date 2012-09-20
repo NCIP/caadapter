@@ -24,12 +24,16 @@ public class ZipUtil
     private ZipFile zipFile = null;
     private String pivotDirectory = null;
     private String initialFile = null;
+    private String absoluteFilePath = null;
 
     public ZipUtil(String file) throws IOException
     {
-        ZipFile zip = new ZipFile(file);
+        File f = new File(file);
+        if ((!f.exists())||(!f.isFile())) throw new IOException("Not a file : " + file);
+        ZipFile zip = new ZipFile(f.getAbsolutePath());
 
         zipFile = zip;
+        absoluteFilePath = (new File(file)).getAbsolutePath();
     }
     public List<String> getEntryNames()
     {
@@ -194,7 +198,8 @@ public class ZipUtil
     {
         if (entry == null) return null;
         if (zipFile == null) return null;
-        String filePath = zipFile.getName();
+
+        String filePath = getZipFileabsolutePath();
         try
         {
             InputStream is = zipFile.getInputStream(entry);
@@ -206,6 +211,10 @@ public class ZipUtil
         }
         if (!File.separator.equals("/")) filePath = filePath.replace(File.separator, "/");
         return "jar:file:///" + filePath + "!/" + entry.getName();
+    }
+    public String getZipFileabsolutePath()
+    {
+        return absoluteFilePath;
     }
     public String getPivotDirectory()
     {
@@ -369,14 +378,19 @@ public class ZipUtil
         {
             fileName = args[0];
             ZipUtil ss = new ZipUtil(fileName);
-            System.out.println("zip File Name : " + ss.getZipFile().getName() + ", Parent : " + ss.getParentDir());
+            System.out.println("currentDir=" + FileUtil.getWorkingDirPath() + ", zip File Name : " + ss.getZipFile().getName() + ", Parent : " + ss.getParentDir());
             List<String> li = ss.getEntryNames();
-            for (String str:li) System.out.println("Entry Name : "+str);
+            for (String str:li)
+            {
+                String url = ss.getAccessURL(ss.getZipFile().getEntry(str));
+                System.out.println("Entry Name : "+str + ", url="+url);
+            }
             List<ZipEntry> list = ss.searchEntryWithNameAsPart("voc.xsd", "xsd");
             for (ZipEntry en:list) System.out.println("Find : "+ en.getName());
         }
         catch(Exception ee)
         {
+            ee.printStackTrace();
             System.out.println("ER" + ee.getMessage());
         }
     }

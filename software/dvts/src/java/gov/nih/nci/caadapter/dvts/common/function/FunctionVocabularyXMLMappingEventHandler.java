@@ -135,7 +135,7 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
                     (type.equalsIgnoreCase("taggingSuffix"))||
                     (type.equalsIgnoreCase("taggingPrefix")))
                 {
-                    if (value == null) throw new SAXException("Invalid DVM (VOM) file format : " + type + " of the "+name+" element needs its own value.");
+                    if (value == null) throw new SAXException("Invalid VOM file format : " + type + " of the "+name+" element needs its own value.");
                 }
             }
             temp = nextTraverse(temp);

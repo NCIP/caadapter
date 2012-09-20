@@ -43,7 +43,7 @@ public class ContextVOMTranslationGUI extends JPanel implements ActionListener
     public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDemo.java,v 1.4 2008-11-21 16:18:38 wangeug Exp $";
 
 
-    private static final String TITLE = "Context DVM TransLation Demo";
+    private static final String TITLE = "Context VOM TransLation Demo";
 
 
     //private FunctionVocabularyMapping functionVocabularyMapping = new FunctionVocabularyMapping();

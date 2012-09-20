@@ -20,7 +20,7 @@ import java.awt.event.WindowEvent;
  */
 public class DomainInformationBrowser extends JDialog
 {
-    private final String TITLE = "DVM Domain Information Browser";
+    private final String TITLE = "VOM Domain Information Browser";
     String context = null;
     JSplitPane splitPane = null;
     JTable table = null;
@@ -92,7 +92,7 @@ public class DomainInformationBrowser extends JDialog
             return;
         }
 
-        String[] header = new String[] {"DVM File Name","Domain Name", "Inverse Allow", "Information"};
+        String[] header = new String[] {"VOM File Name","Domain Name", "Inverse Allow", "Information"};
         tableModel = new DefaultTableModel(header, result.size());
 
         String fileName = "";
