@@ -46,7 +46,7 @@ public class CaAdapterUserWorks  extends HttpServlet
 		String rep = "<tr><td align=\"center\" width=\"30%\" bgcolor=\"CBF5FF\">Command</td>"
                    + "<td width=\"70%\">"
                    //+ "<input type=radio name='command' value='scenarioRegistration'>Scenario Registration&nbsp;&nbsp;&nbsp;<br>"
-                   + "<input type=radio name='command' value='vomRegistration'>DVM File Registration or deleting&nbsp;&nbsp;&nbsp;<br>"
+                   + "<input type=radio name='command' value='vomRegistration'>VOM File Registration or deleting&nbsp;&nbsp;&nbsp;<br>"
                    + "<input type=radio name='command' value='checkPassword' checked>Test Password&nbsp;&nbsp;&nbsp;<br>"
                    + "<input type=radio name='command' value='changePassword'>Change Password&nbsp;&nbsp;&nbsp;<br>"
                    + "</td></tr>";

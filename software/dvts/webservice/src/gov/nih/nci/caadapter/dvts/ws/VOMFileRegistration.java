@@ -127,7 +127,7 @@ public class VOMFileRegistration extends HttpServlet
             if (user.equals(util.getAdministratorID()))
             {
                 gUtil.deleteFile(dir);
-                util.returnMessage(out, "Administrator's DVM (VOM)", util.codeERROR(), "Administrator can not have any own DVM (VOM).");
+                util.returnMessage(out, "Administrator's VOM", util.codeERROR(), "Administrator can not have any own VOM.");
                 return;
             }
 
@@ -184,7 +184,7 @@ public class VOMFileRegistration extends HttpServlet
                 name = name.trim();
                 //System.out.println("multi.getFilesystemName(name)= " + filename);
                 if (filename == null) filename = "";
-                if ((filename.toLowerCase().endsWith(".vom"))||
+                if ((filename.toLowerCase().endsWith("." + Config.VOCABULARY_MAPPING_DIR))||
                     (filename.toLowerCase().endsWith(".xml"))||
                     (filename.toLowerCase().endsWith(".dvm")))
                 {
@@ -209,7 +209,7 @@ public class VOMFileRegistration extends HttpServlet
                     else
                     {
                         gUtil.deleteFile(dir);
-                        util.returnMessageAndLogging(out, "Invalid file type", util.codeERROR(), "This file is not a DVM (or VOM) file. : " + filename, fileDataPath, user, ipAddr, this);
+                        util.returnMessageAndLogging(out, "Invalid file type", util.codeERROR(), "This file is not a VOM file. : " + filename, fileDataPath, user, ipAddr, this);
                         return;
                     }
                 }
@@ -252,7 +252,7 @@ public class VOMFileRegistration extends HttpServlet
             if (vom_Name.equals(""))
             {
                 gUtil.deleteFile(dir);
-                util.returnMessageAndLogging(out, "No DVM (VOM) File for delete", util.codeERROR(), "No DVM (VOM) File is received. (deleting)", fileDataPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "No VOM File for delete", util.codeERROR(), "No VOM File is received. (deleting)", fileDataPath, user, ipAddr, this);
                 if(vomFile != null) vomFile.delete();
                 return;
             }
@@ -262,7 +262,7 @@ public class VOMFileRegistration extends HttpServlet
             if (vomFile == null)
             {
                 gUtil.deleteFile(dir);
-                util.returnMessageAndLogging(out, "No DVM (or VOM) File", util.codeERROR(), "No DVM (or VOM) File is received.", fileDataPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "No VOM File", util.codeERROR(), "No VOM File is received.", fileDataPath, user, ipAddr, this);
                 if(vomFile != null) vomFile.delete();
                 return;
             }
@@ -287,14 +287,14 @@ public class VOMFileRegistration extends HttpServlet
             if (overwrite.equalsIgnoreCase("delete"))
             {
                 gUtil.deleteFile(dir);
-                util.returnMessageAndLogging(out, "No 'vom' (DVM) Directory for deleting", util.codeERROR(), "No 'vom' (DVM) Directory for deleting : " + user + File.separator + "vom", userPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "No 'VOM' Directory for deleting", util.codeERROR(), "No 'VOM' Directory for deleting : " + user + File.separator + "vom", userPath, user, ipAddr, this);
                 if(vomFile != null) vomFile.delete();
                 return;
             }
             if (!sDir.mkdirs())
             {
                 gUtil.deleteFile(dir);
-                util.returnMessageAndLogging(out, "'vom' (DVM) Directory Creation Failure", util.codeERROR(), "DVM (VOM) Directory Creation Failure : " + user + File.separator + "vom", userPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "'VOM' Directory Creation Failure", util.codeERROR(), "VOM Directory Creation Failure : " + user + File.separator + "vom", userPath, user, ipAddr, this);
                 if(vomFile != null) vomFile.delete();
                 return;
             }
@@ -307,7 +307,7 @@ public class VOMFileRegistration extends HttpServlet
         {
             gUtil.deleteFile(dir);
 
-            util.returnMessageAndLogging(out, "Invalid DVM (VOM) File", util.codeERROR(), valResult, userPath, user, ipAddr, this);
+            util.returnMessageAndLogging(out, "Invalid VOM File", util.codeERROR(), valResult, userPath, user, ipAddr, this);
             if(vomFile != null) vomFile.delete();
             return;
         }
@@ -334,7 +334,7 @@ public class VOMFileRegistration extends HttpServlet
             gUtil.deleteFile(dir);
             if(vomFile != null) vomFile.delete();
             if ((duplicateDomains.size() == 1))
-                util.returnMessageAndLogging(out, "Duplicate Domain(s)", util.codeERROR(), "The domain names '"+duplicateDomains.get(0)+"' in this DVM (or VOM) file is already exist in the context. Delete or change it", userPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "Duplicate Domain(s)", util.codeERROR(), "The domain names '"+duplicateDomains.get(0)+"' in this VOM file is already exist in the context. Delete or change it", userPath, user, ipAddr, this);
             else
                 util.returnMessageAndLogging(out, "Duplicate Domains", util.codeERROR(), "Following domain names are already exist in the context. Delete or change them", userPath, user, ipAddr, this, duplicateDomains);
             return;
@@ -367,7 +367,7 @@ public class VOMFileRegistration extends HttpServlet
                 ManageVOMFile.refreshContext(sDir.getAbsolutePath());
                 gUtil.deleteFile(dir);
                 if(vomFile != null) vomFile.delete();
-                util.returnMessageAndLogging(out, "DVM (or VOM) File Delete complete", util.codeINFO(), "This DVM (or VOM) file has been deleted. : " + vom_Name, userPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "VOM File Delete complete", util.codeINFO(), "This VOM file has been deleted. : " + vom_Name, userPath, user, ipAddr, this);
                 return;
 
             }
@@ -388,7 +388,7 @@ public class VOMFileRegistration extends HttpServlet
                 {
                     if(vomFile != null) vomFile.delete();
                     gUtil.deleteFile(dir);
-                    util.returnMessageAndLogging(out, "Already exist DVM (VOM) file", util.codeERROR(), "This DVM (VOM) file name is already exist. : " + user + File.separator + vFile.getName(), userPath, user, ipAddr, this);
+                    util.returnMessageAndLogging(out, "Already exist VOM file", util.codeERROR(), "This VOM file name is already exist. : " + user + File.separator + vFile.getName(), userPath, user, ipAddr, this);
                     return;
                 }
             }
@@ -404,7 +404,7 @@ public class VOMFileRegistration extends HttpServlet
             if (!vomFile.renameTo(new File(fileDataPath + vomFile.getName())))
             {
                 gUtil.deleteFile(dir);
-                util.returnMessageAndLogging(out, "DVM (or VOM) File Copy Failure", util.codeERROR(), "DVM (or VOM) File Copy Failure : " + vomFile.getName(), userPath, user, ipAddr, this);
+                util.returnMessageAndLogging(out, "VOM File Copy Failure", util.codeERROR(), "VOM File Copy Failure : " + vomFile.getName(), userPath, user, ipAddr, this);
                 return;
             }
 
@@ -416,7 +416,7 @@ public class VOMFileRegistration extends HttpServlet
 //                util.returnMessageAndLogging(out, "VOM description File Writing Failure", util.codeERROR(), "VOM description File Writing Failure : " + user + File.separator + "vom" + File.separator + filename, userPath, user, ipAddr, this);
 //                return;
 //            }
-            util.returnMessageAndLogging(out, "DVM (or VOM) File Registration Complete!", util.codeINFO(), "This DVM (or VOM) file is successfully registered. : " + user + File.separator + "vom" + File.separator + filename, userPath, user, ipAddr, this);
+            util.returnMessageAndLogging(out, "VOM File Registration Complete!", util.codeINFO(), "This VOM file is successfully registered. : " + user + File.separator + "vom" + File.separator + filename, userPath, user, ipAddr, this);
             ManageVOMFile.refreshContext(sDir.getAbsolutePath());
         }
         catch(Exception e)
@@ -454,20 +454,20 @@ public class VOMFileRegistration extends HttpServlet
         String h = "";
         h = "<html>\n" +
             "<head>\n" +
-            "<title>DVM File Registration</title>\n" +
+            "<title>VOM File Registration</title>\n" +
             "</head>\n" +
             "<body bgcolor='lightblue'>\n" +
             "<font color='green'>\n" +
             "<center>\n" +
             "<h1>\n" +
-            "caAdapter DVTS Web Service DVM File Registration\n" +
+            "caAdapter DVTS Web Service VOM File Registration\n" +
             "</h1>\n" +
             "\n" +
             "</font>\n" +
             "\n" +
             "<br>\n" +
             "\n" +
-            "** 'DVM' (Domain Value Mapping) and 'VOM' (VOcabulary Mapping) are the same meaning<br>\n" +
+            //"** 'DVM' (Domain Value Mapping) and 'VOM' (VOcabulary Mapping) are the same meaning<br>\n" +
             "<form name='VOM' method='post' action='"+url+"' ENCTYPE='multipart/form-data'>\n" +
             "\n" +
             "<table border=2 cellpading=10>\n";
@@ -493,19 +493,19 @@ public class VOMFileRegistration extends HttpServlet
             "<tr><td>\n" +
             "<h3><font color=blue>"+ (++seq) +". Select one job</font>\n" +
             "</td><td>" +
-            "  <input type=radio name='overwrite' value='Yes'>Overwrite DVM File&nbsp;&nbsp;&nbsp;<br>\n" +
-            "  <input type=radio name='overwrite' value='No' checked>New DVM File Registration&nbsp;&nbsp;&nbsp;<br>\n" +
-            "  <input type=radio name='overwrite' value='Delete'>Delete DVM File&nbsp;&nbsp;&nbsp;<br>\n" +
+            "  <input type=radio name='overwrite' value='Yes'>Overwrite VOM File&nbsp;&nbsp;&nbsp;<br>\n" +
+            "  <input type=radio name='overwrite' value='No' checked>New VOM File Registration&nbsp;&nbsp;&nbsp;<br>\n" +
+            "  <input type=radio name='overwrite' value='Delete'>Delete VOM File&nbsp;&nbsp;&nbsp;<br>\n" +
             //"  <input type=radio name='overwrite' value='Backup'>Backup&nbsp;&nbsp;&nbsp;</h3>\n" +
             "</td></tr>\n" +
             "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". If you select 'Delete a DVM file', input the file name. </font>\n" + //<font color=red>*</font>\n" +
+            "<h3><font color=blue>"+ (++seq) +". If you select 'Delete a VOM file', input the file name. </font>\n" + //<font color=red>*</font>\n" +
             "</td><td>\n" +
             " <input type=text name='vom' value=''> &nbsp;&nbsp;&nbsp;</h3>\n" +
             "  \n" +
             "</td></tr>\n" +
             "<tr><td>\n" +
-            "<h3><font color=blue>"+ (++seq) +". If you select 'Overwrite' or 'New' DVM File, input the file.</h3><h5>Any duplicate domain name is not allowed in the same context.</h5></font>\n" +
+            "<h3><font color=blue>"+ (++seq) +". If you select 'Overwrite' or 'New' VOM File, input the file.</h3><h5>Any duplicate domain name is not allowed in the same context.</h5></font>\n" +
             "</td><td>\n" +
             "  <input type=\"file\" name=\"vomfile\" size=\"30\" style=\"border-top-width:1; style=\"border-right-width:1; \n" +
             "         style=\"border-bottom-width:1; style=\"border-left-width:1px; border-style:dashed;\">\n" +
