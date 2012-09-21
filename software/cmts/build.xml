@@ -78,6 +78,7 @@
 			    <exclude name="jnlp-servlet.jar"/>
 			    <exclude name="jnlp.jar"/>
 			    <exclude name="commons-fileupload-1.1.jar"/>
+			    <exclude name="servlet.jar"/>
 		    </lib>
 			<fileset dir="${dist.dir}/webapp">
 				<exclude name="${jar-signing.keystore.abs-location}"/>
