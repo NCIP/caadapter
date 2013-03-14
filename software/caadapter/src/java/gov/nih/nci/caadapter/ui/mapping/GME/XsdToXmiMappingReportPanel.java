@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 package gov.nih.nci.caadapter.ui.mapping.GME;
@@ -112,7 +111,7 @@ public class XsdToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 		return splitPane;
 	}
 
-    
+
 
     public Map getMenuItems(String menu_name)
 	{
@@ -129,16 +128,16 @@ public class XsdToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 				contextManager.addClientMenuAction(menuMapName, MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE_AS, action);
 				contextManager.addClientMenuAction(menuMapName, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.SAVE_AS, action);
 				action.setEnabled(true);
- 
+
 				action = new gov.nih.nci.caadapter.ui.mapping.GME.actions.CloseXsdToXmiMappingReportAction(this);
 				contextManager.addClientMenuAction(menuMapName, MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
 				action.setEnabled(true);
-				
+
 				actionMap = contextManager.getClientMenuActions(menuMapName, menu_name);
-		
+
 		return actionMap;
 	}
-	
+
 
     /**
      * return the open action inherited with this client.
@@ -199,5 +198,5 @@ public class XsdToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * 
+ *
 */

@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 
 package gov.nih.nci.caadapter.hl7.datatype;
 
@@ -17,7 +17,7 @@ import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
 
 /**
  * The class will parse a complex HL7 Datatype from the xsd file.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2009-11-11 20:27:44 $
@@ -151,12 +151,12 @@ public class ComplexTypeParser {
 
     }
     /*
-     * processInterval will process the timestamp related datatypes. 
-     * 
+     * processInterval will process the timestamp related datatypes.
+     *
      *  The XSD is very complicated for this type but after reviewing the XSD,
      *  it is clear the complication is due the fact that XSD needs to cover all
      *  different scenarios (including missing valus). For use we only need "low", "high", "width" and etc.
-     *  
+     *
      *  Therefore, the interval parser will just extract those attributes and there corresponding datatypes.
      */
     private static void processInterval(Datatype datatype, Node node, String prefix) {

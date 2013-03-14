@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.hl7.datatype;
 /**
  * The class defines Utilitis of parsing a XSD file.
@@ -31,7 +31,7 @@ public class XSDParserUtil {
 	 */
 	private static String[] xsdTypes = { "string",
 				"boolean",
-				"decimal", 
+				"decimal",
 				"double",
 				"token",
 				"NMTOKEN",
@@ -43,7 +43,7 @@ public class XSDParserUtil {
 	/**
 	 * This method will determine whether a datatype is XSD defined datatype or
 	 * a HL7 v3 defined datatype
-	 * 
+	 *
 	 * @param name the name of the datatype
 	 * @param prefix the prefix to all xml elements. For example <xs:attribute>
 	 * xs: is the prefix of the element
@@ -51,7 +51,7 @@ public class XSDParserUtil {
 	 */
 
 	private static HashSet allElement = new HashSet();
-	
+
 	public static boolean isXSDType(String name, String prefix) {
 		  for (int i=0; i<xsdTypes.length;i++) {
 			  if ((prefix+xsdTypes[i]).equals(name)) return true;
@@ -61,7 +61,7 @@ public class XSDParserUtil {
 
 	/**
 	 * This method will get the value of an attribute for a given node
-	 * 
+	 *
 	 * @param node the XML node which contain the attribute
 	 * @param name the name of the attrbiute
 	 * @return String the string value of the attribute.
@@ -80,7 +80,7 @@ public class XSDParserUtil {
 	 *   <node1>
 	 *     <node2>
 	 *   getFirstChildElement(node1) will return a reference to <node2>
-	 * 
+	 *
 	 * @param node the pareent XML node
 	 * @return Node the first child of a given XML node.
 	 */
@@ -104,7 +104,7 @@ public class XSDParserUtil {
 		 *     <node2>
 		 *     <node3>
 		 *   getNextElement(node2) will return a reference to <node3>
-		 * 
+		 *
 		 * @param node the pareent XML node
 		 * @return Node the next XML sibling element.
 		 */
@@ -121,21 +121,21 @@ public class XSDParserUtil {
 
 	  public static HashSet printAllNames(String fileName) throws Exception {
 		  	allElement.removeAll(allElement);
-		  
+
 	  		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	  		DocumentBuilder db = dbf.newDocumentBuilder();
 
 			Document doc = db.parse(fileName);
 			count(doc);
-			
+
 			Iterator allElementIterator = allElement.iterator();
 			while (allElementIterator.hasNext()) {
 				System.out.println(allElementIterator.next());
 			}
-			
+
 			return allElement;
 	  }
-	  
+
 	  public static void count(Node node) {
 	        if (node == null) {
 	            return;

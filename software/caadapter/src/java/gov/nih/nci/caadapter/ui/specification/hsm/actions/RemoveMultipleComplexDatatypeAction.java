@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
@@ -102,7 +100,7 @@ public class RemoveMultipleComplexDatatypeAction extends AbstractHSMContextCRUDA
             	Attribute dtAttrClonned=(Attribute)dtAttr.clone();
             	DefaultMutableTreeNode parentNode =(DefaultMutableTreeNode)targetNode.getParent();
             	Object parentObj=parentNode.getUserObject();
-            	
+
             	Datatype parentDatatype=null;
             	if (parentObj instanceof MIFAttribute)
             	{
@@ -119,7 +117,7 @@ public class RemoveMultipleComplexDatatypeAction extends AbstractHSMContextCRUDA
             		//here return the concrete datatype
             		parentDatatype=parentDtAttribute.getReferenceDatatype();
             	}
-            	
+
             	if (parentDatatype==null)
             	{
             		JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Invalid selection",
@@ -127,7 +125,7 @@ public class RemoveMultipleComplexDatatypeAction extends AbstractHSMContextCRUDA
                         setSuccessfullyPerformed(false);
                         return false;
             	}
-            	
+
             	MIFUtil.removeDatatypeAttributeWithXmlName(parentDatatype,dtAttr.getNodeXmlName());
             	//this sibling Attribute object has been reset with new multiplicity index,
             	//reload them

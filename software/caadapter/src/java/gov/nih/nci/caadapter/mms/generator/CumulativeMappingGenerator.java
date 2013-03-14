@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 package gov.nih.nci.caadapter.mms.generator;
@@ -31,10 +30,10 @@ import java.util.List;
 
 /**
  * The purpose of this class is to create and maintain a CumulativeMapping
- * object. As a caAdapter user drags and drops a source to a target in the UI 
+ * object. As a caAdapter user drags and drops a source to a target in the UI
  * the system will first determine what type of mapping the user is attempting
- * to create then it will determine if the mapping is valid based on various business rules. 
- * If the mapping is found to be valid it will add it to the CumulativeMapping 
+ * to create then it will determine if the mapping is valid based on various business rules.
+ * If the mapping is found to be valid it will add it to the CumulativeMapping
  * object as either a DependencyMapping, AttributeMapping, SingleAssociationMapping, or ManyToManyMapping object.
  *
  * @author OWNER: connellm
@@ -60,18 +59,18 @@ private CumulativeMappingGenerator(String xmiName)  throws Exception
 /**
  * @param xmiFileName_local
  */
-public static boolean init(String xmiFileName_local) 
-{	
+public static boolean init(String xmiFileName_local)
+{
 	try {
 		instance = new CumulativeMappingGenerator(xmiFileName_local);
-    }catch (Exception e){      
+    }catch (Exception e){
       e.printStackTrace();
-      return false;	  
+      return false;
     }
     return true;
 }
 
-public static CumulativeMappingGenerator getInstance() 
+public static CumulativeMappingGenerator getInstance()
 {
 	return instance;
 }
@@ -115,7 +114,7 @@ public void setErrorMessage(String eMessage) {
  * @return boolean
  */
 public boolean unmap(String source, String target, String annotationSite, String relativePath){
-	
+
 	boolean successfullyUnmapped = false;
 	String sourceMappingType = determineSourceMappingType(source);
 	String targetMappingType = determineTargetMappingType(target);
@@ -127,7 +126,7 @@ public boolean unmap(String source, String target, String annotationSite, String
 	} else if (sourceMappingType .equals("attribute") && targetMappingType.equals("attribute")) {
 		if (annotationSite==null||annotationSite.equals(""))
 			successfullyUnmapped = unmapAttribute(source,relativePath, target);
-		else 
+		else
 			successfullyUnmapped = unmapAttribute(annotationSite,relativePath, target);
 	} else if (sourceMappingType.equals("association")&& targetMappingType.equals("attribute")) {
 		if (annotationSite==null||annotationSite.equals(""))
@@ -141,7 +140,7 @@ public boolean unmap(String source, String target, String annotationSite, String
 	}
 	return successfullyUnmapped;
 }
- 
+
 
 /**
  * @param source Source element to be mapped.
@@ -149,10 +148,10 @@ public boolean unmap(String source, String target, String annotationSite, String
  * @param annotationSite path the annotation element for ISO 21090 datatype annotation
  * @param relativePath relative path of the current element to the annotation element
  * @param updateModel If the underneath UML should be updated as creating a new mapping
- * @return boolean 
+ * @return boolean
  */
 public boolean map(String source, String target, String annotationSite, String relativePath, boolean updateModel){
-	
+
 	boolean successfullyMapped = false;
 	// The first thing that needs to be determined is what type of mapping is being attempted, i.e. Dependency, Attribute, Associatin, etc.
 	String sourceMappingType = determineSourceMappingType(source);
@@ -164,7 +163,7 @@ public boolean map(String source, String target, String annotationSite, String r
 		//Then the actual components from the UML model are realized
 		UMLClass sourceClass = getClass(source);
 		UMLClass targetClass = getClass(target);
-		successfullyMapped = mapDependency(sourceClass, source, targetClass, target, updateModel);		
+		successfullyMapped = mapDependency(sourceClass, source, targetClass, target, updateModel);
 	} else if (sourceMappingType.equals("attribute") && targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
 		successfullyMapped = mapAttribute(source, target,annotationSite, relativePath, updateModel);
@@ -175,14 +174,14 @@ public boolean map(String source, String target, String annotationSite, String r
 		if (relativePath==null||relativePath.equals(""))
 			return successfullyMapped;
 		//additional work for ISO datatype -- map collection element with/without join table
-		//case I: the ancestor annotation attribute is mapped 
-		//        set both "mapped-collection-table" and "correlation-table" 
+		//case I: the ancestor annotation attribute is mapped
+		//        set both "mapped-collection-table" and "correlation-table"
 		//        -- no action
-		//case II: the ancestor annotation attribute is not mapped 
+		//case II: the ancestor annotation attribute is not mapped
 		//        neither set "mapped-collection-table" nor "correlation-table"
 		//		  -- no action
 		//case III the ancestor annotation attribute is mapped
-		//        only set  "mapped-collection-table" 
+		//        only set  "mapped-collection-table"
 		//case III.a. the attribute is mapped to the same target table
 		//       -- no action, return
 		//case III.b. the attribute is mapped to a different table
@@ -190,13 +189,13 @@ public boolean map(String source, String target, String annotationSite, String r
 		//       and change "mapped-collection-table" value to current table name
 
 		UMLAttribute annotationAttr=ModelUtil.findAttribute(metaModel.getModel(), annotationSite);
-		if (annotationAttr.getTaggedValue("correlation-table")!=null)		
+		if (annotationAttr.getTaggedValue("correlation-table")!=null)
 			//Case I:
 			return successfullyMapped;
 		if (annotationAttr.getTaggedValue("mapped-collection-table")==null)
 			//Case II:
 			return successfullyMapped;
-		
+
 		//Case III-- only "mapped-collection-table" is set
 		ColumnMetadata columnMeta=(ColumnMetadata)metaModel.getModelMetadata().get(target);
 		String tblName=columnMeta.getTableMetadata().getName();
@@ -204,7 +203,7 @@ public boolean map(String source, String target, String annotationSite, String r
 		if (tblName.equals(tblCollectionName))
 			//Case III.a:
 			return successfullyMapped;
-		
+
 		//Case III.b, set "correlation-table" and change "mapped-collection-table"
 		XMIAnnotationUtil.addTagValue(annotationAttr, "correlation-table", tblCollectionName);
 		XMIAnnotationUtil.addTagValue(annotationAttr, "mapped-collection-table", tblName);
@@ -213,10 +212,10 @@ public boolean map(String source, String target, String annotationSite, String r
 		successfullyMapped = mapAssociation(source, target, annotationSite, relativePath, updateModel);
 		if(!successfullyMapped)
 			return successfullyMapped;
-		
+
 		if (!updateModel)
 			return successfullyMapped;
-		
+
 		//additional work for ISO datatype -- map collection element with/without join table
 		//case I: no child attribute being mapped -- no action return
 		//case II: child attribute are mapped to the same target table -- no action since it is "mapped-collection-table"
@@ -227,11 +226,11 @@ public boolean map(String source, String target, String annotationSite, String r
  		List<MetaObject>  allMappedTargetMeta=cumulativeMapping.findMappedSourceOrChild(source);
 		if (allMappedTargetMeta==null||allMappedTargetMeta.isEmpty())
 			return successfullyMapped;
-		
+
 		ColumnMetadata mappedColumnInOtherTable=null;
 		for (MetaObject oneTrgtMeta:allMappedTargetMeta)
 		{
- 
+
 			if (oneTrgtMeta instanceof ColumnMetadata)
 			{
 				ColumnMetadata oneTrgtColumn=(ColumnMetadata)oneTrgtMeta;
@@ -245,7 +244,7 @@ public boolean map(String source, String target, String annotationSite, String r
 		if (mappedColumnInOtherTable==null)
 			//case I and II
 			return successfullyMapped;
-		
+
 		//case III
 		String otherTblPath=mappedColumnInOtherTable.getParentXPath();
 		TableMetadata otherTblMeta=(TableMetadata)metaModel.getModelMetadata().get(otherTblPath);
@@ -274,11 +273,11 @@ public boolean map(String source, String target, String annotationSite, String r
 private String determineSourceMappingType(String source){
 	String mappingType = null;
 	if (isClass(source)){
-		mappingType = "dependency";	
+		mappingType = "dependency";
 	} else if (isAttribute(source)){
 		mappingType = "attribute";
 	//} //TO_DO else if (isSingleAssociation(source)&& isManyToManyAssociation(source)){
-	} else 
+	} else
 		mappingType="association";
 	return mappingType;
 }
@@ -292,7 +291,7 @@ private String determineSourceMappingType(String source){
 private String determineTargetMappingType(String target){
 	String mappingType = "undefinedTarget";
 	//We need to determine if the target is a table for a dependency mapping or a many to many mapping.
-	
+
 	if (isClass(target) && !isCorrelationTable(target)){
 		mappingType = "dependency";
 	} else if (isAttribute(target)){
@@ -384,15 +383,15 @@ private boolean mapAttribute(String sourcePath, String targetPath, String annota
 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
 	AttributeMetadata attributeMetadata = (AttributeMetadata)modelMeta.get(annotationPath);//.get(sourcePath);
- 
+
 	ColumnMetadata columnMetadata = (ColumnMetadata)modelMeta.get(targetPath);
 	boolean successfullyMapped = false;
 	AttributeMapping mapping = new AttributeMapping();
-	
+
 	columnMetadata.setType(columnMetadata.TYPE_ATTRIBUTE);
 	mapping.setAttributeMetadata(attributeMetadata);
 	mapping.setColumnMetadata(columnMetadata);
-	
+
 	AttributeMappingValidator validator = new AttributeMappingValidator(mapping);
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
@@ -406,7 +405,7 @@ private boolean mapAttribute(String sourcePath, String targetPath, String annota
 			UMLAttribute xpathUMLAttribute=ModelUtil.findAttribute(metaModel.getModel(),columnMetadata.getXPath());
 			//remove the leading string:"Logical View.Logical Model." from source path
 			String pureSrcPath="";
-			
+
 			if (relativePath==null|relativePath.equals(""))
 				pureSrcPath=XMIAnnotationUtil.getCleanPath(metaModel.getMmsPrefixObjectModel(),  sourcePath);
 			else
@@ -461,11 +460,11 @@ private boolean mapAssociation(String sourceXPath, String targetXPath, String an
 	ColumnMetadata targetMetadata = (ColumnMetadata)modelMeta.get(targetXPath);
 	boolean successfullyMapped = false;
 	AssociationMapping mapping = new AssociationMapping();
-		
-	targetMetadata.setType(targetMetadata.TYPE_ASSOCIATION);	
+
+	targetMetadata.setType(targetMetadata.TYPE_ASSOCIATION);
 	mapping.setAssociationEndMetadata(sourceMetadata);
 	mapping.setColumnMetadata(targetMetadata);
-	
+
 	SingleAssociationMappingValidator validator = new SingleAssociationMappingValidator(mapping);
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
@@ -477,13 +476,13 @@ private boolean mapAssociation(String sourceXPath, String targetXPath, String an
 
 		if (updateModel)
 		{
-	
+
 			if (relativePath==null|relativePath.equals(""))
 				XMIAnnotationUtil.annotateAssociationMapping(metaModel.getModel(),sourceXPath, targetXPath);
 			else
 				XMIAnnotationUtil.annotateAssociationMapping(metaModel.getModel(),annotationPath, targetXPath);
 		}
-			
+
 	}
 	else {
 		setErrorMessage(validator.getValidationErrorMessage());
@@ -499,7 +498,7 @@ private boolean unmapAssociation(String annotationPath, String relativePath, Str
 	List<AssociationMapping> singleAssociationMapping = cumulativeMapping.getAssociationMappings();
 	for (AssociationMapping assoS : singleAssociationMapping) {
 //		if (assoS.getAssociationEndMetadata().getXPath().equals(sourceXPath) && assoS.getColumnMetadata().getXPath().equals(targetXPath)) {
-		if (assoS.getColumnMetadata().getXPath().equals(targetXPath)) 
+		if (assoS.getColumnMetadata().getXPath().equals(targetXPath))
 		{
 			if (relativePath==null|relativePath.equals(""))
 			{
@@ -510,7 +509,7 @@ private boolean unmapAssociation(String annotationPath, String relativePath, Str
 			{
 				cumulativeMapping.removeAssociationMapping(assoS,  annotationPath);
 				return XMIAnnotationUtil.deAnnotateAssociationMapping(metaModel.getModel(),  annotationPath, targetXPath);
-			}							
+			}
 		}
 	}
 	return false;
@@ -542,7 +541,7 @@ private boolean isAttribute(String element){
 	Object foundObject=metaModel.getModelMetadata().get(element);
 	if (foundObject==null)
 		return false;
-	
+
 	if (foundObject instanceof AttributeMetadata)
 	{
 		if (Iso21090uiUtil.isCollectionDatatype((AttributeMetadata)foundObject))
@@ -557,11 +556,11 @@ private boolean isAttribute(String element){
 			return true;
 	}
 
-	
+
 	if(foundObject instanceof ColumnMetadata)
 		return true;
 	return false;
-//	
+//
 //	UMLAttribute xpathUMLAttribute=ModelUtil.findAttribute(metaModel.getModel(),element);
 //	if (xpathUMLAttribute!=null)
 //		return true;
@@ -576,7 +575,7 @@ private boolean isAttribute(String element){
 //			else if (modelMeta.get(element) instanceof ColumnMetadata) return true;
 //			else return false;
 //		}
-//	}		
+//	}
 //	return isAttribute;
 }
 
@@ -609,7 +608,7 @@ private boolean isCorrelationTable(String element){
  * @param className
  * @return UMLClass
  */
-private UMLClass findClass(UMLModel model, String[] className, int start, int end) 
+private UMLClass findClass(UMLModel model, String[] className, int start, int end)
 {
   for(UMLPackage pkg : model.getPackages()) {
 	  if (pkg.getName().equals(className[start])) {
@@ -617,7 +616,7 @@ private UMLClass findClass(UMLModel model, String[] className, int start, int en
 		  if(c != null)
 			  return c;
 	  }
-  }    
+  }
   return null;
 }
 
@@ -629,7 +628,7 @@ private UMLClass findClass(UMLModel model, String[] className, int start, int en
 private UMLClass findClass(UMLPackage pkg, String[] className, int start, int end) {
 	if (start == end) {
 		for(UMLClass clazz : pkg.getClasses()) {
-			if(clazz.getName().equals(className[start])) 
+			if(clazz.getName().equals(className[start]))
 				return clazz;
 		}
 	}
@@ -648,7 +647,7 @@ private UMLClass findClass(UMLPackage pkg, String[] className, int start, int en
 	public static void main(String[] args) {
 		CumulativeMappingGenerator.init("C:/sample.xmi");
       CumulativeMappingGenerator x =CumulativeMappingGenerator.getInstance();
-    
+
 //      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene","Logical View.Data Model.GENE", true );
 //      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon","Logical View.Data Model.TAXON");
 //      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone","Logical View.Data Model.CLONE");
@@ -656,7 +655,7 @@ private UMLClass findClass(UMLPackage pkg, String[] className, int start, int en
 //      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence","Logical View.Data Model.SEQUENCE");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Target","Logical View.Data Model.TARGET");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library","Logical View.Data Model.LIBRARY");
-//  	  
+//
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon.id","Logical View.Data Model.TAXON.TAXON_ID");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.id","Logical View.Data Model.CLONE.CLONE_ID");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library.id","Logical View.Data Model.LIBRARY.LIBRARY_ID");
@@ -664,15 +663,15 @@ private UMLClass findClass(UMLPackage pkg, String[] className, int start, int en
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.id","Logical View.Data Model.GENE.GENE_ID");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.id","Logical View.Data Model.SEQUENCE.SEQUENCE_ID");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.id","Logical View.Data Model.CHROMOSOME.CHROMOSOME_ID");
-//  
+//
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.chromosome","Logical View.Data Model.GENE.CHROMOSOME_ID");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.taxon","Logical View.Data Model.CHROMOSOME.TAXON_ID");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.clone","Logical View.Data Model.SEQUENCE.CLONE_ID");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.library","Logical View.Data Model.CLONE.LIBRARY_ID");
-//  	  
+//
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.sequenceCollection","Logical View.Data Model.GENE_SEQUENCE.GENE_ID");
 //  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.geneCollection","Logical View.Data Model.GENE_SEQUENCE.SEQUENCE_ID");
-//  	  
+//
   	  CumulativeMapping y = x.getCumulativeMapping();
 	}
 }

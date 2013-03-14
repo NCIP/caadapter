@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.ui.main;
 
 import gov.nih.nci.caadapter.common.util.Config;
@@ -79,13 +79,13 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 		setIconImage(icon);
 		setSize(600, 400);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-		
+
 		initUI();
 		this.setResizable(false);
 		this.setVisible(true);
 		DefaultSettings.centerWindow(this);
 	}
-	
+
 	public void licenseAccepted(boolean isAccepted)
 	{
 		if (isAccepted)
@@ -98,15 +98,15 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 			System.exit(-1);
 		}
 	}
-	
+
 	private void initUI()
 	{
 		Container contentPane=getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.add(setLicenseTextPanel(), BorderLayout.CENTER);
-		contentPane.add(setInputPanel(), BorderLayout.SOUTH);	 
+		contentPane.add(setInputPanel(), BorderLayout.SOUTH);
 	    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	    
+
 	    addWindowListener(new WindowAdapter(){
 	        public void windowClosing(WindowEvent we) {
 	            Window w = we.getWindow();
@@ -114,12 +114,12 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 	                "Do you want to exit the program?", "caAdapter License Agreement", JOptionPane.YES_NO_OPTION);
 	                if (answer == JOptionPane.YES_OPTION)
 	                    w.dispose();
-	 
+
 	            }
 	        });
 	}
-	
-	private JPanel setLicenseTextPanel()  
+
+	private JPanel setLicenseTextPanel()
 	{
 		JPanel rtnPanel=new JPanel();
 		StringBuffer licenseBf=new StringBuffer();
@@ -144,28 +144,28 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 		JScrollPane js2 = new JScrollPane(mainView);
 		js2.setPreferredSize(new Dimension(this.getWidth()-40, getHeight()-160));
         mainView.setEditable(false);
-        		 
+
 		rtnPanel.add(js2);
 		rtnPanel.setBorder(BorderFactory.createEtchedBorder());
 		return rtnPanel;
 	}
-	
+
 	private JPanel setInputPanel()
 	{
 		JPanel rtnPanel=new JPanel();
 		rtnPanel.setLayout(new BorderLayout());
 
-		acceptBox=new JCheckBox(ACCEPT_AGREEMENT_STATEMENT);		
+		acceptBox=new JCheckBox(ACCEPT_AGREEMENT_STATEMENT);
 		denyBox=new JCheckBox(NOT_ACCEPT_AGREEMENT_STATEMENT);
 		ButtonGroup group=new ButtonGroup();
 		group.add(acceptBox);
 		group.add(denyBox);
-			
-		
+
+
 		JPanel containPane=new JPanel();
 		containPane.setBorder(BorderFactory.createEmptyBorder(5,
 				20,
-				5, 
+				5,
 				50));
 		containPane.setLayout(new GridLayout(3,1));
 		containPane.add(acceptBox);
@@ -196,7 +196,7 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 			JButton evtButton=(JButton)evtObj;
 			if (evtButton==nextButton)
 			{
-				//launch caAdapter 
+				//launch caAdapter
 				if (acceptBox.isSelected())
 					licenseAccepted(true);
 				else if(denyBox.isSelected())
@@ -204,8 +204,8 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 				else
 				{
 					String msg="You have not check your license agreement, \ncontinue ?";
-					
-					int yesNo=JOptionPane.showConfirmDialog(this, 
+
+					int yesNo=JOptionPane.showConfirmDialog(this,
 							msg,
 							"Accept License Agreement",
 							JOptionPane.YES_OPTION);
@@ -221,7 +221,7 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 				licenseAccepted(false);
 			}
 		}
-		
+
 	}
 
 }

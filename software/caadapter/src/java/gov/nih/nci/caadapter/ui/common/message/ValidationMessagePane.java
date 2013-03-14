@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -27,7 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JSplitPane;
- 
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
@@ -85,7 +84,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	private JPanel confirmationMessagePanel;
 	private JLabel confirmationMessageField;
 
-    private int selectedRow = -1;    
+    private int selectedRow = -1;
     private boolean startedTag = false;
     private boolean displayValidatedElement=false;
     private JTextField elementField;
@@ -103,7 +102,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	{
 		displayValidatedElement=displayObject;
 		initialize();
-		
+
 	}
 	private void initialize()
 	{
@@ -353,7 +352,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 				JTabbedPane parentTab=(JTabbedPane)parentCom;
 				parentTab.setSelectedComponent(this);
 			}
-			
+
 	}
 
 	/**

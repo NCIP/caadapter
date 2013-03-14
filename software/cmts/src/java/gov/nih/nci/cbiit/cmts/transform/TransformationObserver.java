@@ -1,14 +1,15 @@
-/**
- * The content of this file is subject to the caAdapter Software License (the "License").  
- * A copy of the License is available at:
- * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
- * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
- * /docs/caAdapter_License
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
+
 package gov.nih.nci.cbiit.cmts.transform;
 /**
  * Define the method to watch progress of a transformation service
- *  
+ *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMTS v1.0
@@ -38,7 +39,7 @@ public interface TransformationObserver {
 	public void progressUpdate(int completionPercent);
 
 	/**
-	 * Inform the HL7 transformation request is cancelled 
+	 * Inform the HL7 transformation request is cancelled
 	 * @return
 	 */
 	public boolean isRequestCanceled();
@@ -46,7 +47,7 @@ public interface TransformationObserver {
 
 	/*
 	 * Set the total number of HL7 message with a transformation service request
-	 * @param count The number of messages 
+	 * @param count The number of messages
 	 */
 	public void setMessageCount(int count);
 

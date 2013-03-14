@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -100,7 +99,7 @@ public class RemoveMultipleAttributeAction extends AbstractHSMContextCRUDAction
             {
             	DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)targetNode.getParent();
             	Object parentObj=parentNode.getUserObject();
-            	
+
             	MIFClass parentMif=null;
             	MIFClass chosenMif=null;
             	if (parentObj instanceof MIFClass)
@@ -110,7 +109,7 @@ public class RemoveMultipleAttributeAction extends AbstractHSMContextCRUDAction
             		MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
            			parentMif=parentMifAssc.getMifClass();
            			if (parentMifAssc.isChoiceSelected())
-           				chosenMif=parentMifAssc.findChoiceSelectedMifClass(); 
+           				chosenMif=parentMifAssc.findChoiceSelectedMifClass();
             	}
 
             	if (parentMif==null)
@@ -120,12 +119,12 @@ public class RemoveMultipleAttributeAction extends AbstractHSMContextCRUDAction
                         setSuccessfullyPerformed(false);
                         return false;
             	}
-            	
+
             	parentMif.removeAttribute(mifAttr);
             	//the MIFAttribute to be removed may exist with ChosenMIFClass
             	if (chosenMif!=null)
             		chosenMif.removeAttribute(mifAttr);
-            	
+
             	//this sibling MIFAttribute object has been reset with new multiplicity index,
             	//reload them
             	parentNode.remove(targetNode);

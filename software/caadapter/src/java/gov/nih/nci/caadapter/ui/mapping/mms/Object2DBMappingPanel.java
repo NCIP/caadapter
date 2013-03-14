@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 package gov.nih.nci.caadapter.ui.mapping.mms;
@@ -87,12 +86,12 @@ import javax.swing.tree.TreeNode;
 /**
  * The class is the main panel to construct the UI and initialize the utilities
  * to facilitate mapping functions.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v3.2
  * @version    $Revision: 1.43 $
- * @date       $Date: 2009-09-30 17:08:26 $ 
+ * @date       $Date: 2009-09-30 17:08:26 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
@@ -104,7 +103,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String SELECT_XMI = "Open XMI file...";
     private static final String SELECT_XSD = "Open XSD file...";
     private static final String GENERATE_HBM = "Generate HBM Files";
-	
+
 	public Object2DBMappingPanel() {
 		this("defaultObjectToDatabaseMapping");
 	}
@@ -189,7 +188,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		middlePanel.setSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3),
 				(int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
-        
+
         JPanel centerTopPanel = new JPanel(new BorderLayout(2, 0));
 //        JButton generateHMBButton = new JButton(GENERATE_HBM);
 //        centerTopPanel.add(generateHMBButton, BorderLayout.CENTER);
@@ -199,11 +198,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 //		JLabel placeHolderLabel = new JLabel();
 //		placeHolderLabel.setPreferredSize(new Dimension(
 //				(int) (Config.FRAME_DEFAULT_WIDTH / 16), 24));
-//		
+//
 //		centerTopPanel.add(placeHolderLabel, BorderLayout.EAST);
 		centerTopPanel.setPreferredSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
-		
+
 		JPanel middleContainerPanel = new JPanel(new BorderLayout());
 		middleContainerPanel.add(centerTopPanel, BorderLayout.NORTH);
 		middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
@@ -274,15 +273,15 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					case JFileChooser.ERROR_OPTION:
 						return;
 					}
-					saveMappingFile();						
+					saveMappingFile();
 					String outputDir=fileChooser.getSelectedFile().getAbsolutePath();
 					UMLModel model=CumulativeMappingGenerator.getInstance().getMetaModel().getHandler().getModel();
 					HBMGenerateCacoreIntegrator.getInstance().generateMapping(model,outputDir);
 					JOptionPane.showMessageDialog(getParent(),
 							"HBM files are generated at "+ fileChooser.getSelectedFile().getAbsolutePath(),
 							"HBM Generation Complete",
-							JOptionPane.INFORMATION_MESSAGE);							
-					
+							JOptionPane.INFORMATION_MESSAGE);
+
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -301,8 +300,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	}
 
 	private void saveMappingFile() {
-		File file = getSaveFile();		
-			
+		File file = getSaveFile();
+
 		if (file == null) {
 			file = DefaultSettings
 					.getUserInputOfFileFromGUI(this,
@@ -337,11 +336,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
             if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
-				//only directly construct new trerNode for the ObjectMetadata, leave AttributeMeta and AssociateMeta  
-            	//to be constructed indirectly as creating the ObjectMetadata 
+				//only directly construct new trerNode for the ObjectMetadata, leave AttributeMeta and AssociateMeta
+            	//to be constructed indirectly as creating the ObjectMetadata
             	if (myMap.get(key) instanceof gov.nih.nci.caadapter.common.metadata.ObjectMetadata) {
 					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(),  true);
-				} 
+				}
 			}
 		}
 		return nodes;
@@ -369,9 +368,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		//find the package tree node of an object;
 		//create the missing nodes
 		//in case the object name contains ".", more token should removed from the full name
-		MetaObject meta=(MetaObject)myMap.get(fullName);			
-		StringTokenizer nameToken=new StringTokenizer(meta.getName(), ".");		
-	 
+		MetaObject meta=(MetaObject)myMap.get(fullName);
+		StringTokenizer nameToken=new StringTokenizer(meta.getName(), ".");
+
 		DefaultMutableTreeNode packageNode = (DefaultMutableTreeNode) node;
 		for (int i = 0; i < pks.length - nameToken.countTokens(); i++) {
 			boolean exist = false;
@@ -397,7 +396,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		DefaultMutableTreeNode newTreeNode;
 		if (isSourceNode)
 		{
-			newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);	
+			newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);
 			//process Attributes associated with an object
 			ObjectMetadata objectMeta=(ObjectMetadata)newTreeNode.getUserObject();
 			int startLevel=0;
@@ -417,12 +416,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		else
 			newTreeNode = new DefaultTargetTreeNode(myMap.get(fullName), true);
-	    
+
         packageNode.add(newTreeNode);
 		return;
 	}
 	/**
-	 * If an object attribute is an ISO data type, add all attributes of the ISO data type as 
+	 * If an object attribute is an ISO data type, add all attributes of the ISO data type as
 	 * child tree node to the object attribute
 	 * @param attrLevel
 	 * @param elementNode
@@ -436,7 +435,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		AttributeMetadata attributeMeta=(AttributeMetadata)elementNode.getUserObject();
 		ObjectMetadata childObject =Iso21090Util.resolveAttributeDatatype(attributeMeta.getDatatype());
 		if (childObject==null)
-		{			
+		{
 			if (Iso21090Util.isCollectionDatatype(attributeMeta.getDatatype()))
 			{
 				addCollectoinStructure(elementNode);
@@ -452,52 +451,52 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			}
 		}
 		for (AttributeMetadata attrMeta:childObject.getAttributes())
-		{			
+		{
 			DefaultSourceTreeNode childAttrNode=new DefaultSourceTreeNode(attrMeta,true);
 			elementNode.add(childAttrNode);
 			addIsoComplexTypeAttribute(attrLevel+1,childAttrNode );
 		}
 	}
-	
+
 	private void addCollectoinStructure(DefaultSourceTreeNode elementNode)
 	{
-		//Add the content of DSET 
+		//Add the content of DSET
 		ObjectMetadata dsetObject=Iso21090Util.resolveAttributeDatatype("DSET");
 		for (AttributeMetadata attrMeta:dsetObject.getAttributes())
-		{			
+		{
 			DefaultSourceTreeNode childAttrNode=new DefaultSourceTreeNode(attrMeta,true);
 			elementNode.add(childAttrNode);
 			if (attrMeta.getDatatype().equals("Set(T)"))
 			{
 				MetaObject collectionMeta=(MetaObject)elementNode.getUserObject();
-				
+
 				String collectoinElementName=null;
 				if(collectionMeta instanceof AttributeMetadata)
 					collectoinElementName= Iso21090Util.findElementDatatypeName(((AttributeMetadata)collectionMeta).getDatatype());
 				if (collectoinElementName==null)
 					continue;
-				
+
 				ObjectMetadata collectionElementObject =Iso21090Util.resolveAttributeDatatype(collectoinElementName);
 				//return here if the data type is not define for a colleciton element
 				//case I: ISO21090 data define DSET with type<T> which not defined
 				//case II: Invalid element type
 				if (collectionElementObject==null)
 					continue;
-				
+
 				//process content of collection element
 				for (AttributeMetadata elmntAttrMeta:collectionElementObject.getAttributes())
-				{			
+				{
 					DefaultSourceTreeNode elementAttrNode=new DefaultSourceTreeNode(elmntAttrMeta,true);
 					childAttrNode.add(elementAttrNode);
 					addIsoComplexTypeAttribute(0,elementAttrNode );
-				}				
+				}
 			}
 			else
 				addIsoComplexTypeAttribute(0,childAttrNode );
 		}
 	}
 	/**
-	 * If an object attribute is a sequence of ISO data types, add all elements of the sequence as 
+	 * If an object attribute is a sequence of ISO data types, add all elements of the sequence as
 	 * child tree node to the object attribute. Each child ISO data type is flat down to its bottom
 	 * @param elementNode
 	 * @param metaHash
@@ -508,11 +507,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		List<ObjectMetadata> sequenceObjects =Iso21090Util.findSequenceDatatypes(elementMeta.getDatatype());
 		if (sequenceObjects==null)
 			return;
-			
+
 		for (ObjectMetadata objectMeta:sequenceObjects)
 		{
 //			DefaultSourceTreeNode childObjectNode=new DefaultSourceTreeNode(objectMeta,true);
-//			elementNode.add(childObjectNode);			
+//			elementNode.add(childObjectNode);
 			for (AttributeMetadata objectAttr:objectMeta.getAttributes())
 			{
 				DefaultSourceTreeNode attrNode=new DefaultSourceTreeNode(objectAttr, true);
@@ -545,10 +544,10 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	protected void buildTargetTree(Object metaInfo, File absoluteFile,
 			boolean isToResetGraph) throws Exception {
 		super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
-		
+
 		 tTree.setCellRenderer(new MMSRenderer());
 		 sTree.setCellRenderer(new MMSRendererPK());
-        
+
         // instantiate the "DropTransferHandler"
 		mmsTargetTreeDropTransferHandler = new MmsTargetTreeDropTransferHandler(
 				tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
@@ -556,7 +555,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 */
@@ -584,7 +583,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 */
@@ -610,12 +609,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 *             changed from protected to pulic by sean
 	 */
-	public ValidatorResults processOpenMapFile(File file) throws Exception 
+	public ValidatorResults processOpenMapFile(File file) throws Exception
 	{
 		// Read the XMI Mapping attributes
 		String fileName = file.getAbsolutePath();
@@ -650,7 +649,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		return null;
 	}
-	
+
 	private void processXmiModel(ModelMetadata myModelMeta, Hashtable sourceNodes, Hashtable targetNodes)
 	{
 		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
@@ -672,7 +671,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
         boolean isSuccess;
 		// create Object-table dependency mapping UI
-		for (UMLDependency dep : myUMLModel.getDependencies()) 
+		for (UMLDependency dep : myUMLModel.getDependencies())
 		{
 			String sourceXpath = "";
 			String targetXpath = "";
@@ -714,7 +713,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		//create class.attribute--table.column mapping
 //		myModelMeta.getPreservedMappedTag().clear();
-		for (UMLPackage pkg : myUMLModel.getPackages()) 
+		for (UMLPackage pkg : myUMLModel.getPackages())
 		{
 			for (UMLPackage pkg2 : pkg.getPackages()) {
 				for (UMLClass clazz : pkg2.getClasses()) {
@@ -760,7 +759,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 									tagRelativePath=Iso21090uiUtil.findAttributeRelativePath((DefaultMutableTreeNode) sourceNode);
 								}
 								isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetXpath,anntationPath,tagRelativePath, false);
-								isSuccess = isSuccess&& 
+								isSuccess = isSuccess&&
 										getMappingDataManager().createMapping((MappableNode) sourceNode,(MappableNode) targetNode);
 							}//tag level loop
 						}//tag list level loop
@@ -769,7 +768,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			}//data model package level loop
 		}//model level package level loop
 	}
-		
+
 	private void buildHash(Hashtable hashtable, DefaultMutableTreeNode root,
 			String parent) {
 		if ((root.getUserObject().toString().equals("Object Model") && parent
@@ -891,7 +890,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Explicitly reload information from the internal given file.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void reload() throws Exception {
@@ -904,7 +903,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Reload the file specified in the parameter.
-	 * 
+	 *
 	 * @param changedFileMap
 	 */
 	public void reload(

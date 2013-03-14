@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <Account name="Account" isEnabled="true" title="MIF Clone Properties" referenceName="" sortKey="" messageType="COCT_MT110000">
   <mif:packageLocation xmlns:mif="urn:hl7-org:v3/mif" section="IM" subSection="CO" artifact="MT-deprecated" realm="UV" domain="CT" root="DEFN" version="04" />
   <attribute name="classCode" type="CS" isEnabled="true" title="MIF Attribute Properties" mnemonic="ACCT" sortKey="1" minimumMultiplicity="1" isStrutural="true" parentXmlPath="Account" maximumMultiplicity="1" isMandatory="true" conformance="R" dDefaultValueProperty="ACCT" dDomainNameOidProperty="ActClass (2.16.840.1.113883.11.11527)" codingStrength="CNE" multiplicityIndex="0" fixedValue="ACCT" minimumSupportedLength="0" domainName="ActClass" />

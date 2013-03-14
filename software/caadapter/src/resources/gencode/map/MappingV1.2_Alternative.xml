@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <!--
     ** BEGIN OLD 1.1 NOTES - They may or may not be relevent anymore **
     Rule 1: Every clonename for the HL7 RMIM should exist. If not, this clonename related info will be ignored

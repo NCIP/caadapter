@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 package gov.nih.nci.caadapter.ui.mapping.catrend.actions;
@@ -23,7 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.Point;
- 
+
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetDragEvent;
@@ -60,14 +59,14 @@ public class CsvToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 	 * Called by the DropTargetAdapter in dragEnter, dragOver and
 	 * dragActionChanged.
 	 * It is allowed to mapp multiple csvSource nodes to one Xmi target node
-	 * 
+	 *
 	 */
 	public boolean isDropOk(DropTargetDragEvent e)
 	{
 		TransferableNode transferableNode = obtainTransferableNode(e);
 		if(transferableNode==null)
 				return false;
-				
+
 		Point p = e.getLocation();
 		TreePath path = this.getTree().getPathForLocation(p.x, p.y);
 		if (path==null)
@@ -76,16 +75,16 @@ public class CsvToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 		if(targetNode instanceof MappableNode)
 		{
 			MappableNode mappableNode = (MappableNode) targetNode;
-	
+
 //			if(mappableNode.isMapped())
 //			{
 //				if (!(targetNode.getUserObject() instanceof TableMetadata)
 //						&&!(targetNode.getUserObject() instanceof ColumnMetadata))
 //				{
-//					return false;	
+//					return false;
 //				}
 //			}
-			
+
 			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) transferableNode.getSelectionList().get(0);
 			//only CSVField is allowed to map with a target node
 			if (!(sourceNode.getUserObject() instanceof CSVFieldMeta))

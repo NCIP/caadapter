@@ -1,11 +1,11 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+
 package gov.nih.nci.caadapter.hl7.mif;
 
 /**
@@ -83,7 +83,7 @@ public class MIFIndexParser {
 	public static MIFIndex loadMIFIndexFromZipFile(String zipFilePath) throws IOException
 	{
 //		String zipFilePath = System.getProperty("caadapter.hl7.mif.path");
-		
+
 		System.out.println("MIFIndexParser.loadMIFIndexFromZipFile()..zipFilePath"+zipFilePath);
 		File zipFile=new File(zipFilePath);
 		if (!zipFile.exists())
@@ -91,15 +91,15 @@ public class MIFIndexParser {
 			String mifOjbPath=zipFilePath.substring(0, zipFilePath.lastIndexOf("/"))+"/mifIndex.obj";
 			return loadMifIndexObject(mifOjbPath);
 		}
-		
-		
+
+
 		ZipFile zip = new ZipFile(zipFile);
 		Enumeration entryEnum=zip.entries();
 
 		MIFIndex mifIndexInfos = new MIFIndex();
 		while (entryEnum.hasMoreElements())
 		{
-			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
+			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();
 			String fileName=zipEntry.getName();
 			//only process the "mif" directory
 			//normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
@@ -124,7 +124,7 @@ public class MIFIndexParser {
 		String zipFilePath=CaadapterUtil.getHL7_MIF_FILE_PATH();
 		return loadMIFIndexFromZipFile(zipFilePath);
 	}
-	
+
 	public static MIFIndex loadMifIndexObject(String objPath) {
 		try {
 			System.out.println("MIFIndexParser.loadMifIndexObject()...:"+objPath);
@@ -143,10 +143,10 @@ public class MIFIndexParser {
 		}
 		return null;
 	}
-	
+
 	public static void saveV2MessageIndexObject(MIFIndex mifIndex) throws Exception {
 		OutputStream os = new FileOutputStream("mifIndex.obj");
-		ObjectOutputStream oos = new ObjectOutputStream(os); 
+		ObjectOutputStream oos = new ObjectOutputStream(os);
 //		MIFIndex mifIndex= loadMIFIndex() ;
 		oos.writeObject(mifIndex);
 		oos.close();
@@ -156,7 +156,7 @@ public class MIFIndexParser {
     public static void main(String[] args) throws Exception {
 //		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInfos();
     	String mifFilePath="hl7_home/Normative_2005/mif_2005.zip";
-    	
+
 		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFIndexFromZipFile(mifFilePath);
 		MIFIndexParser.printMIFIndex(mifIndexInfos);
     	MIFIndexParser.saveV2MessageIndexObject(mifIndexInfos);

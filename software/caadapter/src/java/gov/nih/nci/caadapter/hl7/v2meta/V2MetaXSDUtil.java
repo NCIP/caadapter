@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.hl7.v2meta;
 
 import java.io.File;
@@ -26,7 +26,7 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.9 $
  * @date 	 DATE: $Date: 2009-02-25 15:58:36 $
  * @since caAdapter v4.2
@@ -34,7 +34,7 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
 public class V2MetaXSDUtil {
 	private static Hashtable <String, DefaultMutableTreeNode>elementNodehash;
-	
+
 	/**
 	 * Reset the ElmentMeta hash to load a new ElmentMeta
 	 */
@@ -59,10 +59,10 @@ public class V2MetaXSDUtil {
 			xmlPath=pXmlPath+"."+xmlPath;
 			parentNode=(DefaultMutableTreeNode)parentNode.getParent();
 		}
-		
+
 		return xmlPath;
 	}
-	
+
 	/*
 	 * Add a new child ElemntMeta to the data structure for late searching
 	 * @param childNode  A new child ElementMeta tree node
@@ -96,13 +96,13 @@ public class V2MetaXSDUtil {
 
 		return rtnSt;
 	}
-	public static ElementMeta loadMessageMeta(String xsdPath)  
+	public static ElementMeta loadMessageMeta(String xsdPath)
 	{
 		XSDParser p = new XSDParser();
 		String rootElmnt=xsdPath.substring(xsdPath.lastIndexOf("/")+1);
 		if (xsdPath.indexOf(File.separatorChar)>-1)
 			rootElmnt=xsdPath.substring(xsdPath.lastIndexOf(File.separatorChar)+1);
-		rootElmnt=rootElmnt.substring(0,rootElmnt.indexOf(".xsd") );		
+		rootElmnt=rootElmnt.substring(0,rootElmnt.indexOf(".xsd") );
 		try {
 			System.out.println("V2MetaXSDUtil.loadMessageMeta()..xsdPath:"+xsdPath);
 			URL xsdURL=FileUtil.retrieveResourceURL(xsdPath);
@@ -112,7 +112,7 @@ public class V2MetaXSDUtil {
 			String xsdRscr = xsdURL.toURI().toString();
 			System.out.println("V2MetaXSDUtil.loadMessageMeta()..message schema URI:"+xsdRscr);
 			p.loadSchema(xsdRscr);
-			
+
 //			V2MetaXSDUtil.class.getClassLoader().getResource("mifIndex.obj").openStream();
 		} catch (URISyntaxException e1) {
 			// TODO Auto-generated catch block
@@ -122,9 +122,9 @@ public class V2MetaXSDUtil {
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", rootElmnt);
 		return e;
 	}
-	
-	
-	public static ElementMeta loadMessageMeta(String v2Version,String v2MessageSchema)  
+
+
+	public static ElementMeta loadMessageMeta(String v2Version,String v2MessageSchema)
 	{
 		String v2XsdHome="hl7v2xsd";
 		String xsdFile=v2XsdHome+"/"+v2Version;
@@ -133,12 +133,12 @@ public class V2MetaXSDUtil {
 		ElementMeta e = loadMessageMeta(xsdFile);
 		return e;
 	}
-	
+
 	public static DefaultMutableTreeNode findV2MetaTreeNode(String nodeXmlPath)
 	{
 		return elementNodehash.get(nodeXmlPath);
 	}
-	
+
 	public static CSVMeta createDefaultCsvMeta(String messageRoot)
 	{
 		CSVMetaImpl csvFileMetaImpl = new CSVMetaImpl();
@@ -149,7 +149,7 @@ public class V2MetaXSDUtil {
 		csvFileMetaImpl.setRootSegment(rootSeg);
 		return csvFileMetaImpl;
 	}
-	
+
 }
 
 

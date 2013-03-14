@@ -1,11 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
 package gov.nih.nci.caadapter.sdtm;
 
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
@@ -22,7 +21,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2 revision $Revision: 1.5 $
- * @date       $Date: 2008-09-29 19:08:04 $ 
+ * @date       $Date: 2008-09-29 19:08:04 $
  */
 public class SDTMMetadata extends MetaObjectImpl implements SDKMetaData
 {
@@ -214,7 +213,7 @@ public class SDTMMetadata extends MetaObjectImpl implements SDKMetaData
     /**
      * /**
      *
-     * @param 
+     * @param
      */
     public String getParentXPath()
     {

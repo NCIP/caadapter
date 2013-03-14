@@ -1,11 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
 package gov.nih.nci.caadapter.hl7.mif;
 
 /**
@@ -32,9 +31,9 @@ import java.util.TreeSet;
 
 
 public class MIFUtil {
-	
+
 	private static ArrayList <String> treatedSimpleType=new ArrayList<String>();
-	
+
 	static {
 		treatedSimpleType.add("CS");
 		treatedSimpleType.add("cs");
@@ -48,11 +47,11 @@ public class MIFUtil {
 	 */
 	public static boolean isEditableMIFAttributeDefault(MIFAttribute mifAttr)
 	{
- 
+
 		Datatype mifDt=mifAttr.getDatatype();
 		if (mifAttr.getConcreteDatatype()!=null)
 			mifDt=mifAttr.getConcreteDatatype();
-		//not editable if complex datatype		
+		//not editable if complex datatype
 		if (mifDt==null)
 		{
 			//verify if it is treated for SimpleType with typeName
@@ -61,7 +60,7 @@ public class MIFUtil {
 		}
 		else if (!mifDt.isSimple())
 			return false;
-	
+
 		//verify with FixValue
 		String fixedText=mifAttr.getFixedValue();
 		if (fixedText==null)
@@ -69,7 +68,7 @@ public class MIFUtil {
 
 		if(fixedText.equalsIgnoreCase(""))
 			return true;
-		
+
 		//check if domainName is INSTNACE+KIND
 		String domainName = mifAttr.getDomainName();
         if (domainName == null) domainName = "";
@@ -78,9 +77,9 @@ public class MIFUtil {
 		if ((domainName.indexOf("INSTANCE")>-1)
 			&&(domainName.indexOf("KIND")>-1))
 			return true;
-		
+
 		return false;
-		
+
 	}
 	public static boolean isTreatedAsSimpleType(String typeName)
 	{
@@ -88,7 +87,7 @@ public class MIFUtil {
 			return true;
 		return false;
 	}
-	
+
 	public static boolean containChoiceAssociation(MIFAssociation assc)
 	{
 		MIFClass mifClass=assc.getMifClass();
@@ -102,10 +101,10 @@ public class MIFUtil {
 			if (!mifAssc.getMifClass().getSortedChoices().isEmpty())
 				return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public static List<MIFAssociation> findAddableAssociation(MIFClass mifClass)
 	{
 		List<MIFAssociation> rtnList=new ArrayList<MIFAssociation>();
@@ -114,7 +113,7 @@ public class MIFUtil {
 			if (mifAssc.getMinimumMultiplicity()==0&&!mifAssc.isOptionChosen())
 				rtnList.add(mifAssc);
 		}
- 
+
 		for(MIFClass choicClass:mifClass.getSortedChoices())
 		{
 			if (choicClass.isChoiceSelected())
@@ -127,7 +126,7 @@ public class MIFUtil {
 				break; //one and only one chosen MIFClass
 			}
 		}
-		
+
 //		TreeSet mifAsscs=mifClass.getSortedAssociations();//.getAssociations();
 //		Iterator mifAsscIt=mifAsscs.iterator();
 //		while(mifAsscIt.hasNext())
@@ -150,19 +149,19 @@ public class MIFUtil {
 //		}
 		return rtnList;
 	}
-	
+
 	public static List<MIFAssociation> findRemovableAssociation(MIFClass mifClass)
 	{
 		List<MIFAssociation> rtnList=new ArrayList<MIFAssociation>();
 		if (mifClass==null)
 			return rtnList;
-		
+
 		for (MIFAssociation mifAssc:mifClass.getSortedAssociations())
 		{
 			if (mifAssc.getMinimumMultiplicity()==0&&mifAssc.isOptionChosen())
 				rtnList.add(mifAssc);
 		}
-		
+
 		for(MIFClass choicClass:mifClass.getSortedChoices())
 		{
 			if (choicClass.isChoiceSelected())
@@ -205,7 +204,7 @@ public class MIFUtil {
 		}
 		return rtnNum;
 	}
-	
+
 	public static List<MIFAttribute> findMIFAttributeWithName(MIFClass mifClass, String attrName)
 	{
 		List<MIFAttribute> rtnList=new ArrayList<MIFAttribute>();
@@ -222,7 +221,7 @@ public class MIFUtil {
 	public static TreeSet sortDatatypeAttribute(Datatype dt)
 	{
 		TreeSet<Attribute> rtnSet=new TreeSet<Attribute>();
-		
+
 		Hashtable childAttrHash=dt.getAttributes();
 		Enumeration keyEnums=childAttrHash.keys();
 		while (keyEnums.hasMoreElements())
@@ -233,11 +232,11 @@ public class MIFUtil {
 		}
 		return rtnSet;
 	}
-	
+
 	public static void addDatatypeAttributeOnTop(Datatype dt, Attribute attr)
 	{
- 
-		
+
+
 		Hashtable childAttrHash=dt.getAttributes();
 		Enumeration keyEnums=childAttrHash.keys();
 		while (keyEnums.hasMoreElements())
@@ -248,9 +247,9 @@ public class MIFUtil {
 		}
 		attr.setSortKey(0);
 		dt.getAttributes().put(attr.getName(),attr);
- 
+
 	}
-	
+
 	public static List<Attribute> findDatatypeAttributeWithName(Datatype mifDatatype, String attrName)
 	{
 		List<Attribute> rtnList=new ArrayList<Attribute>();
@@ -301,7 +300,7 @@ public class MIFUtil {
 					oneAttr.setMultiplicityIndex(oneAttr.getMultiplicityIndex()-1);
 			}
 		}
-		
+
 	}
 	/**
 	 * Count the Attribute with the same name
@@ -341,7 +340,7 @@ public class MIFUtil {
 		}
 		return rtnValue;
 	}
-	
+
 	/**
 	 * Recursively check if a class have been defined by the class or its child classes
 	 */

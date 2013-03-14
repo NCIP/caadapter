@@ -1,10 +1,11 @@
-/**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.6 2008-06-09 19:54:05 phadkes Exp $
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
+
 package gov.nih.nci.caadapter.ui.mapping.V2V3;
 
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
@@ -35,7 +36,7 @@ import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
  * This class takes in a HL7 message and creates a csv file and scs file. The
  * structure information is read from the V2.4 directory structure defined by
  * the user
- * 
+ *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date:
@@ -294,7 +295,7 @@ public class MappingMain extends JFrame {
 
     /***********************************************************************
          * This method creates the scs file
-         * 
+         *
          * @return boolean
          */
     public boolean process() throws Exception {

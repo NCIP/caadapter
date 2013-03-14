@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.ui.common.tree;
 
@@ -88,19 +86,19 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 				if (mifClassCopyyear!=null&&!mifClassCopyyear.equals(""))
 					mifCViewName=mifCViewName+" (copyrightYears: "+mifClassCopyyear+" )";
 				setText(mifCViewName);
-				setIcon(CLONE_IMAGE_ICON);	
+				setIcon(CLONE_IMAGE_ICON);
 			}
 			else if(userObj instanceof MIFAttribute)
 			{
-				MIFAttribute mifAttr=(MIFAttribute)userObj;		
+				MIFAttribute mifAttr=(MIFAttribute)userObj;
 				setText(setViewNameForMIFAttribute(mifAttr, (DefaultMutableTreeNode)value));
 				setIcon(CLONE_ATTRIBUTE_IMAGE_ICON);
 			}
 			else if(userObj instanceof MIFAssociation)
 			{
 				MIFAssociation mifAssc=(MIFAssociation)userObj;
-				setText(setViewNameForAssociation(mifAssc, (DefaultMutableTreeNode)value));			
-				setIcon(CLONE_IMAGE_ICON);	
+				setText(setViewNameForAssociation(mifAssc, (DefaultMutableTreeNode)value));
+				setIcon(CLONE_IMAGE_ICON);
 			}
 			else if(userObj instanceof Attribute)
 			{
@@ -109,12 +107,12 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 				if(crntNode.getChildCount()>0)
 					setIcon(CLONE_ATTRIBUTE_IMAGE_ICON);
 				else
-					setIcon(CLONE_DATATYPE_FIELD_IMAGE_ICON);	
+					setIcon(CLONE_DATATYPE_FIELD_IMAGE_ICON);
 			}
-		}		
+		}
 		return rtnComp;
 	}
-	
+
 	/**
 	 * Set display name for a MIFAttribute tree node
 	 * @param mifAttr
@@ -166,14 +164,14 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 					else
 						treeCellText=treeCellText+"  [Multiple]";
 				}
-				
+
 			}
 		}
-			
+
 		return treeCellText;
 	}
-	
-	
+
+
 	/**
 	 * Set display name for a MIFAttribute tree node
 	 * @param mifAttr
@@ -216,18 +214,18 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 					MIFClass choiceClass=mifAssc.findChoiceSelectedMifClass();
 					attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
 				}
-			}				
+			}
 			if (attrMultiplicity==1)
 				treeCellText=treeCellText+"  [Multiple]";
 			else
 				treeCellText=treeCellText +"  [1]";
 		}
 		else if(mifAttr.getMaximumMultiplicity()!=1)
-			treeCellText=treeCellText+"  ["+(mifAttr.getMultiplicityIndex()+1) +"]";					
+			treeCellText=treeCellText+"  ["+(mifAttr.getMultiplicityIndex()+1) +"]";
 
 		return treeCellText;
 	}
-	
+
 	/**
 	 * Set display name for a MIFAssociation tree node
 	 * @param mifAssc
@@ -241,8 +239,8 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 		boolean multipleRequired=true;
 		//check if "multiple" is required
 		if (mifAssc.getMaximumMultiplicity()==1&&!hasChoice)
-			multipleRequired=false;			 
-				
+			multipleRequired=false;
+
 		//find the existing multiplicity of current association
 		boolean hasMoreThanOne=false;
 		if (mifAssc.getMultiplicityIndex()>0)
@@ -255,7 +253,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 			{
 				MIFClass parentMIFClass=(MIFClass)parentObj;
 				parentAsscCnt=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-				
+
 			}
 			else if (parentObj instanceof MIFAssociation )
 			{
@@ -272,13 +270,13 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 			if (parentAsscCnt>1)
 				hasMoreThanOne=true;
 		}
-		
+
 		//set view text
 		String viewIndex="";
 		String viewIndexEnd="]";
 		if (mifAssc.getMultiplicityIndex()==0)
 		{
-			if(multipleRequired)	
+			if(multipleRequired)
 			{
 				viewIndex="  [Multiple";
 				if (hasMoreThanOne)
@@ -293,7 +291,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 			viewIndexEnd="--Alert:For Choice]";
 		if (!viewIndex.equals(""))
 			viewIndex=viewIndex+viewIndexEnd;
-		
+
 		MIFClass asscMIFClass=mifAssc.getMifClass();
 		if(asscMIFClass.getSortedChoices().size()>0)
 		{

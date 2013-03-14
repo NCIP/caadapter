@@ -1,10 +1,10 @@
-/**
- * The content of this file is subject to the caAdapter Software License (the "License").
- * A copy of the License is available at:
- * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
- * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
- * /docs/caAdapter_License
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 
 package gov.nih.nci.cbiit.cmts.ui.actions;
 
@@ -48,7 +48,7 @@ public class NewArtifactAction extends AbstractContextAction
 
 	private static final Character XSLT_COMMAND_MNEMONIC = new Character('S');
 	//hotkey//private static final KeyStroke XSLT_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false);
-	
+
 	private static final Character XQUERY_COMMAND_MNEMONIC = new Character('Q');
 	//hotkey//private static final KeyStroke XQUERY_ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK, false);
 
@@ -85,12 +85,12 @@ public class NewArtifactAction extends AbstractContextAction
 		this.mainFrame = mainFrame;
 		if (transformationType==null
 				||transformationType==""
-					||transformationType==ActionConstants.NEW_XQUERY_STATEMENT)						
+					||transformationType==ActionConstants.NEW_XQUERY_STATEMENT)
 		{
 			setMnemonic(XQUERY_COMMAND_MNEMONIC);
 			//hotkey//setAcceleratorKey(XQUERY_ACCELERATOR_KEY_STROKE);
 		}
-		else if (transformationType==ActionConstants.NEW_XSLT_STYLESHEET) 
+		else if (transformationType==ActionConstants.NEW_XSLT_STYLESHEET)
 		{
 			setMnemonic(XSLT_COMMAND_MNEMONIC);
 			//hotkey//setAcceleratorKey(XSLT_ACCELERATOR_KEY_STROKE);
@@ -121,7 +121,7 @@ public class NewArtifactAction extends AbstractContextAction
 			if (transformationType.equals(ActionConstants.NEW_XSLT_STYLESHEET))
 			{
 				StylesheetBuilder transformer = new StylesheetBuilder(map);
-				
+
 				StringWriter writer = new StringWriter();
 				XSLTStylesheet xsltSheet=transformer.buildStyleSheet();
 				xsltSheet.writeOut(writer);

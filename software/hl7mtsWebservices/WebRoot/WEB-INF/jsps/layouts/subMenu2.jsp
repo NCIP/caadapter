@@ -1,3 +1,10 @@
+<%--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L--%>
+
 <table summary="" cellpadding="0" cellspacing="0" border="0" width="190" height="100%">
               <tr>
                 <td class="subMenuPrimaryTitle" height="22">SUB-MENU TITLE</td>

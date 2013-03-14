@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <!-- bda-build-template version 1.5.3       -->
 <!--
 $Id: install.xml 1952 2009-08-10 22:24:25Z saksass $

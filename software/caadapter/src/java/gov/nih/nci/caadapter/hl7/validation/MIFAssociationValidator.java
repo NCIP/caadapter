@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.hl7.validation;
 
@@ -49,7 +47,7 @@ public class MIFAssociationValidator extends Validator
             Message msg = MessageResources.getMessage("GEN1", new Object[0]);
             results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
         }
-        else 
+        else
         {
         	MIFAssociation mifAssc = (MIFAssociation) toBeValidatedObject;
         	MIFClass asscMifClass=mifAssc.getMifClass();
@@ -57,7 +55,7 @@ public class MIFAssociationValidator extends Validator
         		results.addValidatorResults(validateChoiceAssociation(mifAssc));
         	else
         		results.addValidatorResults(new MIFClassValidator(asscMifClass).validate());
-        	
+
         	if (mifAssc.getMultiplicityIndex()>0)
             {
             	Message message = MessageResources.getMessage("HSM4INFO",
@@ -96,7 +94,7 @@ public class MIFAssociationValidator extends Validator
                 new Object[]{choiceAssc.getXmlPath()});
             ValidatorResult one = new ValidatorResult(ValidatorResult.Level.ERROR, message);
             results.addValidatorResult(one);
-        }   	
+        }
     	return results;
 	}
 }

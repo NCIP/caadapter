@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
-  * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.hl7.datatype;
 
 /**
@@ -33,10 +33,10 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 
 	private Hashtable attributes = new Hashtable();
 	private HashSet predefinedValues = new HashSet();
-	
+
 	private ArrayList<String> patterns = new ArrayList<String>();
 	private String unions = null;
-	
+
 	private String name;
 	private boolean simple = false;
 	private boolean isAbstract =false;
@@ -55,7 +55,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	public String getNodeXmlName() {
 		return this.getName();
 	}
-	
+
 	public String getParentXmlPath() {
 		return parentXmlPath;
 	}
@@ -64,7 +64,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	}
 	/**
 	 * This method will add an attribute object to a given datatype object.
-	 * 
+	 *
 	 * @param attributeName is the name of attribute
 	 * @param attr is the Attribute object associates with the name of that attribute
 	 */
@@ -83,26 +83,26 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	public Hashtable getAttributes() {
 		return attributes;
 	}
-	
+
 	/**
 	 * addPredefinedValue method will add a predefined value to the given datatype.
-	 * 
+	 *
 	 * @param value is a predefined value of the datatype
 	 */
 	public void addPredefinedValue(String value) {
 		String newValue = new String(value);
 		predefinedValues.add(newValue);
 	}
-	
+
 	public void setAttributes(Hashtable<String,Attribute> newAttrs)
 	{
 		attributes=newAttrs;
 	}
-	
+
 	public HashSet getPredefinedValues() {
 		return predefinedValues;
 	}
-	
+
 	public void setPredefinedValue(HashSet<String> newValues)
 	{
 		predefinedValues=newValues;
@@ -143,7 +143,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	public void setSimple(boolean simple) {
 		this.simple = simple;
 	}
-	
+
 	public void print(int level) {
 	   for(int i=0;i<level;i++) {
 		   System.out.print("   ");
@@ -166,7 +166,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 			   System.out.format("%-30s,%s","    attribute: " + attr.getName(), "type = " + attr.getType() + "\n");
 		   }
 	   }
-		
+
 	}
 	/**
 	 * @return the isAbstract
@@ -180,7 +180,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	public void setAbstract(boolean isAbstract) {
 		this.isAbstract = isAbstract;
 	}
-	
+
 	public Object clone()
 	{
 		 try {
@@ -195,7 +195,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 				 clonnedAttrHash.put(oneAttr.getName(), (Attribute) oneAttr.clone());
 			 }
 			 clonnedObj.setAttributes(clonnedAttrHash);
-			
+
 			 //	clone PredeinedValue
 			 HashSet valueSet=getPredefinedValues();
 			 HashSet clonnedValueHash=new HashSet();
@@ -276,7 +276,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	public void setPatterns(ArrayList<String> patterns) {
 		this.patterns = patterns;
 	}
-	
+
 	public void addPattern(String pattern) {
 		patterns.add(pattern);
 	}

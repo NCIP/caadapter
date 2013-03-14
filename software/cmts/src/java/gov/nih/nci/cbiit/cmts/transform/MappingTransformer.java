@@ -1,10 +1,10 @@
-/**
- * The content of this file is subject to the caAdapter Software License (the "License").  
- * A copy of the License is available at:
- * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
- * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
- * /docs/caAdapter_License
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.cbiit.cmts.transform;
 
 import gov.nih.nci.cbiit.cmts.common.ApplicationMessage;
@@ -42,13 +42,13 @@ import net.sf.saxon.xqj.SaxonXQDataSource;
 
 /**
  * This class performs the transformation using XQuery
- * 
+ *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since CMTS v1.0
  * @version $Revision: 1.3 $
  * @date $Date: 2008-10-22 19:01:17 $
- * 
+ *
  */
 public class MappingTransformer extends DefaultTransformer {
 
@@ -56,11 +56,11 @@ public class MappingTransformer extends DefaultTransformer {
 	// Connection for querying
 	private XQConnection conn;
 	private boolean temporaryFileCreated = false;
-	
+
 
 	/**
 	 * constructor
-	 * 
+	 *
 	 * @throws XQException
 	 */
 	public MappingTransformer() throws XQException {
@@ -92,7 +92,7 @@ public class MappingTransformer extends DefaultTransformer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	 
+		}
 	}
 	/**
 	 * @return the conn
@@ -128,7 +128,7 @@ public class MappingTransformer extends DefaultTransformer {
 
 		return exp;
 	}
-	
+
 	@Override
 	public String transfer(String sourceFile, String mappingFile) {
 		// TODO Auto-generated method stub
@@ -162,12 +162,12 @@ public class MappingTransformer extends DefaultTransformer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		return null;
 	}
 	/**
 	 * Pre-process raw source data for transformer
-	 * 
+	 *
 	 * @param sourceRawDataFile
 	 *            URI of source raw data file
 	 * @param map
@@ -238,10 +238,10 @@ public class MappingTransformer extends DefaultTransformer {
 		rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xmlInfor));
 
 		rtnList.addAll(xmlErrorHandler.getErrorMessage());
-		
+
 		return rtnList;
 	}
-	 
+
 	public Mapping getTransformationMapping() {
 		// TODO Auto-generated method stub
 		return mapping;

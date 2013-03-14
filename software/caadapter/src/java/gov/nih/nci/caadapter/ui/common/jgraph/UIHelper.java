@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -195,16 +194,16 @@ public final class UIHelper
 		}
 		else if (metaData instanceof AssociationMetadata)
 			linkColor=MAPPING_LINK_ASSOCIATION_COLOR;
-		
+
 		return linkColor;
 	}
-	
+
 	public static final AttributeMap getDefaultUnmovableEdgeStyle(Object metaData)
 	{
 		Color linkColor=getLinkColor(metaData);
 		return getDefaultUnmovableMappingEdgeStyle(linkColor);
 	}
-	
+
 	private static final AttributeMap getDefaultUnmovableMappingEdgeStyle(Color lineColor)
 	{
 		AttributeMap lineStyle = new AttributeMap();
@@ -313,7 +312,7 @@ public final class UIHelper
 		}
 		return result;
 	}
-	
+
 	public static final MappableNode constructMappableNodeObjectXmlPath(Object treeRoot, String dtObjectXmlPath)
 	{
 		MappableNode result = null;
@@ -327,7 +326,7 @@ public final class UIHelper
 			DefaultMutableTreeNode rootNode =(DefaultMutableTreeNode)treeRoot;
 			result = (MappableNode)findTreeNodeWithXmlPath(rootNode, (String)dtObjectXmlPath);
 		}
-			
+
 		if(result == null)
 	    {
 	            Log.logError(internalInstance, (new StringBuilder()).append("Could not find the datatypeBaseObject '").append(dtObjectXmlPath).append("' in the given tree rooted by '").append(treeRoot).append("'.").toString());
@@ -335,7 +334,7 @@ public final class UIHelper
 	    }
 	    return result;
 	}
-	
+
     public static DefaultMutableTreeNode findTreeNodeWithXmlPath(DefaultMutableTreeNode treeNode, String nodeXmlPath)
     {
         if (nodeXmlPath==null)

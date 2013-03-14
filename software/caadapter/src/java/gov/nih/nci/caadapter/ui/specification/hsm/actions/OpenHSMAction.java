@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
@@ -68,7 +66,7 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	private static final KeyStroke ACCELERATOR_KEY_STROKE_H3S = KeyStroke.getKeyStroke(KeyEvent.VK_2, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
 	private static final String TOOL_TIP_DESCRIPTION = "Open HL7 v3 Specification";
-	
+
 	private transient File openFile;
 
 	/**
@@ -101,12 +99,12 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	protected void setAdditionalAttributes()
 	{
 		setMnemonic(COMMAND_MNEMONIC);
-			
+
 		if (!super.getName().equals(COMMAND_NAME_H3S))
 		{
 			KeyStroke xmlHsmStroke=KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 			setAcceleratorKey(xmlHsmStroke);
-			
+
 		}
 		else
 			setAcceleratorKey(ACCELERATOR_KEY_STROKE_H3S);

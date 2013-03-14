@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 
 package gov.nih.nci.caadapter.ui.mapping.mms;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -62,10 +62,10 @@ public class DialogUserInput extends JDialog implements ActionListener {
 		this(_callingFrame, DefaultObject, "Constant");
 	}
 	public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject, String titleParameter) {
-		this(_callingFrame, DefaultObject, titleParameter, DialogUserInput.INPUT_TYPE_TEXT );	
+		this(_callingFrame, DefaultObject, titleParameter, DialogUserInput.INPUT_TYPE_TEXT );
 	}
 	public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject, String titleParameter, int userType) {
-		this(_callingFrame, DefaultObject, null,titleParameter, DialogUserInput.INPUT_TYPE_TEXT );	
+		this(_callingFrame, DefaultObject, null,titleParameter, DialogUserInput.INPUT_TYPE_TEXT );
 	}
 	    public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject, Vector<Object> chooseObjects, String titleParameter, int userType) {
 	        super(_callingFrame, true);
@@ -76,9 +76,9 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        	this.setTitle(titleParameter);
 	        else
 	        	this.setTitle("Define "+titleParameter);
-	        
+
 	        this.setAlwaysOnTop(true);
-	        this.setResizable(false);        
+	        this.setResizable(false);
             JPanel mainPanel = new JPanel();
 	        mainPanel.setLayout(new BorderLayout());
 
@@ -87,7 +87,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        //add left label if it not tabbedPane
 	        if (inputType!=INPUT_TYPE_TABBED)
 	        	centerPan.add(new JLabel(titleParameter+" :"));
-	        
+
 	        if (inputType==INPUT_TYPE_TEXT)
 	        {
 	        	centerPan.setBorder(new TitledBorder("Input "));
@@ -116,7 +116,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        else
 	        	inputField=new JLabel("Undefined Input Type");
         	centerPan.add(inputField);
- 
+
 	        JPanel butPan = new JPanel();
 	        butPan.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 	        if (inputType==INPUT_TYPE_TABBED)
@@ -126,7 +126,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        	butPan.add(addPKGenerator);
 	        }
 	        JButton okBut = new JButton("OK");
-	        okBut.addActionListener(this);	        
+	        okBut.addActionListener(this);
 	        JButton canBut = new JButton("Cancel");
 	        canBut.addActionListener(this);
 	        butPan.add(okBut);
@@ -141,7 +141,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        DefaultSettings.centerWindow(this);
 	        this.setVisible(true);
 	    }
-	    
+
 	private JTabbedPane initPKGeneratorSelection(Object controlObject)
 	{
 		JTabbedPane rtnPan=new JTabbedPane();
@@ -191,7 +191,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 					}
 					this.setUserInput(pkSettingInputs);
 	    		}
-	    		
+
 	    	}
 	    	else if(cmdValue!=null&&cmdValue.equalsIgnoreCase("Add"))
 	    	{
@@ -208,12 +208,12 @@ public class DialogUserInput extends JDialog implements ActionListener {
 					{
 						if (dbInputName.equalsIgnoreCase(pkgSettings.getTitleAt(tbInx)))
 						{
-							
+
 							JOptionPane.showMessageDialog(this, "Primary key generator exists for database:"+dbInputName +",\nPlease set another database name !", "Duplicate Database Name", 1);
-							return;							
+							return;
 						}
 					}
-					
+
 					pkgSettings.addTab(dbInputName, new PanelPrimaryKeyGenerator(new HashMap<String,String>()));
 					//leave the setting panel visible
 					pkgSettings.setSelectedIndex(pkgSettings.getTabCount()-1);
@@ -224,7 +224,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	    	}
 	    	else
 	    		this.setUserInput(null);
-	    	
+
 	    	this.setVisible(false);
 	    	dispose();
 	    	return;

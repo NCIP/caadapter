@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -23,8 +22,8 @@ import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
 import java.io.File;
 
 /**
- * This class defines XML document validator 
- * 
+ * This class defines XML document validator
+ *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0

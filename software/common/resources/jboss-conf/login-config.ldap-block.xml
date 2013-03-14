@@ -1,3 +1,10 @@
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <application-policy name="@application.context.name@">
 	<authentication>
 		<login-module code = "gov.nih.nci.security.authentication.loginmodules.LDAPLoginModule" flag = "sufficient" >

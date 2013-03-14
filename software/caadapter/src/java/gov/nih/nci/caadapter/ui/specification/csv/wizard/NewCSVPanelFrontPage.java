@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -54,7 +53,7 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
     private static final String GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND = "Generate from a Non-Structure CSV file";
    	private static final String NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND = "Copy from an Existing CSV Specification";
 
-	
+
 	private ButtonGroup buttonGroup;
 	private JRadioButton blankButton;
 	private JRadioButton generateFromCSVInstanceButton;
@@ -97,8 +96,8 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		generateFromCSVInstanceButton.setMnemonic('G');
 		generateFromCSVInstanceButton.addActionListener(this);
 		centerPanel.add(generateFromCSVInstanceButton);
-		
-		
+
+
         generateFromNonStructureCSVInstanceButton = new JRadioButton(GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND);
         generateFromNonStructureCSVInstanceButton.setMnemonic('N');
         generateFromNonStructureCSVInstanceButton.addActionListener(this);

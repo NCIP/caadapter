@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
@@ -86,7 +84,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
 		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, getUIWorkingDirectoryPath(), Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
-//		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, 
+//		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel,
 //				Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
 		if (file != null)
 		{
@@ -113,7 +111,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 			{
 //				System.out.println("SaveAsHsmAction.processSaveFile()..H3S format:"+specFileName);
 //				OutputStream os = new FileOutputStream(file);
-//				ObjectOutputStream oos = new ObjectOutputStream(os); 
+//				ObjectOutputStream oos = new ObjectOutputStream(os);
 //				oos.writeObject(specObject);
 //				oos.close();
 //				os.close();
@@ -121,7 +119,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 //			else if (specFileName.endsWith(".xml"))
 //			{
 				//save as xml
-				MIFToXmlExporter xmlExporter;					
+				MIFToXmlExporter xmlExporter;
 				xmlExporter = new MIFToXmlExporter((MIFClass)specObject);
 				xmlExporter.exportToFile(specFileName);
 			}
@@ -160,11 +158,11 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 		}
 	}
 }
-	
+
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
  *HISTORY 	:Revision 1.6  2008/09/23 15:19:33  wangeug
  *HISTORY 	:caAdapter 4.2 alpha release
  *HISTORY 	:
  */
-	
+

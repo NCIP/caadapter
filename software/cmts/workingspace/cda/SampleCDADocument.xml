@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <?xml-stylesheet type="text/xsl" href="CDA.xsl"?>
 <!--
 Readers should be aware of the evolving "Using SNOMED CT in HL7 Version 3" implementation guide, currently in a draft state. The guide, co-developed by HL7 and the College of American Pathologists, will be balloted by HL7 as an Informative Document. Recommendations in the final published guide should usurp patterns of SNOMED CT usage found in this sample instance.

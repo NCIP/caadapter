@@ -1,11 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
 package gov.nih.nci.caadapter.hl7.transformation;
 
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
@@ -15,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class defines the Utility class to process a CSV data object 
- * 
+ * This class defines the Utility class to process a CSV data object
+ *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
@@ -24,7 +23,7 @@ import java.util.List;
  *          date        $Date: 2009-01-14 21:01:57 $
  */
 public class MapProcssorCSVUtil {
-    public List<CSVSegment> findCSVSegment(CSVSegment csvSegment, String targetXmlPath) 
+    public List<CSVSegment> findCSVSegment(CSVSegment csvSegment, String targetXmlPath)
     {
     	List<CSVSegment> csvSegments = new ArrayList<CSVSegment>();
     	if (targetXmlPath==null)
@@ -47,7 +46,7 @@ public class MapProcssorCSVUtil {
     			}
     		}
     	}
-    	
+
     	if (targetXmlPath.contains(csvSegment.getXmlPath())) {
 			CSVSegment current = csvSegment;
 			ArrayList<CSVSegment> parentHolder = new ArrayList<CSVSegment>();
@@ -60,7 +59,7 @@ public class MapProcssorCSVUtil {
     			{
     				current = csvS;
     				if (current.getChildSegments() == null || current.getChildSegments().size()==0) break;
- 
+
     				for(CSVSegment childSegment:current.getChildSegments()) {
     					if (childSegment.getXmlPath().equals(targetXmlPath)) {
     						csvSegments.add(childSegment);
@@ -82,30 +81,30 @@ public class MapProcssorCSVUtil {
     	return csvSegments;
     }
 /**
- * Find CSVField from a CSVSegment 
+ * Find CSVField from a CSVSegment
  * @param csvSegment
  * @param targetFieldXmlPath
  * @return CSVField found or null
  */
-    public CSVField findCSVField(CSVSegment csvSegment, String targetFieldXmlPath) 
+    public CSVField findCSVField(CSVSegment csvSegment, String targetFieldXmlPath)
     {
     	String targetSegmentXmlPath = targetFieldXmlPath.substring(0,targetFieldXmlPath.lastIndexOf('.'));
     	CSVSegment current = csvSegment;
     	while (true) {
-            if (current == null) 
+            if (current == null)
             	return null;
             String currentSegmentXmlPath = current.getXmlPath();
-            
-            if (targetSegmentXmlPath.equals(currentSegmentXmlPath)) 
+
+            if (targetSegmentXmlPath.equals(currentSegmentXmlPath))
             {
             	//the CSVSegment is the holder of the target CSVField
     			for(CSVField csvField:current.getFields()) {
-    				if (csvField.getXmlPath().equals(targetFieldXmlPath)) 
+    				if (csvField.getXmlPath().equals(targetFieldXmlPath))
     					return csvField;
     			}
     			//the target CSV field is not set as the holder CSVSegment
     			//was created (V2 message parser)
-    			
+
     			//return here since the targetFieldXmlPath is definitely the path
     			//of a CSVField, so it does not need to search the child CSVSegment
     			//of the current CSVSegment
@@ -122,7 +121,7 @@ public class MapProcssorCSVUtil {
             	}
             }
     		current = current.getParentSegment();
-    		if (current == null) 
+    		if (current == null)
     		{
     			System.out.println("Error");
     			System.out.println("csvSegment="+csvSegment.getXmlPath());
@@ -133,9 +132,9 @@ public class MapProcssorCSVUtil {
     }
 
     public CSVField findCSVField(List<CSVSegment> csvSegmentList, String targetXmlPath) {
-    	
+
     	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
-    	
+
     	for (CSVSegment csvSegment: csvSegmentList) {
     		if (csvSegment==null)
     			continue;
@@ -143,7 +142,7 @@ public class MapProcssorCSVUtil {
     		while (true) {
     			if (currentParent.getXmlPath().equals(targetSegmentXmlPath)) {
     				for(CSVField csvField:currentParent.getFields()) {
-    					if (csvField.getXmlPath().equals(targetXmlPath)) 
+    					if (csvField.getXmlPath().equals(targetXmlPath))
     						return csvField;
     				}
     			}
@@ -153,7 +152,7 @@ public class MapProcssorCSVUtil {
     			}
     		}
     	}
-    	
+
     	return null;
     	// Error should be thrown
     }

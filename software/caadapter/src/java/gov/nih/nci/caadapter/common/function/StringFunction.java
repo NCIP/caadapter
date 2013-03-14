@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -81,23 +80,23 @@ public class StringFunction {
 
     /**
      * Examine the input data to determine the output value and its corresponding NullFlavor value
-     * The output NullFlavor value is retrieved from NullFlavorSetting using output value as key. 
+     * The output NullFlavor value is retrieved from NullFlavorSetting using output value as key.
      * The NullFlavor default could be either input from source data or user's default setting
      * <ul>
-     *  <li>Case I: The input data is available but NullFlavorSetting is not, then<p> 
-     * 	set output 1 as CAADAPPTER_NULLFLAVOR_ATTRIBUTE_VALUE:value<p> 
+     *  <li>Case I: The input data is available but NullFlavorSetting is not, then<p>
+     * 	set output 1 as CAADAPPTER_NULLFLAVOR_ATTRIBUTE_VALUE:value<p>
      *  set output 2 as null, transformation engine will read NullFlavorSetting from H3S file or system default
      *
      * <li>Case II: NullFlavorSetting is available but input data is not, then <p>
      *  set output 1 as CAADAPPTER_NULLFLAVOR_ATTRIBUTE_MARK:NULL <p>
      *  set output 2 as NullFlavorSetting, transformation engine will read the default value and use is a as key to retrieve
      *  value from NullFlavorSetting
-     *  
+     *
      *  <li>Case III: Both the input data and NullFlavorSetting are available, then set both the output 1 and output 2
      * </ul>
-     * If dataString is NULL or BLANK, the output value is NULL, otherwise the output value 
+     * If dataString is NULL or BLANK, the output value is NULL, otherwise the output value
      * the same as dataString<p>
-     * 
+     *
      * @param dataString The input data to determine output data value and nullFlavor value
      * @param nullFlavorInput The input setting of list of key:value pair of NullFlavor constants
      * @param nullFlavorDefaultSetting The default setting of list of key:value pair of NullFlavor constants
@@ -130,20 +129,20 @@ public class StringFunction {
     		//transformation engine will retrieve NullFlavorSetting from H3S
         	//or system default, then set "nullFlavor" attribute of target element based value of "output 1"
     		List<String> nullSettingRtnList=new ArrayList<String>();
-    		//set value for "output 1"   		
+    		//set value for "output 1"
     		String opt1=GeneralUtilities.CAADAPTER_NULLFLAVOR_ATTRIBUTE_VALUE+":";
     		if (rtnValue1==null)
     			opt1=opt1+"NULL";
     		else
-    			opt1=opt1+rtnValue1;  		
+    			opt1=opt1+rtnValue1;
     		nullSettingRtnList.add(opt1);
-    		
+
     		//set "output 2" as null
     		nullSettingRtnList.add(null);
-        	//return here, 
+        	//return here,
         	return nullSettingRtnList;
     	}
-    	
+
     	if (dataString==null)
     	{
     		//case II:
@@ -158,9 +157,9 @@ public class StringFunction {
     		nullDataRtnList.add(optRtn1);
     		nullDataRtnList.add(nullSetting.toString());
     		//return here
-    		return nullDataRtnList;    		
+    		return nullDataRtnList;
     	}
-    	
+
     	//case III:
     	//set both "output 1" and "output 2"
     	//set NullFlavorKey based on input data
@@ -169,17 +168,17 @@ public class StringFunction {
     		nullFlavorKey="NULL";
     	else if(nullFlavorKey.equals(""))
     		nullFlavorKey="BLANK";
-    	 
+
     	//retrieve NullFlavor value from NullFlavorSetting
     	String rtnValue2=(String)nullSetting.get(nullFlavorKey);
-    	    	
+
 		//verify if it is a valid NULL FLAVOR constant defined by HL7
 		String nfValuesAllowed=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_NULLFLAVOR_VALUES_ALLOWED);
 		boolean isValidNF=false;
 		if (rtnValue2!=null&&nfValuesAllowed!=null)
 		{
 			String[] valuesAlled=nfValuesAllowed.split(",");
-			
+
 			for (String nfValue:valuesAlled)
 			{
 				if (nfValue!=null&&nfValue.equalsIgnoreCase(rtnValue2))
@@ -195,13 +194,13 @@ public class StringFunction {
     	String nullifyMissingData=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_MISSING_DATA_NULLFLAVOR_NULLIFIED);
 		if (nullifyMissingData!=null&&nullifyMissingData.equalsIgnoreCase("true"))
 		 	rtnValue1=null;
-		
+
 		List<String> rtnList=new ArrayList<String>();
 		rtnList.add(rtnValue1);
     	rtnList.add(rtnValue2);
     	return rtnList;
     }
-   
+
     /**
      * Accepts a String.
      * Returns an Object containing the numeric length of the String.

@@ -1,11 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
 package gov.nih.nci.caadapter.hl7.map.impl;
 
 /**
@@ -46,12 +45,12 @@ public class MifMetaLookup implements MetaLookup {
 		// TODO Auto-generated method stub
 		return table.get(uuid);
 	}
-	
-	private void processDatatype(Datatype datatype) 
+
+	private void processDatatype(Datatype datatype)
 	{
 		if (datatype==null)
 			return;
-		
+
 		Hashtable dtAttrs=datatype.getAttributes();
 		Enumeration<Attribute> childAttrsEnum=dtAttrs.elements();
 		while (childAttrsEnum.hasMoreElements())
@@ -93,17 +92,17 @@ public class MifMetaLookup implements MetaLookup {
 				MIFClass asscMif=assc.getMifClass();
 				table.put(assc.getXmlPath(), assc);
 				initLookupTable(asscMif);
-				
+
 			}
-		
+
 		//process choices
 		if (mif.getSortedChoices()!=null)
 			for(MIFClass choice:mif.getSortedChoices())
 			{
 				if (choice.isChoiceSelected())
 					initLookupTable(choice);
-				//MIFAttribute and MIFAssociation are required 
-				//if the choice item is a list of other choice items 
+				//MIFAttribute and MIFAssociation are required
+				//if the choice item is a list of other choice items
 				if(choice.getSortedChoices().size()>0)
 				{
 					initLookupTable(choice);

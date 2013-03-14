@@ -1,9 +1,8 @@
-/**
- * The content of this file is subject to the caAdapter Software License (the "License").  
- * A copy of the License is available at:
- * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
- * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
- * /docs/caAdapter_License
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -40,7 +39,7 @@ public class FileUtil
     }
     public static URL getCodeBase()
     {
-        
+
         return codeBaseURL;
     }
     /**
@@ -85,8 +84,8 @@ public class FileUtil
         name = name.trim();
         return findFileExe(name, new File(FileUtil.getWorkingDirPath()));
     }
- 
- 
+
+
     public static URL findFileExe(String name, File dir)
     {
         String sp = File.separator;
@@ -195,7 +194,7 @@ public class FileUtil
     	String relPath;
     	if (refPath==null)
     		return filePath;
-    	
+
     	if (filePath.startsWith(refPath))
     		relPath= filePath.substring(refPath.length()+1);
     	else
@@ -258,7 +257,7 @@ public class FileUtil
         return ret;
     }
 
- 
+
     /**
      * Utility method to get resource
      * @param name
@@ -280,7 +279,7 @@ public class FileUtil
             ret = ClassLoader.getSystemResources("/"+name);
 
             if(ret!=null&&ret.hasMoreElements()) return ret;
-            
+
             final URL urlx = findFile(name);
             if (urlx != null)
             {

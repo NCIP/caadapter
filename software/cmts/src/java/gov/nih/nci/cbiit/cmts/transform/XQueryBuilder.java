@@ -1,10 +1,10 @@
-/**
- * The content of this file is subject to the caAdapter Software License (the "License").  
- * A copy of the License is available at:
- * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
- * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
- * /docs/caAdapter_License
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.cbiit.cmts.transform;
 
 import gov.nih.nci.cbiit.cmts.core.AttributeMeta;
@@ -594,7 +594,7 @@ public class XQueryBuilder {
 //		String tgtMappingSrc=null;
 //		LinkType link = links.get(elementXpath);
 //
-//		if(link!=null) 
+//		if(link!=null)
 //		{
 //			tgtMappingSrc = link.getSource().getId();
 //		}
@@ -614,27 +614,27 @@ public class XQueryBuilder {
 //		{
 //			sbQuery.append("<"+tgt.getName()+">");
 //			//child elements
-//			for(ElementMeta e:tgt.getChildElement()) 
+//			for(ElementMeta e:tgt.getChildElement())
 //				processTargetElement(e, tgtMappingSrc);
 //			sbQuery.append("</"+tgt.getName()+">");
-//			
+//
 //			xpathStack.pop();
 //			return;
 //		}
 //		else
 //		{
-//			//neither the element and its attribute 
+//			//neither the element and its attribute
 //			//nor any of its descendant is mapped,
 //			//ignore this element
 //			sbQuery.append("<"+tgt.getName()+"/>");
 //			xpathStack.pop();
 //			return;
-//			
+//
 //		}
-//		
+//
 //		//create loop to pull source data
 //		String var = "item_temp"+String.valueOf(varStack.size());
-//		if (xpathStack.size()>1) 
+//		if (xpathStack.size()>1)
 //			sbQuery.append("{");
 //
 //		sbQuery.append("for $"+var+" in ");
@@ -651,25 +651,25 @@ public class XQueryBuilder {
 //		sbQuery.append(" return ");
 //		varMap.put(tgtMappingSrc, var);
 //		varStack.push(var);
-//		
+//
 //		//start tag and attributes
 //		sbQuery.append("<"+tgt.getName());
 //		processAttributes(tgt, tgtMappingSrc);
 //		sbQuery.append(">");
-//		
+//
 //		pullInlineText(tgt, null);//, tgtMappingSrc);
-//		
+//
 //		//child elements
-//		for(ElementMeta e:tgt.getChildElement()) 
+//		for(ElementMeta e:tgt.getChildElement())
 //			processTargetElement(e, tgtMappingSrc);
-//		
+//
 //		//end tag
-//		sbQuery.append("</"+tgt.getName()+">");	
+//		sbQuery.append("</"+tgt.getName()+">");
 //		//close loop
-//		if(xpathStack.size()>1) 
+//		if(xpathStack.size()>1)
 //			sbQuery.append("}");
 //		sbQuery.append(sep);
-//		
+//
 //		//clear temporary variable stack
 //		varStack.pop();
 //		xpathStack.pop();
@@ -697,11 +697,11 @@ public class XQueryBuilder {
 //	private void pullInlineText(ElementMeta tgtMeta, String parentMappingPath)
 //	{
 //		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
-//		
+//
 //		LinkType link = links.get(elementXpath);
 //		if (link==null)
 //		{
-//			pullInlineTextFromFunction(tgtMeta, parentMappingPath);			
+//			pullInlineTextFromFunction(tgtMeta, parentMappingPath);
 //			return ;
 //		}
 //
@@ -713,15 +713,15 @@ public class XQueryBuilder {
 // 			inlineTextRequred=true;
 // 		else if (!hasMappedDescenant(tgtMeta))
 // 			inlineTextRequred=true;
-// 
-////		if(links.get(elementXpath+"#inlinetext")!=null) 
+//
+////		if(links.get(elementXpath+"#inlinetext")!=null)
 ////		{ //map inline text for mixed node
 ////			srcTextId = links.get(elementXpath+"#inlinetext").getSource().getId();
 ////		}
-// 
+//
 // 		if (!inlineTextRequred)
 // 			return;
-// 		
+//
 //		String srcDynamicPath=null;
 //		if (srcTextId.indexOf("@")>-1)
 //		{
@@ -735,11 +735,11 @@ public class XQueryBuilder {
 //		{
 //				srcDynamicPath=varStack.peek();
 //		}
-//		
+//
 //		if (srcDynamicPath!=null)
 //			sbQuery.append("{data($").append(srcDynamicPath).append(")}");
 //		else //use the absolute path of the attribute/element in case its parent element are not mapped
-//			sbQuery.append("{data(doc($docName)").append(srcTextId+")}");				
+//			sbQuery.append("{data(doc($docName)").append(srcTextId+")}");
 //	}
 
 
@@ -751,7 +751,7 @@ public class XQueryBuilder {
 //	private void processAttributes(ElementMeta tgt, String elementMapingSourceId) {
 //		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 //		for(AttributeMeta a:tgt.getAttrData()) {
-//			if(links.get(elementXpath+"/@"+a.getName())!=null) 
+//			if(links.get(elementXpath+"/@"+a.getName())!=null)
 //			{
 //				LinkType l = links.get(elementXpath+"/@"+a.getName());
 //				String attrMappingSrc = l.getSource().getId();
@@ -771,7 +771,7 @@ public class XQueryBuilder {
 //			}
 //			else if(a.getFixedValue()!=null) { //use fixed value first
 //				sbQuery.append("\""+a.getFixedValue()+"\"");
-//			} 
+//			}
 //			else if(a.getDefaultValue()!=null) {//use default value
 //				sbQuery.append(" ").append(a.getName()).append("=");
 //				sbQuery.append("\""+a.getDefaultValue()+"\"");

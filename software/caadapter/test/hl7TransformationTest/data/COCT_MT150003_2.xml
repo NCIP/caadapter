@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <Organization xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" classCode="ORG" determinerCode="INSTANCE">
    <id extension="1111GHHMO" root="2.16.840.1.113883.19.4" xsi:type="II"/>
    <id extension="2222" root="2.16.840.1.113883.19.5" xsi:type="II"/>

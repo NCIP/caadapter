@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -46,7 +45,7 @@ import java.util.ArrayList;
  */
 public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 {
-	protected static String COMMAND_NAME = ActionConstants.OPEN_CSV2XMI_MAP_FILE.substring(5);//remove the leading "open" 
+	protected static String COMMAND_NAME = ActionConstants.OPEN_CSV2XMI_MAP_FILE.substring(5);//remove the leading "open"
 	protected static Character COMMAND_MNEMONIC = new Character('O');
 	protected static KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 	protected static String TOOL_TIP_DESCRIPTION = "Open a Csv Meta To XMI Mapping File";
@@ -157,12 +156,12 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 						validatorResults = mappingPanel.processOpenMapFile(file);
 						mappingPanel.setChanged(false);
 					Thread.sleep(1);
-					
+
 //					everythingGood = handleValidatorResults(validatorResults);
 					/*
 					 * TODO verify whether needs to call the validator
 					 */
-					
+
 //					mainFrame.getMainContextManager().getContextFileManager().registerFileUsageListener(mappingPanel);
 				}
 				catch (Throwable e1)
@@ -171,7 +170,7 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 					//log the exception, but not report
 					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame, false, true);
 					Message msg = MessageResources.getMessage("GEN3", new Object[0]);
-					
+
 					//report the nice to have message
 					DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), mainFrame, false, false);
 					everythingGood = false;

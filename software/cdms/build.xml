@@ -1,3 +1,10 @@
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <project name="Clinical Data Transformation Service" default="jar" basedir=".">
 	<!-- Tell ant to use my environment variables -->
 	<property environment="env" />

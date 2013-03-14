@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
@@ -95,13 +94,13 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
         }
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         Object obj = targetNode.getUserObject();
-       
+
         if (!(obj instanceof MIFAssociation) )
         	return false;
- 
+
         	MIFAssociation mifAssc = (MIFAssociation) obj;
         	MIFClass mifClass=mifAssc.getMifClass();
-        	
+
             try {
 //                Iterator choiceIt=mifClass.getChoices().iterator();
                 List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
@@ -120,15 +119,15 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
 //    							baseList.add(concreteChild);
 //    				}
 //                	else if(!choiceClass.isChoiceSelected())
-//                   		baseList.add((DatatypeBaseObject)choiceClass);             
+//                   		baseList.add((DatatypeBaseObject)choiceClass);
 //                }
                 AssociationListWizard cloneListWizard =
                         new AssociationListWizard(baseList, true, (JFrame) tree.getRootPane().getParent(), "Clone List", true);
                 DefaultSettings.centerWindow(cloneListWizard);
                 cloneListWizard.setVisible(true);
-                if (cloneListWizard.isOkButtonClicked()) 
+                if (cloneListWizard.isOkButtonClicked())
                 {
-                    final List<DatatypeBaseObject> userSelectedMIFClass = cloneListWizard.getUserSelectedAssociation();                
+                    final List<DatatypeBaseObject> userSelectedMIFClass = cloneListWizard.getUserSelectedAssociation();
                     if (userSelectedMIFClass.size()==0)
                     {
                     	 JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "No choice being selected",
@@ -168,7 +167,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
 //            						{
 //            							chosenItem=concreteChild;
 //                            			break;
-//            						}                    			
+//            						}
 //                    		}
 //                    	}
                     	if (chosenItem!=null)
@@ -190,7 +189,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     				String msgText="You will loss your pre-selected optional clone";
                     				if (chosenList.size()>1)
                     					msgText=msgText+"s";
-                    				
+
                     				for(MIFAssociation ass:chosenList)
                         			{
                     					msgText=msgText+"\n" +ass.getName();
@@ -225,9 +224,9 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     		oneChoiceSelected.setParentXmlPath(mifAssc.getParentXmlPath());
                     		((MIFClass)oneChoiceSelected).setChoiceSelected(true);
                     	}
-                    	
+
                     	mifAssc.setChoiceSelected(true);
-                    	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);  
+                    	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
                     	DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
                     	DefaultMutableTreeNode  newMIFAsscNode =mifTreeLoader.buildObjectNode(mifAssc,hsmNode.getRootMif());
                     	DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)targetNode.getParent();
@@ -237,7 +236,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     	((DefaultTreeModel) tree.getModel()).nodeStructureChanged(parentNode);
                     }
                 }
-                
+
                 setSuccessfullyPerformed(true);
             } catch (Exception e1) {
                 Log.logException(getClass(), e1);
@@ -262,5 +261,5 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
  * HISTORY      : Revision 1.11  2008/09/29 20:18:57  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
- * 
+ *
  * **/

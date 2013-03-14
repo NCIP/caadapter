@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.ui.common.resource;
 
@@ -82,11 +80,11 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 
     private void updateMonitor(ProgressMonitor monitor,int step,String note)
     {
-    	
+
     	monitor.setProgress(step);
     	monitor.setNote(note);
     }
-    private String buildHL7V3Resource(final String mifFilePath, final String coreschemaHome, final String msgSchemaHome, final String hl7Home, 
+    private String buildHL7V3Resource(final String mifFilePath, final String coreschemaHome, final String msgSchemaHome, final String hl7Home,
     		final boolean isSortKeyReassigning)
     {
     	String rtnMsg="Failed to build HL7 V3 resource";
@@ -119,7 +117,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 				    	//create oupput zip file stream
 						String targetSchema=hl7Home+File.separator+"schemas.zip";//+File.separator+"coreschemas";
 						ZipOutputStream outZip = new ZipOutputStream(new FileOutputStream(targetSchema));
-						
+
 						//copy core schemas:
 						updateMonitor(monitor, stepCount++, "Copy coreschema files "+coreschemaHome);
 						BuildResourceUtil.zipDir(outZip, coreschemaHome,"");
@@ -142,10 +140,10 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 						}
 						monitor.close();
 						outZip.close();
-						
+
 						String confirmMsg="Successfully loaded HL7 V3 Standards !";
 						JOptionPane.showMessageDialog(owner, confirmMsg,"Success",JOptionPane.DEFAULT_OPTION);
-						
+
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -160,14 +158,14 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
     	controlThread.start();
 		return rtnMsg;
     }
-    
+
     private String buildHL7V2Resource(String resourceHome, String targetSite)
     {
-    	
+
     	return "Buid HL7 V2 resource:Waiting for integration";
     }
-    
-    
+
+
 	/**
 	 * Invoked when an action occurs.
 	 */
@@ -207,7 +205,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 					JOptionPane.showConfirmDialog(this, warnMsg,"Warning",JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				
+
 				//String targetSite=frontPage.getTargetSite();
 				//never reset sortKey, use false as default
 				confirmMsg=buildHL7V3Resource(mifFileName,coreSchHome,messageSchHome,hl7TargetSite,false);

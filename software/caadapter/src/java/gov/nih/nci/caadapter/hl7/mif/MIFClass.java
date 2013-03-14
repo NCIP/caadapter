@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.hl7.mif;
 
 import gov.nih.nci.caadapter.common.util.Config;
@@ -201,7 +201,7 @@ import java.util.Iterator;
 	 }
 /**
  * Return all item to be selected.
- * If an item is a list of other MIFClass, all these children are promoted 
+ * If an item is a list of other MIFClass, all these children are promoted
  * to top level as choice item
  * @return A list of choice items
  */
@@ -228,7 +228,7 @@ import java.util.Iterator;
 			}
 			else
 				rtnSet.add((MIFClass)(choiceItem));
-			
+
 		}
 		return rtnSet;
 	 }
@@ -410,7 +410,7 @@ import java.util.Iterator;
 		String myCompareKey=getSortKey();
 		if (myCompareKey==null||myCompareKey.equals(""));
 			myCompareKey=getName();
-		
+
 		String otherCompareKey=mifClass.getSortKey();
 		if (otherCompareKey==null||otherCompareKey.equals(""));
 			otherCompareKey=mifClass.getName();
@@ -455,9 +455,9 @@ import java.util.Iterator;
 			 while (asscIt.hasNext())
 			 {
 				 MIFAssociation oneAssc=(MIFAssociation)asscIt.next();
-				 //clone the abstractAssociation only if the MIFClass is 
-				 //abstract since the concrete MIFClass carries only a 
-				 //reference of the abstract MIFAssociation define by the 
+				 //clone the abstractAssociation only if the MIFClass is
+				 //abstract since the concrete MIFClass carries only a
+				 //reference of the abstract MIFAssociation define by the
 				 //abstract MIFClass
 				 if (oneAssc.isAbstractDefined()==this.isAbstractDefined())
 				 {

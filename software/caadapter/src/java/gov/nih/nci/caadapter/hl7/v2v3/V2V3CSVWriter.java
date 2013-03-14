@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.hl7.v2v3;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.io.Writer;
 /**
  * This class provides creates CSV file with the input String array and each
  * array item separated by comma implementations
- * 
+ *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date:
@@ -52,7 +52,7 @@ public class V2V3CSVWriter {
 
 	/**
 	 * Constructs CSVWriter using a comma for the separator.
-	 * 
+	 *
 	 * @param writer
 	 *            the writer to an underlying CSV source.
 	 */
@@ -66,7 +66,7 @@ public class V2V3CSVWriter {
 
 	/**
 	 * Constructs CSVWriter with supplied separator and quote char.
-	 * 
+	 *
 	 * @param writer
 	 *            the writer to an underlying CSV source.
 	 * @param separator
@@ -80,7 +80,7 @@ public class V2V3CSVWriter {
 
 	/**
 	 * Constructs CSVWriter with supplied separator and quote char.
-	 * 
+	 *
 	 * @param writer
 	 *            the writer to an underlying CSV source.
 	 * @param separator
@@ -100,7 +100,7 @@ public class V2V3CSVWriter {
 
 	/**
 	 * Writes the next line to the file.
-	 * 
+	 *
 	 * @param nextLine
 	 *            a string array with each comma-separated element as a separate
 	 *            entry.
@@ -136,10 +136,10 @@ public class V2V3CSVWriter {
 
 	/**
 	 * Close the underlying stream writer flushing any buffered content.
-	 * 
+	 *
 	 * @throws IOException
 	 *             if bad things happen
-	 * 
+	 *
 	 */
 	public void close() throws IOException {
 		pw.flush();
@@ -157,5 +157,5 @@ public class V2V3CSVWriter {
  * HISTORY : HISTORY : Revision 1.2 2006/10/03
  * 15:14:29 jayannah HISTORY : changed the package names HISTORY : HISTORY :
  * Revision 1.1 2006/10/03 14:59:57 jayannah HISTORY : Created the files HISTORY :
- * 
+ *
  */

@@ -1,10 +1,10 @@
-/**
- * The content of this file is subject to the caAdapter Software License (the "License").  
- * A copy of the License is available at:
- * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
- * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
- * /docs/caAdapter_License
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.cbiit.cmts.test;
 
 import gov.nih.nci.cbiit.cmts.core.Component;
@@ -57,7 +57,7 @@ import org.junit.Test;
 import org.xml.sax.ErrorHandler;
 
 /**
- * This class 
+ * This class
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
@@ -97,7 +97,7 @@ public class TransformTest {
 	}
 
 	/*
-	 * 
+	 *
 	 */
 	@Test
 	public void testReadRemoteFile() throws IOException
@@ -105,11 +105,11 @@ public class TransformTest {
 //		String fileURI="//nci6116g.nci.nih.gov/group/NCICB/caAdapter/Temp/";
 		String urlValue="http://localhost:30210/caadapter-cmts/index.html";
 //		String urlValue="file://nci6116g.nci.nih.gov/group/NCICB/caAdapter/Temp/test.xml";
-		URL url = new URL(urlValue); 
+		URL url = new URL(urlValue);
 //		File f = new File("//10.22.33.122/images");
 //		FileReader reader=new FileReader(f);
 		InputStream in=url.openStream();
-		InputStreamReader sReader=new InputStreamReader(in); 
+		InputStreamReader sReader=new InputStreamReader(in);
 
 		LineNumberReader lReader=new LineNumberReader(sReader);
 		String line=lReader.readLine();
@@ -118,11 +118,11 @@ public class TransformTest {
 			System.out.println("TransformTest.testReadRemoteFile()"+line);
 			line=lReader.readLine();
 		}
-		
+
 
 
 	}
-	
+
 	/*
 	 * Test mapping and transformation
 	 */
@@ -139,17 +139,17 @@ public class TransformTest {
 
 		String xmlResult=tester.transfer(srcFile, mappingFile);
 		System.out.println("TransformTest.testMappingAndTransformation()\n"+xmlResult);
-		
+
 	}
 	/**
 	 * Test method for {@link gov.nih.nci.cbiit.cmts.transform.XQueryBuilder#getXQuery()}.
-	 * @throws XQException 
+	 * @throws XQException
 	 */
 	@Test
 	public void testXQueryTransform() throws XQException {
 //		String sourceFile="workingspace/simpleMapping/shiporder.xml";
 //		String xqFile="workingspace/simpleMapping/testXQ1.xq";
-		
+
 		String sourceFile="synderTest.xml";
 		String xqFile="synderQuery.xq";
 		InputStream in;
@@ -175,8 +175,8 @@ public class TransformTest {
 	}
 
 	/**
-	 * 
-	 * @throws XQException 
+	 *
+	 * @throws XQException
 	 * @throws XQException
 	 * @throws JAXBException
 	 * @throws IOException
@@ -191,7 +191,7 @@ public class TransformTest {
 		XQConnection conn = dataSource.getConnection();
 		String xsString="for $Template in doc(\"synderTest.xml\")/TemplateContainer/Template/Tags "+
 			" return $Template" ;
-		
+
 
 		XQPreparedExpression exp = conn.prepareExpression(xsString);
 
@@ -204,7 +204,7 @@ public class TransformTest {
 		System.out.println("TransformTest.testXQueryExpression()..:"+rawResult);
 //		System.out.println(tester.transfer(sourceFile, xqFile));
 	}
-	
+
 	@Test
 	public void testTransformAndOutput() throws XQException, JAXBException, IOException {
 		String mapFile="workingspace/hl7v2/dischargeMap.map";
@@ -215,16 +215,16 @@ public class TransformTest {
 		FileWriter w = new FileWriter("bin/tranform.xq");
 		w.write(queryString);
 		w.close();
-		
+
 		MappingTransformer tester= new MappingTransformer();
 		String dataSource="workingspace/hl7v2/ADT_03.xml";
  		System.out.println("TransformTest.testCMTSTransform()..:\n"+TransformationUtil.formatXqueryResult(tester.transfer(dataSource, mapFile), false));
-		
+
 		w = new FileWriter("bin/tranform.out.xml");
 		String result=tester.transfer(dataSource, mapFile);
 		w.write(result);
 		w.close();
-		
+
 		//using validator
 		String targetSchema=null;
 		Mapping maping=tester.getTransformationMapping();
@@ -237,7 +237,7 @@ public class TransformTest {
 			}
 		}
 		ErrorHandler handler=new XsdSchemaErrorHandler();
-		
+
 		Schema schema=XsdSchemaSaxValidator.loadSchema(targetSchema, handler);
 		XsdSchemaSaxValidator.validateXmlData(schema, result, handler);
 	}

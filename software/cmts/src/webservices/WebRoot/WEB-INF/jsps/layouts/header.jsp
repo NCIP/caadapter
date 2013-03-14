@@ -1,3 +1,10 @@
+<%--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L--%>
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="hdrBG">
 	<tr>
           <td width="283" height="37" align="left"><a href="http://www.cancer.gov"><img alt="National Cancer Institute" src="images/logotype.gif" width="283" height="37" border="0"></a></td>

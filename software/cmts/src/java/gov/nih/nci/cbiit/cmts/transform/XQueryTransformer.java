@@ -1,10 +1,10 @@
-/**
- * The content of this file is subject to the caAdapter Software License (the "License").  
- * A copy of the License is available at:
- * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
- * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
- * /docs/caAdapter_License
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.cbiit.cmts.transform;
 
 
@@ -56,14 +56,14 @@ public class XQueryTransformer extends MappingTransformer {
 		} catch (XQException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	 
+		}
 	}
 	protected XQPreparedExpression prepareXQExpression(String instruction) throws XQException, JAXBException
 	{
 		InputStream in;
 		try {
 			in = new FileInputStream(new File(instruction));
-			InputStreamReader inputStream=new InputStreamReader(in);	
+			InputStreamReader inputStream=new InputStreamReader(in);
 			XQPreparedExpression exp = getConn().prepareExpression(inputStream);
 			return exp;
 		} catch (FileNotFoundException e) {
@@ -72,7 +72,7 @@ public class XQueryTransformer extends MappingTransformer {
 		}
 		return null;
 	}
-	
+
 
 	@Override
 	public List<ApplicationResult> validateXmlData(Object validator,

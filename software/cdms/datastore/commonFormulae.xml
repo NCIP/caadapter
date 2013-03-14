@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <formulaStore name="Common Formula">
 	<formula type="math" name="PI Monthly" status="final" dateModified="2010-12-01T10:14:33.609-05:00">
 		<annotation>Principal and Interest Monthly Payment</annotation>

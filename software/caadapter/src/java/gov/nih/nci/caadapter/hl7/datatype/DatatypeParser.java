@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
-  * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
@@ -50,10 +50,10 @@ public class DatatypeParser {
     private String prefix; //prefix for each element
     private Hashtable<String, Datatype> datatypes = new Hashtable<String, Datatype>();
     private final int COMPLETE = 1;
-    private final int NONCOMPLETE = 0; 
+    private final int NONCOMPLETE = 0;
     private Hashtable<String, List<String>> datatypeSubclass=new Hashtable<String, List<String>>();
     private boolean dataLoaded=false;
-    public Hashtable<String, Datatype> getDatatypes() 
+    public Hashtable<String, Datatype> getDatatypes()
     {
     	return datatypes;
     }
@@ -61,10 +61,10 @@ public class DatatypeParser {
 	//	private HashSet getEnums(String datatypeString) {
 	//		HashSet enums = new HashSet();
 	//		Datatype datatype = (Datatype)datatypes.get(datatypeString);
-	//		if (datatype == null) return enums; 
+	//		if (datatype == null) return enums;
 	//		return datatype.getPredefinedValues();
 	//	}
-	//	
+	//
 		public void loadDatatypes() {
 			if(!dataLoaded)
 			{
@@ -85,31 +85,31 @@ public class DatatypeParser {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
-			db = dbf.newDocumentBuilder();            
+			db = dbf.newDocumentBuilder();
 	        Document vocDoc = null;
 			Document baseDoc = null;
 			Document allDoc = null;
 			String schemaFilePath=NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath();
 	        File schemaFile = new File(schemaFilePath);
 	        String coreSchemaPrefix="coreschemas";
-	        if(!schemaFile.exists()) 
+	        if(!schemaFile.exists())
 	        {
 	        	//webStart deployment, the schemas.zip file INVISIBLE
 	        	System.err.println("Webstart deployment: " + schemaFilePath);
 	        	String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
 	        	String coreXsdPath=specHome+"/"+coreSchemaPrefix;
 	        	String nameVoc=coreXsdPath+"/voc.xsd";
-	        	
+
 	            URL urlVoc=FileUtil.retrieveResourceURL(nameVoc);
 	        	String nameDatatypeBase=coreXsdPath+"/datatypes-base.xsd";
 	        	URL urlDtBase=FileUtil.retrieveResourceURL(nameDatatypeBase);
 	        	String nameDatatype=coreXsdPath+"/datatypes.xsd";
 	        	URL urlDt=FileUtil.retrieveResourceURL(nameDatatype);
-	            	
+
 	        	vocDoc = db.parse(urlVoc.openStream());
 	            baseDoc = db.parse(urlDtBase.openStream());
 	            allDoc = db.parse(urlDt.openStream());
-	        	     
+
 	        }
 	        else
 	    	{
@@ -130,8 +130,8 @@ public class DatatypeParser {
 	        	}
 	    		else
 	    			System.out.println("DatatypeParser.loadDatatypeRawdata()...failed load datatype type");
-	    	}  
-			
+	    	}
+
 			handleGTS();
 			parse(vocDoc);
 			parse(baseDoc);
@@ -152,7 +152,7 @@ public class DatatypeParser {
 			e.printStackTrace();
 		}
 	}
-	private boolean parse(Node node) 
+	private boolean parse(Node node)
 	{
         if (node == null) {
             return true;
@@ -202,27 +202,27 @@ public class DatatypeParser {
 //			   Datatype uDT = ((Datatype)datatypes.get(union));
 //			   if (uDT!=null)
 //			   {
-//				   
+//
 //				   if (uDT.getPatterns().size()>0) {
 //					   for(String p:uDT.getPatterns()) {
 //						   datatype.addPattern(p);
 //					   }
 //				   }
-//				   
+//
 //				   for (String enumValue:(HashSet<String>)getEnums(union))
 //				   {
 //					   datatype.addPredefinedValue(enumValue);
 //				   }
 //			   }
-//			} 
+//			}
 //		}
-//		
+//
 //	}
 	private void populateDatatypes()
     {
 		Hashtable datatypes_check = new Hashtable();
-		Stack<String> processingStack = new Stack(); 
-		
+		Stack<String> processingStack = new Stack();
+
 		Iterator datatypeCheckIt = datatypes.keySet().iterator();
 		while (datatypeCheckIt.hasNext())
         {
@@ -231,7 +231,7 @@ public class DatatypeParser {
 			if (datatype.isSimple())
             {
 				//Process patterns
-				
+
 //				System.out.println("Unions for:"+datatype.getName()+ " -- unions"+ datatype.getUnions());
 				if (datatype.getUnions()!= null)
 				{
@@ -240,7 +240,7 @@ public class DatatypeParser {
 				}
 				else
                 {
-					datatypes_check.put(datatypeString, COMPLETE);					
+					datatypes_check.put(datatypeString, COMPLETE);
 				}
 
 			}
@@ -256,16 +256,16 @@ public class DatatypeParser {
 				}
 			}
 		}
-		
+
 		Iterator datatypeIt = datatypes.keySet().iterator();
 		while (datatypeIt.hasNext())
         {
 			String datatypeString = (String)datatypeIt.next();
 			Datatype datatype = (Datatype)datatypes.get(datatypeString);
 			if ((Integer)datatypes_check.get(datatypeString) == COMPLETE) continue;
-			
+
 			processingStack.push(datatypeString);
-			
+
 			while (processingStack.size() > 0)
             {
 				boolean restart = false;
@@ -295,14 +295,14 @@ public class DatatypeParser {
 								   currentDatatype.addPattern(p);
 							   }
 						   }
-						   
+
 						   for (String enumValue:(HashSet<String>)uDT.getPredefinedValues())
 						   {
 							   currentDatatype.addPredefinedValue(enumValue);
 						   }
 					   }
 					}
-					if (restart) 
+					if (restart)
 					{
 						restart=false;
 						continue;
@@ -313,7 +313,7 @@ public class DatatypeParser {
 
 					}
 				}
-				else 
+				else
 				{
 					String parentDatatypeString = currentDatatype.getParents();
 //					System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
@@ -354,7 +354,7 @@ public class DatatypeParser {
 			}
 		}
 	}
-	
+
 	private void populateSubclasses()
 	{
 		Enumeration dtKeys=datatypes.keys();
@@ -366,14 +366,14 @@ public class DatatypeParser {
 		}
 	}
 	private void addDatatypeToSubclassHash(Datatype dType)
-	{	
+	{
 //		System.out.println("DatatypeParser.addDatatypeToSubclassHash()..dataType:"+dType.getName()+"...getParents():"+dType.getParents());
 		String parentName=dType.getParents();
 		if (parentName==null)
 			return;
 		if (dType.isAbstract())
 			return;
-		
+
 		Datatype parentDatatype=(Datatype)datatypes.get(parentName);
 		while (parentDatatype!=null)
 		{
@@ -394,7 +394,7 @@ public class DatatypeParser {
 				break;
 			parentDatatype=(Datatype)datatypes.get(parentName);
 		}
-			 
+
 	}
 
 	private void handleGTS() {
@@ -405,9 +405,9 @@ public class DatatypeParser {
 		datatype.setAbstract(true);
 		datatypes.put("GTS", datatype);
 	}
-	
+
 	public static void main(String argv[]) throws Exception{
-    
+
 /*  		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   		DocumentBuilder db = dbf.newDocumentBuilder();
 
@@ -427,17 +427,17 @@ public class DatatypeParser {
 		datatypeParser.populateDatatypes();
 		//		datatypeParser.printDatatypes(true, false);
 		datatypeParser.printDatatypes(true, false);
-		
+
 		System.out.println(((Datatype)datatypeParser.getDatatypes().get("ActClass")).getPredefinedValues());
-	*/	
+	*/
 //		datatypeParser.saveDatatypes("C:/temp/serializedMIF/resource/datatypes");
 //		datatypeParser.saveDatatypes("C:/temp/datatypes");
-	
+
 		DatatypeParser datatypeParser1 = new DatatypeParser();
 		datatypeParser1.loadDatatypes();
 		System.out.println(((Datatype)datatypeParser1.getDatatypes().get("ActClass")).getPredefinedValues());
 //		datatypeParser1.printDatatypes(true, false);
-		
+
     }
 }
 /**

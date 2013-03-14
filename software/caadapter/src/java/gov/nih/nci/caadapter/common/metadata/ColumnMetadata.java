@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 package gov.nih.nci.caadapter.common.metadata;
@@ -16,7 +15,7 @@ import gov.nih.nci.caadapter.common.SDKMetaData;
  * @version 1.0
  * @created 11-Aug-2006 8:18:15 AM
  * @author LAST UPDATE $Author: phadkes $
- * @since      caAdapter  v4.2    
+ * @since      caAdapter  v4.2
  * @version    $Revision: 1.4 $
  * @date       $Date: 2008-09-25 19:30:38 $
  */
@@ -28,8 +27,8 @@ public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
 	private String name;
 	private String xPath;
 	private TableMetadata table;
-	private String type; 
-    public static String TYPE_ATTRIBUTE = "TYPE_ATTRIBUTE";  
+	private String type;
+    public static String TYPE_ATTRIBUTE = "TYPE_ATTRIBUTE";
     public static String TYPE_ASSOCIATION = "TYPE_ASSOCIATION";
 
 	public String getDatatype(){
@@ -55,15 +54,15 @@ public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
     public TableMetadata getTableMetadata() {
 		return table;
 	}
-    
+
     public String getType(){
         return type;
     }
-    
+
     public void setType(String type){
-        this.type = type;   
+        this.type = type;
     }
-    
+
 	/**
 	 *
 	 * @param datatype
@@ -83,7 +82,7 @@ public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
 	public String toString() {
 		return getName();
 	}
-	
+
 	public String getTitle() {
 		return getName();
 	}
@@ -118,7 +117,7 @@ public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
 	 public void setIsPrimaryKey(boolean isPrimaryKey) {
 		 this.isPrimaryKey = isPrimaryKey;
 	 }
-	 
+
 	 public String getParentXPath() {
 			String parentXPath;
 			int attributeStartPoint = this.xPath.lastIndexOf(".");

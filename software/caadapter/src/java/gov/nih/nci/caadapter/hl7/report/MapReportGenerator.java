@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 package gov.nih.nci.caadapter.hl7.report;
@@ -36,8 +35,8 @@ import java.io.FileOutputStream;
 import java.util.*;
 
 /**
- * This class defines functions to generate a basic map report in Excel format. 
- * 
+ * This class defines functions to generate a basic map report in Excel format.
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
@@ -158,18 +157,18 @@ public class MapReportGenerator
 	}
 
 
-	private void loadSCS(CSVSegmentMeta csvSegmentMeta) throws Exception 
+	private void loadSCS(CSVSegmentMeta csvSegmentMeta) throws Exception
 	{
 		allCSVElement.add(csvSegmentMeta.getXmlPath());
 		for (CSVFieldMeta cvsField:csvSegmentMeta.getFields()) {
 			allCSVElement.add(cvsField.getXmlPath());
-			
+
 		}
 		for (CSVSegmentMeta csvChildSegmentMeta:csvSegmentMeta.getChildSegments()) {
 			loadSCS(csvChildSegmentMeta);
 		}
 	}
-	
+
 	private void loadH3S(MIFClass mifClass, String parentXmlPath, String parentXmlPathMapped)
 	{
 		allMifElement.add(parentXmlPath+mifClass.getName());
@@ -191,7 +190,7 @@ public class MapReportGenerator
     	}
     	else {
         	HashSet<MIFAttribute> attributes = mifClass.getAttributes();
-        	
+
         	for(MIFAttribute mifAttribute:attributes) {
 				if (parentXmlPath.equals(""))
 					loadH3S(mifAttribute, mifClass.getName(), mifClass.getName());
@@ -201,7 +200,7 @@ public class MapReportGenerator
         	}
 
         	HashSet<MIFAssociation> associations = mifClass.getAssociations();
-        	
+
         	for(MIFAssociation mifAssociation : associations) {
 				if (parentXmlPath.equals(""))
 					loadH3S(mifAssociation, mifClass.getName(), mifClass.getName());
@@ -211,7 +210,7 @@ public class MapReportGenerator
         	}
     	}
 	}
-	
+
 	private void loadH3S(MIFAssociation mifAssociation, String parentXmlPath, String parentXmlPathMapped) {
     	if (mifAssociation.getMifClass()!= null) {
 	    	allMifElementMappedXML.put(parentXmlPathMapped+"." + mifAssociation.getNodeXmlName(),parentXmlPath+"." + mifAssociation.getName());
@@ -223,7 +222,7 @@ public class MapReportGenerator
     	if (mifAttribute.getDatatype() == null) return; //Abstract attrbiute
     	loadH3S(mifAttribute.getDatatype(),parentXmlPath+"."+mifAttribute.getName(),parentXmlPathMapped+"."+mifAttribute.getNodeXmlName());
 	}
-	
+
 	private void loadH3S(Datatype datatype, String parentXPath,  String parentXmlPathMapped) {
     	if (!datatype.isEnabled()) return;
     	allMifElement.add(parentXPath);
@@ -233,12 +232,12 @@ public class MapReportGenerator
     	if (datatype.isSimple()) {
     		return;
     	}
-    	
+
     	for(String attributeName:(Set<String>)(datatype.getAttributes().keySet())) {
-    		
+
     		Attribute attr = (Attribute)datatype.getAttributes().get(attributeName);
     		boolean isSimple = false;
-    		
+
 //    		String datatypeattribute = parentXPath+"."+attr.getNodeXmlName();
     		if (attr.getReferenceDatatype() == null) {
     			isSimple = true;
@@ -257,7 +256,7 @@ public class MapReportGenerator
     		}
     	}
 	}
-	
+
 	private void generatedMappedReport(Mapping mappingMeta)
 	{
 		List<gov.nih.nci.caadapter.hl7.map.Map> mappingLinkList = mappingMeta.getMaps();

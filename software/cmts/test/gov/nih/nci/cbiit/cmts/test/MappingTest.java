@@ -1,10 +1,10 @@
-/**
- * The content of this file is subject to the caAdapter Software License (the "License").  
- * A copy of the License is available at:
- * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
- * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
- * /docs/caAdapter_License
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.cbiit.cmts.test;
 
 import gov.nih.nci.cbiit.cmts.common.XSDParser;
@@ -59,7 +59,7 @@ public class MappingTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
 	/**
 	 * test XSD parsing and marshaling of the generated Model Object
 	 */
@@ -67,7 +67,7 @@ public class MappingTest {
 	public void testParseXSD() throws Exception {
 		XSDParser p = new XSDParser();
 		try {
-			
+
 
 		p.loadSchema("workingspace/simpleMapping/shiporder.xsd", null);
 //		p.loadSchema("workingspace/hl7v3/multicacheschemas/PORR_IN049006UV01.xsd", null);
@@ -76,19 +76,19 @@ public class MappingTest {
 //		ElementMeta e = p.getElementMeta("urn:hl7-org:v3", "PORR_IN049006UV01");
 //		ElementMeta e = p.getElementMeta("urn:hl7-org:v3", "testELM");
 //		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "COCT_MT530000UV.Act");
-		
+
 //		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 //		Marshaller u = jc.createMarshaller();
 //		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 //		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/shiporder.meta.xml"));
-	
+
 		} catch (Exception e) {
 			//System.out.println("MappingTest.testParseXSD()...metacount:"+BaseMeta.metaCount);
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * test HL7 v2 XSD parsing and marshaling of the generated Model Object
 	 */
@@ -102,7 +102,7 @@ public class MappingTest {
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/ADT_A01.meta.xml"));
 	}
-	
+
 	/**
 	 * test HL7 v3 XSD parsing and marshaling of the generated Model Object
 	 */
@@ -116,26 +116,26 @@ public class MappingTest {
 //		Marshaller u = jc.createMarshaller();
 //		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 //		u.marshal(new JAXBElement(new QName("ElementMeta"),ElementMeta.class, e), new File("bin/COCT_MT010000UV01.meta.xml"));
-	
+
 		} catch (Exception e) {
 			//System.out.println("MappingTest.testParseHL7v3XSD()...metacount:"+BaseMeta.);
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Test file relative path 
+	 * Test file relative path
 	 */
 	@Test
 	public void testFilePathRelatize()
 	{
 		String mappingFile="C:/Documents and Settings/wangeug/Desktop/myTest.map";
 		String xsdFile="../../../projects/workspace/cmtsSvn/workingspace/siblingMapping/shiporder.xsd";
-		
+
 	}
 	/**
-	 * test create Mapping from a pair of XSD and marshaling the Mapping 
+	 * test create Mapping from a pair of XSD and marshaling the Mapping
 	 */
 	@Test
 	public void testMarshalMapping() throws Exception {
@@ -147,35 +147,35 @@ public class MappingTest {
 		XSDParser srcP = new XSDParser();
 		srcP.loadSchema(srcComponentId, null);
 		MappingFactory.loadMetaXSD(m, srcP, null,"shiporder", ComponentType.SOURCE);
-		
+
 		XSDParser trgtP = new XSDParser();
 		trgtP.loadSchema(tgtComponentId, null);
 		MappingFactory.loadMetaXSD(m, trgtP,null, "printorder",  ComponentType.TARGET);
-		
+
 		//add links;
 		m.setLinks(new Mapping.Links());
 		MappingFactory.addLink(m, "0", "/shiporder", "1", "/printorder");
 		MappingFactory.addLink(m, "0", "/shiporder/shipto", "1", "/printorder/address");
-		
+
 		MappingFactory.saveMapping(new File("bin/mapping.out.xml"), m);
 //		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmts.core" );
 //		Marshaller u = jc.createMarshaller();
 //		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 //		u.marshal(new JAXBElement(new QName("mapping"),Mapping.class, m), new File("bin/mapping.out.xml"));
 	}
-	
-	
+
+
 	/**
-	 * test round trip marshaling and unmarshaling of Mapping 
+	 * test round trip marshaling and unmarshaling of Mapping
 	 */
 	@Test
 	public void testUnmarshalMapping() throws Exception {
 		Mapping m = MappingFactory.loadMapping(new File("C:/Documents and Settings/wangeug/Desktop/svTest.map"));
 		MappingFactory.saveMapping(new File("mapping_roundtrip.out.xml"), m);
 	}
-	
+
 	/**
-	 * test find node method 
+	 * test find node method
 	 */
 	@Test
 	public void testFindNodeById() throws Exception {

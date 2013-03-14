@@ -1,3 +1,10 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
  * The content of this file is subject to the caAdapter Software License (the "License").
  * A copy of the License is available at:

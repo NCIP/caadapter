@@ -1,3 +1,10 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 package gov.nih.nci.caadapter.security.domain;
 /**
  * The EmailType object define the types of email address for a user to access the data from security xmls.

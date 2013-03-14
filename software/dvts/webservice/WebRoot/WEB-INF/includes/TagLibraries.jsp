@@ -1,3 +1,10 @@
+<%--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!--%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %-->
 <!--%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %-->

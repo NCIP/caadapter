@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.ui.mapping;
 
 import javax.swing.BorderFactory;
@@ -36,14 +36,14 @@ import gov.nih.nci.caadapter.common.SDKMetaData;
  *          revision    $Revision: 1.7 $
  *          date        $Date: 2008-09-29 20:23:51 $
  */
-public class MappingTreeScrollPane extends JScrollPane 
+public class MappingTreeScrollPane extends JScrollPane
 {
 	final public static String DRAW_NODE_TO_LEFT="MAPPING_SOURCE";
 	final public static String DRAW_NODE_TO_RIGHT="MAPPING_TARGET";
 	final private static Color highlightColor=Color.blue;
 //	final private static Color normalColor=Color.gray;
 	final private static int BROKEN_LINE_PIECE=3;
-	
+
 	private String paneType;
 	public MappingTreeScrollPane(String type)
 	{
@@ -51,7 +51,7 @@ public class MappingTreeScrollPane extends JScrollPane
 		setBackground(Color.white);
 		setBorder(BorderFactory.createEmptyBorder());
 	}
-	
+
 	/**
 	 * Override method to see the lines drawn from tree node to border
 	 */
@@ -82,7 +82,7 @@ public class MappingTreeScrollPane extends JScrollPane
 			g.setColor(dftColor);
 		}
 	}
-	
+
 	/**
 	 * Recuisively draw lines for each mapped node
 	 * SourceTree: Node/visible Ancestor --->ScrollPane right border
@@ -99,11 +99,11 @@ public class MappingTreeScrollPane extends JScrollPane
 			MappableNode mappedNode =(MappableNode)treeNode;
 			if (mappedNode.isMapped())
 					drawNode=true;
-			
+
 			if ((!drawNode)&&(treeNode.getChildCount()>0))
 			{
 				//check the userObject for SDKMeta
-				Object userObject=treeNode.getUserObject();	
+				Object userObject=treeNode.getUserObject();
 				if (userObject  instanceof SDKMetaData )
 				{
 					SDKMetaData sdkMeta=(SDKMetaData)userObject;
@@ -118,7 +118,7 @@ public class MappingTreeScrollPane extends JScrollPane
 			    			DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)treeNode.getChildAt(i);
 			    			if(childNode instanceof MappableNode)
 			    			{
-				    			MappableNode mappedChild =(MappableNode)childNode;		    				
+				    			MappableNode mappedChild =(MappableNode)childNode;
 			    				if (mappedChild.isMapped())
 					    		{
 				    				//as long as one Column is mapped, the Table is mapped
@@ -139,14 +139,14 @@ public class MappingTreeScrollPane extends JScrollPane
 				Point panelPoint =SwingUtilities.convertPoint(tree, treeNodeBound.getLocation(), this);
 	    		//do not draw if the node is out of view bound
 				int yPos=panelPoint.y+treeNodeBound.height - treeNodeBound.height/2;
-    		
+
 	    		if (yPos>this.getViewportBorderBounds().height)
 	    			return;
-			
+
 				int xStart=panelPoint.x+treeNodeBound.width + BROKEN_LINE_PIECE;
 	    		int xEnd=this.getBounds().width;
-	    		
-	    		//set line ends with target tree 
+
+	    		//set line ends with target tree
 	    		if (paneType.equals(DRAW_NODE_TO_LEFT))
 	    		{
 	    			xStart=0;
@@ -172,7 +172,7 @@ public class MappingTreeScrollPane extends JScrollPane
 	   			drawHorizontalLinkFromNodeToPaneBorder(g, xStart, xEnd, yPos);
 			}
     	}
-		
+
 		if (treeNode.getChildCount()>0)
     	{
     		//Recursively process all children nodes
@@ -187,7 +187,7 @@ public class MappingTreeScrollPane extends JScrollPane
         		int yPos=panelPoint.y+treeNodeBound.height - treeNodeBound.height/2;
         		if (yPos>this.getViewportBorderBounds().height)
         			return;
-    			recursiveDrawLeaf(g, tree, childNode);   				
+    			recursiveDrawLeaf(g, tree, childNode);
     		}
     	}
     }
@@ -222,16 +222,16 @@ public class MappingTreeScrollPane extends JScrollPane
 			xPieceStart+=2*BROKEN_LINE_PIECE;
 		}
 	}
-	
+
 	public String getPaneType() {
 		return paneType;
 	}
-	
+
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
  * HISTORY      : Revision 1.6  2008/09/29 20:21:32  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
- * 
+ *
  * **/

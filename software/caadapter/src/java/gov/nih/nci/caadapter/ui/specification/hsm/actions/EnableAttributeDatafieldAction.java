@@ -1,14 +1,13 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
- 
+
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
@@ -47,7 +46,7 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
     private static final Character COMMAND_MNEMONIC = new Character('E');
 
     private boolean enableFlag=true; //as default to enable one data field
-    
+
     /**
      * Defines an <code>Action</code> object with a default
      * description string and default icon.
@@ -68,8 +67,8 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
         if (actionType)
         	setName(COMMAND_ENABLE_DATA);
         else
-        	setName(COMMAND_DISABLE_DATA); 	
-        
+        	setName(COMMAND_DISABLE_DATA);
+
         setMnemonic(COMMAND_MNEMONIC);
         setActionCommandType(DOCUMENT_ACTION_TYPE);
         enableFlag=actionType;
@@ -96,7 +95,7 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
         }
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         Object obj = targetNode.getUserObject();
-        
+
         if (obj instanceof Attribute)
         {
         	Attribute mifDt = (Attribute) obj;
@@ -114,7 +113,7 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
         		{
         			NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
         			DefaultMutableTreeNode newTtargetNode = mifTreeLoader.buildObjectNode(mifDt,null);
-        			NewHSMBasicNodeLoader.refreshSubTreeByGivenMifObject(targetNode, newTtargetNode, tree);        		}       		
+        			NewHSMBasicNodeLoader.refreshSubTreeByGivenMifObject(targetNode, newTtargetNode, tree);        		}
         		}
   				((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
         	}
@@ -123,5 +122,5 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * 
+ *
  * **/

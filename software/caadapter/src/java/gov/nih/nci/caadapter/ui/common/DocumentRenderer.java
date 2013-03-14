@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.ui.common;
 
@@ -94,7 +92,7 @@ public class DocumentRenderer implements Printable
                                                 //on a page will be scaled.
 
   protected JFrame mainFrame = null;
- 
+
 
 /*    The DocumentRenderer class uses pFormat and pJob in its methods. Note
       that pFormat is not the variable name used by the print method of the

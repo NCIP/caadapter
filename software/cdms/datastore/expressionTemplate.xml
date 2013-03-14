@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <formulaStore name="Expression Templates" xmlns:ns2="http://cmts.cbiit.nci.nih.gov/core" xmlns:ns3="http://cdms.cbiit.nci.nih.gov/core">
 	<formula type="math" name="addTemplate"  status="final">
 		<annotation>template formula:addition</annotation>

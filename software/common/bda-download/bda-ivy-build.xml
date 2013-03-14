@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="bda-utils" default="retrieve-bda" basedir=".">
 <!--
 $Id: bda-ivy-build.xml 1729 2009-05-28 17:59:23Z saksass $

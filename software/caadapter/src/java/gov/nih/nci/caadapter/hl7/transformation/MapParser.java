@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
@@ -70,7 +68,7 @@ public class MapParser {
         if (!root.getName().equalsIgnoreCase("mapping")) {
             Message msg = MessageResources.getMessage("MAP10", new Object[]{"SCS and H3S"});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
-            return null;	    	
+            return null;
 	    }
 	    Element components = root.getChild("components");
 	    if (components == null) {
@@ -93,7 +91,7 @@ public class MapParser {
 		            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
 		            continue;
 		    	}
-		    		
+
 		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("source")) {
 		    		sourceSpecFileName = (component.getAttribute("location")==null?"":component.getAttribute("location").getValue());
 		    		String cmptType=component.getAttributeValue("kind");
@@ -117,13 +115,13 @@ public class MapParser {
 		    			String id =null;
 		    			if (component.getAttribute("id")!=null)
 		    				id = component.getAttribute("id").getValue();
-		    			
+
 		    			if (kind == null || group == null || name==null) {
 		    	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file"});
 		    	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
 		    	            continue;
 		    			}
-		    			
+
 		    			String datatype = null;
 		    			String datavalue = null;
 		    	       	Element data = component.getChild("data");
@@ -140,8 +138,8 @@ public class MapParser {
 		    	}
 		    }
 	    }
-	    
-	    
+
+
 	    Element links = root.getChild("links");
 	    if (links == null) {
             Message msg = MessageResources.getMessage("MAP11", new Object[]{file.getAbsolutePath()});
@@ -169,7 +167,7 @@ public class MapParser {
 	        if (sourceElement.getAttribute("kind") == null) {
 	        	continue;
 	        }
-	        
+
 	        if (sourceElement.getAttribute("xmlPath") == null) {
 	        	continue;
 	        }
@@ -180,7 +178,7 @@ public class MapParser {
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
 	            continue;
 	        }
-	        Element targetElement = targetElementP.getChild("linkpointer");	        
+	        Element targetElement = targetElementP.getChild("linkpointer");
 	        if (targetElement == null) {
 	            Message msg = MessageResources.getMessage("MAP19", new Object[]{});
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
@@ -189,7 +187,7 @@ public class MapParser {
 	        if (targetElement.getAttribute("xmlPath") == null) {
 	        	continue;
 	        }
-	        
+
 	        targetXPath = targetElement.getAttribute("xmlPath").getValue();
 	        if (targetElement.getAttribute("kind") == null) {
 	        	continue;
@@ -197,16 +195,16 @@ public class MapParser {
 	        String targetKind ="";
 	        targetKind = targetElement.getAttribute("kind").getValue();
 	        if (targetKind.equalsIgnoreCase("h3s")) {
-	        	
+
 	        }else {
 	        	if (targetKind.equalsIgnoreCase("function")) {
-	        	
+
 	        	}
 	        	else {
-	        		
+
 	        	}
 	        }
-	        
+
 	        mappings.put(targetXPath, sourceXPath);
 	    }
 		return mappings;
@@ -250,7 +248,7 @@ public class MapParser {
                 else throw new MappingException("Invalid method name of 'Vocabulary' function group", new Throwable());
 
                 vocabularyMapping = new FunctionVocabularyMapping(datatype, datavalue, isInverse, sourceMapFile.getParentFile());
-                
+
                 functionComponent.setFunctionVocabularyMapping(vocabularyMapping);
             }
 
@@ -284,7 +282,7 @@ public class MapParser {
 	public String getSourceKind() {
 		return sourceKind;
 	}
-	
+
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $

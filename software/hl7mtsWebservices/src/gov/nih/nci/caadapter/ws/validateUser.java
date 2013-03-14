@@ -1,9 +1,10 @@
-/* <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 
 package gov.nih.nci.caadapter.ws;
 
@@ -61,11 +62,11 @@ public class validateUser extends HttpServlet {
         public void doPost (HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException
      {
-         
+
         try
         {
       //      System.out.println(req.getParameterNames());
-            
+
             session = req.getSession(false);
             if (session!=null){
                 session.invalidate();
@@ -73,7 +74,7 @@ public class validateUser extends HttpServlet {
             userId = req.getParameter("userid");
             password = req.getParameter("password");
             System.out.println("userid: " + userId + ", password: " + password);
-            System.out.println("userid: " + userId + ", password: " + password);                  
+            System.out.println("userid: " + userId + ", password: " + password);
             AbstractSecurityDAO abstractDao= DAOFactory.getDAO();
             SecurityAccessIF getSecurityAccess = abstractDao.getSecurityAccess();
             boolean valid = getSecurityAccess.validateUser(userId, password);
@@ -82,7 +83,7 @@ public class validateUser extends HttpServlet {
             session = req.getSession(true);
             String rsltMsg="Test message";
             if (valid){
-                
+
                 if(session.isNew())
                 {
                     session.setAttribute("userid", userId);
@@ -91,7 +92,7 @@ public class validateUser extends HttpServlet {
                 System.out.println("/caAdapterWS/createScenario.do");
                 res.sendRedirect("/caAdapterWS/createScenario.do");
                 return;
-            }        
+            }
             else {
 //             RequestDispatcher dispatch = req.getRequestDispatcher("/caAdapterWS/successmsg.do");
 //             dispatch.forward(req, res);
@@ -99,7 +100,7 @@ public class validateUser extends HttpServlet {
 //          out.println("Complete!");
                 if (session!=null){
                     session.invalidate();
-                }                
+                }
             res.sendRedirect("/caAdapterWS/errormsg.do");
             return;
           }
@@ -109,5 +110,5 @@ public class validateUser extends HttpServlet {
           }
      }
 
-             
+
 }

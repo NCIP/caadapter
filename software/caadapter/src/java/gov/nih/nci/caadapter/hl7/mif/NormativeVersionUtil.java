@@ -1,10 +1,11 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
+
 package gov.nih.nci.caadapter.hl7.mif;
 
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -19,7 +20,7 @@ import java.util.HashMap;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Mar 9, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.6 $
  * @date 	 DATE: $Date: 2009-06-24 18:00:04 $
  * @since caAdapter v4.2
@@ -56,10 +57,10 @@ public class NormativeVersionUtil {
 	{
 		if (normativeSetting==null)
 			loadSetting();
-		
+
 		return normativeSetting;
 	}
-	
+
 	public static MIFIndex loadMIFIndex(String copyrightYear)
 	{
 		if (normativeSetting==null)
@@ -76,7 +77,7 @@ public class NormativeVersionUtil {
 	{
 		String mifSettingFilePath = getNormativeSettingXmlFileName();
 		URL mifSettingURL=FileUtil.retrieveResourceURL(mifSettingFilePath);
-		
+
 		NormativeVersionSettingLoader settingLoader= new NormativeVersionSettingLoader();
 		if (mifSettingURL!=null)
 		{
@@ -87,7 +88,7 @@ public class NormativeVersionUtil {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 		else
 			settingLoader.loadNomativeSetting(new File(mifSettingFilePath));

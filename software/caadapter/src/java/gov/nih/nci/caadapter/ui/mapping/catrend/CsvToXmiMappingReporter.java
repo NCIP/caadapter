@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.ui.mapping.catrend;
 
 import java.io.File;
@@ -39,13 +39,13 @@ public class CsvToXmiMappingReporter {
 	public static String REPORT_MAPPED="REPORT_MAPPED";
 	public static String REPORT_UNMAPPED="REPORT_UNMAPPED";
 	private String reportType=REPORT_MAPPED;
-	
+
 	private MappableNode treeNode;
 	private String sourceFileName;
 	private String targetFileName;
 
 	private ArrayList<String> reportElments=new ArrayList<String>();
-	
+
 	/**
 	 * Constructor with the default reporting type to report mapped elements
 	 * @param nodeToReport
@@ -63,10 +63,10 @@ public class CsvToXmiMappingReporter {
 	{
 		treeNode=nodeToReport;
 		if (type!=null&&!type.equals(""))
-			reportType=type;	
+			reportType=type;
 		verifyMapping();
 	}
-	
+
 	private void verifyMapping()
 	{
 		reportElments.clear();
@@ -83,7 +83,7 @@ public class CsvToXmiMappingReporter {
 		}
 		recursivelyVerifyNode(treeNode, checkMapped);
 	}
-	
+
 	private void recursivelyVerifyNode(MappableNode node, boolean checkType)
 	{
 		if (!(node instanceof DefaultMutableTreeNode ))
@@ -134,7 +134,7 @@ public class CsvToXmiMappingReporter {
 		Document rptDom=createReportDocument();
 		printToFile( rptDom, file);
 	}
-	
+
 	public String getReportAsString()
 	{
 		Document rptDom=createReportDocument();
@@ -142,12 +142,12 @@ public class CsvToXmiMappingReporter {
 		{
 			OutputFormat format = new OutputFormat(rptDom);
 			format.setIndenting(true);
-			
+
 			//convert XML document into a string
 			StringWriter sw = new StringWriter();
 			XMLSerializer stSerializer=new XMLSerializer(sw,format);
 			stSerializer.serialize(rptDom);
-						
+
 			return sw.toString();
 		} catch(IOException ie) {
 		    ie.printStackTrace();
@@ -162,40 +162,40 @@ public class CsvToXmiMappingReporter {
 	{
 		Document dom=null;
 		DocumentBuilderFactory dbf = DocumentBuilderFactoryImpl.newInstance();
-		try 
+		try
 		{
 			//get an instance of builder
 			DocumentBuilder db = dbf.newDocumentBuilder();
-	
+
 			//create an instance of DOM
 			dom = db.newDocument();
 			Element  rootElm=dom.createElement("unmapped");
 			rootElm.setAttribute("type", reportType);
 			dom.appendChild(rootElm);
-			
+
 			Element components=dom.createElement("components");
 			Element srcNode=dom.createElement("component");
 			srcNode.setAttribute("kind", "scs");
 			String srcFilePath = getSourceFileName();
-            if (srcFilePath.startsWith(FileUtil.getWorkingDirPath())) 
+            if (srcFilePath.startsWith(FileUtil.getWorkingDirPath()))
             	srcFilePath = srcFilePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
-            
+
 			srcNode.setAttribute("location", srcFilePath);
 			srcNode.setAttribute("type", "source");
 			components.appendChild(srcNode);
-			
+
 			Element trgtNode=dom.createElement("component");
 			trgtNode.setAttribute("kind", "xmi");
 			String tgrtFilePath =getTargetFileName();
-            if (tgrtFilePath.startsWith(FileUtil.getWorkingDirPath())) 
+            if (tgrtFilePath.startsWith(FileUtil.getWorkingDirPath()))
             	tgrtFilePath = tgrtFilePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
-            
+
 			trgtNode.setAttribute("location", tgrtFilePath);
 			trgtNode.setAttribute("type", "target");
 			components.appendChild(trgtNode);
-			
+
 			rootElm.appendChild(components);
-			
+
 			Element unmappedFields=dom.createElement("fields");
 			for(String oneItem:reportElments)
 			{
@@ -212,7 +212,7 @@ public class CsvToXmiMappingReporter {
 		}
 		return dom;
 	}
-	
+
 	/**
 	 * This method uses Xerces specific classes
 	 * prints the XML document to file.
@@ -230,7 +230,7 @@ public class CsvToXmiMappingReporter {
 			XMLSerializer serializer = new XMLSerializer(
 			new FileOutputStream(file), format);
 			serializer.serialize(dom);
-			
+
 		} catch(IOException ie) {
 		    ie.printStackTrace();
 		}

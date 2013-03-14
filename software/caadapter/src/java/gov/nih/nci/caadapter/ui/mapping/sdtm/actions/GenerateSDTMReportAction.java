@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 import gov.nih.nci.caadapter.common.util.Config;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 /**
  * This class defines the action to carry out process report functionality on a SCM file.
- * 
+ *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2 revision $Revision: 1.3 $ date $Date: 2008-09-29 21:22:50 $
@@ -42,7 +42,7 @@ public class GenerateSDTMReportAction extends AbstractContextAction {
 	/**
 	 * String that identifies the class version and solves the serial version UID problem. This String is for
 	 * informational purposes only and MUST not be made final.
-	 * 
+	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
 	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/GenerateSDTMReportAction.java,v 1.3 2008-09-29 21:22:50 phadkes Exp $";
@@ -82,7 +82,7 @@ public class GenerateSDTMReportAction extends AbstractContextAction {
 
 	/**
 	 * The abstract function that descendant classes must be overridden to provide customsized handling.
-	 * 
+	 *
 	 * @param e
 	 * @return true if the action is finished successfully; otherwise, return false.
 	 */
@@ -120,7 +120,7 @@ public class GenerateSDTMReportAction extends AbstractContextAction {
 
 	/**
 	 * Return the associated UI component.
-	 * 
+	 *
 	 * @return the associated UI component.
 	 */
 	protected Component getAssociatedUIComponent() {

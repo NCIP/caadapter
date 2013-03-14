@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
@@ -112,13 +110,13 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 			mifClass=(MIFClass) obj;
 		else if (obj instanceof MIFAssociation )
 		{
-			MIFAssociation mifAssc=(MIFAssociation)obj;		
+			MIFAssociation mifAssc=(MIFAssociation)obj;
 			mifClass=mifAssc.getMifClass();
 		}
 		try
 		{
             final List<MIFAssociation> addableAsscs = MIFUtil.findAddableAssociation(mifClass);
-            
+
             List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
             for(MIFAssociation addableAssc:addableAsscs)
             	baseList.add((DatatypeBaseObject)addableAssc);
@@ -164,5 +162,5 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
  * HISTORY      : Revision 1.9  2008/09/29 20:18:57  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
- * 
+ *
  * **/

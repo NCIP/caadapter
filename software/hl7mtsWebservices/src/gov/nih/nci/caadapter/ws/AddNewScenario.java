@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.ws;
 
 import gov.nih.nci.caadapter.security.dao.AbstractSecurityDAO;
@@ -67,15 +67,15 @@ public class AddNewScenario extends HttpServlet {
 	   {
           try
           {
-            /* disable security for caAdatper 4.3 release 03-31-2009 
+            /* disable security for caAdatper 4.3 release 03-31-2009
              HttpSession session = req.getSession(false);
-              
+
               if(session==null)
               {
                   res.sendRedirect("/caAdapterWS/login.do");
                   return;
               }
-    	      
+
               String user = (String) session.getAttribute("userid");
               System.out.println(user);
               AbstractSecurityDAO abstractDao= DAOFactory.getDAO();
@@ -87,7 +87,7 @@ public class AddNewScenario extends HttpServlet {
                   res.sendRedirect("/caAdapterWS/permissionmsg.do");
                   return;
               }
-              */    
+              */
         	  String name = "EMPTY";
 
 	    	  // Create a factory for disk-based file items
@@ -133,7 +133,7 @@ public class AddNewScenario extends HttpServlet {
 	    		  } else {
 	    			  System.out.println(item.getFieldName());
 	    			  name = item.getFieldName();
-	    			  
+
 	    			  String filePath = item.getName();
 	    			  String fileName=extractOriginalFileName(filePath);
 	    			  System.out.println("AddNewScenario.doPost()..original file Name:"+fileName);
@@ -154,7 +154,7 @@ public class AddNewScenario extends HttpServlet {
 	    	  }
 	    	  ScenarioUtil.addNewScenarioRegistration(MSName);
 	    	  res.sendRedirect("/caAdapterWS/success.do");
-	    	  
+
 		}catch(NullPointerException ne) {
 	            System.out.println("Error in doPost: " + ne);
 	            req.setAttribute("rtnMessage", ne.getMessage());
@@ -166,7 +166,7 @@ public class AddNewScenario extends HttpServlet {
               res.sendRedirect("/caAdapterWS/error.do");
         }
 	   }
-	   
+
 	   private String extractOriginalFileName(String filePath)
 	   {
 		   if (filePath==null||filePath.equalsIgnoreCase(""))
@@ -176,13 +176,13 @@ public class AddNewScenario extends HttpServlet {
 			   subIndx=filePath.lastIndexOf("/");
 		   else if (filePath.lastIndexOf("\\")>-1)
 			   subIndx=filePath.lastIndexOf("\\");
-		   
+
 		   if (subIndx>0)
 			   return filePath.substring(subIndx+1);
-		   
+
 		   //the original string is file name
 		   return filePath;
-		   
+
 	   }
 	    /**
 	     * Update the reference in .map to the .scs and .h3s files.
@@ -191,11 +191,11 @@ public class AddNewScenario extends HttpServlet {
 	     */
 	    public void updateMapping(String mapplingBakFileName) throws Exception{
 	    	Document xmlDOM = readFile(mapplingBakFileName);
-	    	
+
 	    	NodeList components = xmlDOM.getElementsByTagName("component");
 	    	for(int i = 0; i< components.getLength();i++) {
 	    		Element component = (Element)components.item(i);
-	    		//update location of SCS, H3S 
+	    		//update location of SCS, H3S
 	    		Attr locationAttr = component.getAttributeNode("location");
 	    		Attr kindAttr = component.getAttributeNode("kind");
 	    		if (locationAttr!=null)
@@ -224,17 +224,17 @@ public class AddNewScenario extends HttpServlet {
 	    					String localFileName=extractOriginalFileName(valueAttr.getValue());
 	    					valueAttr.setValue(localFileName);
 	    				}
-	    			}			    	
+	    			}
 	    		}
 	    	}
 	    	System.out.println("AddNewScenario.updateMapping()..mapbakfile:"+mapplingBakFileName);
-	    	
+
 	    	outputXML(xmlDOM,mapplingBakFileName.substring(0, mapplingBakFileName.lastIndexOf(".bak"))  );
 	    }
 	    /**
 	     * Parse a XML document into DOM Tree
 	     *
-	     * @param file File name 
+	     * @param file File name
 	     * @return XML DOM Tree
 	     */
 		private Document readFile(String fileName) throws Exception {
@@ -246,19 +246,19 @@ public class AddNewScenario extends HttpServlet {
 	    /**
 	     * Parse a XML document into DOM Tree
 	     *
-	     * @param file The input File handler 
+	     * @param file The input File handler
 	     * @return XML DOM Tree
 	     */
 		private Document readFile(File file) throws Exception {
 		    org.w3c.dom.Document doc;
-	 
+
 	        try {
 	                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	                //dbf.setValidating(true);
 	                DocumentBuilder db = dbf.newDocumentBuilder();
-	 
+
 	                doc = db.parse(file);
-	 
+
 	                return doc;
 	        }
 	        catch(SAXParseException ex) {
@@ -275,12 +275,12 @@ public class AddNewScenario extends HttpServlet {
 	     * @param domDoc .map file's dom tree
 	     * @param outputFileName the target .map file you want save
 	     */
-		private void outputXML(Document domDoc, String outputFileName) 
+		private void outputXML(Document domDoc, String outputFileName)
 	       throws JDOMException, IOException {
 	       // Create new DOMBuilder, using default parser
 	       DOMBuilder builder = new DOMBuilder();
 	       org.jdom.Document jdomDoc = builder.build(domDoc);
-	       
+
 	       XMLOutputter outputter = new XMLOutputter();
 	       File file = new File(outputFileName);
 	       FileWriter writer = new FileWriter(file);

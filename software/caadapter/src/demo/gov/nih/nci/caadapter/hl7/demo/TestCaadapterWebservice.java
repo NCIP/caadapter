@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.hl7.demo;
 
 import org.apache.axis.client.Call;
@@ -52,7 +52,7 @@ public class TestCaadapterWebservice {
 		}
 		return rtnBuf.toString();
 	}
-	
+
   public static void main(String[] args) {
     try {
 //      String endpointURL = " http://cbioqa101.nci.nih.gov:49080/caAdapterWS/ws/caAdapterTransformationService";
@@ -67,13 +67,13 @@ public class TestCaadapterWebservice {
       System.out.println("TestCaadapterWebservice...scenarioName:"+args[0]);
       System.out.println("TestCaadapterWebservice...cvsString:"+args[1]);
       System.out.println("TestCaadapterWebservice...endURL:"+args[2]);
-      
+
       //read WS paramters
       String scenarioName= args[0];
       String cvsFileName=args[1];
-      String csvString =TestCaadapterWebservice.buildCsvString(cvsFileName);      
+      String csvString =TestCaadapterWebservice.buildCsvString(cvsFileName);
       String endpointURL =args[2];
-      
+
       //build service call
       Service service = new Service();
       Call call = (Call)service.createCall();

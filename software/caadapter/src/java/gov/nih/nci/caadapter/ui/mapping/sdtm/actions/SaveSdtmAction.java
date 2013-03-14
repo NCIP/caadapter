@@ -1,19 +1,19 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
-/* 
+/*
  * saves the SDTM action on the UI
  * @author OWNER: $Author: phadkes $
  * @author LAST UPDATE $Author: phadkes $
- * @since  caAdapter v4.2        
+ * @since  caAdapter v4.2
  * @version    $Revision: 1.4 $
- * @date       $Date: 2008-09-29 21:22:50 $ 
+ * @date       $Date: 2008-09-29 21:22:50 $
 */
 
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;

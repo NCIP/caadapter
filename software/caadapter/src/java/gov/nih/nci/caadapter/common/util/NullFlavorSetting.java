@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.common.util;
 
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Set;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Dec 3, 2008
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.2 $
  * @date 	 DATE: $Date: 2009-01-09 21:31:19 $
  * @since caAdapter v4.2
@@ -33,15 +33,15 @@ public class NullFlavorSetting   extends HashMap {
 	{
 		super();
 		String nullFlavorSetting=setting;
-		
+
 		//use application default
 		if (nullFlavorSetting==null)
 			nullFlavorSetting=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_NULLFLAVOR_VALUES_DEFAULT_SETTING);
-		
+
 		if (nullFlavorSetting!=null)
 			decodeValue(nullFlavorSetting);
 	}
-	
+
 	public String toString()
 	{
 		StringBuffer rtnB=new StringBuffer();
@@ -56,7 +56,7 @@ public class NullFlavorSetting   extends HashMap {
 		}
 		return rtnB.toString();
 	}
-	
+
 	private void decodeValue(String pValue)
 	{
 		String[] values=pValue.split(VALUE_DELIMITTER);
@@ -67,7 +67,7 @@ public class NullFlavorSetting   extends HashMap {
 			//remove leading "&"
 			while (pair.startsWith(VALUE_LEADING_NOTE))
 				pair=pair.replaceFirst(VALUE_LEADING_NOTE, "");
-			
+
 			//set one key/value pair
 			if (pair.indexOf(VALUE_KEY_SEPERATOR)>-1)
 			{
@@ -79,7 +79,7 @@ public class NullFlavorSetting   extends HashMap {
 			else
 				put("NULL", pair);//use it as for value NULL
 		}
- 
+
 	}
 }
 

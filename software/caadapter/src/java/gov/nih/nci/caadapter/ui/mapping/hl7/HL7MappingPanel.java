@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 
 package gov.nih.nci.caadapter.ui.mapping.hl7;
 
@@ -89,7 +89,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_V2_TIP = "Select an HL7 V2 Message Type";
-	
+
 	private static final String SELECT_TARGET = "Open Target...";
 	private static final String SELECT_HMD_TIP = "Select an " + Config.HL7_V3_METADATA_MODULE_NAME;//HL7 v3 Specification";
 
@@ -260,7 +260,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 					{
 			        	String v2Version=wizard.getFrontPage().getUserSelectedMessageVersion();
 			        	String v2Schema=wizard.getFrontPage().getUserSelectedMessageSchema();
-			        	processV2Meta(v2Version+"/"+v2Schema);		    
+			        	processV2Meta(v2Version+"/"+v2Schema);
 					}
 				}
 			}
@@ -297,7 +297,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		sourceTreeDragTransferHandler = new TreeDefaultDragTransferHandler(sTree, DnDConstants.ACTION_LINK);
 		sourceScrollPane.setViewportView(sTree);
 		sTree.expandAll();
- 
+
 		//register collapse all and expand all actions.
 		sourceTreeCollapseAllAction.setTree(sTree);
 		sourceTreeExpandAllAction.setTree(sTree);
@@ -310,9 +310,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		{
 			resetMiddlePanel();
 		}
- 
+
 		mappingSourceFile = null;
- 
+
 		if (this.getRootPane() != null)
 		{
 			this.getRootPane().repaint();
@@ -325,9 +325,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		mappingData.setMappingType("V2_TO_V3");
 		BaseComponent srcComp=mappingData.getSourceComponent();
  		srcComp.setKind(v2VersionAndSchema); //version and schema are combined
-		
+
 	}
-		
+
 private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 {
 	DefaultMappableTreeNode rtnNode;
@@ -338,7 +338,7 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 		rtnNode.add(childNode);
 	}
 	return rtnNode;
-	
+
 }
 	protected TreeNode loadSourceTreeData( Object metaInfo, File absoluteFile)throws Exception
 	{
@@ -417,7 +417,7 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 		if(fileExtension.equalsIgnoreCase(Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION))
 		{
 			parser = new CSVMetaParserImpl();
-	
+
 			returnResult = parser.parse(new FileReader(file));
 			ValidatorResults validatorResults = returnResult.getValidatorResults();
 			if (validatorResults != null && validatorResults.hasFatal())
@@ -428,7 +428,7 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 			}
 			metaInfo = ((CSVMetaResult) returnResult).getCsvMeta();
 		}
-		 
+
 		buildSourceTree(metaInfo, file, isToResetGraph);
  		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
  		//set the source meta kind to "xsd" for v2Meta
@@ -457,7 +457,7 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 		// parse the file into a meta object graph.
 		buildTargetTree(metaInfo, file, isToResetGraph);
 		DefaultMutableTreeNode targetMIFTreeNode=(DefaultMutableTreeNode)tTree.getRootTreeNode().getChildAt(0);
-		
+
 		middlePanel.getMappingDataManager().registerTargetComponent((MIFClass)targetMIFTreeNode.getUserObject(), file);
 		return true;
 	}
@@ -529,7 +529,7 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 					contextManager.enableAction(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, false);
 				else
 					contextManager.enableAction(ActionConstants.NEW_V2_TO_V3_MAP_FILE, false);
-				
+
 				contextManager.enableAction(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, true);
 			}
 		}

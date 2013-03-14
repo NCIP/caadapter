@@ -1,11 +1,11 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+
 package gov.nih.nci.caadapter.hl7.mif.v1;
 /**
  * The class defines the Utiliy object loading HL7 v3 normative artifacts
@@ -35,12 +35,12 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 public class BuildResourceUtil {
-	
+
 	public static String CMET_INFOR_SOURCE_FILE="cmetinfo.coremif";
 	public static String CMET_INFOR_TARGET_FILE="cmetInfos";
 	public static String RESOURCE_DIR="tempDir/processable";
 	public static String DATATYPE_FILE="datatypes";
-	
+
 	public static String findResourceFile(String fileName)
 	{
 		File libDir=new File("lib");
@@ -52,7 +52,7 @@ public class BuildResourceUtil {
 			if (childName.equalsIgnoreCase(fileName))
 				return libDir.getAbsolutePath()+File.separator+fileName;
 		}
-		
+
 		return null;
 	}
 	public static void parserCmetInfor(String fileName, String targetFile)
@@ -79,7 +79,7 @@ public class BuildResourceUtil {
 
 			 MIFIndexParser mifInfoParser = new MIFIndexParser();
 			 MIFIndex mifIndexInfos = new MIFIndex();
-			 for (int i=0; i<children.length; i++) 
+			 for (int i=0; i<children.length; i++)
 			 {
 				 String filename = children[i];
 	             if (filename.indexOf(".mif")>-1)
@@ -97,16 +97,16 @@ public class BuildResourceUtil {
 	}
 	public static void parserMifFromFileDirectory(String fileDirName)
 	{
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();		
-		try 
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try
 		{
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			 File mifDir = new File(fileDirName);
 			 if (!mifDir.exists()||!mifDir.isDirectory())
 				 return;
 			 String[] children = mifDir.list();
-			 for (int i=0; i<children.length; i++) 
-			 {			
+			 for (int i=0; i<children.length; i++)
+			 {
 				String fileName=children[i];
 				String msgType=fileName;
 				if (fileName.equals(CMET_INFOR_SOURCE_FILE))
@@ -114,19 +114,19 @@ public class BuildResourceUtil {
 					String cmetTarget=RESOURCE_DIR+"/"+CMET_INFOR_TARGET_FILE;
 					parserCmetInfor(mifDir.getAbsolutePath()+"/"+fileName, cmetTarget);
 				}
-					
+
 				if (!msgType.endsWith(".mif"))
 					continue;
 				String filePath=mifDir.getAbsolutePath()+"/"+fileName;
 				Document mifDoc = db.parse(filePath);
 				MIFParser mifParser = new MIFParser();
 	        	mifParser.parse(mifDoc);
-	      		
+
 	    		if (msgType.indexOf("UV")>-1)
 	    			msgType=msgType.substring(0, msgType.indexOf("UV"));
 	    		else if (msgType.indexOf(".mif")>-1)
-	    			msgType=msgType.substring(0, msgType.indexOf(".mif"));		
-	        	 
+	    			msgType=msgType.substring(0, msgType.indexOf(".mif"));
+
 	    		mifParser.saveMIFs(RESOURCE_DIR+"/mif/" + fileName,msgType);
 	        }
 		} catch (IOException e) {
@@ -144,7 +144,7 @@ public class BuildResourceUtil {
 		}
 	}
 
-	
+
 	public static void parerMifIndexFromZipFile(String zipFileName) throws Exception
 	{
 		File resourceFile=new File(RESOURCE_DIR);
@@ -153,16 +153,16 @@ public class BuildResourceUtil {
 			resourceFile.mkdir();
 			File mifFile=new File(RESOURCE_DIR+File.separator+"mif");
 			mifFile.mkdir();
-		} 
+		}
 		ZipFile zip = new ZipFile(zipFileName);
 		 Enumeration entryEnum=zip.entries();
 		 MIFIndexParser mifInfoParser = new MIFIndexParser();
 		 MIFIndex mifIndexInfos = new MIFIndex();
 		 while (entryEnum.hasMoreElements())
 		 {
-			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
+			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();
 			String fileName=zipEntry.getName();
-			
+
 			//only process the "mif" directory
 			String validNameStart="mif/";
 			if (!fileName.startsWith(validNameStart))
@@ -186,14 +186,14 @@ public class BuildResourceUtil {
 			mifFile.mkdir();
 		}
 		try {
-			
+
 			ZipFile zip=new ZipFile(zipFileName);
 			Enumeration entryEnum=zip.entries();
 			while (entryEnum.hasMoreElements())
 			{
-				ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
+				ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();
 				String fileName=zipEntry.getName();
-				
+
 				//only process the "mif" directory
 				String validNameStart="mif/";
 				if (!fileName.startsWith(validNameStart))
@@ -217,7 +217,7 @@ public class BuildResourceUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
     public static void parserMifFromZipFile(String zipFileName, boolean isSortKeyReassigning) throws Exception
 	{
@@ -235,9 +235,9 @@ public class BuildResourceUtil {
 		Enumeration entryEnum=zip.entries();
 		while (entryEnum.hasMoreElements())
 		{
-			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
+			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();
 			String fileName=zipEntry.getName();
-			
+
 			//only process the "mif" directory
 			String validNameStart="mif/";
 			if (!fileName.startsWith(validNameStart))
@@ -343,41 +343,41 @@ public class BuildResourceUtil {
     		if (msgType.indexOf("UV")>-1)
     			msgType=msgType.substring(0, msgType.indexOf("UV"));
     		else if (msgType.indexOf(".mif")>-1)
-    			msgType=msgType.substring(0, msgType.indexOf(".mif"));	
+    			msgType=msgType.substring(0, msgType.indexOf(".mif"));
 //    		System.out.println("BuildResourceUtil.parserMifFromZipFile()..save:"+fileName+"="+msgType);
         	  mifParser.saveMIFs(RESOURCE_DIR+"/" + fileName,msgType);
         }
 	}
-	
+
     public static void zipDir(ZipOutputStream zipFileOut, String dir, String extension) throws Exception
     {
         zipDir(zipFileOut, dir, extension, false);
     }
     public static void zipDir(ZipOutputStream zipFileOut, String dir, String extension, boolean isSortKeyReassigning) throws Exception
     {
-        File dirObj = new File(dir); 
-        if(!dirObj.isDirectory()) 
-        { 
+        File dirObj = new File(dir);
+        if(!dirObj.isDirectory())
+        {
             throw new Exception(dir +"is not a directory");
-        } 
+        }
         addDir(dirObj,extension, zipFileOut,dirObj.getName(), isSortKeyReassigning);
-    } 
+    }
 
     private static void addDir(File dirObj, String extension, ZipOutputStream out,String parentPath, boolean isSortKeyReassigning) throws IOException
-    { 
-        File[] files = dirObj.listFiles(); 
-        byte[] tmpBuf = new byte[1024]; 
+    {
+        File[] files = dirObj.listFiles();
+        byte[] tmpBuf = new byte[1024];
 
-        for (int i=0; i<files.length; i++) 
-        { 
-            if(files[i].isDirectory()) 
-            { 
+        for (int i=0; i<files.length; i++)
+        {
+            if(files[i].isDirectory())
+            {
             	String subDirPath=files[i].getName();
             	if (parentPath!=null&&!parentPath.equals(""))
             		subDirPath=parentPath+"/"+subDirPath;
                 addDir(files[i], extension, out, subDirPath, isSortKeyReassigning);
-                continue; 
-            } 
+                continue;
+            }
 //            if(!files[i].isFile()) continue;
 
             String pathName = files[i].getAbsolutePath();
@@ -411,23 +411,23 @@ public class BuildResourceUtil {
             }
 
             FileInputStream in = new FileInputStream(pathName);
-             
+
             String entryName=files[i].getName();
             if (parentPath!=null&&!parentPath.equals(""))
             	entryName=parentPath+"/"+entryName;
-            out.putNextEntry(new ZipEntry(entryName));//.getAbsolutePath())); 
+            out.putNextEntry(new ZipEntry(entryName));//.getAbsolutePath()));
 
-            // Transfer from the file to the ZIP file 
-            int len; 
-            while((len = in.read(tmpBuf)) > 0) 
-            { 
-                out.write(tmpBuf, 0, len); 
-            } 
-            // Complete the entry 
-            out.closeEntry(); 
-            in.close(); 
-        } 
-    } 
+            // Transfer from the file to the ZIP file
+            int len;
+            while((len = in.read(tmpBuf)) > 0)
+            {
+                out.write(tmpBuf, 0, len);
+            }
+            // Complete the entry
+            out.closeEntry();
+            in.close();
+        }
+    }
 
 	public static void copyFiles(String strPath, String dstPath, String srcExtension) throws IOException
 	{
@@ -437,20 +437,20 @@ public class BuildResourceUtil {
 	(src.getName().equals("cashteam")) &&
 	(src.isDirectory()))
 	; // Do not copy anything under this.
-	
-	elseif (src.isDirectory()) 
+
+	elseif (src.isDirectory())
 	*/
 	File src = new File(strPath);
 	File dest = new File(dstPath);
-	
+
 	if (src.isDirectory())
 	{
 		//if(dest.exists()!=true)
 		dest.mkdirs();
 		String list[] = src.list();
-		
-		
-		
+
+
+
 		for (int i = 0; i < list.length; i++)
 		{
 			String dest1 = dest.getAbsolutePath() + "\\" + list[i];

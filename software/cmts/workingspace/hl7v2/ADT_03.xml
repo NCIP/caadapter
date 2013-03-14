@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <ADT_A03 xmlns="urn:hl7-org:v2xml" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:n1="urn:com.sun:encoder" xmlns:hl7="urn:com.sun:encoder-hl7-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v2xml
 ./hl7v2xsd/2.4/ADT_A03.xsd">
 	<!-- ADT_A03 xmlns="urn:hl7-org:v2xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

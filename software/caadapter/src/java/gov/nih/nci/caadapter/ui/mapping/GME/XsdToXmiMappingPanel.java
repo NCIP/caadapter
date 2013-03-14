@@ -1,9 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 package gov.nih.nci.caadapter.ui.mapping.GME;
@@ -64,7 +63,7 @@ import org.jdom.Element;
 /**
  * The class is the main panel to construct the UI and initialize the utilities
  * to facilitate mapping functions.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2 revision $Revision: 1.15 $ date $Date:
@@ -155,7 +154,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
         targetTreeToolBar.add(targetTreeExpandAllAction);
         targetTreeToolBar.add(targetTreeCollapseAllAction);
         targetLocationPanel.add(targetTreeToolBar, BorderLayout.WEST);
-        
+
         JButton openXmiButton = new JButton(SELECT_XMI);
         openXmiButton.setMnemonic('X');
         openXmiButton.setToolTipText("Select XMI file...");
@@ -214,7 +213,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
     protected TreeNode loadSourceTreeData(Object metaInfo, File file)
             throws Exception {
 
-        TreeNode node;    
+        TreeNode node;
         XsdModelMetadata xsdModel = new XsdModelMetadata();
         setXsdModelMeta(xsdModel);
         String xmlSchema=file.getAbsolutePath();
@@ -229,7 +228,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
         String targetNodeName="";
         if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL))
             targetNodeName="Object Model";
- 
+
         else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
             targetNodeName="Data Model";
         else
@@ -244,16 +243,16 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
         Set keySet = myMap.keySet();
         Iterator keySetIterator = keySet.iterator();
         while (keySetIterator.hasNext()) {
-            String key = (String) keySetIterator.next();        
-            if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL)) 
+            String key = (String) keySetIterator.next();
+            if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL))
             {
-                if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) 
+                if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") )
                     constructXmiNTreeNde(node, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), false);
 
             }
-            else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL)) 
+            else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
             {
-                if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".")) 
+                if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "."))
                     constructXmiNTreeNde(node, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(),  false);
             }
         }
@@ -267,7 +266,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 //      {
             MMSRendererPK objectModelRenderer=new MMSRendererPK();
             objectModelRenderer.setXmiMeta(getXmiModelMeta());
-            tTree.setCellRenderer(objectModelRenderer);     
+            tTree.setCellRenderer(objectModelRenderer);
 //      }
 //      else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
 //      {
@@ -328,14 +327,14 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
             while (children.hasMoreElements()) {
                 DefaultMutableTreeNode current = (DefaultMutableTreeNode) children
                         .nextElement();
-    
+
                 if (current.toString().equals(pks[i])) {
                     exist = true;
                     father = current;
                     break;
                 }
             }
-    
+
             if (!exist) {
                 DefaultMutableTreeNode newTreeNode = new DefaultMutableTreeNode(
                         pks[i], true);
@@ -348,14 +347,14 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                 newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);
         else
             newTreeNode = new DefaultTargetTreeNode(myMap.get(fullName), true);
-        
+
         father.add(newTreeNode);
         return;
     }
 
     /**
      * Called by actionPerformed() and overridable by descendant classes.
-     * 
+     *
      * @param file
      * @throws Exception
      */
@@ -385,7 +384,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
     /**
      * Called by actionPerformed() and overridable by descendant classes.
-     * 
+     *
      * @param file
      * @throws Exception
      */
@@ -413,7 +412,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
     /**
      * Called by actionPerformed() and overridable by descendant classes.
-     * 
+     *
      * @param file
      * @throws Exception
      *             changed from protected to pulic by sean
@@ -450,7 +449,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
      *             changed from protected to pulic by sean
      */
     public void processOpenXSDFile(File file) throws Exception
-    {        
+    {
         if (file != null)
         {
             JButton xmiButton = (JButton) targetLocationPanel.getComponent(1);
@@ -466,7 +465,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
     {
           return targetLocationPanel;
     }
-    
+
     public void processOpenXMIFile() throws Exception
     {
         //TODO: open and create mappings from XMIModelMetadata
@@ -494,7 +493,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                 for (Iterator it=map.keySet().iterator(); it.hasNext(); ) {
                     Object key = it.next();
                     Object value = map.get(key);
-                                        
+
                     if ( value instanceof UMLAttribute )
                     {
                         UMLAttribute att = (UMLAttribute) value;
@@ -541,7 +540,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                                          if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("NCI_GME_XML_ELEMENT") )
                                          {
 
-                                            xsdClass = elmnt.getAttributeValue("value"); 
+                                            xsdClass = elmnt.getAttributeValue("value");
                                          }
                                      }
                                }
@@ -616,12 +615,12 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
                             if (mappedValue.equalsIgnoreCase(""))
                                     continue;
-                               
+
                                // Find the xmi.id for this class
                                UMLClassBean trgtClassBean = (UMLClassBean) xmiModelMeta.getUmlHashMap().get( classPath );
                                String modelElementId = trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
                                System.out.println("xmi.id: (" + modelElementId + " )" );
-                               
+
                                // Return any TaggedValues in xmi.content level
                                Element xmiContent = xmiModelMeta.getXmiContent();
                                java.util.List children=xmiContent.getChildren();
@@ -658,7 +657,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                                // swap the rolename and class name before appending it to xsd xpath
                                String roleName = mappedValue.substring(0, mappedValue.lastIndexOf("/"));
                                mappedValue = xsdClass + "/" + roleName;
-                               String xsdPath = xsdRoot.substring( xsdRoot.lastIndexOf("/") + 1, xsdRoot.length() ) + "." + mappedValue.replaceAll("/", ".");                               
+                               String xsdPath = xsdRoot.substring( xsdRoot.lastIndexOf("/") + 1, xsdRoot.length() ) + "." + mappedValue.replaceAll("/", ".");
 
                                System.out.println("xsdPath: " + xsdPath );
                                System.out.println("xmiPath: " + xmiPath );
@@ -822,7 +821,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
         setSaveFile(file);
         //redraw mapping panel
-        middlePanel.getMappingDataManager().setMappingData(mapping);               
+        middlePanel.getMappingDataManager().setMappingData(mapping);
         return validatorResults;
     }
 
@@ -951,18 +950,18 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
                         //redraw mapping panel
                         Mapping currentMapping= middlePanel.getMappingDataManager().retrieveMappingData(false);
-                        middlePanel.getMappingDataManager().setMappingData(currentMapping);     
+                        middlePanel.getMappingDataManager().setMappingData(currentMapping);
                 }
             }
             else if (SELECT_XSD.equals(command)) {
                 File file = DefaultSettings.getUserInputOfFileFromGUI(this, // FileUtil.getUIWorkingDirectoryPath(),
                         ".xsd", "Open XSD meta file ...", false, false);
-                               
-                if (file != null) 
+
+                if (file != null)
                 {
                     JButton xmiButton = (JButton) targetLocationPanel.getComponent(1);
                     xmiButton.setEnabled( true );
-                    
+
                     processOpenSourceTree(file, true, true);
                     Mapping currentMapping= middlePanel.getMappingDataManager().retrieveMappingData(false);
                     middlePanel.getMappingDataManager().setMappingData(currentMapping);
@@ -984,7 +983,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
     /**
      * Explicitly reload information from the internal given file.
-     * 
+     *
      * @throws Exception
      */
     public void reload() throws Exception {
@@ -994,7 +993,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
     /**
      * Reload the file specified in the parameter.
-     * 
+     *
      * @param changedFileMap
      */
     public void reload( Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap) {
@@ -1041,7 +1040,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                     false);
         }
     }
-    
+
 
     public String getMappingTarget() {
         return mappingTarget;

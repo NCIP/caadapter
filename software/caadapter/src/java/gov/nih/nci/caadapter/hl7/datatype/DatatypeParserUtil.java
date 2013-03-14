@@ -1,10 +1,11 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
+
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import java.util.Collections;
@@ -36,18 +37,18 @@ public class DatatypeParserUtil {
 		if (name==null||name.equals(""))
 			return null;
 		DatatypeParser datatypeParser = getDatatypeParser();
-		if (datatypeParser.getDatatypes().get(name) == null) 
+		if (datatypeParser.getDatatypes().get(name) == null)
 			return CustomerDatatypeUtil.getCustomerDatatype(name);
 		return (Datatype)datatypeParser.getDatatypes().get(name);
 	}
 	public static List <String>findSubclassListWithTypeName(String className)
 	{
-		List <String>rtnList=getDatatypeParser().findSubclassList(className);  
+		List <String>rtnList=getDatatypeParser().findSubclassList(className);
 		if (rtnList!=null)
 			Collections.sort(rtnList);
 		return rtnList;
 	}
-	
+
 	public static boolean isAbstractDatatypeWithName(String typeName)
 	{
 		List subClassList=findSubclassListWithTypeName(typeName);

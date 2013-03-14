@@ -1,3 +1,9 @@
+<%--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L--%>
 
  <table summary="" cellpadding="0" cellspacing="0" border="0" width="150" height="100%">
               <tr>

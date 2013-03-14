@@ -1,11 +1,9 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
-
 
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
@@ -129,19 +127,19 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 				if (!((AssociationMetadata)metaO).getNavigability())
 					continue;
 			}
-			
+
 			if (!metaO.isMapped()) {
 				//skip item in "Model.ValueDomains"
 				if (metaO.getXPath().indexOf("Model.ValueDomain")>-1)
 					continue;
-				
+
 				if (metaO instanceof ObjectMetadata) {
 					//if the object is a super class and is extended-- INFO
 					//else -- ERROR
 					if (((ObjectMetadata)metaO).getUmlClass().getGeneralizations().isEmpty())
 					{
 						Message msg = MessageResources.getMessage("O2DB3", new Object[]{metaO.getXPath()});
-						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));						
+						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 					}
 					else
 					{
@@ -151,11 +149,11 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 				}
 				if (metaO instanceof AttributeMetadata) {
 					if (((AttributeMetadata)metaO).isDerived()) {
-						 
+
 						String superClassName=(String)myModel.getInheritanceMetadata().get(((AttributeMetadata)metaO).getParentXPath());
-						
+
 						Message msg = MessageResources.getMessage("O2DB4", new Object[]{metaO.getXPath(), superClassName});
-						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));						
+						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
 					}else {
 						ObjectMetadata holderClass= (ObjectMetadata)myMap.get(((AttributeMetadata)metaO).getParentXPath());
 						if (holderClass.isMapped())
@@ -199,13 +197,13 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 			DefaultSettings.centerWindow(dlg);
 			dlg.setVisible(true);
 		}
-		
+
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
-		
+
 		} else {
 			return false;
-		}			
+		}
 	}
 
 	/**
