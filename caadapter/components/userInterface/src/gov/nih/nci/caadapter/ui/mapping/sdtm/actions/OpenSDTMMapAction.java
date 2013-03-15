@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
@@ -32,7 +39,7 @@ import java.util.ArrayList;
 
 /**
  * This class defines the open Map panel action.
- * 
+ *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2 revision $Revision: 1.8 $ date $Date: 2008-06-09 19:54:06 $
@@ -81,7 +88,7 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 
 	/**
 	 * Return the real implementation of ContextClient class.
-	 * 
+	 *
 	 * @return the class object
 	 */
 	protected Class getContextClientClass()
@@ -91,7 +98,7 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 
 	/**
 	 * Return the real user input of the file to be opened.
-	 * 
+	 *
 	 * @return the file object
 	 */
 	protected File getFileFromUserInput()
@@ -101,13 +108,13 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 
 	/**
 	 * Launch the context manager client to UI.
-	 * 
+	 *
 	 * @param panel
 	 * @param file
 	 */
-	protected void launchPanel(final ContextManagerClient panel, final File file) 
+	protected void launchPanel(final ContextManagerClient panel, final File file)
 	{
-		final Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame, "_conn", true);			
+		final Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame, "_conn", true);
 		// have to add the new tab so as the panel may update its panel title in the tabbed pane.
 		SwingWorker worker = new SwingWorker() {
 			public Object construct()
@@ -205,5 +212,5 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 		// TODO Auto-generated method stub
 		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED);
 	}
-	
+
 }

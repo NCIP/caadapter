@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
-  * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
@@ -42,7 +49,7 @@ import org.w3c.dom.Node;
 public class MIFParser {
 	private String prefix;
     private MIFClass mifClass=null;
-    
+
 	public boolean parse(Node node) {
         Document document = (Document)node;
         String schemaString = document.getDocumentElement().getNodeName();
@@ -71,21 +78,21 @@ public class MIFParser {
         mifClass.setPackageLocation(mifPackageLocation);
         return true;
 	}
-	
+
 	public MIFClass getMIFClass() {
 		return this.mifClass;
 	}
-	
+
 	public void saveMIFs(String fileName, String msgType) throws Exception {
 		OutputStream os = new FileOutputStream(fileName);
-		ObjectOutputStream oos = new ObjectOutputStream(os); 
+		ObjectOutputStream oos = new ObjectOutputStream(os);
 
 		mifClass.setMessageType(msgType);
 		oos.writeObject(mifClass);
 		oos.close();
 		os.close();
 	}
-	
+
 	public MIFClass loadMIF(String mifFileName) {
 		try {
 			InputStream is = this.getClass().getResourceAsStream("/mif/" + mifFileName);
@@ -101,7 +108,7 @@ public class MIFParser {
 	}
 
 	public static void main(String argv[]) throws Exception{
-    
+
   		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   		DocumentBuilder db = dbf.newDocumentBuilder();
 
@@ -109,9 +116,9 @@ public class MIFParser {
 //		Document mifDoc = db.parse("T:/YeWu/Edition2006/processable/mif/COCT_MT150003UV03.mif");
 //		Document mifDoc = db.parse("T:/YeWu/Edition2006/mif/PORR_MT040011UV01.mif");
 
-  		
+
   		File dir = new File("T:/YeWu/Edition2006/mif/");
-      
+
   		String[] children = dir.list();
   		if (children == null) {
           // Either dir does not exist or is not a directory
@@ -135,7 +142,7 @@ public class MIFParser {
         			msgType=msgType.substring(0, msgType.indexOf("UV"));
         		else if (msgType.indexOf(".mif")>-1)
         			msgType=msgType.substring(0, msgType.indexOf(".mif"));
-        			
+
             	  mifParser.saveMIFs("C:/temp/serializedMIF/resource/mif/" + filename,msgType);
 //            	  mifParser.getMIFClass().printMIFClass(0, new HashSet());
               }

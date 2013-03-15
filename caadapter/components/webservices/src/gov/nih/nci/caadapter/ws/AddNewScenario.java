@@ -1,10 +1,10 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
+
 package gov.nih.nci.caadapter.ws;
 
 import java.io.DataInputStream;
@@ -65,7 +65,7 @@ public class AddNewScenario extends HttpServlet {
 	      String name, filename, type;
 	      long formDatalength = 0;
 
-	      
+
 	      name = filename = type = "EMPTY";
 	      try
 	      {
@@ -151,7 +151,7 @@ public class AddNewScenario extends HttpServlet {
 		    		Attr locationAttr = component.getAttributeNode("location");
 		    		if (locationAttr.getValue().endsWith("h3s"))
 		    			locationAttr.setValue(MSName+".h3s");
-		    		else 
+		    		else
 		    			locationAttr.setValue(MSName+".xml");
 	    		}
 	    	}
@@ -160,7 +160,7 @@ public class AddNewScenario extends HttpServlet {
 	    /**
 	     * Parse a XML document into DOM Tree
 	     *
-	     * @param file File name 
+	     * @param file File name
 	     * @return XML DOM Tree
 	     */
 		public Document readFile(String fileName) throws Exception {
@@ -172,19 +172,19 @@ public class AddNewScenario extends HttpServlet {
 	    /**
 	     * Parse a XML document into DOM Tree
 	     *
-	     * @param file The input File handler 
+	     * @param file The input File handler
 	     * @return XML DOM Tree
 	     */
 		public Document readFile(File file) throws Exception {
 		    org.w3c.dom.Document doc;
-	 
+
 	        try {
 	                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	                //dbf.setValidating(true);
 	                DocumentBuilder db = dbf.newDocumentBuilder();
-	 
+
 	                doc = db.parse(file);
-	 
+
 	                return doc;
 	        }
 	        catch(SAXParseException ex) {
@@ -201,12 +201,12 @@ public class AddNewScenario extends HttpServlet {
 	     * @param domDoc .map file's dom tree
 	     * @param outputFileName the target .map file you want save
 	     */
-		public void outputXML(org.w3c.dom.Document domDoc, String outputFileName) 
+		public void outputXML(org.w3c.dom.Document domDoc, String outputFileName)
 	       throws JDOMException, IOException {
 	       // Create new DOMBuilder, using default parser
 	       DOMBuilder builder = new DOMBuilder();
 	       org.jdom.Document jdomDoc = builder.build(domDoc);
-	       
+
 	       XMLOutputter outputter = new XMLOutputter();
 	       File file = new File(outputFileName);
 	       FileWriter writer = new FileWriter(file);

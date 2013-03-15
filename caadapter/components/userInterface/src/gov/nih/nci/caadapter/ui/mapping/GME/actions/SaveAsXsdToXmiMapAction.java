@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -111,8 +118,8 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 				return false;
 			}
 		}
-		
-		//Select file name and type 
+
+		//Select file name and type
 		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
 		if (file != null)
 		{
@@ -127,13 +134,13 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 	}
 
 	/**
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 * @throws Exception
 	 */
 	protected boolean processSaveFile(File file) throws Exception
-	{		
+	{
 		preActionPerformed(mappingPanel);
 
         MappingDataManager mappingManager = mappingPanel.getMappingDataManager();
@@ -161,7 +168,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
             while (xsdBeanIt.hasNext())
             {
                   String modelKey=(String)xsdBeanIt.next();
-                
+
                   //find the attribute
                   Object umlObject = (Object) xsdToXmi.getXmiModelMeta().getUmlHashMap().get(modelKey );
 
@@ -220,13 +227,13 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                 	AttributeMetadata trgtAttr=(AttributeMetadata)trgtMeta;
 //                	String srcKey=srcAttr.getXPath();
                 	String srcKey=srcAttr.getXmlPath();
-                	
+
 
                     //add "EA Model" infront of the xmlPath
                 	String trgtKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAttr.getXmlPath();
                 	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..annotate source:"+srcKey);
                 	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..annotate target:"+trgtKey);
-        	
+
                 	UMLAttributeBean trgtUmlBean=(UMLAttributeBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(trgtKey);
                     if ( trgtUmlBean ==null)
                     {
@@ -274,7 +281,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                         //annoate class to add tag at XMI level (xmi.content)
                     	String srcClassName=srcClassPath.substring(srcClassPath.lastIndexOf(".")+1);
                     	xsdToXmi.getXmiModelMeta().annotateClassObject(annoateGmeNamespace, modelElmentId, srcClassName, modelElmentId);
-                    }                	
+                    }
                 }
                 else if (trgtMeta instanceof AssociationMetadata)
                 {
@@ -374,7 +381,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
             File rptFile =null;
             if (xsdToXmi.getReportPanel()!=null)
             	rptFile=xsdToXmi.getReportPanel().getSaveFile();
-            
+
             if (rptFile!=null)
             {
 //            	rptFile=DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save Mapping Report As...", true, true);

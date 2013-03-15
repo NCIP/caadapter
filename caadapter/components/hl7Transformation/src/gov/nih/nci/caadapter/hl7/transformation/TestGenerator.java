@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.hl7.transformation;
 
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
@@ -26,15 +33,15 @@ public class TestGenerator {
 
 	public MIFClass mifClass = new MIFClass();
     private Hashtable datatypes = new Hashtable();
-	
+
 	public void saveMIFs(String fileName) throws Exception {
 		OutputStream os = new FileOutputStream(fileName);
-		ObjectOutputStream oos = new ObjectOutputStream(os); 
+		ObjectOutputStream oos = new ObjectOutputStream(os);
 		oos.writeObject(mifClass);
 		oos.close();
 		os.close();
 	}
-	
+
 	public MIFClass loadMIF(String mifFileName) {
 		try {
 			InputStream is = this.getClass().getResourceAsStream("/mif/" + mifFileName);
@@ -57,7 +64,7 @@ public class TestGenerator {
 		else {
 			Hashtable attrs = datatype.getAttributes();
 			Iterator it = attrs.keySet().iterator();
-			
+
 			while (it.hasNext()) {
 				String name = (String)it.next();
 				Attribute attribute = (Attribute)attrs.get(name);
@@ -90,7 +97,7 @@ public class TestGenerator {
 			mifAttribute.setDatatype(dt);
 			mifAttribute.setParentXmlPath(parentXmlPath);
 		}
-		
+
 		for(MIFAssociation mifAsso:mifClass.getAssociations()) {
 			if (mifAsso.getMifClass()!= null) setup(mifAsso.getMifClass(),parentXmlPath+"."+mifAsso.getName());
 		}

@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -62,7 +69,7 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 		{
 			setIcon(pseudoRootIcon);
 		}
-		
+
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 		if (node.getUserObject() instanceof DatatypeBaseObject)
 		{
@@ -73,7 +80,7 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 				setIcon(disableItemIcon);
 				returnValue.setBackground(DISABLED_CHOICE_BACK_GROUND_COLOR);
 			}
-			String treeCellText=nodeBase.getName();	
+			String treeCellText=nodeBase.getName();
 			if (nodeBase instanceof Attribute)
 			{
 				Attribute dtAttr=(Attribute)nodeBase;
@@ -94,7 +101,7 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 						parentDt=parentMifAttr.getConcreteDatatype();
 						if (parentDt==null)
 							parentDt=parentMifAttr.getDatatype();
-						
+
 					}
 					int attrCnt=0;
 					if (parentDt!=null)
@@ -139,12 +146,12 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 								attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
 							}
 						}
-												
+
 						if (attrMultiplicity!=1)
 							treeCellText=treeCellText +"  [1]";
 					}
- 
-				}			
+
+				}
 			}
 			else if(nodeBase instanceof MIFAssociation)
 			{
@@ -182,13 +189,13 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 					}
 					if (asscMultiplicity!=1)
 					{
-						treeCellText=treeCellText+"  [1]";	
+						treeCellText=treeCellText+"  [1]";
 						if (mifAssc.getMaximumMultiplicity()==1)
 							treeCellText=treeCellText+"  [Alert: For Choice]";
 					}
 				}
 			}
-			setText(treeCellText);	
+			setText(treeCellText);
 		}
 		return returnValue;
 	}

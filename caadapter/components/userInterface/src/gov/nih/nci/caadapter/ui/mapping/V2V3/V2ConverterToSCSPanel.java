@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.ui.mapping.V2V3;
@@ -140,7 +147,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private File oneMessageFile = null;
     private String segmentsOBX = "";
     private MetaDataLoader v2MetaDataPath = null;
-   
+
     private HL7V2MessageTree v2Tree;
     private V2Converter converter;
     private java.util.List<String> listOBXDataType = new ArrayList<String>();
@@ -306,7 +313,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 //        jtInputMessageType.setEnabled(jrHL7MessageTypeOnly.isSelected());
 //        jtInputMessageType.setEditable(jrHL7MessageTypeOnly.isSelected());
 //        jbInputMessageTypeConfirm.setEnabled(jrHL7MessageTypeOnly.isSelected());
-        
+
 
 
 //        jtInputFile.setEnabled(jrHL7MessageFile.isSelected());
@@ -1045,7 +1052,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         else doPressGenerateSingleMessage();
     }
     private void doPressGenerateMultiMessage()
-    {            
+    {
         String fileSCS = jtInputSCSFile.getText();
         String fileCSV = jtInputCSVFile.getText();
         String fileSCSValidate = jtValidateSCSFile.getText();
@@ -1175,7 +1182,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     {
         if (jcHL7Version.getItemCount() > 0) jcHL7Version.setEnabled(true);
         else jcHL7Version.setEnabled(false);
-        
+
         String dataDir = jtDataDirectory.getText();
         if ((dataDir == null)||(dataDir.trim().equals(""))) dataDir = "";
         File fileD = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
@@ -1311,7 +1318,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             setRadioButtonState();
         }
     }
-    
+
     private void doPressSCSOrCSVFileBrowse(JButton button)
     {
 

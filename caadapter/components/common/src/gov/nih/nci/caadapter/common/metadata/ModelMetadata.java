@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.common.metadata;
@@ -44,8 +51,8 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * model being imported into the caAdapter tool. The class loads an XMI file
  * and parses through it creating a LinkedHashMap composed of keys, which are
  * basically xpath like links to the position in the XMI file where the UML Model element
- * is located. The value in the key/value pair is either an ObjectMetadata, 
- * AttributeMetadata, AssociationMetadata, TableMetadata, or ColumnMetadata 
+ * is located. The value in the key/value pair is either an ObjectMetadata,
+ * AttributeMetadata, AssociationMetadata, TableMetadata, or ColumnMetadata
  * object. The key value pairs are loaded into the LinkedHashMap in order of location
  * in the XMI file and can be retrieved in the same order. The contents of the
  * LinkedHashMap can be used to construct the Object and Data model portions of
@@ -66,17 +73,17 @@ public class ModelMetadata {
     private static HashSet<String> discriminatorKeys = new HashSet<String>();
     private static HashSet<String> clobKeys = new HashSet<String>();
     private static Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
-    
+
     private static String mmsPrefixObjectModel = "Logical View.Logical Model";
     private static String mmsPrefixDataModel = "Logical View.Data Model";
-    //define a list to hold "tag:value" of the UMLTaggedValue for the mapped attributes 
+    //define a list to hold "tag:value" of the UMLTaggedValue for the mapped attributes
     private static List <String>preservedMappedTag=new ArrayList<String>();
     public ModelMetadata(){}
-	
+
 	public ModelMetadata(String xmiFileName){
 		this.xmiFileName = xmiFileName;
 	}
-	
+
 	public static void init(String xmiFileName) {
 	    try {
             // Check for the agrUML or EA XMI
@@ -118,12 +125,12 @@ public class ModelMetadata {
 	public static ModelMetadata getInstance() {
 		return modelMetadata;
 	}
-	
+
 	public static XmiInOutHandler getHandler() {
 		return handler;
 	}
-	
-	public static ModelMetadata createModel(String xmiFileName) 
+
+	public static ModelMetadata createModel(String xmiFileName)
 	{
 		 if ( modelMetadata != null )
 		 {
@@ -140,33 +147,33 @@ public class ModelMetadata {
 		 init(xmiFileName);
 		 createModel(model);
 		 Object[] sortedArray  = sortedModel.toArray();
-		 
+
 		 for( int i=0; i < sortedModel.size(); i++ )
 		 {
 			 modelHashMap.put(((MetaObjectImpl)sortedArray[i]).getXPath(),sortedArray[i]);
 		 }
-		 
-		 for( int i=0; i < sortedModel.size(); i++ ) 
+
+		 for( int i=0; i < sortedModel.size(); i++ )
 		 {
-			 if (sortedArray[i] instanceof AssociationMetadata) 
+			 if (sortedArray[i] instanceof AssociationMetadata)
 			 {
 				 AssociationMetadata assoMeta = (AssociationMetadata)sortedArray[i];
-				 if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == -1) 
+				 if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == -1)
 				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(false);
 				 }
-				 else if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == 1) 
+				 else if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == 1)
 				 {
 					 assoMeta.setNavigability(false);
 					 assoMeta.setManyToOne(true);
 				 }
-				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == -1) 
+				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == -1)
 				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(true);
 				 }
-				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == 1) 
+				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == 1)
 				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(false);
@@ -178,9 +185,9 @@ public class ModelMetadata {
 				 }
 			 }
 		 }
-		 return modelMetadata; 
+		 return modelMetadata;
 	}
-	
+
     private static void createModel(UMLModel model)
     {
         for( UMLPackage pkg : model.getPackages() )
@@ -285,11 +292,11 @@ public class ModelMetadata {
 	    	String eaIdEndB=((UMLAssociationEndBean)assocEndB).getJDomElement().getAttributeValue("type");
 	    	if(eaIdEndA!=null && eaIdEndA.equals(eaIdEndB))
 	    		isSelfAssociated=true;
-	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==1) || 
+	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==1) ||
 	    		(assocEndB.getHighMultiplicity()==-1 && assocEndA.getHighMultiplicity()==1)) {
 	    		isOneToMany = true;
 	    	}
-	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==-1) || 
+	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==-1) ||
 		    		(assocEndB.getHighMultiplicity()==-1 && assocEndA.getHighMultiplicity()==-1)) {
 		    		isManyToMany = true;
 		    	}
@@ -302,10 +309,10 @@ public class ModelMetadata {
 	    		AssociationMetadata thisEnd = new AssociationMetadata();
 	    		thisEnd.setUMLAssociation(assoc);
 	    		UMLClass clazz1 = (UMLClass)assocEnd.getUMLElement();
-	    		if (assocEnd.getRoleName().equals("")) 
+	    		if (assocEnd.getRoleName().equals(""))
 	    			continue;
-			
-	    		if (!clazz1.getName().equals(clazz.getName())||isSelfAssociated) 
+
+	    		if (!clazz1.getName().equals(clazz.getName())||isSelfAssociated)
 	    		{
 	    			if (assocEnd.isNavigable()||isOneToMany || isManyToMany) {
 	    				thisEnd.setRoleName(assocEnd.getRoleName());
@@ -319,8 +326,8 @@ public class ModelMetadata {
 	    			}
 	    		}
 	    	}
-	  }	  	  
-	  
+	  }
+
 	  private static void printAttribute(UMLAttribute att, ObjectMetadata object, StringBuffer pathKey, boolean derived) {
 		    StringBuffer attributePath = new StringBuffer();
 		    attributePath.append(pathKey);
@@ -333,10 +340,10 @@ public class ModelMetadata {
 	        attMetadata.setXmlPath(attributePath.toString());
 	        attMetadata.setDerived(derived);
 	        sortedModel.add(attMetadata);
-	        //attMetadata.setSemanticConcept(att.getTaggedValue("conceptId").getValue());   
+	        //attMetadata.setSemanticConcept(att.getTaggedValue("conceptId").getValue());
 	  }
-	  
-	  private static void printColumnAttribute(UMLAttribute att, TableMetadata object, StringBuffer pathKey) 
+
+	  private static void printColumnAttribute(UMLAttribute att, TableMetadata object, StringBuffer pathKey)
 	  {
 	        ColumnMetadata attMetadata = new ColumnMetadata();
 	        StringBuffer colPathKey = new StringBuffer();
@@ -351,16 +358,16 @@ public class ModelMetadata {
 //	        System.out.println("xxxxxxxxxxxxxxx COLUMN: " + colPathKey);
 	  }
 	  	public HashMap getInheritanceMetadata() {
-	  		return inheritanceHashMap;		
-	  	}	  
+	  		return inheritanceHashMap;
+	  	}
 
 	  	public HashMap getObjectMetadata() {
-	  		return objectHashMap;		
-	  	}	  
+	  		return objectHashMap;
+	  	}
 
 	  	public LinkedHashMap getModelMetadata() {
-	  		return modelHashMap;		
-	  	}	  
+	  		return modelHashMap;
+	  	}
 		/**
 		 * @return Returns the xmiFileName.
 		 */
@@ -373,34 +380,34 @@ public class ModelMetadata {
 		public void setXmiFileName(String xmiFileName) {
 			this.xmiFileName = xmiFileName;
 		}
-		
+
 		public HashSet getPrimaryKeys()
 		{
 			return primaryKeys;
 		}
-		
-		public void setPrimaryKeys( HashSet keyList )		
+
+		public void setPrimaryKeys( HashSet keyList )
 		{
-			primaryKeys = keyList;	
+			primaryKeys = keyList;
 		}
-		
+
 		public HashSet getLazyKeys()
 		{
 			return lazyKeys;
 		}
-		
-		public void setLazyKeys( HashSet lazyKeyList )		
+
+		public void setLazyKeys( HashSet lazyKeyList )
 		{
 			lazyKeys = lazyKeyList;
 		}
-		
+
 		/**
 		 * @return Returns the model.
 		 */
 		public UMLModel getModel() {
 			return model;
 		}
-		
+
 		/**
 		 * @param model The model to set.
 		 */
@@ -445,7 +452,7 @@ public class ModelMetadata {
 			otherEndMultiplicity = getOtherAssociationEnd(assocEnd).getHighMultiplicity();
 			return otherEndMultiplicity;
 		}
-		  
+
 		public static UMLAssociationEnd getOtherAssociationEnd(UMLAssociationEnd assocEnd) {
 			UMLAssociation assoc = assocEnd.getOwningAssociation();
 			UMLAssociationEnd otherAssocEnd = null;
@@ -458,7 +465,7 @@ public class ModelMetadata {
 			}
 			return otherAssocEnd;
 		}
-		
+
 	/**
 	 * @param args
 	 */
@@ -499,10 +506,10 @@ public class ModelMetadata {
 }
 
 class XPathComparator implements Comparator {
-	public final int compare ( Object a, Object b) 
-	{ 
+	public final int compare ( Object a, Object b)
+	{
 		MetaObjectImpl info1 = (MetaObjectImpl)a;
 		MetaObjectImpl info2 = (MetaObjectImpl)b;
-	return (info1.getXPath().compareTo(info2.getXPath())); 
+	return (info1.getXPath().compareTo(info2.getXPath()));
 	} // en
 }

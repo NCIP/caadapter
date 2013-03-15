@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
@@ -15,7 +22,7 @@ import org.w3c.dom.Node;
 
 /**
  * The class will parse an MIF attribute section  from the mif XML file.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2008-06-09 19:53:50 $
@@ -34,7 +41,7 @@ public class AttributeParser {
 		else {
 			mifAtrribute.setMandatory(false);
 		}
-		
+
 		if (XSDParserUtil.getAttribute(node, "isStructural")!= null) {
 			mifAtrribute.setStrutural(Boolean.parseBoolean(XSDParserUtil.getAttribute(node, "isStructural")));
 		}
@@ -44,9 +51,9 @@ public class AttributeParser {
 
 		if (XSDParserUtil.getAttribute(node, "minimumMultiplicity")!= null)
 			mifAtrribute.setMinimumMultiplicity(Integer.parseInt(XSDParserUtil.getAttribute(node, "minimumMultiplicity")));
-		else 
+		else
 			mifAtrribute.setMinimumMultiplicity(-2);
-		
+
 		if (XSDParserUtil.getAttribute(node, "maximumMultiplicity")!= null) {
 			if (XSDParserUtil.isMultiple(node, "maximumMultiplicity"))
 				mifAtrribute.setMaximumMultiplicity(-1);
@@ -54,7 +61,7 @@ public class AttributeParser {
 				mifAtrribute.setMaximumMultiplicity(Integer.parseInt(XSDParserUtil.getAttribute(node, "maximumMultiplicity")));
 			}
 		else {
-			mifAtrribute.setMaximumMultiplicity(-2);							
+			mifAtrribute.setMaximumMultiplicity(-2);
 		}
 		if (XSDParserUtil.getAttribute(node, "minimumSupportedLength") != null)
 			mifAtrribute.setMinimumSupportedLength(Integer.parseInt(XSDParserUtil.getAttribute(node, "minimumSupportedLength")));
@@ -74,7 +81,7 @@ public class AttributeParser {
         		if (!(typeName.equals("SET")||typeName.equals("BAG")||typeName.equals("LIST"))) {
         			type = XSDParserUtil.getAttribute(child, "name");
         		}
-        		
+
         		Node firstChild = XSDParserUtil.getFirstChildElement(child);
         		if (firstChild!= null) {
         			if (firstChild.getNodeName().equals("supplierBindingArgumentDatatype")) {
@@ -85,14 +92,14 @@ public class AttributeParser {
         					if (secondChild.getNodeName().equals("supplierBindingArgumentDatatype")) {
         						if (!type.equals("")) type = type + "_";
         						type = type + XSDParserUtil.getAttribute(secondChild, "name");
-        					}        				
+        					}
         			}
         		}
         		mifAtrribute.setType(type);
-        	}        	
+        	}
             child = child.getNextSibling();
         }
-        
+
         return mifAtrribute;
 	}
 }

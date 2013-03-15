@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.mms.validator;
@@ -26,11 +33,11 @@ import gov.nih.nci.caadapter.common.metadata.TableMetadata;
  * @created 11-Aug-2006 8:18:19 AM
  */
 public class SingleAssociationMappingValidator {
-	
+
 	private String validationErrorMessage;
 	private CumulativeMapping cumulativeMapping;
 	private SingleAssociationMapping associationMapping;
-	
+
 	public SingleAssociationMappingValidator(SingleAssociationMapping mapping){
          this.associationMapping = mapping;
 	}
@@ -45,10 +52,10 @@ public class SingleAssociationMappingValidator {
 		try {
 			cumulativeMapping = CumulativeMapping.getInstance();
 		} catch (Exception e) {
-			
+
 		}
 		List dependencyMappings = cumulativeMapping.getDependencyMappings();
-		
+
 		Iterator i = dependencyMappings.iterator();
 		while (i.hasNext()) {
 			try {
@@ -85,7 +92,7 @@ public class SingleAssociationMappingValidator {
 		try {
 		cumulativeMapping = CumulativeMapping.getInstance();
 		} catch (Exception e){
-			
+
 		}
 		List singleAssociationMappings = cumulativeMapping.getSingleAssociationMappings();
 		ColumnMetadata colMetadata = associationMapping.getColumnMetadata();
@@ -103,7 +110,7 @@ public class SingleAssociationMappingValidator {
 		}
 	 	return previouslyMapped;
 	}
-	
+
     public boolean isTargetColumnPrimaryKey() {
     	boolean isPrimaryKey = false;
     	return isPrimaryKey;
@@ -130,7 +137,7 @@ public class SingleAssociationMappingValidator {
 		try {
 			cumulativeMapping = CumulativeMapping.getInstance();
 		} catch (Exception e){
-			
+
 		}
 		List dependencyMappings = cumulativeMapping.getDependencyMappings();
 		Iterator i = dependencyMappings.iterator();
@@ -314,7 +321,7 @@ public class SingleAssociationMappingValidator {
 			} if (!isForeignKeyCorrectDatatype()){
 				this.validationErrorMessage = "The id attribute of the source object is not compatible with the target column datatype.";
 				isValidMapping = false;
-			}		
+			}
 		} else if (isOneToOne()) {
 			  if (!isMappedColumnForeignKey()) {
 				  this.validationErrorMessage = "Target column must be a primary key.";
@@ -322,17 +329,17 @@ public class SingleAssociationMappingValidator {
 			  }if (isValidMapping && !isForeignKeyCorrectDatatype()){
 				 	this.validationErrorMessage = "The id attribute of the source object is not compatible with the target column datatype.";
 					isValidMapping = false;
-			  }		
+			  }
 		}*/
 		return isValidMapping;
 	}
     public String getParentXPath(String childString){
     	String parentPath = null;
-    
+
     	int end = childString.lastIndexOf(".");
     	parentPath = childString.substring(0,end);
     	return parentPath;
-    	
+
     }
 	public String getValidationErrorMessage() {
 		return validationErrorMessage;

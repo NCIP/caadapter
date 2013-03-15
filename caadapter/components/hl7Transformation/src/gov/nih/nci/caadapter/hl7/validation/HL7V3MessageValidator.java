@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.validation;
 
@@ -36,7 +43,7 @@ import org.xml.sax.SAXException;
 public class HL7V3MessageValidator {
 	private Validator validator = null;
     ValidatorResults theValidatorResults = new ValidatorResults();
-	
+
 	/**
 	 * @param xsdSchema is XSD associated with the HL7 v3 message
 	 */
@@ -66,9 +73,9 @@ public class HL7V3MessageValidator {
 			return theValidatorResults;
 		}
         // 4. Parse the document you want to check.
-        ByteArrayInputStream domSource = new ByteArrayInputStream(xmlString.getBytes());  
+        ByteArrayInputStream domSource = new ByteArrayInputStream(xmlString.getBytes());
         Source source = new StreamSource(domSource);
-        
+
         // 5. Check the document
         try {
             validator.validate(source);
@@ -80,7 +87,7 @@ public class HL7V3MessageValidator {
             Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Not Valid:" + ex.getMessage()});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 			return theValidatorResults;
-        }  
+        }
         catch (Exception ex) {
             Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Unexpected Error:" + ex.getMessage()});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
@@ -96,16 +103,16 @@ public class HL7V3MessageValidator {
 	public ValidatorResults validate(String xmlString, String xsdSchema) {
 
 		Validator validator = getValidator(xsdSchema);
-        
+
 		if (validator == null) {
             Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Error loading XSD for this Message!..schema:"+xsdSchema});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 			return theValidatorResults;
 		}
         // 4. Parse the document you want to check.
-        ByteArrayInputStream domSource = new ByteArrayInputStream(xmlString.getBytes());  
+        ByteArrayInputStream domSource = new ByteArrayInputStream(xmlString.getBytes());
         Source source = new StreamSource(domSource);
-        
+
         // 5. Check the document
         try {
             validator.validate(source);
@@ -116,7 +123,7 @@ public class HL7V3MessageValidator {
             Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Not Valid:" + ex.getMessage()});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 			return theValidatorResults;
-        }  
+        }
         catch (Exception ex) {
             Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Unexpected Error:" + ex.getMessage()});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
@@ -132,7 +139,7 @@ public class HL7V3MessageValidator {
 	        Schema schema=null;
 	        try {
 	        	schema = factory.newSchema(schemaLocation);
-	        }       
+	        }
 	        catch (Exception ex) {
 	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Loading Schema Error:" + ex.getMessage()});
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));

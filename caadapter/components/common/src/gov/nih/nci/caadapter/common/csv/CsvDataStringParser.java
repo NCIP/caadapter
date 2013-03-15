@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.common.csv;
 
 import java.util.ArrayList;
@@ -29,23 +36,23 @@ public class CsvDataStringParser {
 	private static String  COMMA_ENCODER="CAADAPTER_&#44;";
 	/**
 	 * Constructor with the default delimiter
-	 * @param s 
+	 * @param s
 	 */
 	public CsvDataStringParser(String s)
 	{
 		contentData=s;
 	}
-	
+
 	/**
 	 * Constructor with the default delimiter
-	 * @param s 
+	 * @param s
 	 */
 	public CsvDataStringParser(String s, String delimiter)
 	{
 		contentData=s;
 		USER_DELIMITER=delimiter;
 	}
-	
+
 	public String [] getDataFields()
 	{
 		if (USER_DELIMITER!=null
@@ -74,7 +81,7 @@ public class CsvDataStringParser {
 		}
 		return encodedFields;
 	}
-	
+
 	/**
 	 * Encode the contentData string
 	 * Encode DOULBE_QUOT and COMMA within a pair of delimiters (DOUBLE_QUOTE).
@@ -101,7 +108,7 @@ public class CsvDataStringParser {
 			if (stChars[i]==','&&isInDoubleQuote)
 				encodeSb.append(COMMA_ENCODER);
 			else
-				encodeSb.append(stChars[i]);	
+				encodeSb.append(stChars[i]);
 		}
 		contentData=encodeSb.toString().replace("\"", "");
 	}

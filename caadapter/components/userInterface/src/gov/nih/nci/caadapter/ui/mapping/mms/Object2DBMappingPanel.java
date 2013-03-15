@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.ui.mapping.mms;
@@ -92,7 +99,7 @@ import org.jdom.output.XMLOutputter;
 /**
  * The class is the main panel to construct the UI and initialize the utilities
  * to facilitate mapping functions.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2 revision $Revision: 1.36 $ date $Date:
@@ -109,7 +116,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
     private static final String SELECT_XSD = "Open XSD file...";
     private static final String ANNOTATE_XMI = "Tag XMI File";
 	private static final String GENERATE_HBM = "Generate HBM Files";
-	
+
 	private static HashSet<String> primaryKeys = new HashSet<String>();
 	private static HashSet<String> lazyKeys = new HashSet<String>();
     private static HashSet<String> clobKeys = new HashSet<String>();
@@ -288,8 +295,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					case JFileChooser.ERROR_OPTION:
 						return;
 					}
-										
-					saveMappingFile();			
+
+					saveMappingFile();
 					String outputDir=fileChooser.getSelectedFile().getAbsolutePath();
 					UMLModel model=ModelMetadata.getHandler().getModel();
 					HBMGenerateCacoreIntegrator.getInstance().generateMapping(model,outputDir);
@@ -298,8 +305,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 									+ fileChooser.getSelectedFile()
 											.getAbsolutePath(),
 							"HBM Generation Complete",
-							JOptionPane.INFORMATION_MESSAGE);							
-					
+							JOptionPane.INFORMATION_MESSAGE);
+
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -318,9 +325,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	}
 
 	public void saveMappingFile() {
-		File file = getSaveFile();		
+		File file = getSaveFile();
 		File mapFile = new File(file.getAbsolutePath().replaceAll(".xmi", ".map"));
-		
+
 		if (file == null) {
 			file = DefaultSettings
 					.getUserInputOfFileFromGUI(this,
@@ -335,7 +342,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		try {
 			CumulativeMappingToMappingFileGenerator myGenerator = new CumulativeMappingToMappingFileGenerator();
 			myGenerator.setXmiFileName(CumulativeMappingGenerator.getXmiFileName().replaceAll(".xmi", ".map"));
-			// Creating mapping file		
+			// Creating mapping file
 			myGenerator.createLocalMappingFile();
 			XMLOutputter outp = new XMLOutputter();
 			outp.setFormat(Format.getPrettyFormat());
@@ -424,7 +431,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 				newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);
 		else
 			newTreeNode = new DefaultTargetTreeNode(myMap.get(fullName), true);
-	    
+
         father.add(newTreeNode);
 		return;
 	}
@@ -453,10 +460,10 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	protected void buildTargetTree(Object metaInfo, File absoluteFile,
 			boolean isToResetGraph) throws Exception {
 		super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
-		
+
 		 tTree.setCellRenderer(new MMSRenderer());
 		 sTree.setCellRenderer(new MMSRendererPK());
-        
+
         // instantiate the "DropTransferHandler"
 		mmsTargetTreeDropTransferHandler = new MmsTargetTreeDropTransferHandler(
 				tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
@@ -464,7 +471,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 */
@@ -492,7 +499,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 */
@@ -520,7 +527,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 *             changed from protected to pulic by sean
@@ -656,7 +663,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 															(MappableNode) targetNode);
 									if (!isSuccess)
 									{
-										//no UI link is created for the mapped table.column 
+										//no UI link is created for the mapped table.column
 										//"mapped-attributes"/"implements-association"
 										String prvdTag=tagValue.getName()+":"+tagValue.getValue();
 										ModelMetadata.getPreservedMappedTag().add(prvdTag);
@@ -668,17 +675,17 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					}
 				}
 			}
-			
+
 			primaryKeys = new HashSet<String>();
 			lazyKeys = new HashSet<String>();
 			discriminatorKeys = new HashSet<String>();
             clobKeys = new HashSet<String>();
-			
+
 			//Retrieve all the primaryKeys & lazyKeys saved as TaggedValues
-			for( UMLPackage pkg : myUMLModel.getPackages() ) 
+			for( UMLPackage pkg : myUMLModel.getPackages() )
 			{
 				getPackages( pkg );
-			}				
+			}
 
             myModel.setPrimaryKeys( primaryKeys );
 			myModel.setLazyKeys( lazyKeys );
@@ -714,7 +721,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			for( UMLTaggedValue tagValue : clazz.getTaggedValues() )
 			{
 				if( tagValue.getName().contains( "discriminator" ))
-				{	
+				{
 					String packageName = "";
 					UMLPackage umlPackage = clazz.getPackage();
 					while (umlPackage != null)
@@ -723,19 +730,19 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 						umlPackage = umlPackage.getParent();
 					}
 		            packageName =  packageName + clazz.getName();
-		            
+
 	    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_OBJECTMODEL).length();
 	    			String dvalue = (packageName).substring(preLen+1);
 
 	    			discriminatorValues.put(dvalue, tagValue.getValue() );
 				}
-			}			
+			}
             for( UMLAttribute att : clazz.getAttributes() )
-			{	
+			{
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
 				{
 					if( tagValue.getName().contains( "id-attribute" ))
-					{																						
+					{
 						String pkValue=ModelMetadata.getMmsPrefixObjectModel() + "."+tagValue.getValue();
 						UMLAttribute column = ModelUtil.findAttribute(ModelMetadata.getHandler().getModel(), pkValue);
 						if (column==null)
@@ -755,14 +762,14 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
                         if( tagValue.getValue().equals( "CLOB") )
                         {
                             String fieldName = clazz.getName() + "." + att.getName();
-                            clobKeys.add( fieldName );                            
+                            clobKeys.add( fieldName );
                         }
                     }
                 }
-			}		
+			}
     		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
 
-			for( UMLAssociation assc : clazz.getAssociations()) 
+			for( UMLAssociation assc : clazz.getAssociations())
 			{
 				for( UMLTaggedValue tagValue : assc.getTaggedValues() )
 				{
@@ -776,18 +783,18 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			    		}
 					}
 				}
-			}				
+			}
 		}
-		
+
 		for ( UMLPackage pkg2 : pkg.getPackages() )
 		{
 			getPackages( pkg2 );
 		}
 	}
-	
+
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 *             changed from protected to pulic by sean
@@ -1011,7 +1018,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Explicitly reload information from the internal given file.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void reload() throws Exception {
@@ -1024,7 +1031,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Reload the file specified in the parameter.
-	 * 
+	 *
 	 * @param changedFileMap
 	 */
 	public void reload(

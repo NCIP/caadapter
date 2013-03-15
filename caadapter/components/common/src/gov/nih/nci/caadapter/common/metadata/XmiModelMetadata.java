@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.common.metadata;
@@ -51,29 +58,29 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * model being imported into the caAdapter tool. The class loads an XMI file
  * and parses through it creating a LinkedHashMap composed of keys, which are
  * basically xpath like links to the position in the XMI file where the UML Model element
- * is located. The value in the key/value pair is either an ObjectMetadata, 
- * AttributeMetadata, AssociationMetadata, TableMetadata, or ColumnMetadata 
+ * is located. The value in the key/value pair is either an ObjectMetadata,
+ * AttributeMetadata, AssociationMetadata, TableMetadata, or ColumnMetadata
  * object. The key/value pairs are loaded into the LinkedHashMap in order of location
  * in the XMI file and can be retrieved in the same order. The contents of the
  * LinkedHashMap can be used to construct the Object and Data model portions of
- * the caAdapter JTree mapping UI. 
+ * the caAdapter JTree mapping UI.
  * */
 
 public class XmiModelMetadata {
 	private XmiInOutHandler handler = null;
 	private String xmiFileName;
-	
+
 	private LinkedHashMap modelHashMap = new LinkedHashMap();
 	private HashMap objectHashMap = new HashMap();
 	private HashMap inheritanceHashMap = new HashMap();
 	private LinkedHashMap umlHashMap = new LinkedHashMap();
-	
+
 	private HashSet<String> primaryKeys = new HashSet<String>();
 	private HashSet<String> lazyKeys = new HashSet<String>();
     private HashSet<String> discriminatorKeys = new HashSet<String>();
     private HashSet<String> clobKeys = new HashSet<String>();
     private Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
-    
+
     private static String mmsPrefixObjectModel = "Logical View.Logical Model";
     private static String mmsPrefixDataModel = "Logical View.Data Model";
 
@@ -81,13 +88,13 @@ public class XmiModelMetadata {
 	 * Construct a ModelMetaData with xmi file name
 	 * @param xmiFile
 	 */
-	
+
 	public XmiModelMetadata(String xmiFile){
 		xmiFileName = xmiFile;
 		loadXmiModel();
 	}
-	
-	private void loadXmiModel() 
+
+	private void loadXmiModel()
 	{
 		long stTime=System.currentTimeMillis();
 //		System.out.println("XmiModelMetadata.XmiModelMetadata()..start loading:"+stTime);
@@ -95,55 +102,55 @@ public class XmiModelMetadata {
 			return;
 		if(xmiFileName.equals(""))
 			return;
-		
+
 		XmiInOutHandler xmiHandeler=initXmiHandler(xmiFileName);
 		if (xmiHandeler==null)
 			return;
 		handler=xmiHandeler;
-			
+
 		UMLModel umlModel=null;
 		try {
 			 handler.load(xmiFileName);
-			 umlModel =handler.getModel(); 
+			 umlModel =handler.getModel();
 	    } catch (XmiException e) {
 		    	e.printStackTrace();
 	    } catch (IOException e) {
 		    	e.printStackTrace();
 	    }
-	    
+
 	    if(umlModel==null)
 	    	return;
-	    
+
 	    TreeSet sortedModel = loadUMLModel(umlModel);
 		Object[] sortedArray  = sortedModel.toArray();
-		
+
 		modelHashMap = new LinkedHashMap();
 		for( int i=0; i < sortedModel.size(); i++ )
 		{
 			 modelHashMap.put(((MetaObjectImpl)sortedArray[i]).getXPath(),sortedArray[i]);
 		}
-		 
-		for( int i=0; i < sortedModel.size(); i++ ) 
+
+		for( int i=0; i < sortedModel.size(); i++ )
 		{
-			 if (sortedArray[i] instanceof AssociationMetadata) 
+			 if (sortedArray[i] instanceof AssociationMetadata)
 			 {
 				 AssociationMetadata assoMeta = (AssociationMetadata)sortedArray[i];
-				 if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == -1) 
+				 if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == -1)
 				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(false);
 				 }
-				 else if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == 1) 
+				 else if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == 1)
 				 {
 					 assoMeta.setNavigability(false);
 					 assoMeta.setManyToOne(true);
 				 }
-				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == -1) 
+				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == -1)
 				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(true);
 				 }
-				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == 1) 
+				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == 1)
 				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(false);
@@ -157,7 +164,7 @@ public class XmiModelMetadata {
 		}
 		System.out.println("XmiModelMetadata.XmiModelMetadata()..end loading:"+(System.currentTimeMillis()-stTime));
 	}
-	
+
     private XmiInOutHandler initXmiHandler(String fileName)
     {
     	XmiInOutHandler rtnHandler;
@@ -175,7 +182,7 @@ public class XmiModelMetadata {
                 }
             }
             in.close();
-        } 
+        }
         catch (IOException e) {
         	e.printStackTrace();
         }
@@ -189,7 +196,7 @@ public class XmiModelMetadata {
         }
     	return rtnHandler;
     }
-    
+
 	private TreeSet loadUMLModel(UMLModel model)
     {
 		TreeSet rtnSet=new TreeSet(new XPathComparator());
@@ -226,7 +233,7 @@ public class XmiModelMetadata {
                 for(UMLAttribute att : clazz.getAttributes()) {
                     loadColumnAttribute(sortedModel,traversalPath, att, table, pathKey);
                 }
-            } else if (pathKey.toString().contains( XmiModelMetadata.getMmsObjectModelPrefix() ) && !pathKey.toString().contains("java")) 
+            } else if (pathKey.toString().contains( XmiModelMetadata.getMmsObjectModelPrefix() ) && !pathKey.toString().contains("java"))
             {
             	//load ObjectMeta
                 ObjectMetadata object = new ObjectMetadata();
@@ -301,15 +308,15 @@ public class XmiModelMetadata {
 		  	boolean isManyToMany = false;
 	    	UMLAssociationEnd assocEndA = (UMLAssociationEnd)assoc.getAssociationEnds().get(0);
 	    	UMLAssociationEnd assocEndB = (UMLAssociationEnd)assoc.getAssociationEnds().get(1);
-	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==1) || 
+	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==1) ||
 	    		(assocEndB.getHighMultiplicity()==-1 && assocEndA.getHighMultiplicity()==1)) {
 	    		isOneToMany = true;
 	    	}
-	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==-1) || 
+	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==-1) ||
 		    		(assocEndB.getHighMultiplicity()==-1 && assocEndA.getHighMultiplicity()==-1)) {
 		    		isManyToMany = true;
 		    	}
-		    for(UMLAssociationEnd assocEnd : assoc.getAssociationEnds()) 
+		    for(UMLAssociationEnd assocEnd : assoc.getAssociationEnds())
 		    {
 		    	UMLAssociationEnd other = (assocEnd==assocEndA)?assocEndB:assocEndA;
 	    		StringBuffer associationKeyPath = new StringBuffer();
@@ -319,10 +326,10 @@ public class XmiModelMetadata {
 	    		AssociationMetadata thisEnd = new AssociationMetadata();
 	    		thisEnd.setUMLAssociation(assoc);
 	    		UMLClass clazz1 = (UMLClass)assocEnd.getUMLElement();
-	  			if (assocEnd.getRoleName().equals("")) 
+	  			if (assocEnd.getRoleName().equals(""))
 	  				continue;
-		    		
-	  			if (!clazz1.getName().equals(clazz.getName())) 
+
+	  			if (!clazz1.getName().equals(clazz.getName()))
 	  			{
 	    			if (assocEnd.isNavigable()||isOneToMany || isManyToMany) {
 	    				thisEnd.setRoleName(assocEnd.getRoleName());
@@ -339,19 +346,19 @@ public class XmiModelMetadata {
 	    			}
 	    			traversalPath.addOnePathElement(assocEnd.getRoleName());
 //	    			System.out.println("XmiModelMetadata.loadAssociation()..path Nevigator:"+traversalPath.pathNevigator());
-	    	    	
-	    	    	umlHashMap.put(traversalPath.pathNevigator(), assoc);  
+
+	    	    	umlHashMap.put(traversalPath.pathNevigator(), assoc);
 	    	    	traversalPath.removeLastPathElement(assocEnd.getRoleName());
 
 		    	}
 	    	}
-		    
-	  }	  	  
-	  
+
+	  }
+
 	  private void loadAttribute(TreeSet sortedModel, XmiTraversalPath traversalPath, UMLAttribute att, ObjectMetadata object, StringBuffer pathKey, boolean derived) {
 		  	traversalPath.addOnePathElement(att.getName());
 //	    	System.out.println("XmiModelMetadata.loadAttribute()..path Nevigator:"+traversalPath.pathNevigator());
-	    	umlHashMap.put(traversalPath.pathNevigator(), att);  
+	    	umlHashMap.put(traversalPath.pathNevigator(), att);
 	    	StringBuffer attributePath = new StringBuffer();
 		    attributePath.append(pathKey);
 	        AttributeMetadata attMetadata = new AttributeMetadata();
@@ -366,10 +373,10 @@ public class XmiModelMetadata {
 	        attMetadata.setDerived(derived);
 	        sortedModel.add(attMetadata);
 	        traversalPath.removeLastPathElement(att.getName());
-	        //attMetadata.setSemanticConcept(att.getTaggedValue("conceptId").getValue());   
+	        //attMetadata.setSemanticConcept(att.getTaggedValue("conceptId").getValue());
 	  }
-	  
-	  private void loadColumnAttribute(TreeSet sortedModel, XmiTraversalPath traversalPath, UMLAttribute att, TableMetadata tableMeta, StringBuffer pathKey) 
+
+	  private void loadColumnAttribute(TreeSet sortedModel, XmiTraversalPath traversalPath, UMLAttribute att, TableMetadata tableMeta, StringBuffer pathKey)
 	  {
 		  	traversalPath.addOnePathElement(att.getName());
 //	    	System.out.println("XmiModelMetadata.loadColumnAttribute()..path Nevigator:"+traversalPath.pathNevigator());
@@ -389,7 +396,7 @@ public class XmiModelMetadata {
 	        sortedModel.add(attMetadata);
 	        traversalPath.removeLastPathElement(att.getName());
 	  }
-	 
+
 	  /**
 	 * @return Returns the xmiFileName.
 	 */
@@ -414,17 +421,17 @@ public class XmiModelMetadata {
 	}
 
 	public HashMap getInheritanceMetadata() {
-		return inheritanceHashMap;		
-	}	  
+		return inheritanceHashMap;
+	}
 
 	public HashMap getObjectMetadata() {
-		return objectHashMap;		
-	}	  
+		return objectHashMap;
+	}
 
 	public LinkedHashMap getModelMetadata() {
-		return modelHashMap;		
-	}	
-	
+		return modelHashMap;
+	}
+
 	/**
 		 * @param args
 		 */
@@ -432,7 +439,7 @@ public class XmiModelMetadata {
 	//		String xmiPath="C:\\CVS\\caadapter\\workingspace\\Object_to_DB_Example\\sample.xmi";
 			String xmiPath="workingspace\\Object_to_DB_Example\\sdk.xmi";
 			XmiModelMetadata myModel = new XmiModelMetadata(xmiPath);
-			
+
 			LinkedHashMap myMap = myModel.getModelMetadata();
 			Set mySet = myMap.keySet();
 			for (Iterator i = mySet.iterator(); i.hasNext();) {
@@ -447,22 +454,22 @@ public class XmiModelMetadata {
 	{
 			return primaryKeys;
 	}
-		
-		public void setPrimaryKeys( HashSet keyList )		
+
+		public void setPrimaryKeys( HashSet keyList )
 		{
-			primaryKeys = keyList;	
+			primaryKeys = keyList;
 		}
-		
+
 		public HashSet getLazyKeys()
 		{
 			return lazyKeys;
 		}
-		
-		public void setLazyKeys( HashSet lazyKeyList )		
+
+		public void setLazyKeys( HashSet lazyKeyList )
 		{
 			lazyKeys = lazyKeyList;
 		}
-		
+
 		public static String getMmsObjectModelPrefix() {
             return mmsPrefixObjectModel;
         }
@@ -500,7 +507,7 @@ public class XmiModelMetadata {
 			otherEndMultiplicity = getOtherAssociationEnd(assocEnd).getHighMultiplicity();
 			return otherEndMultiplicity;
 		}
-		  
+
 		public static UMLAssociationEnd getOtherAssociationEnd(UMLAssociationEnd assocEnd) {
 			UMLAssociation assoc = assocEnd.getOwningAssociation();
 			UMLAssociationEnd otherAssocEnd = null;
@@ -513,7 +520,7 @@ public class XmiModelMetadata {
 			}
 			return otherAssocEnd;
 		}
-		
+
 	/**
 	 * @return the discriminatorValues
 	 */
@@ -546,7 +553,7 @@ public class XmiModelMetadata {
 		Element taggedValueElmnt=pkgElmt.getChild("ModelElement.taggedValue", modelElement.getNamespace());
 		cleanElmentTaggedChild(taggedValueElmnt, tagName);
 	}
-	
+
 	/**
 	 * Remove "taggedValue" element from a JDOM element
 	 * @param elmnt
@@ -574,7 +581,7 @@ public class XmiModelMetadata {
 		Element modelElement=(Element)modelBean.getJDomElement();
 		Element taggedValueElmnt=prjElmt.getChild("ModelElement.taggedValue", modelElement.getNamespace());
 
-        if (taggedValueElmnt != null)        
+        if (taggedValueElmnt != null)
             cleanElmentTaggedChild(taggedValueElmnt, "NCI_GME_XML_NAMESPACE");
 
 //        modelBean.removeTaggedValue("NCI_GME_XML_NAMESPACE");
@@ -585,7 +592,7 @@ public class XmiModelMetadata {
         UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
         modelBean.addTaggedValue("NCI_GME_XML_NAMESPACE", gmeXmlNamespace );
     }
-    
+
     /**
 	 * Clean all annotation information related with classes, which are set with XMI.content element
 	 *
@@ -594,12 +601,12 @@ public class XmiModelMetadata {
 	{
 		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
 		Element modelElement=(Element)modelBean.getJDomElement();
-		
+
 		Element xmiContent=modelElement.getParentElement();
 		cleanElmentTaggedChild(xmiContent, "NCI_GME_XML_NAMESPACE");
 		cleanElmentTaggedChild(xmiContent, "NCI_GME_XML_ELEMENT");
  	}
-	
+
 	/**
 	 * Annotate XMI file once one target class being mapped
 	 * @param gmeXmlNamespace
@@ -609,12 +616,12 @@ public class XmiModelMetadata {
 	 */
 	public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
 	{
-		
+
 		addClassObjectAnnotationTag("NCI_GME_XML_NAMESPACE", gmeXmlNamespace,packageModelElementId);
-		
+
 		addClassObjectAnnotationTag("NCI_GME_XML_ELEMENT", gmeXmlElementName,classModelElementId);
 	}
-    
+
     public Element getXmiContent()
     {
         UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
@@ -628,7 +635,7 @@ public class XmiModelMetadata {
 	{
 		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
 		Element modelElement=(Element)modelBean.getJDomElement();
-		
+
 		Element xmiContent=modelElement.getParentElement();
 		Element newGmeTag=new Element("TaggedValue", modelElement.getNamespace());
 		newGmeTag.setAttribute("tag", tag);
@@ -668,7 +675,7 @@ public class XmiModelMetadata {
 		newGmeTag.setAttribute("modelElement", modelElmentId);
 		xmiContent.getChildren().add(newGmeTag);
 	}
-	
+
 	public String findModelElementXmiId(String modelElementXmlPath)
 	{
 		Object modelObj=umlHashMap.get(modelElementXmlPath);
@@ -684,10 +691,10 @@ public class XmiModelMetadata {
 }
 
 class XmiXPathComparator implements Comparator {
-	public final int compare ( Object a, Object b) 
-	{ 
+	public final int compare ( Object a, Object b)
+	{
 		MetaObjectImpl info1 = (MetaObjectImpl)a;
 		MetaObjectImpl info2 = (MetaObjectImpl)b;
-	return (info1.getXPath().compareTo(info2.getXPath())); 
+	return (info1.getXPath().compareTo(info2.getXPath()));
 	} // en
 }

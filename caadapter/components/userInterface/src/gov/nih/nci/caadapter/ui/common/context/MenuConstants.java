@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -27,7 +34,7 @@ public interface MenuConstants
 	String REPORT_MENU_NAME = "Report";
 	String HELP_MENU_NAME = "Help";
 	String TOOLBAR_MENU_NAME = "ToolBar";
-	//Module Name 
+	//Module Name
 	String CSV_TO_HL7V3="CSV_TO_HL7V3";
 	String CSV_SPEC="CSV_SPEC";
     String XSD_SPEC="XSD_SPEC";
@@ -39,7 +46,7 @@ public interface MenuConstants
 	String DB_TO_OBJECT="DB_TO_OBJECT";
 	String CSV_TO_XMI="CSV_TO_XMI";
     String XSD_TO_XMI="XSD_TO_XMI";
-	
+
 }
 
 /**

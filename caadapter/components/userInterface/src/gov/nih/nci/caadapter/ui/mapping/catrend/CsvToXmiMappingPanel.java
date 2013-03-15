@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.ui.mapping.catrend;
@@ -70,7 +77,7 @@ import java.util.Set;
 /**
  * The class is the main panel to construct the UI and initialize the utilities
  * to facilitate mapping functions.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2 revision $Revision: 1.15 $ date $Date:
@@ -153,13 +160,13 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		targetTreeToolBar.add(targetTreeExpandAllAction);
 		targetTreeToolBar.add(targetTreeCollapseAllAction);
 		targetLocationPanel.add(targetTreeToolBar, BorderLayout.WEST);
-		
+
 		JButton openXmiButton = new JButton(SELECT_XMI);
 		openXmiButton.setMnemonic('X');
 		openXmiButton.setToolTipText("Select XMI file...");
 		openXmiButton.addActionListener(this);
 		targetLocationPanel.add(openXmiButton, BorderLayout.EAST);
-		
+
 		targetLocationArea.setEditable(false);
 		targetLocationArea.setPreferredSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 10), 24));
@@ -221,7 +228,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		String targetNodeName="";
 		if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL))
 			targetNodeName="Object Model";
- 
+
 		else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
 			targetNodeName="Data Model";
 		else
@@ -236,16 +243,16 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		Set keySet = myMap.keySet();
 		Iterator keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
-			String key = (String) keySetIterator.next();		
-			if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL)) 
+			String key = (String) keySetIterator.next();
+			if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL))
 			{
-				if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) 
+				if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") )
 					constructXmiNTreeNde(node, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), false);
 
 			}
-			else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL)) 
+			else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
 			{
-				if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".")) 
+				if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "."))
 					constructXmiNTreeNde(node, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(),  false);
 			}
 		}
@@ -259,7 +266,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		{
 			MMSRendererPK objectModelRenderer=new MMSRendererPK();
 			objectModelRenderer.setXmiMeta(getXmiModelMeta());
-			tTree.setCellRenderer(objectModelRenderer);		
+			tTree.setCellRenderer(objectModelRenderer);
 		}
 		else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
 		{
@@ -299,14 +306,14 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			while (children.hasMoreElements()) {
 				DefaultMutableTreeNode current = (DefaultMutableTreeNode) children
 						.nextElement();
-	
+
 				if (current.toString().equals(pks[i])) {
 					exist = true;
 					father = current;
 					break;
 				}
 			}
-	
+
 			if (!exist) {
 				DefaultMutableTreeNode newTreeNode = new DefaultMutableTreeNode(
 						pks[i], true);
@@ -319,14 +326,14 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 				newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);
 		else
 			newTreeNode = new DefaultTargetTreeNode(myMap.get(fullName), true);
-	    
+
 	    father.add(newTreeNode);
 		return;
 	}
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 */
@@ -355,7 +362,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 */
@@ -380,7 +387,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
+	 *
 	 * @param file
 	 * @throws Exception
 	 *             changed from protected to pulic by sean
@@ -449,7 +456,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
         setSaveFile(file);
 		//redraw mapping panel
-		middlePanel.getMappingDataManager().setMappingData(mapping);		       
+		middlePanel.getMappingDataManager().setMappingData(mapping);
         return validatorResults;
     }
 
@@ -577,18 +584,18 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 						processOpenTargetTree(file, true, true);
 						//redraw mapping panel
 						Mapping currentMapping= middlePanel.getMappingDataManager().retrieveMappingData(false);
-						middlePanel.getMappingDataManager().setMappingData(currentMapping);		
+						middlePanel.getMappingDataManager().setMappingData(currentMapping);
 				}
 			}
 			else if (SELECT_CSV.equals(command)) {
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this, // FileUtil.getUIWorkingDirectoryPath(),
 						".scs", "Open CSV meta file ...", false, false);
-	
-				if (file != null) 
+
+				if (file != null)
 				{
 					processOpenSourceTree(file, true, true);
 					Mapping currentMapping= middlePanel.getMappingDataManager().retrieveMappingData(false);
-					middlePanel.getMappingDataManager().setMappingData(currentMapping);		
+					middlePanel.getMappingDataManager().setMappingData(currentMapping);
 				}
 			}
 
@@ -607,7 +614,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Explicitly reload information from the internal given file.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void reload() throws Exception {
@@ -617,7 +624,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 	/**
 	 * Reload the file specified in the parameter.
-	 * 
+	 *
 	 * @param changedFileMap
 	 */
 	public void reload(	Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap) {
@@ -664,7 +671,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 					false);
 		}
 	}
-	
+
 
 	public String getMappingTarget() {
 		return mappingTarget;

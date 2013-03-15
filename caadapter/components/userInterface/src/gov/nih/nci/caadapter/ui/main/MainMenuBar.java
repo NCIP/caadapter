@@ -1,8 +1,15 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START --> $Header:
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ $Header:
+
+
+
  * LICENSE_TEXT_END -->
  */
 
@@ -71,7 +78,7 @@ public class MainMenuBar extends AbstractMenuBar
     private Map<String, AbstractContextAction> actionMap;
     private Map<String, JMenuItem> menuItemMap;
     private Map<String, JMenu> menuMap;
-    
+
     public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
         this.mainFrame = mf;//contextManager.getMainFrame();
@@ -240,7 +247,7 @@ public class MainMenuBar extends AbstractMenuBar
         {
             //set csvToV3 as default
             newGroup.add(constructNewCSVTOV3Menu());
-        } 
+        }
         else
         {
             //load each activated component
@@ -260,14 +267,14 @@ public class MainMenuBar extends AbstractMenuBar
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
                 newGroup.add(constructNewDatabaseTOSDTMMenu());
-            }            
+            }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED)
             		||CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED)
             		||CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
             {
                 newGroup.add(constructNewObjectTODatabaseMenu());
             }
-            
+
         }
         return newGroup;
     }
@@ -300,7 +307,7 @@ public class MainMenuBar extends AbstractMenuBar
 	        actionMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newObject2DBMapAction);
 	        menuItemMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newO2DBMapFileItem);
         }
-        return newGroup;        
+        return newGroup;
     }
 
     private JMenu constructPreferenceMenu()
@@ -309,18 +316,18 @@ public class MainMenuBar extends AbstractMenuBar
         JMenu _qb = new JMenu("Tools");
         JMenuItem _menuItem = new JMenuItem(_preference);
         _qb.add(_menuItem);
-        
+
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
-        {       	
+        {
 //        	CaadapterUtil.setAuthorizedUser(true);
         	return _qb;
         }
-        else 
+        else
         {
 //        	webstart user is always authorized
         	CaadapterUtil.setAuthorizedUser(true);
         }
-        
+
         if(!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
         	return _qb;
         //add the build resource menu for standalone application
@@ -448,12 +455,12 @@ public class MainMenuBar extends AbstractMenuBar
 
     private JMenu constructNewDatabaseTOSDTMMenu()
     {
-        
-        
+
+
         JMenu newGroup = new JMenu("RDS Mapping and Transformation Service");
         Database2SDTMAction newDB2SDTMAction = new Database2SDTMAction(mainFrame);
         NewSDTMStructureAction newSDTMStructureAction = new NewSDTMStructureAction(mainFrame);
-                
+
         NewCsvSpecificationAction newCsvSpecAtion = new NewCsvSpecificationAction(mainFrame);
         JMenuItem newCsvSpecItem = new JMenuItem(newCsvSpecAtion);
         newGroup.add(newCsvSpecItem);
@@ -516,7 +523,7 @@ public class MainMenuBar extends AbstractMenuBar
         // link them together
         JMenu openMenu = new JMenu("      " + MenuConstants.OPEN_MENU_NAME);
         openMenu.setMnemonic('O');
-        
+
         //openCSVSpecificationItem is shared by multiple module
         boolean isOpenCsvAdded=false;
         if (CaadapterUtil.getAllActivatedComponents().isEmpty())
@@ -530,7 +537,7 @@ public class MainMenuBar extends AbstractMenuBar
             openMenu.add(openCsvToXmiMapFileItem);
             openMapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, Event.CTRL_MASK + Event.SHIFT_MASK, false));
             openMenu.add(openMapFileItem);
-        } 
+        }
         else
         {
         	int keyStrokeIndex=0;
@@ -550,7 +557,7 @@ public class MainMenuBar extends AbstractMenuBar
                 openMenu.add(openMapFileItem);
                 keyStrokeIndex++;
             }
-            
+
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
             	if (!isOpenCsvAdded)
@@ -595,7 +602,7 @@ public class MainMenuBar extends AbstractMenuBar
             	openMenu.add(openCsvToXmiMapFileItem);
             	keyStrokeIndex++;
             }
-            
+
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
             {
             	openXsdToXmiMapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
@@ -603,7 +610,7 @@ public class MainMenuBar extends AbstractMenuBar
             	keyStrokeIndex++;
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED))
-            {      
+            {
             	openO2DBMapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
                 openMenu.add(openO2DBMapFileItem);
                 keyStrokeIndex++;

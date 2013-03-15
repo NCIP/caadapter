@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -126,7 +133,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		//JLabel jlb = new JLabel(" ");
 		//jlb.setBounds(0, 0, 20, 30);
 		//this.add(jlb);
-		setSize(width, height);   
+		setSize(width, height);
 		String st = setVersionAndBuildNumber(commonPath + Config.DEFAULT_ABOUT_WINDOW_DATA_FILENAME);
 
 		try
@@ -186,10 +193,10 @@ public class AboutWindow extends JDialog //implements ActionListener
 
 									//System.out.println(" URL -- B");
 									thisWindow.dispose();
-									
+
 									String licenseString = generateLicenseInformationHTMLString();
 									new HTMLViewer(licenseString, 700, 500, "caAdapter License Information", true);
-									
+
 //									String licenseHTML_URL = "";
 //						        	String location = gov.nih.nci.caadapter.hl7.demo.LaunchUI.getCodebase();
 //						        	if(location!=null && location.trim().length()>0){
@@ -258,8 +265,8 @@ public class AboutWindow extends JDialog //implements ActionListener
         FileReader fr = null;
         BufferedReader br = null;
         try { fr = new FileReader(commonPath); }
-        catch(FileNotFoundException fe) 
-        { 
+        catch(FileNotFoundException fe)
+        {
         	//fe.printStackTrace();
             normal = false;
             //return ERROR_MESSAGE_FILE_NOT_FOUND+":"+commonPath;
@@ -303,7 +310,7 @@ public class AboutWindow extends JDialog //implements ActionListener
         catch(IOException ie) { return ERROR_MESSAGE_FILE_READING_ERROR; } // "ERROR : File Reading Error"; }
 		 */
 		tot = getBaseHTML1();
-		
+
 
 		tot = replaceTaggedContent(tot, VERSION_TAG_IN_SOURCE_HTML_FILE, Config.CAADAPTER_VERSION, VERSION_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, BUILD_TAG_IN_SOURCE_HTML_FILE, Config.CAADAPTER_BUILD_NUMBER, BUILD_MARKER_IN_SOURCE_HTML_FILE);
@@ -312,7 +319,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		//replace background image path
 		URL bkgUrl=getResource("images/"+Config.ABOUT_WINDOW_BACKGROUND_IMAGE_FILENAME);
 		URL iconUrl=getResource("images/"+Config.CAADAPTER_ICON_FILENAME);
-		
+
 		//tot = replaceTaggedContent(tot, BACKGROUND_FILE_NAME_TAG_IN_SOURCE_HTML_FILE, IMAGE_DIRECTORY_PATH + Config.ABOUT_WINDOW_BACKGROUND_IMAGE_FILENAME + "\">", BACKGROUND_FILE_NAME_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, BACKGROUND_FILE_NAME_TAG_IN_SOURCE_HTML_FILE, bkgUrl+ "\">", BACKGROUND_FILE_NAME_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, "<img id=\"icon\" src=\"", iconUrl+ "\" >", "<!-- caadapter icon -->" );
@@ -353,11 +360,11 @@ public class AboutWindow extends JDialog //implements ActionListener
 		ret = ClassLoader.getSystemResource("/"+name);
 		return ret;
 	}
-	
+
 	private String generateLicenseInformationHTMLString()
 	{
 		String mainContent = "<a name='top'><h2><font color='blue'>caadapter License Information</font></h2></a><br><br> <br><hr width=\"80%\"><br>";
-		
+
 		String readLineOfFile = "";
 		String buffer = "";
 		try
@@ -377,12 +384,12 @@ public class AboutWindow extends JDialog //implements ActionListener
 		{
 			return ERROR_MESSAGE_FILE_READING_ERROR; // "ERROR : File Reading Error"; }
 		}
-		
+
 		mainContent = "<html><head><title>caadapter Licence Agreement</title></head><body><br><br>" + mainContent + "<br></body></html>";
 		return mainContent;
 	}
 
-	
+
 	private String generateLicenseInformationHTML(String licensePath)
 	{
 		ClassLoaderUtil loader = null;
@@ -518,7 +525,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	}
 
 
-	
+
 	private String getBaseHTML1()
 	{
 		String htmlS = "";
@@ -557,7 +564,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		"</html>";
 		return htmlS;
 	}
-	
+
 	private String getBaseHTML()
 	{
 		String htmlS = "";

@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -96,8 +103,8 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 				return false;
 			}
 		}
-		
-		//Select file name 
+
+		//Select file name
 		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
 		if (file != null)
 		{
@@ -108,15 +115,15 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	}
 
 	/**
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 * @throws Exception
 	 */
 	protected boolean processSaveFile(File file) throws Exception
-	{		
+	{
 		boolean success = false;
-		try 
+		try
 		{
             String savingMessage = "Saving file please wait...";
 
@@ -134,10 +141,10 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 
             String mappingFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
 			File mappingFile = new File( mappingFileName );
-			
-			// Create .MAP file with Mapping attribute tagged values			
-			success = saveMappingFile( mappingFile );			
-						
+
+			// Create .MAP file with Mapping attribute tagged values
+			success = saveMappingFile( mappingFile );
+
 			// Create .XMI file with Mapping attribute tagged values
 			String xmiFileName = file.getAbsolutePath().replaceAll(".map", ".xmi");
 			XMIGenerator generator = new XMIGenerator( mappingFile.getAbsolutePath(), xmiFileName );
@@ -150,33 +157,33 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 
             JOptionPane.showMessageDialog( mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE );
         }
-		catch (Exception ex) 
+		catch (Exception ex)
 		{
 			ex.printStackTrace();
-		}		
-			
-		return success;	
+		}
+
+		return success;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean saveMappingFile(File file) throws Exception 
-	{		
+	public boolean saveMappingFile(File file) throws Exception
+	{
 		preActionPerformed(mappingPanel);
 		BufferedOutputStream bw = null;
 		boolean oldChangeValue = mappingPanel.isChanged();
-		
+
 		try
 		{
         	 CumulativeMappingToMappingFileGenerator myGenerator = new CumulativeMappingToMappingFileGenerator();
         	 myGenerator.setXmiFileName(CumulativeMappingGenerator.getXmiFileName());
-        	
-        	//Creating mapping file        
-        	 myGenerator.createLocalMappingFile(); 
+
+        	//Creating mapping file
+        	 myGenerator.createLocalMappingFile();
         	 XMLOutputter outp = new XMLOutputter();
      	     outp.setFormat(Format.getPrettyFormat());
 
@@ -187,16 +194,16 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
      	     } catch (Exception ex) {
      	    	ex.printStackTrace();
      	     }
-     	         	   
+
 			//clear the change flag.
      	    mappingPanel.setChanged(false);
-     	   return true;   
+     	   return true;
 		}
 		catch(Throwable e)
 		{
 			//restore the change value since something occurred and believe the save process is aborted.
 			mappingPanel.setChanged(oldChangeValue);
-			
+
 			//rethrow the exeception
 			throw new Exception(e);
 		}
@@ -217,7 +224,7 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 			{//intentionally ignored.
 			}
 		}
-	}	
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $

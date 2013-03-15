@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -80,7 +87,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 
     private void updateMonitor(ProgressMonitor monitor,int step,String note)
     {
-    	
+
     	monitor.setProgress(step);
     	monitor.setNote(note);
 //    	System.out.println("BuildHL7ResourceDialog.updateMonitor()..."+monitor.getNote());
@@ -104,21 +111,21 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 					try {
 				    	String targetHome=targetSite.substring(0,targetSite.lastIndexOf(File.separator));
 				    	BuildResourceUtil.RESOURCE_DIR=targetHome+File.separator+"temp";
-				 
+
 						String mifZipPath=resourceHome+"/processable/mif/mif.zip";
 						int stepCount=0;
 						updateMonitor(monitor, stepCount++, "Serialize MIF files");
 						BuildResourceUtil.parserMifFromZipFile(mifZipPath, isSortKeyReassigning);
 						updateMonitor(monitor, stepCount++, "Create message index");
 						BuildResourceUtil.parerMifIndexFromZipFile(mifZipPath);
-				
+
 						//process "core schema"/datatypes
 						String coreSchemaSrcHome=resourceHome+File.separator+"processable"+File.separator+"coreschemas";
 						updateMonitor(monitor, stepCount++, "Serialize datatype files");
 						BuildResourceUtil.loadDatatypes(coreSchemaSrcHome);
 						updateMonitor(monitor, stepCount++, "Create ZIP");
 						BuildResourceUtil.zipDir(targetSite, BuildResourceUtil.RESOURCE_DIR);
-						
+
 						//copy schema:
 						//find parentDir of tagetHome../lib/
 //						System.out.println(".run()..targetSite:"+targetSite);
@@ -129,7 +136,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 						schemaHome=schemaHome+File.separator+"schemas";
 						updateMonitor(monitor, stepCount++, "Copy coreschema files "+schemaHome+ File.separator+"coreschemas");
 						BuildResourceUtil.copyFiles(coreSchemaSrcHome, schemaHome+File.separator+"coreschemas", ".xsd");
-						
+
 						String mifSchemaSrcHome=resourceHome+File.separator+"processable"+File.separator+"multicacheschemas";
 						updateMonitor(monitor, stepCount++, "Copy MIF schema files "+schemaHome+File.separator+"multicacheschemas");
 						BuildResourceUtil.copyFiles(mifSchemaSrcHome, schemaHome+File.separator+"multicacheschemas", "xsd");
@@ -150,14 +157,14 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
     	localThread.start();
 		return rtnMsg;
     }
-    
+
     private String buildHL7V2Resource(String resourceHome, String targetSite)
     {
-    	
+
     	return "Buid HL7 V2 resource:Waiting for integration";
     }
-    
-    
+
+
 	/**
 	 * Invoked when an action occurs.
 	 */
@@ -171,9 +178,9 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 			{
 				String srcHome=frontPage.getSelectFileHome();
 				String targetSite=frontPage.getTargetSite();
-			
+
 				confirmMsg=buildHL7V3Resource(srcHome,targetSite,frontPage.isSortKeyReassigning());
- 
+
 			}
 			else if(this.getTitle().equals(BuildHL7ResourceAction.COMMAND_BUILD_V2))
 			{
@@ -181,8 +188,8 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 				int userReply=JOptionPane.showConfirmDialog(this, confirmMsg,"Confirm",JOptionPane.YES_NO_OPTION);
 			}
 		}
- 
- 
+
+
 			setVisible(false);
 			dispose();
 

@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.common.metadata;
 
 import java.util.Iterator;
@@ -17,7 +24,7 @@ public class TestXsdParser extends TestCase {
         XsdModelMetadata xsdModel = new XsdModelMetadata();
         String xmlSchema="workingspace/GME_Example/example.com.xsd";
         xsdModel.parseSchema(xmlSchema);
-        
+
         //list class mapping
         Iterator objKeys=xsdModel.getObjectMap().keySet().iterator();
         System.out.println("TestXsdParser.testGeneration() .. \nclassMapping:");
@@ -26,7 +33,7 @@ public class TestXsdParser extends TestCase {
         	String objKey=(String)objKeys.next();
         	System.out.println(XsdUtil.writeXsdObjectString((ObjectMetadata)xsdModel.getObjectMap().get(objKey)));
         }
-        
+
 //      list attribute mapping
         Iterator attrKeys=xsdModel.getAttributeMap().keySet().iterator();
         System.out.println("TestXsdParser.testGeneration() .. \nAttributeMapping:");
@@ -35,7 +42,7 @@ public class TestXsdParser extends TestCase {
         	String objKey=(String)attrKeys.next();
         	System.out.println(objKey+"="+ xsdModel.getAttributeMap().get(objKey));
         }
-        
+
 //      list association mapping
         Iterator asscKeys=xsdModel.getAssociationMap().keySet().iterator();
         System.out.println("TestXsdParser.testGeneration() .. \nAssociationMapping:");
@@ -45,5 +52,5 @@ public class TestXsdParser extends TestCase {
         	System.out.println(objKey+"="+ xsdModel.getAssociationMap().get(objKey));
         }
     }
-    
+
 }

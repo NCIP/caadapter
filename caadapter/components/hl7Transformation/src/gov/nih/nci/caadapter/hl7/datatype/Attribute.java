@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.datatype;
 
@@ -19,7 +26,7 @@ import java.util.List;
 
 /**
  * The class defines attributes of a HL7 Datatype.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2008-06-10 19:54:26 $
@@ -27,7 +34,7 @@ import java.util.List;
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Comparable <Attribute>, Cloneable  {
 	static final long serialVersionUID = 1L;
-	
+
 	private String name;
 
 	private String type;
@@ -49,7 +56,7 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 	private boolean simple=true;
 	private Datatype referenceDatatype;
 	private int sortKey=0;
-	
+
 	public int compareTo(Attribute attr)
 	{
 		int rtnValue=0;
@@ -79,17 +86,17 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 		return rtnValue;
 	}
 	/**
-	  * Build nodeXmlName with node name and multiplicityIndex 
+	  * Build nodeXmlName with node name and multiplicityIndex
 	 * @return nodeXmlName as part of the element XML patth
 	 */
 	public String getNodeXmlName() {
 		if (getMax()==1)
 			return getName();
-		
+
 		//backward compitable
 		if (getMultiplicityIndex()==0)
 			return getName();
-		
+
 		String stB="";
 		if (getMultiplicityIndex()<10)
 			stB="0";
@@ -106,10 +113,10 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 	}
 
 	/**
-	 * Return ture if the attribute is visible/accessable/allowed, 
+	 * Return ture if the attribute is visible/accessable/allowed,
 	 * return false, otherwise.
-	 * 
-	 * @return boolean 
+	 *
+	 * @return boolean
 	 */
 	public boolean isValid() {
 		if (isProhibited())
@@ -303,7 +310,7 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 	}
 	public String findCardinality() {
 
-		
+
 		return (new MIFCardinality(getMin(),getMax())).toString();
 
 	}

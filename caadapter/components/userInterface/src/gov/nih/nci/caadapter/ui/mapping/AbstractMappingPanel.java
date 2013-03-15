@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.ui.mapping;
 
 import gov.nih.nci.caadapter.common.Log;
@@ -49,42 +56,42 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 	protected DefaultPropertiesPage propertiesPane;
 	protected MappingTreeScrollPane sourceScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT);
 	protected MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
-	
+
 	protected JTextField sourceLocationArea = new JTextField();
 	protected JTextField targetLocationArea = new JTextField();
 	protected MappingMiddlePanel middlePanel = null;
 	protected MappingSourceTree sTree = null;
 	protected MappingTargetTree tTree = null;
-	
+
 	protected TreeCollapseAllAction sourceTreeCollapseAllAction;
 	protected TreeExpandAllAction sourceTreeExpandAllAction;
-	
+
 	protected TreeCollapseAllAction targetTreeCollapseAllAction;
 	protected TreeExpandAllAction targetTreeExpandAllAction;
 
 	protected MappingFileSynchronizer fileSynchronizer;
-	
+
 	protected TreeDefaultDragTransferHandler sourceTreeDragTransferHandler = null;
 	protected abstract TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler();
-	
+
 	protected JPanel sourceButtonPanel = null;
 	protected JPanel sourceLocationPanel = null;
 	protected JPanel targetButtonPanel = null;
 	protected JPanel targetLocationPanel = null;
-	
+
 	protected File mappingSourceFile = null;
 	protected File mappingTargetFile = null;
 	protected static Log logger =new Log();
 	// ??? Not Sure the behavior difference of build target tree and source tree besides we have MappingSourceTree TargerTree -Eric
 	protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
-	{		
+	{
 		TreeNode nodes=loadTargetTreeData(metaInfo,absoluteFile);
 		//Build the target tree
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
 		tTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
 		targetScrollPane.setViewportView(tTree);
 		tTree.expandAll();
-		
+
 //		TargetTreeDragTransferHandler targetTreeDragTransferHandler = null;
 //		drag source for DnD to middle panel.
 		TargetTreeDragTransferHandler targetTreeDragTransferHandler = new TargetTreeDragTransferHandler(tTree, DnDConstants.ACTION_LINK);
@@ -96,7 +103,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		tTree.getActionMap().put(targetTreeCollapseAllAction.getName(), targetTreeCollapseAllAction);
 		tTree.getInputMap().put(targetTreeExpandAllAction.getAcceleratorKey(), targetTreeExpandAllAction.getName());
 		tTree.getActionMap().put(targetTreeExpandAllAction.getName(), targetTreeExpandAllAction);
-		
+
 		if (sTree != null && isToResetGraph)
 		{
 			resetMiddlePanel();
@@ -118,7 +125,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		}
 		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Target_File, absoluteFile);
 	}
-	
+
 	protected void buildSourceTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
 	{
 		TreeNode nodes=loadSourceTreeData(metaInfo,absoluteFile);
@@ -129,7 +136,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		sourceTreeDragTransferHandler = new TreeDefaultDragTransferHandler(sTree, DnDConstants.ACTION_LINK);
 		sourceScrollPane.setViewportView(sTree);
 		sTree.expandAll();
- 
+
 		//register collapse all and expand all actions.
 		sourceTreeCollapseAllAction.setTree(sTree);
 		sourceTreeExpandAllAction.setTree(sTree);
@@ -159,7 +166,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		}
 		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Source_File, absoluteFile);
     }
-	
+
 	protected void resetMiddlePanel()
 	{
 		if (middlePanel != null)
@@ -168,7 +175,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 			middlePanel.repaint();
 		}
 	}
-	
+
 	protected JComponent getCenterPanel(boolean functionPaneRequired)
 		{//construct the top level layout of mapping panel
 			/**
@@ -203,7 +210,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 			JSplitPane topBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 			DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
 			topBottomSplitPane.setDividerLocation(0.5);
-			
+
 			functionPane = new FunctionLibraryPane();
 			functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
 			if(functionPaneRequired)
@@ -231,7 +238,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		 */
 		protected abstract JPanel getTopLevelLeftPanel();
 		protected abstract TreeNode loadSourceTreeData( Object metaInfo, File absoluteFile)throws Exception;
-		
+
 		protected abstract TreeNode loadTargetTreeData( Object metaInfo, File absoluteFile)throws Exception;
 		/**
 	 * Return whether the mapping module is in drag-and-drop mode.
@@ -244,7 +251,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
         boolean checkMiddlePanel = false;
         checkSourceTreeDragTransferHandler = sourceTreeDragTransferHandler.isInDragDropMode();
         checkTargetTreeDropTransferHandler = getTargetTreeDropTransferHandler().isInDragDropMode();
-        checkMiddlePanel = middlePanel.getMiddlePanelDropTransferHandler().isInDragDropMode();       
+        checkMiddlePanel = middlePanel.getMiddlePanelDropTransferHandler().isInDragDropMode();
         return (checkSourceTreeDragTransferHandler ||
 				checkTargetTreeDropTransferHandler ||
 				checkMiddlePanel);
@@ -261,19 +268,19 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
             JOptionPane.showMessageDialog(this, "You should input the source file name first.", "No Source file", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        else 
+        else
         	sourceTreeDragTransferHandler.setInDragDropMode(newValue);
-        
+
         if (getTargetTreeDropTransferHandler() == null)
         {
             JOptionPane.showMessageDialog(this, "You should input the target file name first.", "No Target file", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        else 
+        else
         	getTargetTreeDropTransferHandler().setInDragDropMode(newValue);
 		middlePanel.getMiddlePanelDropTransferHandler().setInDragDropMode(newValue);
 	}
-	
+
 	/**
 	 * Set a new save file.
 	 *
@@ -289,17 +296,17 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		}
 		return result;
 	}
-	
+
 	public MappingFileSynchronizer getMappingFileSynchronizer()
 	{
 		return this.fileSynchronizer;
 	}
-	
+
 	public void synchronizeRegisteredFile(boolean notigyOberver)
 	{
 		getMappingFileSynchronizer().doSynchronizationCheck(notigyOberver);
 	}
-	
+
 	public JScrollPane getSourceScrollPane() {
 		return sourceScrollPane;
 	}
@@ -311,10 +318,10 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 	public MappingMiddlePanel getMiddlePanel() {
 		return middlePanel;
 	}
-	    
+
 	/**
      * Return the mapping data manager.
-     * 
+     *
      * @return the mapping data manager.
      */
 	public MappingDataManager getMappingDataManager() {
@@ -371,7 +378,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		}
 		return resultList;
 	}
-	
+
 	public void setSize(Dimension newDimension)
 	{
 		setSize((int) newDimension.getWidth(), (int) newDimension.getHeight());
@@ -396,7 +403,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		propertiesPane.setSize(rightMostDim);
 		functionPane.setSize(rightMostDim);
 	}
-	
+
 	/**
 	 * Indicate whether or not it is changed.
 	 */

@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.mms.generator;
 
@@ -50,15 +57,15 @@ public class CumulativeMappingToMappingFileGenerator {
 	private UMLModel model;
 	private ModelMetadata modelMetadata;
 	private LinkedHashMap myMap = null;
-	
+
 	public CumulativeMappingToMappingFileGenerator(){
 		try {
 			cumulativeMapping = CumulativeMapping.getInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}  
+		}
 	}
-	
+
 	private void init() {
 	    try {
 	    	modelMetadata = ModelMetadata.getInstance();
@@ -82,21 +89,21 @@ public class CumulativeMappingToMappingFileGenerator {
 		Element components = new Element("components");
 		Element sourceComponent = new Element("component");
 		sourceComponent.setAttribute("location", this.xmiFileName);
-		
+
 		Element targetComponent = new Element("component");
 		targetComponent.setAttribute("location", this.xmiFileName);
 		components.addContent(sourceComponent);
 		components.addContent(targetComponent);
 		mapping.addContent(components);
-		
+
 		Iterator i = cumulativeMapping.getDependencyMappings().iterator();
 		while (i.hasNext()) {
 			try {
-				
+
 				DependencyMapping m = (DependencyMapping) i.next();
 				Element link = new Element("link");
 				link.setAttribute("type", "dependency");
-				
+
 				if (hasParent(m.getSourceDependency().getXPath())) {
 					UMLClass clazz = getParent(m.getSourceDependency().getXPath());
 					link.setAttribute("parent",getFullPath(clazz));
@@ -162,7 +169,7 @@ public class CumulativeMappingToMappingFileGenerator {
 				target.addContent(p.getThisEndColumn().getXPath());
 				link.addContent(target);
 				mapping.addContent(link);
-				
+
 			} catch (Exception e) {
 				 e.printStackTrace();
 			}
@@ -183,21 +190,21 @@ public class CumulativeMappingToMappingFileGenerator {
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
-		
+
 	    doc.setRootElement(mapping);
 	    XMLOutputter p = new XMLOutputter();
 	    p.setFormat(Format.getPrettyFormat());
-	    
-	   
+
+
 	}
 	/**
 	 * @return Document
 	 */
 	public Document getDocument() {
 		return this.doc;
-		
+
 	}
 	/**
 	 * @return CumulativeMapping
@@ -226,7 +233,7 @@ public class CumulativeMappingToMappingFileGenerator {
 	public void setXmiFileName(String xmiFileName) {
 		this.xmiFileName = xmiFileName;
 	}
-	
+
 	/**
 	 * @param pathToObject
 	 * @return hasParent
@@ -246,7 +253,7 @@ public class CumulativeMappingToMappingFileGenerator {
 	    }
 		return hasParent;
 	}
-	
+
 	/**
 	 * @param pathToObject
 	 * @return UMLClass
@@ -261,7 +268,7 @@ public class CumulativeMappingToMappingFileGenerator {
 	    }
 		return returnClass ;
 	}
-	
+
 	/**
 	 * @param clazz
 	 * @return String fullPath
@@ -273,13 +280,13 @@ public class CumulativeMappingToMappingFileGenerator {
 		path.append(clazz.getName());
 		return path.toString();
 	}
-	
+
 	public static void main(String[] args)
     {
         try
         {
         	 CumulativeMappingGenerator x = new CumulativeMappingGenerator("C:/sample.xmi");
-        	    
+
              x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene","Logical View.Data Model.GENE" );
              x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon","Logical View.Data Model.TAXON");
              x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone","Logical View.Data Model.CLONE");
@@ -287,7 +294,7 @@ public class CumulativeMappingToMappingFileGenerator {
              x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence","Logical View.Data Model.SEQUENCE");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Target","Logical View.Data Model.TARGET");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library","Logical View.Data Model.LIBRARY");
-         	  
+
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon.id","Logical View.Data Model.TAXON.TAXON_ID");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.id","Logical View.Data Model.CLONE.CLONE_ID");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library.id","Logical View.Data Model.LIBRARY.LIBRARY_ID");
@@ -295,29 +302,29 @@ public class CumulativeMappingToMappingFileGenerator {
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.id","Logical View.Data Model.GENE.GENE_ID");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.id","Logical View.Data Model.SEQUENCE.SEQUENCE_ID");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.id","Logical View.Data Model.CHROMOSOME.CHROMOSOME_ID");
-         
+
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.chromosome","Logical View.Data Model.GENE.CHROMOSOME_ID");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.taxon","Logical View.Data Model.CHROMOSOME.TAXON_ID");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.clone","Logical View.Data Model.SEQUENCE.CLONE_ID");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.library","Logical View.Data Model.CLONE.LIBRARY_ID");
-         	  
+
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.sequenceCollection","Logical View.Data Model.GENE_SEQUENCE.GENE_ID");
          	 x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.geneCollection","Logical View.Data Model.GENE_SEQUENCE.SEQUENCE_ID");
-         	  
+
          	 CumulativeMapping y = x.getCumulativeMapping();
-        	
-        	
+
+
         	 CumulativeMappingToMappingFileGenerator myGenerator = new CumulativeMappingToMappingFileGenerator();
         	 myGenerator.setXmiFileName("C:/sample.xmi");
-        	
+
         	//Creating mapping file
-        
-        	 myGenerator.createLocalMappingFile(); 
+
+        	 myGenerator.createLocalMappingFile();
         	 XMLOutputter outp = new XMLOutputter();
      	     outp.setFormat(Format.getPrettyFormat());
 
      	     try {
-     	   
+
      	    	File myFile = new File("C:/xyz.xml");
      	    	FileOutputStream myStream = new FileOutputStream(myFile);
      	    	outp.output(myGenerator.getDocument(), myStream);

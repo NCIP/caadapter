@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -317,7 +324,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				Datatype dtType=updtdDatatypeAttr.getReferenceDatatype();
 				String slctdTypeName=(String)dataTypeField.getSelectedItem();
 				if (dtType!=null&&!slctdTypeName.equalsIgnoreCase(""))
-				{	
+				{
 					if (dtType.isAbstract()
 							||(!dtType.getName().equals(slctdTypeName)))
 						updtdDatatypeAttr.setReferenceDatatype((Datatype)DatatypeParserUtil.getDatatype(slctdTypeName).clone());
@@ -368,14 +375,14 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		{//no need to update
 			return;
 		}
-		
+
 		Object userObj = treeNode.getUserObject();
 		if (!(userObj instanceof DatatypeBaseObject))
 		{
 			Log.logWarning(this,"Invalid data type being selectd:"+userObj.getClass().getName());
 			return;
 		}
-		
+
 		DatatypeBaseObject userDatatypeObj=(DatatypeBaseObject)userObj;
 		if (refresh || !GeneralUtilities.areEqual(this.seletedBaseObject, userDatatypeObj))
 		{
@@ -385,7 +392,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			//set parent name form xmlPath
 			String parentXmlPath=userDatatypeObj.getParentXmlPath();//xmlPath.substring(0, xmlPath.lastIndexOf("."));
 			elementParentField.setText(parentXmlPath);
- 
+
 			if (userDatatypeObj instanceof Attribute )
 			{
 				//userDefaultValue  is editable
@@ -398,8 +405,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					mandatoryField.setText("Y");
 				//conformance is not present
 				if (dtAttr.getType()!=null&&DatatypeParserUtil.isAbstractDatatypeWithName(dtAttr.getType()))
-				{					
-					abstractField.setText("Y"); 
+				{
+					abstractField.setText("Y");
 					Datatype dtRefClass=dtAttr.getReferenceDatatype();
 //					if (dtAttr.isEnabled())
 //					{
@@ -420,8 +427,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 							dataTypeField.addItem("No subclass is found");
 //					}
 				}
-				else 
-					abstractField.setText("N"); 
+				else
+					abstractField.setText("N");
 				dataTypeField.addItem(dtAttr.getType());
 				if (dtAttr.getReferenceDatatype()==null)
 					setEditableField(userDefaultValueField, dtAttr.isEnabled());
@@ -451,7 +458,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				{
 					Datatype subClass=mifAttr.getConcreteDatatype();
 					dataTypeField.setEditable(true);
-					abstractField.setText("Y"); 
+					abstractField.setText("Y");
 					List<String> subClassList=DatatypeParserUtil.findSubclassListWithTypeName(mifAttr.getType());
 					if (subClassList!=null)
 					{
@@ -472,13 +479,13 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					abstractField.setText("N");
 					dataTypeField.addItem(mifAttr.getType());
 				}
-				
+
 				//use fixedValue as default value if available
 				hl7DefaultValueField.setText(mifAttr.findHL7DefaultValueProperty());
 				hl7DomainField.setText(mifAttr.findDomainNameOidProperty());//.getDomainName());
 				codingStrengthField.setText(mifAttr.getCodingStrength());
 				userDefaultValueField.setText(mifAttr.getDefaultValue());
-				
+
 				if (MIFUtil.isEditableMIFAttributeDefault(mifAttr))
 					setEditableField(userDefaultValueField,true);
 			}
@@ -505,7 +512,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					else
 						mandatoryField.setText("N");
 					conformanceField.setText(parentMifAssc.getConformance());
-						
+
 				}
 				//Abstract is not present
 //				dataTypeField.addItem(mifClass.getName());
@@ -529,7 +536,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				else
 					mandatoryField.setText("N");
 				conformanceField.setText(mifAssc.getConformance());
-				
+
 //				abstractField.setText(mifAssc.getMifClass().isDynamic()); //Abstract is not presentt
 				MIFClass asscClass=mifAssc.getMifClass();
 //				if(asscClass.getChoices().isEmpty())
@@ -548,7 +555,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				Log.logWarning(this,"Invalid data type being selectd:"+userDatatypeObj.getClass().getName());
 		}
 	}
-	
+
 
 	private void clearAndEditableFields(boolean editableValue)
 	{
@@ -600,14 +607,14 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			return false;
 		}
 		boolean result = false;
-			
+
 		if (seletedBaseObject instanceof MIFClass)
 		{
 			result=false;
 		}
 		else if (seletedBaseObject instanceof MIFAssociation)
 		{
-			result=false;		
+			result=false;
 		}
 		else if (seletedBaseObject instanceof MIFAttribute)
 		{
@@ -621,7 +628,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				Datatype subClass=mifAttr.getConcreteDatatype();
 				if (subClass==null)
 					result=!GeneralUtilities.areEqual(subClass, dataTypeField.getSelectedItem(), true);
-				else 
+				else
 					result = !GeneralUtilities.areEqual(subClass.getName(), dataTypeField.getSelectedItem(), true);
 			}
 			else if (userDefaultValueField.isEditable())
@@ -639,7 +646,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			String slectdDt=(String)dataTypeField.getSelectedItem();
 			if (slectdDt==null||slectdDt.equalsIgnoreCase(""))
 				return result;
-			
+
 			if (attrDataType!=null&&attrDataType.isAbstract())
 			{
 				//compare the selected concrete class
@@ -658,10 +665,10 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		DatatypeBaseObject userDatatypeObj= this.getDatatypeObject(true);//getHl7V3Meta(true);
 		parentPanel.getController().updateCurrentNodeWithUserObject(userDatatypeObj);
 		//explicitly redisplay the property pane, because user could continue to work on it
-		parentPanel.setPropertiesPaneVisible(true);		 
+		parentPanel.setPropertiesPaneVisible(true);
 	}
 
-	
+
 	/**
 	 * Reload the data.
 	 */

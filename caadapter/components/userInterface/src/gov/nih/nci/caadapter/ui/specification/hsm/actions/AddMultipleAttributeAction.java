@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -98,7 +105,7 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
         }
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         Object obj = targetNode.getUserObject();
-        
+
         if (obj instanceof MIFAttribute)
         {
         	MIFAttribute mifAttr = (MIFAttribute) obj;
@@ -107,7 +114,7 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
             	MIFAttribute mifClonned=(MIFAttribute)mifAttr.clone();
             	DefaultMutableTreeNode parentNode =(DefaultMutableTreeNode)targetNode.getParent();
             	Object parentObj=parentNode.getUserObject();
-            	
+
             	MIFClass parentMif=null;
             	if (parentObj instanceof MIFClass)
             		parentMif=(MIFClass)parentObj;
@@ -119,7 +126,7 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
            			else
            				parentMif=parentMifAssc.getMifClass();
             	}
-            	
+
             	if (parentMif==null)
             	{
             		JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Invalid selection",
@@ -130,13 +137,13 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
             	int exitingMIFCount=MIFUtil.getMaximumMIFAttributeMultiplicityIndexWithName(parentMif, mifAttr.getName());
                	mifClonned.setMultiplicityIndex(exitingMIFCount+1);
             	parentMif.addAttribute(mifClonned);
-            	
+
             	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
             	DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
             	DefaultMutableTreeNode clonnedAttrNode =mifTreeLoader.buildObjectNode(mifClonned, hsmNode.getRootMif());
             	int oldNodeIndex =parentNode.getIndex(targetNode);
-            	parentNode.insert(clonnedAttrNode, oldNodeIndex+exitingMIFCount+1); 
-            	
+            	parentNode.insert(clonnedAttrNode, oldNodeIndex+exitingMIFCount+1);
+
             	((DefaultTreeModel) tree.getModel()).nodeStructureChanged(parentNode);
             	setSuccessfullyPerformed(true);
             }

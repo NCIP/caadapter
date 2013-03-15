@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.common.metadata;
 
@@ -61,7 +68,7 @@ public void parseSchema(String filename)
     } else {
         schemaFile = new File(filename);
     }
-  
+
     try {
     	FileReader reader = new FileReader(schemaFile);
         InputSource source = new InputSource(reader);
@@ -79,10 +86,10 @@ public void parseSchema(String filename)
 
 private void initModel()
 {
-	
+
 	if (gmeSchema==null)
 		return;
-	
+
 	//set project name
 	setProjectName(CaadapterUtil.findApplicationConfigValue("caadapter.gme.project.name"));
 	setProjectContext(CaadapterUtil.findApplicationConfigValue("caadapter.gme.project.content"));
@@ -94,8 +101,8 @@ private void initModel()
 //	String targetNsURI =gmeSchema.getTargetNamespace();
 //	setProjectName(targetNsURI);
 
-	
-	
+
+
 	//set class mapping
 	buildSchemaClassMapping(gmeSchema);
 	//set class mapping from imported schema(s)
@@ -148,14 +155,14 @@ private void buildObjectMetadata(ElementDecl clsDecl)
 	String pkName=(String)getPackageMap().get(schemaTargetNs);
 	objMeta.setXPath(pkName+"."+clsDecl.getName());
 	objMeta.setXmlPath(pkName+"."+clsDecl.getName());
-	
+
 	//set attribute mapping and association mapping
 	ComplexType complexType =clsDecl.getType().getSchema().getComplexType(clsType);
 	Enumeration contentEnu=complexType.enumerate();
 	while(contentEnu.hasMoreElements())
 	{
 		 Particle particle=( Particle)contentEnu.nextElement();
-		
+
 		 //there is at least one group under each classMapping element
 		 if (particle instanceof Group)
 		 {
@@ -172,7 +179,7 @@ private void buildObjectMetadata(ElementDecl clsDecl)
 		 else
 			 System.out.println("XsdModelMetadata.buildObjectMetadata()..:"+particle);
 	}
-	//process attributes 
+	//process attributes
 	Enumeration attrEnu=complexType.getAttributeDecls();
 	while(attrEnu.hasMoreElements())
 	{
@@ -243,7 +250,7 @@ private void buildObjectContent(ObjectMetadata objMeta, Group complexContent)
 //			 Group contentGroup=(Group)particle;
 //		 }
 	}
- 
+
 }
 
 private void buildAssociation(String roleName, ObjectMetadata xsdObj, ComplexType asscType)
@@ -266,7 +273,7 @@ private void buildAssociation(String roleName, ObjectMetadata xsdObj, ComplexTyp
 				 {
 					 ElementDecl asscElm=(ElementDecl)asscParticle;
 					 asscParticle.getMaxOccurs();
-					 
+
 					 if(asscElm.getReference()!=null)
 						 asscElm=asscElm.getReference();
 					 buildAssociationWithCardinality(roleName, xsdObj, asscElm, asscParticle.getMaxOccurs(), asscParticle.getMinOccurs());
@@ -283,13 +290,13 @@ private void buildAssociationWithCardinality(String roleName, ObjectMetadata xsd
 	asscMeta.setRoleName(roleName);
 	asscMeta.setXPath(xsdObj.getXPath()+"."+roleName);
 	asscMeta.setXmlPath(xsdObj.getXPath()+"."+roleName);
-	
+
 	String returnType=asscElm.getType().getName();
 	String schemaTargetNs=asscElm.getType().getSchema().getTargetNamespace();
 	String pkName=(String)getPackageMap().get(schemaTargetNs);
 
 	asscMeta.setReturnTypeXPath(pkName+"."+returnType);
- 
+
 	if (maxOccurence==1&&minOccurence==1)
 	{
 		asscMeta.setManyToOne(true);
@@ -297,12 +304,12 @@ private void buildAssociationWithCardinality(String roleName, ObjectMetadata xsd
 	}
 	else
 		asscMeta.setMultiplicity(-1);
-	
-	associationMap.put(asscMeta.getXPath(), asscMeta);	
+
+	associationMap.put(asscMeta.getXPath(), asscMeta);
 	xsdObj.addAssociation(asscMeta);
 }
 
-private void loadSchemaSource(InputSource source) 
+private void loadSchemaSource(InputSource source)
 {
     // -- get default parser from Configuration
     Parser parser = null;
@@ -343,7 +350,7 @@ private void loadSchemaSource(InputSource source)
     }
 
     Schema schema = schemaUnmarshaller.getSchema();
-    
+
     try {
         schema.validate();
     } catch (ValidationException vx) {

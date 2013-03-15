@@ -1,11 +1,18 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /*
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+
+
+
+
 * <!-- LICENSE_TEXT_END -->
  */
- 
+
 package gov.nih.nci.caadapter.hl7.map;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
@@ -403,7 +410,7 @@ public class FunctionVocabularyMapping
             try {  mapData = checkMappingFileAndExtractData(fileNameSCR); }
             catch(FunctionException fe)
             {
-                if (fe.getErrorNumber() == 708) mapData = ""; 
+                if (fe.getErrorNumber() == 708) mapData = "";
                 else throw fe;
             }
 
@@ -593,7 +600,7 @@ public class FunctionVocabularyMapping
         	URL fileURL= ClassLoader.getSystemResource(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
         	String filePath=fileURL.getFile();
         	System.out.println("function spec file Path:"+filePath + " : " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
-            
+
             aFile = new File(filePath);
 //            new FileReader(aFile);
         }
@@ -673,7 +680,7 @@ public class FunctionVocabularyMapping
             producer.setContentHandler(handler);
 
             producer.parse(new InputSource(pathName));
-            
+
         }
         catch(SAXException e)
         {

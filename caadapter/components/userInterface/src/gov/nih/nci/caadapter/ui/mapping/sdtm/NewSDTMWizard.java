@@ -1,10 +1,17 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/cvsroot/hl7sdk/src/gov/nih/nci/caAdapter/ui/db2SDTM/NewSDTMWizard.java,v 1.1 2006/10/30 16:01:50 jayannah
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ $Header: /share/content/cvsroot/hl7sdk/src/gov/nih/nci/caAdapter/ui/db2SDTM/NewSDTMWizard.java,v 1.1 2006/10/30 16:01:50 jayannah
+
+
+
  * LICENSE_TEXT_END -->
  */
 

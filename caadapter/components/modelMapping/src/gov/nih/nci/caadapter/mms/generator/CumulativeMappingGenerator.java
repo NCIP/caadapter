@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.mms.generator;
@@ -32,10 +39,10 @@ import java.util.List;
 /**
  * @author connellm
  * The purpose of this class is to create and maintain a CumulativeMapping
- * object. As a caAdapter user drags and drops a source to a target in the UI 
+ * object. As a caAdapter user drags and drops a source to a target in the UI
  * the system will first determine what type of mapping the user is attempting
- * to create then it will determine if the mapping is valid based on various business rules. 
- * If the mapping is found to be valid it will add it to the CumulativeMapping 
+ * to create then it will determine if the mapping is valid based on various business rules.
+ * If the mapping is found to be valid it will add it to the CumulativeMapping
  * object as either a DependencyMapping, AttributeMapping, SingleAssociationMapping, or ManyToManyMapping object.
  */
 public class CumulativeMappingGenerator {
@@ -63,18 +70,18 @@ public CumulativeMappingGenerator(){
 /**
  * @param xmiFileName_local
  */
-public static boolean init(String xmiFileName_local) 
+public static boolean init(String xmiFileName_local)
 {
-	if (cumulativeMappingGenerator != null) 
+	if (cumulativeMappingGenerator != null)
 	{
 		cumulativeMappingGenerator = null;
 		CumulativeMapping.reset();
 		System.gc();
 	}
-	
+
 	cumulativeMappingGenerator = new CumulativeMappingGenerator();
 	xmiFileName = xmiFileName_local;
-	
+
 	try {
 		ModelMetadata.createModel(xmiFileName_local);
 		metaModel = ModelMetadata.getInstance();
@@ -85,19 +92,19 @@ public static boolean init(String xmiFileName_local)
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
-    }catch (Exception e){      
+    }catch (Exception e){
       e.printStackTrace();
-      return false;	  
+      return false;
     }
     return true;
 }
 
-public static CumulativeMappingGenerator getInstance() 
+public static CumulativeMappingGenerator getInstance()
 {
 	return cumulativeMappingGenerator;
 }
 
-public static String getXmiFileName() 
+public static String getXmiFileName()
 {
 	return xmiFileName;
 }
@@ -109,7 +116,7 @@ public static String getXmiFileName()
  * @return boolean
  */
 public static boolean unmap(String source, String target){
-	
+
 	boolean successfullyUnmapped = false;
 	String sourceMappingType = determineSourceMappingType(source);
 	String targetMappingType = determineTargetMappingType(target);
@@ -133,10 +140,10 @@ public static boolean unmap(String source, String target){
 /**
  * @param source Source element to be mapped.
  * @param target Target element to be mapped.
- * @return boolean 
+ * @return boolean
  */
 public static boolean map(String source, String target){
-	
+
 	boolean successfullyMapped = false;
 	// The first thing that needs to be determined is what type of mapping is being attempted, i.e. Dependency, Attribute, Associatin, etc.
 	String sourceMappingType = determineSourceMappingType(source);
@@ -176,14 +183,14 @@ public static boolean setPrimaryKey( String source )
  * @return String sourceMappingType
  */
 public static String determineSourceMappingType(String source){
-	
+
 	String mappingType = null;
 	if (isClass(source)){
-		mappingType = "dependency";	
+		mappingType = "dependency";
 	} else if (isAttribute(source)){
 		mappingType = "attribute";
 	//} //TO_DO else if (isSingleAssociation(source)&& isManyToManyAssociation(source)){
-	} else if (isSingleAssociation(source)){	
+	} else if (isSingleAssociation(source)){
 		mappingType = "singleassociation";
 	} else if (isOneToManyAssociation(source)){
 		mappingType = "singleassociation";
@@ -203,13 +210,13 @@ public static String determineSourceMappingType(String source){
 public static String determineTargetMappingType(String target){
 	String mappingType = null;
 	//We need to determine if the target is a table for a dependency mapping or a many to many mapping.
-	
+
 	if (isClass(target) && !isCorrelationTable(target)){
 		mappingType = "dependency";
-		//TO_DO if you want to make the mapping tool "fool proof" you would need to determine if the 
+		//TO_DO if you want to make the mapping tool "fool proof" you would need to determine if the
 		//columns the user is mapping are foregein keys, primary keys, correct datatypes, etc. at
 		//this point we are assuming the user is going to have a correctly designed database
-		//and knows what needs to be mapped to what. In my experience though users don't always 
+		//and knows what needs to be mapped to what. In my experience though users don't always
 		//know enough about their data and object oriented program, so you may want to implment some
 		//checking.
 		/*  if we need to validate whether or not the column is a foreign key uncomment this code
@@ -252,7 +259,7 @@ public static UMLClass getClass(String pathToClass){
 //	UMLClass clazz = null;
 //	String[] modelElements = pathToAttribute.split("\\.");
 //	clazz = findClass(model, modelElements, 0,modelElements.length-2);
-//	
+//
 //	if (clazz!=null){
 //		LinkedHashMap modelMeta = metaModel.getModelMetadata();
 //		 for(UMLAttribute att : clazz.getAttributes()) {
@@ -299,7 +306,7 @@ public static UMLAssociationEnd getOtherAssociationEnd(UMLAssociationEnd associa
 			if (!end.getRoleName().equals(associatonEnd.getRoleName())){
 				otherEnd = end;
 			}
-			
+
 		}
 	}
 	return otherEnd;
@@ -368,11 +375,11 @@ public static boolean mapAttribute(String sourcePath, String targetPath){
 	ColumnMetadata columnMetadata = (ColumnMetadata)modelMeta.get(targetPath);
 	boolean successfullyMapped = false;
 	AttributeMapping mapping = new AttributeMapping();
-	
+
 	columnMetadata.setType(columnMetadata.TYPE_ATTRIBUTE);
 	mapping.setAttributeMetadata(attributeMetadata);
 	mapping.setColumnMetadata(columnMetadata);
-	
+
 	AttributeMappingValidator validator = new AttributeMappingValidator(mapping);
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
@@ -415,11 +422,11 @@ public static boolean mapSingleAssociation(String sourceXPath, String targetXPat
 	ColumnMetadata targetMetadata = (ColumnMetadata)modelMeta.get(targetXPath);
 	boolean successfullyMapped = false;
 	SingleAssociationMapping mapping = new SingleAssociationMapping();
-		
-	targetMetadata.setType(targetMetadata.TYPE_ASSOCIATION);	
+
+	targetMetadata.setType(targetMetadata.TYPE_ASSOCIATION);
 	mapping.setAssociationEndMetadata(sourceMetadata);
 	mapping.setColumnMetadata(targetMetadata);
-	
+
 	SingleAssociationMappingValidator validator = new SingleAssociationMappingValidator(mapping);
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
@@ -469,7 +476,7 @@ public static boolean mapManyToManyAssociation(UMLAssociationEnd source, String 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
 	ColumnMetadata col = (ColumnMetadata)modelMeta.get(targetXPath);
 	col.setType(col.TYPE_ASSOCIATION);
-	
+
 	thisEnd.setRoleName(source.getRoleName());
 	thisEnd.setMultiplicity(source.getHighMultiplicity());
 	thisEnd.setNavigability(source.isNavigable());
@@ -491,7 +498,7 @@ public static boolean mapManyToManyAssociation(UMLAssociationEnd source, String 
 /**
  * @param sourceXPath String
  * @param targetXPath String
- * @return boolean 
+ * @return boolean
  */
 public static boolean unmapManyToManyAssociation(String sourceXPath, String targetXPath) {
 	List<ManyToManyMapping> manyToManyMapping = cumulativeMapping.getManyToManyMappings();
@@ -547,7 +554,7 @@ public static boolean isAttribute(String element){
 			else if (modelMeta.get(element) instanceof ColumnMetadata) return true;
 			else return false;
 		}
-	}		
+	}
 //		 for(UMLAttribute att : clazz.getAttributes()) {
 //			  if (att.getName().equals(modelElements[modelElements.length-1])) {
 //				  attribute = att;
@@ -644,7 +651,7 @@ public static boolean isManyToManyAssociation(String element){
 public static boolean isForeignKey(String element){
 	boolean isForeignKey = false;
 	if (metaMap.get(element)!=null){
-		
+
 	}
 	if (metaMap.get(element).getClass().getName().equals("ColumnMetadata")) {
 		ColumnMetadata col = (ColumnMetadata)metaMap.get(element);
@@ -684,7 +691,7 @@ public static boolean isCorrelationTable(String element){
  * @param className
  * @return UMLClass
  */
-private static UMLClass findClass(UMLModel model, String[] className, int start, int end) 
+private static UMLClass findClass(UMLModel model, String[] className, int start, int end)
 {
   for(UMLPackage pkg : model.getPackages()) {
 	  if (pkg.getName().equals(className[start])) {
@@ -692,7 +699,7 @@ private static UMLClass findClass(UMLModel model, String[] className, int start,
 		  if(c != null)
 			  return c;
 	  }
-  }    
+  }
   return null;
 }
 
@@ -704,7 +711,7 @@ private static UMLClass findClass(UMLModel model, String[] className, int start,
 private static UMLClass findClass(UMLPackage pkg, String[] className, int start, int end) {
 	if (start == end) {
 		for(UMLClass clazz : pkg.getClasses()) {
-			if(clazz.getName().equals(className[start])) 
+			if(clazz.getName().equals(className[start]))
 				return clazz;
 		}
 	}
@@ -793,7 +800,7 @@ public static String getColumnFromAssociation(UMLAssociation association)
 	 */
 	public static void main(String[] args) {
       CumulativeMappingGenerator x = new CumulativeMappingGenerator("C:/sample.xmi");
-    
+
       x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene","Logical View.Data Model.GENE" );
       x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon","Logical View.Data Model.TAXON");
       x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone","Logical View.Data Model.CLONE");
@@ -801,7 +808,7 @@ public static String getColumnFromAssociation(UMLAssociation association)
       x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence","Logical View.Data Model.SEQUENCE");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Target","Logical View.Data Model.TARGET");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library","Logical View.Data Model.LIBRARY");
-  	  
+
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon.id","Logical View.Data Model.TAXON.TAXON_ID");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.id","Logical View.Data Model.CLONE.CLONE_ID");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library.id","Logical View.Data Model.LIBRARY.LIBRARY_ID");
@@ -809,15 +816,15 @@ public static String getColumnFromAssociation(UMLAssociation association)
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.id","Logical View.Data Model.GENE.GENE_ID");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.id","Logical View.Data Model.SEQUENCE.SEQUENCE_ID");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.id","Logical View.Data Model.CHROMOSOME.CHROMOSOME_ID");
-  
+
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.chromosome","Logical View.Data Model.GENE.CHROMOSOME_ID");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.taxon","Logical View.Data Model.CHROMOSOME.TAXON_ID");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.clone","Logical View.Data Model.SEQUENCE.CLONE_ID");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.library","Logical View.Data Model.CLONE.LIBRARY_ID");
-  	  
+
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.sequenceCollection","Logical View.Data Model.GENE_SEQUENCE.GENE_ID");
   	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.geneCollection","Logical View.Data Model.GENE_SEQUENCE.SEQUENCE_ID");
-  	  
+
   	  CumulativeMapping y = x.getCumulativeMapping();
 	}
 
@@ -828,6 +835,6 @@ public static String getColumnFromAssociation(UMLAssociation association)
 	public static void setErrorMessage(String errorMessage) {
 		CumulativeMappingGenerator.errorMessage = errorMessage;
 	}
-	
+
 
 }

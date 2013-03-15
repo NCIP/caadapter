@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.hl7.junit;
@@ -30,7 +37,7 @@ import junit.framework.*;
  * 3. MIF commonModelElement parser
  * 4. MIF choice parser
  * 5. MIF composite datatype parser
- * 
+ *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2008-06-09 19:53:51 $
@@ -63,7 +70,7 @@ public class MIFLoadingTests extends TestCase {
 		} catch (ClassNotFoundException e) {
 			Log.logException(this, e);
 		}
-			
+
 		MIFToXmlExporter xmlExporter;
 		try {
 			xmlExporter = new MIFToXmlExporter(rootMif);
@@ -72,14 +79,14 @@ public class MIFLoadingTests extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
-		 
+
+
 //		 attribute = (Attribute)attributes.get("nullFlavor");
 //		 assertNotNull(attribute);
 
 	 }
-	 
- public void testImportHL7V3Specification () 
+
+ public void testImportHL7V3Specification ()
  {
 		String specFileName="mifClassExport.xml";
 //			 String specFileName="C:\\CVS\\caadapter\\workingspace\\examples\\xmlpathSpec\\newCOCT_MT150003.h3s";//PORRT_MT040011.h3s";//newCOCT_MT150003.h3s";
@@ -92,7 +99,7 @@ public class MIFLoadingTests extends TestCase {
 		OutputStream os;
 		try {
 			os = new FileOutputStream("mifClassImportReExport.h3s");
-			ObjectOutputStream oos = new ObjectOutputStream(os); 
+			ObjectOutputStream oos = new ObjectOutputStream(os);
 			oos.writeObject(rootMif);
 			oos.close();
 			os.close();
@@ -109,9 +116,9 @@ public class MIFLoadingTests extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
  }
 	 public static junit.framework.Test suite() {
-		  return new JUnit4TestAdapter(MIFLoadingTests.class);    
+		  return new JUnit4TestAdapter(MIFLoadingTests.class);
 		}
 }

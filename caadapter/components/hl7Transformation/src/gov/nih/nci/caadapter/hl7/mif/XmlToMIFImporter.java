@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -40,7 +47,7 @@ public class XmlToMIFImporter {
 	{
 		builder = new SAXBuilder(false);
 	}
-	
+
 	public MIFClass importMifFromXml(File f)
 	{
 		MIFClass rtnMif=null;
@@ -56,7 +63,7 @@ public class XmlToMIFImporter {
 		}
 		return rtnMif;
 	}
-	
+
 	private MIFClass parserMIFClass(Element elm)
 	{
 		MIFClass rtnMif=new MIFClass();
@@ -65,7 +72,7 @@ public class XmlToMIFImporter {
 		Element packageLoc=null;
 		Namespace hl7Namespace=Namespace.getNamespace("mif","urn:hl7-org:v3/mif");
 		packageLoc=elm.getChild("packageLocation",hl7Namespace);
-		
+
 		if (packageLoc!=null &&!packageLoc.getAttributes().isEmpty())
 		{
 			Hashtable<String, String> packageLocation=new Hashtable<String, String>();
@@ -113,7 +120,7 @@ public class XmlToMIFImporter {
 		}
 		return rtnMif;
 	}
-	
+
 	private MIFAssociation parserMIFAssociation(Element elm)
 	{
 		MIFAssociation rtnMif=new MIFAssociation();
@@ -129,15 +136,15 @@ public class XmlToMIFImporter {
 			{
 				participantHash.put(
 						((Element)partEl).getAttribute("className").getValue(),
-						((Element)partEl).getAttribute("className").getValue()				
+						((Element)partEl).getAttribute("className").getValue()
 				);
-				
+
 			}
 			rtnMif.setParticipantTraversalNames(participantHash);
 		}
 		return rtnMif;
 	}
-	
+
 	private MIFAttribute parserMIFAttribute(Element elm)
 	{
 		MIFAttribute rtnMif=new MIFAttribute();
@@ -146,7 +153,7 @@ public class XmlToMIFImporter {
 		if (typeElm!=null)
 		{
 			rtnMif.setDatatype(parserDatatype(typeElm));
-			//there is an element "type" within "type" 
+			//there is an element "type" within "type"
 			//if the MIFAttribute has datatyp of Abstract
 			Element concreteTypeElm=typeElm.getChild("type");
 			if (concreteTypeElm!=null)
@@ -171,7 +178,7 @@ public class XmlToMIFImporter {
 		}
 		return rtnDt;
 	}
-	
+
 	private Attribute parserDatatypeAttribute(Element elm)
 	{
 		Attribute rtnDtAttr=new Attribute();
@@ -184,7 +191,7 @@ public class XmlToMIFImporter {
 		}
 		return rtnDtAttr;
 	}
-	
+
 	private void setPrimaryAttributes(Object o, Element elmt)
 	{
 		Class[] paramTypes = new Class[1];
@@ -197,7 +204,7 @@ public class XmlToMIFImporter {
             	//not exported, no value to import
             	if (MIFToXmlExporter.methodToBeIngored.contains(mthdName))
             		continue;
-            	
+
             	String mthRtnType=m[i].getReturnType().getSimpleName();
             	String invlkMthdName="";
             	String xmlAttrName="";
@@ -205,9 +212,9 @@ public class XmlToMIFImporter {
             	if (mthRtnType.equals("String"))
             	{
             		invlkMthdName="s"+mthdName.substring(1);//replace "getXX" as "setXX"
-            		paramTypes[0] = String.class;           		
+            		paramTypes[0] = String.class;
             		xmlAttrName=mthdName.substring(3,4).toLowerCase()+ mthdName.substring(4); //remove "get"
-            		
+
             	}
             	else if (mthRtnType.equals("boolean"))
             	{
@@ -219,7 +226,7 @@ public class XmlToMIFImporter {
             	{
             		invlkMthdName="set"+mthdName.substring(3);//replace "getXX" as "setXX"
             		paramTypes[0] = int.class;///String.class;
-            		xmlAttrName=mthdName.substring(3,4).toLowerCase()+ mthdName.substring(4); //remove "get"       		
+            		xmlAttrName=mthdName.substring(3,4).toLowerCase()+ mthdName.substring(4); //remove "get"
               	}
             	if (xmlAttrName.equals(""))
             		continue;
@@ -232,7 +239,7 @@ public class XmlToMIFImporter {
 	            	}
     	            try{
     	            	invlkMthd=c.getMethod(invlkMthdName,paramTypes );
-    	            	
+
     	            	if (mthRtnType.equals("String"))
     	            	{
     	            		invlkMthd.invoke(o,xmlAttrValue);
@@ -244,7 +251,7 @@ public class XmlToMIFImporter {
     	            		boolean bvToSet=false;
      	            		if (xmlAttrValue.equalsIgnoreCase("true"))
     	            			bvToSet=true;
-    	            		
+
     	            		invlkMthd.invoke(o,bvToSet);
      	            	}
     	            	else if (mthRtnType.equals("int"))

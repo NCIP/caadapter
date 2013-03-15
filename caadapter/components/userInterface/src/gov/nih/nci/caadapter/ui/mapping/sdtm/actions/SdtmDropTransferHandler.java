@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
@@ -157,7 +164,7 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
      */
     public boolean setDropData(Object transferredData, DropTargetDropEvent e, DataFlavor chosen)
     {
-        
+
         boolean isSuccess = false;
         StringBuffer _sourceDataAsXPath;
         Point p = e.getLocation();
@@ -255,7 +262,7 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
                             JOptionPane.showMessageDialog(getTree().getRootPane().getParent(), "The selected source cannot be mapped because it is a table, please choose columns to map.", "Mapping Error", JOptionPane.ERROR_MESSAGE);
                             return false;
                         }
-                        isSuccess = mappingDataMananger.createMapping((MappableNode) sourceNode, (MappableNode) targetNode);                        
+                        isSuccess = mappingDataMananger.createMapping((MappableNode) sourceNode, (MappableNode) targetNode);
                         //System.out.println("SdtmDropTransferHandler ------ " + mappingDataMananger.hashCode());
                         if (isSuccess)
                         {
@@ -303,7 +310,7 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
         if (functionOutputPortList.size() == 1)
         {// no need to ask users to
             // select.
-            this.mappingDataMananger.createMapping((MappableNode) functionOutputPortList.get(0), targetNode);            
+            this.mappingDataMananger.createMapping((MappableNode) functionOutputPortList.get(0), targetNode);
         } else if (functionOutputPortList.size() > 1)
         {
             Object choice = JOptionPane.showInputDialog(getParentComponent(), "Select one output paramater of the function to be mapped.", "Select Function Output Parameter", JOptionPane.QUESTION_MESSAGE, null, functionOutputPortList.toArray(), functionOutputPortList.get(0));

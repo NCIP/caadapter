@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -92,13 +99,13 @@ public class MapLinkValidator extends Validator {
         else if((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta)
 				&& (target instanceof gov.nih.nci.caadapter.hl7.datatype.Attribute))
 		{
-			//Do not allowed map from a CSV field to Datatype field 
+			//Do not allowed map from a CSV field to Datatype field
 			//if that field is treated as an MIFAttribute(complex type)
 			Attribute dtAttr=(Attribute)target;
 			//"inlineText" filed dose not have a reference datatype
 			if (dtAttr.getReferenceDatatype()!=null&&!dtAttr.getReferenceDatatype().isSimple())
 				foundError=true;
-			//a valid map between a csv field and MIF datatype attribute 
+			//a valid map between a csv field and MIF datatype attribute
 			//only if the referenced datatype is simple or "inlineText(null)" .
 		}
 		else if ((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta)
@@ -114,7 +121,7 @@ public class MapLinkValidator extends Validator {
 		else if ((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta)
 				&& (target instanceof  gov.nih.nci.caadapter.hl7.datatype.Attribute))
 		{
-			//Allow map from a CSV segment to a Datatype field 
+			//Allow map from a CSV segment to a Datatype field
 			//only  if that field is treated as an MIFAttribute (complex)
 			Attribute dtAttr=(Attribute)target;
 			//"inlineText" Attribute dose not have a referenced datatype
@@ -135,7 +142,7 @@ public class MapLinkValidator extends Validator {
 		}
 		else
 			foundError=true;
-		
+
 		if (foundError)
 		{
 			//an invalid map - create an error.

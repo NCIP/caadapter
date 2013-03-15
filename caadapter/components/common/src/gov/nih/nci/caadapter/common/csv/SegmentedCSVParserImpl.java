@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -373,7 +380,7 @@ public class SegmentedCSVParserImpl {
         return parse(dataString, meta);
     }
 
-    
+
     public static CSVDataResult parse(File dataFile, CSVMeta csvMeta) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
@@ -421,7 +428,7 @@ public class SegmentedCSVParserImpl {
             return csvDataResult;
           }
     }
-    
+
     public static CSVDataResult parse(String[][] data, CSVMeta csvMeta) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
@@ -544,7 +551,7 @@ public class SegmentedCSVParserImpl {
         if (dataFields > metaFields) {
             Message msg = MessageResources.getMessage("CSV3", new Object[]{meta.getName(), dataFields, metaFields});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-        }        
+        }
         //setup the fields.
         ArrayList<CSVField> fields = new ArrayList<CSVField>();
         List<CSVFieldMeta> fieldMeta = meta.getFields();

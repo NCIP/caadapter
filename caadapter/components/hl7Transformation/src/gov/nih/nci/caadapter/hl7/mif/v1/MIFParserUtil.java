@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
@@ -38,7 +45,7 @@ public class MIFParserUtil {
 	{
 		try
         {
-        	InputStream mifIs =Thread.currentThread().getClass().getResourceAsStream("/mif/" + mifFileName); 
+        	InputStream mifIs =Thread.currentThread().getClass().getResourceAsStream("/mif/" + mifFileName);
         	//this.getClass().getResourceAsStream("/mif/" + mifFileName);
         	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         	DocumentBuilder db = dbf.newDocumentBuilder();
@@ -66,7 +73,7 @@ public class MIFParserUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-   
+
 		return null;
 	}
 	public static MIFClass getMIFClass(String mifFileName)
@@ -111,7 +118,7 @@ public class MIFParserUtil {
 //			msgType=msgType.substring(0, msgType.indexOf("UV"));
 //		else if (msgType.indexOf(".mif")>-1)
 //			msgType=msgType.substring(0, msgType.indexOf(".mif"));
-//					
+//
 //		MIFClass rtnClass=mifParser.getMIFClass();
 //		rtnClass.setMessageType(msgType);
 //		MIFReferenceResolver refResolver=new MIFReferenceResolver();
@@ -120,7 +127,7 @@ public class MIFParserUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public static Hashtable<String, String> getDocumentElementAttributes( Node docNode )
@@ -128,9 +135,9 @@ public class MIFParserUtil {
 		Hashtable<String, String> rtnHash=new Hashtable<String, String>();
 		if (docNode==null)
 			return rtnHash;
-			
+
 		NamedNodeMap attrMap=docNode.getAttributes();
-		if (attrMap != null) 
+		if (attrMap != null)
 		{
 			for (int i=0;i<attrMap.getLength();i++)
 			{

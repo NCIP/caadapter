@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.mms.validator;
@@ -56,12 +63,12 @@ public class ManyToManyMappingValidator {
 		}
 		return asssociationEndMutltiplicityIsCorrect;
 	}
-	
+
 	/**
 	 * This method determines if the multiplicity of the association role being mapped
 	 * is greater than one which it would need to be to qualify as an end of a many to many relationship.
-	 */	
-	
+	 */
+
 	public boolean otherAssociationEndMultiplicityIsCorrect(){
 		boolean otherAssociationEndMultiplicityIsCorrect = false;
 		if (associationMapping.getOtherAssociationEndMetadata().getMultiplicity() == -1) {
@@ -69,7 +76,7 @@ public class ManyToManyMappingValidator {
 		}
 		return otherAssociationEndMultiplicityIsCorrect;
 	}
-	
+
 	/**
 	 * This method determines if the parent object of association role being mapped
 	 * has itself been mapped to a target table.
@@ -81,10 +88,10 @@ public class ManyToManyMappingValidator {
 		try {
 			cumulativeMapping = CumulativeMapping.getInstance();
 		} catch (Exception e) {
-			
+
 		}
 		List dependencyMappings = cumulativeMapping.getDependencyMappings();
-		
+
 		Iterator i = dependencyMappings.iterator();
 		while (i.hasNext()) {
 			try {
@@ -99,8 +106,8 @@ public class ManyToManyMappingValidator {
 		}
 		return associationEndObjectDependencyMapped;
 	}
-	
-	
+
+
 	   /**
      * This method verifies that the terminating end of an association has been
      * mapped to a database table
@@ -114,7 +121,7 @@ public class ManyToManyMappingValidator {
 		try {
 			cumulativeMapping = CumulativeMapping.getInstance();
 		} catch (Exception e) {
-			
+
 		}
 		List dependencyMappings = cumulativeMapping.getDependencyMappings();
 		Iterator i = dependencyMappings.iterator();
@@ -131,19 +138,19 @@ public class ManyToManyMappingValidator {
 		}
 		return otherAssociationEndObjectDependencyMapped;
 	}
-	
+
 	/**
-	 * This method determines if the parent table of the column being mapped is a correlation table.	 
+	 * This method determines if the parent table of the column being mapped is a correlation table.
 	 */
-	
+
 	public boolean selectedTableIsCorrelationTable(){
-		boolean isCorrelationTable = false; 
+		boolean isCorrelationTable = false;
 		if (associationMapping.getThisEndColumn().getTableMetadata().getType().equals("correlation")); {
 			isCorrelationTable = true;
 		}
 		return isCorrelationTable;
 	}
-	
+
 	/**
 	 * This method checks to make sure the selected column has not been mapped before.
 	 */
@@ -153,8 +160,8 @@ public class ManyToManyMappingValidator {
 			if (att.getColumnMetadata().getName().equals(associationMapping.getThisEndColumn().getName())) {
 				isAlreadyMapped = true;
 			}
-		}		
-		return isAlreadyMapped;	
+		}
+		return isAlreadyMapped;
 	}
 	/**
 	 * This method returns the reason for the invalidation
@@ -174,7 +181,7 @@ public class ManyToManyMappingValidator {
 	 * This method calls all the specific business rule verification checks for a many
 	 * to many mapping relationship.
 	 */
-	
+
 	public boolean isValid(){
 		boolean isValidMapping = true;
 
@@ -199,7 +206,7 @@ public class ManyToManyMappingValidator {
 		if (isValidMapping && selectedTableIsCorrelationTable()){
 			this.validationErrorMessage = "The parent table of the column selected has not been annotated as a correlation table.";
 		}
-		
+
 		if (isValidMapping && selectedColumnAlreadyMapped()) {
 			this.validationErrorMessage = "The target column selected has already been mapped.";
 		}
@@ -211,7 +218,7 @@ public class ManyToManyMappingValidator {
 	      	int end = childString.lastIndexOf(".");
 	    	parentPath = childString.substring(0,end);
 	    	return parentPath;
-	    	
+
 	    }
 }
-	
+

@@ -1,11 +1,18 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /*
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+
+
+
+
 * <!-- LICENSE_TEXT_END -->
  */
- 
+
 package gov.nih.nci.caadapter.hl7.v2v3.v2gene;
 
 import gov.nih.nci.caadapter.common.function.DateFunction;
@@ -116,7 +123,7 @@ public class TempV2FromCSV
                 boolean cTag = false;
                 for(int i=0;i<csvData.length;i++) if (!((csvData[i]==null)||(csvData[i].trim().equals("")))) cTag = true;
                 if (!cTag) continue;
-                
+
                 n++;
                 String lineNum = "" + n;
                 while(lineNum.length() < 6) lineNum = "0" + lineNum;
@@ -178,7 +185,7 @@ public class TempV2FromCSV
                     }
                     catch(IOException ie)
                     {
-                        
+
                     }
 
                 }

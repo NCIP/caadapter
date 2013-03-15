@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.mapping.V2V3.actions;
 
@@ -34,7 +41,7 @@ import java.util.ArrayList;
  */
 public class V2V3MapAction extends AbstractContextAction  {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -80,7 +87,7 @@ public class V2V3MapAction extends AbstractContextAction  {
     /**
          * The abstract function that descendant classes must be overridden to
          * provide customsized handling.
-         * 
+         *
          * @param e
          * @return true if the action is finished successfully; otherwise,
          *         return false.
@@ -147,7 +154,7 @@ public class V2V3MapAction extends AbstractContextAction  {
 
     /**
          * Return the associated UI component.
-         * 
+         *
          * @return the associated UI component.
          */
     protected Component getAssociatedUIComponent() {

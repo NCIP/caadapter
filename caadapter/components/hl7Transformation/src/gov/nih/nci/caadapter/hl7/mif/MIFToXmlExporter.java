@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.mif;
 
@@ -56,7 +63,7 @@ public class MIFToXmlExporter {
          methodToBeIngored.add("findIsAbstract");
          methodToBeIngored.add("findIsMultiple");
          methodToBeIngored.add("findIsRerence");
-         
+
 	}
 	/**
 	 * Constructor with a MIFClass object for exporting
@@ -69,7 +76,7 @@ public class MIFToXmlExporter {
 		rootElm.setName(tbExported.getName());
 		mifDoc.setRootElement(rootElm);
 	}
-	
+
 	/**
 	 * Exoport the given MIFClass object into a XML file
 	 * @param fileName -- name of the exported XML file
@@ -113,7 +120,7 @@ public class MIFToXmlExporter {
 		setPrimaryAttributes(tbBuilt, rtnElm);
 		//set packageLocation
 		Hashtable<String, String> packageLocation=tbBuilt.getPackageLocation();
-		if (packageLocation!=null)	
+		if (packageLocation!=null)
 		{
 			Element packageLocationElm=new Element("packageLocation");
 			Enumeration pKeys=packageLocation.keys();
@@ -124,13 +131,13 @@ public class MIFToXmlExporter {
 				if (packageAttrName.indexOf("xmlns")>-1)
 				{
 					packageLocationElm.setNamespace(Namespace.getNamespace("mif",packageAttrValue));
-					 
+
 				}
 				else
-					packageLocationElm.setAttribute(packageAttrName,packageAttrValue);		
+					packageLocationElm.setAttribute(packageAttrName,packageAttrValue);
 			System.out.println("MIFToXmlExporter.buildMIFClassElement()..add attribute:"+ packageAttrName+"="+packageLocation.get(packageAttrName));
 			}
-			 
+
 			rtnElm.addContent(packageLocationElm);
 		}
 		//add MIFAttibute
@@ -158,13 +165,13 @@ public class MIFToXmlExporter {
 		{
 			choiceElm.addContent(buildMIFClassElement(choice));
 		}
-		
+
 		//add the choic elemnt only if necessary
 		if (choiceElm.getChildren().size()>0)
 			rtnElm.addContent(choiceElm);
 		return rtnElm;
 	}
-	
+
 	/**
 	 * Build an XML element with a MIFAssociation object
 	 * @param tbBuilt
@@ -208,7 +215,7 @@ public class MIFToXmlExporter {
 		{
 			dtElm=buildDatatype(dt);
 			rtnElm.addContent(dtElm);
-			//there is a concrete data type for 
+			//there is a concrete data type for
 			//the MIFAttribute with Abstract type
 			if (tbBuilt.getConcreteDatatype()!=null)
 			{
@@ -217,7 +224,7 @@ public class MIFToXmlExporter {
 		}
 		else
 			Log.logInfo(this,"Datatype is not defined for MIFAttribute:"+tbBuilt.getXmlPath());
-		
+
 		return rtnElm;
 	}
 	/**
@@ -247,7 +254,7 @@ public class MIFToXmlExporter {
 		}
 		return rtnElm;
 	}
-	
+
 	private Element buildDatatypeAttribute(Attribute tbBuilt) throws Exception
 	{
 		Element rtnElm=new Element("dataField");
@@ -259,16 +266,16 @@ public class MIFToXmlExporter {
 			rtnElm.addContent(buildDatatype(refDatatype));
 		return rtnElm;
 	}
-	
+
 /**
- * Parser the properties of an object and set them as the attributes 
+ * Parser the properties of an object and set them as the attributes
  * the target XML element using java.reflection
  * @param o
  * @param elmt
  */
 	private void setPrimaryAttributes(Object o, Element elmt)
 	{
-	    try {           
+	    try {
             Class c = o.getClass();
             Method m[] = c.getDeclaredMethods();
             for (int i = 0; i < m.length; i++)
@@ -281,7 +288,7 @@ public class MIFToXmlExporter {
             		continue;
             	//build attributeName
             	if (mthRtnType.equals("String")||mthRtnType.equals("int"))
-            	{   //ognore toString() method      		
+            	{   //ognore toString() method
             		xmlAttrName=mthdName.substring(3,4).toLowerCase()+ mthdName.substring(4); //remove "get"
             	}
             	else if (mthRtnType.equals("boolean"))
@@ -291,7 +298,7 @@ public class MIFToXmlExporter {
 
             	if (xmlAttrName.equals(""))
             		continue;
-            	
+
 	            try{
 	            	invlkMthd=c.getMethod(mthdName,new Class[0]);
 	            	Object valueObj=invlkMthd.invoke(o,new Object[0]);
@@ -301,7 +308,7 @@ public class MIFToXmlExporter {
             	{
 //		                		nm.printStackTrace();
             	}
-         	} 
+         	}
          }
          catch (Throwable e) {
             System.err.println(e);

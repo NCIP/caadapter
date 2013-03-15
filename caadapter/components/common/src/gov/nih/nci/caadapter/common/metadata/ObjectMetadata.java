@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.common.metadata;
@@ -42,7 +49,7 @@ public class ObjectMetadata extends MetaObjectImpl implements SDKMetaData{
 	 * object if one exists.
 	 */
 	private ObjectMetadata parentObject;
-	
+
 	/**
 	 * This attribute indicates the location of the object within the source model xmi file
 	 */
@@ -221,11 +228,11 @@ public class ObjectMetadata extends MetaObjectImpl implements SDKMetaData{
 	public void setName(String name){
 		this.name = name;
 	}
-	
+
 	public String toString() {
 		return getName();
 	}
-	
+
 	public String getTitle() {
 		return getName();
 	}
@@ -245,7 +252,7 @@ public class ObjectMetadata extends MetaObjectImpl implements SDKMetaData{
 	public void setXPath(String xPath){
 		this.xPath = xPath;
 	}
-	
+
 	String id;
 
 	public String getId() {
@@ -255,7 +262,7 @@ public class ObjectMetadata extends MetaObjectImpl implements SDKMetaData{
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 //	public String getRootId() {
 //		ModelMetadata myModel = ModelMetadata.getInstance();
 //		HashMap myMap = myModel.getInheritanceMetadata();
@@ -269,7 +276,7 @@ public class ObjectMetadata extends MetaObjectImpl implements SDKMetaData{
 //		return (String)objectMap.get(root);
 //		}
 //	}
-//	
+//
 	private UMLClass umlClass;
 
 	/**
@@ -285,5 +292,5 @@ public class ObjectMetadata extends MetaObjectImpl implements SDKMetaData{
 	public void setUmlClass(UMLClass umlClass) {
 		this.umlClass = umlClass;
 	}
-	
+
 }

@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.common.csv;
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -37,7 +44,7 @@ public class CsvReader {
 	public CsvReader(InputStream data, CSVMeta meta) throws IOException
 	{
 		this.dataStream = data;
-		this.csvMeta = meta; 
+		this.csvMeta = meta;
 		this.rootName = csvMeta.getRootSegment().getName();
 		lRd =new LineNumberReader(new InputStreamReader(dataStream));
 		this.readCount = 0;
@@ -85,7 +92,7 @@ public class CsvReader {
 				list.add(nextSegment);
 		}
 		String[][] record=new String[list.size()][];
-		
+
 		for (int i=0;i<list.size();i++)
 		{
 			record[i]=list.get(i);
@@ -94,7 +101,7 @@ public class CsvReader {
 		return SegmentedCSVParserImpl.parse(record, csvMeta);
 	}
 
-	private String[] getNextCsvSegment() throws IOException 
+	private String[] getNextCsvSegment() throws IOException
 	{
 		StringBuffer csvLine = new StringBuffer();
 		boolean isComplete=true;
@@ -118,11 +125,11 @@ public class CsvReader {
 		//System.out.println("read next line:"+Arrays.toString(ret));
 		return ret;
 	}
-	
-	public synchronized void close() throws IOException 
+
+	public synchronized void close() throws IOException
 	{
 		this.hasMoreRecord = false;
 		this.dataStream.close();
 	}
-	
+
 }

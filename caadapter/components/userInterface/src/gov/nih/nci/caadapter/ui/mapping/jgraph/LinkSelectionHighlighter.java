@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -78,7 +85,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
 	private MappingMiddlePanel middlePanel;
-	
+
     //private TestAction testAction;
     private LazyEagerAction lazyEagerAction;
     private PrimaryKeyAction primaryKeyAction;
@@ -86,14 +93,14 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
     private ClobAction clobAction;
     private DiscriminatorAction discriminatorAction;
     private JPopupMenu popupMenu = null;
-    
+
 	private boolean graphInSelection = false;
 	private boolean graphInClearSelectionMode = false;
 	private boolean sourceTreeInSelection = false;
 	private boolean targetTreeInSelection = false;
 
-	//private String selectedNode; 
-	
+	//private String selectedNode;
+
 	public LinkSelectionHighlighter(AbstractMappingPanel mappingPanel, JGraph graph, MappingMiddlePanel middlePanel)
 	{
 		this.middlePanel = middlePanel;
@@ -271,11 +278,11 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		if ((!(object instanceof DefaultGraphCell) && (object instanceof DefaultMutableTreeNode)))
 		{//screen out possible graph cell but just leave pure tree node to be highlighted
-			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;			
+			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;
 			TreePath treePath = new TreePath(treeNode.getPath());
-			
+
 			//System.out.println( "HighlightTreeNodeInTree: " + treePath.toString() );
-			
+
 //			tree.scrollPathToVisible(treePath);
 			tree.setSelectionPath(treePath);
 		}
@@ -308,9 +315,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		TreePath path = e.getPath();
 		Object node = (path==null)? null : path.getLastPathComponent();
 //		Log.logInfo(this, "TreeSelectionSource:'" + (eventSource ==null? "null" : eventSource.getClass().getName()) + "'");
-		
+
 		//System.out.println( "TreeSelectionSource:'" + (eventSource ==null? "null" : eventSource.getClass().getName()) + "'");
-		
+
 		if(graphInSelection || sourceTreeInSelection || targetTreeInSelection)
 		{//if graph is in selection, no need to execute further logic; otherwise, we may run into an indefinite loop.
 //			Log.logInfo(this, "In Graph or tree selection mode, so just ignore.");
@@ -329,15 +336,15 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 				searchMode = MappingViewCommonComponent.SEARCH_BY_SOURCE_NODE;
 				//notify that tree is selection process.
 				//System.out.println( "sourceTreeInSelection is true");
-				sourceTreeInSelection = true;				
-				mappingPanel.getTargetTree().clearSelection();				
+				sourceTreeInSelection = true;
+				mappingPanel.getTargetTree().clearSelection();
 			}
 			else if(eventSource instanceof MappingTargetTree)
 			{
 				searchMode = MappingViewCommonComponent.SEARCH_BY_TARGET_NODE;
 				//notify that tree is selection process.
 				targetTreeInSelection = true;
-				mappingPanel.getSourceTree().clearSelection();	
+				mappingPanel.getSourceTree().clearSelection();
 			}
 
 			graphInClearSelectionMode = true;
@@ -392,33 +399,33 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		// If Right Mouse Button
 		if (SwingUtilities.isRightMouseButton(e))
-		{         						
+		{
 			Container parentC = e.getComponent().getParent();
-			
+
 			while ( !(parentC instanceof JScrollPane))
 			{
 				parentC=parentC.getParent();
 			}
-			
+
 			MappingTreeScrollPane mappingScroll=(MappingTreeScrollPane)parentC;
-			
-			if(mappingScroll.getPaneType().equals(MappingTreeScrollPane.DRAW_NODE_TO_LEFT)) 
+
+			if(mappingScroll.getPaneType().equals(MappingTreeScrollPane.DRAW_NODE_TO_LEFT))
 			{
 				// Create PopupMenu for the Cell
 				JPopupMenu menu = createTargetPopupMenu();
-						
+
 				// Display PopupMenu
 				menu.show(e.getComponent(), e.getX(), e.getY());
 			}
-			
+
 			if(mappingScroll.getPaneType().equals(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT))
 			{
 				// Create PopupMenu for the Cell
 				JPopupMenu menu = createSourcePopupMenu();
-						
+
 				// Display PopupMenu
 				menu.show(e.getComponent(), e.getX(), e.getY());
-			}	
+			}
 		}
 
 		//if mouse clicked, it is definitely not in drag and drop.
@@ -433,7 +440,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             return;
         }
         mappingPanel.setInDragDropMode(false);
-        
+
         if(previousValue)
 		{//previously in drag and drop mode, so to ensure the highlight back up, generate the corresponding tree or graph selection event.
 			Object source = e.getSource();
@@ -442,7 +449,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			//following code tries to trigger the valueChanged() methods above to mimic and restore the "highlight" command
 			if(source instanceof JGraph)
 			{
-				JGraph mGraph = (JGraph) source;			
+				JGraph mGraph = (JGraph) source;
 				mGraph.setSelectionCells(mGraph.getSelectionCells());
 //				GraphSelectionEvent event = new GraphSelectionEvent(source, new Object[]{}, )
 			}
@@ -468,7 +475,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			}
 		}
 	}
-	
+
 	//
 	// PopupMenu
 	//
@@ -497,7 +504,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 
         primaryKeyAction = new PrimaryKeyAction( mappingPanel, middlePanel, primaryKeyText );
 		discriminatorValueAction = new DiscriminatorValueAction(mappingPanel, middlePanel);
-        
+
         JMenuItem menuItem = new JMenuItem(primaryKeyAction);
 		JMenuItem menuItemDiscriminator = new JMenuItem(discriminatorValueAction);
 
@@ -507,15 +514,15 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		// Disable PK function if selected node has children
 		primaryKeyAction.setEnabled( false );
 		discriminatorValueAction.setEnabled(false);
-        
+
         //Check to see if anything is selected
 		if( sourceTree.getLeadSelectionPath() != null )
 		{
 			leadingPath = sourceTree.getLeadSelectionPath();
-			
+
 			//TreePath paths[] = sourceTree.getSelectionPaths();
-			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();			
-		
+			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
+
 			if( mutNode.getChildCount() == 0 )
 			{
 				primaryKeyAction.setEnabled( true );
@@ -526,15 +533,15 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             {
                 primaryKeyAction.setEnabled( false );
             }
-            
+
             if (mutNode.getUserObject() instanceof ObjectMetadata) {
-            	
+
             	ObjectMetadata objectMetadata = (ObjectMetadata)mutNode.getUserObject();
 
             	modelMetadata = ModelMetadata.getInstance();
 		    	Hashtable<String, String> discriminatorValues = modelMetadata.getDiscriminatorValues();
 		    	int startpos = modelMetadata.getMmsPrefixObjectModel().length();
-		    	
+
 		    	if (discriminatorValues.get(objectMetadata.getXPath().substring(startpos+1))!= null)
 		    		discriminatorValueAction.setEnabled(true);
             }
@@ -547,20 +554,20 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	protected JPopupMenu createTargetPopupMenu()
 	{
 		JPopupMenu popupMenu = new JPopupMenu();
-		
+
 		String lazyText = "Set as Eager";
         String clobText = "Set as CLOB";
         String discriminatorText = "Set as Discrimator";
 
         //Could change this depending on whether lazy/eager
-    	ModelMetadata modelMetadata = ModelMetadata.getInstance();    	
+    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
     	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
     	HashSet<String> clobKeys = modelMetadata.getClobKeys();
     	HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
 
         JTree targetTree = mappingPanel.getTargetTree();
-		TreePath leadingPath = targetTree.getLeadSelectionPath();														
-		
+		TreePath leadingPath = targetTree.getLeadSelectionPath();
+
 		System.out.println( "Lazy Keys: " + lazyKeys );
 		String lKey = parseNode( leadingPath.toString() );
 		String lazyKey = modelMetadata.getMmsPrefixDataModel() + "." + lKey;
@@ -614,7 +621,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         lazyEagerAction.setEnabled( false );
         clobAction.setEnabled( false );
         discriminatorAction.setEnabled( false );
-        
+
         if(lazyText==null || lazyText.trim().length()==0) {
         	popupMenu.remove(lazyItem);
         	//lazyItem.setEnabled(false);
@@ -625,16 +632,16 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		{
 			leadingPath = targetTree.getLeadSelectionPath();
 			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
-			
-			// Disable PK function if selected node has children		
+
+			// Disable PK function if selected node has children
 			if( mutNode.getChildCount() == 0 )
 			{
 				if (lazyEagerAction !=null) lazyEagerAction.setEnabled( true );
                 clobAction.setEnabled( true );
                 discriminatorAction.setEnabled( true );
             }
-		}		
-	
+		}
+
 		return popupMenu;
 	}
 
@@ -647,15 +654,15 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         //node = replace( node, ")", " " );
         node = replace( node, "Data Model.", "" );
         node = replace( node, "Object Model.", "" );
-        node = node.trim();        
-		return node; 
+        node = node.trim();
+		return node;
 	}
-	
+
     static String replace(String str, String pattern, String replace) {
         int s = 0;
         int e = 0;
         StringBuffer result = new StringBuffer();
-    
+
         while ((e = str.indexOf(pattern, s)) >= 0) {
             result.append(str.substring(s, e));
             result.append(replace);
@@ -664,7 +671,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         result.append(str.substring(s));
         return result.toString();
     }
-    
+
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $

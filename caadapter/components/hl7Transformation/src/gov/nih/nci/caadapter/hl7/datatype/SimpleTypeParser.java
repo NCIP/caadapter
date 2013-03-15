@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.datatype;
 
@@ -15,27 +22,27 @@ import org.w3c.dom.Node;
 
 /**
  * The class will parse a simple HL7 Datatype from the xsd file.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-06-09 19:53:50 $
  */
 
 public class SimpleTypeParser {
-	
+
 	private static HashSet allChild = new HashSet();
 	private static HashSet allWithinChild = new HashSet();
 	private static HashSet allBase = new HashSet();
-	
+
 	/**
 	 * @param node the section of xsd which defines a complex HL7 v3 datatype
 	 * @param prefix the prefix to all xml elements. For example <xs:attribute>
 	 * xs: is the prefix of the element
 	 */
 	public static Datatype parseSimple(Node node, String prefix) {
-		
+
 		Datatype datatype = new Datatype();
-		
+
 		datatype.setSimple(true);
 		datatype.setName(XSDParserUtil.getAttribute(node,"name"));
 
@@ -43,17 +50,17 @@ public class SimpleTypeParser {
 
         while (child != null) {
 
-        	//Parsing child node with type "restriction" 
+        	//Parsing child node with type "restriction"
         	allChild.add(child.getNodeName());
         	if (child.getNodeName().equals(prefix+"restriction")) {
-        		
+
         		String parentType = XSDParserUtil.getAttribute(child, "base");
         		datatype.setParents(parentType);
         		allBase.add(parentType);
         		if (!XSDParserUtil.isXSDType(parentType, prefix)) {
         			//copy attribute
         			//TO DO
-        			
+
         		}
 
         		Node restrictionChild = child.getFirstChild();
@@ -84,21 +91,21 @@ public class SimpleTypeParser {
         	{
         		datatype.setUnions(XSDParserUtil.getAttribute(child, "itemType"));
         	}
-        	
+
             child = child.getNextSibling();
         }
         return datatype;
 	}
 
 	public static void parseSimpleWithinUnion(Node node, String prefix, Datatype datatype) {
-		
+
         Node children = node.getFirstChild();
         while (children != null) {
         	if (children.getNodeName().equals(prefix+"simpleType")) {
                 Node child = children.getFirstChild();
         		while (child != null) {
 
-        			//Parsing child node with type "restriction" 
+        			//Parsing child node with type "restriction"
         			allChild.add(child.getNodeName());
         			if (child.getNodeName().equals(prefix+"restriction")) {
         				Node restrictionChild = child.getFirstChild();

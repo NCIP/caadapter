@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -47,7 +54,7 @@ public class CsvCache {
         long lastmodified = f.lastModified();
 
         // if the file is in the cache && the most current
-        if (returnArray != null && lastmodified == (Long)timestamp.get(filename)) 
+        if (returnArray != null && lastmodified == (Long)timestamp.get(filename))
         {
             // do nothing.
         	return returnArray;
@@ -67,7 +74,7 @@ public class CsvCache {
     public static synchronized String[][] getCsvFromString(String dataString) throws FileNotFoundException, IOException {
         return getCsvFromInputStream(new ByteArrayInputStream(dataString.getBytes()));
     }
-    
+
     /**
      * Read data from a CSV stream and convert it into a String array of Segments and Fields
      * @param dataStream
@@ -90,7 +97,7 @@ public class CsvCache {
 //    		{
 //    			lValue=readBf.toString();
 //    			readBf=new StringBuffer();
-//		   
+//
 //			   isComplete=isDoubleQuoteClosed(isComplete,lValue);
 //			   if (isComplete)
 //			   {
@@ -102,7 +109,7 @@ public class CsvCache {
 //		    	   lastValue="";
 //		    	   rtnList.add(cParser.getDataFields());
 //			   }
-//			   else 
+//			   else
 //			   {
 //				   if (lastValue.equals(""))
 //		    	   {
@@ -119,18 +126,18 @@ public class CsvCache {
 //    		inChar=inBf.read();
 //    	}
     	LineNumberReader lRd=new LineNumberReader(new InputStreamReader(dataStream));
-       
+
        ArrayList<String[]> rtnList=new ArrayList<String[]>();
        String lValue=lRd.readLine();
        String lastValue="";
        boolean isComplete=true;
-       
+
        while (lValue!=null&&!lValue.trim().equals(""))
        {
     	   //check if this line is a complete new line
     	   if (lValue.indexOf("\r")>-1)
     			   System.out.println("CsvCache.getCsvFromInputStream()..found CR:"+lValue);
-    		   
+
     	   isComplete=isDoubleQuoteClosed(isComplete,lValue);
     	   if (isComplete)
     	   {
@@ -142,7 +149,7 @@ public class CsvCache {
 	    	   lastValue="";
 	    	   rtnList.add(cParser.getDataFields());
     	   }
-    	   else 
+    	   else
     	   {
     		   if (lastValue.equals(""))
 	    	   {
@@ -160,7 +167,7 @@ public class CsvCache {
     	   rtnArray[i]=rtnList.get(i);
        return  rtnArray;
     }
-    
+
     /**
      * 1. If it is within a double quote, there should be ODD number of double-quote
      * 2. If it is not within a double quote, there should be EVEN number of double-quote
@@ -171,7 +178,7 @@ public class CsvCache {
     protected static boolean isDoubleQuoteClosed(boolean searchNewQuote,String newLineContent )
     {
     	if (newLineContent==null||newLineContent.equalsIgnoreCase(""))
-    		return searchNewQuote; 
+    		return searchNewQuote;
     	//there is not any DOUBLE_QUOTE in the string
     	if (!newLineContent.contains("\""))
     		return searchNewQuote;
@@ -183,13 +190,13 @@ public class CsvCache {
     	}
     	return searchNewQuote;
     }
-    
+
     protected static String readLineWithCarriageReturn(InputStream dataStream)
     {
     	StringBuffer rtnSb=new StringBuffer();
-    	
+
     	return rtnSb.toString();
-    	
+
     }
 }
 

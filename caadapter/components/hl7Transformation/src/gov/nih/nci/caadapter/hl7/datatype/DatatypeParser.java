@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
-  * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.datatype;
 
@@ -52,13 +59,13 @@ public class DatatypeParser {
     private String prefix; //prefix for each element
     private Hashtable datatypes = new Hashtable();
     private final int COMPLETE = 1;
-    private final int NONCOMPLETE = 0; 
+    private final int NONCOMPLETE = 0;
     private Hashtable<String, List<String>> datatypeSubclass=new Hashtable<String, List<String>>();
     public Hashtable getDatatypes() {
     	return datatypes;
     }
 	public boolean parse(Node node) {
-	
+
         if (node == null) {
             return true;
         }
@@ -107,27 +114,27 @@ public class DatatypeParser {
 			   Datatype uDT = ((Datatype)datatypes.get(union));
 			   if (uDT!=null)
 			   {
-				   
+
 				   if (uDT.getPatterns().size()>0) {
 					   for(String p:uDT.getPatterns()) {
 						   datatype.addPattern(p);
 					   }
 				   }
-				   
+
 				   for (String enumValue:(HashSet<String>)getEnums(union))
 				   {
 					   datatype.addPredefinedValue(enumValue);
 				   }
 			   }
-			} 
+			}
 		}
-		
+
 	}
 	public void populateDatatypes()
     {
 		Hashtable datatypes_check = new Hashtable();
-		Stack<String> processingStack = new Stack(); 
-		
+		Stack<String> processingStack = new Stack();
+
 		Iterator datatypeCheckIt = datatypes.keySet().iterator();
 		while (datatypeCheckIt.hasNext())
         {
@@ -136,7 +143,7 @@ public class DatatypeParser {
 			if (datatype.isSimple())
             {
 				//Process patterns
-				
+
 //				System.out.println("Unions for:"+datatype.getName()+ " -- unions"+ datatype.getUnions());
 				if (datatype.getUnions()!= null)
 				{
@@ -145,7 +152,7 @@ public class DatatypeParser {
 				}
 				else
                 {
-					datatypes_check.put(datatypeString, COMPLETE);					
+					datatypes_check.put(datatypeString, COMPLETE);
 				}
 
 			}
@@ -161,16 +168,16 @@ public class DatatypeParser {
 				}
 			}
 		}
-		
+
 		Iterator datatypeIt = datatypes.keySet().iterator();
 		while (datatypeIt.hasNext())
         {
 			String datatypeString = (String)datatypeIt.next();
 			Datatype datatype = (Datatype)datatypes.get(datatypeString);
 			if ((Integer)datatypes_check.get(datatypeString) == COMPLETE) continue;
-			
+
 			processingStack.push(datatypeString);
-			
+
 			while (processingStack.size() > 0)
             {
 				boolean restart = false;
@@ -200,14 +207,14 @@ public class DatatypeParser {
 								   currentDatatype.addPattern(p);
 							   }
 						   }
-						   
+
 						   for (String enumValue:(HashSet<String>)uDT.getPredefinedValues())
 						   {
 							   currentDatatype.addPredefinedValue(enumValue);
 						   }
 					   }
 					}
-					if (restart) 
+					if (restart)
 					{
 						restart=false;
 						continue;
@@ -218,7 +225,7 @@ public class DatatypeParser {
 
 					}
 				}
-				else 
+				else
 				{
 					String parentDatatypeString = currentDatatype.getParents();
 					System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
@@ -267,7 +274,7 @@ public class DatatypeParser {
 			}
 		}
 	}
-	
+
 	public void printDatatypes(boolean isSimple, boolean isComplex) {
 		System.out.println("Size"+datatypes.size());
 	    Vector v = new Vector(datatypes.keySet());
@@ -303,11 +310,11 @@ public class DatatypeParser {
 	private HashSet getEnums(String datatypeString) {
 		HashSet enums = new HashSet();
 		Datatype datatype = (Datatype)datatypes.get(datatypeString);
-		if (datatype == null) return enums; 
+		if (datatype == null) return enums;
 		return datatype.getPredefinedValues();
 	}
 	/*
-	 * This method will serialize the datatype objects into a file. 
+	 * This method will serialize the datatype objects into a file.
 	 *
 	 * @param filenNme the name of the file to save all the info
 	 *
@@ -315,12 +322,12 @@ public class DatatypeParser {
 
 	public void saveDatatypes(String fileName) throws Exception {
 		OutputStream os = new FileOutputStream(fileName);
-		ObjectOutputStream oos = new ObjectOutputStream(os); 
+		ObjectOutputStream oos = new ObjectOutputStream(os);
 		oos.writeObject(datatypes);
 		oos.close();
 		os.close();
 	}
-	
+
 	public void loadDatatypes() {
 		try {
 			InputStream is = this.getClass().getResourceAsStream("/datatypes");
@@ -335,21 +342,21 @@ public class DatatypeParser {
 //		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 //  		DocumentBuilder db;
 //		try {
-//			db = dbf.newDocumentBuilder();	
+//			db = dbf.newDocumentBuilder();
 //			InputStream isVoc =getClass().getResourceAsStream("/schemas/coreschemas/voc.xsd");
 //			InputStream isDatatypeBase =getClass().getResourceAsStream("/schemas/coreschemas/datatypes-base.xsd");
 //			InputStream isDatatype =getClass().getResourceAsStream("/schemas/coreschemas/datatypes.xsd");
-//			
+//
 //			Document vocDoc = db.parse(isVoc);
 //			Document baseDoc = db.parse(isDatatypeBase);
-//			Document allDoc = db.parse(isDatatype);	
+//			Document allDoc = db.parse(isDatatype);
 //			handleGTS();
 //			parse(vocDoc);
 //			parse(baseDoc);
 //			parse(allDoc);
 //			populateDatatypes();
 //			populateSubclasses();
-//			
+//
 //		} catch (ParserConfigurationException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
@@ -361,7 +368,7 @@ public class DatatypeParser {
 //			e.printStackTrace();
 //		}
 	}
-	
+
 	public List<String> findSubclassList(String typeName)
 	{
 		return datatypeSubclass.get(typeName);
@@ -377,14 +384,14 @@ public class DatatypeParser {
 		}
 	}
 	private void addDatatypeToSubclassHash(Datatype dType)
-	{	
+	{
 //		System.out.println("DatatypeParser.addDatatypeToSubclassHash()..dataType:"+dType.getName()+"...getParents():"+dType.getParents());
 		String parentName=dType.getParents();
 		if (parentName==null)
 			return;
 		if (dType.isAbstract())
 			return;
-		
+
 		Datatype parentDatatype=(Datatype)datatypes.get(parentName);
 		while (parentDatatype!=null)
 		{
@@ -405,7 +412,7 @@ public class DatatypeParser {
 				break;
 			parentDatatype=(Datatype)datatypes.get(parentName);
 		}
-			 
+
 	}
 
 	public void handleGTS() {
@@ -416,9 +423,9 @@ public class DatatypeParser {
 		datatype.setAbstract(true);
 		datatypes.put("GTS", datatype);
 	}
-	
+
 	public static void main(String argv[]) throws Exception{
-    
+
 /*  		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   		DocumentBuilder db = dbf.newDocumentBuilder();
 
@@ -438,16 +445,16 @@ public class DatatypeParser {
 		datatypeParser.populateDatatypes();
 		//		datatypeParser.printDatatypes(true, false);
 		datatypeParser.printDatatypes(true, false);
-		
+
 		System.out.println(((Datatype)datatypeParser.getDatatypes().get("ActClass")).getPredefinedValues());
-	*/	
+	*/
 //		datatypeParser.saveDatatypes("C:/temp/serializedMIF/resource/datatypes");
 //		datatypeParser.saveDatatypes("C:/temp/datatypes");
-	
+
 		DatatypeParser datatypeParser1 = new DatatypeParser();
 		datatypeParser1.loadDatatypes();
 		System.out.println(((Datatype)datatypeParser1.getDatatypes().get("ActClass")).getPredefinedValues());
 //		datatypeParser1.printDatatypes(true, false);
-		
+
     }
 }

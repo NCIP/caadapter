@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.ui.hl7message.instanceGen;
@@ -489,7 +496,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if (((hl7Default != null)&&(!hl7Default.trim().equals("")))||
             ((userDefault != null)&&(!userDefault.trim().equals("")))) {}//return "";//existsDefaultValue = true;
         else
-        {               
+        {
 //            if (line.endsWith("statusCode"))
 //            {
 //                return line + ".noneX => normal";
@@ -502,7 +509,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 //            {
 //                return line + ".noneX => EVN";
 //            }
-            
+
             if ((line.endsWith("addr"))||(line.endsWith("addr00"))||(line.endsWith("addr01")))
             {
                 return line + ".noneX => 1634 Helperton St., Uniline, MD 20919";
@@ -565,7 +572,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 String[] res = null;
                 if ((!userDefault.equals(""))||(!hl7Default.equals("")))
                 {
-                    if (hl7Default.equals("")) hl7Default = userDefault; 
+                    if (hl7Default.equals("")) hl7Default = userDefault;
                     //res = getVocabularyDomainCode(domainName, hl7Default);
                     res = VocabularyGeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName, hl7Default);
                 }
@@ -628,7 +635,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
                         isCode = true;
                         //System.out.println("CVVV7 : is code true : " + codeItems + " : " + parent.getName() + " : " + field.getName());
-                                           
+
                         //codeItems = new String[] {domainName, odi, "Domain Not Found", "NotFound"};
                         //return line + " => " + "%%Not Found";
                     }
@@ -639,7 +646,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         {
             if (isCode)
             {
-                System.err.println("Un-natural Code setting : " + codeFieldName + " : " + field.getName() + " : " + parent.getName() + " : " + datatype);  
+                System.err.println("Un-natural Code setting : " + codeFieldName + " : " + field.getName() + " : " + parent.getName() + " : " + datatype);
                 isCode = false;
                 codeItems = 0;
             }
@@ -836,7 +843,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         {
             if (block.startsWith("NULL")) return null;
         }
-        
+
         if (checkDataType(datatype, "PN"))
         {
             if (block.equals("PERSON_FAMILY_NAME_LIST"))
@@ -1244,7 +1251,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if (lineArr.length != tailArr.length) return false;
         int index = 0;
         int matchCount = -1;
-        if (tailArr[index].equals("*")) matchCount++; 
+        if (tailArr[index].equals("*")) matchCount++;
         else
         {
             divided = checkStringAndNumberSuffix(lineArr[index]);

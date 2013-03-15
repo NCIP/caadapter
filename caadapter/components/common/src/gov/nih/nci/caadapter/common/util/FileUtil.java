@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -55,7 +62,7 @@ public class FileUtil
             OUTPUT_DIR.mkdir();
         }
     }
-    
+
     public static String getAssociatedFileAbsolutePath(String holderFile, String associatedFile)
     {
     	if(associatedFile.indexOf(File.separator)>-1)
@@ -70,7 +77,7 @@ public class FileUtil
     	String holderParent=holder.getParent();
 
     	String rntPath=holderParent+File.separator+associatedFile;
-    	
+
     	return rntPath;
     }
 /**
@@ -97,7 +104,7 @@ public class FileUtil
     	String associateParent=associted.getParent();
     	if (!holderParent.equals(associateParent))
     		return associatedFile;
-    	
+
     	return associted.getName();
     }
     /**
@@ -124,7 +131,7 @@ public class FileUtil
 
     public static String getCommonDirPath()
     {
-        return getComponentsDirPath() + File.separator + "common"; 
+        return getComponentsDirPath() + File.separator + "common";
     }
 
     public static String getDataViewerDirPath()
@@ -265,7 +272,7 @@ public class FileUtil
 
         //if (v2Loader == null) System.out.println("CCC v3 meta loader (1) : " + resourceFile);
         //else System.out.println("CCC v3 meta loader (2) : " + v2Loader.getPath() + ", " + resourceFile);
-        
+
         if (!resourceFile.equals(""))
         {
             MetaDataLoader loader = null;
@@ -629,7 +636,7 @@ public class FileUtil
         }
         return in1;
     }
-   
+
     /**
      * Delete a lck file from the output directory.  A lck file is a temporary file that is
      * created by the logger.
@@ -956,7 +963,7 @@ public class FileUtil
         byte bt = 0;
 
         boolean started = false;
-        
+
 
         while(true)
         {
@@ -1186,4 +1193,4 @@ public class FileUtil
  * Playing around with CVS keywords / javadoc generation.
  *
  */
- 
+

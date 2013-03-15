@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -80,7 +87,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 	private int currentCount = 1;//count from 1...
 	private int totalNumberOfMessages = 0;
 	private boolean isBatchTransform = false;
-	
+
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
 
@@ -230,7 +237,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     private void setMessageResultList(java.util.List newMessageList)
     {
     	if (newMessageList==null||newMessageList.isEmpty())
-    		return;    		
+    		return;
     	initializeMessageList();
     	for(Object oneMsg:newMessageList)
     	{
@@ -239,7 +246,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     	currentCount = 1;
 		changeDisplay();
 	}
-    
+
     public boolean setSaveFile(File saveFile, boolean refresh) throws Exception
     {
     	System.out.println("HL7MessagePanel.setSaveFile()..refresh:"+refresh);
@@ -286,9 +293,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
             currentCount--;
         else if (NEXT_ITEM.equals(command))
             currentCount++;
-        else 
+        else
         	return;
-        
+
         changeDisplay();
     }
 
@@ -339,7 +346,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					{
 						public void run()
 						{
-							
+
 					    	try {
 					    		int count = 0;
 					    		List<XMLElement> xmlElements = null;
@@ -356,7 +363,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 								}
 								else
 								{
-									
+
 									if(count>0){
 										listnerPane.totalNumberOfMessages = count;
 										listnerPane.currentCount = 1;
@@ -376,7 +383,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 								progressor.close();
 							}
 						}
-					}				
+					}
 				);
 				localThread.start();
 				this.setChanged(!this.isBatchTransform);
@@ -479,7 +486,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			
+
 		}
 		else
 		{//just clean up
@@ -530,12 +537,12 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				action = new gov.nih.nci.caadapter.ui.hl7message.actions.CloseHL7V3MessageAction(this);
 				contextManager.addClientMenuAction(MenuConstants.HL7_V3_MESSAGE, MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
 				action.setEnabled(true);
-				
+
 				actionMap = contextManager.getClientMenuActions(MenuConstants.HL7_V3_MESSAGE, menu_name);
-//		}		
+//		}
 		return actionMap;
 	}
-	
+
 /*	public Map getMenuItems_save(String menu_name)
     {
 //		if (menuMap == null)

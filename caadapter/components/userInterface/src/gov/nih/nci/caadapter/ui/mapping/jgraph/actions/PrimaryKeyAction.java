@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -28,23 +35,23 @@ import javax.swing.tree.*;
 public class PrimaryKeyAction extends AbstractContextAction
 {
 	private static final String COMMAND_NAME = "Make Primary Key";
-	
+
 	private static final String LOGID = "$RCSfile: PrimaryKeyAction.java,v $";
 	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.8 2008-06-09 19:54:06 phadkes Exp $";
-	
+
 	private static final Character COMMAND_MNEMONIC = new Character('P');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
 
     public String contextText = "Set as Primary Key";
     private AbstractMappingPanel absMappingPanel;
 	private MappingMiddlePanel middlePanel;
-	
+
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
 	public PrimaryKeyAction(AbstractMappingPanel abstractPanel, MappingMiddlePanel midPanel, String superText)
-	{	
+	{
 		super(superText, null);
         contextText = superText;
         this.absMappingPanel = abstractPanel;
@@ -52,12 +59,12 @@ public class PrimaryKeyAction extends AbstractContextAction
 		setMnemonic(COMMAND_MNEMONIC);
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
 	}
-	
+
     static String replace(String str, String pattern, String replace) {
         int s = 0;
         int e = 0;
         StringBuffer result = new StringBuffer();
-    
+
         while ((e = str.indexOf(pattern, s)) >= 0) {
             result.append(str.substring(s, e));
             result.append(replace);
@@ -66,7 +73,7 @@ public class PrimaryKeyAction extends AbstractContextAction
         result.append(str.substring(s));
         return result.toString();
     }
-    
+
 	/**
 	 * The abstract function that descendant classes must be overridden to provide customsized handling.
 	 *
@@ -80,7 +87,7 @@ public class PrimaryKeyAction extends AbstractContextAction
             int userChoice = JOptionPane.showConfirmDialog(middlePanel,
                     "Make this a Primary Key?", "Question",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		
+
             if (userChoice == JOptionPane.YES_OPTION)
             {
                 try {
@@ -141,7 +148,7 @@ public class PrimaryKeyAction extends AbstractContextAction
   			    try {
 			    	JTree sourceTree = absMappingPanel.getSourceTree();
 			    	TreePath leadingPath = sourceTree.getLeadSelectionPath();
-                      
+
                     ModelMetadata modelMetadata = ModelMetadata.getInstance();
 			    	HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
 
@@ -158,10 +165,10 @@ public class PrimaryKeyAction extends AbstractContextAction
 			    }
             }
         }
-        
+
         return isSuccessfullyPerformed();
 	}
-	
+
 	public String parseNode( String node )
 	{
 		node = replace( node, ", ", "." );
@@ -175,34 +182,34 @@ public class PrimaryKeyAction extends AbstractContextAction
 //        //index of out range problem!
 //        String substr = node.substring( start, end + 1 );
 //        node = replace( node, substr, " " );
-        
-        node = replace( node, "Object Model.", "" ); 
-        
+
+        node = replace( node, "Object Model.", "" );
+
         node = node.trim();
-        
-		return node; 
+
+		return node;
 	}
-	
-	public void traverse(JTree tree) 
-	{ 
+
+	public void traverse(JTree tree)
+	{
 	   TreeModel model = tree.getModel();
-	   if (model != null) 
+	   if (model != null)
 	   {
 		      Object root = model.getRoot();
 		      System.out.println(root.toString());
-		      walk(model,root);    
+		      walk(model,root);
 	   }
 	   else
 	   {
 	        System.out.println("Tree is empty.");
 	   }
     }
-		    
+
 	  protected void walk(TreeModel model, Object o)
 	  {
 	    int  cc;
 	    cc = model.getChildCount(o);
-	    for( int i=0; i < cc; i++) 
+	    for( int i=0; i < cc; i++)
 	    {
 	      Object child = model.getChild(o, i );
 	      if (model.isLeaf(child))
@@ -211,14 +218,14 @@ public class PrimaryKeyAction extends AbstractContextAction
 	      }
 	      else {
 	        System.out.print(child.toString()+"--");
-	        walk(model,child ); 
+	        walk(model,child );
 	        }
 	     }
 	  }
-	  
+
 	protected Component getAssociatedUIComponent()
 	{
-		return middlePanel;	
+		return middlePanel;
 	}
 
     	/**

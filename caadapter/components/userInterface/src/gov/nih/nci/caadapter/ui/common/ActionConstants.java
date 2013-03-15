@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -37,7 +44,7 @@ public interface ActionConstants
 	String NEW_HSM_FILE = "New " + NEW_HSM_FILE_TXT;
 	String NEW_O2DB_MAP_FILE = "Object Model to Data Model Map Specification";
 	String NEW_CSV2XMI_MAP_FILE = "New Csv Meta To Xmi Mapping";
-    String NEW_XSD2XMI_MAP_FILE = "New Xsd To Xmi Mapping (GME)";   
+    String NEW_XSD2XMI_MAP_FILE = "New Xsd To Xmi Mapping (GME)";
 
     String OPEN_MAP_FILE_TXT = NEW_MAP_FILE_TXT;
 	String OPEN_MAP_FILE = "Open HL7 v2 to HL7 v3 " + OPEN_MAP_FILE_TXT;

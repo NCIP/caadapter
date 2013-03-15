@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.hl7.transformation;
 
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
@@ -39,7 +46,7 @@ public class MapProcssorCSVUtil {
     			}
     		}
     	}
-    	
+
     	if (targetXmlPath.contains(csvSegment.getXmlPath())) {
 			CSVSegment current = csvSegment;
 			ArrayList<CSVSegment> parentHolder = new ArrayList<CSVSegment>();
@@ -52,7 +59,7 @@ public class MapProcssorCSVUtil {
     			{
     				current = csvS;
     				if (current.getChildSegments() == null || current.getChildSegments().size()==0) break;
- 
+
     				for(CSVSegment childSegment:current.getChildSegments()) {
 //  					System.out.println("ChildSegment" + childSegment.getXmlPath());
     					if (childSegment.getXmlPath().equals(targetXmlPath)) {
@@ -98,7 +105,7 @@ public class MapProcssorCSVUtil {
 /*    		}
     	}
     }
-*/  
+*/
         public CSVField findCSVField(CSVSegment csvSegment, String targetXmlPath) {
     	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
 //    	CSVSegment current = csvSegment.getParentSegment();
@@ -128,9 +135,9 @@ public class MapProcssorCSVUtil {
     }
 
     public CSVField findCSVField(List<CSVSegment> csvSegments, String targetXmlPath) {
-    	
+
     	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
-    	
+
     	for (CSVSegment csvSegment: csvSegments) {
         	CSVSegment current = csvSegment.getParentSegment();
     		while (true) {
@@ -145,7 +152,7 @@ public class MapProcssorCSVUtil {
     			}
     		}
     	}
-    	
+
     	return null;
     	// Error should be thrown
     }

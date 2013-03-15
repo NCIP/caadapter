@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -31,7 +38,7 @@ import javax.swing.tree.TreeNode;
 public class XsdTreeNodeLoader extends DefaultNodeLoader
 {
 
-	
+
 	/**
 	 * Based on the given object type, this function will convert the meta-data tree to a TreeNode-based tree structure, whose root is the returned TreeNode.
 	 * @param o the meta-data object
@@ -57,7 +64,7 @@ public class XsdTreeNodeLoader extends DefaultNodeLoader
 			throw new NodeLoader.MetaDataloadException(e.getMessage(), e);
 		}
 	}
-	
+
 	private DefaultMutableTreeNode processXsdMeta(XsdModelMetadata xsdModel)
 	{
 		String projectNameDecoder=java.net.URLDecoder.decode(xsdModel.getProjectNamespace());
@@ -72,11 +79,11 @@ public class XsdTreeNodeLoader extends DefaultNodeLoader
 	    	DefaultMutableTreeNode clsNode=buildObjectMetadataNode(objMeta);
 	    	String clsPackagePath=objMeta.getXPath();
 	    	addObjectMetadataNodeWithPackage( gmeNode,clsNode, clsPackagePath );
-	    	 
+
 	    }
 		return gmeNode;
 	}
-	
+
 	/**
 	 * recursive add an objectMetadata tree node into the root root
 	 * @param parentNode

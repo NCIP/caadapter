@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -103,14 +110,14 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
-		System.out.println("ValidateCsvToXmiMapAction.doAction()");		
+		System.out.println("ValidateCsvToXmiMapAction.doAction()");
         //generate mapping report:
 		CsvToXmiMappingPanel mappingPanel=(CsvToXmiMappingPanel)parentPanel;
         MappingBaseTree mappingBaseTree=(MappingBaseTree)mappingPanel.getSourceTree();
 
         CsvToXmiMappingReportPanel mpReportPane = mappingPanel.getReportPanel();
         boolean createNewReport=false;
-        
+
         if (mpReportPane==null)
         {
         	createNewReport=true;
@@ -119,7 +126,7 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
         	createNewReport=true;
         JFrame holderFrame=findHolderFrame(parentPanel);
 		AbstractMainFrame mainFrame= (AbstractMainFrame)holderFrame;
-		
+
         if (createNewReport)
         {
         	mpReportPane=new CsvToXmiMappingReportPanel();
@@ -138,8 +145,8 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
         	//bring the report pane to front
         	mainFrame.getTabbedPane().setSelectedComponent(mpReportPane);
         }
-        
-		
+
+
 		return true;
 	}
 
@@ -161,5 +168,5 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
 	{
 		return parentPanel;
 	}
-	
+
 }

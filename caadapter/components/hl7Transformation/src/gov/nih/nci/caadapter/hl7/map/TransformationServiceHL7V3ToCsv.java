@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.hl7.map;
 
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -29,28 +36,28 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class TransformationServiceHL7V3ToCsv  {
-	
+
 	private File mapFile = null;
 	private File sourceFile = null;
-  
+
 	public TransformationServiceHL7V3ToCsv(String sourceFileName, String mapFileName)
 	{
-		this(new File( sourceFileName ),new File(mapFileName));		
+		this(new File( sourceFileName ),new File(mapFileName));
 	}
-	
+
 	public TransformationServiceHL7V3ToCsv(File source , File map )
 	{
 		sourceFile=source;
 		mapFile=map;
 	}
- 
-	public List<TransformationResult> process() 
+
+	public List<TransformationResult> process()
 	{
 		List<TransformationResult> transformationResults = new ArrayList<TransformationResult>();
-		try {	    			
+		try {
 			SAXParser saxParser=SAXParserFactory.newInstance().newSAXParser();
 			HL7V3SaxContentHandler saxContentHandler= new HL7V3SaxContentHandler();
-	    	    	
+
 	        MapParser mapParser = new MapParser();
 	        Hashtable mappings = mapParser.processOpenMapFile(mapFile);
 	        saxContentHandler.setLinkMapping(mappings);
@@ -62,7 +69,7 @@ public class TransformationServiceHL7V3ToCsv  {
 	        	transformationResults.add(new TransformationResult(msg,mappingValidatorResults ));
 	        	return transformationResults;
 	        }
-	        
+
 	        String fullCsvfilepath = FileUtil.filenameLocate(mapFile.getParent(), mapParser.getSCSFilename());
 	        FileReader fileReader = new FileReader(new File(fullCsvfilepath));
             CSVMetaParserImpl csvParser = new CSVMetaParserImpl();
@@ -76,7 +83,7 @@ public class TransformationServiceHL7V3ToCsv  {
 	        	return transformationResults;
             }
             saxContentHandler.setCsvMeta(csvMetaResult.getCsvMeta());
-            
+
 			saxParser.parse(new InputSource(new FileReader(sourceFile)), saxContentHandler);
 			String msgGenerated=saxContentHandler.getCsvDataWrapper().toString();
 			if (!saxContentHandler.getParseDocumentResults().isValid())
@@ -85,7 +92,7 @@ public class TransformationServiceHL7V3ToCsv  {
 	        	transformationResults.add(new TransformationResult(msg,saxContentHandler.getParseDocumentResults()));
 	        	return transformationResults;
 	        }
-			
+
 			ValidatorResults prcValidatorResults=saxContentHandler.getParseDocumentResults();
 			prcValidatorResults.addValidatorResults(csvMetaResult.getValidatorResults());
 			prcValidatorResults.addValidatorResults(mappingValidatorResults);
@@ -109,7 +116,7 @@ public class TransformationServiceHL7V3ToCsv  {
 		}
 		return transformationResults;
 	}
-	
+
 	/**
 	 * @param args
 	 */
@@ -123,5 +130,5 @@ public class TransformationServiceHL7V3ToCsv  {
 		TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(mapFileName,fName);
 		svc.process();
 	}
-	
+
 }

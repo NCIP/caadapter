@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.hl7.transformation;
 
 import gov.nih.nci.caadapter.common.Message;
@@ -39,11 +46,11 @@ import java.util.Set;
  */
 public class DatatypeProcessor {
 	/**
-	 * This method will generate a default of HL7 v3 message objects 
-	 * 
+	 * This method will generate a default of HL7 v3 message objects
+	 *
 	 * @param datatype the Datatype that will be processed
 	 * @parentXPath parent xmlpath to the current datatype, will be used to determine the xmlpath for attributes of the datatype
-	 * @xmlName the name that will used to determine the name of XMLElement 
+	 * @xmlName the name that will used to determine the name of XMLElement
 	 */
 	MapProcssorCSVUtil csvUtil = new MapProcssorCSVUtil();
     private Hashtable<String, FunctionComponent> functions = new Hashtable<String, FunctionComponent>();
@@ -54,7 +61,7 @@ public class DatatypeProcessor {
     	this.functions = functions;
     	this.mappings = mappings;
     }
-    
+
     public XMLElement process_default_datatype(Datatype datatype,  String parentXPath, String xmlName, MutableFlag hasUserdata) throws MappingException ,FunctionException{
 
     	XMLElement xmlElement = new XMLElement();
@@ -93,35 +100,35 @@ public class DatatypeProcessor {
 //    	if (xmlElement.getChildren().size()!=0) return xmlElement;
 //    	return null;
     	return xmlElement;
-    }    	
+    }
 
     /**
-	 * This method will process a datatype object and generate a list of HL7 v3 message objects 
-	 * 
+	 * This method will process a datatype object and generate a list of HL7 v3 message objects
+	 *
 	 * @param datatype the Datatype that will be processed
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
 	 * 		  and data for all child Datatypes
 	 * @parentXPath parent xmlpath to the current datatype, will be used to determine the xmlpath for attributes of the datatype
-	 * @xmlName the name that will used to determine the name of XMLElement 
+	 * @xmlName the name that will used to determine the name of XMLElement
 	 */
     public List<XMLElement> process_datatype(Datatype datatype, CSVSegment pCsvSegment, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
-    	
+
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
     	if (datatype.getCsvSegments() == null)return NullXMLElement.NULL;
     	if (datatype.getCsvSegments().size()==0) return NullXMLElement.NULL;
 
     	//Scenario 1: Inputs are from different siblings
-    	if (datatype.getCsvSegments().size() > 1) {    		
+    	if (datatype.getCsvSegments().size() > 1) {
     		List<List<CSVSegment>> allListsCSVSegments = new ArrayList<List<CSVSegment>>();
-    		
+
     		for (String csvS:datatype.getCsvSegments()) {
     			allListsCSVSegments.add(csvUtil.findCSVSegment(pCsvSegment, csvS));
     		}
-    		
+
     		List <CSVSegment> csvSegmentList = new ArrayList<CSVSegment>();
     		List <Integer> csvSegmentIndex = new ArrayList<Integer>();
     		List <Integer> csvSegmentSum = new ArrayList<Integer>();
-    		
+
     		int size = allListsCSVSegments.size();
     		for(int i=0;i<size;i++) {
     			if (allListsCSVSegments.get(i).isEmpty())
@@ -133,7 +140,7 @@ public class DatatypeProcessor {
     			csvSegmentSum.add(allListsCSVSegments.get(i).size());
     			csvSegmentIndex.add(0);
     		}
-    		
+
     		boolean hasMore = true;
     		List<XMLElement> sibXMLElements = new ArrayList<XMLElement>();
     		while (hasMore) {
@@ -180,23 +187,23 @@ public class DatatypeProcessor {
 			}
 			return returnXMLElements;
     	}
-    }    	
-    
+    }
+
 	/**
-	 * This method will process a datatype object and generate a list of HL7 v3 message objects 
-	 * 
+	 * This method will process a datatype object and generate a list of HL7 v3 message objects
+	 *
 	 * @param datatype the Datatype that will be processed
 	 * @param csvSegments CSV segments that determines the root segments that dominate the cardinality
 	 * 		  and data for all child Datatypes
 	 * @parentXPath parent xmlpath to the current datatype, will be used to determine the xmlpath for attributes of the datatype
-	 * @xmlName the name that will used to determine the name of XMLElement 
+	 * @xmlName the name that will used to determine the name of XMLElement
 	 */
     public List<XMLElement> process_datatype(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException {
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
     	if (datatype.getCsvSegments() == null)return NullXMLElement.NULL;
     	if (datatype.getCsvSegments().size()==0) return NullXMLElement.NULL;
     	List<XMLElement> returnValue = new ArrayList<XMLElement>();
-    	
+
 	    MutableFlag mutableFlag = new MutableFlag(false);
 	    MutableFlag mutableFlagDefault = new MutableFlag(true);
 
@@ -214,7 +221,7 @@ public class DatatypeProcessor {
     }
 
     public List<XMLElement> process_datatype_wo_sibling(Datatype datatype, CSVSegment pCsvSegment, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
-    	
+
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
     	String current = datatype.getCsvSegments().get(0);
     	List<CSVSegment> csvSegments = csvUtil.findCSVSegment(pCsvSegment, current);
@@ -241,22 +248,22 @@ public class DatatypeProcessor {
         		}
         		if (isSimple) {
     				String scsXmlPath = mappings.get(parentXPath+"."+attributeName);
-    				if (scsXmlPath==null) 
+    				if (scsXmlPath==null)
     				{
     					//use user's default,not"forceGenerate"
-    					processAttributeDefaultValue(false, attr, xmlElement,attributeName, hasDefaultdata,null,null);	
+    					processAttributeDefaultValue(false, attr, xmlElement,attributeName, hasDefaultdata,null,null);
     					continue;
     				}
     				if (scsXmlPath.startsWith("function.")) { //function mapping to target
     					MutableFlag mutableFlag = new MutableFlag(false);
     					MutableFlag mutableFlagDefault = new MutableFlag(true);
     					String datavalue = getFunctionValue(csvSegment,scsXmlPath,data, mutableFlag, mutableFlagDefault);
-    					if (mutableFlag.hasUserMappedData()) 
+    					if (mutableFlag.hasUserMappedData())
     					{
     						xmlElement.addAttribute(attributeName, datavalue, attr.getType(),null,null);
         					hasUserdata.setHasUserMappedData(true);
     					}
-    					else 
+    					else
     					{
    							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null);
     					}
@@ -267,9 +274,9 @@ public class DatatypeProcessor {
     						CSVField csvField = csvUtil.findCSVField(csvSegment, scsXmlPath);
     						if (csvField != null)
     						{
-    							if (csvField.getValue().equals("")) 
+    							if (csvField.getValue().equals(""))
     							{
-    	   							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null); 
+    	   							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null);
     							}
     							else {
     								xmlElement.setHasUserMappedData(true);
@@ -279,7 +286,7 @@ public class DatatypeProcessor {
     					}
     					else {
     						if (data.get(scsXmlPath).equals("")) {
-	   							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null); 
+	   							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null);
     						}
     						else {
     							xmlElement.setHasUserMappedData(true);
@@ -306,12 +313,12 @@ public class DatatypeProcessor {
     			}
     		}
     		resultList.add(xmlElement);
-    	}   	
+    	}
     	return resultList;
     }
 
     public XMLElement process_datatype_w_sibling(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
-    	
+
 		XMLElement xmlElement = new XMLElement();
 		xmlElement.setName(xmlName);
 
@@ -322,7 +329,7 @@ public class DatatypeProcessor {
     			data.put(csvField.getXmlPath(),csvField.getValue());
     		}
     	}
-		
+
 		Hashtable<String, Attribute> attrs = datatype.getAttributes();
 		for(String attributeName:(Set<String>)(attrs.keySet())) {
 			Attribute attr = attrs.get(attributeName);
@@ -340,20 +347,20 @@ public class DatatypeProcessor {
 				if (scsXmlPath==null)
 				{
 					//use user's default,not"forceGenerate"
-					processAttributeDefaultValue(false, attr, xmlElement,attributeName, hasDefaultdata,null,null);	
+					processAttributeDefaultValue(false, attr, xmlElement,attributeName, hasDefaultdata,null,null);
 					continue;
 				}
-				
+
 				if (scsXmlPath.startsWith("function.")) { //function mapping to target
 					MutableFlag mutableFlag = new MutableFlag(false);
 					MutableFlag mutableFlagDefault = new MutableFlag(true);
 					String datavalue = getFunctionValue(csvSegments,scsXmlPath,data, mutableFlag, mutableFlagDefault);
-					if (mutableFlag.hasUserMappedData()) 
+					if (mutableFlag.hasUserMappedData())
 					{
 						hasUserdata.setHasUserMappedData(true);
 						xmlElement.addAttribute(attributeName, datavalue, attr.getType(),null,null);
 					}
-					else 
+					else
 					{
 						processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null);
 					}
@@ -363,7 +370,7 @@ public class DatatypeProcessor {
 					if (data.get(scsXmlPath) == null) { //inverse relationship
 						CSVField csvField = csvUtil.findCSVField(csvSegments, scsXmlPath);
 						if (csvField.getValue().equals("")) {
-   							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null); 
+   							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null);
 						}
 						else {
 							xmlElement.setHasUserMappedData(true);
@@ -373,7 +380,7 @@ public class DatatypeProcessor {
 					}
 					else {
 						if (data.get(scsXmlPath).equals("")) {
-   							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null); 
+   							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null);
 						}
 						else {
 							xmlElement.setHasUserMappedData(true);
@@ -410,7 +417,7 @@ public class DatatypeProcessor {
     public String getFunctionValue(List<CSVSegment> csvSegments, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException
     {
     	int outputpos = 0;
-    	
+
     	int pos = scsXmlPath.lastIndexOf(".outputs.");
     	outputpos = Integer.valueOf(scsXmlPath.substring(pos+9, scsXmlPath.length()));
     	String fXmlPath = scsXmlPath.substring(0,pos);
@@ -420,7 +427,7 @@ public class DatatypeProcessor {
     		throw new MappingException("count not find function: " + scsXmlPath, null);
 
     	FunctionMeta functionMeta = functionComponent.getMeta();
-    	
+
     	// first, is the function a constant?
     	if (functionMeta.isConstantFunction()) {
     		FunctionConstant fc = functionComponent.getFunctionConstant();
@@ -485,7 +492,7 @@ public class DatatypeProcessor {
 
     	return theValue;
     }
-    public void processAttributeDefaultValue(boolean forceGenerate, Attribute attr, XMLElement xmlElement, String attributeName, MutableFlag hasDefaultData, String domainName, String codingStrength) 
+    public void processAttributeDefaultValue(boolean forceGenerate, Attribute attr, XMLElement xmlElement, String attributeName, MutableFlag hasDefaultData, String domainName, String codingStrength)
     {
     	if (forceGenerate) {
     		if (attr == null) {
@@ -514,7 +521,7 @@ public class DatatypeProcessor {
     		}
     	}
     	else {
-    		if (attr == null) 
+    		if (attr == null)
     		{
     			hasDefaultData.setHasUserMappedData(false);
     			return;

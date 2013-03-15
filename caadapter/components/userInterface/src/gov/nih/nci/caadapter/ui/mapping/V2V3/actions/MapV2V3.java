@@ -1,8 +1,15 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.8 2008-06-09 19:54:05 phadkes Exp $
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.8 2008-06-09 19:54:05 phadkes Exp $
+
+
+
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.ui.mapping.V2V3.actions;
@@ -73,7 +80,7 @@ public class MapV2V3 extends JDialog implements ActionListener {
     AbstractMainFrame callingFrame;
 
     public MapV2V3(AbstractMainFrame _callingFrame) {
-        new NewV2V3GUI(_callingFrame);        
+        new NewV2V3GUI(_callingFrame);
     }
     public MapV2V3(AbstractMainFrame _callingFrame, String deprected) {
         callingFrame = _callingFrame;
@@ -165,7 +172,7 @@ public class MapV2V3 extends JDialog implements ActionListener {
         fileZone1.add(new JLabel());
         //
         //fileZone1.add(_bPanel);
-        //advanced.setPreferredSize(new Dimension(5,2));        
+        //advanced.setPreferredSize(new Dimension(5,2));
         fileZone1.add(advanced);
         fileZone1.add(process);
         fileZone1.add(cancel);

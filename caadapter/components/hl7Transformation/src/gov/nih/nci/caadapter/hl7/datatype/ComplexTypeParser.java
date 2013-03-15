@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.hl7.datatype;
@@ -16,14 +23,14 @@ import org.w3c.dom.Node;
 
 /**
  * The class will parse a complex HL7 Datatype from the xsd file.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2008-06-09 19:53:50 $
  */
 
 public class ComplexTypeParser {
-	
+
 	private static HashSet allChild = new HashSet();
 	private static HashSet allWithinComplexContent = new HashSet();
 	private static HashSet allRestriction = new HashSet();
@@ -37,9 +44,9 @@ public class ComplexTypeParser {
 	 */
 
 	public static Datatype parseComplex(Node node, String prefix) {
-		
+
 		Datatype datatype = new Datatype();
-		
+
 		datatype.setSimple(false);
 		datatype.setName(XSDParserUtil.getAttribute(node,"name"));
 		datatype.setAbstract(false);
@@ -52,7 +59,7 @@ public class ComplexTypeParser {
 
         while (child != null) {
 
-        	//Parsing child node with type "complexContent" 
+        	//Parsing child node with type "complexContent"
         	allChild.add(child.getNodeName());
         	if (child.getNodeName().equals(prefix+"complexContent")) {
         		Node complexContentChild = child.getFirstChild();
@@ -97,7 +104,7 @@ public class ComplexTypeParser {
         	if (child.getNodeName().equals(prefix+"attribute")) {
 				datatype.addAttribute(XSDParserUtil.getAttribute(child, "name"), addAttribute(child, true));
         	}
-        	
+
             child = child.getNextSibling();
         }
         return datatype;
@@ -109,18 +116,18 @@ public class ComplexTypeParser {
 		System.out.println("all nodes within extension node = " + allExtension);
 		System.out.println("all nodes within sequence node = " + allSequence);
 	}
-	
+
 	/*
 	 * processSequence method will parse the <sequence> element within the <restrict> or <extension>
 	 * element.
-	 * 
+	 *
 	 * After reviewing the xsd document, we found all <choice> elements are actually parts of that datatype
 	 */
 	private static void processSequence(Datatype datatype, Node node, String prefix) {
 		Node sequenceChild = node.getFirstChild();
 		while (sequenceChild!= null) {
 			allSequence.add(sequenceChild.getNodeName());
-			
+
 			//choice element with in sequence is dealing with parts
 			if (sequenceChild.getNodeName().equals(prefix+"choice")) {
 				Node choices = sequenceChild.getFirstChild();
@@ -132,33 +139,33 @@ public class ComplexTypeParser {
 				}
 			}
 
-			//element is a variable in a complex type that is defined as another complextype 
+			//element is a variable in a complex type that is defined as another complextype
 			if (sequenceChild.getNodeName().equals(prefix+"element")) {
 				datatype.addAttribute(XSDParserUtil.getAttribute(sequenceChild, "name"), addAttribute(sequenceChild, false));
 			}
 			sequenceChild = sequenceChild.getNextSibling();
 		}
-		
+
 	}
     /*
-     * processInterval will process the timestamp related datatypes. 
-     * 
+     * processInterval will process the timestamp related datatypes.
+     *
      *  The XSD is very complicated for this type but after reviewing the XSD,
      *  it is clear the complication is due the fact that XSD needs to cover all
      *  different scenarios (including missing valus). For use we only need "low", "high", "width" and etc.
-     *  
+     *
      *  Therefore, the interval parser will just extract those attributes and there corresponding datatypes.
      */
 	private static void processInterval(Datatype datatype, Node node, String prefix) {
 		Node lowNode = XSDParserUtil.getFirstChildElement(node);
-		
+
 		Attribute lowAttribute = new Attribute();
 		lowAttribute.setName("low");
 		lowAttribute.setAttribute(false);
 		lowAttribute.setType(XSDParserUtil.getAttribute(XSDParserUtil.getFirstChildElement(lowNode), "type"));
 		lowAttribute.setMax(-1);
 		datatype.addAttribute("low", lowAttribute);
-		
+
 		if (lowNode == null) return;
 		Node highNode = XSDParserUtil.getNextElement(lowNode);
 
@@ -178,7 +185,7 @@ public class ComplexTypeParser {
 		widthAttribute.setType(XSDParserUtil.getAttribute(XSDParserUtil.getFirstChildElement(widthNode), "type"));
 		widthAttribute.setMax(-1);
 		datatype.addAttribute("width", widthAttribute);
-		
+
 		if (widthNode == null) return;
 		Node centerNode = XSDParserUtil.getNextElement(widthNode);
 
@@ -191,8 +198,8 @@ public class ComplexTypeParser {
 	}
 
 	/*
-	 * addAttribute method will parse an <attribute> element and 
-	 * create an Attribute object to be added to the corresponding 
+	 * addAttribute method will parse an <attribute> element and
+	 * create an Attribute object to be added to the corresponding
 	 * datatype object
 	 */
 	private static Attribute addAttribute(Node node, boolean isAttribute) {
@@ -214,12 +221,12 @@ public class ComplexTypeParser {
 		if (XSDParserUtil.getAttribute(node, "default")!= null)
 			attribute.setDefaultValue(XSDParserUtil.getAttribute(node, "default"));
 
-		
+
 		if (XSDParserUtil.getAttribute(node, "minOccurs")!= null)
 			attribute.setMin(Integer.parseInt(XSDParserUtil.getAttribute(node, "minOccurs")));
-		else 
+		else
 			attribute.setMin(-2);
-		
+
 		if (XSDParserUtil.getAttribute(node, "maxOccurs")!= null) {
 			if (XSDParserUtil.isMultiple(node, "maxOccurs"))
 				attribute.setMax(-1);
@@ -227,7 +234,7 @@ public class ComplexTypeParser {
 				attribute.setMax(Integer.parseInt(XSDParserUtil.getAttribute(node, "maxOccurs")));
 			}
 		else {
-			attribute.setMax(-2);							
+			attribute.setMax(-2);
 		}
 		return attribute;
 	}

@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.mapping;
 
@@ -15,13 +22,13 @@ import javax.swing.JComponent;
 public class MappingPanelAdjustmentHandler implements AdjustmentListener {
 
 	private ArrayList <JComponent> observingComponents =new ArrayList<JComponent>();
-	/* 
+	/*
 	 * @see java.awt.event.AdjustmentListener#adjustmentValueChanged(java.awt.event.AdjustmentEvent)
 	 */
-	public void adjustmentValueChanged(AdjustmentEvent arg0) 
+	public void adjustmentValueChanged(AdjustmentEvent arg0)
 	{
 		if (!arg0.getValueIsAdjusting())
-			return;	
+			return;
 		for (JComponent obsrvComp: observingComponents)
 			obsrvComp.repaint();
 	}

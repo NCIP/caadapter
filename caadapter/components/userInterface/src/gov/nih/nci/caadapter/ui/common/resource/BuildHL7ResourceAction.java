@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.common.resource;
 
@@ -28,9 +35,9 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     public static final String COMMAND_BUILD_V2 = "Load HL7 v2 Processable Artifacts";
     public static final String COMMAND_BUILD_V2_CORE ="Load HL7 v2 Core Artifacts";
     public static final String COMMAND_BUILD_V_MESSAGE = "Load HL7 v2 Message Artifacts";
- 
+
     private AbstractMainFrame mainFrame;
-   
+
     private static final String RESOURCE_NAME_V3="resource.zip";
     private static final String RESOURCE_NAME_V2="resourceV2.zip";
 
@@ -62,16 +69,16 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
      *         return false.
      */
     protected boolean doAction(ActionEvent e) throws Exception {
- 
+
     	String resourceName="";
     	if (getName().equals(COMMAND_BUILD_V2))
     		resourceName=RESOURCE_NAME_V2;
     	else if (getName().equals(COMMAND_BUILD_V3))
     		resourceName=RESOURCE_NAME_V3;
-    	
+
     	String resorcePath=BuildResourceUtil.findResourceFile(resourceName);
     	boolean toContinue=false;
-    	
+
     	if (resorcePath==null||resorcePath.equals(""))
     	{
     		toContinue=true;
@@ -82,7 +89,7 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     	else
     	{
     		String msgConfirm="Your resource is found :"+resorcePath+".\nIt will replaced if you continue ?";
-    		
+
     		int userReply=JOptionPane.showConfirmDialog(mainFrame, msgConfirm, getName(),JOptionPane.YES_OPTION);
     		if (userReply==JOptionPane.YES_OPTION)
     			toContinue=true;
@@ -96,11 +103,11 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
 //		        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
     			HL7AuthorizationDialog dialog=	new HL7AuthorizationDialog (mainFrame,"Notice: Loading HL7 V2 Specification"
     					,HL7AuthorizationDialog.HL7_V2_WARNING_CONTEXT_FILE_PATH);
- 
+
     		}
             else if (getName().equals( COMMAND_BUILD_V2_CORE))
     		{
-    			V2MetaBasicInstallDialog dialog = new V2MetaBasicInstallDialog(mainFrame); 
+    			V2MetaBasicInstallDialog dialog = new V2MetaBasicInstallDialog(mainFrame);
     			DefaultSettings.centerWindow(dialog);
     			//dialog.setViewOnly(true);
 		        dialog.setVisible(true);
@@ -205,7 +212,7 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
         */
 
         return true;
-        
+
     }
 
     /**

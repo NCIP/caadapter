@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.mif;
 
@@ -24,7 +31,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 
 /**
  * The class defines attributes of a HL7 Mif class.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision $Revision: 1.18 $ date $Date: 2008-06-09 19:53:50 $
@@ -45,7 +52,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	private int maximumMultiplicity;
 	private int multiplicityIndex=0;
 	private String name;
-	
+
 	private String domainName;
 	private String mnemonic;
 	private String codingStrength;
@@ -138,7 +145,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public int getMaximumMultiplicity() {
 		return maximumMultiplicity;
 	}
-	
+
 	public int getMultiplicityIndex() {
 		return multiplicityIndex;
 	}
@@ -188,14 +195,14 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		this.name = name;
 	}
 	/**
-	 * Build nodeXmlName with node name and multiplicityIndex 
+	 * Build nodeXmlName with node name and multiplicityIndex
 	 * @return
 	 */
 	public String getNodeXmlName()
 	{
 		if (getMaximumMultiplicity()==1)
 			return getName();
-		
+
 		String stB="";
 		if (getMultiplicityIndex()<10)
 			stB="0";
@@ -299,7 +306,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		this.strutural = strutural;
 	}
 	public int compareTo(MIFAttribute attr) {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 		int mySortKey=Integer.valueOf( getSortKey());
 		int myIndex= getMultiplicityIndex();
 		int attrSortKey=Integer.valueOf(attr.getSortKey());
@@ -315,7 +322,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		else if (mySortKey>attrSortKey)
 			rtnValue= 1;
 		else
-			rtnValue= -1;	
+			rtnValue= -1;
 		return rtnValue;
 	}
 	@Override
@@ -328,7 +335,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		// TODO Auto-generated method stub
 		optionChosen=option;
 	}
-	
+
 	public Object clone()
 	{
 		 try {
@@ -337,7 +344,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 				 clonnedObj.setDatatype((Datatype)getDatatype().clone());
 			 if (getConcreteDatatype()!=null)
 				 clonnedObj.setConcreteDatatype((Datatype)getConcreteDatatype().clone());
-			 
+
 			 return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -411,7 +418,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public void setCsvSegment(String csvSegment) {
 		this.csvSegment = csvSegment;
 	}
-	
+
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		// TODO Auto-generated method stub
 		Class beanClass = this.getClass();
@@ -419,7 +426,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		propList.add(new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null));
 		propList.add(new PropertyDescriptor("Name", beanClass, "getNodeXmlName", null));
 		propList.add(new PropertyDescriptor("Type", beanClass, "findTypeProperty", null));
-		
+
 		propList.add(new PropertyDescriptor("Cardinality", beanClass, "findCardinality", null));
 		propList.add(new PropertyDescriptor("isMultiple", beanClass, "findIsMultiple", null));
 		propList.add(new PropertyDescriptor("Mandatory", beanClass, "isMandatory", null));
@@ -434,7 +441,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		propList.add(new PropertyDescriptor("Coding Strength", beanClass, "getCodingStrength", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
-		
+
 		return result;
 	}
 
@@ -452,7 +459,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public String findIsMultiple() {
 		if (this.getMaximumMultiplicity()==1)
 			return "false";
-		
+
 		return "true";
 	}
 
@@ -460,14 +467,14 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		if (getDatatype()!=null
 				&&getDatatype().isAbstract())
 			return "true";
-		
+
 		return "false";
 	}
 	public String findTypeProperty() {
 		// TODO Auto-generated method stub
 		return "Attribute";
 	}
-	
+
 	public String findDomainNameOidProperty() {
 		// TODO Auto-generated method stub
 		String dmName=getDomainName();
@@ -476,7 +483,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		String odiSetting=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
 		if (odiSetting==null||!odiSetting.equalsIgnoreCase("true"))
 			return dmName;
-		
+
 		long sTime=System.currentTimeMillis();
 		String oid="";
 		try {

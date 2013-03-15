@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -1383,7 +1390,7 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
       cont = cont + "</font>";
       contNode.setUserObject(new HelpContentElement("Table of Content", cont));
       HelpContentElement ele = (HelpContentElement) headOfMain.getUserObject();
-      cont = "<img src='images/" + Config.SPLASH_WINDOW_IMAGE_FILENAME + "' width='520' height='390'>";   
+      cont = "<img src='images/" + Config.SPLASH_WINDOW_IMAGE_FILENAME + "' width='520' height='390'>";
       ele.setNodeContent(cont);
       headOfMain.setUserObject(ele);
   }
@@ -2174,7 +2181,7 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
 
       srcP = srcP.replaceAll("<img src='../", "<img src='../components/userInterface/resources/");
       //srcP = srcP.replaceAll("<img src='../", "<img src='jar:file:/C:/projects/caadapter/lib/caAdapter.jar!");
-      //todo change this code to read image file from caadapter.jar file using class loader. 
+      //todo change this code to read image file from caadapter.jar file using class loader.
       //Log.logInfo(this, "G point : "+src+", " + link);
 
       int t = 0;

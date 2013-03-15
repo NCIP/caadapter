@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -167,7 +174,7 @@ public class OpenHL7MessageFrontPage extends JPanel
 	{
 		File tempFile = null;
 		String fileTypeMsg = null;
-		
+
 		//if csv->hl7, validate dest file
 		if(!this.isCSV2HL7 && DEST_FILE_BROWSE_MODE.equals(mode))
 			return true;
@@ -179,14 +186,14 @@ public class OpenHL7MessageFrontPage extends JPanel
     					JOptionPane.ERROR_MESSAGE);
         		return false;
         	}
-        		
+
 //        	if(tempFile.exists()){
 //        		if( JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(this, getDestFile()+" exists, do you want to overwrite it?"))
 //        			return false;
 //        	}
         	return true;
         }
-        		
+
 		if(DATA_FILE_BROWSE_MODE.equals(mode))
 		{
 			tempFile = getDataFile();
@@ -197,7 +204,7 @@ public class OpenHL7MessageFrontPage extends JPanel
 			tempFile = getMapFile();
 			fileTypeMsg = "The map specification ";
 		}
-		
+
 		if (tempFile == null || !tempFile.isFile())
 		{
 			String errorDetail = (tempFile==null) ? "should not be null."
@@ -210,8 +217,8 @@ public class OpenHL7MessageFrontPage extends JPanel
 		{
 			return true;
 		}
-		
-		
+
+
 	}
 
 	/**

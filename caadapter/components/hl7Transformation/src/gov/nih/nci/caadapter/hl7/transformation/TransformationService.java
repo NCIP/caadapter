@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -71,15 +78,15 @@ public class TransformationService
     CSVMeta meta = null;
     MIFClass mifClass = null;
     CsvReader reader = null;
-    
+
     private CSVSegmentedFile csvSegmentedFile = null;
     private ArrayList <TransformationObserver>transformationWatchList;
     ValidatorResults theValidatorResults = new ValidatorResults();
 
 	/**
-	 * This method will create a transformer that loads csv data from a file 
+	 * This method will create a transformer that loads csv data from a file
 	 * and transforms into HL7 v3 messages
-	 * 
+	 *
 	 * @param mapfilename the name of the mapping file
 	 * @param csvfilename the name of the csv file
 	 */
@@ -97,9 +104,9 @@ public class TransformationService
     }
 
 	/**
-	 * This method will create a transformer that loads csv data from a String 
+	 * This method will create a transformer that loads csv data from a String
 	 * and transforms into HL7 v3 messages
-	 * 
+	 *
 	 * @param mapfilename the name of the mapping file
 	 * @param csvString the string that contains csv data
 	 */
@@ -118,9 +125,9 @@ public class TransformationService
     }
 
 	/**
-	 * This method will create a transformer that loads csv data from an inputstream  
+	 * This method will create a transformer that loads csv data from an inputstream
 	 * and transforms into HL7 v3 messages
-	 * 
+	 *
 	 * @param mapfilename the name of the mapping file
 	 * @param csvStream the inputstream that contains csv data
 	 */
@@ -138,9 +145,9 @@ public class TransformationService
     }
 
 	/**
-	 * This method will create a transformer that loads csv data from an Java File object  
+	 * This method will create a transformer that loads csv data from an Java File object
 	 * and transforms into HL7 v3 messages
-	 * 
+	 *
 	 * @param mapfile the Java mapping file object
 	 * @param csvfile the csv file object
 	 */
@@ -160,7 +167,7 @@ public class TransformationService
     	transformationWatchList=new ArrayList<TransformationObserver>();
     }
 
-    
+
     /**
 	 * @return the isOutputStream
 	 */
@@ -207,7 +214,7 @@ public class TransformationService
     		transformationWatchList=new ArrayList<TransformationObserver>();
     	transformationWatchList.add(observer);
     }
-    
+
     /**
      * Add an oberver to the tranformation server
      * @param observer
@@ -219,7 +226,7 @@ public class TransformationService
     	if (transformationWatchList.contains(observer))
     			transformationWatchList.remove(observer);
     }
-    
+
     private void informProcessProgress(int steps)
     {
     	if (transformationWatchList.size()!=0) {
@@ -240,7 +247,7 @@ public class TransformationService
     {
     	mappings = new Hashtable();
     	funcations = new Hashtable<String, FunctionComponent>();
-    	
+
     	/*
     	 * TODO Exception handling here
     	 */
@@ -250,34 +257,34 @@ public class TransformationService
         funcations = mapParser.getFunctions();
     	System.out.println("Map Parsing time" + (System.currentTimeMillis()-mapbegintime));
     }
-    
+
     private void loadH3S()  throws FileNotFoundException
     {
         String h3sFilename = mapParser.getH3SFilename();
         String fullh3sfilepath = FileUtil.filenameLocate(mapfile.getParent(), h3sFilename);
-        
+
         long loadmifbegintime = System.currentTimeMillis();
-        
+
         if (fullh3sfilepath.endsWith(".h3s"))
         {
         	mifClass = loadMIF(fullh3sfilepath);
         }
-        else 
+        else
         {
-        	XmlToMIFImporter xmlToMIFImporter = new XmlToMIFImporter(); 
+        	XmlToMIFImporter xmlToMIFImporter = new XmlToMIFImporter();
         	mifClass = xmlToMIFImporter.importMifFromXml(new File(fullh3sfilepath));
         }
-        
+
     	System.out.println("loadmif Parsing time" + (System.currentTimeMillis()-loadmifbegintime));
     }
-    
+
     public void loadCsvMeta(File metaFile) throws FileNotFoundException
     {
     	CSVMetaParserImpl parser = new CSVMetaParserImpl();
     	CSVMetaResult csvMetaResult = parser.parse(new FileReader(metaFile));
     	meta = csvMetaResult.getCsvMeta();
     }
-    
+
     public List<XMLElement> process() throws Exception
     {
        	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
@@ -285,9 +292,9 @@ public class TransformationService
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
        	this.loadMap();
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
-        
+
         if (!mapParser.getValidatorResults().isValid())
-        {	
+        {
         	System.out.println("Invalid .map file");
             Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid MAP file!"});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
@@ -296,26 +303,26 @@ public class TransformationService
 
         this.loadH3S();
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
-        
-        
+
+
         long csvbegintime = System.currentTimeMillis();
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
         CSVDataResult csvDataResult = null;
-        if (isInputStream) 
+        if (isInputStream)
         {
         	csvDataResult=parseCsvInputStream(mapParser.getSCSFilename());
         }
-        else if (isCsvString) 
+        else if (isCsvString)
         {
         	csvDataResult= parseCsvString(mapParser.getSCSFilename());
         }
-        else 
+        else
         {
         	csvDataResult= parseCsvfile(mapParser.getSCSFilename());
         }
-        
+
     	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
-        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
 
         // parse the datafile, if there are errors.. return.
         final ValidatorResults csvDataValidatorResults = csvDataResult.getValidatorResults();
@@ -333,12 +340,12 @@ public class TransformationService
         }
         csvSegmentedFile = csvDataResult.getCsvSegmentedFile();
     	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_COUNT_MESSAGE);
-        
+
     	MapProcessor mapProcess = new MapProcessor();
-        
+
         List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass, transformationWatchList);
 //    	HL7V3MessageValidator validator = new HL7V3MessageValidator();
-/*        for(XMLElement xmlElement:xmlElements) 
+/*        for(XMLElement xmlElement:xmlElements)
         {
         	System.out.println("Message:"+xmlElement.toXML());
 //        	xmlElement.validate();
@@ -348,7 +355,7 @@ public class TransformationService
         		System.out.println("Message:" + message+".");
         	}
 //        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages());
-        	
+
         	System.out.println("XML validation results:");
 //        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd"));
 //        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT010000UV01.xsd"));
@@ -369,7 +376,7 @@ public class TransformationService
     		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
 
     		if (!mapParser.getValidatorResults().isValid())
-    		{	
+    		{
     			System.out.println("Invalid .map file");
     			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid MAP file!"});
     			theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
@@ -386,7 +393,7 @@ public class TransformationService
     		File scsFile = new File(FileUtil.filenameLocate(mapfile.getParent(), mapParser.getSCSFilename()));
     		this.loadCsvMeta(scsFile);
 
-    		if (isCsvString || (!this.isOutputStream && this.outputFile==null && this.outputStream==null)) 
+    		if (isCsvString || (!this.isOutputStream && this.outputFile==null && this.outputStream==null))
     		{
     			throw new Exception("not valid for batch transformation.");
     		}
@@ -408,7 +415,7 @@ public class TransformationService
     		{
     			List<XMLElement> xmlElements = processNext();
 //  			HL7V3MessageValidator validator = new HL7V3MessageValidator();
-    			/*        for(XMLElement xmlElement:xmlElements) 
+    			/*        for(XMLElement xmlElement:xmlElements)
         {
         	System.out.println("Message:"+xmlElement.toXML());
 //        	xmlElement.validate();
@@ -444,7 +451,7 @@ public class TransformationService
     				return -1;
     			}
     		}
-    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
+    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
     		System.out.println("total message" + messageCount);
     		writer.close();
     	}finally{
@@ -509,7 +516,7 @@ public class TransformationService
     	}
     	return ret.toString();
     }
-    
+
     public static Object readObjFromZip(File file, String name) throws FileNotFoundException, ClassNotFoundException, IOException{
     	Object ret = null;
     	ZipInputStream inZip = null;
@@ -529,19 +536,19 @@ public class TransformationService
     			inZip.close();
     		}catch(Exception ignored){}
     	}
-    		
+
     	return ret;
     }
-    
+
     public static int countEntriesInZip(File file) throws FileNotFoundException, IOException{
     	ZipInputStream inZip = new ZipInputStream(new FileInputStream(file));
     	int count = 0;
-    	while(inZip.getNextEntry()!=null) 
+    	while(inZip.getNextEntry()!=null)
     		count++;
     	inZip.close();
     	return count;
     }
-    
+
     private CSVDataResult parseCsvfile(String scsFilename) throws Exception
     {
         SegmentedCSVParserImpl parser = new SegmentedCSVParserImpl();
@@ -568,8 +575,8 @@ public class TransformationService
 	public ValidatorResults getValidatorResults() {
 		return theValidatorResults;
 	}
-	
-	
+
+
 /*    private TransformationResult handleException(Exception e) //List<TransformationResult> v3messageResults
     {
 		String errorMessage = e.getMessage();
@@ -627,7 +634,7 @@ public class TransformationService
 
         //   	TransformationService ts = new TransformationService("C:/xmlpathSpec/NewEncounter_comp.map",
 //		"C:/xmlpathSpec/NewEncounter_comp2.csv");
-        
+
    	TransformationService ts = new TransformationService("C:/xmlpathSpec/error/choice_basic.map",
 		"C:/xmlpathSpec/error/choice_basic_without_patient.csv");
 
