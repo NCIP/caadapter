@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -69,7 +76,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
     public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.7 2008-09-29 20:14:14 wangeug Exp $";
- 
+
     private JTabbedPane rightTabbedPane;
     private TreeExpandAllAction treeExpandAllAction;
     private TreeCollapseAllAction treeCollapseAllAction;
@@ -98,7 +105,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
     {
         initialize();
         TreeNode root=loadTreeNodeWithMIF(mifFileName);
-        
+
     	initializeTreeWithMIFTreeNode(root);
     }
 
@@ -134,7 +141,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         //for place holding
         setPropertiesPaneVisible(false);
         setMessagePaneVisible(false);
-        
+
         centerSplitPane.setLeftComponent(treePanel);
         centerSplitPane.setRightComponent(rightTabbedPane);
         this.add(centerSplitPane, BorderLayout.CENTER);
@@ -172,7 +179,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
                 dummyHolderForPropertiesDisplay.setEnabled(false);
                 JPanel placeHolderForPropertiesDisplay = new JPanel(new BorderLayout());
                 placeHolderForPropertiesDisplay.add(dummyHolderForPropertiesDisplay, BorderLayout.NORTH);
-                placeHolderForPropertiesDisplay.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT /2 ));/// 3));        
+                placeHolderForPropertiesDisplay.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT /2 ));/// 3));
                 rightTabbedPane.add("Properties ", placeHolderForPropertiesDisplay);
             }
         }
@@ -226,13 +233,13 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
     }
 
     private ValidatorResults initializeTreeWithFile(File saveFile)
-    { 	
+    {
         ValidatorResults validatorResults = new ValidatorResults();
         try
         {
         	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(true);
         	TreeNode root = newHsmNodeLoader.loadData(saveFile);
-        	initializeTreeWithMIFTreeNode(root);	
+        	initializeTreeWithMIFTreeNode(root);
         }
         catch (Throwable e1)
         {
@@ -243,7 +250,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
 		}
         return validatorResults;
     }
-    
+
     private TreeNode loadTreeNodeWithMIF(String mifFileName)
     {
         if(mifFileName==null)
@@ -263,7 +270,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             return null;
         }
     }
-    
+
     private void initializeTreeWithMIFTreeNode(TreeNode root )
     {
         try
@@ -287,13 +294,13 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             DefaultSettings.reportThrowableToLogAndUI(this, e, "Error occurred during tree initialitation", this, true, true);
         }
     }
-    
+
     public JTree getTree()
     {
         return hsmTree;
     }
 
-    
+
     public ValidatorResults setSaveFile(File saveFile, boolean refreshTree)
     {
         ValidatorResults validatorResults = new ValidatorResults();
@@ -385,12 +392,12 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
 				action = new gov.nih.nci.caadapter.ui.specification.hsm.actions.CloseHSMAction(this);
 				contextManager.addClientMenuAction(MenuConstants.HSM_FILE, MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
 				action.setEnabled(true);
-				
+
 				actionMap = contextManager.getClientMenuActions(MenuConstants.HSM_FILE, menu_name);
-//		}		
+//		}
 		return actionMap;
 	}
- 
+
     /**
      * return the open action inherited with this client.
      */
@@ -418,5 +425,5 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * 
+ *
  * **/

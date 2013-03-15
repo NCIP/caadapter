@@ -1,8 +1,15 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/ui/jgraph/MiddlePanelJGraphController.java,v 1.65 2006/10/10 17:18:26
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+  $Header: /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/ui/jgraph/MiddlePanelJGraphController.java,v 1.65 2006/10/10 17:18:26
+
+
+
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.ui.mapping.jgraph;
@@ -81,7 +88,7 @@ import java.util.List;
  * This is the controller class of Middle Panel JGraph implementation. The MiddlePanelJGraphController class will deal with real implementation of some of
  * actions to modify (mainly CRUD) upon graph, and mainly focuses on drag-and-drop and handlings of repaint of graph, for example. MiddlePanelMarqueeHandler
  * will help handle key and mouse driven events such as display pop menus, etc.
- * 
+ *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2 revision $Revision: 1.31 $ date $Date: 2008-11-21 16:18:58 $
@@ -96,7 +103,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	/**
 	 * String that identifies the class version and solves the serial version UID problem. This String is for informational purposes only and MUST not be made
 	 * final.
-	 * 
+	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
 	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.31 2008-11-21 16:18:58 wangeug Exp $";
@@ -124,12 +131,12 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	private FunctionBoxViewUsageManager usageManager;
 
 	private LinkSelectionHighlighter linkSelectionHighlighter;
-	
-	
+
+
     public LinkSelectionHighlighter getHighLighter(){
             return linkSelectionHighlighter;
     }
-	// 
+	//
 	// Construct the Graph using the Model as its Data Source
 	public MiddlePanelJGraphController(MiddlePanelJGraph graph, MappingMiddlePanel middlePanel, AbstractMappingPanel mappingPanel) {
 		this.graph = graph;
@@ -138,7 +145,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		this.mappingPanel = mappingPanel;
 		initialization(false);
 	}
-	
+
 
 
 	public void setJGraph(MiddlePanelJGraph newGraph)
@@ -156,7 +163,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		// dropTarget = new DropTarget(graph, DnDConstants.ACTION_LINK, this);
 		// Use a Custom Marquee Handler
 		marqueeHandler = new MiddlePanelMarqueeHandler(graph, this);
-		graph.setMarqueeHandler(marqueeHandler); 
+		graph.setMarqueeHandler(marqueeHandler);
 		// Make Ports Visible by Default
 		this.graph.setPortsVisible(true);
 		// Use the Grid (but don't make it Visible)
@@ -244,7 +251,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Explicitly set the value.
-	 * 
+	 *
 	 * @param newValue
 	 */
 	public void setGraphChanged(boolean newValue)
@@ -265,7 +272,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Return a more concrete implementation of original interface to provide graph selection listener interface.
-	 * 
+	 *
 	 * @return MappingPanelPropertiesSwitchController
 	 */
 	public MappingPanelPropertiesSwitchController getPropertiesSwitchController()
@@ -305,7 +312,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Reset the mapping view list.
-	 * 
+	 *
 	 * @param mappingViewList
 	 */
 	protected void setMappingViewList(List mappingViewList)
@@ -344,13 +351,13 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
          setGraphChanged(false);
          registerLinkHighlighter();
      }
-    
+
 
     /**
 	 * Called by MiddlePanelMarqueeHandler Insert a new Edge between source and target
 	 */
 	public boolean handleConnect(DefaultPort source, DefaultPort target)
-	{	
+	{
 		if ( !source.getEdges().isEmpty() || !target.getEdges().isEmpty() ) {// either port has been used, should report
 			StringBuffer msg = new StringBuffer();
 			if ( !source.getEdges().isEmpty() ) {
@@ -398,7 +405,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * Handle the deletion of all graph cells on the middle panel.
 	 */
     public synchronized void handleDeleteAll()
-    {     
+    {
         clearAllGraphCells();
 
 		//repaint the source and target scrollPanes
@@ -426,7 +433,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		//System.out.println("middlePanel kind: " + middlePanel.getKind() );
 		for(int i=0; i<cells.length; i++)
 		{
-			if(cells[i] == null || !(cells[i] instanceof DefaultEdge)) 
+			if(cells[i] == null || !(cells[i] instanceof DefaultEdge))
 				continue;
 			DefaultEdge edge = (DefaultEdge) cells[i];
 
@@ -505,7 +512,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			}
 		}
 	}
-	
+
 	/**
 	 * Called by setMappingData() or constructMappingGraph(), and other methods.
 	 */
@@ -515,7 +522,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		Object[] cells = DefaultGraphModel.getDescendants(graph.getModel(), graph.getRoots()).toArray();
 		// call to remove all cells
 		removeCells(cells, false);
-		unmapCells(cells);		
+		unmapCells(cells);
 		setMappingViewList(Collections.synchronizedList(new ArrayList()));
 		setGraphChanged(false);
 	}
@@ -530,7 +537,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			if (firstToDelete instanceof FunctionBoxCell)
 				repaintSourceTarget=true;
 		}
-		
+
 		cells = DefaultGraphModel.getDescendants(graph.getModel(), cells).toArray();
 		if ( !findAssociatedCells ) {// no need to find associated cells, so directly remove them.
 			graph.getGraphLayoutCache().remove(cells, true, true);
@@ -565,7 +572,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			}
 			mappingViewList.removeAll(mappingViewToBeDeletedList);
 		}
-		
+
 		//repaint the source and target scrollPanes
 		if (repaintSourceTarget)
 		{
@@ -576,7 +583,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Add the specified function at the specific start location.
-	 * 
+	 *
 	 * @param function
 	 * @param startPoint
 	 * @return if the function has been successfully added.
@@ -592,7 +599,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Called by constructMappingGraph() to insert in functions defined in the mappingMeta.
-	 * 
+	 *
 	 * @param functionComponent
 	 * @return if the function has been successfully added.
 	 */
@@ -686,7 +693,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * construct and add graph ports to the given cell with constructed attributes to the map.
-	 * 
+	 *
 	 * @param function
 	 * @param portAttributes
 	 * @param parentMap
@@ -762,19 +769,19 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 //			boolean sourceNodeDisplayed=true;
 //			boolean targetNodeDisplayed=true;
 			try {
-				if ( sourceNode instanceof FunctionBoxDefaultPort ) 
+				if ( sourceNode instanceof FunctionBoxDefaultPort )
 				{
-					if ( targetNode instanceof FunctionBoxDefaultPort ) 
+					if ( targetNode instanceof FunctionBoxDefaultPort )
 					{// todo: consider how to draw functional box movement.
-					} 
-					else if ( targetNode instanceof DefaultMutableTreeNode ) 
+					}
+					else if ( targetNode instanceof DefaultMutableTreeNode )
 					{
 						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
 //						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
 						adjustToNewPosition(treeNode, targetNodeCellAttribute);
 					}
-				} 
-				else if ( sourceNode instanceof DefaultMutableTreeNode ) 
+				}
+				else if ( sourceNode instanceof DefaultMutableTreeNode )
 				{// neither sourceNode nor targetNode is functional box, so this implies a direct map
 					if ( !(targetNode instanceof FunctionBoxDefaultPort) && (targetNode instanceof DefaultMutableTreeNode) ) {
 						// change target node
@@ -811,7 +818,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Adjust the given treenode's display coordinates. If given tree node is null or the root, will simply ignore.
-	 * 
+	 *
 	 * @param treeNode
 	 *            the tree node
 	 * @param oldAttributeMap
@@ -843,7 +850,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	}
 	/**
 	 * Return the number of pixels changed due to scrolling.
-	 * 
+	 *
 	 * @param treeScrollPane
 	 * @param treeNode
 	 * @param reCalculateToNearestParent
@@ -913,7 +920,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Create mapping relation between the source and target nodes.
-	 * 
+	 *
 	 * @param sourceNode
 	 * @param targetNode
 	 * @return if mapping is successfully created.
@@ -1124,7 +1131,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Get mapping relation consolidated.
-	 * 
+	 *
 	 * @param refresh
 	 *            if true, the underline implementation will refresh data from user's input; otherwise, it will return what it has now, which may not be
 	 *            up-to-date;
@@ -1194,12 +1201,12 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				{
 					localSourceUserObject =((DefaultMutableTreeNode) sourceNode).getUserObject();
 					if ( UIHelper.isDataFromSourceTree((DefaultMutableTreeNode) sourceNode) )
-					{ 
+					{
 						sourceComponent = mappingData.getSourceComponent();
 						//process V2Meta mapping
 						if (localSourceUserObject instanceof ElementMeta)
 							localSourceUserObject=V2MetaXSDUtil.findNodeXmlPath((DefaultMutableTreeNode) sourceNode);
-					}					 
+					}
 				}
 				if ( targetNode instanceof FunctionBoxDefaultPort ) {
 					localTargetUserObject = (MetaObject) ((FunctionBoxDefaultPort) targetNode).getUserObject();
@@ -1229,7 +1236,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Locate the function box component in the component map.
-	 * 
+	 *
 	 * @param componentMap
 	 * @param portNode
 	 * @return the function box component in the component map.
@@ -1250,7 +1257,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	/**
 	 * This method will help remove those function deleted in scene from mappingData and add those from scene to mappingData. Therefore, after calling this
 	 * method, both mappingData and/or uuidComponentMap structure may change.
-	 * 
+	 *
 	 * @param mappingData
 	 * @param uuidComponentMap
 	 */
@@ -1283,7 +1290,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Construct the direct mapping information and put it into the given mappingData
-	 * 
+	 *
 	 * @param sourceNode
 	 * @param targetNode
 	 * @param mappingData
@@ -1324,7 +1331,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Call this method only if you do not have a base component handy; otherwise, call the overloaded function, so as to help you preserve your UUID value.
-	 * 
+	 *
 	 * @param metaObject
 	 * @param file
 	 */
@@ -1341,7 +1348,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 
 	/**
 	 * Call this method only if you do not have a base component handy; otherwise, call the overloaded function, so as to help you preserve your UUID value.
-	 * 
+	 *
 	 * @param metaObject
 	 * @param file
 	 */
@@ -1417,7 +1424,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				//build source node with mapped xml path
 				String nodeObjXmlPath=sourceMapComp.getDataXmlPath();
 				sourceNode=(MappableNode)V2MetaXSDUtil.findV2MetaTreeNode(nodeObjXmlPath);
-				
+
 			}
             else if ( sourceMapComp.isComponentOfFunctionType() )
             {

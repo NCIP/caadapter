@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.datatype;
 
@@ -27,7 +34,7 @@ import org.jdom.input.SAXBuilder;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Dec 12, 2008
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.2 $
  * @date 	 DATE: $Date: 2009-03-12 13:25:54 $
  * @since caAdapter v4.2
@@ -48,7 +55,7 @@ public class DatatypeCoreAttributeLoader {
 	{
 		builder = new SAXBuilder(false);
 	}
-	
+
 	public void loadCoreAttributeConfig(InputStream in)
 	{
 		Document document;
@@ -73,7 +80,7 @@ public class DatatypeCoreAttributeLoader {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void parseRootElement(Element root)
 	{
 		datatypeCoreAttributes=new HashMap<String, List>();

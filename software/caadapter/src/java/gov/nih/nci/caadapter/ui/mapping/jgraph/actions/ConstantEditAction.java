@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -50,7 +57,7 @@ public class ConstantEditAction extends DefaultAbstractJgraphAction
 	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ConstantEditAction.java,v 1.3 2009-07-10 19:56:23 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Edit Constant...";
-	
+
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.

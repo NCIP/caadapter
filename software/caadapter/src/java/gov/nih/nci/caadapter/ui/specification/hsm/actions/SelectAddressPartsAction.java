@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -103,7 +110,7 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
         }
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         Object obj = targetNode.getUserObject();
-        
+
         if (obj instanceof MIFAttribute)
         {
         	MIFAttribute mifAttr = (MIFAttribute) obj;
@@ -139,8 +146,8 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
                 String popupTitle="Address Parts To Be Added";
                 if (!toAdd)
                 	popupTitle="Address Parts To Be Removed";
-                
-                AssociationListWizard listWizard = 
+
+                AssociationListWizard listWizard =
                     new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(),popupTitle, true);
                 DefaultSettings.centerWindow(listWizard);
                 listWizard.setVisible(true);
@@ -158,7 +165,7 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
                     }
                 }
                 System.out.println("SelectAddressPartsAction.doAction()..addresss datatype isEnabled:"+mifAttr.getDatatype().isEnabled());
-                
+
                 NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
                 DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
                 DefaultMutableTreeNode  newAddressNode =mifTreeLoader.buildObjectNode(mifAttr,hsmNode.getRootMif());
@@ -178,5 +185,5 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * 
+ *
  * **/

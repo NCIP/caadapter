@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.common.util;
 
@@ -21,7 +28,7 @@ import java.net.URL;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Mar 25, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.2 $
  * @date 	 DATE: $Date: 2009-04-01 17:38:50 $
  * @since caAdapter v4.2
@@ -29,7 +36,7 @@ import java.net.URL;
 
 public class WebstartUtil {
 	private static boolean isWebstartDeployed=false;
-	
+
 	/**
 	 * @return the isWebstartDeployed
 	 */
@@ -48,37 +55,37 @@ public class WebstartUtil {
 	{
 		System.out.println("WebstartUtil.downloadFile()...source file:"+srcFile);
 		try {
-			
+
 			URL isURL=FileUtil.retrieveResourceURL(srcFile);
 			if (isURL==null)
 				return;
 			InputStream fis =isURL.openStream();
-			DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));  
+			DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));
 			File outFile=new File(targetFile);
 			//create the path folders
 			if (!outFile.exists())
 				outFile.getParentFile().mkdirs();
-			
-			FileOutputStream fos = new FileOutputStream(targetFile);   
-			DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos));   
-			byte b;  
-			try{      
-				while(true){           
-					b = (byte) dis.readByte();             
-					dos.write(b);       
-				}   
-			}   
+
+			FileOutputStream fos = new FileOutputStream(targetFile);
+			DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos));
+			byte b;
+			try{
+				while(true){
+					b = (byte) dis.readByte();
+					dos.write(b);
+				}
+			}
 			catch(EOFException e)
-			{       
-				System.err.println("Finish read end of file...");   
-			}   finally{           
-				dos.close();   
-			}  
- 
+			{
+				System.err.println("Finish read end of file...");
+			}   finally{
+				dos.close();
+			}
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

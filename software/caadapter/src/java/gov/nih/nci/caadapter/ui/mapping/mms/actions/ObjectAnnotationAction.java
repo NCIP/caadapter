@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
@@ -23,23 +30,23 @@ import java.util.Vector;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jul 6, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.2 $
  * @date 	 DATE: $Date: 2009-07-30 17:38:06 $
  * @since caAdapter v4.2
  */
 
-public class ObjectAnnotationAction extends ItemAnnotationAction 
+public class ObjectAnnotationAction extends ItemAnnotationAction
 {
 	public static int SET_DISCRIMINATOR_VALUE=1;
 	public static int REMOVE_DISCRIMINATOR_VALUE=2;
 	public static int SET_GLOBAL_NULLFLAVOR_CONTANT=3;
 	public static int REMOVE_GLOBAL_NULLFLAVOR_CONSTANT=4;
-	public ObjectAnnotationAction(String nameTxt,  int actionType, MappingMiddlePanel midPane) 
+	public ObjectAnnotationAction(String nameTxt,  int actionType, MappingMiddlePanel midPane)
 	{
 		super(nameTxt, actionType, midPane );
 	}
- 
+
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction#doAction(java.awt.event.ActionEvent)
 	 */
@@ -64,7 +71,7 @@ public class ObjectAnnotationAction extends ItemAnnotationAction
 			XMIAnnotationUtil.removeTagValue(umlClass, tagName);
 			return true;
 		}
-	
+
 		//add tag
 		int dialogType=DialogUserInput.INPUT_TYPE_TEXT;
 		Vector<Object> dfValues=new Vector<Object>();
@@ -86,7 +93,7 @@ public class ObjectAnnotationAction extends ItemAnnotationAction
 			//annotate object with new tag value
 			XMIAnnotationUtil.addTagValue(umlClass, tagName,(String)dialog.getUserInput());
 			return true;
-		}			
+		}
 		return false;
 	}
 }

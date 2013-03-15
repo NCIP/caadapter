@@ -1,0 +1,14 @@
+caAdapter
+Copyright 2007 SAIC
+
+This project is distributed under the BSD 3-Clauses License.
+Please see LICENSE file for details.
+
+
+This project was developed as part of the NCI CBITT initiative.
+
+caAdapter started as a project of the larger caBIG initiative, with the goal of allowing researchers to integrate, query, report, and analyze significant associations between genetic variations and disease, drug response or other clinical outcomes.
+The project was initially developed by SAIC under funding from the CBIIT office of the National Cancer Institute.
+
+In 2013, as part of the National Cancer Informatics Program (NCIP) Open Development Initiative, 
+the caB2B source code was migrated to GitHub to allow further development by the broader community.

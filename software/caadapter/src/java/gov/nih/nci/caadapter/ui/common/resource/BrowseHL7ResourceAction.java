@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -11,7 +18,7 @@ package gov.nih.nci.caadapter.ui.common.resource;
 
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
- 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -96,7 +103,7 @@ public class BrowseHL7ResourceAction extends AbstractContextAction
 	protected boolean doAction(ActionEvent e)
 	{
 		String fileExtension = fileExt;// frontPage.getFileExtension(browseMode);
- 
+
 		//get user's input of resource directory
         File file = null;
         if (inputTargetField.getText()==null

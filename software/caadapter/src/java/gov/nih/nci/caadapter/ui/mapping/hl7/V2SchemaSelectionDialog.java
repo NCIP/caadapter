@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -19,7 +26,7 @@ import java.awt.event.ActionListener;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jan 21, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.1 $
  * @date 	 DATE: $Date: 2009-01-23 18:22:00 $
  * @since caAdapter v4.2
@@ -79,12 +86,12 @@ public class V2SchemaSelectionDialog extends JDialog implements ActionListener
         JButton cancelButton = new JButton(CANCEL_COMMAND);
         cancelButton.setMnemonic('C');
         cancelButton.addActionListener(this);
-        
+
         JPanel tempPanel = new JPanel(new GridLayout(1, 2));
         tempPanel.add(okButton);
         tempPanel.add(cancelButton);
         buttonPanel.add(tempPanel);
-        
+
     	return buttonPanel;
     }
     /**
@@ -156,7 +163,7 @@ public class V2SchemaSelectionDialog extends JDialog implements ActionListener
     {
         return okButtonClicked;
     }
- 
+
 }
 /**
 * HISTORY: $Log: not supported by cvs2svn $

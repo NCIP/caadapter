@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.specification.csv;
 
@@ -171,7 +178,7 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
                    }
                 } catch (Exception e2) {
 
-                }                
+                }
             }
             if (nodeSelected) {
                 DefaultMutableTreeNode showSelected = null;
@@ -183,7 +190,7 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
                     for (int i = 0; i < selectedNodesArrayList.size(); i++) {
                         visitAllNodes(rootNode, (CSVFieldMetaImpl) selectedNodesArrayList.get(i), true);
                     }
-                    segmentPane.getTableFields().clearSelectedNodes();                  
+                    segmentPane.getTableFields().clearSelectedNodes();
                     jTree.setSelectionPath(showPath);
                     return;
                 } else if (userChoice == JOptionPane.NO_OPTION | userChoice == JOptionPane.CANCEL_OPTION) {
@@ -372,7 +379,7 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         //process(node);
         if (node.getChildCount() >= 0) {
             for (Enumeration e = node.children(); e.hasMoreElements();) {
-                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e.nextElement();                 
+                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e.nextElement();
                 try {
                     // System.out.println(((SDTMMetadata) node1.getUserObject()).getXPath());
                     CSVFieldMetaImpl csvFieldMeta = (CSVFieldMetaImpl) node1.getUserObject();

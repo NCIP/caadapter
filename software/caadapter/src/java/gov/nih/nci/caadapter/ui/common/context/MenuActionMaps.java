@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.common.context;
 
@@ -11,7 +18,7 @@ package gov.nih.nci.caadapter.ui.common.context;
  * Maintians map for MenuActions
  * @author OWNER: $Author: phadkes $
  * @author LAST UPDATE $Author: phadkes $
- * @since      caAdapter  v4.2    
+ * @since      caAdapter  v4.2
  * @version    $Revision: 1.3 $
  * @date       $Date: 2008-09-24 17:46:09 $
 */
@@ -26,7 +33,7 @@ public class MenuActionMaps {
 	protected Map<String, Action> reportMenuActions;
 	protected Map<String, Action> toolBarMenuActions;
 	private String clientName;
-	
+
 	public MenuActionMaps(String svcName)
 	{
 		clientName=svcName;
@@ -49,17 +56,17 @@ public class MenuActionMaps {
 	public Map<String, Action> getReportMenuActions() {
 		if (reportMenuActions==null)
 			reportMenuActions=Collections.synchronizedMap(new HashMap<String, Action>());
-		
+
 		return reportMenuActions;
 	}
-	
+
 	public Map<String, Action> getToolBarMenuActions() {
 		if (toolBarMenuActions==null)
 			toolBarMenuActions=Collections.synchronizedMap(new HashMap<String, Action>());
-		
+
 		return toolBarMenuActions;
 	}
-	
+
 	public Map getMenuActionWithMenuName(String menuName)
 	{
 		if (menuName==null|menuName.trim().equals(""))
@@ -73,12 +80,12 @@ public class MenuActionMaps {
 			rtnMap= getToolBarMenuActions();
 		return rtnMap;
 	}
-	
+
 	public void addFileMenuAction(String actionName, Action newAction)
 	{
 		getFileMenuActions().put(actionName, newAction);
 	}
-	
+
 	public void addReportMenuAction(String actionName, Action newAction)
 	{
 		getReportMenuActions().put(actionName, newAction);

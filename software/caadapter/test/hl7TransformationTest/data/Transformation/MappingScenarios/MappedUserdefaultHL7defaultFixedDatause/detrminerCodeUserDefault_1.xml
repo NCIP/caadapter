@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <!-- section='IM' subSection='CO' artifact='MT-deprecated' realm='UV' xmlns:mif='urn:hl7-org:v3/mif' domain='CT' root='DEFN' version='01'-->
 <Encounter xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" classCode="ENC" moodCode="EVN">
    <id assigningAuthorityName="NCI" root="2.16.840.1.113883.3.26.208" extension="60040-766" xsi:type="II"/>

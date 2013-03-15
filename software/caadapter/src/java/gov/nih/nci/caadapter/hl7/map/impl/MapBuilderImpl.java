@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -131,7 +138,7 @@ public class MapBuilderImpl {
             if (baseComponent.getFile()!=null)
             {
 	            String filePath = baseComponent.getFileAbsolutePath();
-	            if (filePath.startsWith(FileUtil.getWorkingDirPath())) 
+	            if (filePath.startsWith(FileUtil.getWorkingDirPath()))
 	            	filePath = filePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
 	            cComponent.setLocation(filePath);
             }
@@ -139,7 +146,7 @@ public class MapBuilderImpl {
             if ( metaObject == null )
             {
                 String mType = cMapping.getType();
-                if (mType == null) 
+                if (mType == null)
                 	mType = "";
                 if (mType.indexOf("CSV_TO_XMI")>-1)
                 {
@@ -149,11 +156,11 @@ public class MapBuilderImpl {
                 {
                 	cComponent.setKind("v2");
                 	cComponent.setLocation(baseComponent.getKind());
-                }              
-                else 
+                }
+                else
                     throw new MappingException("Invalid mapping type:"+mType, null);
             }
-            else if (metaObject instanceof DatatypeBaseObject) 
+            else if (metaObject instanceof DatatypeBaseObject)
             {
             	cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
             	if (metaObject instanceof MIFClass)
@@ -161,10 +168,10 @@ public class MapBuilderImpl {
             	else
             		throw new MappingException("Invalid mapping meta object type:"+metaObject.getName(), null);
             }
-            else if (metaObject instanceof CSVMeta) 
+            else if (metaObject instanceof CSVMeta)
                 	cComponent.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
-        } 
-        else if (componentType == FUNCTION) 
+        }
+        else if (componentType == FUNCTION)
         {
             FunctionMeta functionMeta = ((FunctionComponent)baseComponent).getMeta();
             cComponent.setKind(functionMeta.getKind());
@@ -172,7 +179,7 @@ public class MapBuilderImpl {
             cComponent.setName(functionMeta.getFunctionName());
             String stringId=((FunctionComponent)baseComponent).getId();
             cComponent.setId(Integer.valueOf(stringId));
-            
+
             //if("constant".equalsIgnoreCase(functionMeta.getFunctionName())){
             if(functionMeta.isConstantFunction())
             {
@@ -204,7 +211,7 @@ public class MapBuilderImpl {
 
         // setup the view second.
         View view = baseComponent.getView();
-        if (view != null) 
+        if (view != null)
         {
             C_view cView = new C_view();
             if (view.getColor() != null) cView.setColor(view.getColor().toString());
@@ -253,7 +260,7 @@ public class MapBuilderImpl {
             	else
             		sourcePointer.setKind("default");
             }
-             
+
             //setup the target LinkPointer
             BaseMapElement targetmap = map.getTargetMapElement();
             C_linkpointer targetPointer = new C_linkpointer();

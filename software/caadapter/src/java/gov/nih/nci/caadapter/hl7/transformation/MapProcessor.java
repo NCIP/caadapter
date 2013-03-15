@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
-  * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.hl7.transformation;
@@ -53,8 +60,8 @@ public class MapProcessor {
     ValidatorResults theValidatorResults = new ValidatorResults();
 
 	/**
-	 * This method will process the mapping file and generate a list of HL7 v3 message objects 
-	 * 
+	 * This method will process the mapping file and generate a list of HL7 v3 message objects
+	 *
 	 * @param mapfilename the name of the mapping file
 	 * @param csvfilename the name of the csv file
 	 */
@@ -65,18 +72,18 @@ public class MapProcessor {
         csvUtil = new MapProcssorCSVUtil();
 
         datatypeProcessor.setEnv(csvUtil, functions, mappings);
-        
+
         List<XMLElement> resultsArray = new ArrayList<XMLElement>();
 
         List<CSVSegment> logicalRecords = csvSegmentedFile.getLogicalRecords();
 
-        if (logicalRecords.size()==0) 
+        if (logicalRecords.size()==0)
         {
         	return resultsArray;
         }
-        
+
         mapProcessorHelper.preprocessMIF(mappings,functions, mifClass, false, logicalRecords.get(0).getName());
-        
+
         // process one CSV source logical record at a time.
         if (transformationWatchList.size()!=0) {
         	for (TransformationObserver tObserver:transformationWatchList)
@@ -104,18 +111,18 @@ public class MapProcessor {
 
 	/**
 	 * This method will process the root MIFClass object and generate a list of HL7 v3 message objects and
-	 * populate valiation messages 
-	 * 
+	 * populate valiation messages
+	 *
 	 * @param mifClass the MIFClass that will be processed
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
-	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass 
+	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass
 	 */
     private List<XMLElement> processRootMIFclass(MIFClass mifClass, CSVSegment pCsvSegment) throws MappingException,FunctionException {
-    	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
+    	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
     	List<CSVSegment> csvSegments = null;
 
     	//Step1: find all the csvSegments for attributes
-    	if (mifClass.isMapped()) 
+    	if (mifClass.isMapped())
     	{
     		csvSegments = csvUtil.findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
     	}
@@ -285,7 +292,7 @@ public class MapProcessor {
 	    	    List<XMLElement> choiceXmlElements = new ArrayList<XMLElement>();
  	    	    List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment, mutableFlag,mutableFlagDefault, forceGenerateAssociation, startChoice, choiceXmlElements,toRelaxCardinality);
     			/** block start **********
-    			 * 
+    			 *
     			 * The following block to avoid associations to be
     			 * included with current class if it comes from other
     			 * reference
@@ -301,7 +308,7 @@ public class MapProcessor {
     			if (!asscToProcess)
     				continue;
     			/** block end **/
-    			
+
 	    	    if (startChoice) {
     				choiceHolder.add(choiceXmlElements);
     				choiceFlag.add(mutableFlagDefault);
@@ -494,10 +501,10 @@ public class MapProcessor {
 	 *
 	 * @param mifAttribute the MIFAttribute object that will be processed
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
-	 * 		  and data for all Datatypes of the MIFAttribute 
+	 * 		  and data for all Datatypes of the MIFAttribute
 	 */
     private List<XMLElement> processAttribute(MIFAttribute mifAttribute, CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException,FunctionException{
-    	
+
     	boolean forceGenerate = mifAttribute.getMinimumMultiplicity() > 0;
     	if (mifAttribute.getDatatype() == null) return NullXMLElement.NULL; //Abstract attrbiute
 
@@ -506,13 +513,13 @@ public class MapProcessor {
     	Datatype mifDt=mifAttribute.getConcreteDatatype();
 		if (mifDt==null)
 			mifDt=mifAttribute.getDatatype();
-		
+
     	//No mappings
     	if (mifAttribute.getCsvSegments().size()== 0) {
     		if (mifAttribute.isMandatory()) {
 //	    	    MutableFlag mutableFlag = new MutableFlag(false);
     			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifDt, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName());
-    			if (defaultXMLElement != null) 
+    			if (defaultXMLElement != null)
     			{
     	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No mapping  is available for the required attribute: " + mifAttribute.getXmlPath()});
     	            ValidatorResults validatorResults = new ValidatorResults();
@@ -528,7 +535,7 @@ public class MapProcessor {
     	            ValidatorResults validatorResults = new ValidatorResults();
     	            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     	            defaultXMLElement.setValidatorResults(validatorResults);
-    				
+
     	            xmlElements.add(defaultXMLElement);
     			}
     			return xmlElements;
@@ -548,12 +555,12 @@ public class MapProcessor {
         				return xmlElements;
         			}
         			//Default datatype elements always generate at least an empty element
-        			return NullXMLElement.NULL;    				
+        			return NullXMLElement.NULL;
     			}
     			return NullXMLElement.NULL;
     		}
     	}
-    	
+
     	if (forceGenerate)
     	{
     	    MutableFlag mutableFlag = new MutableFlag(false);
@@ -568,7 +575,7 @@ public class MapProcessor {
     			hasDefaultdata.setHasUserMappedData(false);
     		}
     	}
-    	else 
+    	else
     	{
     	    MutableFlag mutableFlag = new MutableFlag(false);
     	    MutableFlag mutableFlagDefault = new MutableFlag(true);
@@ -578,10 +585,10 @@ public class MapProcessor {
     			hasUserdata.setHasUserMappedData(true);
     		}
     		else {
-    			return new ArrayList<XMLElement>(); 
+    			return new ArrayList<XMLElement>();
     		}
     	}
-    	
+
 		for(XMLElement xmlElement:xmlElements)
 		{
 //			xmlElement.addAttribute("xsi:type", mifDt.getName(), null, null, null);
@@ -603,10 +610,10 @@ public class MapProcessor {
     	{
     		//No action is needed
     	}
-    	else 
+    	else
     	{
     		boolean hasDefault = false;
-    		for(MutableFlag mf:choiceFlag) 
+    		for(MutableFlag mf:choiceFlag)
     		{
     			if (mf.hasUserMappedData()) hasDefault = true;
     		}
@@ -642,7 +649,7 @@ public class MapProcessor {
 						theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
     			}
     		}
-    		else // No default data 
+    		else // No default data
     		{
     			List<XMLElement> tempXmlElements = choiceHolder.get(0);
     			xmlElement.addChildren(tempXmlElements);

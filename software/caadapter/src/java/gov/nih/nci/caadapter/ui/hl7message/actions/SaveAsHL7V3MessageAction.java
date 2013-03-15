@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -96,7 +103,7 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 		else
 			file=DefaultSettings.getUserInputOfFileFromGUI(this.hl7Panel, //getUIWorkingDirectoryPath(),
 				Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
-			
+
 		if (file != null)
 		{
 			setSuccessfullyPerformed(processSaveFile(file));
@@ -137,7 +144,7 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 					message=((TransformationResult)messageResult).getMessageText();
 				if (messageResult==null)
 					continue;
-				
+
 				File messageFile = fileList.get(i);
 				fw = new FileWriter(messageFile);
 				bw = new BufferedWriter(fw);

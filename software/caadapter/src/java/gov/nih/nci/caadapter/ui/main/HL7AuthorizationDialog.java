@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.main;
 
@@ -64,21 +71,21 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 		if (contextFilePath.equals(HL7_V2_WARNING_CONTEXT_FILE_PATH))
 			setViewOnly(true);
 		setSize(600, 250);
-		enableEvents(AWTEvent.WINDOW_EVENT_MASK);		
+		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
 		initUI();
 		this.setResizable(false);
 		DefaultSettings.centerWindow(this);
 		this.setVisible(true);
 	}
-		
+
 	private void initUI()
 	{
 		Container contentPane=getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.add(setContextTextPanel(), BorderLayout.CENTER);
-		contentPane.add(setInputPanel(), BorderLayout.SOUTH);	 
+		contentPane.add(setInputPanel(), BorderLayout.SOUTH);
 	    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	    
+
 	    addWindowListener(new WindowAdapter(){
 	        public void windowClosing(WindowEvent we) {
 	            Window w = we.getWindow();
@@ -89,14 +96,14 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 	            }
 	        });
 	}
-	
-	private JPanel setContextTextPanel()  
+
+	private JPanel setContextTextPanel()
 	{
 		JPanel rtnPanel=new JPanel();
 		StringBuffer licenseBf=new StringBuffer();
 		String titleMessage="";
-		licenseBf.append(titleMessage);	
-		
+		licenseBf.append(titleMessage);
+
 		try {
 			InputStream input=this.getClass().getResourceAsStream(contextFilePath);
 			InputStreamReader reader=new InputStreamReader(input);
@@ -118,12 +125,12 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 		JScrollPane js2 = new JScrollPane(mainView);
 		js2.setPreferredSize(new Dimension(this.getWidth()-40, getHeight()-60));
         mainView.setEditable(false);
-        		 
+
 		rtnPanel.add(js2);
 		rtnPanel.setBorder(BorderFactory.createEtchedBorder());
 		return rtnPanel;
 	}
-	
+
 	private JPanel setInputPanel()
 	{
 		JPanel rtnPanel=new JPanel();
@@ -163,10 +170,10 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 			if (evtButton==nextButton)
 			{
 				CaadapterUtil.setAuthorizedUser(true);
-//				//launch caAdapter 
+//				//launch caAdapter
 //				String msg="caAdapter will not work properly because of the missing resource, \ncontinue ?";
-//				
-//				int yesNo=JOptionPane.showConfirmDialog(this, 
+//
+//				int yesNo=JOptionPane.showConfirmDialog(this,
 //						msg,
 //						"Accept License Agreement",
 //						JOptionPane.YES_OPTION);

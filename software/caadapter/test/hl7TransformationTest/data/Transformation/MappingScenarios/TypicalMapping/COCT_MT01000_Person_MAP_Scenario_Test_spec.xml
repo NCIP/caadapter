@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <Encounter name="Encounter" isEnabled="true" title="MIF Clone Properties" referenceName="" messageType="COCT_MT010000" sortKey="">
   <attribute name="classCode" type="CS" isEnabled="true" title="MIF Attribute Properties" mnemonic="ENC" minimumMultiplicity="1" isStrutural="true" parentXmlPath="Encounter" maximumMultiplicity="1" isMandatory="true" conformance="R" domainName="ActClass" codingStrength="CNE" multiplicityIndex="0" sortKey="1" fixedValue="ENC" minimumSupportedLength="0" />
   <attribute name="moodCode" type="CS" isEnabled="true" title="MIF Attribute Properties" mnemonic="EVN" minimumMultiplicity="1" isStrutural="true" parentXmlPath="Encounter" maximumMultiplicity="1" isMandatory="true" conformance="R" domainName="ActMood" codingStrength="CNE" multiplicityIndex="0" sortKey="2" fixedValue="EVN" minimumSupportedLength="0" />

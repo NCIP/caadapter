@@ -1,14 +1,21 @@
-/* <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
+/
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.security.config;
 
 /**
- * This file configures the xmlRepository document settings, castor mapping file etc. 
+ * This file configures the xmlRepository document settings, castor mapping file etc.
  *
  * @author OWNER: Sandeep Phadke
  * @author LAST UPDATE: $Author: phadkes $
@@ -25,9 +32,9 @@ public class SecurityConfig {
     public static String SECURITY_XML_USERGROUP="caAdapter/security/config/dataxmls/UserGroup.xml";
     public static String SECURITY_XML_USERSECURITYOBJECTMAPPING="caAdapter/security/config/dataxmls/UserSecurityObjectMapping.xml";
     public static String SECURITY_XML_WEBSERVICEMAPPING="caAdapter/security/config/dataxmls/WebServiceMapping.xml";
-   
+
     public static String SECURITY_XML_MAPPING="caAdapter/security/config/Mapping.xml";
-    
+
     public static String SECURITY_DATA_ACCESS_OBJECT="gov.nih.nci.caadapter.security.dao.xmlDao.XmlDaoImpl";
 
 }

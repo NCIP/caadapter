@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -87,7 +94,7 @@ public class MapParserImpl {
             processComponents(cMapping.getC_components());
             processLinks(cMapping.getC_links(), validatorResults);
             processViews(cMapping.getC_views());
-            
+
         } catch(MappingException e){
             Log.logException(this, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
@@ -153,7 +160,7 @@ public class MapParserImpl {
 //        				// TODO Auto-generated catch block
 //        				Log.logException(this, e);
 //        			}
-                } 
+                }
                 else if (Config.FUNCTION_DEFINITION_DEFAULT_KIND.equalsIgnoreCase(kind)) {
                     component = generateFunctionComponent(cComponent, kind);
                 } else if(kind.equalsIgnoreCase("xmi"))
@@ -165,16 +172,16 @@ public class MapParserImpl {
                     component.setXmlPath(BaseMapElementImpl.getCastorComponentID(cComponent));//cComponent.getXmlPath());
                     component.setKind(kind);
                     component.setFile(xmiFile);
-                	
+
                 }
                 else if(kind.equalsIgnoreCase("v2"))
                 {
                 	//create v2Meta component
 //                	File xsdFile = new File(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
                     component = new BaseComponent();
-                    component.setType(cComponent.getType());                   
+                    component.setType(cComponent.getType());
                     component.setKind(cComponent.getLocation().toString());
-                 
+
 //                    component.setFile(xsdFile);
                 }
                 else {
@@ -204,11 +211,11 @@ public class MapParserImpl {
             }
         } catch (FileNotFoundException e) {
             throw new MappingException("Error in MapParser, File not found", e);
-        }      
+        }
     }
 
-   
-     
+
+
     /**
      * A method to assist with processComponents()
      */
@@ -272,7 +279,7 @@ public class MapParserImpl {
 
             // set it in the lookup table.
             //the function ID is create from Singleton of current application
-            //but the old ID is required to parse "view" and "link" 
+            //but the old ID is required to parse "view" and "link"
             String lookupKey="function."+cComponent.getId();
             metaLookupTable.put(lookupKey, new FunctionMetaLookup(functionMeta));
             componentLookupTable.put(lookupKey, functionComponent);
@@ -352,7 +359,7 @@ public class MapParserImpl {
             	{
             		//function component always is target
             			map.setSourceMapElement(mapElement2);
-                        map.setTargetMapElement(mapElement1);	
+                        map.setTargetMapElement(mapElement1);
             	}
             	else
             	{
@@ -376,7 +383,7 @@ public class MapParserImpl {
                 {
                     String waringMsg="Link ignored.  An error occured creating --source: " + cLink.getC_source().getC_linkpointer().getXmlPath()
         			+ "/target: "+cLink.getC_target().getC_linkpointer().getXmlPath();
-                    
+
                 	Log.logWarning(this, waringMsg);
                     Message msg = MessageResources.getMessage("GEN0", new Object[]{waringMsg});
                     vResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
@@ -446,16 +453,16 @@ public class MapParserImpl {
 	        		metaObject = metaLookup.lookup(xmlPathToSet);//.getDataXmlPath());
 	        	}
 	        }
-			
+
         	if (metaObject == null)
 	            throw new MappingException("Error processing link --meta object is not found --(linkKind/dataXmlPath): " + cLinkPointer.getKind() + "/" + cLinkPointer.getXmlPath(), null);
 	        baseMapElement.setMetaObject(metaObject);
-        }        	
-        baseMapElement.setComponent(baseComponent);  
+        }
+        baseMapElement.setComponent(baseComponent);
         baseMapElement.setXmlPath(xmlPathToSet);//cLinkPointer.getXmlPath());
         return baseMapElement;
     }
-  
+
     private void processViews(C_views cViews) throws MappingException {
         // for each view..
         for (int i = 0; i < cViews.getC_viewCount(); i++) {

@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -87,7 +94,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	private String WINDOWS_MARKER_IN_SOURCE_HTML_FILE = "<!--&&:Variable Area;Don't touch this Paragraph-->";
 	private String EXIT_HYPERLINK_IN_SOURCE_HTML_FILE = "EXIT.HTML";
 	private String LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE = "licenseinformation";
-	
+
 	public AboutWindow(JFrame parent)
 	{
 		super(parent, false);//, "About caAdapter HL7 Mapping and Transformation Service", false);
@@ -121,7 +128,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		js2.setBounds(0, 0, width, height);
 		mainView.setEditable(false);
 		this.add(js2);
-		setSize(width, height);   
+		setSize(width, height);
 		String st = setVersionAndBuildNumber(commonPath + Config.DEFAULT_ABOUT_WINDOW_DATA_FILENAME);
 
 		try
@@ -181,7 +188,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 
 									//System.out.println(" URL -- B");
 									thisWindow.dispose();
-									
+
 									String licenseString = generateLicenseInformationHTMLString();
 									new HTMLViewer(licenseString, 700, 500, "caAdapter License Information", true);
 																	}
@@ -267,11 +274,11 @@ public class AboutWindow extends JDialog //implements ActionListener
 		ret = ClassLoader.getSystemResource("/"+name);
 		return ret;
 	}
-	
+
 	private String generateLicenseInformationHTMLString()
 	{
 		String mainContent = "<a name='top'><h2><font color='blue'>caadapter License Information</font></h2></a><br><br> <br><hr width=\"80%\"><br>";
-		
+
 		String readLineOfFile = "";
 		try
 		{
@@ -290,13 +297,13 @@ public class AboutWindow extends JDialog //implements ActionListener
 		{
 			return ERROR_MESSAGE_FILE_READING_ERROR; // "ERROR : File Reading Error"; }
 		}
-		
+
 		mainContent = "<html><head><title>caadapter Licence Agreement</title></head><body><br><br>" + mainContent + "<br></body></html>";
 		return mainContent;
 	}
 
-	
-	
+
+
 	private String replaceTaggedContent(String tot, String tagOfContent, String replacingStr, String tagOfTail)
 	{
 		try
@@ -327,7 +334,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	}
 
 
-	
+
 	private String getBaseHTML1()
 	{
 		String htmlS = "";
@@ -366,7 +373,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		"</html>";
 		return htmlS;
 	}
-	
+
 	private String getNarrativeSentence()
 	{
 		return " caAdapter is an open source tool set that provides model mapping services in support of caCORE components and facilitates data mapping and transformation among different kinds of data sources."+

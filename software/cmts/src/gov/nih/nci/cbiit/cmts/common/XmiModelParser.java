@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.cbiit.cmts.common;
@@ -38,15 +45,15 @@ import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
  * model being imported into the caAdapter tool. The class loads an XMI file
  * and parses through it creating a LinkedHashMap composed of keys, which are
  * basically xpath like links to the position in the XMI file where the UML Model element
- * is located. The value in the key/value pair is either an ObjectMetadata, 
- * AttributeMetadata, AssociationMetadata, TableMetadata, or ColumnMetadata 
+ * is located. The value in the key/value pair is either an ObjectMetadata,
+ * AttributeMetadata, AssociationMetadata, TableMetadata, or ColumnMetadata
  * object. The key/value pairs are loaded into the LinkedHashMap in order of location
  * in the XMI file and can be retrieved in the same order. The contents of the
  * LinkedHashMap can be used to construct the Object and Data model portions of
  * the caAdapter JTree mapping UI.
 
  * @author LAST UPDATE $Author: wangeug $
- * @since      caAdapter  v4.2    
+ * @since      caAdapter  v4.2
  * @version    $Revision: 1.15 $
  * @date       $Date: 2009-06-12 15:14:21 $
  * */
@@ -55,7 +62,7 @@ public class XmiModelParser {
 	private XmiInOutHandler handler = null;
 	private String xmiFileName;
 	private Component rootComponent;
-	
+
 
 	private static String mmsPrefixObjectModel = "Logical View.Logical Model";
     private static String mmsPrefixDataModel = "Logical View.Data Model";
@@ -64,46 +71,46 @@ public class XmiModelParser {
 	 * Construct a ModelMetaData with xmi file name
 	 * @param xmiFile
 	 */
-	
+
 	public XmiModelParser(String xmiFile){
 		xmiFileName = xmiFile;
 		loadXmiModel();
 	}
-	
-	private void loadXmiModel() 
+
+	private void loadXmiModel()
 	{
 		long stTime=System.currentTimeMillis();
 		if(xmiFileName==null)
 			return;
 		if(xmiFileName.equals(""))
 			return;
-		
+
 		XmiInOutHandler xmiHandeler=initXmiHandler(xmiFileName);
 		if (xmiHandeler==null)
 			return;
 		handler=xmiHandeler;
-			
+
 		UMLModel umlModel=null;
 		try {
 			 handler.load(xmiFileName);
-			 umlModel =handler.getModel(); 
+			 umlModel =handler.getModel();
 	    } catch (XmiException e) {
 		    	e.printStackTrace();
 	    } catch (IOException e) {
 		    	e.printStackTrace();
 	    }
-	    
+
 	    if(umlModel==null)
 	    	return;
-	    
+
 	    ElementMeta xmiElementMeta = loadUMLModel(umlModel);
 	    rootComponent =new Component();
 	    rootComponent.setRootElement(xmiElementMeta);
 	    rootComponent.setKind(KindType.fromValue("xmi"));
-	    		
+
 		System.out.println("XmiModelMetadata.XmiModelMetadata()..end loading:"+(System.currentTimeMillis()-stTime));
 	}
-	
+
     private XmiInOutHandler initXmiHandler(String fileName)
     {
     	XmiInOutHandler rtnHandler;
@@ -121,7 +128,7 @@ public class XmiModelParser {
                 }
             }
             in.close();
-        } 
+        }
         catch (IOException e) {
         	e.printStackTrace();
         }
@@ -135,7 +142,7 @@ public class XmiModelParser {
         }
     	return rtnHandler;
     }
-    
+
 	private ElementMeta loadUMLModel(UMLModel model)
     {
 		ElementMeta rtnMeta=new ElementMeta();
@@ -150,7 +157,7 @@ public class XmiModelParser {
 				continue;
 			rtnMeta.getChildElement().add(pkgElement);
         }
-        return rtnMeta; 
+        return rtnMeta;
     }
 
     private ElementMeta loadPackage(XmiTraversalPath traversalPath, UMLPackage pkg)
@@ -166,12 +173,12 @@ public class XmiModelParser {
 				continue;
 			packageMeta.getChildElement().add(childPkgElement);
 		}
-			
+
         for(UMLClass clazz : pkg.getClasses())
         {
-        	//ignore table 
+        	//ignore table
         	if (clazz.getStereotype()!=null&&clazz.getStereotype().equalsIgnoreCase("table"))
-        		continue;        	
+        		continue;
         	packageMeta.getChildElement().add(parseUMLClass(traversalPath, clazz));
         }
 
@@ -187,7 +194,7 @@ public class XmiModelParser {
         ElementMeta objectMeta = new ElementMeta();
         objectMeta.setName(umlClass.getName());
 
-        
+
         /* The following code look through the inheritance hierachy and populate
          * attributes of all parents to the object
          */
@@ -204,7 +211,7 @@ public class XmiModelParser {
          */
 		for (UMLGeneralization clazzG : clazzGs) {
 		    parent = (UMLClass)clazzG.getSupertype();
-		    if (parent != umlClass) 
+		    if (parent != umlClass)
 		        break;
 		}
         if (parent!=umlClass) {
@@ -215,7 +222,7 @@ public class XmiModelParser {
                 parent = null;
                 for (UMLGeneralization clazzG : clazzGs) {
                     parent = (UMLClass)clazzG.getSupertype();
-                    if (parent != grandParent) 
+                    if (parent != grandParent)
                     	{break;}
                 }
             }
@@ -226,7 +233,7 @@ public class XmiModelParser {
                 }
             }
         }
-        
+
         //parse the attribute defined with current object
         for(UMLAttribute att : umlClass.getAttributes()) {
         	objectMeta.getAttrData().add(parseAttribute(traversalPath, att, false));
@@ -239,44 +246,44 @@ public class XmiModelParser {
         traversalPath.removeLastPathElement(umlClass.getName());
         return objectMeta;
     }
- 
+
 	  private ElementMeta parseAssociation(XmiTraversalPath traversalPath, UMLAssociation assoc, UMLClass objectClass) {
 	    	ElementMeta thisEnd=null;
-		    for(UMLAssociationEnd assocEnd : assoc.getAssociationEnds()) 
+		    for(UMLAssociationEnd assocEnd : assoc.getAssociationEnds())
 		    {
 	    		UMLClass endClass =(UMLClass)assocEnd.getUMLElement();
-//	  			if (assocEnd.getRoleName().equals("")) 
+//	  			if (assocEnd.getRoleName().equals(""))
 //	  				continue;
 		    	if (!assocEnd.isNavigable())
 		    		continue;
 		    	//only attach one end with the holding class
-	  			if (endClass.getName().equals(objectClass.getName())) 
+	  			if (endClass.getName().equals(objectClass.getName()))
 	  				continue;
 		    	thisEnd=new ElementMeta();
   				thisEnd.setName(assocEnd.getRoleName());
-  		 
+
   				thisEnd.setMaxOccurs(BigInteger.valueOf(assocEnd.getHighMultiplicity()));
   				thisEnd.setMinOccurs(BigInteger.valueOf(assocEnd.getLowMultiplicity()));
 	  		}
 		    return thisEnd;
-	  }	  	  
-	  
+	  }
+
 	  private AttributeMeta parseAttribute(XmiTraversalPath traversalPath, UMLAttribute att,  boolean derived) {
 		  	traversalPath.addOnePathElement(att.getName());
 		  	AttributeMeta rtnMeta=new AttributeMeta();
 		  	rtnMeta.setName(att.getName());
 		  	rtnMeta.setIsRequired(true);
 		  	rtnMeta.setIsEnabled(true);
-		  	
+
 	        UMLDatatype attDt=att.getDatatype();
 	        if (attDt!=null)
 	        	rtnMeta.setType(attDt.getName());
 
-	        traversalPath.removeLastPathElement(att.getName());   
+	        traversalPath.removeLastPathElement(att.getName());
 		  	return rtnMeta;
 	  }
-	  
-	 
+
+
 	  public XmiInOutHandler getHandler() {
 		return handler;
 	}
@@ -341,7 +348,7 @@ public class XmiModelParser {
 			System.out.println("XmiModelMetadata.printElement()..\t"+attrMeta.getName());
 		for (ElementMeta elmntMeta:meta.getChildElement())
 			printElement(elmntMeta);
-		
+
 	}
 }
 

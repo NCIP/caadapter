@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -95,8 +102,8 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 				return false;
 			}
 		}
-		
-		//Select file name 
+
+		//Select file name
 		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
 		if (file != null)
 		{
@@ -107,13 +114,13 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	}
 
 	/**
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 * @throws Exception
 	 */
 	protected boolean processSaveFile(File file) throws Exception
-	{		
+	{
 		preActionPerformed(mappingPanel);
 
         MappingDataManager mappingManager = mappingPanel.getMappingDataManager();
@@ -144,14 +151,14 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 			mappingPanel.setChanged(false);
 			//try to notify affected panels
 			postActionPerformed(mappingPanel);
-		
+
             csvToXmi.cvsToXmiGeneration(file.getAbsolutePath());
-    		
+
             //generate mapping report:
             File rptFile =null;
             if (csvToXmi.getReportPanel()!=null)
             	rptFile=csvToXmi.getReportPanel().getSaveFile();
-            
+
             if (rptFile!=null)
             {
 //            	rptFile=DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save Mapping Report As...", true, true);

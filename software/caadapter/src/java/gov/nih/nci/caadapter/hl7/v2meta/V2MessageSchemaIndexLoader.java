@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.v2meta;
 
@@ -23,7 +30,7 @@ import java.util.zip.ZipFile;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jan 22, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.3 $
  * @date 	 DATE: $Date: 2009-02-25 16:52:29 $
  * @since caAdapter v4.2
@@ -31,7 +38,7 @@ import java.util.zip.ZipFile;
 
 public class V2MessageSchemaIndexLoader {
 	private static V2MessageIndex v2Index;
-	
+
 	public  static V2MessageIndex loadMessageInfos() throws Exception {
 		if (v2Index!=null)
 			return v2Index;
@@ -43,7 +50,7 @@ public class V2MessageSchemaIndexLoader {
 		v2Index = new V2MessageIndex();
 		while (entryEnum.hasMoreElements())
 		{
-			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
+			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();
 			String fileName=zipEntry.getName();
  			v2Index.addMessageType(fileName);
 		}
@@ -51,13 +58,13 @@ public class V2MessageSchemaIndexLoader {
 	}
 	public static void saveV2MessageIndexObject() throws Exception {
 		OutputStream os = new FileOutputStream("v2MessageIndex.obj");
-		ObjectOutputStream oos = new ObjectOutputStream(os); 
+		ObjectOutputStream oos = new ObjectOutputStream(os);
 		V2MessageIndex v2Index= loadMessageInfos() ;
 		oos.writeObject(v2Index);
 		oos.close();
 		os.close();
 	}
-	
+
 	public static V2MessageIndex loadV2MessageIndexObject() {
 		try {
 			System.out
@@ -76,7 +83,7 @@ public class V2MessageSchemaIndexLoader {
 		}
 		return null;
 	}
-	
+
 	public static void main(String[] args)
 	{
 		try {

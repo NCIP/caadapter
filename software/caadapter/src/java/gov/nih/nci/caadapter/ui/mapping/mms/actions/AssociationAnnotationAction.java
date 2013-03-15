@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
@@ -28,7 +35,7 @@ import java.awt.event.ActionEvent;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jul 2, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.3 $
  * @date 	 DATE: $Date: 2009-09-28 20:09:39 $
  * @since caAdapter v4.2
@@ -51,7 +58,7 @@ public class AssociationAnnotationAction extends ItemAnnotationAction {
 		super(nameTxt, actionType, midPane );
 		// TODO Auto-generated constructor stub
 	}
- 
+
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction#doAction(java.awt.event.ActionEvent)
 	 */
@@ -62,10 +69,10 @@ public class AssociationAnnotationAction extends ItemAnnotationAction {
 		UMLAssociation umlAssc=asscMeta.getUMLAssociation();
 		ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 		UMLClass umlClass=ModelUtil.findClass(modelMetadata.getModel(), asscMeta.getXPath());
-		
+
 		if (this.getAnnotationActionType()==SET_INVERSEOF)
 		{
-			
+
     		ColumnMetadata columnMapped=(ColumnMetadata)CumulativeMappingGenerator.getInstance().getCumulativeMapping().findMappedTarget(asscMeta.getXPath());
         	UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),columnMapped.getXPath());
 
@@ -79,7 +86,7 @@ public class AssociationAnnotationAction extends ItemAnnotationAction {
     			otherEnd=(UMLAssociationEndBean)endTwo;
     			thisEnd=(UMLAssociationEndBean)endOne;
     		}
-    		String otherEndFullPath= ModelUtil.getFullName((UMLClass)otherEnd.getUMLElement())+"."+thisEnd.getRoleName();	       	
+    		String otherEndFullPath= ModelUtil.getFullName((UMLClass)otherEnd.getUMLElement())+"."+thisEnd.getRoleName();
     		String otherEndPurePath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), otherEndFullPath);
     		XMIAnnotationUtil.addTagValue(xpathAttr, "inverse-of", otherEndPurePath);
 
@@ -119,7 +126,7 @@ public class AssociationAnnotationAction extends ItemAnnotationAction {
 				//annotate object with new tag value
  				XMIAnnotationUtil.addTagValue(umlAssc, newCascadeTagName,(String)dialog.getUserInput());
 	        }
-			
+
 			return true;
 		}
 		return false;

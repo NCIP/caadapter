@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -88,8 +95,8 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 				return false;
 			}
 		}
-		
-		//Select file name 
+
+		//Select file name
 		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
 		if (file != null)
 		{
@@ -100,15 +107,15 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	}
 
 	/**
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 * @throws Exception
 	 */
 	protected boolean processSaveFile(File file) throws Exception
-	{		
+	{
 		boolean success = false;
-		try 
+		try
 		{
             String savingMessage = "Saving file please wait...";
 
@@ -126,32 +133,32 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 
 //            String mappingFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
 //			File mappingFile = new File( mappingFileName );
-			
-			// Create .MAP file with Mapping attribute tagged values			
-			success = saveMappingFile( file.getAbsolutePath() );			
-						
+
+			// Create .MAP file with Mapping attribute tagged values
+			success = saveMappingFile( file.getAbsolutePath() );
+
 			mappingPanel.setSaveFile(file);
             frame.setVisible( false );
             frame.dispose();
 
             JOptionPane.showMessageDialog( mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE );
         }
-		catch (Exception ex) 
+		catch (Exception ex)
 		{
 			ex.printStackTrace();
-		}		
-			
-		return success;	
+		}
+
+		return success;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 * @throws Exception
 	 */
-	private boolean saveMappingFile(String fileName) throws Exception 
-	{		
+	private boolean saveMappingFile(String fileName) throws Exception
+	{
 		preActionPerformed(mappingPanel);
 		boolean oldChangeValue = mappingPanel.isChanged();
 		try
@@ -162,7 +169,7 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 			xmiMetada.getHandler().save( fileName);
 			//clear the change flag.
      	    mappingPanel.setChanged(false);
-     	   return true;   
+     	   return true;
 		}
 		catch(Throwable e)
 		{
@@ -171,7 +178,7 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 			//rethrow the exeception
 			throw new Exception(e);
 		}
-	}	
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $

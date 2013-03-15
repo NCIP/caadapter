@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
@@ -17,7 +24,7 @@ import org.w3c.dom.Node;
 
 /**
  * The class will parse a specializedClass section  from the mif XML file.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2009-11-11 20:26:47 $
@@ -38,7 +45,7 @@ public class SpecializedClassParser {
 	 * @return MIFClass parsed with given XML node
 	 */
 	public MIFClass parseSpecializedClass(Node node,String prefix, Hashtable<String,String> participantTraversalNames) {
-		
+
         Node child = node.getFirstChild();
         String annotation = null;
         while (child != null)
@@ -57,7 +64,7 @@ public class SpecializedClassParser {
                 //return cmetRefParser.parseCMetRef(child, prefix,false);
             }
         	/*
-        	 * The following is not part of the spec but appears in MIF files anyway. The reference 
+        	 * The following is not part of the spec but appears in MIF files anyway. The reference
         	 * is a link to a class of the same CMET. (Personal observation)
         	 */
         	if (child.getNodeName().equals(prefix+"reference")

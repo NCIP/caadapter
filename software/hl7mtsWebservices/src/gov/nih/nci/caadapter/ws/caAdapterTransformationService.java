@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ws;
 
@@ -36,8 +43,8 @@ public class caAdapterTransformationService
     /**
      * caadapter Web Service to provide transformation service
      *
-     * @param mappingScenario The name of the mapping scenario 
-     * @param csvString csv data in String format 
+     * @param mappingScenario The name of the mapping scenario
+     * @param csvString csv data in String format
      * @return A collection of the transformed HL7 v3 message
      */
     public ArrayList<String> transformationService(String mappingScenario, String csvString)
@@ -48,7 +55,7 @@ public class caAdapterTransformationService
 	public ArrayList<String> transformationService(String mappingScenario, String csvString, String controlMessage)
     {
 
-		  ArrayList<String> result = new ArrayList<String>(); 
+		  ArrayList<String> result = new ArrayList<String>();
 
           String controlMessageFile = null;
             if ((controlMessage != null)&&(!controlMessage.trim().equals("")))
@@ -72,12 +79,12 @@ public class caAdapterTransformationService
 			  String path =ScenarioUtil.SCENARIO_HOME;
 			  String scenarioPath=path+"/"+mappingScenario;
 			  boolean exists = (new File(scenarioPath)).exists();
-			  if (exists) 
+			  if (exists)
 			  {
 				  System.out.println("caAdapterTransformationService.transformationService()..path:"+path);
 				  String mappingFileName = scenarioPath+"/"+scenario.getMappingFile();
 				  System.out.println("mapping file:"+mappingFileName);
-	
+
 
                   String tempCSVFile = FileUtil.getTemporaryFileName(".csv");
                   FileUtil.saveStringIntoTemporaryFile(tempCSVFile, csvString);

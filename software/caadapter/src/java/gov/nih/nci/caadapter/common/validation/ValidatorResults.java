@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -117,7 +124,7 @@ public class ValidatorResults extends Object implements java.io.Serializable
         return rtnList;
     }
     public List <ValidatorResult>  getValidationResult(ValidatorResult.Level level)
-    { 	
+    {
         if (level == ValidatorResult.Level.FATAL)
         {
             return fatalResults;
@@ -148,7 +155,7 @@ public class ValidatorResults extends Object implements java.io.Serializable
             Log.logWarning(this, "Unknown Validation Level" + level);
             return new ArrayList<ValidatorResult>();
         }
-  	
+
     }
     /**
      * Get all messages ordered by validation level.
@@ -156,7 +163,7 @@ public class ValidatorResults extends Object implements java.io.Serializable
      */
     public List<Message> getAllMessages()
     {
-        
+
         return this.getMessages(ValidatorResult.Level.ALL);
     }
 
@@ -171,7 +178,7 @@ public class ValidatorResults extends Object implements java.io.Serializable
         if (!errorResults.isEmpty()) levels.add(ValidatorResult.Level.ERROR);
         if (!warningResults.isEmpty()) levels.add(ValidatorResult.Level.WARNING);
         if (!infoResults.isEmpty()) levels.add(ValidatorResult.Level.INFO);
-        //enable use to see all types of messages 
+        //enable use to see all types of messages
         if (levels.size()>0)
         	levels.add(0,ValidatorResult.Level.ALL);
         return levels;
@@ -226,7 +233,7 @@ public class ValidatorResults extends Object implements java.io.Serializable
     			||level.equals(ValidatorResult.Level.ALL))
 	        for (int i = 0; i < fatalResults.size(); i++)
 	        {
-	            sb.append("FATAL: ").append(fatalResults.get(i).getMessage()).append(carriageReturn);    
+	            sb.append("FATAL: ").append(fatalResults.get(i).getMessage()).append(carriageReturn);
 	        }
     	if (level.equals(ValidatorResult.Level.ERROR)
     			||level.equals(ValidatorResult.Level.ALL))
@@ -243,7 +250,7 @@ public class ValidatorResults extends Object implements java.io.Serializable
             sb.append("WARNING: ").append(warningResults.get(i).getMessage()).append(carriageReturn);
 
         }
-    	
+
     	if (level.equals(ValidatorResult.Level.INFO)
     			||level.equals(ValidatorResult.Level.ALL))
         for (int i = 0; i < infoResults.size(); i++)
@@ -253,7 +260,7 @@ public class ValidatorResults extends Object implements java.io.Serializable
         }
     	return sb.toString();
     }
-    
+
     public boolean savePrintableFile(String filePath,  ValidatorResult.Level slctdLevel)
     {
        FileWriter fw = null;

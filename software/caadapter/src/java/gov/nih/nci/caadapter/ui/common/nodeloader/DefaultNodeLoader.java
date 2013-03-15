@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -79,7 +86,7 @@ public class DefaultNodeLoader implements NodeLoader
 	 * @param object
 	 * @param tree if null, no corresponding tree update information will be broadcast.
 	 */
-	public static void refreshSubTreeByGivenMifObject(DefaultMutableTreeNode targetNode, DefaultMutableTreeNode newNode, JTree tree) 
+	public static void refreshSubTreeByGivenMifObject(DefaultMutableTreeNode targetNode, DefaultMutableTreeNode newNode, JTree tree)
 	{
 		if(newNode!=null)
 		{//clear out all children and add in new ones, if any
@@ -87,7 +94,7 @@ public class DefaultNodeLoader implements NodeLoader
 			int childCount = newNode.getChildCount();
 			targetNode.setAllowsChildren(true);
 			for(int i=0; i<childCount; i++)
-			{//once a node is moved from newNode to targetNode, it 
+			{//once a node is moved from newNode to targetNode, it
 			//is removed from the newNode children list, so always getChildAt(0)
 				targetNode.add((MutableTreeNode) newNode.getChildAt(0));
 			}

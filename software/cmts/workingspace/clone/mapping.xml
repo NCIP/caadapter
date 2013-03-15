@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
         <component location="workingspace\clone\shiporder.xsd" kind="xml" type="source" id="0">

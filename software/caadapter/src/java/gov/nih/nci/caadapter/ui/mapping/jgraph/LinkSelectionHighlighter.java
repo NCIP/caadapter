@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -90,7 +97,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
-	private MappingMiddlePanel middlePanel;  
+	private MappingMiddlePanel middlePanel;
 	private boolean graphInSelection = false;
 
 	public LinkSelectionHighlighter(AbstractMappingPanel mappingPanel, JGraph graph, MappingMiddlePanel middlePanel)
@@ -141,15 +148,15 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 				JOptionPane.showMessageDialog(mappingPanel, "You should input the source file name first(2).", "No Source file", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			else 
+			else
 				mappingPanel.getTargetTree().clearSelection();
-		  
+
 			if (mappingPanel.getSourceTree() == null)
 			{
 				JOptionPane.showMessageDialog(mappingPanel, "You should input the target file name first(2).", "No Target file", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			else 
+			else
 				mappingPanel.getSourceTree().clearSelection();
 	    	return;
 	    }
@@ -184,7 +191,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		//ignore if it is a clear selection event
 		if (!e.isAddedPath())
 			return;
-		
+
 		if (graphInSelection)
 			return;
 		graph.clearSelection();
@@ -195,7 +202,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		//set tree highlight being cleaned as clean graph highlight
 		MappingBaseTree evntTree=(MappingBaseTree)eventSource;
 		evntTree.setSelectionPath(path);
-		
+
 		String searchMode = null;
 		if(eventSource instanceof MappingSourceTree)
 			searchMode = MappingViewCommonComponent.SEARCH_BY_SOURCE_NODE;
@@ -238,7 +245,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		if ((!(object instanceof DefaultGraphCell) && (object instanceof DefaultMutableTreeNode)))
 		{//screen out possible graph cell but just leave pure tree node to be highlighted
-			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;			
+			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;
 			TreePath treePath = new TreePath(treeNode.getPath());
 			tree.setSelectionPath(treePath);
 		}
@@ -250,33 +257,33 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	public void mouseClicked(MouseEvent e)
 	{
 		if (SwingUtilities.isRightMouseButton(e))
-		{         						
+		{
 			Container parentC = e.getComponent().getParent();
-			
+
 			while ( !(parentC instanceof JScrollPane))
 			{
 				parentC=parentC.getParent();
 			}
-			
+
 			MappingTreeScrollPane mappingScroll=(MappingTreeScrollPane)parentC;
-			
-			if(mappingScroll.getPaneType().equals(MappingTreeScrollPane.DRAW_NODE_TO_LEFT)) 
+
+			if(mappingScroll.getPaneType().equals(MappingTreeScrollPane.DRAW_NODE_TO_LEFT))
 			{
 				// Create PopupMenu for the Cell
 				JPopupMenu menu = createTargetPopupMenu();
-						
+
 				// Display PopupMenu
 				menu.show(e.getComponent(), e.getX(), e.getY());
 			}
-			
+
 			if(mappingScroll.getPaneType().equals(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT))
 			{
 				// Create PopupMenu for the Cell
 				JPopupMenu menu = createSourcePopupMenu();
-						
+
 				// Display PopupMenu
 				menu.show(e.getComponent(), e.getX(), e.getY());
-			}	
+			}
 		}
 
 		//if mouse clicked, it is definitely not in drag and drop.
@@ -291,7 +298,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             return;
         }
         mappingPanel.setInDragDropMode(false);
-        
+
         if(previousValue)
 		{//previously in drag and drop mode, so to ensure the highlight back up, generate the corresponding tree or graph selection event.
 			Object source = e.getSource();
@@ -300,7 +307,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			//following code tries to trigger the valueChanged() methods above to mimic and restore the "highlight" command
 			if(source instanceof JGraph)
 			{
-				JGraph mGraph = (JGraph) source;			
+				JGraph mGraph = (JGraph) source;
 				mGraph.setSelectionCells(mGraph.getSelectionCells());
 //				GraphSelectionEvent event = new GraphSelectionEvent(source, new Object[]{}, )
 			}
@@ -327,7 +334,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		}
 	}
 	/**
-	 * Set popup menu for the nodes of source tree 
+	 * Set popup menu for the nodes of source tree
 	 * @return sourceNodePopup
 	 */
 	private JPopupMenu createSourcePopupMenu()
@@ -337,19 +344,19 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 
         ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();
 
-		TreePath leadingPath = sourceTree.getLeadSelectionPath();    
+		TreePath leadingPath = sourceTree.getLeadSelectionPath();
         //Check to see if anything is selected
 		if( sourceTree.getLeadSelectionPath() != null )
 		{
-			leadingPath = sourceTree.getLeadSelectionPath();	
+			leadingPath = sourceTree.getLeadSelectionPath();
 			//TreePath paths[] = sourceTree.getSelectionPaths();
-			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();			
-			
+			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
+
 			Object nodeObj=mutNode.getUserObject();
 			if (!(nodeObj instanceof MetaObject))
 				return popupMenu;
 			MetaObject metaObj=(MetaObject)nodeObj;
-		
+
 			//the following four actions apply to object metadata
 			ObjectAnnotationAction discValueSettingAction=new ObjectAnnotationAction("Set Discriminator Value", ObjectAnnotationAction.SET_DISCRIMINATOR_VALUE,middlePanel);
             popupMenu.add(new JMenuItem(discValueSettingAction));
@@ -359,9 +366,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             popupMenu.add(new JMenuItem(gNullflavorValueSettingAction));
             ObjectAnnotationAction gNullflavorValueRemoveAction=new ObjectAnnotationAction("Remove Global NullFlavor Constant", ObjectAnnotationAction.REMOVE_GLOBAL_NULLFLAVOR_CONSTANT,middlePanel);
             popupMenu.add(new JMenuItem(gNullflavorValueRemoveAction));
-        	
+
             popupMenu.addSeparator();
-        	
+
             //add action for attribute
             AttributeAnnotationAction pkSetAction=new AttributeAnnotationAction("Set as Primary Key", AttributeAnnotationAction.SET_AS_PK,middlePanel);
             popupMenu.add(new JMenuItem(pkSetAction));
@@ -369,44 +376,44 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             AttributeAnnotationAction pkUnsetAction=new AttributeAnnotationAction("Unset as Primary Key", AttributeAnnotationAction.REMOVE_ANNOTATION_TAG,middlePanel);
             popupMenu.add(new JMenuItem(pkUnsetAction));
             pkUnsetAction.setAnnotationTagName("id-attribute");
-            
+
             AttributeAnnotationAction constantSetAction=new AttributeAnnotationAction("Set Local Constant Value", AttributeAnnotationAction.SET_CONSTANT_VALUE,middlePanel);
             popupMenu.add(new JMenuItem(constantSetAction));
             AttributeAnnotationAction constantRemoveAction=new AttributeAnnotationAction("Remove Local Constant Value", AttributeAnnotationAction.REMOVE_ANNOTATION_TAG,middlePanel);
             popupMenu.add(new JMenuItem(constantRemoveAction));
-            
+
             AttributeAnnotationAction nullflavorSetAction=new AttributeAnnotationAction("Set Local NullFlavor Constant", AttributeAnnotationAction.SET_NULLFLAOVR_CONSTANT,middlePanel);
             popupMenu.add(new JMenuItem(nullflavorSetAction));
             AttributeAnnotationAction nullflavorRemoveAction=new AttributeAnnotationAction("Remove Local NullFlavor Constant", AttributeAnnotationAction.REMOVE_ANNOTATION_TAG,middlePanel);
             popupMenu.add(new JMenuItem(nullflavorRemoveAction));
-            
+
             AttributeAnnotationAction elementTypeSetAction=new AttributeAnnotationAction("Set Collection Eelment Type", AttributeAnnotationAction.SET_COLLECTION_ELEMENT_TYPE,middlePanel);
             popupMenu.add(new JMenuItem(elementTypeSetAction));
             AttributeAnnotationAction elementTypeRemoveAction=new AttributeAnnotationAction("Remove Collection Eelment Type", AttributeAnnotationAction.REMOVE_ANNOTATION_TAG,middlePanel);
             popupMenu.add(new JMenuItem(elementTypeRemoveAction));
             popupMenu.addSeparator();
-            
+
         	//The following actions apply for association metadata
         	AssociationAnnotationAction cascadeSettingAction=new AssociationAnnotationAction("Set Cascade Value", AssociationAnnotationAction.SET_CASCADE_SETTING,middlePanel);
             popupMenu.add(new JMenuItem(cascadeSettingAction));
             AssociationAnnotationAction cascadeRemoveAction=new AssociationAnnotationAction("Remove Cascade Value",  AssociationAnnotationAction.REMOVE_CASCADE_SETTING,middlePanel);
             popupMenu.add(new JMenuItem(cascadeRemoveAction));
-          
+
             AssociationAnnotationAction inverseSettingAction=new AssociationAnnotationAction("Set as Inverse Side",  AssociationAnnotationAction.SET_INVERSEOF,middlePanel);
             popupMenu.add(new JMenuItem(inverseSettingAction));
             AssociationAnnotationAction inverseRemoveAction=new AssociationAnnotationAction("Unset as Inverse Side",  AssociationAnnotationAction.REMOVE_INVERSEOF, middlePanel);
             popupMenu.add(new JMenuItem(inverseRemoveAction));
-            
+
             if ( metaObj instanceof AssociationMetadata )
             {
             	AssociationMetadata asscMetadata = (AssociationMetadata)mutNode.getUserObject();
             	if (!asscMetadata.isMapped())
             		return popupMenu;
-            	//check if "inverse-of" exist  
+            	//check if "inverse-of" exist
             	UMLAssociation umlAssc=asscMetadata.getUMLAssociation();
             	String pureAssciationEndPath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(),  asscMetadata.getXPath());
             	UMLTaggedValue correlationTagValue=umlAssc.getTaggedValue("correlation-table");
-            	
+
             	if (correlationTagValue!=null)
     			{
             		ColumnMetadata columnMapped=(ColumnMetadata)CumulativeMappingGenerator.getInstance().getCumulativeMapping().findMappedTarget(asscMetadata.getXPath());
@@ -423,14 +430,14 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	    				inverseSettingAction.setEnabled(true);
 	    			}
     			}
-    			//check if NCI_CASCADE_ASSOCIATION exist 
-    			
+    			//check if NCI_CASCADE_ASSOCIATION exist
+
     			String fullCascadeTagName="NCI_CASCADE_ASSOCIATION#"+pureAssciationEndPath;
     			UMLTaggedValue cascadeTagValue=umlAssc.getTaggedValue(fullCascadeTagName);
      			cascadeSettingAction.setMetaAnnoted(asscMetadata);
-   				cascadeSettingAction.setEnabled(true);  				
+   				cascadeSettingAction.setEnabled(true);
     			if (cascadeTagValue!=null)
-    			{	
+    			{
      	   			System.out.println("AssociationAnnotationAction.doAction()..existing value:"+cascadeTagValue.getName()+"="+cascadeTagValue.getValue());
    					cascadeRemoveAction.setMetaAnnoted(asscMetadata);
    					cascadeRemoveAction.setEnabled(true);
@@ -438,7 +445,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             }
             else 	if (metaObj instanceof AttributeMetadata)
             {
-            	AttributeMetadata attrMetadata = (AttributeMetadata)mutNode.getUserObject();	 			
+            	AttributeMetadata attrMetadata = (AttributeMetadata)mutNode.getUserObject();
             	AttributeMetadata annotationAttrMetadat=Iso21090uiUtil.findAnnotationAttribute(mutNode);
             	boolean isGlobal=false;
     			if (attrMetadata.getXPath().equals(annotationAttrMetadat.getXPath()))
@@ -449,9 +456,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 				if (xpathAttr==null&&annotationAttrMetadat.isDerived())
 				{
 					ObjectMetadata holderObject=(ObjectMetadata)modelMetadata.getModelMetadata().get(annotationAttrMetadat.getParentXPath());
-					xpathAttr=Iso21090uiUtil.findInheritedAttributeDefinition(modelMetadata.getModel(), annotationAttrMetadat, holderObject.getUmlClass());					
+					xpathAttr=Iso21090uiUtil.findInheritedAttributeDefinition(modelMetadata.getModel(), annotationAttrMetadat, holderObject.getUmlClass());
 				}
-				//add relative path for local attribute				
+				//add relative path for local attribute
 				if (!isGlobal)
 					tagName=tagName+"."+Iso21090uiUtil.findAttributeRelativePath(mutNode);
 
@@ -463,7 +470,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         				constantRemoveAction.setName("Remove Global Constant");
         			}
             		constantSetAction.setEnabled(true);
-            		constantSetAction.setMetaAnnoted(annotationAttrMetadat); 
+            		constantSetAction.setMetaAnnoted(annotationAttrMetadat);
             		constantSetAction.setAnnotationTagName(tagName);
             		if (xpathAttr.getTaggedValue(tagName)!=null)
             		{
@@ -473,7 +480,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             		}
             	}
 				else if (attrMetadata.getDatatype().equalsIgnoreCase("SEQUENCE(ADXP)"))
-//		            	
+//
 //            	else if (annotationAttrMetadat.getDatatype().equalsIgnoreCase("DSET<AD>")
 //            			&&attrMetadata.getDatatype().equalsIgnoreCase("SEQUENCE(ADXP)"))
             	{
@@ -503,14 +510,14 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             	}
             	if (attrMetadata!=annotationAttrMetadat) //.isMapped())
             		return popupMenu;
-            	
+
             	tagName="id-attribute";
             	UMLTaggedValue pkTag=xpathAttr.getTaggedValue(tagName);
             	if (pkTag!=null)
             	{
             		pkUnsetAction.setMetaAnnoted(annotationAttrMetadat);
             		pkUnsetAction.setEnabled(true);
-            	} 
+            	}
             	else
             	{
             		UMLClass parentClass=ModelUtil.findClass(modelMetadata.getModel(), annotationAttrMetadat.getParentXPath());
@@ -518,13 +525,13 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         			{
         				if (sblAttribute.getTaggedValue(tagName)!=null)
         					return popupMenu;
-        			}	
+        			}
                 	pkSetAction.setMetaAnnoted(annotationAttrMetadat);
                 	pkSetAction.setEnabled(true);
             	}
             }
             else  if (metaObj instanceof ObjectMetadata) {
-            	
+
             	ObjectMetadata objectMetadata = (ObjectMetadata)mutNode.getUserObject();
             	UMLClass objClass=(UMLClass)ModelUtil.findClass(modelMetadata.getModel(), objectMetadata.getXPath());
             	if (objClass==null)
@@ -540,11 +547,11 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
                 	{
             			gNullflavorValueRemoveAction.setMetaAnnoted(objectMetadata);
             			gNullflavorValueRemoveAction.setEnabled(true);
-                	}  
+                	}
             	}
             	if (!objectMetadata.isMapped())
             		return popupMenu;
-            	
+
             	//check if this class is a sub-class
 				List<UMLGeneralization> clazzGs = objClass.getGeneralizations();
 				boolean isRoot=true;
@@ -557,7 +564,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
                 }
                 if (isRoot)
             		return popupMenu;
-           
+
             	//The class is a sub-class, continue
             	//check if discrimniator value exists
             	UMLTaggedValue discTag=objClass.getTaggedValue("discriminator");
@@ -565,9 +572,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             	{
             		discValueRemoveAction.setMetaAnnoted(objectMetadata);
             		discValueRemoveAction.setEnabled(true);
-            	}  
+            	}
                	discValueSettingAction.setMetaAnnoted(objectMetadata);
-               	discValueSettingAction.setEnabled(true);                    		
+               	discValueSettingAction.setEnabled(true);
             }
         }
 		return popupMenu;
@@ -581,26 +588,26 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		JPopupMenu popupMenu = new JPopupMenu();
         //Could change this depending on whether lazy/eager
-    	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();    	
- 
+    	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();
+
         JTree targetTree = mappingPanel.getTargetTree();
-		TreePath leadingPath = targetTree.getLeadSelectionPath();														
-	
+		TreePath leadingPath = targetTree.getLeadSelectionPath();
+
 		//the following two actions apply to table metadata
 		ColumnAnnotationAction pkSettingAction=new ColumnAnnotationAction("Set Primary Key Generator", ColumnAnnotationAction.SET_PK_GENERATOR,middlePanel);
         popupMenu.add(new JMenuItem(pkSettingAction));
         ColumnAnnotationAction pkRemoveAction=new ColumnAnnotationAction("Remove Primary Key Generator", ColumnAnnotationAction.REMOVE_PK_GENERATOR,middlePanel);
         popupMenu.add(new JMenuItem(pkRemoveAction));
-    	
+
         popupMenu.addSeparator();
-    	
+
     	//The following actions apply for association column metadata
         ColumnAnnotationAction discKeySettingAction=new ColumnAnnotationAction("Set as Discriminator Key", ColumnAnnotationAction.SET_DISCRIMINATOR_KEY,middlePanel);
         popupMenu.add(new JMenuItem(discKeySettingAction));
         ColumnAnnotationAction discKeyRemoveAction=new ColumnAnnotationAction("Unset as Discriminator Key",  ColumnAnnotationAction.REMOVE_DISCRIMINATOR_KEY,middlePanel);
         popupMenu.add(new JMenuItem(discKeyRemoveAction));
         popupMenu.addSeparator();
-        
+
       //The following actions apply for column metadata of table mapped to ISO data type
         ColumnAnnotationAction isoInverseSettingAction=new ColumnAnnotationAction("Set as Inverse Side", ColumnAnnotationAction.SET_INVERSE_KEY,middlePanel);
         popupMenu.add(new JMenuItem(isoInverseSettingAction));
@@ -624,28 +631,28 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 				UMLTaggedValue mappingAsscTag=xpathAttr.getTaggedValue("implements-association");
 				if (mappingAsscTag!=null)
 					return popupMenu;
-				
+
 				UMLTaggedValue mappingAttrTag=xpathAttr.getTaggedValue("mapped-attributes");
  				if (mappingAttrTag!=null)
 				{
 					//check if primary key column
-					HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);			
+					HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);
 					if (!pkSetting.isEmpty())
 					{
 						pkRemoveAction.setMetaAnnoted(columnMeta);
 						pkRemoveAction.setEnabled(true);
 						pkSettingAction.setMetaAnnoted(columnMeta);
 						pkSettingAction.setEnabled(true);
-					} 
+					}
 					else
 					{
 						//enable pkSettingAction if no attribute has "primaryKey Generator"
 						boolean pkSet=false;
 						TableMetadata tblMeta=columnMeta.getTableMetadata();
 						for(ColumnMetadata anyCol:tblMeta.getColumns())
-						{						
+						{
 							UMLAttribute anyUmlAttr=ModelUtil.findAttribute(modelMetadata.getModel(),anyCol.getXPath());
-							HashMap<String, HashMap<String, String>> pkAnySetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(anyUmlAttr);			
+							HashMap<String, HashMap<String, String>> pkAnySetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(anyUmlAttr);
 							if (!pkAnySetting.isEmpty())
 							{
 								pkSet=true;
@@ -659,7 +666,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 							pkSettingAction.setEnabled(true);
 						}
 					}
-					//check if the column is mapped as implicit primary key 
+					//check if the column is mapped as implicit primary key
 					AttributeMetadata srcAttr=(AttributeMetadata)CumulativeMappingGenerator.getInstance().getCumulativeMapping().findMappedSource(columnMeta.getXPath());
 					if (srcAttr==null)
 					{
@@ -698,10 +705,10 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 						isoImplicitKeySettingAction.setEnabled(true);
 					}
 				}
-			}	
+			}
 		}
 		return popupMenu;
-	}    
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $

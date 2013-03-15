@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.common.csv.data.impl;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
@@ -22,7 +29,7 @@ import java.util.StringTokenizer;
  * CSVSegmentedFileExtension
  * @author OWNER: $Author: phadkes $
  * @author LAST UPDATE $Author: phadkes $
- * @since      caAdapter  v4.2    
+ * @since      caAdapter  v4.2
  * @version    $Revision: 1.7 $
  * @date       $Date: 2008-09-24 20:00:10 $
 */
@@ -30,7 +37,7 @@ import java.util.StringTokenizer;
 public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 	private CSVMeta csvMeta;
 	private ValidatorResults transformationResults;
-	
+
 	public void insertCsvField(String csvFieldKey, String csvValue)
 	{
 //		System.out.println("CSVSegmentedFileExtension.insertCsvField().. field:"+csvFieldKey);
@@ -67,11 +74,11 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 	}
 
 	/**
-	 * Set new value with CSVMeta 
+	 * Set new value with CSVMeta
 	 * @param userCsvMeta
 	 */
 	public void setCsvMeta(CSVMeta userCsvMeta) {
-		csvMeta = userCsvMeta;  		
+		csvMeta = userCsvMeta;
 	    CSVSegmentMeta rootSegmentMeta = csvMeta.getRootSegment();
 	    CSVSegment rootSeg=recursivlyAddEmptySegmentRecords(rootSegmentMeta);
 	    addLogicalRecord(rootSeg);
@@ -104,7 +111,7 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 		{
 			String childSegName=stoken.nextToken();
 			if (parentSegs.isEmpty())
-				break;		
+				break;
 			else
 			{
 				List childSegs=new ArrayList<CSVSegmentExtension>();
@@ -120,7 +127,7 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 		}
 		return parentSegs;
 	}
-	
+
 	/**
 	 * Create a new CSVSegment and attached it with its parent segment
 	 * @param parentSeg
@@ -128,7 +135,7 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 	 * @return
 	 */
 	private CSVSegment createChildSegment (CSVSegment parentSeg, String childSegName)
-	{	
+	{
 
 		CSVSegmentMeta newChildMeta=null;
 		if (parentSeg==null)
@@ -156,7 +163,7 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 
 		return newSeg;
 	}
-	
+
 	/**
 	 * Create an empty CSVSegment given it metadata
 	 * @param meta
@@ -183,16 +190,16 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
         segment.setFields(fields);
         return segment;
     }
-    
+
 	private CSVSegment recursivlyAddEmptySegmentRecords(CSVSegmentMeta segMeta )
 	{
-		CSVSegment segment=initializeEmptyCsvSegment(segMeta);       	    
+		CSVSegment segment=initializeEmptyCsvSegment(segMeta);
 		for (CSVSegmentMeta childSegmentMeta:segMeta.getChildSegments())
 	    {
 	    	CSVSegment childSeg=recursivlyAddEmptySegmentRecords( childSegmentMeta);
 	    	childSeg.setParentSegment(segment);
 	    	segment.addChildSegment(childSeg);
-	    } 
+	    }
 	    return segment;
 	}
 
@@ -220,7 +227,7 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 		}
 		return rtnValue;
 	}
-	
+
 	/**
 	 * Express the CSVSegmentFile as string
 	 */
@@ -236,10 +243,10 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 		StringBuffer sb=new StringBuffer();
 		for (CSVSegment csvSeg:this.getLogicalRecords())
 			sb.append(recursivelyConvertSegmentToCSVString(csvSeg));
-		
+
 		return sb.toString();
 	}
-	
+
 	private String recursivelyConvertSegmentToCSVString(CSVSegment csvSeg)
 	{
 		StringBuffer sb=new StringBuffer();

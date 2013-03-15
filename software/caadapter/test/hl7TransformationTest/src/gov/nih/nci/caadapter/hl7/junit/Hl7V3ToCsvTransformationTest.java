@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.hl7.junit;
 
 import static org.junit.Assert.*;
@@ -28,7 +35,7 @@ import java.io.FileWriter;;
  */
 public class Hl7V3ToCsvTransformationTest extends TestCase {
 
-	
+
 	/**
 	 * Test method for {@link gov.nih.nci.caadapter.hl7.v3csv.TransformationServiceHL7V3ToCsv#TransformationServiceHL7V3ToCsv(java.lang.String, java.lang.String)}.
 	 */
@@ -44,10 +51,10 @@ public class Hl7V3ToCsvTransformationTest extends TestCase {
 	public void testTransformationServiceHL7V3ToCsvFileFile() {
 		String mapFileName="C:\\CVS\\caadapter\\components\\hl7Transformation\\test\\data\\COCT_MT150003.map";
 		String srcFileName="C:\\CVS\\caadapter\\components\\hl7Transformation\\test\\data\\COCT_MT150003_1.xml";
-		
+
 		File mapFile=new File(mapFileName);
 		File srcFile=new File(srcFileName);
-		
+
 		String csvOut=srcFile.getParent()+File.separator+"transferOut.csv";
 		TransformationServiceHL7V3ToCsv ts=new TransformationServiceHL7V3ToCsv(srcFile,mapFile);
 		List csvList=ts.process();

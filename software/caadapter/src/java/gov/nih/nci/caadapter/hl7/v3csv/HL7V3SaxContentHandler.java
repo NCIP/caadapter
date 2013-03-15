@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.hl7.v3csv;
 
 /**
@@ -49,7 +56,7 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 		super.startDocument();
 		pathToRoot=new MessageElementXmlPath();
 		//retrive csv MetaData
-		csvDataWrapper = new CSVSegmentedFileExtension();		
+		csvDataWrapper = new CSVSegmentedFileExtension();
 		parseDocumentResults=new ValidatorResults();
 		Message msg = MessageResources.getMessage("HL7TOCSV0", new Object[]{"Start"});
 		parseDocumentResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
@@ -57,14 +64,14 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 		csvDataWrapper.setCsvMeta(csvMeta);
 		Log.logInfo(this, msg);
 	}
-	
-	public void  endElement(String uri, String localName, String qName) throws SAXException 
+
+	public void  endElement(String uri, String localName, String qName) throws SAXException
 	{
 		super.endElement(uri, localName, qName);
 		pathToRoot.removeLeaf(qName);
 	}
-	
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException 
+
+	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
 	{
 		super.startElement(uri, localName, qName, attributes);
 		//remove the MessageType from the element name and add it to xmlPath
@@ -72,9 +79,9 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 			pathToRoot.add(qName.substring(qName.indexOf(".")+1));
 		else
 			pathToRoot.add(qName);
-		if (pathToRoot.size()==1) //reformat xmlpath 
+		if (pathToRoot.size()==1) //reformat xmlpath
 			reformatLinkMapping();
-		
+
 		int attrLength=attributes.getLength();
 		for (int i=0;i<attrLength;i++)
 		{
@@ -84,7 +91,7 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 				continue;
         	String srcFieldRef=findCsvReferenceFieldPath(pathToRoot.getPathValue()+"."+attrQName);
         	if (srcFieldRef!=null)
-        		csvDataWrapper.insertCsvField(srcFieldRef, attrValue);	
+        		csvDataWrapper.insertCsvField(srcFieldRef, attrValue);
         	else
         	{
         		Message msg = MessageResources.getMessage("HL7TOCSV1", new Object[]{pathToRoot+ "."+attrQName, attrValue});
@@ -93,7 +100,7 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
         	}
 		}
 	}
-	
+
     public void characters( char[] charSeq, int start, int len )
     {
         String str = new String( charSeq, start, len );
@@ -110,7 +117,7 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
         	}
        }
     }
-    
+
 
 	public CSVSegmentedFileExtension getCsvDataWrapper() {
 		return csvDataWrapper;
@@ -134,7 +141,7 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 	public void setLinkMapping(Hashtable<String, String> linkxmlMapp) {
 		linkMapping=linkxmlMapp;
 	}
-	public void reformatLinkMapping() 
+	public void reformatLinkMapping()
 	{
 		Enumeration keys=linkMapping.keys();
 		while(keys.hasMoreElements())
@@ -145,7 +152,7 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 //			reset the target element xmlPath removing index
 			linkMapping.put(resetTargetElementXmlPath(targetXmlPath), srcXmlPath);
 		}
-		
+
 	}
 
 	public CSVMeta getCsvMeta() {
@@ -155,7 +162,7 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 	public void setCsvMeta(CSVMeta csvMetaNew) {
 		csvMeta = csvMetaNew;
 	}
-	
+
 	private String resetTargetElementXmlPath(String oldxmlPath)
 	{
 		if (!oldxmlPath.startsWith(pathToRoot.getRootName()))
@@ -176,7 +183,7 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 			{
 				sb.append("."+nxtTk);
 			}
-			
+
 		}
 		return sb.toString().substring(1);//remove the first "."
 	}

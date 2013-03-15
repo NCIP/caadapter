@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.v2meta;
 
@@ -24,16 +31,16 @@ import com.sun.encoder.MetaRef;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Oct 23, 2008
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.3 $
  * @date 	 DATE: $Date: 2009-04-17 20:07:39 $
  * @since caAdapter v4.2
  */
 
 public class V2MessageEncoderFactory {
-	
+
 	private static Hashtable<String, Encoder> encoderHash=new Hashtable<String, Encoder>();
-	
+
 	public static Encoder getV2MessageEncoder(String v2Version, String msgXsd)
 	{
 		String encoderKey=v2Version+"_"+msgXsd;
@@ -60,9 +67,9 @@ public class V2MessageEncoderFactory {
 				System.out
 						.println("V2MessageEncoderFactory.getV2MessageEncoder()...metatURL:"+metaURL);
 				MetaRef meta = factory.makeMeta(metaURL,topElem);
-//				MetaRef meta = factory.makeMeta(ClassLoader.getSystemResource(v2XsdFile),topElem);			
+//				MetaRef meta = factory.makeMeta(ClassLoader.getSystemResource(v2XsdFile),topElem);
 				System.out.println("V2MessageEncoderFactory.getV2MessageEncoder()...load V2Meta:"+meta+"..time:"+(System.currentTimeMillis()-csvbegintime));
-								
+
 				//Create the encoder instance, HL7Encoder
 				rtnEncoder = factory.newEncoder(type, meta);
 				System.out.println("V2MessageEncoderFactory.getV2MessageEncoder()...initialize encoder:"+(System.currentTimeMillis()-csvbegintime));
@@ -70,8 +77,8 @@ public class V2MessageEncoderFactory {
 			} catch (EncoderConfigurationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
-		}	
+			}
+		}
 		return rtnEncoder;
 	}
 

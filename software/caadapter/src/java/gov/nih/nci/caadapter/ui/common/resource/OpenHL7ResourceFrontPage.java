@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -69,7 +76,7 @@ public class OpenHL7ResourceFrontPage extends JPanel
         }
         else
 			resourcHome="HL7 V2 Resource Home:";
-			
+
 		//set MIF file selection
 		JLabel mifFileLabel = new JLabel(resourcHome);
 		centerPanel.add(mifFileLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
@@ -105,7 +112,7 @@ public class OpenHL7ResourceFrontPage extends JPanel
 		JButton messageScheamBrowseButton=new JButton(new BrowseHL7ResourceAction(this, messageSchemaInputField, "Browser", null));
 		centerPanel.add(messageScheamBrowseButton, new GridBagConstraints(3,2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
-		
+
 		JLabel mapFileLabel = new JLabel(HL7_RESOURCE_SITE);
 		centerPanel.add(mapFileLabel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -113,14 +120,14 @@ public class OpenHL7ResourceFrontPage extends JPanel
 		hl7HomeInputField=new JTextField();;
 		hl7HomeInputField.setPreferredSize(new Dimension(350, 25));
 		hl7HomeInputField.setText(System.getProperty("user.dir"));
-//		JLabel caAdapterHome=new JLabel(System.getProperty("user.dir"));	
+//		JLabel caAdapterHome=new JLabel(System.getProperty("user.dir"));
 //		caAdapterHome.setPreferredSize(new Dimension(350, 25));
 		centerPanel.add(hl7HomeInputField, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		JButton hl7HomeBrowseButton=new JButton(new BrowseHL7ResourceAction(this, hl7HomeInputField, "Browser", null));
 		centerPanel.add(hl7HomeBrowseButton, new GridBagConstraints(3,4, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
-		
+
         this.add(centerPanel, BorderLayout.CENTER);
 	}
 
@@ -129,7 +136,7 @@ public class OpenHL7ResourceFrontPage extends JPanel
 //		System.out.println("OpenHL7ResourceFrontPage.setUserSelectionFile()..selected file:"+file);
 		mifFileInputField.setText(file.getAbsolutePath());
 	}
-	
+
 	public String getSelectFileHome() {
 		return mifFileInputField.getText();
 	}
@@ -152,7 +159,7 @@ public class OpenHL7ResourceFrontPage extends JPanel
 	public String getMessageSchemaFileDirectory() {
 		return messageSchemaInputField.getText();
 	}
-	
+
 }
 
 /**

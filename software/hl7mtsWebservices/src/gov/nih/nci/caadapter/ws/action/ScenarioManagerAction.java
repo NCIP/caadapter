@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ws.action;
 
@@ -11,7 +18,7 @@ package gov.nih.nci.caadapter.ws.action;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Apr 2, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.1 $
  * @date 	 DATE: $Date: 2009-04-13 15:24:56 $
  * @since caAdapter v4.2
@@ -44,9 +51,9 @@ public class ScenarioManagerAction extends DispatchAction {
 	 * @throws ServletException
 	 */
 	 public ActionForward browseScenarioRegistration(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-	            HttpServletResponse response) throws IOException, ServletException 
+	            HttpServletResponse response) throws IOException, ServletException
 	 {
-			
+
 //		ArrayList<ScenarioRegistration> rtnList=new ArrayList<ScenarioRegistration>();
 //		ScenarioRegistration itemOne=new ScenarioRegistration();
 //		itemOne.setName("Test CSV to V3");
@@ -55,16 +62,16 @@ public class ScenarioManagerAction extends DispatchAction {
 //		itemOne.setTargetFile("target One");
 //		rtnList.add(itemOne);
 //		ScenarioRegistration itemTwo=new ScenarioRegistration();
-//		
+//
 //		itemTwo.setName("Test V2 to V3");
-// 
+//
 //		itemTwo.setMappingFile("Mapping  Two");
 //		itemTwo.setTargetFile("Target Two");
-//		
+//
 //		itemTwo.addVocabuaryMappingFile("VOM One");
 //		itemTwo.addVocabuaryMappingFile("VOM Two");
 //		rtnList.add(itemTwo);
- 
+
 
 		ArrayList<ScenarioRegistration> rtnList=null;
 		try {
@@ -76,7 +83,7 @@ public class ScenarioManagerAction extends DispatchAction {
 		}
 		if (rtnList==null||rtnList.size()==0)
 			request.setAttribute("rtnMessage", "No scenario being registered!");
-		 
+
 		request.setAttribute("results", rtnList);
 		return mapping.findForward("success");
 //	     return mapping.findForward("failure");

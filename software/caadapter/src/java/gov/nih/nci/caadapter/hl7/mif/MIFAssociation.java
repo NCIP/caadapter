@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.mif;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
@@ -17,7 +24,7 @@ import java.util.Hashtable;
 
 /**
  * The class defines an MIF association of a HL7 Mif class.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0 revision $Revision: 1.25 $ date $Date: 2009-11-11 20:26:59 $
@@ -48,7 +55,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private String csvSegment;
 	private boolean mapped;
 	private Hashtable <String,String> participantTraversalNames=new Hashtable<String, String>();
-	
+
 	/**
 	 * @return the mapped
 	 */
@@ -140,7 +147,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public MIFClass getMifClass() {
 		return mifClass;
 	}
-	
+
 	/**
 	 * Found the choiceSelected MIFClass if this Association contains a choice
 	 * @return chosenMIFClass
@@ -187,7 +194,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		this.name = name;
 	}
 	/**
-	 * Build nodeXmlName with node name and multiplicityIndex 
+	 * Build nodeXmlName with node name and multiplicityIndex
 	 * @return
 	 */
 	public String getNodeXmlName()
@@ -199,14 +206,14 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 			if (chosenMif!=null)
 				viewName=chosenMif.getNodeXmlName();
 		}
-			
+
 		if (getMaximumMultiplicity()==1)
 		{
 			if(!MIFUtil.containChoiceAssociation(this))
 				return viewName;
-			
+
 		}
-		
+
 		String stB="";
 		if (getMultiplicityIndex()<10)
 			stB="0";
@@ -253,8 +260,8 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		// TODO Auto-generated method stub
 //		String myCompKey=this.getSortKey()+this.getMultiplicityIndex();
 //		String asscCompKey=mifAssc.getSortKey()+mifAssc.getMultiplicityIndex();
-//		
-//		return (myCompKey.compareToIgnoreCase(asscCompKey));	
+//
+//		return (myCompKey.compareToIgnoreCase(asscCompKey));
 		int mySortKey=Integer.valueOf( getSortKey());
 		int myIndex= getMultiplicityIndex();
 		int asscSortKey=Integer.valueOf(mifAssc.getSortKey());
@@ -270,7 +277,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		else if (mySortKey>asscSortKey)
 			rtnValue= 1;
 		else
-			rtnValue= -1;	
+			rtnValue= -1;
 		return rtnValue;
 	}
 	@Override
@@ -283,7 +290,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		// TODO Auto-generated method stub
 		optionChosen=option;
 	}
-	
+
 	public boolean isChoiceSelected() {
 		return choiceSelected;
 	}
@@ -319,7 +326,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 					clonedHT.put(partKey, traversalName);
 				}
 				clonnedObj.setParticipantTraversalNames(clonedHT);
-			 }		 
+			 }
 			 clonnedObj.setChoiceSelected(false);
 			 //if MIFAssociation being cloned is OptionalChosen
 			 //the coloned new MIFAssociation should be same
@@ -331,7 +338,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
              throw new InternalError(e.toString());
          }
 	}
-	
+
 	public String toString()
 	{
 		if (this.getMaximumMultiplicity()==1)
@@ -347,7 +354,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	@Override
 	public void setEnabled(boolean enable) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	public boolean isOptionForced() {
 		return optionForced;
@@ -378,7 +385,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		// TODO Auto-generated method stub
 		return "MIF Association Properties";
 	}
-	
+
 	public String findCardinality() {
 
 		int multMin=Integer.valueOf(this.getMinimumMultiplicity());
@@ -388,7 +395,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	}
 
 	public String findIsRerence() {
-		
+
 		if (this.getMifClass()!=null)
 			return String.valueOf(getMifClass().isReference());
 		return "false";
@@ -425,7 +432,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 //&umkis	public void setComment(String comment) {
 //&umkis		this.comment = comment;
 //&umkis    }
-}	
+}
 /**
  * HISTORY :$Log: not supported by cvs2svn $
  * HISTORY :Revision 1.24  2009/04/02 20:34:40  altturbo

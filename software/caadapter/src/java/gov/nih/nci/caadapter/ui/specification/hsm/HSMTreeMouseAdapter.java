@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -50,7 +57,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
     private RemoveMultipleAttributeAction removeMultipleAttributeAction;
     private AddMultipleComplexDatatypeAction addMultipleComplexDatatypeAction;
     private RemoveMultipleComplexDatatypeAction removeMultipleComplexDatatypeAction;
- 
+
     private SelectChoiceAction selectChoiceAction;
     private ValidateHSMAction validateHSMAction;
     private SelectAddressPartsAction addAddressPartsAction;
@@ -76,7 +83,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
         removeAddressPartsAction=new SelectAddressPartsAction(SelectAddressPartsAction.REMOVE_PART_COMMAND_NAME,this.parentPanel);
         enableDatafield=new EnableAttributeDatafieldAction(this.parentPanel,true);
         disableDatafield=new EnableAttributeDatafieldAction(this.parentPanel,false);
-        
+
     }
 
     public void mousePressed(MouseEvent mouseEvent)
@@ -101,7 +108,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
         	enablePopupMenu.add(addMultipleComplexDatatypeAction);
         	enablePopupMenu.add(removeMultipleComplexDatatypeAction);
         }
-    	
+
         if (popupMenu == null)
         {
             popupMenu = new JPopupMenu("Tree Manipulation");
@@ -119,7 +126,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
             popupMenu.add(validateHSMAction);
             popupMenu.add(forceOptionCloneAction);
             popupMenu.addSeparator();
-            popupMenu.add(addAddressPartsAction); 
+            popupMenu.add(addAddressPartsAction);
             popupMenu.add(removeAddressPartsAction);
         }
     }
@@ -162,7 +169,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 retrievePopupMenu();
                 setAllEnabled(false);
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
-                Object userObj = node.getUserObject();	
+                Object userObj = node.getUserObject();
                 if (userObj instanceof MIFClass)
                 {
                     validateHSMAction.setEnabled(true);
@@ -171,7 +178,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                     final List<MIFAssociation> removableAssociations = MIFUtil.findRemovableAssociation(mifClass);
                     if (addableAssociations.size() > 0)
                     	addCloneAction.setEnabled(true);
-                    
+
                     if (removableAssociations.size() > 0)
                     	removeCloneAction.setEnabled(true);
                 }
@@ -179,12 +186,12 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 if (userObj instanceof MIFAssociation)
                 {
                 	validateHSMAction.setEnabled(true);
-                	MIFAssociation mifAssc = (MIFAssociation) userObj;               	
+                	MIFAssociation mifAssc = (MIFAssociation) userObj;
                     if (!mifAssc.getMifClass().getSortedChoices().isEmpty())
                     	selectChoiceAction.setEnabled(true);
                 	if (mifAssc.getMaximumMultiplicity()!= 1)
                     {
-                        
+
                         if (mifAssc.getMultiplicityIndex()>0)
                         {
                             removeMultipleCloneAction.setEnabled(true);
@@ -204,9 +211,9 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                              }
                              else
                              	addMultipleCloneAction.setEnabled(true);
-                        }                    		
+                        }
                 	}
- 
+
                     //check if add/remove clone Item is required
                     MIFClass asscMifClass=mifAssc.getMifClass();
                     List<MIFAssociation> asscToAdd;
@@ -221,7 +228,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 //                    	if (asscToAdd.size() > 0)
 //                    		addCloneAction.setEnabled(true);
 //	                }
- 
+
                     List<MIFAssociation> asscToRemove;
                     asscToRemove= MIFUtil.findRemovableAssociation(asscMifClass);
                     //check Assc to added from the choiceSelected class
@@ -234,7 +241,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 //                    	if (asscToRemove.size() > 0)
 //		                	removeCloneAction.setEnabled(true);
 //		            }
-	                
+
                     if (mifAssc.isOptionChosen())
                     {
                     	forceOptionCloneAction.setEnabled(true);
@@ -257,13 +264,13 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                         }
                         else
                         	addMultipleAttributeAction.setEnabled(true);
-                        	
+
                     }
                 	Datatype mifDt =mifAttr.getDatatype();
-                	//find concrete datatype for "ANY" type  
+                	//find concrete datatype for "ANY" type
                 	if (mifDt.isAbstract())
             			mifDt=mifAttr.getConcreteDatatype();
-            		
+
                 	if (mifDt!=null&&mifDt.getName().equals("AD")                			)
                 	{
                 		int toAddCnt=0;
@@ -282,7 +289,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 			removeAddressPartsAction.setEnabled(true);
                 	}
                 }
-                
+
                 if (userObj instanceof Attribute)
                 {
                 	Attribute dtAttr = (Attribute) userObj;
@@ -291,10 +298,10 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 			toShowPopup=true;
                 	else if (!dtAttr.isSimple())
                 		toShowPopup=true;
-                	
+
                 	if (!toShowPopup)
                 		return;
-                	
+
                 	if (dtAttr.isEnabled())
                 	{
                 		disableDatafield.setEnabled(true);
@@ -310,7 +317,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 		enableDatafield.setEnabled(true);
                 	System.out
 							.println("HSMTreeMouseAdapter.showIfPopupTrigger()..dtAttr.getMax():"+dtAttr.getMax());
-                	
+
                 	enablePopupMenu.show(mouseEvent.getComponent(),
     	                    mouseEvent.getX(), mouseEvent.getY());
                 	return;
@@ -319,7 +326,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 popupMenu.show(mouseEvent.getComponent(),
                     mouseEvent.getX(), mouseEvent.getY());
         }
-        }	
+        }
     }
 }
 /**
@@ -327,5 +334,5 @@ public class HSMTreeMouseAdapter extends MouseAdapter
  * HISTORY      : Revision 1.15  2008/09/29 20:14:14  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
- * 
+ *
  * **/

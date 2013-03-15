@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
@@ -18,7 +25,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * The class will parse an MIF association section  from the mif XML file.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2009-11-11 20:27:28 $
@@ -26,7 +33,7 @@ import org.w3c.dom.NodeList;
 public class AssociationParser {
 	public MIFAssociation parseAttribute(Node node, String prefix) {
 		MIFAssociation mifAssociation = new MIFAssociation();
-		
+
 		Node child = node.getFirstChild();
 //		set the association sortedKey
 		mifAssociation.setSortKey(XSDParserUtil.getAttribute(node, "sortKey"));
@@ -43,12 +50,12 @@ public class AssociationParser {
         		else {
         			mifAssociation.setMandatory(false);
         		}
-        		
+
         		if (XSDParserUtil.getAttribute(child, "minimumMultiplicity")!= null)
         			mifAssociation.setMinimumMultiplicity(Integer.parseInt(XSDParserUtil.getAttribute(child, "minimumMultiplicity")));
-        		else 
+        		else
         			mifAssociation.setMinimumMultiplicity(-2);
-        		
+
         		if (XSDParserUtil.getAttribute(child, "maximumMultiplicity")!= null) {
         			if (XSDParserUtil.isMultiple(child, "maximumMultiplicity"))
         				mifAssociation.setMaximumMultiplicity(-1);
@@ -56,11 +63,11 @@ public class AssociationParser {
         				mifAssociation.setMaximumMultiplicity(Integer.parseInt(XSDParserUtil.getAttribute(child, "maximumMultiplicity")));
         			}
         		else {
-        			mifAssociation.setMaximumMultiplicity(-2);							
+        			mifAssociation.setMaximumMultiplicity(-2);
         		}
 //        		mifAssociation.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
         		//define a hashtable to keep the ClassName and ReversalName pair for future processing
-        		
+
         		Hashtable <String, String>participantClassTraversalName=new Hashtable<String, String>();
         		NodeList children=child.getChildNodes();
         		for (int childrenIndex=0;childrenIndex<children.getLength();childrenIndex++)
@@ -92,10 +99,10 @@ public class AssociationParser {
         					}
         				}
         			}
-        				
+
         		}
         		mifAssociation.setParticipantTraversalNames(participantClassTraversalName);
-        		
+
         		Node targetConnectionChild = child.getFirstChild();
         		while (targetConnectionChild != null) {
                 	if (targetConnectionChild.getNodeName().endsWith("participantClass")){//.equals(prefix+"participantClass")) {

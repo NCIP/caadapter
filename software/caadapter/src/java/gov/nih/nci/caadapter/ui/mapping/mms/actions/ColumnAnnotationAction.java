@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
@@ -31,7 +38,7 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jul 7, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.3 $
  * @date 	 DATE: $Date: 2009-07-30 19:06:33 $
  * @since caAdapter v4.2
@@ -43,13 +50,13 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 	public static int REMOVE_PK_GENERATOR=2;
 	public static int SET_DISCRIMINATOR_KEY=3;
 	public static int REMOVE_DISCRIMINATOR_KEY=4;
-	
+
 	public static int SET_INVERSE_KEY=5;
 	public static int REMOVE_INVERSE_KEY=6;
-	
+
 	public static int SET_IMPLICT_KEY=7;
 	public static int REMOVE_IMPLICT_KEY=8;
-	
+
 	/**
 	 * @param actionName
 	 * @param actionType
@@ -73,7 +80,7 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 	 */
 	@Override
 	protected boolean doAction(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub 
+		// TODO Auto-generated method stub
 		ColumnMetadata columnMeta=(ColumnMetadata)this.getMetaAnnoted();;
 		ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 		UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),columnMeta.getXPath());
@@ -96,8 +103,8 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 		else if (getAnnotationActionType()==REMOVE_PK_GENERATOR)
 		{
 			//check if primary key column
-			HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);			
-			
+			HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);
+
 			Vector<Object> dfValues=new Vector<Object>(pkSetting.keySet());
 			DialogUserInput dialog = new DialogUserInput(null, null, dfValues, "Primary Key Generator",DialogUserInput.INPUT_TYPE_CHOOSE );
 			if (dialog.getUserInput()!=null)
@@ -105,7 +112,7 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 				//annotate object with new tag value
  				XMIAnnotationUtil.removePrimaryKey(xpathAttr, (String)dialog.getUserInput());
 	        }
-			
+
 		}
 		else if (getAnnotationActionType()==SET_DISCRIMINATOR_KEY)
 		{
@@ -117,7 +124,7 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 				{
 					UMLClass objectClass=(UMLClass)dpd.getSupplier();
 					UMLClass topSuperClass=retrieveTopSuperClass(objectClass);
-					
+
 					String objectFullPath=ModelUtil.getFullName(topSuperClass);
 					if (objectFullPath!=null&&objectFullPath.length()>27)
 					{
@@ -136,19 +143,19 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 			{
 				if (!tableColumn.getName().equals(xpathAttr.getName()))
 					XMIAnnotationUtil.removeTagValue(tableColumn, "discriminator");
-			}		
+			}
 			return true;
 		}
 		else if (getAnnotationActionType()==SET_INVERSE_KEY)
 		{
 			UMLClass tableClass=ModelUtil.findClass(modelMetadata.getModel(), columnMeta.getParentXPath());
-				
+
 			//remove all the "inverse-of" column
 			String inverseValue="";
 			for (UMLAttribute tableColumn:tableClass.getAttributes())
 			{
 				if (tableColumn.getTaggedValue("implements-association")!=null)
-					inverseValue=tableColumn.getTaggedValue("implements-association").getValue();	
+					inverseValue=tableColumn.getTaggedValue("implements-association").getValue();
 				XMIAnnotationUtil.removeTagValue(tableColumn, "inserse-of");
 			}
 			//set new value
@@ -160,7 +167,7 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 			UMLClass tableClass=ModelUtil.findClass(modelMetadata.getModel(), columnMeta.getParentXPath());
 			//find the implict id
 			TableMetadata tblMeta= (TableMetadata)modelMetadata.getModelMetadata().get(columnMeta.getParentXPath());
-			
+
 			String implicitKeyValue="";
 			for (UMLAttribute tableColumn:tableClass.getAttributes())
 			{
@@ -197,9 +204,9 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 		    	}
 			}
 		}
-		
-			
-			
+
+
+
 		return false;
 	}
 

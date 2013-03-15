@@ -1,3 +1,10 @@
+<!--L
+  Copyright SAIC.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caadapter/LICENSE.txt for details.
+L-->
+
 <!--
   - NOTE: The oid "2.16.840.1.113883.19" is a 'sample' OID.  It will need to be replaced
   - by application-specific OIDs representing the application which actually created the

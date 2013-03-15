@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -63,20 +70,20 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
     private boolean inClosingAllOrShutdownMode = false;
     private Map<String, MenuActionMaps> clientMenuActions=null;
     private static ContextManager mgrSingleton;
-    
+
     /**
      * Private constructor works for singleton instance
      *
      */
     private ContextManager()
-    { 
+    {
     }
-    
+
     public void setToolBarHandler(ToolBarHandler newToolBarHandler)
     {
     	toolBarHandler =newToolBarHandler;
     }
-    
+
     /**
      * initialize the ContextManager only once with mainFrame
      * @param owner
@@ -85,22 +92,22 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
     {
     	mainFrame = owner;
     	contextFileManager = new ContextFileManager(mainFrame);
-//    	menu = new MainMenuBar(mainFrame); 
-    	clientMenuActions = Collections.synchronizedMap(new HashMap<String, MenuActionMaps>());    	    
+//    	menu = new MainMenuBar(mainFrame);
+    	clientMenuActions = Collections.synchronizedMap(new HashMap<String, MenuActionMaps>());
 
 		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_HELP_MENU_ACTIVATED))
 		{
-			toolBarHandler.addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);							
+			toolBarHandler.addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);
 		}
     }
-   
+
     public static ContextManager getContextManager()
     {
     	if (mgrSingleton==null)
     		mgrSingleton=new ContextManager();
     	return mgrSingleton;
     }
-    
+
     public Map getClientMenuActions(String svcName, String menuName)
     {
     	MenuActionMaps menuMaps=(MenuActionMaps)clientMenuActions.get(svcName);
@@ -109,13 +116,13 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
     	else
     		return null;
     }
-    
+
     public void addClientMenuAction(String svcName,String menuName, String actionName, Action action)
     {
     	MenuActionMaps menuMaps=(MenuActionMaps)clientMenuActions.get(svcName);
     	if (menuMaps==null)
     		menuMaps=new MenuActionMaps(svcName);
-    	
+
     	if (menuName.equalsIgnoreCase(MenuConstants.FILE_MENU_NAME))
     		menuMaps.addFileMenuAction(actionName, action);
 		else if (menuName.equalsIgnoreCase(MenuConstants.REPORT_MENU_NAME))
@@ -124,16 +131,16 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
 			menuMaps.addToolBarMenuAction(actionName, action);
     	clientMenuActions.put(svcName, menuMaps);
     }
-    
+
     public void removeClientMenuAction (String svcName, String menuName, String actionName)
     {
     	if (svcName==null||svcName.equals(""))
     		return;
-    	
-    	//remove all action for the service 
+
+    	//remove all action for the service
     	if (menuName==null||menuName.equals(""))
     		clientMenuActions.remove(svcName);
-    	
+
     	MenuActionMaps menuMaps=(MenuActionMaps)clientMenuActions.get(svcName);
     	if (menuMaps==null)
     		return;
@@ -163,7 +170,7 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
     {
         return contextFileManager;
     }
-    
+
     /**
      * Return the currently active panel.
      *
@@ -205,7 +212,7 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
 		if(nowPanel instanceof DefaultContextManagerClientPanel)
 		{
 			((DefaultContextManagerClientPanel)nowPanel).synchronizeRegisteredFile(true);
-			
+
 		}
 	}
 
@@ -251,7 +258,7 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
         		{
         			getToolBarHandler().addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);
         		}
-        		
+
                 mainFrame.updateToolBar(toolBarHandler.getToolBar(), closeButton);
 
                 //update the menus
@@ -264,12 +271,12 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
             else
             {//we could possibly be here b/c user closed the last tab, roll back to menu's original state.
                 getToolBarHandler().removeAllActions();
-        		
+
                 if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_HELP_MENU_ACTIVATED))
         		{
         			getToolBarHandler().addAction(getMenu().getDefinedAction(ActionConstants.HELP_TOPIC), true); //.helpTopicAction
         		}
-        		
+
                 mainFrame.updateToolBar(toolBarHandler.getToolBar());
                 menu.resetMenus(false);
             }
@@ -318,14 +325,14 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
             }
         }
     }
-    
+
     private boolean updateMenuAction(Map actionMap, String actionConstant)
     {
     	JMenuItem menuItem=this.getMenu().getDefinedMenuItem(actionConstant);
     	if (menuItem==null)
     		return false;
         Action act = (Action) actionMap.get(actionConstant);
-        
+
         if (act != null)
         {
             menuItem.setAction(null);
@@ -338,7 +345,7 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
             return false;
         }
     }
-    
+
 //    private void updateMenu_save(Map actionMap, String menu_name)
 //    {
 //        if (menu_name == MenuConstants.FILE_MENU_NAME)

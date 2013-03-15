@@ -1,8 +1,15 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START --> $Header:
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+  $Header:
+
+
+
  * LICENSE_TEXT_END -->
  */
 
@@ -71,7 +78,7 @@ public class MainMenuBar extends AbstractMenuBar
     private Map<String, AbstractContextAction> actionMap;
     private Map<String, JMenuItem> menuItemMap;
     private Map<String, JMenu> menuMap;
-    
+
     public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
         this.mainFrame = mf;//contextManager.getMainFrame();
@@ -240,19 +247,19 @@ public class MainMenuBar extends AbstractMenuBar
             JMenuItem newHSMFileItem = new JMenuItem(newHSMAction);
             actionMap.put(ActionConstants.NEW_HSM_FILE, newHSMAction);
             menuItemMap.put(ActionConstants.NEW_HSM_FILE, newHSMFileItem);
- 
+
             JMenu newCsvToHL7=constructNewCSVTOV3Menu();
             newCsvToHL7.insert(newHSMAction, 1);
             newGroup.add(newCsvToHL7);
-            
+
             JMenu newV2ToHL7=constructNewV2TOV3Menu();
             newV2ToHL7.insert(newHSMAction, 0);
             newGroup.add(newV2ToHL7);
-            
+
             JMenu newHL7ToCsv=constructNewV3TOCSVMenu();
             newGroup.add(newHL7ToCsv);
-            
-        } 
+
+        }
         else
         {
             //load each activated component
@@ -263,22 +270,22 @@ public class MainMenuBar extends AbstractMenuBar
                 JMenuItem newHSMFileItem = new JMenuItem(newHSMAction);
                 actionMap.put(ActionConstants.NEW_HSM_FILE, newHSMAction);
                 menuItemMap.put(ActionConstants.NEW_HSM_FILE, newHSMFileItem);
-     
+
                 JMenu newCsvToHL7=constructNewCSVTOV3Menu();
                 newCsvToHL7.insert(newHSMAction, 1);
                 newGroup.add(newCsvToHL7);
-                
+
                 JMenu newV2ToHL7=constructNewV2TOV3Menu();
                 newV2ToHL7.insert(newHSMAction, 0);
                 newGroup.add(newV2ToHL7);
-                
+
                 JMenu newHL7ToCsv=constructNewV3TOCSVMenu();
                 newGroup.add(newHL7ToCsv);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
                 newGroup.add(constructNewDatabaseTOSDTMMenu());
-            }            
+            }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED)
             		||CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
             {
@@ -288,7 +295,7 @@ public class MainMenuBar extends AbstractMenuBar
             {
                 newGroup.add(constructNewObjectTODatabaseMenu(true));
             }
-            
+
         }
         return newGroup;
     }
@@ -323,7 +330,7 @@ public class MainMenuBar extends AbstractMenuBar
 	        actionMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newObject2DBMapAction);
 	        menuItemMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newO2DBMapFileItem);
         }
-        return newGroup;        
+        return newGroup;
     }
 
     private JMenu constructPreferenceMenu()
@@ -332,19 +339,19 @@ public class MainMenuBar extends AbstractMenuBar
         JMenu _qb = new JMenu("Tools");
         JMenuItem _menuItem = new JMenuItem(_preference);
         _qb.add(_menuItem);
-        
+
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED)
         		||CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
-        {       	
+        {
         	_menuItem.setEnabled(false);
         	return _qb;
         }
-        else 
+        else
         {
 //        	webstart user is always authorized
         	CaadapterUtil.setAuthorizedUser(true);
         }
-        
+
         if(!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
         	return _qb;
         //add the build resource menu for standalone application
@@ -358,7 +365,7 @@ public class MainMenuBar extends AbstractMenuBar
         System.out.println("MainMenuBar.constructPreferenceMenu()...WebstartUtil.isWebstartDeployed():"+WebstartUtil.isWebstartDeployed());
         if (WebstartUtil.isWebstartDeployed())
         	buildV3.setEnabled(false);
-        
+
         JMenuItem _buildV3Item = new JMenuItem(buildV3);
         _qb.add(_buildV3Item);
 
@@ -428,13 +435,13 @@ public class MainMenuBar extends AbstractMenuBar
     {
     	//user should be authorized to use HL7 artifacts
         JMenu newGroup = new JMenu("HL7 V2 to HL7 V3 Mapping and Transformation Service");
-        
+
         NewMapFileAction newMapAction = new NewMapFileAction(ActionConstants.NEW_V2_TO_V3_MAP_FILE, mainFrame);
         newMapAction.setAuthorizationRequired(true);
         JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction);
         actionMap.put(ActionConstants.NEW_V2_TO_V3_MAP_FILE, newMapAction);
         menuItemMap.put(ActionConstants.NEW_V2_TO_V3_MAP_FILE, newCsvToV3MapItem);
-        
+
         NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V2_TO_HL7_V3_MESSAGE, mainFrame);
         newHL7V3MessageAction.setAuthorizationRequired(true);
         JMenuItem newHL7V3MessageItem = new JMenuItem(newHL7V3MessageAction);
@@ -460,12 +467,12 @@ public class MainMenuBar extends AbstractMenuBar
 
     private JMenu constructNewDatabaseTOSDTMMenu()
     {
-        
-        
+
+
         JMenu newGroup = new JMenu("RDS Mapping and Transformation Service");
         Database2SDTMAction newDB2SDTMAction = new Database2SDTMAction(mainFrame);
         NewSDTMStructureAction newSDTMStructureAction = new NewSDTMStructureAction(mainFrame);
-                
+
         NewCsvSpecificationAction newCsvSpecAtion = new NewCsvSpecificationAction(mainFrame);
         JMenuItem newCsvSpecItem = new JMenuItem(newCsvSpecAtion);
         newGroup.add(newCsvSpecItem);
@@ -487,12 +494,12 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem openCsvToV3MapFileItem = new JMenuItem(openMapAction);
         actionMap.put(ActionConstants.OPEN_CSV_TO_HL7_MAP_FILE, openMapAction);
         menuItemMap.put(ActionConstants.OPEN_CSV_TO_HL7_MAP_FILE, openCsvToV3MapFileItem);
-        
+
         OpenMapFileAction openV2ToV3MapAction = new OpenMapFileAction(ActionConstants.OPEN_V2_TO_V3_MAP_FILE,mainFrame);
         JMenuItem openV2ToV3MapFileItem = new JMenuItem(openV2ToV3MapAction);
         actionMap.put(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, openMapAction);
         menuItemMap.put(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, openV2ToV3MapFileItem);
-        
+
         OpenObjectToDbMapAction openO2DBMapAction = new OpenObjectToDbMapAction(mainFrame);
 
         JMenuItem openO2DBMapFileItem = new JMenuItem(openO2DBMapAction);
@@ -530,7 +537,7 @@ public class MainMenuBar extends AbstractMenuBar
         // link them together
         JMenu openMenu = new JMenu("      " + MenuConstants.OPEN_MENU_NAME);
         openMenu.setMnemonic('O');
-        
+
         //openCSVSpecificationItem is shared by multiple module
         boolean isOpenCsvAdded=false;
         if (CaadapterUtil.getAllActivatedComponents().isEmpty())
@@ -540,12 +547,12 @@ public class MainMenuBar extends AbstractMenuBar
             openHSMFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK + Event.SHIFT_MASK, false));
             openMenu.add(openCSVSpecificationItem);
             openCsvToXmiMapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, Event.CTRL_MASK + Event.SHIFT_MASK, false));
-            openMenu.add(openCsvToXmiMapFileItem); 
+            openMenu.add(openCsvToXmiMapFileItem);
             openCsvToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, Event.CTRL_MASK + Event.SHIFT_MASK, false));
             openMenu.add(openCsvToV3MapFileItem);
             openV2ToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, Event.CTRL_MASK + Event.SHIFT_MASK, false));
             openMenu.add(openV2ToV3MapFileItem);
-        } 
+        }
         else
         {
         	int keyStrokeIndex=0;
@@ -564,12 +571,12 @@ public class MainMenuBar extends AbstractMenuBar
                 openCsvToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
                 openMenu.add(openCsvToV3MapFileItem);
                 keyStrokeIndex++;
-                
+
                 openV2ToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
                 openMenu.add(openV2ToV3MapFileItem);
                 keyStrokeIndex++;
             }
-            
+
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
             	if (!isOpenCsvAdded)
@@ -612,7 +619,7 @@ public class MainMenuBar extends AbstractMenuBar
             	openMenu.add(openCsvToXmiMapFileItem);
             	keyStrokeIndex++;
             }
-            
+
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
             {
             	openXsdToXmiMapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
@@ -620,7 +627,7 @@ public class MainMenuBar extends AbstractMenuBar
             	keyStrokeIndex++;
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED))
-            {      
+            {
             	openO2DBMapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
                 openMenu.add(openO2DBMapFileItem);
                 keyStrokeIndex++;

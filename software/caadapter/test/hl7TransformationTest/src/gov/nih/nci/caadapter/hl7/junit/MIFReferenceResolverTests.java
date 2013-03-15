@@ -1,11 +1,18 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
- 
+
+/**
+
+
+
+
+
+ */
+
 package gov.nih.nci.caadapter.hl7.junit;
 
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
@@ -31,10 +38,10 @@ import junit.framework.TestCase;
 
 public class MIFReferenceResolverTests extends TestCase {
 
-	
+
 	/**
 	 * As an assoication MIFClass has a choice group, it is required to
-	 * set traversal name for each choice element. If the MIFClass is a 
+	 * set traversal name for each choice element. If the MIFClass is a
 	 * reference defined previously, all the choice elements should be
 	 * cloned and set with correct traversal name
 	 *
@@ -53,7 +60,7 @@ public class MIFReferenceResolverTests extends TestCase {
 	        mifParser.parse(mifDoc);
 	        MIFClass parseredMif= mifParser.getMIFClass();
 	        //resolve the internal reference
-			
+
 	        MIFReferenceResolver refResolver=new MIFReferenceResolver();
 			refResolver.getReferenceResolved(parseredMif);
 //	        parseredMif.printMIFClass(0, new HashSet());
@@ -74,11 +81,11 @@ public class MIFReferenceResolverTests extends TestCase {
 			e.printStackTrace();
 		}
 
-		
+
 //          	  mifParser.saveMIFs("C:/temp/serializedMIF/resource/mif/" + filename,msgType);
 
 	}
 	 public static junit.framework.Test suite() {
-		  return new JUnit4TestAdapter(MIFReferenceResolverTests.class);    
+		  return new JUnit4TestAdapter(MIFReferenceResolverTests.class);
 		}
 }

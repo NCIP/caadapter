@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.mms.generator;
 
@@ -35,14 +42,14 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jul 9, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.4 $
  * @date 	 DATE: $Date: 2009-10-07 16:44:34 $
  * @since caAdapter v4.2
  */
 
 public class XMIAnnotationUtil {
-	
+
 	/**
 	 * Add/update a tag value with a UMLTaggedElement<br>
 	 * <ul>
@@ -70,7 +77,7 @@ public class XMIAnnotationUtil {
 	/**
 	 * Create a link between an Object in Logical Model and a Table in Data ModeldataSource<br>
 	 * Only one DataSource link is allowed for an object since it can only be supported by one table, <br>
-	 * but more than one DataSource links are allowed for a table since it can support more than one objects. 
+	 * but more than one DataSource links are allowed for a table since it can support more than one objects.
 	 * <ul>
 	 * <li>UML client: UML element of  table in Data Model package
 	 * <li>UML supplier: UML element of object in Logical Model package
@@ -81,12 +88,12 @@ public class XMIAnnotationUtil {
 	 * <li>Stereotype: DataSource
 	 * </ul><br>
 	 * <hr>
-	 * Since a correlation table never work as the data source of any object in the Logical Model, 
+	 * Since a correlation table never work as the data source of any object in the Logical Model,
 	 * all the correlation-table tags with value of the target table should be cleared once the table is assigned as data source of an object
 	 * @param umlModel The target UML model
 	 * @param tablePath The full path of a table in the Data Model
 	 * @param objectPath The full path of an Object in the Logical Model
-	 * @return <ul> 
+	 * @return <ul>
 	 * 			<li>true if new dependency is successfully created.
 	 * 			<li>false if a dependency exist or failed with other reason
 	 */
@@ -94,10 +101,10 @@ public class XMIAnnotationUtil {
 	{
 		UMLClass client = ModelUtil.findClass(umlModel,tablePath);
 	    UMLClass supplier = ModelUtil.findClass(umlModel,objectPath);
-	    
+
 	    if (client==null||supplier==null)
 	    	return false;
-	    
+
 	    //check if a dependency exist for the object
 	    for(UMLDependency existDep:supplier.getDependencies())
 	    {
@@ -110,9 +117,9 @@ public class XMIAnnotationUtil {
 	    	}
 	    }
 		UMLDependency dep =umlModel.createDependency(client, supplier, "dependency");
-		Log.logInfo(dep, "Add dataSource link...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());		
+		Log.logInfo(dep, "Add dataSource link...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
 		//persist this dependency to UML model
-		dep=umlModel.addDependency( dep );	
+		dep=umlModel.addDependency( dep );
 	    dep.addStereotype("DataSource");
 	    dep.addTaggedValue("stereotype", "DataSource");
 	    dep.addTaggedValue("ea_type", "Dependency");
@@ -120,14 +127,14 @@ public class XMIAnnotationUtil {
 	    dep.addTaggedValue("style", "3");
 	    dep.addTaggedValue("ea_sourceName", client.getName());
 	    dep.addTaggedValue("ea_targetName", supplier.getName());
-	    
+
 	    //add this dependency to cache data of its ends
 	    dep.getSupplier().getDependencies().add(dep);
 		dep.getClient().getDependencies().add(dep);
-		
+
 	    //check if any column of the target has been mapped to
 	    //an association end in the Logical Model, the target table could
-	    //be used as "correlation-table" of the association. 
+	    //be used as "correlation-table" of the association.
 	    //The "correlation-table" tag should be removed
 	    for (UMLAttribute tblColumn:client.getAttributes())
 	    {
@@ -145,13 +152,13 @@ public class XMIAnnotationUtil {
 	    			if (crlTag!=null&&crlTag.getValue().equalsIgnoreCase(client.getName()));
 	    				removeTagValue(umlAssc, crlTag.getName());
 	    		}
-	    		
+
 	    	}
-	    	
+
 	    }
 		return true;
 	}
-	
+
 	/**
 	 * Remove a UML tag from an element
 	 * @param taggedElement
@@ -172,9 +179,9 @@ public class XMIAnnotationUtil {
 
 		return false;
 	}
-	
+
 	/**
-	 * Delete the implements-association and correlation-table annotation tags for an association mapping  
+	 * Delete the implements-association and correlation-table annotation tags for an association mapping
 	 * <ul>
 	 *  <li> always delete association mapping tag:implements-association
 	 *  <li> delete correlation-table tag if the association is uni-directional
@@ -183,7 +190,7 @@ public class XMIAnnotationUtil {
 	 * @param umlModel The target UML model
 	 * @param sourcePath The full path of an Object in the Logical Model
 	 * @param targetPath The full path of a table in the Data Model
-	 * @return <ul> 
+	 * @return <ul>
 	 * 			<li>true if the association mapping is successfully created.
 	 * 			<li>false if he association mapping exist or failed with other reason
 	 */
@@ -201,7 +208,7 @@ public class XMIAnnotationUtil {
 				return (removeTagValue(umlAttribute, "correlation-table")&&removeTagValue(umlAttribute, "mapped-collection-table"));
 			else
 				return removeTagValue(umlAttribute, "mapped-collection-table");
-		
+
 		}
 		AssociationMetadata asscMeta=(AssociationMetadata)metaObj;//modelMeta.getModelMetadata().get(sourcePath);
 		if (asscMeta==null)
@@ -219,20 +226,20 @@ public class XMIAnnotationUtil {
 		if (endOne.getRoleName()==null|endOne.getRoleName().equals("")
 				|endTwo.getRoleName()==null|endTwo.getRoleName().equals(""))
 			return removeTagValue(umlAssc, "correlation-table");
-		
+
 		UMLAssociationEndBean otherEnd=(UMLAssociationEndBean)endOne;
 		UMLAssociationEndBean thisEnd=(UMLAssociationEndBean)endTwo;
-		
+
 		if (endTwo.getRoleName().equals(asscMeta.getRoleName()))
 		{
 			otherEnd=(UMLAssociationEndBean)endTwo;
 			thisEnd=(UMLAssociationEndBean)endOne;
 		}
-		String otherEndFullPath= ModelUtil.getFullName((UMLClass)otherEnd.getUMLElement())+"."+thisEnd.getRoleName();	
+		String otherEndFullPath= ModelUtil.getFullName((UMLClass)otherEnd.getUMLElement())+"."+thisEnd.getRoleName();
 		ColumnMetadata targetColumn=(ColumnMetadata)modelMeta.getModelMetadata().get(targetPath);
 		if (targetColumn==null)
 			return false;
-		
+
 		UMLClass targetTbl=ModelUtil.findClass(umlModel, targetColumn.getParentXPath());
 		if (targetTbl==null)
 			return false;
@@ -251,9 +258,9 @@ public class XMIAnnotationUtil {
 		//the association end is the only mapped end, remove the correlation tag
 		return removeTagValue(umlAssc, "correlation-table");
 	}
-	
+
 	/**
-	 * Add/update the implements-association and correlation-table annotation tags for an association mapping  
+	 * Add/update the implements-association and correlation-table annotation tags for an association mapping
 	 * <ul>
 	 *  <li> always add association mapping tag:implements-association
 	 *  <li> determine if a correlation-table is used.
@@ -269,7 +276,7 @@ public class XMIAnnotationUtil {
 	 * @param umlModel The target UML model
 	 * @param sourcePath The full path of an Object in the Logical Model
 	 * @param targetPath The full path of a table in the Data Model
-	 * @return <ul> 
+	 * @return <ul>
 	 * 			<li>true if the association mapping is successfully created.
 	 * 			<li>false if he association mapping exist or failed with other reason
 	 */
@@ -280,24 +287,24 @@ public class XMIAnnotationUtil {
 		//remove the leading string:"Logical View.Logical Model." from source path
 		String pureSrcPath=XMIAnnotationUtil.getCleanPath(modelMeta.getMmsPrefixObjectModel(),  sourcePath);
 		XMIAnnotationUtil.addTagValue(tblColumn, "implements-association", pureSrcPath);
-		
+
 		LinkedHashMap modelMetaHash =modelMeta.getModelMetadata();
 		//add inverse of tag if "many-to-one"
 		MetaObject metaEndObj=(MetaObject)modelMetaHash.get(sourcePath);
 		if (metaEndObj instanceof AssociationMetadata)
 		{
-			AssociationMetadata asscEndMeta=(AssociationMetadata)metaEndObj;	
+			AssociationMetadata asscEndMeta=(AssociationMetadata)metaEndObj;
 			if (asscEndMeta.getMultiplicity()==1&&asscEndMeta.getReciprocalMultiplity()==-1)
 			{
 				XMIAnnotationUtil.addTagValue(tblColumn, "inverse-of", pureSrcPath);
 			}
 		}
-			
+
 		ColumnMetadata columnMeta =(ColumnMetadata)modelMetaHash.get(targetPath);
 		if (columnMeta==null)
 			return false;
 		String tblPath=columnMeta.getTableMetadata().getXPath();
-		
+
 		UMLClass tblClass=ModelUtil.findClass(umlModel, tblPath);
 		//check if table is the data source of any object
 		//to determine if it is a correlation-table
@@ -310,13 +317,13 @@ public class XMIAnnotationUtil {
 				Log.logInfo(existDep, "Target can not be a correlation table...DataSource link exist...target table:"+((UMLClass)existDep.getClient()).getName()+" is the datasource of object:"+((UMLClass)existDep.getSupplier()).getName());
 	    		return false;
 	    	}
-	    }	
+	    }
 		//check the association end in the Logical Model
 		MetaObject metaObj=(MetaObject)modelMetaHash.get(sourcePath);
 		if (metaObj instanceof AssociationMetadata)
 		{
 			AssociationMetadata asscMeta=(AssociationMetadata)modelMetaHash.get(sourcePath);
-			UMLAssociation umlAssc=asscMeta.getUMLAssociation();		
+			UMLAssociation umlAssc=asscMeta.getUMLAssociation();
 			addTagValue(umlAssc,"correlation-table",tblClass.getName());
 		}
 		else if (metaObj instanceof AttributeMetadata)
@@ -328,10 +335,10 @@ public class XMIAnnotationUtil {
 	}
 	/**
 	 * Remove the Data Source dependency from an object in the Logical Model
-	 * 
+	 *
 	 * @param umlModel
 	 * @param objectPath
-	 * @return <ul> 
+	 * @return <ul>
 	 * 			<li>true if the dependency is successfully removed.
 	 * 			<li>false if the dependency  does not exist or failed to remove with other reason
 	 */
@@ -346,8 +353,8 @@ public class XMIAnnotationUtil {
 	    for(UMLDependency existDep:supplier.getDependencies())
 	    {
 	    	String stereoType=existDep.getStereotype();
-	    	//there is a bug in XMI handler in creating Dependency, 
-	    	//the stereotype is not set correctly.    	
+	    	//there is a bug in XMI handler in creating Dependency,
+	    	//the stereotype is not set correctly.
 	    	if (stereoType==null&&existDep.getTaggedValues().isEmpty())
 	    			continue;
 	    	else if(stereoType.equalsIgnoreCase("DataSource"))
@@ -356,23 +363,23 @@ public class XMIAnnotationUtil {
 	    		foundDep=existDep;
 	    		break;
 	    	}
-	    	
+
 	    }
 	    if (foundDep==null)
 	    	return false;
 	    //remove the dependency from list of dependency associated with model
-	    Log.logInfo(foundDep, "Dependency deleted from model...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());   		
+	    Log.logInfo(foundDep, "Dependency deleted from model...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
 	    supplier.getDependencies().remove(foundDep);
 	    client.getDependencies().remove(foundDep);
-	    umlModel.getDependencies().remove(foundDep); 
-	    //remove the JDomElement from Model 	    
+	    umlModel.getDependencies().remove(foundDep);
+	    //remove the JDomElement from Model
 	    Element depElt=((UMLDependencyBean)foundDep).getJDomElement();
 	    Log.logInfo(foundDep, "Remove dependency section from XMI file....Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
 	    depElt.getParentElement().removeContent(depElt);//childElmnt);
-   
+
 		return true;
 	}
-	
+
 	/**
 	 * @param grossPath
 	 * @return cleanPath
@@ -386,7 +393,7 @@ public class XMIAnnotationUtil {
 		}
 		return cleanPath;
 	}
-    
+
     public static HashMap<String, HashMap<String, String>> findPrimaryKeyGenerrator(UMLTaggableElement tableAttribute)
     {
     	HashMap<String, HashMap<String, String>> rtnHash=new HashMap<String, HashMap<String, String>>();
@@ -400,7 +407,7 @@ public class XMIAnnotationUtil {
     			rtnHash.put(dbName, oneDbPK);
     		}
     	}
-    	
+
     	Iterator<String> keyIt=rtnHash.keySet().iterator();
     	while(keyIt.hasNext())
     	{
@@ -413,7 +420,7 @@ public class XMIAnnotationUtil {
     		UMLTaggedValue pTag1=tableAttribute.getTaggedValue(pp1+"."+dbName);
     		if (pTag1!=null)
     			oneDbPK.put(pp1, pTag1.getValue());
-    		
+
     		UMLTaggedValue pTag2=tableAttribute.getTaggedValue(pp2+"."+dbName);
     		if (pTag2!=null)
     			oneDbPK.put(pp2, pTag2.getValue());
@@ -423,7 +430,7 @@ public class XMIAnnotationUtil {
     	}
     	return rtnHash;
     }
-    
+
     public static void removePrimaryKey( UMLTaggableElement tableAttribute , String dbName)
     {
     	removeTagValue(tableAttribute, "NCI_GENERATOR."+dbName);
@@ -431,7 +438,7 @@ public class XMIAnnotationUtil {
     	removeTagValue(tableAttribute, "NCI_GENERATOR_PROPERTY2."+dbName);
     	removeTagValue(tableAttribute, "NCI_GENERATOR_PROPERTY3."+dbName);
     }
-    
+
     public static void addPrimaryKey( UMLTaggableElement tableAttribute , String dbName, HashMap<String, String>keyParameters)
     {
     	Iterator<String> paramKeys=keyParameters.keySet().iterator();

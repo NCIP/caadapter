@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
@@ -20,7 +27,7 @@ import org.w3c.dom.Node;
 
 /**
  * The class will parse a MIF class from the mif XML file.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2009-11-11 20:26:39 $
@@ -39,7 +46,7 @@ public class ClassParser {
 		String abstractFlag=XSDParserUtil.getAttribute(node, "isAbstract");
 		if ((abstractFlag!=null)&&(abstractFlag.equalsIgnoreCase("true")))
 				mifClass.setAbstractDefined(true);
- 
+
         Node child = node.getFirstChild();
 
         String annotation = null;
@@ -61,7 +68,7 @@ public class ClassParser {
         				MIFClass specializedMIFClass = specializedClassParser.parseSpecializedClass(specializedChild, prefix,null);
         				if (participantTraversalName!=null)
         					specializedMIFClass.setTraversalName(participantTraversalName.get(specializedMIFClass.getName()));
-        				
+
         				specializedMIFClass.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
        					mifClass.addChoice(specializedMIFClass);
         			}
@@ -77,7 +84,7 @@ public class ClassParser {
         		if (mifClass.isAbstractDefined())
         			mifAssociation.setAbstractDefined(true);
         		mifClass.addAssociation(mifAssociation);
-        		
+
         	}
             if (child.getNodeName().equals(prefix+"annotation")||child.getNodeName().equals("annotation")||
                 child.getNodeName().equals(prefix+"annotations")||child.getNodeName().equals("annotations"))

@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 package gov.nih.nci.caadapter.ui.mapping.GME.actions;
@@ -30,7 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.Point;
- 
+
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetContext;
@@ -71,17 +78,17 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 	 * Called by the DropTargetAdapter in dragEnter, dragOver and
 	 * dragActionChanged.
 	 * It is allowed to mapp multiple csvSource nodes to one Xmi target node
-	 * 
+	 *
 	 */
 	public boolean isDropOk(DropTargetDragEvent e)
 	{
-		
+
 		TransferableNode transferableNode = obtainTransferableNode(e);
 		if(transferableNode==null)
 				return false;
-				
+
 		Point p = e.getLocation();
-		
+
         TreePath path = this.getTree().getPathForLocation(p.x, p.y);
 		if (path==null)
 			return false;
@@ -106,7 +113,7 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
         if( targetNode instanceof MappableNode )
 		{
 			MappableNode mappableNode = (MappableNode) targetNode;
-	
+
 			if( mappableNode.isMapped() )
 			{
 					return false;
@@ -121,13 +128,13 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 
 			MapLinkValidator validator = new MapLinkValidator(sourceNode.getUserObject(), targetNode.getUserObject());
 			ValidatorResults validatorResult = validator.validate();
-            
+
 //			Object targetUserObject = targetNode.getUserObject();
 //			if(targetUserObject instanceof MetaObject)
 //			{//further validate if the target object itself is mappable or not.
 //				validatorResult.addValidatorResults(MapLinkValidator.isMetaObjectMappable((MetaObject) targetUserObject));
 //			}
-            
+
             return validatorResult.isValid();
 		}
 		return true;
@@ -140,7 +147,7 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 	 */
 	public boolean setDropData(Object transferredData, DropTargetDropEvent e, DataFlavor chosen)
 	{
-        
+
         boolean isSuccess = false;
 		Point p = e.getLocation();
 		TreePath path = this.getTree().getPathForLocation(p.x, p.y);
@@ -153,7 +160,7 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 /////////////// Changes for Bug id 14800 by Sandeep Phadke on 7/11/2008
 		TransferableNode dragSourceObj = (TransferableNode) transferredData;
-		List dragSourceObjList = dragSourceObj.getSelectionList();		
+		List dragSourceObjList = dragSourceObj.getSelectionList();
 		DefaultMutableTreeNode sourceTreeNode = (DefaultMutableTreeNode) dragSourceObjList.get(0);
 		String sourceXPath = ((SDKMetaData) sourceTreeNode.getUserObject()).getXPath();
 		String sourceParentXPath = sourceXPath.substring( 0,sourceXPath.lastIndexOf(".") );
@@ -164,7 +171,7 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
     	String targetXPath = ((SDKMetaData) targetNode.getUserObject()).getXPath();
     	targetParentXPath = targetXPath.substring( 0,targetXPath.lastIndexOf(".") );
     	LinkedHashMap currentMappings = new LinkedHashMap();
-    	
+
         for (int j=0; j < maps.size(); j++ )
         {
             Map tempMap = maps.get(j);
@@ -173,21 +180,21 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
             xpath = tempMap.getTargetMapElement().getMetaObject().getXmlPath();
             String mappedTargetPath = xpath.substring( 0,xpath.lastIndexOf(".") );
             //loop thru the existing mappings and populate the linkedhashmap.
-            if (!currentMappings.containsKey(mappedSourcePath) && (!currentMappings.containsValue(mappedTargetPath)) ) 
+            if (!currentMappings.containsKey(mappedSourcePath) && (!currentMappings.containsValue(mappedTargetPath)) )
             	currentMappings.put(mappedSourcePath, mappedTargetPath);
         }
         // populate the linkedhashmap with new mapping source/target, if you are trying to map
-        // new element whose target has already been mapped earlier this put will fail here, 
+        // new element whose target has already been mapped earlier this put will fail here,
         // thus that entry would not be there in the map and will be caught and message will be displayed.
-        if (!currentMappings.containsKey(sourceParentXPath) && (!currentMappings.containsValue(targetParentXPath)) ) 
+        if (!currentMappings.containsKey(sourceParentXPath) && (!currentMappings.containsValue(targetParentXPath)) )
         	currentMappings.put(sourceParentXPath, targetParentXPath);
-        
-        // check if new mapping exists in the linkedhashmap, if mapping is valid it should 
+
+        // check if new mapping exists in the linkedhashmap, if mapping is valid it should
         // contain in the linkedhashmap else display the message.
         if (currentMappings.containsKey(sourceParentXPath) ){
         	String targetPath = (String) currentMappings.get(sourceParentXPath);
-            	
-        	
+
+
         	if (!targetPath.equals(targetParentXPath)){
         		JOptionPane.showMessageDialog(getTree().getRootPane().getParent(),
 				"You can not do a cross reference mapping for GME objects.",
@@ -195,17 +202,17 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 				JOptionPane.ERROR_MESSAGE);
         		return false;
         	}
-            
+
         } else {
     		JOptionPane.showMessageDialog(getTree().getRootPane().getParent(),
     				"You can not do a cross reference mapping for GME objects.",
     				"Mapping Error",
     				JOptionPane.ERROR_MESSAGE);
             		return false;
-        	
+
         }
-//////////////	End change for bug id 14800	
-		
+//////////////	End change for bug id 14800
+
 		try
 		{
 			TransferableNode dragSourceObjectSelection = (TransferableNode) transferredData;
@@ -239,7 +246,7 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 //                            Mapping mData = mappingDataMananger.retrieveMappingData(true);
 //
 //                            List<Map> maps = mData.getMaps();
-                            
+
                             for (int j=0; j < maps.size(); j++ )
                             {
                                 Map tempMap = maps.get(j);

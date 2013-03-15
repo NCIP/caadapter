@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -110,27 +117,27 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 		}
 		else if (obj instanceof MIFAssociation )
 		{
-			MIFAssociation mifAssc=(MIFAssociation)obj;	
+			MIFAssociation mifAssc=(MIFAssociation)obj;
 			mifClass=mifAssc.getMifClass();
 			if (mifAssc.isChoiceSelected())
 				choiceSelected=mifAssc.findChoiceSelectedMifClass();
 		}
-		
+
 		try
 		{
             final List<MIFAssociation> removeableAsscs = MIFUtil.findRemovableAssociation(mifClass);
             final List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
-            
+
             for(MIFAssociation removeableAssc:removeableAsscs)
             	baseList.add((DatatypeBaseObject)removeableAssc);
-            
+
 //            if (choiceSelected!=null)
 //            {
 //            	final List<MIFAssociation> choiceClassRemovableAsscs = MIFUtil.findRemovableAssociation(choiceSelected);
 //            	for(MIFAssociation removableAssc:choiceClassRemovableAsscs)
 //                	baseList.add((DatatypeBaseObject)removableAssc);
 //            }
-            
+
             AssociationListWizard cloneListWizard =
                 new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Removed", true);
             DefaultSettings.centerWindow(cloneListWizard);
@@ -154,7 +161,7 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
                     			oneAsscNode.removeFromParent();
                     			break;
                     		}
-                		}	
+                		}
                 	}
                 }
                 ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
@@ -178,5 +185,5 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
  * HISTORY      : Revision 1.7  2008/09/29 20:18:56  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
- * 
+ *
  * **/

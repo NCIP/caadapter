@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
@@ -28,7 +35,7 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jul 7, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.1 $
  * @date 	 DATE: $Date: 2009-07-30 17:38:06 $
  * @since caAdapter v4.2
@@ -41,7 +48,7 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 	public static int SET_CONSTANT_VALUE=3;
 	public static int SET_COLLECTION_ELEMENT_TYPE=4;
  	public static int SET_NULLFLAOVR_CONSTANT=5;
- 
+
 	private String annotationTagName;
 	/**
 	 * @return the annotationTagName
@@ -73,7 +80,7 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 	 */
 	@Override
 	protected boolean doAction(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub 
+		// TODO Auto-generated method stub
 		AttributeMetadata attrMeta=(AttributeMetadata)this.getMetaAnnoted();;
 		ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 		UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),attrMeta.getXPath());
@@ -91,7 +98,7 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 		{
 			String parentFullpath=attrMeta.getParentXPath();
 			String parentCleanpath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(), parentFullpath);
-			
+
 			XMIAnnotationUtil.addTagValue(xpathAttr, getAnnotationTagName(), parentCleanpath);
 			UMLClass parentClass=ModelUtil.findClass(modelMetadata.getModel(), attrMeta.getParentXPath());
 			//remove all the "id-attribute" column
@@ -99,9 +106,9 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 			{
 				if (!sblAttribute.getName().equals(xpathAttr.getName()))
 					XMIAnnotationUtil.removeTagValue(sblAttribute, "id-attribute");
-			}		
+			}
 			return true;
-		}	
+		}
 		else if (getAnnotationActionType()==SET_CONSTANT_VALUE
 				||getAnnotationActionType()==SET_NULLFLAOVR_CONSTANT
 				||getAnnotationActionType()==SET_COLLECTION_ELEMENT_TYPE)
@@ -115,7 +122,7 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 			dfValues.add(defaultTxt);
 			String dialogName="Constant Value";
 			int dialogType=DialogUserInput.INPUT_TYPE_TEXT;
-			
+
 			if (getAnnotationActionType()==SET_NULLFLAOVR_CONSTANT)
 			{
 				dialogName="Local NullFlavor Constant";
@@ -135,9 +142,9 @@ public class AttributeAnnotationAction extends ItemAnnotationAction {
 				//annotate object with new tag value
 				XMIAnnotationUtil.addTagValue(xpathAttr, getAnnotationTagName(),(String)dialog.getUserInput());
 				return true;
-			}	
+			}
 		}
-			
+
 		return false;
 	}
 

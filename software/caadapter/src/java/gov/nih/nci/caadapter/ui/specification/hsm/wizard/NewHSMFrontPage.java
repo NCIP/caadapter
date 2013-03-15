@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -75,10 +82,10 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 
 		centerPanel.add(new JLabel(HL7_NORMATIVE_LABEL), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		
+
 		centerPanel.add(new JLabel(HL7_MESSAGE_CATEGORY_LABEL), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		
+
 		centerPanel.add(new JLabel(HL7_MESSAGE_TYPE_LABEL), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
 		try {
@@ -90,20 +97,20 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 				indxSortMap.put(cpYear, NormativeVersionUtil.loadMIFIndex(cpYear));
 			for(MIFIndex indxItem:indxSortMap.values())
 				hl7NormativeComboBox.addItem(indxItem);
-			
+
 			hl7NormativeComboBox.setSelectedIndex(-1);
 			hl7NormativeComboBox.addActionListener(this);
 
             if (hl7NormativeComboBox.getItemCount() == 0) throw new Exception("Not found MIF files. Please check '"+NormativeVersionUtil.getNormativeSettingXmlFileName()+"' file.");
 
             hl7MessageCategoryComboBox = new JComboBox();
-			hl7MessageCategoryComboBox.setEnabled(false);		
+			hl7MessageCategoryComboBox.setEnabled(false);
 			hl7MessageCategoryComboBox.addActionListener(this);
-			
+
 			hl7MessageTypeComboBox=new JComboBox();
 			hl7MessageTypeComboBox.setEnabled(false);
-			
-			
+
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
@@ -111,15 +118,15 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
             errorMessage = e.getMessage();
             return;
         }
-		
+
 		centerPanel.add(hl7NormativeComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-		
+
 		centerPanel.add(hl7MessageCategoryComboBox, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		centerPanel.add(hl7MessageTypeComboBox, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-		
+
 		this.add(centerPanel);
         success = true;
         errorMessage = "";
@@ -137,7 +144,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	public String getUserSelectedMIFFileName ()
 	{
 		String slctMsgType= (String)hl7MessageTypeComboBox.getSelectedItem().toString();
-		
+
 		return mifIndex.findMIFFileName(slctMsgType);
 	}
 
@@ -156,10 +163,10 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 				hl7MessageCategoryComboBox.addItem(msgOneCat);
 			hl7MessageCategoryComboBox.setSelectedIndex(-1);
 			hl7MessageCategoryComboBox.setEnabled(true);
-			
+
 			hl7MessageTypeComboBox.removeAllItems();
 			hl7MessageTypeComboBox.setEnabled(false);
-			
+
 		}
 		else if (e.getSource()==hl7MessageCategoryComboBox)
 		{
@@ -195,5 +202,5 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
  * HISTORY      : Revision 1.6  2008/09/29 20:14:54  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
- * 
+ *
  * **/

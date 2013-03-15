@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -29,7 +36,7 @@ import java.util.TreeSet;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jan 21, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.4 $
  * @date 	 DATE: $Date: 2009-04-24 18:20:34 $
  * @since caAdapter v4.2
@@ -52,8 +59,8 @@ public class V2SchemaSelectionPanel extends JPanel implements ActionListener
 
 	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 V2 Message Version:";
 	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 V2 Message Schema:";
-	
-	
+
+
 	private JComboBox hl7MessageTypeComboBox;
 	private V2MessageIndex v2MessageIndex;
 	private JComboBox hl7MessageCategoryComboBox;
@@ -78,50 +85,50 @@ public class V2SchemaSelectionPanel extends JPanel implements ActionListener
 		centerPanel.add(new JLabel(HL7_MESSAGE_TYPE_LABEL), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
 		v2MessageIndex=V2MessageSchemaIndexLoader.loadV2MessageIndexObject();
-		
+
 		try {
 			if (v2MessageIndex==null)
 			{
 				System.out.println("V2SchemaSelectionPanel.initialize()..load V2MessageIndex from ZIP file....");
-				v2MessageIndex =V2MessageSchemaIndexLoader.loadMessageInfos();			
+				v2MessageIndex =V2MessageSchemaIndexLoader.loadMessageInfos();
 			}hl7MessageTypeComboBox=new JComboBox();
 			hl7MessageTypeComboBox.setEnabled(false);
 			TreeSet<String> sortV2Index=new TreeSet<String>(v2MessageIndex.getMessageCategory());
 			hl7MessageCategoryComboBox = new JComboBox(sortV2Index.toArray());
 			hl7MessageCategoryComboBox.addActionListener(this);
 			hl7MessageCategoryComboBox.setSelectedIndex(-1);
-			
-		} catch (Exception e) {  
+
+		} catch (Exception e) {
             errorMessage = e.getMessage();
             return;
         }
-		
+
 		centerPanel.add(hl7MessageCategoryComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		centerPanel.add(hl7MessageTypeComboBox, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-		
+
 		this.add(centerPanel);
- 
+
         errorMessage = "";
     }
 
- 
+
     public String getErrorMessage()
     {
         return errorMessage;
     }
- 
+
 	public String getUserSelectedMessageVersion ()
 	{
-		String slctMsgType= (String)hl7MessageCategoryComboBox.getSelectedItem().toString();	
+		String slctMsgType= (String)hl7MessageCategoryComboBox.getSelectedItem().toString();
 		return slctMsgType;
 	}
 
- 
+
 	public String getUserSelectedMessageSchema ()
 	{
-		String slctMsgType= (String)hl7MessageTypeComboBox.getSelectedItem().toString();	
+		String slctMsgType= (String)hl7MessageTypeComboBox.getSelectedItem().toString();
 		return slctMsgType;
 	}
 
@@ -144,7 +151,7 @@ public class V2SchemaSelectionPanel extends JPanel implements ActionListener
 					hl7MessageTypeComboBox.addItem(msgOneType);
 			}
 		}
- 
+
 	}
 }
 

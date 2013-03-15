@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -22,7 +29,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * Validate if the abstract data type has been specialized. 
+ * Validate if the abstract data type has been specialized.
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
  * @author LAST UPDATE: $Author: wangeug $
@@ -71,7 +78,7 @@ public class MIFAttributeValidator extends Validator
     	ValidatorResults results = new ValidatorResults();
     	if (datatype==null)
     		return results;
-    	
+
     	final Hashtable <String, Attribute>attrHash=datatype.getAttributes();
     	Enumeration<Attribute> attrElements=attrHash.elements();
     	while (attrElements.hasMoreElements())
@@ -100,14 +107,14 @@ public class MIFAttributeValidator extends Validator
 	                        new Object[]{oneAttr.getXmlPath(),
 	            			oneAttr.getType(), oneAttr.getReferenceDatatype().getName()});
 	            	results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, message));
-	    
+
     			}
     			results.addValidatorResults(validateDatatypeType(oneAttr.getReferenceDatatype()));
     		}
     	}
     	return results;
     }
-    
+
     private ValidatorResults validateAbstractTypeAttribute(MIFAttribute cloneAttributeMeta)
     {
         ValidatorResults results = new ValidatorResults();
@@ -123,7 +130,7 @@ public class MIFAttributeValidator extends Validator
                     new Object[]{cloneAttributeMeta.getXmlPath(),
         			cloneAttributeMeta.getDatatype(),
         			cloneAttributeMeta.getConcreteDatatype()});
-        		results.addValidatorResult( new ValidatorResult(ValidatorResult.Level.INFO, message));       	
+        		results.addValidatorResult( new ValidatorResult(ValidatorResult.Level.INFO, message));
         }
 
         if (cloneAttributeMeta.getMultiplicityIndex()>0)

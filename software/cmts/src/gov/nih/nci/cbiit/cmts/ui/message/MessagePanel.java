@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -98,7 +105,7 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
 	private JComponent contructNorthPanel()
 	{
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		
+
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		JPanel navigationPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		JLabel totalNumberOfMessageLabel = new JLabel("Total Messages:");
@@ -304,16 +311,16 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
 //				contextManager.enableAction(ActionConstants.SAVE_AS, true);
 //			}
 //		}
-//		
+//
 //		//since the action depends on the panel instance,
 //		//the old action instance should be removed
 		if (actionMap!=null)
 			contextManager.removeClientMenuAction("MESSAGE", menu_name, "");
-		
+
 		action = getDefaultCloseAction();
 		contextManager.addClientMenuAction("MESSAGE", MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
 		action.setEnabled(true);
-		
+
 		return contextManager.getClientMenuActions("MESSAGE", menu_name);
 	}
 
@@ -437,7 +444,7 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
 		// TODO Auto-generated method stub
 //		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
 //		Action closeAction = (Action) actionMap.get(ActionConstants.CLOSE);
-	
+
 		Action closeAction	=new DefaultCloseAction(MainFrame.getInstance());
 		return closeAction;
 	}
@@ -461,7 +468,7 @@ public class MessagePanel extends JPanel implements ActionListener, ContextManag
 
 	public void reload() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
 

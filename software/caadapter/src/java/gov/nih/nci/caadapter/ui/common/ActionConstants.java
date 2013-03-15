@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 
 
@@ -26,36 +33,36 @@ public interface ActionConstants
 	//NEW_MAP_FILE is used as the key to the text, while the NEW_MAP_FILE_TXT is used as the action name;
 	//this is because the action name in display may be the same but we really need to distinguish them in a map
 	//between a new and an open command.
-	
+
 	String NEW_CSV_SPEC = Config.CSV_MODULE_NAME;
 	String NEW_HSM_FILE = Config.HL7_V3_METADATA_MODULE_NAME;
 	String NEW_CSV_TO_HL7_MAP_FILE = "CSV to HL7 V3 " + Config.MAP_MODULE_NAME;
-	
+
 	String NEW_CSV_TO_HL7_V3_MESSAGE = "CSV to " + Config.HL7_V3_MESSAGE_MODULE_NAME;
 	String NEW_HL7_V2_TO_HL7_V3_MESSAGE = "HL7 V2 to " + Config.HL7_V3_MESSAGE_MODULE_NAME;
 	String NEW_V2_TO_V3_MAP_FILE = "HL7 V2 to HL7 V3 " + Config.MAP_MODULE_NAME;
-	
+
 	String NEW_HL7_V3_TO_CSV= Config.HL7_V3_TO_CSV_MODULE_NAME;
-	
+
 	String NEW_O2DB_MAP_FILE = "Object Model to Data Model Map Specification";
 	String NEW_CSV2XMI_MAP_FILE = "New Csv Meta To Xmi Mapping";
-    String NEW_XSD2XMI_MAP_FILE = "New Xsd To Xmi Mapping (GME)";   
+    String NEW_XSD2XMI_MAP_FILE = "New Xsd To Xmi Mapping (GME)";
 
 	String OPEN_CSV_SPEC = Config.CSV_MODULE_NAME +" (.scs)";
 	String OPEN_HSM_FILE =Config.HL7_V3_METADATA_MODULE_NAME +" (.h3s)";
 	String OPEN_CSV_TO_HL7_MAP_FILE = "CSV to HL7 V3 " + Config.MAP_MODULE_NAME + " (.map)";
-	
+
 	String OPEN_V2_TO_V3_MAP_FILE = "HL7 V2 to HL7 V3 " + Config.MAP_MODULE_NAME + " (.map)";
-	
+
 	String OPEN_HL7_V3_MESSAGE = Config.HL7_V3_MESSAGE_MODULE_NAME +" (.xml)";
-	
+
 	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
 	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV/Database to RDS Map Specification";
 	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
 	String OPEN_CSV2XMI_MAP_FILE = "Open CSV Meta To Object/Data Model Mapping";
     String OPEN_XSD2XMI_MAP_FILE = "Open XSD Meta To XMI Mapping";
 
-	
+
 
 	String OPEN = "Open...";
 	String CLOSE = "Close";

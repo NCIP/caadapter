@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.hl7.v2meta;
 
@@ -11,7 +18,7 @@ package gov.nih.nci.caadapter.hl7.v2meta;
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jan 22, 2009
- * @author   LAST UPDATE: $Author: wangeug 
+ * @author   LAST UPDATE: $Author: wangeug
  * @version  REVISION: $Revision: 1.1 $
  * @date 	 DATE: $Date: 2009-02-25 16:52:11 $
  * @since caAdapter v4.2
@@ -28,7 +35,7 @@ import java.util.Hashtable;
 public class V2MessageIndex implements Serializable {
 
 	private Hashtable <String, ArrayList<String>> schemaFileName=new Hashtable<String, ArrayList<String>>();
-	
+
 	public void addMessageType(String schFileName)
 	{
 //		System.out.println("V2MessageIndex.addMessageType()..adding:"+schFileName);
@@ -51,14 +58,14 @@ public class V2MessageIndex implements Serializable {
 			msgList.add(msgSchemaName);
 			schemaFileName.put(versionName, msgList);
 		}
- 	
+
 	}
-	
+
 	public Set<String> getMessageCategory()
 	{
 		return schemaFileName.keySet();
 	}
-	
+
 
 	public Set<String> fingMessageTypesWithCategory(String msgCat)
 	{

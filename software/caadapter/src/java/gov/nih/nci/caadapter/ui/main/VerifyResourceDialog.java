@@ -1,9 +1,16 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 /**
- * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
-[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
-http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
- * <!-- LICENSE_TEXT_END -->
+
+
+
+
+
  */
 package gov.nih.nci.caadapter.ui.main;
 
@@ -64,13 +71,13 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 
 		setSize(600, 400);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-		
+
 		initUI(rsrc);
 		this.setResizable(false);
 		DefaultSettings.centerWindow(this);
 		this.setVisible(true);
 }
-	
+
 	public void licenseAccepted(boolean isAccepted)
 	{
 		if (isAccepted)
@@ -82,15 +89,15 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 			System.exit(-1);
 		}
 	}
-	
+
 	private void initUI(ArrayList list)
 	{
 		Container contentPane=getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.add(setContextTextPanel(list), BorderLayout.CENTER);
-		contentPane.add(setInputPanel(), BorderLayout.SOUTH);	 
+		contentPane.add(setInputPanel(), BorderLayout.SOUTH);
 	    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	    
+
 	    addWindowListener(new WindowAdapter(){
 	        public void windowClosing(WindowEvent we) {
 	            Window w = we.getWindow();
@@ -101,18 +108,18 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 	            }
 	        });
 	}
-	
+
 	public static String setWarningContext(ArrayList list, String txtFilePath)
 	{
 		StringBuffer licenseBf=new StringBuffer();
 		String titleMessage="The following resource/library files are not found :\n\n";
 		licenseBf.append(titleMessage);
-		
+
 		for(String missingFileNme:(ArrayList<String>)list)
 			licenseBf.append("\t"+missingFileNme+"\n");
 		licenseBf.append("\n\n");
-		
-		
+
+
 		try {
 			InputStream input=VerifyResourceDialog.class.getClass().getResourceAsStream(txtFilePath);
 			InputStreamReader reader=new InputStreamReader(input);
@@ -131,18 +138,18 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 		}
 		return licenseBf.toString();
 	}
-	private JPanel setContextTextPanel(ArrayList list)  
+	private JPanel setContextTextPanel(ArrayList list)
 	{
 		JPanel rtnPanel=new JPanel();
 //		StringBuffer licenseBf=new StringBuffer();
 //		String titleMessage="The following resource/library files are not found :\n\n";
 //		licenseBf.append(titleMessage);
-//		
+//
 //		for(String missingFileNme:(ArrayList<String>)list)
 //			licenseBf.append("\t"+missingFileNme+"\n");
 //		licenseBf.append("\n\n");
-//		
-//		
+//
+//
 //		try {
 //			InputStream input=this.getClass().getResourceAsStream(contextFilePath);
 //			InputStreamReader reader=new InputStreamReader(input);
@@ -164,7 +171,7 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 		JScrollPane js2 = new JScrollPane(mainView);
 		js2.setPreferredSize(new Dimension(this.getWidth()-40, getHeight()-60));
         mainView.setEditable(false);
-        		 
+
 		rtnPanel.add(js2);
 //		JLabel txtLabel=new JLabel();
 //		txtLabel.setText(licenseBf.toString());
@@ -172,7 +179,7 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 		rtnPanel.setBorder(BorderFactory.createEtchedBorder());
 		return rtnPanel;
 	}
-	
+
 	private JPanel setInputPanel()
 	{
 		JPanel rtnPanel=new JPanel();
@@ -202,10 +209,10 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 			JButton evtButton=(JButton)evtObj;
 			if (evtButton==nextButton)
 			{
-				//launch caAdapter 
+				//launch caAdapter
 //				String msg="caAdapter will not work properly because of the missed resources, \ncontinue ?";
-//				
-//				int yesNo=JOptionPane.showConfirmDialog(this, 
+//
+//				int yesNo=JOptionPane.showConfirmDialog(this,
 //						msg,
 //						"Resources Missing",
 //						JOptionPane.YES_OPTION);
