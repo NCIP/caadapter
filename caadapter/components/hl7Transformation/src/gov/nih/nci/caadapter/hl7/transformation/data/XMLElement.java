@@ -1,6 +1,8 @@
-/**
- * <!-- LICENSE_TEXT_START -->
-  * <!-- LICENSE_TEXT_END -->
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
  */
 
 package gov.nih.nci.caadapter.hl7.transformation.data;
@@ -32,7 +34,7 @@ import java.util.Vector;
  *          date        $Date: 2008-05-23 15:48:34 $
  */
 public class XMLElement implements Cloneable{
-	
+
 	private String name;
 	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 	private Vector<XMLElement> children = new Vector<XMLElement>();
@@ -57,7 +59,7 @@ public class XMLElement implements Cloneable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * @param child the child XMLElement to be added
 	 */
@@ -175,15 +177,15 @@ public class XMLElement implements Cloneable{
 	public void setHasUserMappedData(boolean hasUserMappedData) {
 		this.hasUserMappedData = hasUserMappedData;
 	}
-	
+
 	public String toString() {
 		return this.toXML().toString();
 	}
-	
+
 	public StringBuffer toXML() {
 		StringBuffer output = new StringBuffer();
 		output.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		
+
 		MIFClass rootMIFClass = getMifClass();
 		Hashtable<String, String> comments = rootMIFClass.getPackageLocation();
 		if (comments!=null)
@@ -209,10 +211,10 @@ public class XMLElement implements Cloneable{
 		StringBuffer output = new StringBuffer();
 		for(int i = 0; i<level;i++) output.append("   ");
 		output.append("<" + getName());
-		
+
 		if (level == 0) {
 			output.append(" xmlns=\"urn:hl7-org:v3\"");
-			output.append(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");			
+			output.append(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
 		}
 		for(Attribute attribute:attributes) {
 			String key = attribute.getName();
@@ -225,7 +227,7 @@ public class XMLElement implements Cloneable{
 				output.append(" "+key+"="+"\""+value+"\"");
 			}
 		}
-		
+
 		if (getChildren().size() == 0&&!addBody) {
 			output.append("/>\n");
 		}
@@ -242,7 +244,7 @@ public class XMLElement implements Cloneable{
 				output.append(">");
 				output.append(bodyValue.replaceAll(CaadapterUtil.LINEFEED_ENCODE, "\n"));
 				output.append("</" + getName() + ">\n");
-				
+
 			}
 		}
 		return output;
@@ -272,7 +274,7 @@ public class XMLElement implements Cloneable{
 
 	public ValidatorResults validate(Hashtable datatypes, String pXmlPath) {
 		ValidatorResults validatorResults_temp = new ValidatorResults();
-		
+
 		boolean checkCode = false;
 		if (getDomainName()!= null && !getDomainName().equals(""))
 		{
@@ -287,11 +289,11 @@ public class XMLElement implements Cloneable{
 					datatype = (Datatype)datatypes.get(attribute.getDomainName());
 				else
 					datatype = (Datatype)datatypes.get(getDomainName());
-				if (datatype!= null) 
+				if (datatype!= null)
 				{
 					HashSet predefinedValues = datatype.getPredefinedValues();
 					if (predefinedValues.size()>0) {
-						if (!predefinedValues.contains(attribute.getValue())) 
+						if (!predefinedValues.contains(attribute.getValue()))
 						{
 				            if (attribute.getCodingStrength()!=null && attribute.getCodingStrength().equals("CNE")||(getCodingStrength()!=null && getCodingStrength().equals("CNE")))
 				            {
@@ -320,29 +322,29 @@ public class XMLElement implements Cloneable{
 					}
 				}
 			}
-			
-			if (attribute.getDatatype() != null) 
+
+			if (attribute.getDatatype() != null)
 			{
 				if (!attribute.getDatatype().equals(""))
 				{
 					String dt = attribute.getDatatype();
 					if (dt.equals("cs")) continue;
-					
+
 //					System.out.println("Validating:"+pXmlPath + "." + attribute.getName());
-					
+
 					Datatype datatype = (Datatype)datatypes.get(dt);
-					if (datatype!= null) 
+					if (datatype!= null)
 					{
 						HashSet predefinedValues = datatype.getPredefinedValues();
 						if (predefinedValues.size()>0) {
-							if (!predefinedValues.contains(attribute.getValue())) 
+							if (!predefinedValues.contains(attribute.getValue()))
 							{
 					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
-					            validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));			
+					            validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 							}
 						}
-						
-						if (datatype.getPatterns().size() > 0) 
+
+						if (datatype.getPatterns().size() > 0)
 						{
 							String vPattern = "";
 							boolean patternMatch = false;
@@ -356,7 +358,7 @@ public class XMLElement implements Cloneable{
 							}
 							if (!patternMatch) {
 					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not match attribute pattern " + vPattern + "(" + attribute.getValue() + ")"});
-					            validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));			
+					            validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 							}
 						}
 					}

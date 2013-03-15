@@ -1,3 +1,10 @@
+/*L
+ * Copyright SAIC.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+ */
+
 package gov.nih.nci.caadapter.hl7.transformation;
 /**
  * Define the method to watch progress of a transformation service 
