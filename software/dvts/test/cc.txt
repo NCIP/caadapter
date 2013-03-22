@@ -1,4 +1,0 @@
-caBIG/EVS=http://165.112.133.125:8080/caadapter-dvts/ContextVOMTranslation?context=EVS
-#CTEP=http://165.112.133.125:8080/caadapter-dvts/ContextVOMTranslation?context=CTEP
-CTEP=http://165.112.133.125:8080/caadapter-dvts/restful/context/CTEP
-CTEP1=C:\apache-tomcat-6.0.20\temp\test\caAdapterWS\META-INF\caAdapterWS\scenarios\CTEP1\vom

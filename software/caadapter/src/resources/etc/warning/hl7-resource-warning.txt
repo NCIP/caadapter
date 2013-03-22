@@ -1,2 +1,0 @@
-Please check the caAdapter Installation Guide to get the required third party 
-libray files or create the required resource files using caAdapter tools.

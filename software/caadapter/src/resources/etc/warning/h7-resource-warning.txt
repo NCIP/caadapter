@@ -1,9 +1,0 @@
-This feature of caAdapter requires an HL7 V2 Resources File derived from HL7 published standards. This file cannot be distributed with caAdapter due to licensing issues.
-
-To use this feature, please contact the caAdapter support team at:
-
-NCICB Application Support
-http://ncicb.nci.nih.gov/NCICB/support
-
-Telephone: 301-451-4384 
-Toll free: 888-478-4423

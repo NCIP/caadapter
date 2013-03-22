@@ -1,7 +1,0 @@
-		NOTICE
-
-
-caAdapter user HL7 artificates that include the HL& data types, message definitions 
-and schemas, vocabularies, etc. Before you use caAdapter, you must review and agree 
-to the HL7 Public License. You may obtain a copy of the license at:
-	http://www.hl7.org

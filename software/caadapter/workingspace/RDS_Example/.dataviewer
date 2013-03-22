@@ -1,7 +1,0 @@
-CCCDEV~cbiodb2-d.nci.nih.gov:1521:CCCDEV~Oracle~ctomjanus~ctomjanus
-caAdapter~cbiodb2-d:1521:cadev~Oracle~caadapter~caadapter
-CGEMS~cbiodb2-d.nci.nih.gov:1521:CPDEV~Oracle~cgemsdev~cgems
-QA~cbiodb30.nci.nih.gov:1521:cbtest~Oracle~cabioqa~cabioqa
-cagwascsm~cbiodb2-d.nci.nih.gov:1521:RBTDEV~Oracle~CSM_CAINTEGRATOR~CSM_CAINTEGRATOR
-cagwas~cbiodb2-d.nci.nih.gov:1521:CPDEV~Oracle~cgemsdev~cgemsdev
-test~localhost:1521:XE~Oracle~hr~hr

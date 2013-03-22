@@ -1,3 +1,0 @@
-Copy the .dataviewer file in <user>\documents and settings\ folder; 
-Please check with the systems group for the passwords for the all the databases;
-Please do not edit the generated SQLs. If the sql are edited, the transformation engine will crash

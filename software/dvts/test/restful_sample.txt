@@ -1,1 +1,0 @@
-http://165.112.133.125:8080/caadapter-dvts/restful/context/CTEP/domain/maritalStatus/value/SGL/inverse
