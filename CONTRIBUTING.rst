@@ -17,9 +17,6 @@ Getting Started
 
 * Fork the repository on GitHub to publish any proposed changes
 
-.. If the project uses an issue tracker, use the next bullet.
-   Otherwise, remove the next bullet.  Delete this note either way.
-
 * Submit a ticket for your issue at https://tracker.nci.nih.gov/browse/CAADAPTER,
   assuming one does not already exist.
 
