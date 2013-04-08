@@ -28,4 +28,4 @@ An NCI hosted instance of caAdapter is publicly available at:
  * [caAdapter GME v4.2 Webstart] (http://caadapter.nci.nih.gov/caadapter-gme)
  * [caAdapter v4.0 Webstart] (http://caadapter.nci.nih.gov/caadapter/caadapter.jnlp)
  
-Please join us in further developing and improving caArray.
+Please join us in further developing and improving caAdapter.
