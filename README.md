@@ -10,10 +10,22 @@ Please see the NOTICE and LICENSE files for details.
 
 You will find more details about caAdapter in the following links:
 
- * Home Page: https://wiki.nci.nih.gov/x/7Q5y
- * Code Repository: http://github.com/NCIP/caadapter
- * Issue Tracker: https://tracker.nci.nih.gov/browse/CAADAPTER
- * Documentation: https://wiki.nci.nih.gov/x/7Q5y
- * NCI OSDI: https://wiki.nci.nih.gov/display/caBIGCommunityCode/CBIIT+Open+Source+Development+Initiative
- * Release Notes: https://wiki.nci.nih.gov/x/npN4B
- * Installation Package: http://gforge.nci.nih.gov/frs/?group_id=77
+ * [Home Page] (https://wiki.nci.nih.gov/x/7Q5y)
+ * [Code Repository] (http://github.com/NCIP/caadapter)
+ * [Issue Tracker] (https://tracker.nci.nih.gov/browse/CAADAPTER)
+ * [Documentation] (https://wiki.nci.nih.gov/x/7Q5y)
+ * [NCI OSDI]  (https://wiki.nci.nih.gov/display/caBIGCommunityCode/CBIIT+Open+Source+Development+Initiative)
+ * [Release Notes] (https://wiki.nci.nih.gov/x/npN4B)
+ * [Installation Package] (http://gforge.nci.nih.gov/frs/?group_id=77)
+ 
+An NCI hosted instance of caAdapter is publicly available at:
+
+ * [caAdapter CMTS v1.0 Web GUI] (http://caadapter.nci.nih.gov/caadapter-cmts)
+ * [caAdapter CMTS v1.0 Web Service] (http://caadapter.nci.nih.gov/caadapterWS-cmts)
+ * [caAdapter MMS v4.4 Webstart] (http://caadapter.nci.nih.gov/caadapter-mms)
+ * [caAdapter HL7 MTS v4.3 Web Service] (http://caadapter.nci.nih.gov/caAdapterWS)
+ * [caAdapter HL7 MTS v4.3 Webstart] (http://caadapter.nci.nih.gov/caadapter-hl7)
+ * [caAdapter GME v4.2 Webstart] (http://caadapter.nci.nih.gov/caadapter-gme)
+ * [caAdapter v4.0 Webstart] (http://caadapter.nci.nih.gov/caadapter/caadapter.jnlp)
+ 
+Please join us in further developing and improving caAdapter.
