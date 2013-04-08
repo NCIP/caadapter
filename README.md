@@ -14,7 +14,6 @@ You will find more details about caAdapter in the following links:
  * [Code Repository] (http://github.com/NCIP/caadapter)
  * [Issue Tracker] (https://tracker.nci.nih.gov/browse/CAADAPTER)
  * [Documentation] (https://wiki.nci.nih.gov/x/7Q5y)
- * [NCI OSDI]  (https://wiki.nci.nih.gov/display/caBIGCommunityCode/CBIIT+Open+Source+Development+Initiative)
  * [Release Notes] (https://wiki.nci.nih.gov/x/npN4B)
  * [Installation Package] (http://gforge.nci.nih.gov/frs/?group_id=77)
  
