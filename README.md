@@ -10,7 +10,7 @@ Please see the NOTICE and LICENSE files for details.
 
 You will find more details about caAdapter in the following links:
 
- * [Home Page] (https://wiki.nci.nih.gov/x/7Q5y)
+ * [Community Wiki] (https://wiki.nci.nih.gov/x/7Q5y)
  * [Code Repository] (http://github.com/NCIP/caadapter)
  * [Issue Tracker] (https://tracker.nci.nih.gov/browse/CAADAPTER)
  * [Documentation] (https://wiki.nci.nih.gov/x/7Q5y)
