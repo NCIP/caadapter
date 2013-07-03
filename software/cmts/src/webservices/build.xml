@@ -85,6 +85,7 @@ L-->
 			<exclude name="xercesImpl.jar"/>
 			<exclude name="rt.jar"/>
 			<exclude name="jaxb-api-2.2.1.jar"/>
+			<exclude name="servlet-api.jar"/>
 		</lib>
 		<classes dir="${module.build.dir}" />
 
