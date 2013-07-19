@@ -1,10 +1,3 @@
-/*L
- * Copyright SAIC, SAIC-Frederick.
- *
- * Distributed under the OSI-approved BSD 3-Clause License.
- * See http://ncip.github.com/caadapter/LICENSE.txt for details.
- */
-
 package gov.nih.nci.cbiit.cmts.function;
 
 import java.util.Map;
@@ -32,14 +25,37 @@ public class DateTimeFunction {
         String endDay=paramters.get("endDate");
         //return "day-from-date(xs:date("+endDay +")) - day-from-date(xs:date("+startDay+"))";
 
-
         URL url = FileUtil.getCodeBase();
         String urlS = null;
         if (url != null) urlS = url.toString();
-        else urlS = "http://caadapter.nih.nci.gov/caadapter-cmts/";
+        //else urlS = "http://caadapter.nih.nci.gov/caadapter-cmts/";
+        else urlS = "http://caadapter.nci.nih.gov/caadapter-cmts/";
         if (!urlS.endsWith("/")) urlS = urlS + "/";
-        return "data(doc('"+ urlS + "WebFunctionService?functionName=countDays&amp;val01="+FileUtil.findNumericValue(startDay, false)+"&amp;val02="+FileUtil.findNumericValue(endDay, false)+"')/caAdapterResponse/result)";
-        //return r;
+        
+        System.out.println ("urlS in countDays: "+ urlS);
+        String r = "data" +
+                   "(" +
+                       "doc"+
+                       "(" +
+                          "concat" +
+                          "(" +
+                             "'"+ urlS + "WebFunctionService?functionName=countDays&amp;val01=',"+
+                             "concat" +
+                             "(" +
+                                FileUtil.findNumericValue(startDay, true)+"," +
+                                "concat" +
+                                "(" +
+                                    "'&amp;val02='," +
+                                    FileUtil.findNumericValue(endDay, true) +
+                                ")" +
+                             ")" +
+                          ")" +
+                       ")/caAdapterResponse/result" +
+                   ")";
+        
+        System.out.println ("r in countDays: "+ r);
+        
+        return r;
     }
 
     /**

@@ -1,10 +1,10 @@
-/*L
- * Copyright SAIC, SAIC-Frederick.
- *
- * Distributed under the OSI-approved BSD 3-Clause License.
- * See http://ncip.github.com/caadapter/LICENSE.txt for details.
+/**
+ * The content of this file is subject to the caAdapter Software License (the "License").  
+ * A copy of the License is available at:
+ * [caAdapter CVS home directory]\etc\license\caAdapter_license.txt. or at:
+ * http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent
+ * /docs/caAdapter_License
  */
-
 package gov.nih.nci.cbiit.cmts.transform;
 
 import gov.nih.nci.cbiit.cmts.common.ApplicationMessage;
@@ -18,14 +18,13 @@ import gov.nih.nci.cbiit.cmts.transform.artifact.RDFEncoder;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaErrorHandler;
 import gov.nih.nci.cbiit.cmts.transform.validation.XsdSchemaSaxValidator;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URI;
+
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Stack;
+
 
 import javax.xml.validation.Schema;
 import javax.xml.xquery.XQConnection;
@@ -42,13 +41,13 @@ import net.sf.saxon.xqj.SaxonXQDataSource;
 
 /**
  * This class performs the transformation using XQuery
- *
+ * 
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since CMTS v1.0
  * @version $Revision: 1.3 $
  * @date $Date: 2008-10-22 19:01:17 $
- *
+ * 
  */
 public class MappingTransformer extends DefaultTransformer {
 
@@ -56,11 +55,11 @@ public class MappingTransformer extends DefaultTransformer {
 	// Connection for querying
 	private XQConnection conn;
 	private boolean temporaryFileCreated = false;
-
+	
 
 	/**
 	 * constructor
-	 *
+	 * 
 	 * @throws XQException
 	 */
 	public MappingTransformer() throws XQException {
@@ -92,7 +91,7 @@ public class MappingTransformer extends DefaultTransformer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}	 
 	}
 	/**
 	 * @return the conn
@@ -111,38 +110,57 @@ public class MappingTransformer extends DefaultTransformer {
 
 	protected XQPreparedExpression prepareXQExpression(String instruction) throws XQException, JAXBException
 	{
-		mapping = MappingFactory.loadMapping(new File(instruction));
+        mapping = MappingFactory.loadMapping(new File(instruction));
 
         XQueryBuilder builder = new XQueryBuilder(mapping);
-		String queryString = builder.getXQuery();
-        String mm = "";
-        for (int i=0;i<queryString.length();i++)
+
+        String xql = null;
+        try
         {
-            String achar = queryString.substring(i, i+1);
-            if (achar.equals("<")) mm = mm + "&lt;";
-            else if (achar.equals(">")) mm = mm + "&gt;";
-            else mm = mm + achar;
+            xql = builder.getXQuery();
         }
-        //System.out.println("CCCC queryString=" + mm);
+        catch(Exception ee)
+        {
+            //System.out.println("CCCCC : GGG1=" + ee.getMessage());
+            //ee.printStackTrace();
+            throw new XQException(ee.getMessage());
+        }
+
+        String mm = null;
+        try
+        {
+            mm = modifyMappingInstForWebFunction(xql, false);
+        }
+        catch(Exception ee)
+        {
+            //System.out.println("CCCCC : GGG2=" + ee.getMessage());
+            //ee.printStackTrace();
+            throw new XQException(ee.getMessage());
+        }
+
         XQPreparedExpression exp = getConn().prepareExpression(mm);
 
 		return exp;
 	}
-
+	
 	@Override
 	public String transfer(String sourceFile, String mappingFile) {
 		// TODO Auto-generated method stub
 		try {
-			XQPreparedExpression exp = prepareXQExpression(mappingFile);
-			// parse raw data to a temporary file
+
+            XQPreparedExpression exp = prepareXQExpression(mappingFile);
+
+            // parse raw data to a temporary file
 			//if source is HL7 v2, the target namespace is set as null
             //System.out.println("CCCC 441");
             String tempXmlSrc = parseRawData(sourceFile, mapping);
-			URI sourcUri=new File(sourceFile).toURI();
-			exp.bindString(new QName("docName"), sourcUri.getPath(), conn
-					.createAtomicType(XQItemType.XQBASETYPE_STRING));
-			XQResultSequence result = exp.executeQuery();
-			String rawResult = result.getSequenceAsString(new Properties());
+
+            URI sourcUri=new File(sourceFile).toURI();
+			exp.bindString(new QName("docName"), sourcUri.getPath(), conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
+
+            XQResultSequence result = exp.executeQuery();
+
+            String rawResult = result.getSequenceAsString(new Properties());
 			RDFEncoder rdfEncoder=new RDFEncoder(rawResult);
 			String xmlResult=rdfEncoder.getFormatedRDF();
 			if (isTemporaryFileCreated()) {
@@ -162,12 +180,12 @@ public class MappingTransformer extends DefaultTransformer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 	/**
 	 * Pre-process raw source data for transformer
-	 *
+	 * 
 	 * @param sourceRawDataFile
 	 *            URI of source raw data file
 	 * @param map
@@ -238,10 +256,10 @@ public class MappingTransformer extends DefaultTransformer {
 		rtnList.add(new ApplicationResult(ApplicationResult.Level.INFO, xmlInfor));
 
 		rtnList.addAll(xmlErrorHandler.getErrorMessage());
-
+		
 		return rtnList;
 	}
-
+	 
 	public Mapping getTransformationMapping() {
 		// TODO Auto-generated method stub
 		return mapping;
@@ -297,6 +315,7 @@ public class MappingTransformer extends DefaultTransformer {
         }
         return xmlResult;
     }
+
 }
 
 /**

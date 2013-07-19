@@ -1,15 +1,9 @@
-/*L
- * Copyright SAIC, SAIC-Frederick.
- *
- * Distributed under the OSI-approved BSD 3-Clause License.
- * See http://ncip.github.com/caadapter/LICENSE.txt for details.
- */
-
 package gov.nih.nci.cbiit.cmts.ws;
 
 import gov.nih.nci.cbiit.cmts.transform.TransformationService;
 import gov.nih.nci.cbiit.cmts.transform.TransformerFactory;
 import gov.nih.nci.cbiit.cmts.ws.object.ScenarioRegistration;
+import gov.nih.nci.cbiit.cmts.util.FileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,6 +24,16 @@ public class TransformationServiceImpl implements TransformationWebService{
 	public ArrayList<String>  transferData(String mappingScenario,
 			String sourceData) {
 		ArrayList<String> result = new ArrayList<String>();
+
+        try
+        {
+            mappingScenario = extractCodeBaseFromScenario(mappingScenario);
+        }
+        catch(Exception ee)
+        {
+            result.add(ee.getMessage());
+        	return result;
+        }
 
         File tempSourceFile=prepareSourceData(sourceData, result);
         if (!tempSourceFile.exists())
@@ -52,6 +56,15 @@ public class TransformationServiceImpl implements TransformationWebService{
 	public ArrayList<String> transferResource(String mappingScenario,
 			String sourceResource) {
 		ArrayList<String> result = new ArrayList<String>();
+        try
+        {
+            mappingScenario = extractCodeBaseFromScenario(mappingScenario);
+        }
+        catch(Exception ee)
+        {
+            result.add(ee.getMessage());
+        	return result;
+        }
 
         File tempSourceFile=prepareSourceDataFromResource(sourceResource, result);
         if (!tempSourceFile.exists())
@@ -151,6 +164,75 @@ public class TransformationServiceImpl implements TransformationWebService{
         File tempSourceFile=new File(fileName);
         return tempSourceFile;
 	}
+
+    private String extractCodeBaseFromScenario(String scenario) throws Exception
+    {
+        if ((scenario == null)||(scenario.trim().equals(""))) throw new Exception("Scenario Name is NULL or EMPTY.");
+        scenario = scenario.trim();
+        int idx = scenario.indexOf("@");
+        if (idx < 0) return scenario;
+
+        String[] s = new String[2];
+        s[0] = scenario.substring(0, idx);
+        s[1] = scenario.substring(idx + 1);
+        if ((s[0].trim().equals(""))||(s[1].trim().equals(""))) throw new Exception("This Scenario Name is Invalid : " + scenario);
+
+        String urlS = null;
+
+        String wsURL = s[1].trim();
+
+        String SERVICE_NAME = "/caadapter-cmts/";
+
+        if (wsURL.toLowerCase().equals("qa"))
+            urlS = "http://caadapter-qa.nci.nih.gov" + SERVICE_NAME;
+        else if (wsURL.toLowerCase().equals("dev"))
+            urlS = "http://caadapter-dev.nci.nih.gov" + SERVICE_NAME;
+        else if (wsURL.toLowerCase().equals("stage"))
+            urlS = "http://caadapter-stage.nci.nih.gov" + SERVICE_NAME;
+        else if (wsURL.toLowerCase().equals("proc"))
+            urlS = "http://caadapter.nci.nih.gov" + SERVICE_NAME;
+        else
+        {
+            if (!wsURL.endsWith("/")) wsURL = wsURL + "/";
+            while(wsURL.startsWith("/")) wsURL = wsURL.substring(1);
+            if ((wsURL.toLowerCase().startsWith("http://"))||(wsURL.toLowerCase().startsWith("https://"))) {}
+            else wsURL = "http://" + wsURL;
+            while(true)
+            {
+                int idx2 = wsURL.indexOf(SERVICE_NAME);
+                if (idx2 > 0)
+                {
+                    urlS = wsURL.substring(0, idx2 + SERVICE_NAME.length());
+                    break;
+                }
+
+                idx2 = wsURL.toLowerCase().indexOf("/caadapterws");
+                if (idx2 > 0)
+                {
+                    urlS = wsURL.substring(0, idx2) + SERVICE_NAME;
+                    break;
+                }
+
+                urlS = wsURL + SERVICE_NAME.substring(1);
+                break;
+            }
+        }
+
+        if (urlS == null) urlS = s[1].trim();
+
+        URL url = null;
+
+        try
+        {
+            url = new URL(urlS);
+        }
+        catch(Exception ee)
+        {
+            throw new Exception("Invalid Server address("+s[0].trim()+"): " + urlS);
+        }
+        if (url != null) FileUtil.setCodeBase(url);
+        return s[0].trim();
+    }
 	
 //	private ArrayList<String> convertData(String mappingFile, String sourceDataFile) throws XQException
 //	{
